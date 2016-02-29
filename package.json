@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "autoprefixer": "^6.3.3",
+    "bluebird": "^3.3.3",
     "compression": "^1.6.1",
     "css-loader": "^0.23.1",
     "css-mqpacker": "^4.0.0",
@@ -19,6 +20,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "isomorphic-fetch": "2.2.1",
     "lodash": "4.5.0",
+    "log4js": "^0.6.32",
     "lost": "^6.7.2",
     "mongoose": "^4.4.4",
     "morgan": "^1.6.1",
@@ -29,6 +31,7 @@
     "postcss-loader": "^0.8.1",
     "postcss-simple-vars": "^1.2.0",
     "rucksack-css": "^0.8.5",
+    "string-template": "^1.0.0",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.13",
     "webpack-manifest-plugin": "^1.0.0",
