@@ -18,17 +18,29 @@ var videoSchema = mongoose.Schema({
 	allowRatings: {
 		default: true,
 		type: Boolean
+	},
+	
+	/*
+	 * The type of camera used to make the video.
+	 * @type {Object}
+	 */
+	cameraType:  {
+		type: mongoose.Schema.ObjectId, ref: 'CameraType'
 	},	
 	
 	/*
 	 * Old Name: Categories
 	 */
-	categories: [],	
+	categories: [{
+		type: mongoose.Schema.ObjectId, ref: 'CategoryType'
+	}],	
 
 	/*
 	 * Old Name: Channel
 	 */
-	channel:  {type: mongoose.Schema.ObjectId, ref: 'Channel'},
+	channel:  {
+		type: mongoose.Schema.ObjectId, ref: 'Channel'
+	},
 	
 	/*
 	 * Old Name: Description
@@ -38,6 +50,14 @@ var videoSchema = mongoose.Schema({
 		required	: true,
 		type			: String
 	},	
+	
+	/*
+	 * The type of drone used to make the video.
+	 * @type {Object}
+	 */
+	droneType:  {
+		type: mongoose.Schema.ObjectId, ref: 'DroneType'
+	},
 	
 	/* 
 	 * Old Name: Duration 
@@ -110,13 +130,18 @@ var videoSchema = mongoose.Schema({
 	/*
 	 * Old Name : user
 	 */
-	userId: {type: mongoose.Schema.ObjectId, ref: 'User'},
+	userId: {
+		type: mongoose.Schema.ObjectId, ref: 'User'
+	},
 	
 	/*
 	 * Old Name : ViewCount
 	 * The number of time the video has been viewed.
 	 */
-	viewCount: {type: Number, default: 0},	
+	viewCount: {
+		default : 0,
+		type: Number
+	},	
 	
 	/* 
 	 * Old name : FileName

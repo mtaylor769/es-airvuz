@@ -62,7 +62,7 @@ var userSchema = mongoose.Schema({
 	
 	// Represents a list of social media account tied to this user account.
 	socialMediaAccounts: [{ 
-			type: mongoose.Schema.Types.ObjectId, ref: 'SocialMediaAccount' 
+		type: mongoose.Schema.Types.ObjectId, ref: 'SocialMediaAccount' 
 	}],
 	
 	// Represents a unique user name that is displayed for the user.
