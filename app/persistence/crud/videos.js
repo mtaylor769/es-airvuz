@@ -75,6 +75,12 @@ Videos.prototype.getPreCondition = function(params) {
 
 /*
  * Create a new Video document.
+ * @param params 				       {Object}
+ * @param params.title 	       {string}
+ * @param params.description   {string}
+ * @param params.duration      {string}
+ * @param params.videoPath     {string}
+ * @param params.thumbnailPath {string}
  */
 Videos.prototype.create = function(params) {
 	

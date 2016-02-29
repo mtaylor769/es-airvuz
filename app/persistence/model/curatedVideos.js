@@ -9,7 +9,7 @@ var curatedVideosSchema = mongoose.Schema({
 	curatedType : {
 		required	: true,
 		type			: String,
-		default		: ['FAVORITE', 'FEATURED', 'STAFF_PICK']
+		default		: ['FEATURED', 'STAFF_PICK']
 	},
 	
 	videoId: {
@@ -17,7 +17,7 @@ var curatedVideosSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId, ref: 'Video' 
 	},
 	
-	viewIndex		: {
+	viewOrder		: {
 		required	: true,
 		type			: Number
 	}
