@@ -130,13 +130,18 @@ var videoSchema = mongoose.Schema({
 	/*
 	 * Old Name : user
 	 */
-	userId: {type: mongoose.Schema.ObjectId, ref: 'User'},
+	userId: {
+		type: mongoose.Schema.ObjectId, ref: 'User'
+	},
 	
 	/*
 	 * Old Name : ViewCount
 	 * The number of time the video has been viewed.
 	 */
-	viewCount: {type: Number, default: 0},	
+	viewCount: {
+		default : 0,
+		type: Number
+	},	
 	
 	/* 
 	 * Old name : FileName
