@@ -103,7 +103,7 @@ DroneType.prototype.create = function(params){
   );
 };
 
-DroneType.prototype.get = function(req, res) {
+DroneType.prototype.get = function() {
   DroneTypeModel.find({isVisible: true}).exec()
     .then(function(droneTypes){
       return res.send(droneTypes);
@@ -112,6 +112,16 @@ DroneType.prototype.get = function(req, res) {
       return err
     })
 };
+
+DroneType.prototype.getOne = function(id) {
+  DroneTypeModel.findOne({_id: id}).exec()
+  .then(function(droneType){
+    return res.send(droneType);
+  })
+  .catch(function(err){
+    return err;
+  })
+}
 
 DroneType.prototype.remove = function(req, res) {
   DroneTypeModel.findByIdAndRemove({_id: req.body._id}).exec()

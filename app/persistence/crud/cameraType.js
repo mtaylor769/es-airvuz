@@ -102,7 +102,7 @@ CameraType.prototype.create = function(params){
   );
 };
 
-CameraType.prototype.get = function(params) {
+CameraType.prototype.get = function() {
   CameraTypeModel.find({isVisible: true}).exec()
     .then(function(cameraTypes){
       return res.send(cameraTypes);
@@ -112,8 +112,18 @@ CameraType.prototype.get = function(params) {
     })
 };
 
-CameraType.prototype.remove = function(req, res) {
-  CameraTypeModel.findByIdAndRemove({_id: req.body._id}).exec()
+CameraType.prototype.getOne = function(id) {
+  CameraType.findOneById({_id: id}).exec()
+  .then(function(cameraType){
+    return res.send(cameraType);
+  })
+  .catch(function(err){
+    return err;
+  })
+};
+
+CameraType.prototype.remove = function(id) {
+  CameraTypeModel.findByIdAndRemove({_id: id}).exec()
   .then(function(cameraType){
     return res.send(cameraType)
   })
