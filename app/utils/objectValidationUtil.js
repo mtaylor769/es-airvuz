@@ -43,6 +43,12 @@ var ObjectValidationUtil = function() {
 	 * @type {object}
 	 */
 	this.data				= {};
+	
+	/*
+	 * Identifies if the validation is for an update.
+	 * @type {boolean}
+	 */
+	this.update			= false;
 }
 
 ObjectValidationUtil.prototype.setValidation = function(func) {
@@ -51,7 +57,8 @@ ObjectValidationUtil.prototype.setValidation = function(func) {
 }
 
 ObjectValidationUtil.prototype.validate = function(params) {
-	params = params || {};
+	params			= params || {};
+	this.update	= params.update || false;
 	this.validation(params);
 	
 	if(this.errors.length === 0) {

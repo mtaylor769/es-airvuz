@@ -84,6 +84,8 @@ Videos.prototype.getPreCondition = function(params) {
  */
 Videos.prototype.create = function(params) {
 	
+	
+	
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Videos.create"});
 
 	return(new Promise(function(resolve, reject) {
