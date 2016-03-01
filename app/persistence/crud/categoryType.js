@@ -130,3 +130,5 @@ CategoryType.prototype.remove = function(id) {
     return err;
   })
 };
+
+module.exports = new CategoryType();

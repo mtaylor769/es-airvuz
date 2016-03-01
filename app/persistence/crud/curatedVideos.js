@@ -6,7 +6,7 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var CuratedVideoModel						= mongoose.model('CuratedVideos');
 
-var DroneType = function(){
+var CuratedVideo = function(){
 
 };
 
@@ -15,7 +15,7 @@ var DroneType = function(){
  * @param params.sourceLocation {string} - location where the error initiates.
  */
 
-CuratedVideoModel.prototype.getPreCondition = function(params) {
+CuratedVideo.prototype.getPreCondition = function(params) {
 
   var sourceLocation = params.sourceLocation;
   /*
@@ -71,7 +71,7 @@ CuratedVideoModel.prototype.getPreCondition = function(params) {
  * @param params.viewOrder    {number}
  */
 
-CuratedVideoModel.prototype.create = function(params) {
+CuratedVideo.prototype.create = function(params) {
 
   var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CuratedVideos.create"});
 
@@ -99,7 +99,7 @@ CuratedVideoModel.prototype.create = function(params) {
   }))
 };
 
-CuratedVideoModel.prototype.get = function() {
+CuratedVideo.prototype.get = function() {
   CuratedVideoModel.find({}).exec()
   .then(function(curatedVideos){
     return res.send(curatedVideos)
@@ -109,7 +109,7 @@ CuratedVideoModel.prototype.get = function() {
   })
 };
 
-CuratedVideoModel.prototype.getById = function(id) {
+CuratedVideo.prototype.getById = function(id) {
   CuratedVideoModel.findById({_id: id}).exec()
   .then(function(curatedVideo){
     return res.send(curatedVideo);
@@ -119,7 +119,7 @@ CuratedVideoModel.prototype.getById = function(id) {
   })
 };
 
-CuratedVideoModel.prototype.remove = function(id) {
+CuratedVideo.prototype.remove = function(id) {
   CuratedVideoModel.findByIdAndRemove({_id: id}).exec()
   .then(function(curatedVideo){
     return res.send(curatedVideo)
@@ -128,3 +128,5 @@ CuratedVideoModel.prototype.remove = function(id) {
     return err;
   })
 };
+
+module.exports = new CuratedVideo();
