@@ -1,10 +1,10 @@
 var Promise											= require('bluebird');
 var mongoose										= require('mongoose');
 var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.DroneType');
+var logger											= log4js.getLogger('persistance.crud.CuratedVideos');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var DroneTypeModel							= mongoose.model('CameraType');
+var CuratedVideoModel						= mongoose.model('CuratedVideos');
 
 var DroneType = function(){
 
@@ -14,7 +14,8 @@ var DroneType = function(){
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-DroneType.prototype.getPreCondition = function(params){
+
+CuratedVideoModel.prototype.getPreCondition = function(params) {
 
   var sourceLocation = params.sourceLocation;
   /*
@@ -24,58 +25,55 @@ DroneType.prototype.getPreCondition = function(params){
   /*
    * @type {object}
    */
+  preCondition.setValidation(function(params) {
+    var errorMessage        = new ErrorMessage();
+    this.data.curatedType   = params.curatedType || null;
+    this.data.videoId       = params.videoId || null;
+    this.data.viewOrder     = params.viewOrder || null;
 
-  preCondition.setValidation(function(params){
-    var errorMessage       = new ErrorMessage();
-    this.data.manufacturer = params.manufacturer || null;
-    this.data.model        = params.model || null;
-    this.data.isVisible    = parmas.isVisible || null;
-
-
-    if(this.data.manufacturer === null){
+    if(this.data.curatedType === null) {
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
-          name : "manufacturer"
+          name : "curatedType"
         },
         sourceLocation	: sourceLocation
       })
     }
 
-    if(this.data.model === null){
+    if(this.data.videoId === null) {
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
-          name : "model"
+          name : "videoId"
         },
         sourceLocation	: sourceLocation
       })
     }
 
-    if(this.data.isVisible === null){
+    if(this.data.viewOrder === null) {
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
-          name : "isVisible"
+          name : "viewOrder"
         },
         sourceLocation	: sourceLocation
       })
     }
-  });return(preCondition)
-
+  }); return(preCondition);
 };
 
 /*
  * Create a new DroneType document.
- * @param params 				       {Object}
- * @param params.manufacturer  {string}
- * @param params.model         {string}
- * @param params.isVisible     {string}
+ * @param params 				      {Object}
+ * @param params.curatedType  {string}
+ * @param params.videoId      {string}
+ * @param params.viewOrder    {number}
  */
 
-DroneType.prototype.create = function(params) {
+CuratedVideoModel.prototype.create = function(params) {
 
-  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.DroneType.create"});
+  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CuratedVideos.create"});
 
   return(new Promise(function(resolve, reject) {
 
@@ -84,9 +82,9 @@ DroneType.prototype.create = function(params) {
       reject(validation.errors);
     }
 
-    var droneTypeModel = new DroneTypeModel(validation.data);
-    droneTypeModel.save(function(error, droneType) {
-      if(error){
+    var curatedVideosModel = new CuratedVideoModel(validation.data);
+    curatedVideosModel.save(function(error, curatedVideo){
+      if(error) {
         var errorMessage = new ErrorMessage();
         errorMessage.getErrorMessage({
           errorId					: "PERS1000",
@@ -95,42 +93,38 @@ DroneType.prototype.create = function(params) {
         });
         reject(errorMessage.getErrorMessage());
       } else {
-        resolve(droneType);
+        resolve(curatedVideo);
       }
     })
-
-  })
-  );
+  }))
 };
 
-DroneType.prototype.get = function() {
-  DroneTypeModel.find({isVisible: true}).exec()
-    .then(function(droneTypes){
-      return res.send(droneTypes);
-    })
-    .catch(function(err){
-      return err
-    })
-};
-
-DroneType.prototype.getById = function(id) {
-  DroneTypeModel.findById({_id: id}).exec()
-  .then(function(droneType){
-    return res.send(droneType);
+CuratedVideoModel.prototype.get = function() {
+  CuratedVideoModel.find({}).exec()
+  .then(function(curatedVideos){
+    return res.send(curatedVideos)
   })
   .catch(function(err){
     return err;
   })
 };
 
-DroneType.prototype.remove = function(req, res) {
-  DroneTypeModel.findByIdAndRemove({_id: req.body._id}).exec()
-  .then(function(droneType){
-    return res.json({removedDrone: droneType.model})
+CuratedVideoModel.prototype.getById = function(id) {
+  CuratedVideoModel.findById({_id: id}).exec()
+  .then(function(curatedVideo){
+    return res.send(curatedVideo);
   })
   .catch(function(err){
     return err;
   })
 };
 
-module.exports = new DroneType();
+CuratedVideoModel.prototype.remove = function(id) {
+  CuratedVideoModel.findByIdAndRemove({_id: id}).exec()
+  .then(function(curatedVideo){
+    return res.send(curatedVideo)
+  })
+  .catch(function(err){
+    return err;
+  })
+};

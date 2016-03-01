@@ -112,8 +112,8 @@ CameraType.prototype.get = function() {
     })
 };
 
-CameraType.prototype.getOne = function(id) {
-  CameraType.findOneById({_id: id}).exec()
+CameraType.prototype.getById = function(id) {
+  CameraType.findById({_id: id}).exec()
   .then(function(cameraType){
     return res.send(cameraType);
   })
