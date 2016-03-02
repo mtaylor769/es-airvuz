@@ -18,11 +18,12 @@ var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
 var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
 var https       = require('https').createServer(credentials, app).listen(443);
 var http        = require("http").createServer(app);
+var passport    = require('passport');
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.locals.sourceManifest = require('../public/manifest.json');
+//app.locals.sourceManifest = require('../public/manifest.json');
 
 //   __  __ _     _     _ _
 //  |  \/  (_) __| | __| | | _____      ____ _ _ __ ___
@@ -38,7 +39,7 @@ var morgan = require('morgan');
 app.use(morgan('dev'));
 app.use(compression());
 app.use(express.static(path.resolve(__dirname, '../public')));
-
+app.use(passport.initialize());
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
 //    / _ \ | |_) | |  | |_) / _ \| | | | __/ _ \ __|

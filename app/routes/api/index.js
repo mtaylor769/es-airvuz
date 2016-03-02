@@ -1,4 +1,5 @@
 var apiRouter = require('express').Router();
+var passport  = require('passport');
 
 var users = require('./users');
 

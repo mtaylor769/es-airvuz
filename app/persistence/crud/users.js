@@ -138,6 +138,9 @@ User.prototype.create = function(params) {
 	);
 }
 
+/*
+* Get all users
+*/
 User.prototype.getAllUsers = function(params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
 	var validation = preCondition.validate(params);
@@ -174,6 +177,9 @@ User.prototype.getAllUsers = function(params) {
 	
 }
 
+/*
+* Get a user by ID
+*/
 User.prototype.getUserById = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserById"});
 	var validation = preCondition.validate(params);
@@ -202,6 +208,9 @@ User.prototype.getUserById = function (params) {
 	
 }
 
+/*
+* Get a user by email
+*/
 User.prototype.getUserByEmail = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByEmail"});
 	var validation = preCondition.validate(params);
@@ -230,6 +239,10 @@ User.prototype.getUserByEmail = function (params) {
 	
 }
 
+
+/*
+* Get a user by user name
+*/
 User.prototype.getUserByUserName = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
@@ -252,10 +265,12 @@ User.prototype.getUserByUserName = function (params) {
 				reject(errorMessage.getErrors());
 			});
 		}
-
 	}));
 }
 
+/*
+* Update user information
+*/
 User.prototype.update = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
@@ -269,6 +284,9 @@ User.prototype.update = function (params) {
 	}));
 }
 
+/*
+* Delete
+*/
 User.prototype.delete = function(params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
