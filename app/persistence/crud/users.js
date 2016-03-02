@@ -185,12 +185,12 @@ User.prototype.getUserById = function (params) {
 			.then(function(user){
 				resolve(user);
 			})
-			.error(function(e){
+			.error(function(error){
 				var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
 					statusCode			: "500",
 					errorMessage 		: "Failed while getting user by Id",
-					sourceError			: e,
+					sourceError			: error,
 					sourceLocation	: "persistence.crud.Users.getAllAusers"
 				});
 				reject(errorMessage.getErrors());
@@ -213,12 +213,12 @@ User.prototype.getUserByEmail = function (params) {
 			.then(function(user){
 				resolve(user);
 			})
-			.error(function(e){
+			.error(function(error){
 				var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
 					statusCode			: "500",
 					errorMessage 		: "Failed while getting user by Email",
-					sourceError			: e,
+					sourceError			: error,
 					sourceLocation	: "persistence.crud.Users.getUserByEmail"
 				});
 				reject(errorMessage.getErrors());
@@ -241,12 +241,12 @@ User.prototype.getUserByUserName = function (params) {
 			.then(function(user){
 				resolve(user);
 			})
-			.error(function(e){
+			.error(function(error){
 				var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
 					statusCode			: "500",
 					errorMessage		: "Failed while getting user by user name",
-					sourceError			: e,
+					sourceError			: error,
 					sourceLocation	: "persistence.crud.Users.getUserByUserName"
 				});
 				reject(errorMessage.getErrors());
@@ -280,12 +280,12 @@ User.prototype.delete = function(params) {
 			.then(function(user){
 				resolve(user);
 			})
-			.error(function(e){
+			.error(function(error){
 				var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
 					statusCode			: "500",
 					errorMessage 		: "Failed while deleting user",
-					sourceError			: e,
+					sourceError			: error,
 					sourceLocation		: "persistence.crud.Users.delete"
 				});
 				reject(errorMessage.getErrors());
