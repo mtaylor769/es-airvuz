@@ -51,12 +51,12 @@ var userSchema = mongoose.Schema({
 	// The users last name
 	lastName : {
 		required	: true,
-		type			: String
+		type		: String
 	},
 	
 	password : {
 		required	: false,
-		type			: String,
+		type		: String,
 		unique		: true
 	},
 	
@@ -74,10 +74,11 @@ var userSchema = mongoose.Schema({
 	
 	/* 
 	 * The site url name of the user. 
-	 * Example: www.airvuz.com/<userUrlName> 
+	 * Example: www.airvuz.com/<uniqueName> 
 	 */
-	userUrlName : {
+	uniqueName : {
 		required	: true,
+		unique		: true,
 		type			: String
 	},
 	

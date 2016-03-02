@@ -10,8 +10,6 @@ module.exports = new LocalStrategy({
   passwordField: 'password'
 }, function (email, password, done) {
 
-
-
 });
 
 module.exports.PROVIDER_KEY = PROVIDER_KEY;
