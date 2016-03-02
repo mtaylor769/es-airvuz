@@ -7,10 +7,17 @@ global.IS_NODE = true;
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_CONNECTION || 'mongodb://localhost/airvuz-2');
 
-var path = require('path');
-var express = require('express');
+var path        = require('path');
+var express     = require('express');
+var fs          = require('fs');
+var app         = express();
 
-var app = express();
+//SSL certs
+var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
+var https       = require('https').createServer(credentials, app);
+var http        = require("http").createServer(app);
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
