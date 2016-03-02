@@ -50,4 +50,4 @@ var api = require('./routes/api');
 
 app.use('/api', api.router);
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 80);
