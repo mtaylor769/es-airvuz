@@ -6,9 +6,9 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.Users');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var UsersModel									= mongoose.model('users');
+var UserModel									= mongoose.model('users');
 
-var User = function() {
+var Users = function() {
 	
 }
 
@@ -16,7 +16,7 @@ var User = function() {
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-User.prototype.getPreCondition = function(params) {
+Users.prototype.getPreCondition = function(params) {
 	/*
 	 * @type {string}
 	 */
@@ -101,9 +101,9 @@ User.prototype.getPreCondition = function(params) {
 
 
 /*
- * Create a new User document.
+ * Create a new Users document.
  */
-User.prototype.create = function(params) {
+Users.prototype.create = function(params) {
 	
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
 
@@ -116,7 +116,7 @@ User.prototype.create = function(params) {
 			}		
 
 			// Persist
-			var userModel = new VideoModel(validation.data);
+			var userModel = new UserModel(validation.data);
 			userModel.save(function(error, user) {
 				if(error) {
 					var errorMessage		= new ErrorMessage();
@@ -141,7 +141,7 @@ User.prototype.create = function(params) {
 /*
 * Get all users
 */
-User.prototype.getAllUsers = function(params) {
+Users.prototype.getAllUsers = function(params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
@@ -180,7 +180,7 @@ User.prototype.getAllUsers = function(params) {
 /*
 * Get a user by ID
 */
-User.prototype.getUserById = function (params) {
+Users.prototype.getUserById = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserById"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
@@ -211,7 +211,7 @@ User.prototype.getUserById = function (params) {
 /*
 * Get a user by email
 */
-User.prototype.getUserByEmail = function (params) {
+Users.prototype.getUserByEmail = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByEmail"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
@@ -243,7 +243,7 @@ User.prototype.getUserByEmail = function (params) {
 /*
 * Get a user by user name
 */
-User.prototype.getUserByUserName = function (params) {
+Users.prototype.getUserByUserName = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
@@ -271,7 +271,7 @@ User.prototype.getUserByUserName = function (params) {
 /*
 * Update user information
 */
-User.prototype.update = function (params) {
+Users.prototype.update = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
@@ -287,7 +287,7 @@ User.prototype.update = function (params) {
 /*
 * Delete
 */
-User.prototype.delete = function(params) {
+Users.prototype.delete = function(params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
@@ -312,4 +312,4 @@ User.prototype.delete = function(params) {
 	}));
 }
 
-module.exports = new User();
+module.exports = new Users();
