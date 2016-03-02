@@ -16,7 +16,7 @@ var app         = express();
 var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
 var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
 var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
-var https       = require('https').createServer(credentials, app);
+var https       = require('https').createServer(credentials, app).listen(443);
 var http        = require("http").createServer(app);
 
 app.set('views', path.resolve(__dirname, 'views'));
