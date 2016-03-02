@@ -312,3 +312,4 @@ User.prototype.delete = function(params) {
 	}));
 }
 
+module.exports = new User();
