@@ -146,6 +146,6 @@ Videos.prototype.remove = function(id) {
 	.catch(function(err) {
 		return err;
 	})
-}
+};
 
 module.exports = new Videos();
