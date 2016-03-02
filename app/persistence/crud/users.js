@@ -29,10 +29,10 @@ User.prototype.getPreCondition = function(params) {
 	
 	preCondition.setValidation(function(params) {
 		//need to pass in user data info
-		var errorMessage				= new ErrorMessage();
-		var sessionId					= params.sessionId || null;
-		var userId						= params.user.userId || null;
-		this.data.emailAddress			= params.user.emailAddress || null;
+		var errorMessage					= new ErrorMessage();
+		var sessionId							= params.sessionId || null;
+		var userId								= params.user.userId || null;
+		this.data.emailAddress		= params.user.emailAddress || null;
 		this.data.password				= params.user.password || null;
 		this.data.firstName				= params.user.firstName || null;
 		this.data.lastName				= params.user.lastName || null;
@@ -40,56 +40,56 @@ User.prototype.getPreCondition = function(params) {
 		
 		if(userId === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",,
-				errorMessage 	: "User ID is null", 
+				statusCode			: "400",,
+				errorMessage		: "User ID is null", 
 				sourceLocation	: sourceLocation
 			});
 		}			
 		
 		if(sessionId === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",
-				errorMessage 	: "Session ID is null",
+				statusCode			: "400",
+				errorMessage		: "Session ID is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
 		if(emailAddress === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",
-				errorMessage 	: "Email address is null",
+				statusCode			: "400",
+				errorMessage		: "Email address is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
 		if(password === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",
-				errorMessage 	: "Password is null",
+				statusCode			: "400",
+				errorMessage		: "Password is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
 		if(userName === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",
-				errorMessage 	: "Username is null",
+				statusCode			: "400",
+				errorMessage		: "Username is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
 		if(firstName === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",
-				errorMessage 	: "First name is null",
+				statusCode			: "400",
+				errorMessage		: "First name is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
 		if(lastName === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode		: "400",
-				errorMessage 	: "Last name is null",
+				statusCode			: "400",
+				errorMessage		: "Last name is null",
 				sourceLocation	: sourceLocation
 			});
 		}
@@ -124,7 +124,7 @@ User.prototype.create = function(params) {
 						statusCode			: "500",
 						errorMessage 		: "Failed while creating new user"
 						sourceError			: error,
-						sourceLocation		: "persistence.crud.Users.create"
+						sourceLocation	: "persistence.crud.Users.create"
 					});
 					reject(errorMessage.getErrors());
 				}
@@ -161,7 +161,7 @@ User.prototype.getAllUsers = function(params) {
 					statusCode			: "500",
 					errorMessage 		: "Failed while getting users",
 					sourceError			: e,
-					sourceLocation		: "persistence.crud.Users.getAllAusers"
+					sourceLocation	: "persistence.crud.Users.getAllAusers"
 				});
 				reject(errorMessage.getErrors());
 			});
@@ -191,7 +191,7 @@ User.prototype.getUserById = function (params) {
 					statusCode			: "500",
 					errorMessage 		: "Failed while getting user by Id",
 					sourceError			: e,
-					sourceLocation		: "persistence.crud.Users.getAllAusers"
+					sourceLocation	: "persistence.crud.Users.getAllAusers"
 				});
 				reject(errorMessage.getErrors());
 			});
@@ -219,7 +219,7 @@ User.prototype.getUserByEmail = function (params) {
 					statusCode			: "500",
 					errorMessage 		: "Failed while getting user by Email",
 					sourceError			: e,
-					sourceLocation		: "persistence.crud.Users.getUserByEmail"
+					sourceLocation	: "persistence.crud.Users.getUserByEmail"
 				});
 				reject(errorMessage.getErrors());
 			});
@@ -245,9 +245,9 @@ User.prototype.getUserByUserName = function (params) {
 				var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
 					statusCode			: "500",
-					errorMessage 		: "Failed while getting user by user name",
+					errorMessage		: "Failed while getting user by user name",
 					sourceError			: e,
-					sourceLocation		: "persistence.crud.Users.getUserByUserName"
+					sourceLocation	: "persistence.crud.Users.getUserByUserName"
 				});
 				reject(errorMessage.getErrors());
 			});
