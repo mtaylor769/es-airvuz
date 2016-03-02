@@ -95,7 +95,8 @@ CategoryType.prototype.create = function(params) {
       }
     })
 
-  }))
+  })
+  );
 };
 
 CategoryType.prototype.get = function() {
