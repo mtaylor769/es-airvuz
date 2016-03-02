@@ -4,7 +4,8 @@
   "scripts": {
     "start": "node app/index.js",
     "build": "NODE_ENV=development webpack --config client/webpack.config.js",
-    "build:prod": "NODE_ENV=production webpack --config client/webpack.config.js"
+    "build:prod": "NODE_ENV=production webpack --config client/webpack.config.js",
+    "test": "istanbul cover _mocha -- test/app/**/*.test.js"
   },
   "dependencies": {
     "autoprefixer": "^6.3.3",
@@ -36,5 +37,15 @@
     "webpack": "^1.12.13",
     "webpack-manifest-plugin": "^1.0.0",
     "webpack-md5-hash": "0.0.5"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.4.2",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-jasmine": "^0.2.3",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.4.5",
+    "protractor": "^3.1.1"
   }
 }
