@@ -1,12 +1,12 @@
 var Promise											= require('bluebird');
 var mongoose										= require('mongoose');
 var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.CuratedVideos');
+var logger											= log4js.getLogger('persistance.crud.PlayList');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CuratedVideoModel						= mongoose.model('CuratedVideos');
+var PlaylistModel							= mongoose.model('PlayList');
 
-var CuratedVideo = function(){
+var Playlist = function(){
 
 };
 
@@ -14,8 +14,7 @@ var CuratedVideo = function(){
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-
-CuratedVideo.prototype.getPreCondition = function(params) {
+Playlist.prototype.getPreCondition = function(params) {
 
   var sourceLocation = params.sourceLocation;
   /*
@@ -25,17 +24,29 @@ CuratedVideo.prototype.getPreCondition = function(params) {
   /*
    * @type {object}
    */
-  preCondition.setValidation(function(params) {
-    var errorMessage        = new ErrorMessage();
-    this.data.curatedType   = params.curatedType || null;
-    this.data.videoId       = params.videoId || null;
-    this.data.viewOrder     = params.viewOrder || null;
 
-    if(this.data.curatedType === null) {
+  preCondition.setValidation(function(params) {
+    var errorMessage         = new ErrorMessage();
+    this.data.playListName   = params.playListName;
+    this.data.userId         = params.userId;
+    this.data.videoId        = params.videoList[0];
+    this.data.viewOrder      = params.videoList[1];
+
+    if(this.data.playListName === null) {
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
-          name : "curatedType"
+          name : "playListName"
+        },
+        sourceLocation	: sourceLocation
+      })
+    }
+
+    if(this.data.userId === null) {
+      this.errors = errorMessage.getErrorMessage({
+        errorId					: "VALIDA1000",
+        templateParams	: {
+          name : "userId"
         },
         sourceLocation	: sourceLocation
       })
@@ -50,7 +61,6 @@ CuratedVideo.prototype.getPreCondition = function(params) {
         sourceLocation	: sourceLocation
       })
     }
-
     if(this.data.viewOrder === null) {
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
@@ -60,20 +70,22 @@ CuratedVideo.prototype.getPreCondition = function(params) {
         sourceLocation	: sourceLocation
       })
     }
-  }); return(preCondition);
+
+  });return(preCondition);
 };
 
 /*
  * Create a new DroneType document.
- * @param params 				      {Object}
- * @param params.curatedType  {string}
- * @param params.videoId      {string}
- * @param params.viewOrder    {number}
+ * @param params 				       {Object}
+ * @param params.playListName  {string}
+ * @param params.userId        {string}
+ * @param params.videoId       {string}
+ * @param params.viewOrder     {string}
  */
 
-CuratedVideo.prototype.create = function(params) {
+Playlist.prototype.create = function(params) {
 
-  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CuratedVideos.create"});
+  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.PlayList.create"});
 
   return(new Promise(function(resolve, reject) {
 
@@ -82,9 +94,9 @@ CuratedVideo.prototype.create = function(params) {
       reject(validation.errors);
     }
 
-    var curatedVideosModel = new CuratedVideoModel(validation.data);
-    curatedVideosModel.save(function(error, curatedVideo){
-      if(error) {
+    var playlistModel = new PlaylistModel(validation.data);
+    playlistModel.save(function(error, playlist) {
+      if(error){
         var errorMessage = new ErrorMessage();
         errorMessage.getErrorMessage({
           errorId					: "PERS1000",
@@ -93,41 +105,46 @@ CuratedVideo.prototype.create = function(params) {
         });
         reject(errorMessage.getErrorMessage());
       } else {
-        resolve(curatedVideo);
+        resolve(playlist);
       }
     })
-  })
+
+    })
   );
 };
 
-CuratedVideo.prototype.get = function() {
-  CuratedVideoModel.find({}).exec()
-  .then(function(curatedVideos){
-    return res.send(curatedVideos)
+Playlist.prototype.get = function() {
+
+  PlaylistModel.find({}).exec()
+  .then(function(playlists) {
+    return res.send(playlists);
   })
-  .catch(function(err){
+  .catch(function(err) {
     return err;
   })
 };
 
-CuratedVideo.prototype.getById = function(id) {
-  CuratedVideoModel.findById({_id: id}).exec()
-  .then(function(curatedVideo){
-    return res.send(curatedVideo);
+Playlist.prototype.getById = function(id) {
+
+  PlaylistModel.findById({_id: id}).exec()
+  .then(function(playlist) {
+    return res.send(playlist)
   })
-  .catch(function(err){
+  .catch(function(err) {
     return err;
   })
 };
 
-CuratedVideo.prototype.remove = function(id) {
-  CuratedVideoModel.findByIdAndRemove({_id: id}).exec()
-  .then(function(curatedVideo){
-    return res.send(curatedVideo)
+Playlist.prototype.remove = function(id) {
+
+  PlaylistModel.findByIdAndRemove({_id: id}).exec()
+  .then(function(playlist) {
+    return res.send(playlist)
   })
-  .catch(function(err){
+  .catch(function(err) {
     return err;
   })
 };
 
-module.exports = new CuratedVideo();
+
+module.exports = new Playlist();
