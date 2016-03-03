@@ -29,4 +29,4 @@ var cameraTypeSchema = mongoose.Schema({
 
 });
 
-mongoose.model('CameraType', cameraTypeSchema);
+mongoose.model('cameraType', cameraTypeSchema);
