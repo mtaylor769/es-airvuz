@@ -1,6 +1,7 @@
 var usersRouter   = require('express').Router();
 var passport      = require('passport');
-var User          = require('../app/persistence/crud/users'); 
+var User          = require('../../persistence/crud/users'); 
+//var User          = null;
 
 usersRouter.get('/', function (req, res) {
 

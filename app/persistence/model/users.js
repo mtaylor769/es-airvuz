@@ -94,4 +94,4 @@ var userSchema = mongoose.Schema({
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
 //userSchema.createIndex( { "socialMediaAccount.accountId": 1 }, { background: true } );
 
-mongoose.model('User', userSchema);
+mongoose.model('users', userSchema);
