@@ -1,3 +1,5 @@
 require('../styles/index.css');
 
-console.log('hello');
+var test = require('./test');
+
+exports.add = function (a, b) { return a+b };

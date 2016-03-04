@@ -5,7 +5,9 @@
     "start": "node app/index.js",
     "build": "NODE_ENV=development webpack --config client/webpack.config.js",
     "build:prod": "NODE_ENV=production webpack --config client/webpack.config.js",
-    "test": "istanbul cover _mocha -- test/app/**/*.test.js"
+    "test": "npm run test:node && npm run test:karma -- --single-run",
+    "test:node": "JASMINE_CONFIG_PATH=specs/support/jasmine.app.json istanbul cover --dir ./coverage/app -x **/specs/** jasmine",
+    "test:karma": "karma start"
   },
   "dependencies": {
     "autoprefixer": "^6.3.3",
@@ -41,13 +43,18 @@
     "webpack-md5-hash": "0.0.5"
   },
   "devDependencies": {
-    "expect.js": "^0.3.1",
     "istanbul": "^0.4.2",
+    "istanbul-instrumenter-loader": "^0.2.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-coverage": "^0.5.4",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-ie-launcher": "^0.2.0",
     "karma-jasmine": "^0.2.3",
+    "karma-opera-launcher": "^0.3.0",
+    "karma-safari-launcher": "^0.1.1",
     "karma-webpack": "^1.7.0",
-    "mocha": "^2.4.5",
     "protractor": "^3.1.1"
   }
 }

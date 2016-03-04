@@ -23,7 +23,9 @@ var passport    = require('passport');
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//app.locals.sourceManifest = require('../public/manifest.json');
+// Makes a global variable for templates to get client code.
+// YOU MUST RUN WEBPACK FOR THE MANIFEST FILE TO EXIST.
+app.locals.sourceManifest = require('../public/manifest.json');
 
 //   __  __ _     _     _ _
 //  |  \/  (_) __| | __| | | _____      ____ _ _ __ ___
