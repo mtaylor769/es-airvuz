@@ -5,6 +5,7 @@
     "start": "node app/index.js",
     "build": "NODE_ENV=development webpack --config client/webpack.config.js",
     "build:prod": "NODE_ENV=production webpack --config client/webpack.config.js",
+    "build:win": "set NODE_ENV=development&& webpack --config client/webpack.config.js",
     "test": "istanbul cover _mocha -- test/app/**/*.test.js"
   },
   "dependencies": {

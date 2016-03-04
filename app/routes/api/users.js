@@ -1,6 +1,6 @@
 var usersRouter   = require('express').Router();
 var passport      = require('passport');
-var User          = require('../../persistence/crud/users'); 
+var Users          = require('../../persistence/crud/users'); 
 
 usersRouter.get('/', function (req, res) {
 
@@ -9,10 +9,8 @@ usersRouter.get('/', function (req, res) {
 });
 
 usersRouter.get('/signup', function(req,res){
-  var params = {
-    sessionId   : req.sessionId,
-    user        : req.user
-  }
+  var params = req.user || {};
+  params.sessionId = req.sessionId || null;
   Users.create(params);
 });
 
