@@ -12,11 +12,12 @@
     "test:karma": "karma start",
     "test:win": "npm run test:node:win && npm run test:karma:win -- --single-run",
     "test:node:win": "set  JASMINE_CONFIG_PATH=specs/support/jasmine.app.json&& istanbul cover --dir ./coverage/app -x **/specs/** jasmine",
-    "test:karma:win": "karma start",
+    "test:karma:win": "karma start"
   },
   "dependencies": {
     "autoprefixer": "^6.3.3",
     "bluebird": "^3.3.3",
+    "clean-webpack-plugin": "^0.1.8",
     "compression": "^1.6.1",
     "css-loader": "^0.23.1",
     "css-mqpacker": "^4.0.0",

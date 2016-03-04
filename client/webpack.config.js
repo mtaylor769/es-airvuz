@@ -23,6 +23,7 @@ var webpack               = require ( 'webpack' );
 var WebpackManifestPlugin = require ( 'webpack-manifest-plugin' );
 var WebpackMd5Hash        = require ( 'webpack-md5-hash' );
 var ExtractTextPlugin     = require ( 'extract-text-webpack-plugin' );
+var CleanWebpackPlugin    = require ( 'clean-webpack-plugin' );
 
 // PostCSS
 var cssImport    = require ( 'postcss-import' );
@@ -54,6 +55,8 @@ config.entry        = {};
 config.entry.vendor = [
   'lodash'
 ];
+
+// Entry points for webpack to compile code.
 config.entry.airvuz = './scripts';
 
 // Output
@@ -103,6 +106,10 @@ config.postcss = function ( webpack ) {
 
 // Plugins
 config.plugins = [];
+
+config.plugins.push ( new CleanWebpackPlugin( [ config.output.path ], {
+  root: path.resolve(__dirname, '..')
+} ) );
 
 config.plugins.push ( new WebpackManifestPlugin ( ) );
 
