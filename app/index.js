@@ -5,7 +5,7 @@ global.IS_NODE = true;
 
 // Enable Mongoose
 var mongoose = require('../mongoose');
-mongoose.connect(process.env.MONGODB_CONNECTION || 'mongodb://localhost/airvuz-2');
+//mongoose.connect(process.env.MONGODB_CONNECTION || 'mongodb://localhostAirVuzV2');
 
 var path        = require('path');
 var express     = require('express');
