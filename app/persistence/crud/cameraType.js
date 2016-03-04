@@ -4,7 +4,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CameraType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CameraTypeModel							= mongoose.model('CameraType');
+var CameraTypeModel							= mongoose.model('cameraType');
 
 var CameraType = function(){
 

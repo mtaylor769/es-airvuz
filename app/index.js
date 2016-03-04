@@ -4,7 +4,7 @@ global.IS_DEVELOPMENT = NODE_ENV === 'development';
 global.IS_NODE = true;
 
 // Enable Mongoose
-var mongoose = require('mongoose');
+var mongoose = require('../mongoose');
 mongoose.connect(process.env.MONGODB_CONNECTION || 'mongodb://localhost/airvuz-2');
 
 var path        = require('path');

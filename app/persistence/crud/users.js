@@ -6,7 +6,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.Users');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var UserModel									= mongoose.model('users');
+var UserModel										= mongoose.model('users');
 
 var Users = function() {
 	
@@ -40,7 +40,7 @@ Users.prototype.getPreCondition = function(params) {
 		
 		if(userId === null) {
 			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",,
+				statusCode			: "400",
 				errorMessage		: "User ID is null", 
 				sourceLocation	: sourceLocation
 			});
@@ -122,7 +122,7 @@ Users.prototype.create = function(params) {
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
-						errorMessage 		: "Failed while creating new user"
+						errorMessage 		: "Failed while creating new user",
 						sourceError			: error,
 						sourceLocation	: "persistence.crud.Users.create"
 					});
@@ -275,7 +275,7 @@ Users.prototype.update = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
-		if (validation.errors !=== null) {
+		if (validation.errors !== null) {
 			reject(validation.errors);
 		} else {
 			//Code to update user
