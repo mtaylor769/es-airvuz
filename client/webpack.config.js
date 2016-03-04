@@ -10,6 +10,7 @@
 var NODE_ENV    = process.env.NODE_ENV || 'development';
 var IS_DEVELOPMENT = NODE_ENV === 'development';
 var IS_PRODUCTION  = NODE_ENV === 'production';
+console.log(IS_DEVELOPMENT);
 
 //   _     _ _                    _
 //  | |   (_) |__  _ __ __ _ _ __(_) ___ ___

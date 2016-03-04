@@ -31,12 +31,12 @@ Users.prototype.getPreCondition = function(params) {
 		//need to pass in user data info
 		var errorMessage					= new ErrorMessage();
 		var sessionId							= params.sessionId || null;
-		var userId								= params.user.userId || null;
-		this.data.emailAddress		= params.user.emailAddress || null;
-		this.data.password				= params.user.password || null;
-		this.data.firstName				= params.user.firstName || null;
-		this.data.lastName				= params.user.lastName || null;
-		this.data.userName				= params.user.userName || null;
+		var userId								= params.userId || null;
+		this.data.emailAddress		= params.emailAddress || null;
+		this.data.password				= params.password || null;
+		this.data.firstName				= params.firstName || null;
+		this.data.lastName				= params.lastName || null;
+		this.data.userName				= params.userName || null;
 		
 		if(userId === null) {
 			this.errors = errorMessage.getErrorMessage({
