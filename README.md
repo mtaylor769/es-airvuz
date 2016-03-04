@@ -14,7 +14,13 @@ _**Note:** If you update a production client build you'll need to restart Expres
 - `npm run test:node` — Runs Node.js test, will end once completed. You can add aditional Jasmine command line options using the following syntax, `npm run test:node -- {options}`.
 - `npm run test:karma` — Starts up a Karma server and beings testing client code. This will remain running until terminated and will execute tests after every change. You can add additional Karma command line options using the following syntax, `npm run test:karma -- {options}`. By default Karma only tests Chrome and Firefox, to test additional browsers use the following command, `npm run test:karma -- --browsers Safari,Chrome,Firefox`.
 
-All test will create code coverage and place it in the `coverage/` folder.
+All tests will create code coverage and place it in the `coverage/` folder.
+
+## Windows
+
+If you receive an error trying to run a NPM script on Windows. Add a `:win` to the end of the command and that will use a special Windows version of the script. This is due to the differences between how *nix systems and Windows do environmental variables.
+
+_**Note:** When setting an environmental variable for Windows make sure to not add whitespace after the variable value. This is right `set NODE_ENV=production&& node app.js`, this is wrong `set NODE_ENV=production && node app.js`._
 
 ## Nick's Notes
 
