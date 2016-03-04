@@ -12,6 +12,7 @@
     "test:karma": "karma start",
     "test:win": "npm run test:node:win && npm run test:karma:win -- --single-run",
     "test:node:win": "set  JASMINE_CONFIG_PATH=specs/support/jasmine.app.json&& istanbul cover --dir ./coverage/app -x **/specs/** jasmine",
+    "test:jasmine:win": "set  JASMINE_CONFIG_PATH=specs/support/jasmine.app.json&& jasmine",
     "test:karma:win": "karma start"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
   "devDependencies": {
     "istanbul": "^0.4.2",
     "istanbul-instrumenter-loader": "^0.2.0",
+    "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",
