@@ -1,6 +1,6 @@
 describe('Users', function () {
   var Promise = require('bluebird');
-  var Users = require('../../../app/persistence/crud/users');
+  var Users = require('../../../../app/persistence/crud/users');
   var validUser = {
     sessionId     : "sessionId",
     emailAddress  : "test@email.com",
@@ -15,10 +15,10 @@ describe('Users', function () {
     lastName      : "Thao"
   }
 
-  describe("Create", function(done){
-    it('returns a Promise after creating a user', function () {
-      var returnPromise = Users.create(validUser);
-      expect(returnPromise).toBe(jasmine.any(Promise));
+  describe("Create", function(){
+    it('returns a Promise after creating a user', function (done) {
+      var returnPromise = Users.create(null);
+      expect(returnPromise).toEqual(jasmine.any(Promise));
       done();
     });
   });

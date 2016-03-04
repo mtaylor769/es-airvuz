@@ -6,7 +6,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.Users');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var UserModel										= mongoose.model('users');
+var UserModel										= require('../model/users');
 
 var Users = function() {
 	
@@ -104,13 +104,14 @@ Users.prototype.getPreCondition = function(params) {
  * Create a new Users document.
  */
 Users.prototype.create = function(params) {
-	
+	console.log("params are: " + params);
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
 
 	return(new Promise(function(resolve, reject) {
 
 			// Validation
 			var validation = preCondition.validate(params);
+			console.log("validation is: " + validation);
 			if(validation.errors !== null) {
 				reject(validation.errors);
 			}		

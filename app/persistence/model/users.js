@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var crypto   = require('crypto');
-var uuid     = require('node-uuid');
+var uuid     = require('uuid');
 
 var userSchema = mongoose.Schema({
 	
@@ -94,4 +94,4 @@ var userSchema = mongoose.Schema({
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
 //userSchema.createIndex( { "socialMediaAccount.accountId": 1 }, { background: true } );
 
-mongoose.model('users', userSchema);
+module.exports = mongoose.model('users', userSchema);
