@@ -22,7 +22,6 @@ All tests will create code coverage and place it in the `coverage/` folder.
 If you receive an error trying to run a NPM script on Windows. Add a `:win` to the end of the command and that will use a special Windows version of the script. This is due to the differences between how *nix systems and Windows do environmental variables.
 
 _**Note:** When setting an environmental variable for Windows make sure to not add whitespace after the variable value. This is right `set NODE_ENV=production&& node app.js`, this is wrong `set NODE_ENV=production && node app.js`._
->>>>>>> 9c9c213b80c87c0ba486aec64b80873195fcf718
 
 ## Nick's Notes
 
