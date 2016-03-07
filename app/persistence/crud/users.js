@@ -213,8 +213,6 @@ Users.prototype.getUserById = function (userId) {
 		}
 
 	}));
-
-	
 }
 
 /*
