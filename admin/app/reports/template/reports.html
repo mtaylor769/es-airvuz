@@ -1,0 +1,39 @@
+<div class="col-md-6 m-t-40">
+        <label for="sDate">Start Date</label>
+        <input class="form-control" type="text" id="sDate" ng-model="startDate">
+        <label for="eDate">End Date</label>
+        <input class="form-control" type="text" id="eDate" ng-model="endDate">
+        <button class="btn btn-primary pull-right m-t-15" ng-click="userVideos(startDate, endDate)">Site Information</button>
+        <div class=" m-t-40">
+            <label for="username">Username</label>
+            <input class="form-control" type="text" id="username" ng-model="username">
+            <button class="btn btn-primary pull-right m-t-15" ng-click="getVideos(username, startDate, endDate)">Videos</button>
+            <button class="btn btn-primary pull-right m-t-15" ng-click="getComments(username, startDate, endDate)">Comments</button>
+        </div>
+</div>
+<div ng-show="loading" id="loadInfo" class="pre col-md-6">
+    <div class="load-con">
+        <h1>Loading</h1><i class="fa fa-spinner fa-pulse"></i>
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+<div class="col-md-6" ng-show="siteInfo">
+    <h1>{{title}}</h1>
+    <p>Total users, as of [{{endDate}}] : {{totalUsers}}</p>
+    <p>Total videos, as of [{{endDate}}] : {{totalVideos}}</p>
+    <p>New users within date range, [{{startDate}}] - [{{endDate}}] : {{newUsersCount}}</p>
+    <p>New videos within date range, [{{startDate}}] - [{{endDate}}]: {{newVideos}}</p>
+        { "data": {{newUsersList | json}} }
+</div>
+<div class="col-md-6" ng-show="comments">
+    <h1>Comments for {{username}}</h1>
+    <p>Total Comments Between [{{startDate}}] And [{{endDate}}] : {{commentCount}}</p>
+</div>
+<div class="col-md-6" ng-show="videos">
+    <h1>Videos for {{username}}</h1>
+    <p>Total Videos between [{{startDate}}] And [{{endDate}}] : {{videoCount}}</p>
+</div>
