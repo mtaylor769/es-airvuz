@@ -13,14 +13,8 @@
         <link rel="stylesheet" href="<%= sourceManifest['airvuz.css'] %>">
     </head>
     <body>
-
-        <div id="airvuz-app"><%- react %></div>
-
-        <script>
-            AIRVUZ_REDUX_HYDRATE = <%- JSON.stringify(reduxStore) %>;
-        </script>
-        <script src="<%= sourceManifest['vendor.js'] %>"></script>
-        <script src="<%= sourceManifest['airvuz.js'] %>"></script>
-
+        <h1>Client</h1>
+        <div id="airvuz-app"></div>
+        <%- include _script %>
     </body>
 </html>

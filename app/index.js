@@ -60,4 +60,11 @@ var api = require('./routes/api');
 
 app.use('/api', api.router);
 
+app.get('/play', function (req, res) {
+  res.render('play');
+});
+app.get(/.*/, function (req, res) {
+  res.render('index');
+});
+
 app.listen(process.env.PORT || 80);
