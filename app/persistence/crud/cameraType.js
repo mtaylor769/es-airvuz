@@ -103,23 +103,11 @@ CameraType.prototype.create = function(params){
 };
 
 CameraType.prototype.get = function() {
-  CameraTypeModel.find({isVisible: true}).exec()
-    .then(function(cameraTypes){
-      return res.send(cameraTypes);
-    })
-    .catch(function(err){
-      return err;
-    })
+  return CameraTypeModel.find({isVisible: true}).exec();
 };
 
 CameraType.prototype.getById = function(id) {
-  CameraType.findById({_id: id}).exec()
-  .then(function(cameraType){
-    return res.send(cameraType);
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CameraType.findById({_id: id}).exec();
 };
 
 CameraType.prototype.remove = function(id) {

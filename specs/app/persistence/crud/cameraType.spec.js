@@ -23,15 +23,30 @@ var validCamera = {
       var returnVal = CameraType.create(validCamera);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
-    it('should reject null', function(done) {
+    xit('should reject null', function(done) {
 
       CameraType.create(null).then(function() {
         throw new Error('resolve should not be called');
-        done();
       }, function(err) {
         expect(err).toEqual(jasmine.any(ErrorMessage));
         done();
       })
     })
-  })
+  });
+
+  describe('#get', function() {
+    it('should return a promise', function() {
+      var returnVal = CameraType.get();
+      expect(returnVal).toEqual(jasmine.any(Promise))
+    });
+  });
+
+  describe('#getById', function() {
+    it('should return a promise', function() {
+      var returnVal = CameraType.getById();
+      expect(returnVal).toEqual(jasmine.any(Promise))
+    });
+  });
+
 });
+
