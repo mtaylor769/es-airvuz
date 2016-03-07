@@ -54,10 +54,11 @@ ErrorMessage.prototype.getErrors = function() {
 }
 
 /*
- * @param {string}		errorId - the current error to lookup
- * @param {string}		sourceLocation - the name space to the function that is causing the error, ex: Users.create.
- * @param {string}		sourceError - an source error, such as a failed save to mongo.
- * @param {Object}		templateParams - params use to populate an error message.
+ * @param {Object}		params
+ * @param {string}		params.errorId - the current error to lookup
+ * @param {string}		params.sourceLocation - the name space to the function that is causing the error, ex: Users.create.
+ * @param {string}		params.sourceError - an source error, such as a failed save to mongo.
+ * @param {Object}		params.templateParams - params use to populate an error message.
  */
 ErrorMessage.prototype.getErrorMessage = function(params) {
 	//logger.debug(".getErrorMessage - params.errors:" + JSON.stringify(params, null, 2));	
