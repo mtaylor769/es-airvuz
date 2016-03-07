@@ -4,7 +4,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CameraType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CameraTypeModel							= mongoose.model('cameraType');
+var CameraTypeModel							= require('../model/cameraType');
 
 var CameraType = function(){
 
@@ -28,7 +28,7 @@ CameraType.prototype.getPreCondition = function(params){
     var errorMessage       = new ErrorMessage();
     this.data.manufacturer = params.manufacturer || null;
     this.data.model        = params.model || null;
-    this.data.isVisible    = parmas.isVisible || null;
+    this.data.isVisible    = params.isVisible || null;
 
 
     if(this.data.manufacturer === null){
@@ -103,23 +103,11 @@ CameraType.prototype.create = function(params){
 };
 
 CameraType.prototype.get = function() {
-  CameraTypeModel.find({isVisible: true}).exec()
-    .then(function(cameraTypes){
-      return res.send(cameraTypes);
-    })
-    .catch(function(err){
-      return err;
-    })
+  return CameraTypeModel.find({isVisible: true}).exec();
 };
 
 CameraType.prototype.getById = function(id) {
-  CameraType.findById({_id: id}).exec()
-  .then(function(cameraType){
-    return res.send(cameraType);
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CameraType.findById({_id: id}).exec();
 };
 
 CameraType.prototype.remove = function(id) {
@@ -129,7 +117,7 @@ CameraType.prototype.remove = function(id) {
   })
   .catch(function(err){
     return err;
-  })9
+  })
 };
 
 module.exports = new CameraType();
