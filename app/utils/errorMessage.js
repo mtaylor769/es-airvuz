@@ -61,13 +61,23 @@ ErrorMessage.prototype.getErrors = function() {
  * @param {Object}		params.templateParams - params use to populate an error message.
  */
 ErrorMessage.prototype.getErrorMessage = function(params) {
-	//logger.debug(".getErrorMessage - params.errors:" + JSON.stringify(params, null, 2));	
+	var error							= {};	
+	
+	if(params === null) {
+		// Missing params
+		error.errorId					= "PARAM1010";
+		error.sourceError			= "";
+		error.sourceLocation	= "";			
+		error.errorMsg				= ERRORS[error.errorId].msg;
+		this.errors.push(error);
+		return(this.errors);
+	}
 	
 	params							= params || {};
 	var errorId					= params.errorId || null;
 	var templateParams	= params.templateParams || null;
 	
-	var error							= {};
+	
 	error.errorId					= errorId;
 	error.sourceError			= params.sourceError;
 	error.sourceLocation	= params.sourceLocation || "";	
