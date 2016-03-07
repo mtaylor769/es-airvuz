@@ -56,21 +56,13 @@ var userSchema = mongoose.Schema({
 	
 	password : {
 		required	: false,
-		type		: String,
-		unique		: true
+		type		: String
 	},
 	
 	// Represents a list of social media account tied to this user account.
 	socialMediaAccounts: [{ 
 		type: mongoose.Schema.Types.ObjectId, ref: 'SocialMediaAccount' 
 	}],
-	
-	// Represents a unique user name that is displayed for the user.
-	userName : {
-		required	: false,
-		type			: String,
-		unique		: true
-	},
 	
 	/* 
 	 * The site url name of the user. 
@@ -86,9 +78,6 @@ var userSchema = mongoose.Schema({
 		default	: "2.0.0",
 		type		: String
 	}
-	
-	
-
 });
 
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
