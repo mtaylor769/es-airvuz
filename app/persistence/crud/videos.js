@@ -4,6 +4,8 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.Videos');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+var ValidationException					= require('../../utils/exceptions/ValidationException');
 var VideoModel									= mongoose.model('Video');
 
 var Videos = function() {
@@ -57,7 +59,7 @@ Videos.prototype.getPreCondition = function(params) {
 				},
 				sourceLocation	: sourceLocation
 			});
-		}		
+		}
 		
 		if(this.data.title === null) {
 			this.errors = errorMessage.getErrorMessage({
@@ -93,7 +95,8 @@ Videos.prototype.create = function(params) {
 			// Validation
 			var validation = preCondition.validate(params);
 			if(validation.errors !== null) {
-				reject(validation.errors);
+				var validationException = new ValidationException({ errors : validation.errors });
+				reject(validationException);
 			}		
 
 			// Persist
@@ -106,7 +109,9 @@ Videos.prototype.create = function(params) {
 						sourceError			: error,
 						sourceLocation	: "persistence.crud.Videos.create"
 					});
-					reject(errorMessage.getErrors());
+
+					var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+					reject(persistenceException);
 				}
 				else {
 					resolve(video);
