@@ -36,11 +36,18 @@ app.locals.sourceManifest = require('../public/manifest.json');
 
 var compression = require('compression');
 var morgan = require('morgan');
+var bodyParser = require('body-parser');
 
 
 app.use(morgan('dev'));
 app.use(compression());
 app.use(express.static(path.resolve(__dirname, '../public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use('/admin', express.static(path.resolve(__dirname, '../admin')));
+app.use('/admin/*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../admin/index.html'));
+});
 app.use(passport.initialize());
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___

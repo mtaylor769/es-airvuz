@@ -1,31 +1,31 @@
-var cameraTypeModel = require('../../../../app/persistence/model/cameraType');
+var categoryTypeModel = require('../../../../app/persistence/model/categoryType');
 var Promise = require('bluebird');
 var ErrorMessage = require('../../../../app/utils/errorMessage');
 
 describe('CameraType', function() {
-var CameraType = require('../../../../app/persistence/crud/cameraType');
-var validCamera = {
-  manufacturer: 'test_man',
-  model: 'test_mod',
-  isVisible: true
-};
+  var CategoryType = require('../../../../app/persistence/crud/categoryType');
+  var validCategory = {
+    backGroundImage: 'something.jpg',
+    name: 'someCat',
+    isVisible: true
+  };
 
-//afterAll(function(done) {
-//  cameraTypeModel.find(validCamera).exec(function(types) {
-//    types.forEach(function(type) {
-//      type.remove();
-//    });
-//    done();
-//  })
-//}, 30000);
+afterAll(function(done) {
+  categoryTypeModel.find(validCategory).exec()
+  .then(function(types){
+    types.forEach(function(type) {
+      type.remove();
+    });
+    done();
+  })
+});
   describe('#create', function() {
     it('should return a promise', function() {
-      var returnVal = CameraType.create(validCamera);
+      var returnVal = CategoryType.create(validCategory);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
     xit('should reject null', function(done) {
-
-      CameraType.create(null).then(function() {
+      CategoryType.create(null).then(function() {
         throw new Error('resolve should not be called');
       }, function(err) {
         expect(err).toEqual(jasmine.any(ErrorMessage));
@@ -36,21 +36,21 @@ var validCamera = {
 
   describe('#get', function() {
     it('should return a promise', function() {
-      var returnVal = CameraType.get();
+      var returnVal = CategoryType.get();
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });
 
   describe('#getById', function() {
     it('should return a promise', function() {
-      var returnVal = CameraType.getById();
+      var returnVal = CategoryType.getById();
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });
 
   describe('#remove', function() {
     it('should return a promise', function() {
-      var returnVal = CameraType.remove();
+      var returnVal = CategoryType.remove();
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });

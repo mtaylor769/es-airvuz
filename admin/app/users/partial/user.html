@@ -1,0 +1,64 @@
+
+<div class="user">
+  <h1><img src="/images/default-user.png" width="50" class="img-circle mr15"/>{{ ::vm.user.name.first }} {{ ::vm.user.name.last }}</h1>
+  <form role="form" name="userForm">
+    <div class="form-group">
+      <label>First Name</label>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="First name *" ng-model="vm.user.name.first" required="required" class="form-control text-input"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Last name *" ng-model="vm.user.name.last" required="required" class="form-control text-input"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+        <input type="text" placeholder="Title" ng-model="vm.user.title" class="form-control text-input"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Change password</label>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-key"></i></span>
+        <input type="password" placeholder="Password (min 6 character) *" ng-model="vm.user.password" ng-minlength="6" class="form-control text-input"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Roles</label><br/><span ng-repeat="role in vm.roles">
+        <label class="checkbox-inline">
+          <input id="{{::role.value}}" type="checkbox" ng-model="vm.checkbox[role.value]" ng-change="vm.syncRole(vm.checkbox[role.value], role.value)"/> {{ ::role.name }}
+        </label><br/></span>
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select required="required" ng-model="vm.user.status" class="form-control">
+        <option value="active">Active</option>
+        <option value="block">Block</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Phone (optional)</label>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-phone"></i></span>
+        <input type="text" placeholder="___-___-____" ng-model="vm.user.phone" ui-mask="999-999-9999" model-view-value="true" class="form-control text-input"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+        <input type="email" placeholder="Email address *" ng-model="vm.user.email" required="required" disabled="disabled" class="form-control text-input"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 mb15">
+        <button ui-sref="users.list" class="btn btn-danger btn-block">Cancel</button>
+      </div>
+      <div class="col-sm-6">
+        <button ng-disabled="userForm.$pristine" ng-click="vm.save()" class="btn btn-default btn-block btn-success">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

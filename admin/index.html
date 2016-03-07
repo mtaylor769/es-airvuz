@@ -1,0 +1,96 @@
+<html lang="en" ng-app="AirvuzAdmin" ng-strict-di>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body ng-cloak ng-controller="BaseController as baseCtrl">
+<div layout="column" layout-fill>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button ng-click="baseCtrl.showSideBar()">
+        <md-icon class="material-icons">menu</md-icon>
+      </md-button>
+      <span flex layout-align="center center">Airvuz</span>
+      <md-button ng-click="baseCtrl.logout()">
+        <md-icon class="material-icons">power_settings_new</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content>
+    <div ui-view></div>
+  </md-content>
+  <md-sidenav md-component-id="left" class="md-sidenav-left">
+    <md-list>
+      <md-list-item ui-sref="home">
+        <md-icon class="material-icons">home</md-icon>
+        <p>Dashboard</p>
+      </md-list-item>
+      <md-list-item ui-sref="users.all">
+        <md-icon class="material-icons">person</md-icon>
+        <p>Users</p>
+      </md-list-item>
+      <md-list-item ui-sref="videos.all">
+        <md-icon class="material-icons">ondemand_video</md-icon>
+        <p>Videos</p>
+      </md-list-item>
+      <md-list-item ui-sref="featuredVideos">
+        <md-icon class="material-icons">ondemand_video</md-icon>
+        <p>Featured Videos</p>
+      </md-list-item>
+      <md-list-item ui-sref="staffVideos">
+        <md-icon class="material-icons">ondemand_video</md-icon>
+        <p>Staff Pick Videos</p>
+      </md-list-item>
+      <md-list-item ui-sref="reports">
+        <md-icon class="material-icons">show_chart</md-icon>
+        <p>Reports</p>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+</div>
+
+<!-- Angular Material requires Angular.js Libraries -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+
+
+
+<script src="/admin/app/app.module.js"></script>
+<script src="/admin/app/app.config.js"></script>
+<script src="/admin/app/app.routes.js"></script>
+<script src="/admin/app/app.run.js"></script>
+<script src="/admin/app/core/controllers/base.controller.js"></script>
+<script src="/admin/app/core/services/identity.js"></script>
+<script src="/admin/app/core/services/staffVideos.service.js"></script>
+<script src="/admin/app/core/services/users.service.js"></script>
+<script src="/admin/app/core/services/videos.service.js"></script>
+<script src="/admin/app/core/services/featuredVideos.service.js"></script>
+<script src="/admin/app/core/services/auth.js"></script>
+<script src="/admin/app/core/services/confirmDelete.js"></script>
+<script src="/admin/app/login/login.controller.js"></script>
+<script src="/admin/app/home/home.controller.js"></script>
+<script src="/admin/app/featuredVideos/featuredVideos.controller.js"></script>
+<script src="/admin/app/staffPickVideos/staffPickVideos.controller.js"></script>
+<script src="/admin/app/reports/reports.controller.js"></script>
+<script src="/admin/app/videos/videos.controller.js"></script>
+<script src="/admin/app/users/users.controller.js"></script>
+
+<!-- ui router-->
+<script src="/admin/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/admin/lib/angular-jwt/dist/angular-jwt.min.js"></script>
+
+</body>
+</html>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at //material.angularjs.org/license.
+-->

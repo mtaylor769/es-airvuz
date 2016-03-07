@@ -1,0 +1,24 @@
+<md-dialog>
+  <md-dialog-content>
+    <form name="loginForm" layout="column" layout-align="center center">
+      <md-input-container>
+        <label>Email</label>
+        <input name="email" ng-model="loginCtrl.user.email" required>
+        <div ng-messages="loginForm.email.$error" ng-show="loginForm.email.$dirty">
+          <div ng-message="required">This is required!</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <label>Password</label>
+        <input type="password" name="password" ng-model="loginCtrl.user.password" required>
+        <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$dirty">
+          <div ng-message="required">This is required!</div>
+        </div>
+      </md-input-container>
+
+      <md-dialog-actions>
+        <md-button ng-click="loginCtrl.login()" class="md-primary">Login</md-button>
+      </md-dialog-actions>
+    </form>
+  </md-dialog-content>
+</md-dialog>
