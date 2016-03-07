@@ -9,6 +9,7 @@ var validCamera = {
   model: 'test_mod',
   isVisible: true
 };
+var id = '55e557fd1497cb362da8873f';
 
 //afterAll(function(done) {
 //  cameraTypeModel.find(validCamera).exec(function(types) {
@@ -24,7 +25,6 @@ var validCamera = {
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
     xit('should reject null', function(done) {
-
       CameraType.create(null).then(function() {
         throw new Error('resolve should not be called');
       }, function(err) {
@@ -43,14 +43,14 @@ var validCamera = {
 
   describe('#getById', function() {
     it('should return a promise', function() {
-      var returnVal = CameraType.getById();
+      var returnVal = CameraType.getById(id);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });
 
   describe('#remove', function() {
     it('should return a promise', function() {
-      var returnVal = CameraType.remove();
+      var returnVal = CameraType.remove(id);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });

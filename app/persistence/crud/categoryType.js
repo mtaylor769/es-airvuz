@@ -4,7 +4,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CategoryType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CategoryTypeModel						= require('../model/CategoryType');
+var CategoryTypeModel						= require('../model/categoryType');
 
 var CategoryType = function(){
 
