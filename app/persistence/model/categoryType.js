@@ -28,4 +28,4 @@ var categoryTypeSchema = mongoose.Schema({
 
 });
 
-mongoose.model('CategoryType', categoryTypeSchema);
+module.exports = mongoose.model('CategoryType', categoryTypeSchema);
