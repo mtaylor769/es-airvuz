@@ -1,0 +1,29 @@
+<h1>Videos</h1>
+<p>Search By Video Id</p>
+<div class="form-group search">
+    <input type="text" class="form-control" ng-model="videoId" placeholder="Search">
+    <button class="btn btn-primary" ng-click="vm.videoSearch(videoId)">Submit</button>
+</div>
+<table class="table table-striped table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Categories</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="video in vm.videos" >
+            <td>{{video.Title}}</td>
+            <td>{{video.Categories}}</td>
+            <th>
+                <div class="pull-right">
+                    <button class="btn btn-default" ng-click="vm.editVideo(video)">Edit</button>
+                    <button class="btn btn-danger" ng-click="vm.removeVideo(video)">Delete</button>
+                    <button class="btn btn-primary" ng-click="vm.adminEdit(video)">Admin Video Edit</button>
+                    <button class="btn btn-warning" ng-click="vm.editComments(video)">Comments</button>
+                </div>
+            </th>
+        </tr>
+    </tbody>
+</table>

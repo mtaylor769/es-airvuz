@@ -141,37 +141,27 @@ Users.prototype.create = function(params) {
 /*
 * Get all users
 */
-Users.prototype.getAllUsers = function(params) {
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
-	var validation = preCondition.validate(params);
+Users.prototype.getAllUsers = function() {
 	return(new Promise(function(resolve, reject){
-
-		if (validation.data.sessionId === null) {
-			reject(validation.errors);
-		} else {
-			UsersModel.find({}).exec()
-			.then(function(allUsers){
-				var param = {
-					status 	: "200",
-					message : "Okay",
-					users 	: allUsers
-				};
-				resolve(param);
-			})
-			.error(function(e) {
-				var errorMessage		= new ErrorMessage();
-				errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorMessage 		: "Failed while getting users",
-					sourceError			: e,
-					sourceLocation	: "persistence.crud.Users.getAllAusers"
-				});
-				reject(errorMessage.getErrors());
+		UsersModel.find({}).exec()
+		.then(function(allUsers){
+			var param = {
+				status 	: "200",
+				message : "Okay",
+				users 	: allUsers
+			};
+			resolve(param);
+		})
+		.error(function(e) {
+			var errorMessage		= new ErrorMessage();
+			errorMessage.getErrorMessage({
+				statusCode			: "500",
+				errorMessage 		: "Failed while getting users",
+				sourceError			: e,
+				sourceLocation	: "persistence.crud.Users.getAllAusers"
 			});
-		}
-
-
-
+			reject(errorMessage.getErrors());
+		});
 	}));
 
 	
@@ -180,14 +170,33 @@ Users.prototype.getAllUsers = function(params) {
 /*
 * Get a user by ID
 */
-Users.prototype.getUserById = function (params) {
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserById"});
-	var validation = preCondition.validate(params);
+Users.prototype.getUserById = function (userId) {
+	var validation = {};
+
+	if (userId) {
+		validation.data.userId 			= userId;
+	} else {
+		validation.data.userId 			= null;
+		
+		validation.sourceLocation		= "persistence.crud.Users.getUserById";
+
+		var errorMessage		= new ErrorMessage();
+		errorMessage.getErrorMessage({
+			statusCode								: "500",
+			errorMessage 							: "Failed while getting user by Id",
+			sourceError								: "Invalid UserId",
+			sourceLocation						: "persistence.crud.Users.getUserById"
+		});
+
+		validation.errors 					= errorMessage;
+	}
+
+
 	return(new Promise(function(resolve, reject){
-		if (validation.data.sessionId === null || validation.data.userId === null) {
+		if (validation.data.userId === null) {
 			reject(validation.errors);
 		} else {
-			UsersModel.find({_id : validation.data.userId}).exec()
+			UsersModel.find({_id : userId}).exec()
 			.then(function(user){
 				resolve(user);
 			})
@@ -204,18 +213,32 @@ Users.prototype.getUserById = function (params) {
 		}
 
 	}));
-
-	
 }
 
 /*
 * Get a user by email
 */
-Users.prototype.getUserByEmail = function (params) {
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByEmail"});
-	var validation = preCondition.validate(params);
+Users.prototype.getUserByEmail = function (userEmail) {
+	var validation = {};
+	if (userEmail) {
+		validation.data.userEmail 	= userEmail;
+	} else {
+		validation.data.userEmail		= null;
+		validation.sourceLocation		= "persistence.crud.Users.getUserByEmail";
+
+		var errorMessage						= new ErrorMessage();
+		errorMessage.getErrorMessage({
+			statusCode								: "500",
+			errorMessage 							: "Failed while getting user by Email",
+			sourceError								: "Invalid UserEmail",
+			sourceLocation						: "persistence.crud.Users.getUserByEmail"
+		});
+
+		validation.errors 					= errorMessage;
+	}
+
 	return(new Promise(function(resolve, reject){
-		if (validation.data.sessionId === null || validation.data.emailAddress === null) {
+		if (validation.data.emailAddress === null) {
 			reject(validation.errors);
 		} else {
 			UsersModel.find({emailAddress : validation.data.emailAddress}).exec()
@@ -235,7 +258,6 @@ Users.prototype.getUserByEmail = function (params) {
 		}
 
 	}));
-
 	
 }
 
@@ -243,11 +265,29 @@ Users.prototype.getUserByEmail = function (params) {
 /*
 * Get a user by user name
 */
-Users.prototype.getUserByUserName = function (params) {
+Users.prototype.getUserByUserName = function (userName) {
+	var validation = {};
+	if (userName) {
+		validation.data.userName 	= userName;
+	} else {
+		validation.data.userName		= null;
+		validation.sourceLocation		= "persistence.crud.Users.getUserByUserName";
+
+		var errorMessage						= new ErrorMessage();
+		errorMessage.getErrorMessage({
+			statusCode								: "500",
+			errorMessage 							: "Failed while getting user by UserName",
+			sourceError								: "Invalid UserName",
+			sourceLocation						: "persistence.crud.Users.getUserByUserName"
+		});
+
+		validation.errors 					= errorMessage;
+	}
+
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
-		if (validation.data.sessionId === null || validation.data.emailAddress === null) {
+		if (validation.data.userName === null) {
 			reject(validation.errors);
 		} else {
 			UsersModel.find({userName : validation.data.userName}).exec()
@@ -274,6 +314,8 @@ Users.prototype.getUserByUserName = function (params) {
 Users.prototype.update = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
+	//build validation for params
+
 	return(new Promise(function(resolve, reject){
 		if (validation.errors !== null) {
 			reject(validation.errors);

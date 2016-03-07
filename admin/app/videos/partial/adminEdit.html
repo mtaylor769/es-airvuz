@@ -1,0 +1,18 @@
+<h1>Admin Edit for: {{video.Title}}</h1>
+
+<p>Vuz Count</p>
+<div class="form-group search">
+    <input type="text" class="form-control" ng-model="video.ViewCount">
+</div>
+<p>Likes</p>
+<div class="form-group search">
+    <input type="text" class="form-control" ng-model="video.Like">
+</div>
+<p>Upload Date</p>
+<div class="form-group search">
+    <input type="text" class="form-control" ng-model="video.UploadDate">
+    <button class="btn btn-primary" ng-click="saveEdits(video._id, ViewCount, Like, UploadDate)">Submit</button>
+</div>
+<div style="display:inline-block; min-height:290px;">
+    <datepicker ng-model="video.UploadDate" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+</div>
