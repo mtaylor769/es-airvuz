@@ -45,6 +45,7 @@ var VideoApiCreate = function(req, res) {
 		.then(function(video) {
 			var response = {};
 			response.data = {};
+			response.success = true;
 			response.data.title = video.title;
 			response.data.duration = video.duration;
 			logger.debug("VideoApiCreate.then");
@@ -52,18 +53,9 @@ var VideoApiCreate = function(req, res) {
 		})
 		.catch(function(error) {
 
-			if(error instanceof PersistenceException) {
-				logger.debug("PersistenceException:" + JSON.stringify(error.getErrors(), null, 2));
-			}
-
-			if(error instanceof ValidationException) {
-				logger.debug("ValidationException:" + JSON.stringify(error.getErrors(), null, 2));
-			}
-
 			if(error instanceof BaseException) {
 				res.send(error.getResponse());
-			}
-			
+			}			
 
 		});		
 		
@@ -79,13 +71,32 @@ req.query.sessionId = "sessionId" + new Date();
 req.query.userId				= "GUEST";
 req.query.userAclRoles	= {};
 req.query.title					= "Title of video";
-//req.query.description		= "Description of video";
+req.query.description		= "Description of video";
 req.query.duration			= "2:30";
 req.query.videoPath			= "path to video";
 req.query.thumbnailPath	= "path to thumbnail";	
 
-VideoApiCreate(req, response);
+//VideoApiCreate(req, response);
 
+
+	// FAIL
+	Videos.create(null)
+	.then(function() {
+		logger.debug("Videos.create: .then");
+	})
+	.catch(function(error) {
+		
+		if(error instanceof PersistenceException) {
+			logger.debug("PersistenceException:" + JSON.stringify(error.getErrors(), null, 2));
+		}
+		
+		if(error instanceof ValidationException) {
+			logger.debug("ValidationException:" + JSON.stringify(error.getErrors(), null, 2));
+		}
+		
+		
+
+	});
 
 /*
 	// FAIL
@@ -115,7 +126,8 @@ VideoApiCreate(req, response);
 		
 
 	});
-	
+	*/
+	/*
 	// SUCCEED
 	Videos.create({
 		sessionId			: "sessionId" + new Date(),
