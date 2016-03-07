@@ -9,6 +9,7 @@
     "build:prod:win": "set NODE_ENV=production&& webpack --config client/webpack.config.js",
     "test": "npm run test:node && npm run test:karma -- --single-run",
     "test:node": "JASMINE_CONFIG_PATH=specs/support/jasmine.app.json istanbul cover --dir ./coverage/app -x **/specs/** jasmine",
+    "test:jasmine": "JASMINE_CONFIG_PATH=specs/support/jasmine.app.json jasmine",
     "test:karma": "karma start",
     "test:win": "npm run test:node:win && npm run test:karma:win -- --single-run",
     "test:node:win": "set  JASMINE_CONFIG_PATH=specs/support/jasmine.app.json&& istanbul cover --dir ./coverage/app -x **/specs/** jasmine",

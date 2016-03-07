@@ -104,7 +104,6 @@ Users.prototype.getPreCondition = function(params) {
  * Create a new Users document.
  */
 Users.prototype.create = function(params) {
-	console.log("params are: " + params);
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
 
 	return(new Promise(function(resolve, reject) {

@@ -5,6 +5,7 @@ describe('Users', function () {
     sessionId     : "sessionId",
     emailAddress  : "test@email.com",
     password      : "testABC124",
+    userName      : "zekethao",
     firstName     : "Zeke",
     lastName      : "Thao"
   }
@@ -17,7 +18,10 @@ describe('Users', function () {
 
   describe("Create", function(){
     it('returns a Promise after creating a user', function (done) {
-      var returnPromise = Users.create(null);
+      var returnPromise = Users.create(validUser);
+      returnPromise.resolve("Success").then(function(value){
+        console.log("value :" + value);
+      });
       expect(returnPromise).toEqual(jasmine.any(Promise));
       done();
     });
