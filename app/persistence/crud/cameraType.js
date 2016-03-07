@@ -69,7 +69,7 @@ CameraType.prototype.getPreCondition = function(params){
  * @param params 				       {Object}
  * @param params.manufacturer  {string}
  * @param params.model         {string}
- * @param params.isVisible     {string}
+ * @param params.isVisible     {boolean}
  */
 
 CameraType.prototype.create = function(params){
@@ -107,17 +107,11 @@ CameraType.prototype.get = function() {
 };
 
 CameraType.prototype.getById = function(id) {
-  return CameraType.findById({_id: id}).exec();
+  return CameraTypeModel.findById({_id: id}).exec();
 };
 
 CameraType.prototype.remove = function(id) {
-  CameraTypeModel.findByIdAndRemove({_id: id}).exec()
-  .then(function(cameraType){
-    return res.send(cameraType)
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CameraTypeModel.findByIdAndRemove({_id: id}).exec()
 };
 
 module.exports = new CameraType();

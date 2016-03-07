@@ -4,7 +4,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CategoryType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CategoryTypeModel							= mongoose.model('CategoryType');
+var CategoryTypeModel						= require('../model/CategoryType');
 
 var CategoryType = function(){
 
@@ -100,36 +100,15 @@ CategoryType.prototype.create = function(params) {
 };
 
 CategoryType.prototype.get = function() {
-
-  CategoryTypeModel.find({}).exec()
-  .then(function(categoryType){
-    return res.send(categoryType);
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CategoryTypeModel.find({isVisible: true}).exec();
 };
 
 CategoryType.prototype.getById = function(id) {
-
-  CategoryTypeModel.findById({_id: id}).exec()
-  .then(function(categoryType){
-    return res.send(categoryType);
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CategoryTypeModel.findById({_id: id}).exec();
 };
 
 CategoryType.prototype.remove = function(id) {
-
-  CategoryTypeModel.findByIdAndRemove({_id: id}).exec()
-  .then(function(categoryType){
-    return res.send(categoryType)
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CategoryTypeModel.findByIdAndRemove({_id: id}).exec();
 };
 
 module.exports = new CategoryType();
