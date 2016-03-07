@@ -27,6 +27,46 @@ describe('Users', function () {
     });
   });
 
+  describe("GetAllUsers", function(){
+    it('returns a Promise with all users', function (done) {
+      var returnPromise = Users.getAllUsers();
+      returnPromise.resolve("Success").then(function(value){
+      });
+      expect(returnPromise).toEqual(jasmine.any(Promise));
+      done();
+    });
+  });
+
+  describe("GetUserById", function(){
+    it('returns a Promise with user found by Id', function (done) {
+      var returnPromise = Users.getUserById();
+      returnPromise.resolve("Success").then(function(value){
+      });
+      expect(returnPromise).toEqual(jasmine.any(Promise));
+      done();
+    });
+  });
+
+  describe("GetUserByEmail", function(){
+    it('returns a Promise with user found by Email', function (done) {
+      var returnPromise = Users.getUserByEmail();
+      returnPromise.resolve("Success").then(function(value){
+      });
+      expect(returnPromise).toEqual(jasmine.any(Promise));
+      done();
+    });
+  });
+
+  describe("GetUserByUsername", function(){
+    it('returns a Promise with user found by username', function (done) {
+      var returnPromise = Users.getUserByUserName();
+      returnPromise.resolve("Success").then(function(value){
+      });
+      expect(returnPromise).toEqual(jasmine.any(Promise));
+      done();
+    });
+  });
+
   afterAll(function() {
     //clean up and delete test users
 
