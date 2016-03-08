@@ -1,12 +1,12 @@
-var cameraTypeModel = require('../../../../app/persistence/model/cameraType');
-var Promise = require('bluebird');
-var ErrorMessage = require('../../../../app/utils/errorMessage');
+var cameraTypeModel   = require('../../../../app/persistence/model/cameraType');
+var Promise           = require('bluebird');
+var BaseException		  = require('../../../../app/utils/exceptions/BaseException');
 
 describe('CameraType', function() {
-var CameraType = require('../../../../app/persistence/crud/cameraType');
-var validCamera = {
-  manufacturer: 'test_man',
-  model: 'test_mod',
+var CameraType        = require('../../../../app/persistence/crud/cameraType');
+var validCamera       = {
+  manufacturer: 'testMan',
+  model: 'testMod',
   isVisible: true
 };
 var id = '55e557fd1497cb362da8873f';
@@ -26,10 +26,10 @@ var id = '55e557fd1497cb362da8873f';
     });
     xit('should reject null', function(done) {
       CameraType.create(null).then(function() {
-        throw new Error('resolve should not be called');
       }, function(err) {
-        expect(err).toEqual(jasmine.any(ErrorMessage));
-        done();
+        expect(err).toEqual(jasmine.any(BaseException));
+        console.log('**** instance of ****');
+        console.log(err instanceof BaseException);
       })
     })
   });
