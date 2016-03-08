@@ -84,7 +84,6 @@ DroneType.prototype.create = function(params) {
     var validation = preCondition.validate(params);
     if (validation.errors !== null) {
       var validationException = new ValidationException({ errors : validation.errors });
-			console.log("DroneType: validation error");
       reject(validationException);
 			return;
     }

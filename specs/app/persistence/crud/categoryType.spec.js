@@ -22,7 +22,7 @@ describe('CategoryType', function() {
 //});
   describe('#create', function() {
 		
-    xit('should return a promise', function() {
+    it('should return a promise', function() {
       var returnVal = CategoryType.create(validCategory);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
