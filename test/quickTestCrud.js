@@ -9,7 +9,7 @@ var BaseException						= require('../app/utils/exceptions/BaseException');
 var PersistenceException		= require('../app/utils/exceptions/PersistenceException');
 var ValidationException			= require('../app/utils/exceptions/ValidationException');
 var Videos									= require('../app/persistence/crud/videos');
-
+var CameraType										= require('../app/persistence/crud/cameraType');
 
 
 
@@ -78,7 +78,23 @@ req.query.thumbnailPath	= "path to thumbnail";
 
 //VideoApiCreate(req, response);
 
+CameraType.create(null)
+	.then(function() {
+		logger.debug("CameraType.create: .then");
+	})
+	.catch(function(error) {
+		
+		if(error instanceof PersistenceException) {
+			logger.debug("PersistenceException:" + JSON.stringify(error.getErrors(), null, 2));
+		}
+		
+		if(error instanceof ValidationException) {
+			logger.debug("ValidationException:" + JSON.stringify(error.getErrors(), null, 2));
+		}
 
+	});
+
+/*
 	// FAIL
 	Videos.create(null)
 	.then(function() {
@@ -93,10 +109,9 @@ req.query.thumbnailPath	= "path to thumbnail";
 		if(error instanceof ValidationException) {
 			logger.debug("ValidationException:" + JSON.stringify(error.getErrors(), null, 2));
 		}
-		
-		
 
 	});
+	*/
 
 /*
 	// FAIL
