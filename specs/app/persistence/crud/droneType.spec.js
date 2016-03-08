@@ -21,10 +21,12 @@ describe('DroneType', function() {
 //  })
 //});
   describe('#create', function() {
+		
     it('should return a promise', function() {
       var returnVal = DroneType.create(validDroneType);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
+		
     it('should reject null', function(done) {
       DroneType.create(null).then(function() {
       }, function(err) {
@@ -32,6 +34,7 @@ describe('DroneType', function() {
         done();
       })
     })
+		
   });
 
   describe('#get', function() {

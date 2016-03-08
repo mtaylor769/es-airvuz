@@ -28,10 +28,12 @@ CategoryType.prototype.getPreCondition = function(params) {
    */
 
   preCondition.setValidation(function(params){
+		console.log("CategoryType.setValidation");
+		console.log("CategoryType.setValidation params.backGroundImage: " + params.backGroundImage);
     var errorMessage = new ErrorMessage();
-    this.data.backGroundImage = params.backGroundImage;
-    this.data.name = params.name;
-    this.data.isVisible = params.isVisible;
+    this.data.backGroundImage = params.backGroundImage || null;
+    this.data.name = params.name || null;
+    this.data.isVisible = params.isVisible || null;
 
     if(this.data.backGroundImage === null) {
       this.errors = errorMessage.getErrorMessage({
@@ -62,7 +64,9 @@ CategoryType.prototype.getPreCondition = function(params) {
         sourceLocation	: sourceLocation
       })
     }
-  });return(preCondition);
+  });
+	
+	return(preCondition);
 };
 /*
  * Create a new DroneType document.
@@ -75,15 +79,22 @@ CategoryType.prototype.create = function(params) {
 
   var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CategoryType.create"});
 
+	console.log("CategoryType.create");
+
   return(new Promise(function(resolve, reject) {
 
     var validation = preCondition.validate(params);
+		console.log("CategoryType.postValidate");
+		console.log("CategoryType validation.errors:" + typeof(validation.errors) + "   : " + validation.errors);
     if (validation.errors !== null) {
       var validationException = new ValidationException({ errors : validation.errors });
+			console.log("CategoryType: validation error");
       reject(validationException);
+			return;
     }
 
     var categoryTypeModel = new CategoryTypeModel(validation.data);
+		console.log("CategoryType: persist");
     categoryTypeModel.save(function(error, categoryType){
       if(error){
         var errorMessage = new ErrorMessage();
@@ -94,8 +105,10 @@ CategoryType.prototype.create = function(params) {
         });
         var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
         reject(persistenceException);
+				return;
       } else {
         resolve(categoryType);
+				return;
       }
     })
 
