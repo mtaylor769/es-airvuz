@@ -4,7 +4,9 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CategoryType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CategoryTypeModel						= require('../model/CategoryType');
+var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+var ValidationException					= require('../../utils/exceptions/ValidationException');
+var CategoryTypeModel						= require('../model/categoryType');
 
 var CategoryType = function(){
 
@@ -77,7 +79,8 @@ CategoryType.prototype.create = function(params) {
 
     var validation = preCondition.validate(params);
     if (validation.errors !== null) {
-      reject(validation.errors);
+      var validationException = new ValidationException({ errors : validation.errors });
+      reject(validationException);
     }
 
     var categoryTypeModel = new CategoryTypeModel(validation.data);
@@ -89,7 +92,8 @@ CategoryType.prototype.create = function(params) {
           sourceError			: error,
           sourceLocation	: "persistence.crud.CategoryType.create"
         });
-        reject(errorMessage.getErrorMessage());
+        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+        reject(persistenceException);
       } else {
         resolve(categoryType);
       }

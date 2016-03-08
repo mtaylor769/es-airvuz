@@ -114,14 +114,7 @@ Playlist.prototype.create = function(params) {
 };
 
 Playlist.prototype.get = function() {
-
-  PlaylistModel.find({}).exec()
-  .then(function(playlists) {
-    return res.send(playlists);
-  })
-  .catch(function(err) {
-    return err;
-  })
+  return PlaylistModel.find({}).exec()
 };
 
 Playlist.prototype.getById = function(id) {

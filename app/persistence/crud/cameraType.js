@@ -4,6 +4,8 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CameraType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+var ValidationException					= require('../../utils/exceptions/ValidationException');
 var CameraTypeModel							= require('../model/cameraType');
 
 var CameraType = function(){
@@ -80,7 +82,8 @@ CameraType.prototype.create = function(params){
 
     var validation = preCondition.validate(params);
     if (validation.errors !== null) {
-      reject(validation.errors);
+      var validationException = new ValidationException({ errors : validation.errors });
+      reject(validationException);
     }
 
     var cameraTypeModel = new CameraTypeModel(validation.data);
@@ -92,7 +95,9 @@ CameraType.prototype.create = function(params){
           sourceError			: error,
           sourceLocation	: "persistence.crud.CameraType.create"
         });
-        reject(errorMessage.getErrorMessage());
+
+        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+        reject(persistenceException);
       } else {
         resolve(cameraType);
       }

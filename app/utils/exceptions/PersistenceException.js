@@ -1,9 +1,11 @@
-var PersistenceException = function(params) {
-	this.errors = params.errors;
+var BaseException = require('./BaseException');
+var util					= require('util');
+
+var PersistenceException = function() {
+	BaseException.apply(this, arguments);
+	this.exceptionType = "PersistenceException";
 }
 
-PersistenceException.prototype.getErrors = function() {
-	return(this.errors);
-}
+util.inherits(PersistenceException, BaseException);
 
 module.exports = PersistenceException;

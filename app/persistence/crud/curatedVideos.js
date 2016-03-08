@@ -4,7 +4,9 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CuratedVideos');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var CuratedVideoModel						= mongoose.model('CuratedVideos');
+var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+var ValidationException					= require('../../utils/exceptions/ValidationException');
+var CuratedVideoModel						= require('../model/curatedVideos');
 
 var CuratedVideo = function(){
 
@@ -79,7 +81,8 @@ CuratedVideo.prototype.create = function(params) {
 
     var validation = preCondition.validate(params);
     if (validation.errors !== null) {
-      reject(validation.errors);
+      var validationException = new ValidationException({ errors : validation.errors });
+      reject(validationException);
     }
 
     var curatedVideosModel = new CuratedVideoModel(validation.data);
@@ -91,7 +94,8 @@ CuratedVideo.prototype.create = function(params) {
           sourceError			: error,
           sourceLocation	: "persistence.crud.DroneType.create"
         });
-        reject(errorMessage.getErrorMessage());
+        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+        reject(persistenceException);
       } else {
         resolve(curatedVideo);
       }
@@ -101,33 +105,15 @@ CuratedVideo.prototype.create = function(params) {
 };
 
 CuratedVideo.prototype.get = function() {
-  CuratedVideoModel.find({}).exec()
-  .then(function(curatedVideos){
-    return res.send(curatedVideos)
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CuratedVideoModel.find({}).exec()
 };
 
 CuratedVideo.prototype.getById = function(id) {
-  CuratedVideoModel.findById({_id: id}).exec()
-  .then(function(curatedVideo){
-    return res.send(curatedVideo);
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CuratedVideoModel.findById({_id: id}).exec()
 };
 
 CuratedVideo.prototype.remove = function(id) {
-  CuratedVideoModel.findByIdAndRemove({_id: id}).exec()
-  .then(function(curatedVideo){
-    return res.send(curatedVideo)
-  })
-  .catch(function(err){
-    return err;
-  })
+  return CuratedVideoModel.findByIdAndRemove({_id: id}).exec()
 };
 
 module.exports = new CuratedVideo();

@@ -1,18 +1,18 @@
-var categoryTypeModel = require('../../../../app/persistence/model/categoryType');
-var Promise = require('bluebird');
+var categoryTypeModel     = require('../../../../app/persistence/model/categoryType');
+var Promise               = require('bluebird');
 var BaseException					= require('../../../../app/utils/exceptions/BaseException');
 
-describe('CategoryType', function() {
-  var CategoryType = require('../../../../app/persistence/crud/categoryType');
-  var validCategory = {
-    backGroundImage: 'something.jpg',
-    name: 'someCat',
-    isVisible: true
+describe('CuratedVideos', function() {
+  var CuratedVideos       = require('../../../../app/persistence/crud/curatedVideos');
+  var validCuratedVideo   = {
+    curatedType: 'FEATURED',
+    videoId: '55e557fd1497cb362da8873f',
+    viewOrder: 12
   };
   var id = '55e557fd1497cb362da8873f';
 
 //afterAll(function(done) {
-//  categoryTypeModel.find(validCategory).exec()
+//  categoryTypeModel.find(validCuratedVideo).exec()
 //  .then(function(types){
 //    types.forEach(function(type) {
 //      type.remove();
@@ -22,11 +22,11 @@ describe('CategoryType', function() {
 //});
   describe('#create', function() {
     it('should return a promise', function() {
-      var returnVal = CategoryType.create(validCategory);
+      var returnVal = CuratedVideos.create(validCuratedVideo);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
     it('should reject null', function(done) {
-      CategoryType.create(null).then(function() {
+      CuratedVideos.create(null).then(function() {
       }, function(err) {
         expect(err).toEqual(jasmine.any(BaseException));
         done();
@@ -36,23 +36,24 @@ describe('CategoryType', function() {
 
   describe('#get', function() {
     it('should return a promise', function() {
-      var returnVal = CategoryType.get();
+      var returnVal = CuratedVideos.get();
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });
 
   describe('#getById', function() {
     it('should return a promise', function() {
-      var returnVal = CategoryType.getById(id);
+      var returnVal = CuratedVideos.getById(id);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });
 
   describe('#remove', function() {
     it('should return a promise', function() {
-      var returnVal = CategoryType.remove(id);
+      var returnVal = CuratedVideos.remove(id);
       expect(returnVal).toEqual(jasmine.any(Promise))
     });
   });
 
 });
+

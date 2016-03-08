@@ -1,9 +1,11 @@
-var ValidationException = function(params) {
-	this.errors = params.errors;
+var BaseException = require('./BaseException');
+var util					= require('util');
+
+var ValidationException = function() {
+	BaseException.apply(this, arguments);
+	this.exceptionType = "ValidationException";
 }
 
-ValidationException.prototype.getErrors = function() {
-	return(this.errors);
-}
+util.inherits(ValidationException, BaseException);
 
 module.exports = ValidationException;

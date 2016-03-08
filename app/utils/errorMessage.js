@@ -92,6 +92,9 @@ ErrorMessage.prototype.getErrorMessage = function(params) {
 		case "PARAM1010" : {
 				error.paramName = templateParams.name;
 		}
+		case "VALIDA1000" : {
+				error.required = templateParams.name;
+		}
 	}
 	
 	this.errors.push(error);
