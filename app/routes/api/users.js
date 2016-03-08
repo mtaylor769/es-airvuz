@@ -8,11 +8,15 @@ usersRouter.get('/', function (req, res) {
 
 });
 
-usersRouter.get('/signup', function(req,res){
-  var params = req.user || {};
-  params.sessionId = req.sessionId || null;
-  Users.create(params);
-});
+usersRouter.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/',
+  failureRedirect: '/'
+}));
+
+usersRouter.get('/login', passport.authenticate('local-login', {
+  successRedirect: '/',
+  failureRedirect: '/'
+}));
 
 usersRouter.get('/logout', function(req, res){
   req.logout();
