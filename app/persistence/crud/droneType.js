@@ -4,7 +4,9 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.DroneType');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var DroneTypeModel							= mongoose.model('CameraType');
+var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+var ValidationException					= require('../../utils/exceptions/ValidationException');
+var DroneTypeModel							= require('../model/droneType');
 
 var DroneType = function(){
 
@@ -29,7 +31,7 @@ DroneType.prototype.getPreCondition = function(params){
     var errorMessage       = new ErrorMessage();
     this.data.manufacturer = params.manufacturer || null;
     this.data.model        = params.model || null;
-    this.data.isVisible    = parmas.isVisible || null;
+    this.data.isVisible    = params.isVisible || null;
 
 
     if(this.data.manufacturer === null){
@@ -81,7 +83,8 @@ DroneType.prototype.create = function(params) {
 
     var validation = preCondition.validate(params);
     if (validation.errors !== null) {
-      reject(validation.errors);
+      var validationException = new ValidationException({ errors : validation.errors });
+      reject(validationException);
     }
 
     var droneTypeModel = new DroneTypeModel(validation.data);
@@ -93,7 +96,8 @@ DroneType.prototype.create = function(params) {
           sourceError			: error,
           sourceLocation	: "persistence.crud.DroneType.create"
         });
-        reject(errorMessage.getErrorMessage());
+        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+        reject(persistenceException);
       } else {
         resolve(droneType);
       }
@@ -104,33 +108,15 @@ DroneType.prototype.create = function(params) {
 };
 
 DroneType.prototype.get = function() {
-  DroneTypeModel.find({isVisible: true}).exec()
-    .then(function(droneTypes){
-      return res.send(droneTypes);
-    })
-    .catch(function(err){
-      return err
-    })
+  return DroneTypeModel.find({isVisible: true}).exec()
 };
 
 DroneType.prototype.getById = function(id) {
-  DroneTypeModel.findById({_id: id}).exec()
-  .then(function(droneType){
-    return res.send(droneType);
-  })
-  .catch(function(err){
-    return err;
-  })
+  return DroneTypeModel.findById({_id: id}).exec()
 };
 
-DroneType.prototype.remove = function(req, res) {
-  DroneTypeModel.findByIdAndRemove({_id: req.body._id}).exec()
-  .then(function(droneType){
-    return res.json({removedDrone: droneType.model})
-  })
-  .catch(function(err){
-    return err;
-  })
+DroneType.prototype.remove = function(id) {
+  return DroneTypeModel.findByIdAndRemove({_id: id}).exec()
 };
 
 module.exports = new DroneType();

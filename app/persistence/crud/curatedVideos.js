@@ -4,6 +4,8 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CuratedVideos');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+var ValidationException					= require('../../utils/exceptions/ValidationException');
 var CuratedVideoModel						= require('../model/curatedVideos');
 
 var CuratedVideo = function(){
@@ -79,7 +81,8 @@ CuratedVideo.prototype.create = function(params) {
 
     var validation = preCondition.validate(params);
     if (validation.errors !== null) {
-      reject(validation.errors);
+      var validationException = new ValidationException({ errors : validation.errors });
+      reject(validationException);
     }
 
     var curatedVideosModel = new CuratedVideoModel(validation.data);
@@ -91,7 +94,8 @@ CuratedVideo.prototype.create = function(params) {
           sourceError			: error,
           sourceLocation	: "persistence.crud.DroneType.create"
         });
-        reject(errorMessage.getErrorMessage());
+        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+        reject(persistenceException);
       } else {
         resolve(curatedVideo);
       }
