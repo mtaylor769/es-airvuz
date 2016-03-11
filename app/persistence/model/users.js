@@ -23,6 +23,14 @@ var userSchema = mongoose.Schema({
     default: Date.now
 	},
     
+	/*
+	 * The site url name of the user. 
+	 * Example: www.airvuz.com/<uniqueName> 
+	 */
+	customizedUrl : {
+		type	: String
+	},
+		
 	// The users email address
 	emailAddress : {
 		required	: true,
@@ -65,8 +73,7 @@ var userSchema = mongoose.Schema({
 	}],
 	
 	/* 
-	 * The site url name of the user. 
-	 * Example: www.airvuz.com/<uniqueName> 
+
 	 */
 	uniqueName : {
 		required	: true,
