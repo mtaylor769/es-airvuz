@@ -20,19 +20,25 @@ var id = '55e557fd1497cb362da8873f';
 //  })
 //}, 30000);
   describe('#create', function() {
-    it('should return a promise', function() {
-      var returnVal = CameraType.create(validCamera);
-      expect(returnVal).toEqual(jasmine.any(Promise))
-    });
-    xit('should reject null', function(done) {
-      CameraType.create(null).then(function() {
-      }, function(err) {
-        expect(err).toEqual(jasmine.any(BaseException));
-        console.log('**** instance of ****');
-        console.log(err instanceof BaseException);
-      })
-    })
-  });
+
+		it('should return a promise', function () {
+			CameraType
+				.create(validCamera)
+				.then(function (returnVal) {
+					expect(returnVal).toEqual(jasmine.any(Promise));
+				});
+
+		});
+
+
+		it('should reject null', function (done) {
+			CameraType.create(null).then(function () {
+			}, function (err) {
+				expect(err).toEqual(jasmine.any(BaseException));
+				done();
+			})
+		});
+	})
 
   describe('#get', function() {
     it('should return a promise', function() {

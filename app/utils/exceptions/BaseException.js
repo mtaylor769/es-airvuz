@@ -1,5 +1,6 @@
 var BaseException = function(params) {
-	this.errors					= params.errors;
+	params							= params || {};
+	this.errors					= params.errors || {};
 	this.exceptionType	= "";
 }
 
@@ -8,6 +9,7 @@ BaseException.prototype.getErrors = function() {
 }
 
 BaseException.prototype.getResponse = function() {
+	console.log("getResponse");
 	var response									= {};
 	response.error								= {};
 	response.error.exceptionType	= this.exceptionType;

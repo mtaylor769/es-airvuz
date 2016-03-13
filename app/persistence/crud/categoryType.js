@@ -29,9 +29,9 @@ CategoryType.prototype.getPreCondition = function(params) {
 
   preCondition.setValidation(function(params){
     var errorMessage = new ErrorMessage();
-    this.data.backGroundImage = params.backGroundImage;
-    this.data.name = params.name;
-    this.data.isVisible = params.isVisible;
+    this.data.backGroundImage = params.backGroundImage || null;
+    this.data.name = params.name || null;
+    this.data.isVisible = params.isVisible || null;
 
     if(this.data.backGroundImage === null) {
       this.errors = errorMessage.getErrorMessage({
@@ -62,7 +62,9 @@ CategoryType.prototype.getPreCondition = function(params) {
         sourceLocation	: sourceLocation
       })
     }
-  });return(preCondition);
+  });
+	
+	return(preCondition);
 };
 /*
  * Create a new DroneType document.
@@ -81,6 +83,7 @@ CategoryType.prototype.create = function(params) {
     if (validation.errors !== null) {
       var validationException = new ValidationException({ errors : validation.errors });
       reject(validationException);
+			return;
     }
 
     var categoryTypeModel = new CategoryTypeModel(validation.data);
@@ -94,8 +97,10 @@ CategoryType.prototype.create = function(params) {
         });
         var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
         reject(persistenceException);
+				return;
       } else {
         resolve(categoryType);
+				return;
       }
     })
 

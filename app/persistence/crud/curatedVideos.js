@@ -83,6 +83,7 @@ CuratedVideo.prototype.create = function(params) {
     if (validation.errors !== null) {
       var validationException = new ValidationException({ errors : validation.errors });
       reject(validationException);
+			return;
     }
 
     var curatedVideosModel = new CuratedVideoModel(validation.data);
@@ -96,8 +97,10 @@ CuratedVideo.prototype.create = function(params) {
         });
         var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
         reject(persistenceException);
+				return;
       } else {
         resolve(curatedVideo);
+				return;
       }
     })
   })
