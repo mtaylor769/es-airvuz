@@ -28,33 +28,16 @@ Users.prototype.getPreCondition = function(params) {
 	var preCondition		= new ObjectValidationUtil();
 	
 	preCondition.setValidation(function(params) {
+		console.log('set validation: params ' + params);
 		//need to pass in user data info
 		var errorMessage					= new ErrorMessage();
-		var sessionId							= params.sessionId || null;
-		var userId								= params.userId || null;
 		this.data.emailAddress		= params.emailAddress || null;
 		this.data.password				= params.password || null;
 		this.data.firstName				= params.firstName || null;
 		this.data.lastName				= params.lastName || null;
-		this.data.userName				= params.userName || null;
-		
-		if(userId === null) {
-			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorMessage		: "User ID is null", 
-				sourceLocation	: sourceLocation
-			});
-		}			
-		
-		if(sessionId === null) {
-			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorMessage		: "Session ID is null",
-				sourceLocation	: sourceLocation
-			});
-		}
+		this.data.userName				= params.userName || null;			
 
-		if(emailAddress === null) {
+		if(this.data.emailAddress === null) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorMessage		: "Email address is null",
@@ -62,7 +45,7 @@ Users.prototype.getPreCondition = function(params) {
 			});
 		}
 
-		if(password === null) {
+		if(this.data.password === null) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorMessage		: "Password is null",
@@ -70,7 +53,7 @@ Users.prototype.getPreCondition = function(params) {
 			});
 		}
 
-		if(userName === null) {
+		if(this.data.userName === null) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorMessage		: "Username is null",
@@ -78,7 +61,7 @@ Users.prototype.getPreCondition = function(params) {
 			});
 		}
 
-		if(firstName === null) {
+		if(this.data.firstName === null) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorMessage		: "First name is null",
@@ -86,7 +69,7 @@ Users.prototype.getPreCondition = function(params) {
 			});
 		}
 
-		if(lastName === null) {
+		if(this.data.lastName === null) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorMessage		: "Last name is null",
@@ -104,8 +87,10 @@ Users.prototype.getPreCondition = function(params) {
  * Create a new Users document.
  */
 Users.prototype.create = function(params) {
+	console.log('hitting create: ');
+	console.log(params);
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
-
+	console.log(preCondition);
 	return(new Promise(function(resolve, reject) {
 
 			// Validation

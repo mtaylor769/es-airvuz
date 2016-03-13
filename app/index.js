@@ -11,6 +11,8 @@ var path        = require('path');
 var express     = require('express');
 var fs          = require('fs');
 var app         = express();
+var bodyParser  = require('body-parser');
+var jwt         = require('jsonwebtoken');
 
 //SSL certs
 var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
@@ -48,7 +50,12 @@ app.use('/admin', express.static(path.resolve(__dirname, '../admin')));
 app.use('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../admin/index.html'));
 });
+
+require('./config/passport/local')();
 app.use(passport.initialize());
+app.use(passport.session());
+
+
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
 //    / _ \ | |_) | |  | |_) / _ \| | | | __/ _ \ __|
@@ -63,6 +70,7 @@ app.use('/api', api.router);
 app.get('/play', function (req, res) {
   res.render('play');
 });
+
 app.get(/.*/, function (req, res) {
   res.render('index');
 });

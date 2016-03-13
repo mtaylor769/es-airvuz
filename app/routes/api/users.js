@@ -1,6 +1,6 @@
-var usersRouter   = require('express').Router();
-var passport      = require('passport');
-var Users          = require('../../persistence/crud/users'); 
+var usersRouter         = require('express').Router();
+var passport            = require('passport');
+var Users               = require('../../persistence/crud/users');
 
 usersRouter.get('/', function (req, res) {
 
@@ -8,10 +8,15 @@ usersRouter.get('/', function (req, res) {
 
 });
 
-usersRouter.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/',
-  failureRedirect: '/'
-}));
+// usersRouter.post('/signup', passport.authenticate('local-signup', {
+//   successRedirect: '/',
+//   failureRedirect: '/play'
+// }));
+
+usersRouter.post('/signup', function(req, res) {
+  console.log(req.body);
+  Users.create(req.body);
+});
 
 usersRouter.get('/login', passport.authenticate('local-login', {
   successRedirect: '/',
