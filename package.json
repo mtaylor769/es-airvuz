@@ -55,6 +55,7 @@
     "webpack-md5-hash": "0.0.5"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "istanbul": "^0.4.2",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jasmine": "^2.4.1",
@@ -68,6 +69,8 @@
     "karma-opera-launcher": "^0.3.0",
     "karma-safari-launcher": "^0.1.1",
     "karma-webpack": "^1.7.0",
-    "protractor": "^3.1.1"
+    "mocha": "^2.4.5",
+    "protractor": "^3.1.1",
+    "supertest": "^1.2.0"
   }
 }
