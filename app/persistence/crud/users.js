@@ -16,70 +16,84 @@ var Users = function() {
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-Users.prototype.getPreCondition = function(params) {
+Users.prototype.validateCreateUser = function(params) {
 	/*
 	 * @type {string}
 	 */
-	var sourceLocation	= params.sourceLocation;
+	var sourceLocation				= "persistence.crud.Users.create";
+	var userInfo 							= {};
 	
-	/*
-	 * @type {Object}
-	 */
-	var preCondition		= new ObjectValidationUtil();
-	
-	preCondition.setValidation(function(params) {
-		console.log('set validation: params ' + params);
-		//need to pass in user data info
-		var errorMessage					= new ErrorMessage();
-		this.data.emailAddress		= params.emailAddress || null;
-		this.data.password				= params.password || null;
-		this.data.firstName				= params.firstName || null;
-		this.data.lastName				= params.lastName || null;
-		this.data.userName				= params.userName || null;			
+	//need to pass in user data info
+	var errorMessage					= new ErrorMessage();
+	userInfo.data = {};
+	userInfo.errors = {};
+	userInfo.data.emailAddress		= params.emailAddress || null;
+	userInfo.data.password				= params.password || null;
+	userInfo.data.firstName				= params.firstName || null;
+	userInfo.data.lastName				= params.lastName || null;
+	userInfo.data.userName				= params.userName || null;		
 
-		if(this.data.emailAddress === null) {
-			this.errors = errorMessage.getErrorMessage({
+		if(userInfo.data.emailAddress === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "emailAddress"
+				},
 				errorMessage		: "Email address is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
-		if(this.data.password === null) {
-			this.errors = errorMessage.getErrorMessage({
+		if(userInfo.data.password === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "password"
+				},
 				errorMessage		: "Password is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
-		if(this.data.userName === null) {
-			this.errors = errorMessage.getErrorMessage({
+		if(userInfo.data.userName === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "userName"
+				},
 				errorMessage		: "Username is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
-		if(this.data.firstName === null) {
-			this.errors = errorMessage.getErrorMessage({
+		if(userInfo.data.firstName === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "firstName"
+				},
 				errorMessage		: "First name is null",
 				sourceLocation	: sourceLocation
 			});
 		}
 
-		if(this.data.lastName === null) {
-			this.errors = errorMessage.getErrorMessage({
+		if(userInfo.data.lastName === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "lastName"
+				},
 				errorMessage		: "Last name is null",
 				sourceLocation	: sourceLocation
 			});
 		}
-				
-	});
 
-	return(preCondition);
+		return userInfo;
 }
 
 
@@ -87,37 +101,32 @@ Users.prototype.getPreCondition = function(params) {
  * Create a new Users document.
  */
 Users.prototype.create = function(params) {
-	console.log('hitting create: ');
-	console.log(params);
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.create"});
-	console.log(preCondition);
+
+	var validation 				= this.validateCreateUser(params);
 	return(new Promise(function(resolve, reject) {
 
-			// Validation
-			var validation = preCondition.validate(params);
-			console.log("validation is: " + validation);
 			if(validation.errors !== null) {
 				reject(validation.errors);
 			}		
 
 			// Persist
-			var userModel = new UserModel(validation.data);
-			userModel.save(function(error, user) {
-				if(error) {
+			var saveUser 						= new UserModel(validation.data);
+			saveUser.password 			= saveUser.generateHash(saveUser.password);
+			saveUser.save(function(error){
+				if (error) {
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
+						errorId 				: "PERS1000",
 						errorMessage 		: "Failed while creating new user",
 						sourceError			: error,
 						sourceLocation	: "persistence.crud.Users.create"
 					});
 					reject(errorMessage.getErrors());
-				}
-				else {
-					resolve(user);
+				} else {
+					resolve(saveUser);
 				}
 			});
-			
 		})
 			
 	);
@@ -204,6 +213,7 @@ Users.prototype.getUserById = function (userId) {
 * Get a user by email
 */
 Users.prototype.getUserByEmail = function (userEmail) {
+	console.log('fetching user');
 	var validation = {};
 	if (userEmail) {
 		validation.data.userEmail 	= userEmail;
@@ -251,16 +261,17 @@ Users.prototype.getUserByEmail = function (userEmail) {
 * Get a user by user name
 */
 Users.prototype.getUserByUserName = function (userName) {
+	console.log('hitting getUserByUserName');
+	console.log(userName);
 	var validation = {};
 	if (userName) {
-		validation.data.userName 	= userName;
+		validation.userName 	= userName.username;
 	} else {
-		validation.data.userName		= null;
-		validation.sourceLocation		= "persistence.crud.Users.getUserByUserName";
-
+		validation.userName		= null;
 		var errorMessage						= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
+			errorId 									: "PERS1000",
 			errorMessage 							: "Failed while getting user by UserName",
 			sourceError								: "Invalid UserName",
 			sourceLocation						: "persistence.crud.Users.getUserByUserName"
@@ -269,18 +280,13 @@ Users.prototype.getUserByUserName = function (userName) {
 		validation.errors 					= errorMessage;
 	}
 
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
-	var validation = preCondition.validate(params);
 	return(new Promise(function(resolve, reject){
-		if (validation.data.userName === null) {
+		if (validation.userName === null) {
 			reject(validation.errors);
 		} else {
-			UsersModel.find({userName : validation.data.userName}).exec()
-			.then(function(user){
-				resolve(user);
-			})
-			.error(function(error){
-				var errorMessage		= new ErrorMessage();
+			var userFound = UserModel.find({userName : validation.userName}, function(error, user){
+				if (error) {
+					var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
 					statusCode			: "500",
 					errorMessage		: "Failed while getting user by user name",
@@ -288,6 +294,9 @@ Users.prototype.getUserByUserName = function (userName) {
 					sourceLocation	: "persistence.crud.Users.getUserByUserName"
 				});
 				reject(errorMessage.getErrors());
+				} else {
+					resolve(user);
+				}
 			});
 		}
 	}));

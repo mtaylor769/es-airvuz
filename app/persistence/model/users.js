@@ -68,7 +68,7 @@ var userSchema 		= mongoose.Schema({
 	 * The site url name of the user. 
 	 * Example: www.airvuz.com/<uniqueName> 
 	 */
-	uniqueName : {
+	userName : {
 		required	: true,
 		unique		: true,
 		type			: String

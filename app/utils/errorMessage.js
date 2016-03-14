@@ -77,7 +77,6 @@ ErrorMessage.prototype.getErrorMessage = function(params) {
 	var errorId					= params.errorId || null;
 	var templateParams	= params.templateParams || null;
 	
-	
 	error.errorId					= errorId;
 	error.sourceError			= params.sourceError;
 	error.sourceLocation	= params.sourceLocation || "";	

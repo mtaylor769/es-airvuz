@@ -1,7 +1,7 @@
 var usersRouter         = require('express').Router();
 var passport            = require('passport');
 var Users               = require('../../persistence/crud/users');
-
+console.log(passport);
 usersRouter.get('/', function (req, res) {
 
   res.send('Test');
@@ -14,14 +14,22 @@ usersRouter.get('/', function (req, res) {
 // }));
 
 usersRouter.post('/signup', function(req, res) {
-  console.log(req.body);
   Users.create(req.body);
 });
 
-usersRouter.get('/login', passport.authenticate('local-login', {
-  successRedirect: '/',
-  failureRedirect: '/'
-}));
+usersRouter.post('/login', passport.authenticate('local-login'), function(req, res){
+  console.log('passport is working');
+});
+
+// usersRouter.post('/login', passport.authenticate('local-login', {
+//   successRedirect: '/',
+//   failureRedirect: '/play',
+//   failureFlash: 'Invalid username or password.'
+// }));
+
+// usersRouter.post('/login', function(req, res){
+//   console.log(req.body);
+// });
 
 usersRouter.get('/logout', function(req, res){
   req.logout();

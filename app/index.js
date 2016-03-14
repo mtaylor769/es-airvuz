@@ -51,9 +51,10 @@ app.use('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../admin/index.html'));
 });
 
-require('./config/passport/local')();
+
 app.use(passport.initialize());
 app.use(passport.session());
+require('./config/passport/local')(app, passport);
 
 
 //      _    ____ ___   ____             _
