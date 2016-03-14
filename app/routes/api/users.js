@@ -1,7 +1,6 @@
 var usersRouter         = require('express').Router();
 var passport            = require('passport');
 var Users               = require('../../persistence/crud/users');
-console.log(passport);
 usersRouter.get('/', function (req, res) {
 
   res.send('Test');

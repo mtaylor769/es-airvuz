@@ -213,14 +213,12 @@ Users.prototype.getUserById = function (userId) {
 * Get a user by email
 */
 Users.prototype.getUserByEmail = function (userEmail) {
-	console.log('fetching user');
 	var validation = {};
+	console.log('passed paramater for userEmail is: ' + userEmail);
 	if (userEmail) {
-		validation.data.userEmail 	= userEmail;
+		validation.userEmail 	= userEmail;
 	} else {
-		validation.data.userEmail		= null;
-		validation.sourceLocation		= "persistence.crud.Users.getUserByEmail";
-
+		validation.userEmail		= null;
 		var errorMessage						= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
@@ -232,23 +230,23 @@ Users.prototype.getUserByEmail = function (userEmail) {
 		validation.errors 					= errorMessage;
 	}
 
-	return(new Promise(function(resolve, reject){
-		if (validation.data.emailAddress === null) {
+	return(new Promise(function(resolve, reject) {
+		if (validation.userEmail === null) {
 			reject(validation.errors);
 		} else {
-			UsersModel.find({emailAddress : validation.data.emailAddress}).exec()
-			.then(function(user){
-				resolve(user);
-			})
-			.error(function(error){
-				var errorMessage		= new ErrorMessage();
-				errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorMessage 		: "Failed while getting user by Email",
-					sourceError			: error,
-					sourceLocation	: "persistence.crud.Users.getUserByEmail"
-				});
-				reject(errorMessage.getErrors());
+			UserModel.findOne({emailAddress : validation.userEmail}, function(error, user){
+				if (error) {
+					var errorMessage		= new ErrorMessage();
+					errorMessage.getErrorMessage({
+						statusCode			: "500",
+						errorMessage 		: "Failed while getting user by Email",
+						sourceError			: error,
+						sourceLocation	: "persistence.crud.Users.getUserByEmail"
+					});
+					reject(errorMessage.getErrors());
+				} else {
+					resolve(user);
+				}
 			});
 		}
 

@@ -5,21 +5,19 @@ var Users =  require('../../persistence/crud/users');
 
 module.exports = function(app, passport) {
 
-  passport.use('local-login', new LocalStrategy(
-  function(username, password, done){
-    console.log(username);
-    console.log(password);
-    var userPromise = Users.getUserByUserName({username : username});
+  passport.use('local-login', new LocalStrategy({
+    usernameField: 'emailAddress'
+  },
+  function(emailAddress, password, done){
+    var userPromise = Users.getUserByEmail(emailAddress);
+
     userPromise.then(function(user){
       if (!user) {
-        console.log('no user found');
         return done(null, false);
       }
-      if (!user.validPassword) {
-        console.log('invalid password');
+      if (!user.validPassword(password)) {
         return done(null, false)
       }
-      console.log('good to go');
       return done(null, user);
     })
     .error(function(error){
