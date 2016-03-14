@@ -5,13 +5,27 @@ var Users =  require('../../persistence/crud/users');
 
 module.exports = function(app, passport) {
 
+  passport.serializeUser(function(user, done) {
+    done(null, user._id);
+  });
+
+
+  passport.deserializeUser(function (id, done) {
+    Users.findById({ _id: id})
+    .then(function(user){
+      done(null, user);
+    })
+    .error(function(error){
+      done(error, null);
+    });
+  });
+  
   passport.use('local-login', new LocalStrategy({
-    usernameField: 'emailAddress'
+    usernameField: 'email'
   },
   function(emailAddress, password, done){
-    var userPromise = Users.getUserByEmail(emailAddress);
-
-    userPromise.then(function(user){
+    Users.getUserByEmail(emailAddress)
+    .then(function(user) {
       if (!user) {
         return done(null, false);
       }

@@ -27,7 +27,7 @@ Users.prototype.validateCreateUser = function(params) {
 	var errorMessage					= new ErrorMessage();
 	userInfo.data = {};
 	userInfo.errors = {};
-	userInfo.data.emailAddress		= params.emailAddress || null;
+	userInfo.data.emailAddress		= params.email || null;
 	userInfo.data.password				= params.password || null;
 	userInfo.data.firstName				= params.firstName || null;
 	userInfo.data.lastName				= params.lastName || null;
@@ -165,14 +165,13 @@ Users.prototype.getAllUsers = function() {
 * Get a user by ID
 */
 Users.prototype.getUserById = function (userId) {
+	console.log('searching for user by userId: ' + userId);
 	var validation = {};
 
 	if (userId) {
-		validation.data.userId 			= userId;
+		validation.userId 			= userId;
 	} else {
-		validation.data.userId 			= null;
-		
-		validation.sourceLocation		= "persistence.crud.Users.getUserById";
+		validation.userId 			= null;
 
 		var errorMessage		= new ErrorMessage();
 		errorMessage.getErrorMessage({
@@ -181,16 +180,14 @@ Users.prototype.getUserById = function (userId) {
 			sourceError								: "Invalid UserId",
 			sourceLocation						: "persistence.crud.Users.getUserById"
 		});
-
 		validation.errors 					= errorMessage;
 	}
 
-
 	return(new Promise(function(resolve, reject){
-		if (validation.data.userId === null) {
+		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UsersModel.find({_id : userId}).exec()
+			UsersModel.find({_id : validation.userId}).exec()
 			.then(function(user){
 				resolve(user);
 			})
@@ -214,7 +211,6 @@ Users.prototype.getUserById = function (userId) {
 */
 Users.prototype.getUserByEmail = function (userEmail) {
 	var validation = {};
-	console.log('passed paramater for userEmail is: ' + userEmail);
 	if (userEmail) {
 		validation.userEmail 	= userEmail;
 	} else {
@@ -249,7 +245,6 @@ Users.prototype.getUserByEmail = function (userEmail) {
 				}
 			});
 		}
-
 	}));
 	
 }
