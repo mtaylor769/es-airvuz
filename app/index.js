@@ -22,6 +22,8 @@ var https       = require('https').createServer(credentials, app).listen(443);
 var http        = require("http").createServer(app);
 var passport    = require('passport');
 
+var config      = require('../config/config')[global.NODE_ENV];
+
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -55,6 +57,7 @@ app.use('/admin/*', function (req, res) {
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport/local')(app, passport);
+require('./config/passport/local')(passport, config);
 
 
 //      _    ____ ___   ____             _

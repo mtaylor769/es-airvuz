@@ -27,11 +27,6 @@ usersRouter.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-// usersRouter.post('/login', passport.authenticate('local-login', {
-//   successRedirect: '/play',
-//   failureRedirect: '/'
-// }));
-
 usersRouter.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
