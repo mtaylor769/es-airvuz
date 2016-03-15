@@ -11,6 +11,10 @@ module.exports = function(passport, config) {
     passReqToCallback: true
   }, function (req, accessToken, refreshToken, profile, done) {
     //Need to look into profile information and return userID
+    console.log(accessToken);
+    console.log(refreshToken);
+    console.log(profile);
+    
     var consoleInformation = {
       accessToken : accessToken,
       refreshToken : refreshToken,
