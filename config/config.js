@@ -10,7 +10,7 @@ module.exports = {
     facebook: {
       clientID: "868675893230044",
       clientSecret: "916d3bbd7e46d2ff4ae05d173aef4cd7",
-      callbackURL: "http://localhost/auth/facebook/callback"
+      callbackURL: "http://localhost/api/socialmedia/facebook/callback"
     },
     linkedIn: {
       clientID: "test",
@@ -19,9 +19,9 @@ module.exports = {
     },
 
     google_localhost: {
-        "clientID": "257509599064-3omlk38mtq8e3upm55eemp8q7hk1pqg6.apps.googleusercontent.com",
-        "clientSecret": "DPdvaCrEoP2p6Jc7tzn5QOzP",
-        "callbackURL": "http://localhost/auth/google/callback"
+        clientID        : "257509599064-3omlk38mtq8e3upm55eemp8q7hk1pqg6.apps.googleusercontent.com",
+        clientSecret    : "DPdvaCrEoP2p6Jc7tzn5QOzP",
+        callbackURL     : "http://localhost/auth/google/callback"
     },
     google: {
       "clientID": "257509599064-3omlk38mtq8e3upm55eemp8q7hk1pqg6.apps.googleusercontent.com",
