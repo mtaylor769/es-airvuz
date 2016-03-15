@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
-var Schema   = mongoose.Schema;
-var crypto   = require('crypto');
-var uuid     = require('uuid');
+var mongoose 			= require('mongoose');
+var Schema  			= mongoose.Schema;
+var bcrypt        = require('bcrypt-nodejs');
+var uuid     			= require('uuid');
 
-var userSchema = mongoose.Schema({
+var userSchema 		= mongoose.Schema({
 	
 	// Does the user accept donations.
 	allowDonation : {
@@ -75,7 +75,7 @@ var userSchema = mongoose.Schema({
 	/* 
 
 	 */
-	uniqueName : {
+	userName : {
 		required	: true,
 		unique		: true,
 		type			: String
@@ -86,6 +86,15 @@ var userSchema = mongoose.Schema({
 		type		: String
 	}
 });
+
+userSchema.methods.generateHash = function(password) {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+}
+
+userSchema.methods.validPassword = function(password) {
+	console.log('your passed parameter is: ' + password);
+	return bcrypt.compareSync(password, this.password);
+}
 
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
 //userSchema.createIndex( { "socialMediaAccount.accountId": 1 }, { background: true } );

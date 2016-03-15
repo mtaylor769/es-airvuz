@@ -6,6 +6,8 @@ var database = {
 	NAME : "AirVuzV2"
 }
 
+var secret = "B+`{<e}]C}HT<m<G";
+
 function connectToDatabase() {
 	var connectionStr = 'mongodb://' + database.HOST + '/' + database.NAME;
 	console.log("connstr:" + connectionStr);

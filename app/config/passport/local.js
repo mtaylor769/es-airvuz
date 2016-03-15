@@ -1,56 +1,38 @@
 "use strict";
 
-let LocalStrategy = require('passport-local').Strategy;
-let Users =  require('../../persistence/crud/users');
+var LocalStrategy = require('passport-local').Strategy;
+var Users =  require('../../persistence/crud/users');
 
-module.exports = function(passport){
-  passport.use('local-signup', new LocalStrategy({
-    firstName           : 'firstName',
-    lastName            : 'lastName',
-    userName            : 'userName',
-    emailAddress        : 'email',
-    password            : 'password'
-  },
-  function(req, email, password, done){
-    process.nextTick(function(){
-      var userPromise = Users.getUserByEmail(email);
-      user.then(function(user) {
-        //console.log(user);
-        if (!user) {
-          var newUser = {
-            firstName         : req.firstName,
-            lastName          : req.lastName,
-            userName          : req.userName,
-            emailAddress      : req.emailAddress
-          }
-          //TODO:  Zeke - look into doing this encryption
-          newUser.password = bcrypt(password);
+module.exports = function(passport, config) {
 
-          var createUser = Users.create(newUser);
-          return done(null, createUser);
-        }
-        if (!user.verifyPassword(password)) {
-          return done(null, false);
-        }
-        return (null, user);
-      })
-      .error(function(error){
-        return done(null, false);
-      });
+  passport.serializeUser(function(user, done) {
+    done(null, user._id);
+  });
+
+
+  passport.deserializeUser(function (id, done) {
+    Users.findById({ _id: id})
+    .then(function(user){
+      done(null, user);
+    })
+    .error(function(error){
+      done(error, null);
     });
-  }));
-
+  });
+  
   passport.use('local-login', new LocalStrategy({
-    emailAddress            : 'email',
-    password                : 'password'
+    usernameField: 'email'
   },
-  function(req, email, password, done){
-    var userPromise = Users.getUserByEmail({emailAddress : email});
-    userPromise.then(function(user){
+  function(emailAddress, password, done){
+    Users.getUserByEmail(emailAddress)
+    .then(function(user) {
       if (!user) {
         return done(null, false);
       }
-      if (!user.validPassword)
+      if (!user.validPassword(password)) {
+        return done(null, false)
+      }
+      return done(null, user);
     })
     .error(function(error){
       return done(null, false);

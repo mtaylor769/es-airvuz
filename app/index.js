@@ -11,6 +11,8 @@ var path        = require('path');
 var express     = require('express');
 var fs          = require('fs');
 var app         = express();
+var bodyParser  = require('body-parser');
+var jwt         = require('jsonwebtoken');
 
 //SSL certs
 var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
@@ -19,6 +21,8 @@ var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
 var https       = require('https').createServer(credentials, app).listen(443);
 var http        = require("http").createServer(app);
 var passport    = require('passport');
+
+var config      = require('../config/config')[global.NODE_ENV];
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -48,7 +52,13 @@ app.use('/admin', express.static(path.resolve(__dirname, '../admin')));
 app.use('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../admin/index.html'));
 });
+
+
 app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport/local')(passport, config);
+require('./config/passport/facebook')(passport, config);
+
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
 //    / _ \ | |_) | |  | |_) / _ \| | | | __/ _ \ __|
@@ -63,8 +73,11 @@ app.use('/api', api.router);
 app.get('/play', function (req, res) {
   res.render('play');
 });
+
 app.get(/.*/, function (req, res) {
   res.render('index');
 });
 
 app.listen(process.env.PORT || 80);
+
+module.exports = app;
