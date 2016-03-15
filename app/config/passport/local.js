@@ -3,7 +3,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var Users =  require('../../persistence/crud/users');
 
-module.exports = function(app, passport) {
+module.exports = function(passport, config) {
 
   passport.serializeUser(function(user, done) {
     done(null, user._id);

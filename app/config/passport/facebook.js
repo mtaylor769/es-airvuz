@@ -1,7 +1,7 @@
 "use strict";
 
 var FacebookStrategy = require('passport-facebook').Strategy;
-
+var SocialMedia =  require('../../persistence/crud/socialMediaAccount');
 
 module.exports = function(passport, config) {
   passport.use(new FacebookStrategy({

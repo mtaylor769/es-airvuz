@@ -85,7 +85,6 @@ socialMediaAccount.prototype.create = function(params) {
       }
     });
   }));
-
 }
 
 module.exports = new socialMediaAccount();

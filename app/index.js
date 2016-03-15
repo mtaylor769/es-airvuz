@@ -56,9 +56,8 @@ app.use('/admin/*', function (req, res) {
 
 app.use(passport.initialize());
 app.use(passport.session());
-require('./config/passport/local')(app, passport);
 require('./config/passport/local')(passport, config);
-
+require('./config/passport/facebook')(passport, config);
 
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
