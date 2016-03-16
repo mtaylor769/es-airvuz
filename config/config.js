@@ -8,9 +8,9 @@ module.exports = {
       name: 'airvuz'
     },
     facebook: {
-      clientID: "868675893230044",
-      clientSecret: "916d3bbd7e46d2ff4ae05d173aef4cd7",
-      callbackURL: "http://localhost/api/auth/facebook/callback"
+      clientID          : "868675893230044",
+      clientSecret      : "916d3bbd7e46d2ff4ae05d173aef4cd7",
+      callbackURL       : "http://localhost/api/auth/facebook/callback"
     },
     linkedIn: {
       clientID: "test",
@@ -30,9 +30,9 @@ module.exports = {
     },
 
     twitter_local: {
-    clientID: "o1k5SYvBtqZOluOuZ5FP9YMja",
-    clientSecret: "87Tpccs9rv0NPDCiKCie4biCyAjV1bWMkVaCTTCG1G5qFP1jGD",
-    callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+    clientID            : "o1k5SYvBtqZOluOuZ5FP9YMja",
+    clientSecret        : "87Tpccs9rv0NPDCiKCie4biCyAjV1bWMkVaCTTCG1G5qFP1jGD",
+    callbackURL         : "http://127.0.0.1/api/auth/twitter/callback"
    }, 
    
     twitter: {

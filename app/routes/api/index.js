@@ -24,6 +24,12 @@ apiRouter.route('/auth/google')
 apiRouter.route('/auth/google/callback')
   .get(auth.googleCallback);
 
+apiRouter.route('/auth/twitter')
+  .get(auth.twitter);
+
+apiRouter.route('/auth/twitter/callback')
+  .get(auth.twitterCallback);
+
 
 /**
  * /api/users/
