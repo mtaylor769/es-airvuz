@@ -19,12 +19,26 @@ function login(req, res, next) {
 
 function facebook(req, res, next) {
   console.log('hitting facebook api');
-  passport.authenticate('facebook', {scope : 'email'});
+  passport.authenticate('facebook', {scope : 'email'})(req, res, next);
 }
 
 function facebookCallback(req, res, next) {
   console.log('successful facebook auth callback');
-  passport.authenticate('facebook', { failureRedirect: '/play' }),
+  passport.authenticate('facebook', { failureRedirect: '/play' })(req, res, next),
+  function(req, res) {
+    console.log(req.body);
+    res.redirect('/');
+  };
+}
+
+function google(req, res, next) {
+  console.log('hitting google api');
+  passport.authenticate('google', { scope : ['profile', 'email'] })(req, res, next);
+}
+
+function googleCallback(req, res, next) {
+  console.log('successful google auth callback');
+  passport.authenticate('google', { failureRedirect: '/play' })(req, res, next),
   function(req, res) {
     console.log(req.body);
     res.redirect('/');
@@ -39,5 +53,7 @@ module.exports = {
   login               : login,
   local               : local,
   facebook            : facebook,
-  facebookCallback    : facebookCallback
+  facebookCallback    : facebookCallback,
+  google              : google,
+  googleCallback      : googleCallback
 };
