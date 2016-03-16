@@ -123,34 +123,27 @@ Videos.prototype.create = function(params) {
 	);
 };
 
-Videos.prototype.get = function() {
-	VideoModel.find({}).exec()
-	.then(function(videos) {
-		return res.send(videos);
-	})
-	.catch(function(err) {
-		return err;
-	})
-};
+//Videos.prototype.get = function() {
+//	VideoModel.find({}).exec()
+//	.then(function(videos) {
+//		return res.send(videos);
+//	})
+//	.catch(function(err) {
+//		return err;
+//	})
+//};
 
 Videos.prototype.getById = function(id) {
-	VideoModel.findById({_id: id}).exec()
-	.then(function(video) {
-		return res.send(video);
-	})
-	.catch(function(err) {
-		return err;
-	})
+	return VideoModel.findById({_id: id}).exec()
 };
 
 Videos.prototype.remove = function(id) {
-	VideoModel.findById({_id: id}).exec()
-	.then(function(video) {
-		return res.send(video);
-	})
-	.catch(function(err) {
-		return err;
-	})
+	return VideoModel.findByIdAndRemove({_id: id}).exec()
+};
+
+Videos.prototype.update = function(params) {
+	console.log(params);
+	return VideoModel.findByIdAndUpdate(params.id, params.update).exec()
 };
 
 module.exports = new Videos();
