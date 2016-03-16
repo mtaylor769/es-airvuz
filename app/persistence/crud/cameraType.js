@@ -120,8 +120,12 @@ CameraType.prototype.getById = function(id) {
 };
 
 CameraType.prototype.remove = function(id) {
-  return CameraTypeModel.findByIdAndRemove({_id: id}).exec()
+  return CameraTypeModel.findByIdAndRemove({_id: id}).exec();
 };
+
+CameraType.prototype.update = function(params) {
+  return CameraTypeModel.findByIdAndUpdate(params.id, params.update, { new: true } );
+}
 
 module.exports = new CameraType();
 
