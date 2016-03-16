@@ -18,19 +18,21 @@ describe('Videos', function() {
   var videoId;
   describe('POST' + API_URL, function() {
     it('should create a video', function(done) {
-      request.post(API_URL)
+      request
+        .post(API_URL)
         .send(video)
         .expect(200)
         .expect(function(response) {
           videoId = response.body._id;
         })
-        .end(done)
+        .end(done);
     })
   });
 
   describe('GET' + API_URL, function() {
     it('should return users info', function(done) {
-      request.get(API_URL + '/' + videoId)
+      request
+        .get(API_URL + '/' + videoId)
         .send()
         .expect(200)
         .end(function(err, res) {
@@ -45,7 +47,8 @@ describe('Videos', function() {
 
   describe('PUT' + API_URL, function() {
     it('should replace title', function(done) {
-      request.put(API_URL + '/'  + videoId)
+      request
+        .put(API_URL + '/'  + videoId)
         .send({_id: videoId, title: 'We are changing this'})
         .expect(200)
         .end(function(err, res) {
@@ -58,10 +61,13 @@ describe('Videos', function() {
 
   describe('DELETE' + API_URL, function() {
     it('should delete the video', function(done) {
-      request.delete(API_URL + '/' + videoId)
-      .send()
-      .expect(200)
-      .end(done)
+      request
+        .delete(API_URL + '/' + videoId)
+        .send()
+        .expect(200)
+        .end(done);
     })
-  })
+  });
+
+
 });

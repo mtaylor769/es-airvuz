@@ -3,6 +3,7 @@ var users               = require('./users');
 var videos              = require('./videos');
 var passport            = require('passport');
 var SocialMedia         = require('../../persistence/crud/socialMediaAccount');
+var cameraType          = require('./cameraType');
 
 /**
  * /api/auth
@@ -29,6 +30,7 @@ apiRouter.route('/auth/twitter')
 
 apiRouter.route('/auth/twitter/callback')
   .get(auth.twitterCallback);
+
 
 
 /**
@@ -59,5 +61,20 @@ apiRouter.route('/videos/:id')
   .delete(videos.del);
 
 
+/**
+ * /api/camera-type/
+ */
+apiRouter.route('/camera-type')
+  .post(cameraType.post)
+  .get(cameraType.get);
+
+apiRouter.route('/camera-type/:id')
+  .get(cameraType.getById)
+  .put(cameraType.put)
+  .delete(cameraType.del);
+
+var auth = require('./auth');
+apiRouter.route('/auth/token')
+  .post(auth.login);
 
 exports.router = apiRouter;
