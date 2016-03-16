@@ -59,13 +59,8 @@ function twitterCallback(req, res, next) {
   };
 }
 
-function local(req, res) {
-  //passport
-}
-
 module.exports = {
   login               : login,
-  local               : local,
   facebook            : facebook,
   facebookCallback    : facebookCallback,
   google              : google,
