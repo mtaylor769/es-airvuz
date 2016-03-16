@@ -316,26 +316,41 @@ Users.prototype.update = function (params) {
 /*
 * Delete
 */
-Users.prototype.delete = function(params) {
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
-	var validation = preCondition.validate(params);
+Users.prototype.delete = function(userId) {
+	var validation 								= {};
+	if (userId) {
+		validation.userId 					= userId;
+	} else {
+		validation.userId						= null;
+		var errorMessage						= new ErrorMessage();
+		errorMessage.getErrorMessage({
+			statusCode								: "500",
+			errorId 									: "PERS1000",
+			errorMessage 							: "Failed while deleting user by Id",
+			sourceError								: "Invalid Id",
+			sourceLocation						: "persistence.crud.Users.delete"
+		});
+
+		validation.errors 					= errorMessage;
+	}
+
 	return(new Promise(function(resolve, reject){
-		if (validation.data.sessionId === null || validation.data.userId === null) {
+		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UsersModel.delete({_id : validation.data.userId}).exec()
-			.then(function(user){
-				resolve(user);
-			})
-			.error(function(error){
-				var errorMessage		= new ErrorMessage();
-				errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorMessage 		: "Failed while deleting user",
-					sourceError			: error,
-					sourceLocation		: "persistence.crud.Users.delete"
-				});
-				reject(errorMessage.getErrors());
+			UserModel.delete({_id : validation.userId}, function(error, user){
+				if (error) {
+					var errorMessage		= new ErrorMessage();
+					errorMessage.getErrorMessage({
+						statusCode			: "500",
+						errorMessage 		: "Failed while deleting user by Id",
+						sourceError			: error,
+						sourceLocation	: "persistence.crud.Users.delete"
+					});
+					reject(errorMessage.getErrors());
+				} else {
+					resolve(user);
+				}
 			});
 		}
 	}));
