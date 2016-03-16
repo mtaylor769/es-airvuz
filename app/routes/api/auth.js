@@ -32,6 +32,10 @@ function login(req, res, next) {
   // });
 }
 
+function local(req, res) {
+  //passport
+}
 module.exports = {
-  login: login
+  login: login,
+  local: local
 };

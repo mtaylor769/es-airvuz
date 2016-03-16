@@ -4,15 +4,11 @@ var Users               = require('../../persistence/crud/users');
 var jwt                 = require('jsonwebtoken');
 var tokenConfig         = require('../../../config/token');
 
-usersRouter.get('/', function (req, res) {
 
-  res.send('Test');
 
-});
-
-usersRouter.post('/signup', function(req, res) {
+function post(req, res) {
   Users.create(req.body);
-});
+}
 
 usersRouter.post('/login', function(req, res, next) {
   passport.authenticate('local-login', function(error, user, info){
@@ -40,4 +36,6 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-exports.router = usersRouter;
+module.export = {
+  post: post
+};
