@@ -13,6 +13,7 @@ module.exports = function(passport, config) {
     callbackURL: config.facebook.callbackURL,
     passReqToCallback: true
   }, function (req, accessToken, refreshToken, profile, done) {
+    console.log('hitting facebook strategy');
     //Need to look into profile information and return userID
     console.log(accessToken);
     console.log(refreshToken);
