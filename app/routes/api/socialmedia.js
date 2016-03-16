@@ -7,7 +7,7 @@ var config              = require('../config/config')[global.NODE_ENV];
 
 socialmediaRouter.get('/facebook', passport.authenticate('facebook', {scope : 'email'}));
 
-socialmediaRouter.get('/api/socialmedia/facebook/callback', 
+socialmediaRouter.get('/facebook/callback', 
   passport.authenticate('facebook', { failureRedirect: '/play' }),
   function(req, res) {
     console.log('successful facebook auth');
@@ -16,7 +16,7 @@ socialmediaRouter.get('/api/socialmedia/facebook/callback',
 
 socialmediaRouter.get('/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
-socialmediaRouter.get('/api/socialmedia/google/callback', 
+socialmediaRouter.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/play' }),
   function(req, res) {
     console.log('successful google auth');

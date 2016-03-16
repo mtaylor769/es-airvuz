@@ -1,6 +1,8 @@
-var jwt = require('jsonwebtoken'),
-  passport = require('passport'),
-  tokenConfig = require('../../../config/token');
+var jwt               = require('jsonwebtoken'),
+  passport            = require('passport'),
+  tokenConfig         = require('../../../config/token'),
+  passport            = require('passport'),
+  SocialMedia         = require('../../persistence/crud/socialMediaAccount');;
 
 function login(req, res, next) {
   passport.authenticate('local-login', function(error, user, info){
