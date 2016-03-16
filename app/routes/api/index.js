@@ -48,17 +48,17 @@ apiRouter.route('/auth')
 /**
  * /api/videos/
  */
-//apiRouter.route('/videos')
-//  .get(videos.get);
+apiRouter.route('/videos')
+  .post(videos.post);
 //apiRouter.use('/videos', videos.router);
 //
 //apiRouter.route('/videos/category/:category')
 //  .get(videos.getByCategory);
 //
-//apiRouter.route('/videos/:id')
-//  .get(videos.get)
-//  .put(videos.update)
-//  .delete(videos.delete);
+apiRouter.route('/videos/:id')
+  .get(videos.get)
+  .put(videos.put)
+  .delete(videos.del);
 
 var auth = require('./auth');
 apiRouter.route('/auth/token')

@@ -16,20 +16,22 @@ describe('Videos', function() {
   var video = testVideo;
   var API_URL = '/api/videos';
   var videoId;
-  before(function(done) {
-    request.post(API_URL)
-      .send(video)
-      .expect(200)
-      .expect(function(response) {
-        videoId = response.body._id;
-      })
-      .end(done)
+  describe('POST' + API_URL, function() {
+    it('should create a video', function(done) {
+      request.post(API_URL)
+        .send(video)
+        .expect(200)
+        .expect(function(response) {
+          videoId = response.body._id;
+        })
+        .end(done)
+    })
   });
 
   describe('GET' + API_URL, function() {
     it('should return users info', function(done) {
-      request.get(API_URL)
-        .send({_id: videoId})
+      request.get(API_URL + '/' + videoId)
+        .send()
         .expect(200)
         .end(function(err, res) {
           var data = res.body;
@@ -51,6 +53,15 @@ describe('Videos', function() {
           expect(title).to.equal('We are changing this')
           done();
         })
+    })
+  });
+
+  describe('DELETE' + API_URL, function() {
+    it('should delete the video', function(done) {
+      request.delete(API_URL + '/' + videoId)
+      .send()
+      .expect(200)
+      .end(done)
     })
   })
 });
