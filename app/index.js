@@ -68,9 +68,7 @@ require('./config/passport/twitter')(passport, config);
 //  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
 //
 
-var api     = require('./routes/api');
-
-app.use('/api', api.router);
+app.use(require('./routes/api/routes'));
 
 app.get('/play', function (req, res) {
   res.render('play');

@@ -11,25 +11,25 @@ var categoryType        = require('./categoryType')
  */
 var auth = require('./auth');
 
-apiRouter.route('/auth')
+apiRouter.route('/api/auth')
   .post(auth.login);
 
-apiRouter.route('/auth/facebook')
+apiRouter.route('/api/auth/facebook')
   .get(auth.facebook);
 
-apiRouter.route('/auth/facebook/callback')
+apiRouter.route('/api/auth/facebook/callback')
   .get(auth.facebookCallback);
 
-apiRouter.route('/auth/google')
+apiRouter.route('/api/auth/google')
   .get(auth.google);
 
-apiRouter.route('/auth/google/callback')
+apiRouter.route('/api/auth/google/callback')
   .get(auth.googleCallback);
 
-apiRouter.route('/auth/twitter')
+apiRouter.route('/api/auth/twitter')
   .get(auth.twitter);
 
-apiRouter.route('/auth/twitter/callback')
+apiRouter.route('/api/auth/twitter/callback')
   .get(auth.twitterCallback);
 
 
@@ -37,26 +37,26 @@ apiRouter.route('/auth/twitter/callback')
 /**
  * /api/users/
  */
-//apiRouter.route('/users')
+//apiRouter.route('/api/users')
 //  .get(users.getAll)
 //  .post(users.post);
 //
-//apiRouter.route('/users/search')
+//apiRouter.route('/api/users/search')
 //  .get(users.search);
 //
-//apiRouter.route('/users/:id');
+//apiRouter.route('/api/users/:id');
 
 /**
  * /api/videos/
  */
-apiRouter.route('/videos')
+apiRouter.route('/api/videos')
   .post(videos.post);
 //apiRouter.use('/videos', videos.router);
 //
-//apiRouter.route('/videos/category/:category')
+//apiRouter.route('/api/videos/category/:category')
 //  .get(videos.getByCategory);
 //
-apiRouter.route('/videos/:id')
+apiRouter.route('/api/videos/:id')
   .get(videos.get)
   .put(videos.put)
   .delete(videos.del);
@@ -65,11 +65,11 @@ apiRouter.route('/videos/:id')
 /**
  * /api/camera-type/
  */
-apiRouter.route('/camera-type')
+apiRouter.route('/api/camera-type')
   .post(cameraType.post)
   .get(cameraType.get);
 
-apiRouter.route('/camera-type/:id')
+apiRouter.route('/api/camera-type/:id')
   .get(cameraType.getById)
   .put(cameraType.put)
   .delete(cameraType.del);
@@ -77,12 +77,12 @@ apiRouter.route('/camera-type/:id')
 /**
  * /api/category-type/
  */
-apiRouter.route('/category-type')
+apiRouter.route('/api/category-type')
   .post(categoryType.post)
   .get(categoryType.get);
 
 var auth = require('./auth');
-apiRouter.route('/auth/token')
+apiRouter.route('/api/auth/token')
   .post(auth.login);
 
-exports.router = apiRouter;
+module.exports = apiRouter;
