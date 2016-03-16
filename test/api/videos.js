@@ -33,10 +33,8 @@ describe('Videos', function() {
         .expect(200)
         .end(function(err, res) {
           var data = res.body;
-
           expect(data).to.have.property('title');
           expect(data).to.have.property('categories');
-
           done();
         })
 
@@ -45,17 +43,12 @@ describe('Videos', function() {
 
   describe('PUT' + API_URL, function() {
     it('should replace title', function(done) {
-      console.log(API_URL + '/'  + videoId);
       request.put(API_URL + '/'  + videoId)
-        .send({id: videoId, title: 'We are changing this'})
+        .send({_id: videoId, title: 'We are changing this'})
         .expect(200)
         .end(function(err, res) {
-          console.log('00000err');
-          console.log(res.body);
-          var title = res.title;
-
-          expect(title).toEqual('We are changing this');
-
+          var title = res.body.title;
+          expect(title).to.equal('We are changing this')
           done();
         })
     })

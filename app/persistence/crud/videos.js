@@ -142,8 +142,7 @@ Videos.prototype.remove = function(id) {
 };
 
 Videos.prototype.update = function(params) {
-	console.log(params);
-	return VideoModel.findByIdAndUpdate(params.id, params.update).exec()
+	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec()
 };
 
 module.exports = new Videos();

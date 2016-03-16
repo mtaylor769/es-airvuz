@@ -17,11 +17,9 @@ videoRouter.get('/', function(req, res) {
 });
 
 videoRouter.put('/:id', function(req, res) {
-  console.log('hitting route')
   Videos.update({id: req.body._id, update: req.body})
   .then(function(video) {
-    console.log(video);
-    res.json(video);
+    res.send(video);
   })
 });
 
