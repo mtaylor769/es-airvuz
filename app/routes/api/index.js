@@ -4,6 +4,7 @@ var videos              = require('./videos');
 var passport            = require('passport');
 var SocialMedia         = require('../../persistence/crud/socialMediaAccount');
 var cameraType          = require('./cameraType');
+var categoryType        = require('./categoryType')
 
 /**
  * /api/auth
@@ -72,6 +73,13 @@ apiRouter.route('/camera-type/:id')
   .get(cameraType.getById)
   .put(cameraType.put)
   .delete(cameraType.del);
+
+/**
+ * /api/category-type/
+ */
+apiRouter.route('/category-type')
+  .post(categoryType.post)
+  .get(categoryType.get);
 
 var auth = require('./auth');
 apiRouter.route('/auth/token')
