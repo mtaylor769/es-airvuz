@@ -11,7 +11,7 @@ module.exports = function(passport, config) {
     // callbackURL: "http://localhost/auth/google/callback"
     clientID: config.google_localhost.clientID,
     clientSecret: config.google_localhost.clientSecret,
-    callbackURL: 'http://localhost/api/socialmedia/google/callback',
+    callbackURL: 'http://localhost/api/auth/google/callback',
     passReqToCallback: true
   }, function (token, refreshToken, profile, done) {
     //Need to look into profile information and return userID

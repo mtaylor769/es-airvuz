@@ -10,7 +10,7 @@ module.exports = {
     facebook: {
       clientID: "868675893230044",
       clientSecret: "916d3bbd7e46d2ff4ae05d173aef4cd7",
-      callbackURL: "http://localhost/api/socialmedia/facebook/callback"
+      callbackURL: "http://localhost/api/auth/facebook/callback"
     },
     linkedIn: {
       clientID: "test",

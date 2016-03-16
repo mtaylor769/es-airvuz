@@ -15,6 +15,9 @@ apiRouter.route('/auth')
 apiRouter.route('/auth/facebook')
   .get(auth.facebook);
 
+apiRouter.route('/auth/facebook/callback')
+  .get(auth.facebookCallback);
+
 
 /**
  * /api/users/

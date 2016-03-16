@@ -18,25 +18,26 @@ function login(req, res, next) {
 }
 
 function facebook(req, res, next) {
+  console.log('hitting facebook api');
   passport.authenticate('facebook', {scope : 'email'});
 }
 
 function facebookCallback(req, res, next) {
+  console.log('successful facebook auth callback');
   passport.authenticate('facebook', { failureRedirect: '/play' }),
   function(req, res) {
-    console.log('successful facebook auth callback');
     console.log(req.body);
-  });
+    res.redirect('/');
+  };
 }
-
-
-
 
 function local(req, res) {
   //passport
 }
 
 module.exports = {
-  login: login,
-  local: local
+  login               : login,
+  local               : local,
+  facebook            : facebook,
+  facebookCallback    : facebookCallback
 };
