@@ -7,30 +7,13 @@ var SocialMedia         = require('../../persistence/crud/socialMediaAccount');
 /**
  * /api/auth
  */
-apiRouter.route('/auth')
-  .post('/', function(req, res, next) {
-  passport.authenticate('local-login', function(error, user, info){
-    if (error) {
-      return next(error);
-    }
-    if (!user) {
-      return res.json(401, {error: 'No user found'});
-    }
-    var token =  jwt.sign(user, tokenConfig.secret, { expiresIn: tokenConfig.expires });
-    res.json({token: token});
-  })(req, res, next);
-});
+var auth = require('./auth');
 
 apiRouter.route('/auth')
-  .get('/facebook', passport.authenticate('facebook', {scope : 'email'}));
+  .post(auth.login);
 
-apiRouter.route('/auth')
-  .get('/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/play' }),
-  function(req, res) {
-    console.log('successful facebook auth');
-    console.log(req.body);
-  });
+apiRouter.route('/auth/facebook')
+  .get(auth.facebook);
 
 
 /**
@@ -60,8 +43,6 @@ apiRouter.route('/videos/:id')
   .put(videos.put)
   .delete(videos.del);
 
-var auth = require('./auth');
-apiRouter.route('/auth/token')
-  .post(auth.login);
+
 
 exports.router = apiRouter;
