@@ -125,7 +125,7 @@ CameraType.prototype.remove = function(id) {
 
 CameraType.prototype.update = function(params) {
   return CameraTypeModel.findByIdAndUpdate(params.id, params.update, { new: true } );
-}
+};
 
 module.exports = new CameraType();
 

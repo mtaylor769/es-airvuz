@@ -1,37 +1,47 @@
-var CategoryType = require('../../persistence/crud/categorytype');
+var CategoryTypeCrud = require('../../persistence/crud/categorytype');
 
-function post(req, res) {
-  CategoryType
+function CategoryType() {
+
+}
+
+CategoryType.prototype.post = function(req, res) {
+  CategoryTypeCrud
   .create(req.body)
   .then(function(category) {
     res.send(category);
   })
-}
+};
 
-function get(req, res) {
-  CategoryType
+CategoryType.prototype.get = function(req, res) {
+  CategoryTypeCrud
   .get()
   .then(function(categories) {
     res.send(categories);
   })
-}
-
-function getById(req, res) {
-
-}
-
-function put(req, res) {
-
-}
-
-function del(req, res) {
-
-}
-
-module.exports = {
-  post: post,
-  get: get,
-  getById: getById,
-  put: put,
-  del: del
 };
+
+CategoryType.prototype.getById = function(req, res) {
+  CategoryTypeCrud
+  .getById(req.params.id)
+  .then(function(category) {
+    res.send(category);
+  })
+};
+
+CategoryType.prototype.put = function(req, res) {
+  CategoryTypeCrud
+  .update({id: req.body._id, update: req.body})
+  .then(function(category) {
+    res.send(category);
+  })
+};
+
+CategoryType.prototype.delete = function(req, res) {
+  CategoryTypeCrud
+  .remove(req.params.id)
+  .then(function() {
+    res.sendStatus(200);
+  })
+};
+
+module.exports = new CategoryType();

@@ -116,6 +116,10 @@ CategoryType.prototype.getById = function(id) {
   return CategoryTypeModel.findById({_id: id}).exec();
 };
 
+CategoryType.prototype.update = function(params) {
+  return CategoryTypeModel.findByIdAndUpdate(params.id, params.update, { new: true } ).exec();
+};
+
 CategoryType.prototype.remove = function(id) {
   return CategoryTypeModel.findByIdAndRemove({_id: id}).exec();
 };

@@ -1,49 +1,47 @@
-var CameraType = require('../../persistence/crud/cameraType');
+var CameraTypeCrud = require('../../persistence/crud/cameraType');
 
-function post(req, res) {
-  CameraType
+function CameraType() {
+
+};
+
+CameraType.prototype.post = function(req, res) {
+  CameraTypeCrud
   .create(req.body)
   .then(function(camera) {
     res.send(camera);
   })
-}
+};
 
-function get(req, res) {
-  CameraType
+CameraType.prototype.get = function(req, res) {
+  CameraTypeCrud
   .get()
   .then(function(cameras) {
     res.send(cameras);
   })
-}
+};
 
-function getById(req, res) {
-  CameraType
+CameraType.prototype.getById = function(req, res) {
+  CameraTypeCrud
   .getById(req.params.id)
   .then(function(camera) {
     res.send(camera);
   })
-}
+};
 
-function put(req, res) {
-  CameraType
+CameraType.prototype.put = function(req, res) {
+  CameraTypeCrud
   .update({id: req.body._id, update: req.body})
   .then(function(camera) {
     res.send(camera);
   })
-}
+};
 
-function del(req, res) {
-  CameraType
+CameraType.prototype.delete = function(req, res) {
+  CameraTypeCrud
   .remove(req.params.id)
   .then(function() {
     res.sendStatus(200);
   })
-}
-
-module.exports = {
-  post: post,
-  get: get,
-  getById: getById,
-  put: put,
-  del: del
 };
+
+module.exports = new CameraType();

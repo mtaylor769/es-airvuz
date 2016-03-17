@@ -78,7 +78,7 @@ describe('CameraType', function() {
   describe('DELETE' + API_URL, function() {
     it('should delete one video', function(done) {
       request
-        .del(API_URL + '/' + cameraId)
+        .delete(API_URL + '/' + cameraId)
         .send()
         .expect(200)
         .end(done)
