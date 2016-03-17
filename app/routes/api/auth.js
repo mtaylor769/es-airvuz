@@ -18,17 +18,14 @@ function login(req, res, next) {
 }
 
 function facebook(req, res, next) {
-  console.log('hitting facebook api');
-  passport.authenticate('facebook', {scope : 'email'})(req, res, next);
+  passport.authenticate('facebook')(req, res, next);
 }
 
 function facebookCallback(req, res, next) {
-  console.log('successful facebook auth callback');
-  passport.authenticate('facebook', { failureRedirect: '/play' })(req, res, next),
-  function(req, res) {
-    console.log(req.body);
-    res.redirect('/');
-  };
+  passport.authenticate('facebook', { 
+    successRedirect: '/',
+    failureRedirect: '/play'
+  })(req, res, next);
 }
 
 function google(req, res, next) {

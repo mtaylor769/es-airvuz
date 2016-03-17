@@ -9,7 +9,6 @@ module.exports = function(passport, config) {
     done(null, user._id);
   });
 
-
   passport.deserializeUser(function (id, done) {
     Users.findById({ _id: id})
     .then(function(user){

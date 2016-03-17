@@ -6,7 +6,7 @@ var socialMediaAccountSchema = mongoose.Schema({
 	/*
 	 * @type {string}
 	 */
-	accountType : {
+	provider : {
 		required	: true,
 		type			: String,
 		default		: ['FACEBOOK', "GOOGLE+", "INSTAGRAM", "TWITTER", "VIMEO"]
