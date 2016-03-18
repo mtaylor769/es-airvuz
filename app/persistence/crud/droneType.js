@@ -118,6 +118,10 @@ DroneType.prototype.getById = function(id) {
   return DroneTypeModel.findById({_id: id}).exec()
 };
 
+DroneType.prototype.update = function(params) {
+  return DroneTypeModel.findByIdAndUpdate(params.id, params.update, { new: true } ).exec();
+};
+
 DroneType.prototype.remove = function(id) {
   return DroneTypeModel.findByIdAndRemove({_id: id}).exec()
 };
