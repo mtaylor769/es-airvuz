@@ -10,12 +10,13 @@ var SocialModel                 = require('../model/socialMediaAccount');
 
 var socialMediaAccount = function() {
   
-  
 }
 
 socialMediaAccount.prototype.validateParams = function(params) {
   var sourceLocation = "persistence.crud.socialMediaAccount.create"
   var returnParams= {};
+  returnParams.data = {};
+  var errorMessage    = new ErrorMessage();
   if (params.provider === null) {
     returnParams.error =  errorMessage.getErrorMessage({
         statusCode      : "400",
@@ -61,16 +62,19 @@ socialMediaAccount.prototype.validateParams = function(params) {
 }
 
 socialMediaAccount.prototype.create = function(params) {
+  console.log('hitting socialMediaAccount.prototype.create');
   var validation = this.validateParams(params);
   return (new Promise(function(resolve, reject){
-    if (validation.error !== null) {
+    if (validation.error) {
       reject(validation.error);
     }
 
     //persist
-    var newAccount = socialModel(validation.data)
+    var newAccount = SocialModel(validation.data);
     newAccount.save(function(error) {
       if (error) {
+        console.log('error saving new social media');
+        console.log(error);
         var errorMessage    = new ErrorMessage();
         errorMessage.getErrorMessage({
           statusCode      : "500",
@@ -81,6 +85,8 @@ socialMediaAccount.prototype.create = function(params) {
         });
         reject(errorMessage.getErrors());
       } else {
+        console.log('no issues saving new creating');
+        console.log(newAccount);
         resolve(newAccount);
       }
     });
@@ -88,7 +94,9 @@ socialMediaAccount.prototype.create = function(params) {
 }
 
 socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, provider) {
-  var validation = {};
+  var validation        = {};
+  validation.error      = null;
+  var errorMessage      = new ErrorMessage();
   if (accountId === null) {
     validation.accountId       = null;
     validation.error    =  errorMessage.getErrorMessage({
@@ -101,7 +109,7 @@ socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, pr
         sourceLocation  : "persistence.crud.socialMediaAccount.findAccountByIdandProvider"
       });
   } else {
-    valdation.accountId        = accountId;
+    validation.accountId        = accountId;
   }
   if (provider === null) {
     validation.provider = null;
@@ -118,16 +126,12 @@ socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, pr
     validation.provider = provider;
   }
   return (new Promise(function(resolve, reject){
-    if (validation.error !== null) {
+    if (validation.error) {
       reject(validation.error);
     } else {
-      SocialModel.findOne({
-        $or : [
-          {accountId : validation.accountId},
-          { provider : validation.provider}
-        ]
-      })
-      .exec(function(error, account){
+      console.log('no validation errors');
+      SocialModel.findOne({ $or : [{accountId : validation.accountId}, { provider : validation.provider}]}, 
+        function(error, account){
         if (error) {
           var errorMessage    = new ErrorMessage();
           errorMessage.getErrorMessage({
@@ -144,7 +148,6 @@ socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, pr
       });
     }
   }));
-
 }
 
 

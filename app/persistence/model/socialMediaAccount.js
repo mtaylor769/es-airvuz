@@ -25,5 +25,5 @@ var socialMediaAccountSchema = mongoose.Schema({
 
 });
 
-mongoose.model('SocialMediaAccount', socialMediaAccountSchema);
+module.exports = mongoose.model('SocialMediaAccount', socialMediaAccountSchema);
 

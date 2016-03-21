@@ -28,7 +28,6 @@ Users.prototype.validateCreateUser = function(params) {
 	userInfo.data = {};
 	userInfo.errors = {};
 	userInfo.data.emailAddress		= params.email || null;
-	userInfo.data.password				= params.password || null;
 	userInfo.data.firstName				= params.firstName || null;
 	userInfo.data.lastName				= params.lastName || null;
 	userInfo.data.userName				= params.userName || null;		
@@ -41,18 +40,6 @@ Users.prototype.validateCreateUser = function(params) {
 					name : "emailAddress"
 				},
 				errorMessage		: "Email address is null",
-				sourceLocation	: sourceLocation
-			});
-		}
-
-		if(userInfo.data.password === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "password"
-				},
-				errorMessage		: "Password is null",
 				sourceLocation	: sourceLocation
 			});
 		}
