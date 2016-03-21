@@ -105,12 +105,12 @@ apiRouter.route('/api/drone-type/:id')
  */
 apiRouter.route('/api/curated-videos')
   .post(curatedVideos.post)
-//  .get(curatedVideos.get);
+  .get(curatedVideos.get);
 //
-//apiRouter.route('/api/curated-videos/:id')
-//  .get(curatedVideos.getById)
-//  .put(curatedVideos.put)
-//  .delete(curatedVideos.delete);
+apiRouter.route('/api/curated-videos/:id')
+  .get(curatedVideos.getById)
+  .put(curatedVideos.put)
+  .delete(curatedVideos.delete);
 
 
 

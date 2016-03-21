@@ -107,16 +107,20 @@ CuratedVideo.prototype.create = function(params) {
   );
 };
 
-CuratedVideo.prototype.get = function() {
-  return CuratedVideoModel.find({}).exec()
+CuratedVideo.prototype.get = function(type) {
+  return CuratedVideoModel.find({curatedType: type}).exec();
 };
 
 CuratedVideo.prototype.getById = function(id) {
-  return CuratedVideoModel.findById({_id: id}).exec()
+  return CuratedVideoModel.findById({_id: id}).exec();
 };
 
+CuratedVideo.prototype.update = function(params) {
+  return CuratedVideoModel.findByIdAndUpdate(params.id, params.update, { new: true } ).exec();
+}
+
 CuratedVideo.prototype.remove = function(id) {
-  return CuratedVideoModel.findByIdAndRemove({_id: id}).exec()
+  return CuratedVideoModel.findByIdAndRemove({_id: id}).exec();
 };
 
 module.exports = new CuratedVideo();
