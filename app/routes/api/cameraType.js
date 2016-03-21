@@ -2,7 +2,7 @@ var CameraTypeCrud = require('../../persistence/crud/cameraType');
 
 function CameraType() {
 
-};
+}
 
 CameraType.prototype.post = function(req, res) {
   CameraTypeCrud

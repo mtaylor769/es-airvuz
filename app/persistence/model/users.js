@@ -5,6 +5,11 @@ var uuid     			= require('uuid');
 
 var userSchema 		= mongoose.Schema({
 	
+	/*
+	 * User ACL Roles.
+	 */
+	aclRoles : [String],
+	
 	// Does the user accept donations.
 	allowDonation : {
 		type		: Boolean,
