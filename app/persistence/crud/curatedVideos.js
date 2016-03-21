@@ -74,7 +74,7 @@ CuratedVideo.prototype.getPreCondition = function(params) {
  */
 
 CuratedVideo.prototype.create = function(params) {
-
+  console.log('here');
   var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CuratedVideos.create"});
 
   return(new Promise(function(resolve, reject) {
