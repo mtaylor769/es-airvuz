@@ -51,7 +51,6 @@ var userSchema 		= mongoose.Schema({
   
 	// The users first name
   firstName : {
-		required : true,
     type : String
   },
 	
@@ -63,12 +62,10 @@ var userSchema 		= mongoose.Schema({
   
 	// The users last name
 	lastName : {
-		required	: true,
 		type		: String
 	},
 	
 	password : {
-		required	: false,
 		type		: String
 	},
 	

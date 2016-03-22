@@ -27,8 +27,6 @@ users.prototype.validateCreateUser = function(params) {
 	var errorMessage							= new ErrorMessage();
 	userInfo.data 								= {};
 	userInfo.data.emailAddress		= params.emailAddress || null;
-	userInfo.data.firstName				= params.firstName || null;
-	userInfo.data.lastName				= params.lastName || null;
 	userInfo.data.userName				= params.userName || null;		
 
 		if(userInfo.data.emailAddress === null) {
@@ -51,30 +49,6 @@ users.prototype.validateCreateUser = function(params) {
 					name : "userName"
 				},
 				errorMessage		: "Username is null",
-				sourceLocation	: sourceLocation
-			});
-		}
-
-		if(userInfo.data.firstName === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "firstName"
-				},
-				errorMessage		: "First name is null",
-				sourceLocation	: sourceLocation
-			});
-		}
-
-		if(userInfo.data.lastName === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "lastName"
-				},
-				errorMessage		: "Last name is null",
 				sourceLocation	: sourceLocation
 			});
 		}
@@ -105,10 +79,10 @@ users.prototype.create = function(params) {
 				}
 				console.log('preSave');
 				console.log('save user : ' + saveUser);
-				saveUser.save(function(error, theUser){
+				saveUser.save(function(error){
 					console.log('postSave');
 					if (error) {
-						console.log('error while saving');
+						console.log('error while saving ' + error);
 						var errorMessage		= new ErrorMessage();
 						errorMessage.getErrorMessage({
 							statusCode			: "500",
@@ -121,10 +95,11 @@ users.prototype.create = function(params) {
             return;
 					}
 						console.log('saving user');
-						console.log(theUser);
-						resolve(theUser);
+						console.log(saveUser);
+						resolve(saveUser);
             return;
 				});
+				console.log('post save function');
 		}));
 }
 
