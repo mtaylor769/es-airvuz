@@ -1,38 +1,27 @@
 var mongoose = require('mongoose');
 
-var videoCommentSchema = mongoose.Schema({
-
+var videoCommentsSchema = mongoose.Schema({
+	
 	/*
-	 * The comment.
+	 * The initial comment
 	 */
 	comment : {
-		required	: true,
-		type			: String
+		ref : 'VideoComment',
+		type: mongoose.Schema.ObjectId
 	},
 
 	/*
-	 * When the comment was created.
+	 * The replies to the initial comment
 	 */
-	commentCreatedDate : {
-		default: Date.now,
-		type: Date
-	},
+	replies : [{
+		type: mongoose.Schema.ObjectId, ref: 'VideoComment'
+	}],
 
-	/*
-	 * Identifies if the comment is visible.
-	 */
-	isVisible: {
-		required	: true,
-		type			: Boolean
-	},
-
-	/*
-	 * The userId of the person who made the comment.
-	 */
-	userId : {
-		type: mongoose.Schema.ObjectId, ref: 'User'
+	videoId: {
+		type: mongoose.Schema.ObjectId, ref: 'Video'
 	}
+
 
 });
 
-mongoose.model('VideoComment', videoCommentSchema);
+mongoose.model('CameraType', videoCommentsSchema);

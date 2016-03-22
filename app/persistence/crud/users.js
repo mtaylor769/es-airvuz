@@ -27,7 +27,8 @@ users.prototype.validateCreateUser = function(params) {
 	var errorMessage							= new ErrorMessage();
 	userInfo.data 								= {};
 	userInfo.data.emailAddress		= params.emailAddress || null;
-	userInfo.data.userName				= params.userName || null;		
+	userInfo.data.userName				= params.userName || null;
+  userInfo.data.password        = params.password || null;
 
 		if(userInfo.data.emailAddress === null) {
 			userInfo.errors = errorMessage.getErrorMessage({
@@ -75,12 +76,10 @@ users.prototype.create = function(params) {
 				// Persist
 				var saveUser 						= new UserModel(validation.data);
 				if (saveUser.password) {
+          console.log('hash password');
 					saveUser.password 		= saveUser.generateHash(saveUser.password);
 				}
-				console.log('preSave');
-				console.log('save user : ' + saveUser);
 				saveUser.save(function(error){
-					console.log('postSave');
 					if (error) {
 						console.log('error while saving ' + error);
 						var errorMessage		= new ErrorMessage();
@@ -99,7 +98,6 @@ users.prototype.create = function(params) {
 						resolve(saveUser);
             return;
 				});
-				console.log('post save function');
 		}));
 }
 
