@@ -8,7 +8,7 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var UserModel										= require('../model/users');
 
-var Users = function() {
+var users = function() {
 	
 }
 
@@ -16,7 +16,7 @@ var Users = function() {
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-Users.prototype.validateCreateUser = function(params) {
+users.prototype.validateCreateUser = function(params) {
 	/*
 	 * @type {string}
 	 */
@@ -24,10 +24,9 @@ Users.prototype.validateCreateUser = function(params) {
 	var userInfo 							= {};
 	
 	//need to pass in user data info
-	var errorMessage					= new ErrorMessage();
-	userInfo.data = {};
-	userInfo.errors = {};
-	userInfo.data.emailAddress		= params.email || null;
+	var errorMessage							= new ErrorMessage();
+	userInfo.data 								= {};
+	userInfo.data.emailAddress		= params.emailAddress || null;
 	userInfo.data.firstName				= params.firstName || null;
 	userInfo.data.lastName				= params.lastName || null;
 	userInfo.data.userName				= params.userName || null;		
@@ -87,42 +86,49 @@ Users.prototype.validateCreateUser = function(params) {
 /*
  * Create a new Users document.
  */
-Users.prototype.create = function(params) {
-
+users.prototype.create = function(params) {
+	console.log('params');
+	console.log(params);
 	var validation 				= this.validateCreateUser(params);
 	return(new Promise(function(resolve, reject) {
 
-			if(validation.errors !== null) {
+			if(validation.errors) {
+				console.log('validation errors found');
+				console.log(validation.errors);
 				reject(validation.errors);
-			}		
-
-			// Persist
-			var saveUser 						= new UserModel(validation.data);
-			saveUser.password 			= saveUser.generateHash(saveUser.password);
-			saveUser.save(function(error){
-				if (error) {
-					var errorMessage		= new ErrorMessage();
-					errorMessage.getErrorMessage({
-						statusCode			: "500",
-						errorId 				: "PERS1000",
-						errorMessage 		: "Failed while creating new user",
-						sourceError			: error,
-						sourceLocation	: "persistence.crud.Users.create"
-					});
-					reject(errorMessage.getErrors());
-				} else {
-					resolve(saveUser);
+			} else {
+				// Persist
+				var saveUser 						= new UserModel(validation.data);
+				if (saveUser.password) {
+					saveUser.password 		= saveUser.generateHash(saveUser.password);
 				}
-			});
-		})
 			
-	);
+				saveUser.save(function(error, theUser){
+					if (error) {
+						console.log('error while saving');
+						var errorMessage		= new ErrorMessage();
+						errorMessage.getErrorMessage({
+							statusCode			: "500",
+							errorId 				: "PERS1000",
+							errorMessage 		: "Failed while creating new user",
+							sourceError			: error,
+							sourceLocation	: "persistence.crud.Users.create"
+						});
+						reject(errorMessage.getErrors());
+					} else {
+						console.log('saving user');
+						console.log(theUser);
+						resolve(theUser);
+					}
+				});
+			}
+		}));
 }
 
 /*
 * Get all users
 */
-Users.prototype.getAllUsers = function() {
+users.prototype.getAllUsers = function() {
 	return(new Promise(function(resolve, reject){
 		UsersModel.find({}).exec()
 		.then(function(allUsers){
@@ -137,6 +143,7 @@ Users.prototype.getAllUsers = function() {
 			var errorMessage		= new ErrorMessage();
 			errorMessage.getErrorMessage({
 				statusCode			: "500",
+				errorId 				: "PERS1000",
 				errorMessage 		: "Failed while getting users",
 				sourceError			: e,
 				sourceLocation	: "persistence.crud.Users.getAllAusers"
@@ -151,7 +158,7 @@ Users.prototype.getAllUsers = function() {
 /*
 * Get a user by ID
 */
-Users.prototype.getUserById = function (userId) {
+users.prototype.getUserById = function (userId) {
 	console.log('searching for user by userId: ' + userId);
 	var validation = {};
 
@@ -163,6 +170,7 @@ Users.prototype.getUserById = function (userId) {
 		var errorMessage		= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
+			errorId 									: "PERS1000",
 			errorMessage 							: "Failed while getting user by Id",
 			sourceError								: "Invalid UserId",
 			sourceLocation						: "persistence.crud.Users.getUserById"
@@ -174,19 +182,71 @@ Users.prototype.getUserById = function (userId) {
 		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UsersModel.find({_id : validation.userId}).exec()
-			.then(function(user){
-				resolve(user);
-			})
-			.error(function(error){
-				var errorMessage		= new ErrorMessage();
-				errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorMessage 		: "Failed while getting user by Id",
-					sourceError			: error,
-					sourceLocation	: "persistence.crud.Users.getAllAusers"
-				});
-				reject(errorMessage.getErrors());
+			UserModel.find({_id : validation.userId},
+				function(error, user){
+				if (error) {
+					var errorMessage		= new ErrorMessage();
+					errorMessage.getErrorMessage({
+						statusCode			: "500",
+						errorId 				: "PERS1000",
+						errorMessage 		: "Failed while getting user by Id",
+						sourceError			: error,
+						sourceLocation	: "persistence.crud.Users.getAllAusers"
+					});
+					reject(errorMessage.getErrors());
+				} else {
+					resolve(user);
+				}
+			});
+		}
+	}));
+}
+
+/*
+* Get a user by social media ID
+*/
+users.prototype.getUserBySocialId = function (socialId) {
+	console.log('searching for user by socialId: ' + socialId);
+	var validation = {};
+
+	if (socialId) {
+		validation.socialId 			= socialId;
+	} else {
+		validation.socialId 			= null;
+
+		var errorMessage					= new ErrorMessage();
+		errorMessage.getErrorMessage({
+			statusCode								: "500",
+			errorId 									: "PERS1000",
+			errorMessage 							: "Failed while getting user by Id",
+			sourceError								: "Invalid socialId",
+			sourceLocation						: "persistence.crud.Users.getUserBySocialId"
+		});
+		validation.errors 					= errorMessage;
+	}
+
+	return(new Promise(function(resolve, reject){
+		if (validation.errors) {
+			console.log('validation errors exist');
+			reject(validation.errors);
+		} else {
+			UserModel.find({socialMediaAccounts : validation.socialId}, 
+			function(error, user){
+				if (error) {
+					var errorMessage		= new ErrorMessage();
+					errorMessage.getErrorMessage({
+						statusCode			: "500",
+						errorId 				: "PERS1000",
+						errorMessage 		: "Failed while getting user by social Id",
+						sourceError			: error,
+						sourceLocation	: "persistence.crud.Users.getUserBySocialId"
+					});
+					reject(errorMessage.getErrors());
+				} else {
+					console.log('here is your user');
+					console.log(user);
+					resolve(user);
+				}
 			});
 		}
 
@@ -196,7 +256,7 @@ Users.prototype.getUserById = function (userId) {
 /*
 * Get a user by email
 */
-Users.prototype.getUserByEmail = function (userEmail) {
+users.prototype.getUserByEmail = function (userEmail) {
 	var validation = {};
 	if (userEmail) {
 		validation.userEmail 	= userEmail;
@@ -240,7 +300,7 @@ Users.prototype.getUserByEmail = function (userEmail) {
 /*
 * Get a user by user name
 */
-Users.prototype.getUserByUserName = function (userName) {
+users.prototype.getUserByUserName = function (userName) {
 	console.log('hitting getUserByUserName');
 	console.log(userName);
 	var validation = {};
@@ -285,7 +345,7 @@ Users.prototype.getUserByUserName = function (userName) {
 /*
 * Update user information
 */
-Users.prototype.update = function (params) {
+users.prototype.update = function (params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
 	//build validation for params
@@ -303,7 +363,7 @@ Users.prototype.update = function (params) {
 /*
 * Delete
 */
-Users.prototype.delete = function(userId) {
+users.prototype.delete = function(userId) {
 	var validation 								= {};
 	if (userId) {
 		validation.userId 					= userId;
@@ -343,4 +403,4 @@ Users.prototype.delete = function(userId) {
 	}));
 }
 
-module.exports = new Users();
+module.exports = new users();

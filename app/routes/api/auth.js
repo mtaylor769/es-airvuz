@@ -34,12 +34,10 @@ function google(req, res, next) {
 }
 
 function googleCallback(req, res, next) {
-  console.log('successful google auth callback');
-  passport.authenticate('google', { failureRedirect: '/play' })(req, res, next),
-  function(req, res) {
-    console.log(req.body);
-    res.redirect('/');
-  };
+  passport.authenticate('google', { 
+    successRedirect: '/',
+    failureRedirect: '/play'
+  })(req, res, next);
 }
 
 function twitter(req, res, next) {

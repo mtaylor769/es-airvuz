@@ -1,34 +1,64 @@
 "use strict";
 
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var SocialMedia =  require('../../persistence/crud/socialMediaAccount');
+var GoogleStrategy    = require('passport-google-oauth').OAuth2Strategy;
+var SocialMedia         =  require('../../persistence/crud/socialMediaAccount');
+var Users               = require('../../persistence/crud/users');
 
 module.exports = function(passport, config) {
   passport.use(new GoogleStrategy({
-    //Google local
-    //clientID: 783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com
-    //clientSecret: vJM7NvyWkpjom_bpubWuWLJP
-    // clientID: "257509599064-3omlk38mtq8e3upm55eemp8q7hk1pqg6.apps.googleusercontent.com",
-    // clientSecret: "DPdvaCrEoP2p6Jc7tzn5QOzP",
-    // callbackURL: "http://localhost/auth/google/callback"
-    clientID: '783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com',
-    clientSecret: 'vJM7NvyWkpjom_bpubWuWLJP',
-    callbackURL: config.google_localhost.callbackURL,
+    // clientID: '783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com',
+    // clientSecret: 'vJM7NvyWkpjom_bpubWuWLJP',
+    // callbackURL: config.google_localhost.callbackURL,
+    // passReqToCallback: true
+    clientID: config.google.clientID,
+    clientSecret: config.google.clientSecret,
+    callbackURL: config.google.callbackURL,
     passReqToCallback: true
-
-  }, function (token, refreshToken, profile, done) {
-    console.log('hitting google passport strategy');
-    //Need to look into profile information and return userID
-    console.log(token);
-    console.log(refreshToken);
-    console.log(profile);
-    
-    var consoleInformation = {
-      token: token,
-      refreshToken: refreshToken,
-      profile: profile
+  }, function (req, token, refreshToken, profile, cb) {
+    var data = {
+      provider    : profile.provider,
+      accountData : profile,
+      accountId   : profile.id
     }
-    //log this and find out what it is
-    return consoleInformation;
+    var account = SocialMedia.findAccountByIdandProvider(data.accountId, data.provider);
+    account.then(function(accountInfo){
+      var findUser = {};
+      if (accountInfo) {
+        findUser = matchAccounts(data, accountInfo);
+        return cb(null, findUser);
+      } else {
+        var newAccount = SocialMedia.create(data);
+        newAccount.then(function(error, newAccountData){
+          if (error) {
+            cb(null, error);
+          } else {
+            findUser = matchAccounts(data, newAccountData._id);
+            return cb(null, findUser);
+          }
+        });
+      }
+    });
   }));
+
+  var matchAccounts = function(data, account) {
+    var findUser = Users.getUserBySocialId(account._id);
+    findUser.then(function(theUser){
+      if (theUser && theUser.length > 0) {
+        console.log('empty user');
+        return theUser;
+      } else {
+        console.log('no user found in matchAccounts');
+        console.log(data.accountData.emails[0].value);
+        var userData = {
+          userName : data.accountData.name.givenName + " " + data.accountData.name.familyName,
+          firstName : data.accountData.name.givenName,
+          lastName : data.accountData.name.familyName,
+          emailAddress : data.accountData.emails[0].value,
+          socialMediaAccounts : account._id
+        }
+        var newUser = Users.create(userData);
+        return newUser;
+      }
+    });
+  };
 };
