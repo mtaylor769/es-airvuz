@@ -38,10 +38,11 @@ var videoSchema = mongoose.Schema({
 	/*
 	 * Old Name: Channel
 	 */
+	/*
 	channel:  {
 		type: mongoose.Schema.ObjectId, ref: 'Channel'
 	},
-	
+	*/
 	/*
 	 * Old Name: Description
 	 * The description of the video file.
@@ -130,11 +131,11 @@ var videoSchema = mongoose.Schema({
 	/*
 	 * Old Name : user
 	 */
-	// userId: {
-	// 	ref				: 'User',
-	// 	required	: true,
-	// 	type			: mongoose.Schema.ObjectId
-	// },
+	userId: {
+	 	ref				: 'User',
+	 	required	: true,
+	 	type			: mongoose.Schema.ObjectId
+	},
 	
 	/*
 	 * Old Name : ViewCount
