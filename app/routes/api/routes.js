@@ -39,9 +39,9 @@ apiRouter.route('/api/auth/twitter/callback')
 /**
  * /api/users/
  */
-//apiRouter.route('/api/users')
-//  .get(users.getAll)
-//  .post(users.post);
+apiRouter.route('/api/users')
+  //.get(users.getAll)
+  .post(users.post);
 //
 //apiRouter.route('/api/users/search')
 //  .get(users.search);

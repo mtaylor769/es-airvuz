@@ -96,14 +96,17 @@ users.prototype.create = function(params) {
 				console.log('validation errors found');
 				console.log(validation.errors);
 				reject(validation.errors);
-			} else {
+        return;
+			}
 				// Persist
 				var saveUser 						= new UserModel(validation.data);
 				if (saveUser.password) {
 					saveUser.password 		= saveUser.generateHash(saveUser.password);
 				}
-			
+				console.log('preSave');
+				console.log('save user : ' + saveUser);
 				saveUser.save(function(error, theUser){
+					console.log('postSave');
 					if (error) {
 						console.log('error while saving');
 						var errorMessage		= new ErrorMessage();
@@ -115,13 +118,13 @@ users.prototype.create = function(params) {
 							sourceLocation	: "persistence.crud.Users.create"
 						});
 						reject(errorMessage.getErrors());
-					} else {
+            return;
+					}
 						console.log('saving user');
 						console.log(theUser);
 						resolve(theUser);
-					}
+            return;
 				});
-			}
 		}));
 }
 

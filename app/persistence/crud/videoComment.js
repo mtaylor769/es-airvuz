@@ -6,16 +6,16 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CameraTypeModel							= require('../model/cameraType');
+var VideoCommentModel							= require('../model/videoComment');
 
-var CameraType = function(){
+var VideoComment = function(){
 
 };
 /*
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-CameraType.prototype.getPreCondition = function(params){
+VideoComment.prototype.getPreCondition = function(params){
 
   /*
    * @type {string}
@@ -27,27 +27,28 @@ CameraType.prototype.getPreCondition = function(params){
   var preCondition = new ObjectValidationUtil();
 
   preCondition.setValidation(function(params){
-    var errorMessage       = new ErrorMessage();
-    this.data.manufacturer = params.manufacturer || null;
-    this.data.model        = params.model || null;
-    this.data.isVisible    = params.isVisible || null;
+    var errorMessage              = new ErrorMessage();
+    this.data.comment             = params.comment || null;
+    this.data.commentCreatedDate  = params.commentCreatedDate || null;
+    this.data.isVisible           = params.isVisible || null;
+    this.data.userId              = params.userId || null;
 
 
-    if(this.data.manufacturer === null){
+    if(this.data.comment === null){
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
-          name : "manufacturer"
+          name : "comment"
         },
         sourceLocation	: sourceLocation
       })
     }
 
-    if(this.data.model === null){
+    if(this.data.commentCreatedDate === null){
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
-          name : "model"
+          name : "commentCreatedDate"
         },
         sourceLocation	: sourceLocation
       })
@@ -62,7 +63,16 @@ CameraType.prototype.getPreCondition = function(params){
         sourceLocation	: sourceLocation
       })
     }
-  });return(preCondition)
+  if(this.data.userId === null){
+    this.errors = errorMessage.getErrorMessage({
+      errorId					: "VALIDA1000",
+      templateParams	: {
+        name : "userId"
+      },
+      sourceLocation	: sourceLocation
+    })
+  }
+});return(preCondition)
 
 };
 
@@ -72,61 +82,58 @@ CameraType.prototype.getPreCondition = function(params){
  * @param params.manufacturer  {string}
  * @param params.model         {string}
  * @param params.isVisible     {boolean}
+ * @param params.userId        {ObjectId}
  */
 
-CameraType.prototype.create = function(params){
+VideoComment.prototype.create = function(params) {
 
-  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CameraType.create"});
+  var preCondition = this.getPreCondition({sourceLocation: "persistence.crud.videoComment"})
 
   return(new Promise(function(resolve, reject) {
 
     var validation = preCondition.validate(params);
-    if (validation.errors !== null) {
-      var validationException = new ValidationException({ errors : validation.errors });
+    if(validation.errors !== null) {
+      var validationException = new ValidationException({errors: validation.errors});
       reject(validationException);
-			return;
+      return;
     }
 
-    var cameraTypeModel = new CameraTypeModel(validation.data);
-    cameraTypeModel.save(function(error, cameraType){
-      if(error){
+    var videoCommentModel = new VideoCommentModel(validation.data);
+    videoCommentModel.save(function(error, videoComment) {
+      if(error) {
         var errorMessage = new ErrorMessage();
         errorMessage.getErrorMessage({
           errorId					: "PERS1000",
           sourceError			: error,
-          sourceLocation	: "persistence.crud.CameraType.create"
+          sourceLocation	: "persistence.crud.videoComment.create"
         });
 
-        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+        var persistenceException = new PersistenceException({errors : errorMessage.getErrors() });
         reject(persistenceException);
-				return;
+        return;
       } else {
-        resolve(cameraType);
-				return;
+        resolve(videoComment);
+        return;
       }
     })
-		
+
 
   })
   );
 };
 
-CameraType.prototype.get = function() {
-  return CameraTypeModel.find({isVisible: true}).exec();
+VideoComment.prototype.get = function() {
+  return VideoCommentModel.find({}).exec();
 };
 
-CameraType.prototype.getById = function(id) {
-  return CameraTypeModel.findById({_id: id}).exec();
+VideoComment.prototype.getById = function(id) {
+  return VideoCommentModel.findById({_id: id}).exec();
 };
 
-CameraType.prototype.update = function(params) {
-  return CameraTypeModel.findByIdAndUpdate(params.id, params.update, { new: true } );
+VideoComment.prototype.update = function(params) {
+  return VideoCommentModel.findByIdAndUpdate(params.id, params.update, { new: true }).exec();
 };
 
-CameraType.prototype.remove = function(id) {
-  return CameraTypeModel.findByIdAndRemove({_id: id}).exec();
+VideoComment.prototype.remove = function(id) {
+  return VideoCommentModel.findByIdAndRemove({_id: id}).exec();
 };
-
-
-module.exports = new CameraType();
-
