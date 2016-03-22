@@ -6,10 +6,6 @@ var Users               = require('../../persistence/crud/users');
 
 module.exports = function(passport, config) {
   passport.use(new GoogleStrategy({
-    // clientID: '783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com',
-    // clientSecret: 'vJM7NvyWkpjom_bpubWuWLJP',
-    // callbackURL: config.google_localhost.callbackURL,
-    // passReqToCallback: true
     clientID: config.google.clientID,
     clientSecret: config.google.clientSecret,
     callbackURL: config.google.callbackURL,
@@ -22,9 +18,8 @@ module.exports = function(passport, config) {
     }
     var account = SocialMedia.findAccountByIdandProvider(data.accountId, data.provider);
     account.then(function(accountInfo){
-      var findUser = {};
       if (accountInfo) {
-        findUser = matchAccounts(data, accountInfo);
+        var findUser = matchAccounts(data, accountInfo);
         return cb(null, findUser);
       } else {
         var newAccount = SocialMedia.create(data);
@@ -32,7 +27,7 @@ module.exports = function(passport, config) {
           if (error) {
             cb(null, error);
           } else {
-            findUser = matchAccounts(data, newAccountData._id);
+            var findUser = matchAccounts(data, newAccountData._id);
             return cb(null, findUser);
           }
         });

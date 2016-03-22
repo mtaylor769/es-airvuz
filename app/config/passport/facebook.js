@@ -29,11 +29,8 @@ module.exports = function(passport, config) {
     }
     var account = SocialMedia.findAccountByIdandProvider(data.accountId, data.provider);
     account.then(function(accountInfo){
-      console.log('accountInfo: ');
-      console.log(accountInfo._id);
-      var findUser = {};
       if (accountInfo) {
-        findUser = matchAccounts(data, accountInfo);
+        var findUser = matchAccounts(data, accountInfo);
         return cb(null, findUser);
       } else {
         var newAccount = SocialMedia.create(data);
@@ -41,7 +38,7 @@ module.exports = function(passport, config) {
           if (error) {
             cb(null, error);
           } else {
-            findUser = matchAccounts(data, newAccountData._id);
+            var findUser = matchAccounts(data, newAccountData._id);
             return cb(null, findUser);
           }
         });

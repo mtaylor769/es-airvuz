@@ -22,6 +22,11 @@ module.exports = {
       clientSecret      : "vJM7NvyWkpjom_bpubWuWLJP",
       callbackURL       : "http://localhost/api/auth/google/callback"
     },
+    instagram: {
+      clientID          : "cb92ebeaf6514b4aa5356ef90ec89a6e",
+      clientSecret      : "ef72b26c4b9b42a38b188131745f32da",
+      callbackURL       : "http://localhost/api/auth/instagram/callback"
+    },
 
     twitter_local: {
     clientID            : "o1k5SYvBtqZOluOuZ5FP9YMja",

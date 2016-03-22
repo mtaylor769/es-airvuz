@@ -40,6 +40,18 @@ function googleCallback(req, res, next) {
   })(req, res, next);
 }
 
+function instagram(req, res, next) {
+  console.log('hitting instagram api');
+  passport.authenticate('instagram')(req, res, next);
+}
+
+function instagramCallback(req, res, next) {
+  passport.authenticate('instagram', { 
+    successRedirect: '/',
+    failureRedirect: '/play'
+  })(req, res, next);
+}
+
 function twitter(req, res, next) {
   console.log('hitting twitter api');
   passport.authenticate('twitter', { scope : ['profile', 'email'] })(req, res, next);
@@ -61,5 +73,7 @@ module.exports = {
   google              : google,
   googleCallback      : googleCallback,
   twitter             : twitter,
-  twitterCallback     : twitterCallback
+  twitterCallback     : twitterCallback,
+  instagram           : instagram,
+  instagramCallback   : instagramCallback
 };

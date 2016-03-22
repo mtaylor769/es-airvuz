@@ -34,6 +34,11 @@ apiRouter.route('/api/auth/twitter')
 apiRouter.route('/api/auth/twitter/callback')
   .get(auth.twitterCallback);
 
+apiRouter.route('/api/auth/instagram')
+  .get(auth.instagram);
+
+apiRouter.route('/api/auth/instagram/callback')
+  .get(auth.instagramCallback);
 
 
 /**

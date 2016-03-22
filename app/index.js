@@ -59,7 +59,7 @@ app.use(passport.session());
 require('./config/passport/local')(passport, config);
 require('./config/passport/facebook')(passport, config);
 require('./config/passport/google')(passport, config);
-require('./config/passport/twitter')(passport, config);
+require('./config/passport/instagram')(passport, config);
 
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
