@@ -6,7 +6,7 @@ var videoCommentsSchema = mongoose.Schema({
 	 * The initial comment
 	 */
 	comment : {
-		ref : 'VideoComment',
+		ref : 'Comment',
 		type: mongoose.Schema.ObjectId
 	},
 
@@ -24,4 +24,4 @@ var videoCommentsSchema = mongoose.Schema({
 
 });
 
-mongoose.model('CameraType', videoCommentsSchema);
+module.exports = mongoose.model('VideoComment', videoCommentsSchema);

@@ -35,4 +35,4 @@ var videoCommentSchema = mongoose.Schema({
 
 });
 
-mongoose.model('VideoComment', videoCommentSchema);
+mongoose.model('Comment', videoCommentSchema);

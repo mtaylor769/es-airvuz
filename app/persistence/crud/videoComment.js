@@ -1,17 +1,25 @@
-var comment = require('../../');
-var VideoCommentModel = require('../model/videoComment');
+var VideoCommentModel   = require('../model/videoComment');
+var mongoose					  = require('mongoose');
 
-function something(params) {
+var VideoComment        = mongoose.model("VideoComment");
 
-
-  var videoComment = VideoCommentModel;
-  videoComment.save(function(err, vidComment) {
-    console.log(vidComment);
-  })
+function videoComment() {
 
 }
 
-something(comment);
+videoComment.prototype.create = function(params) {
+  console.log("videoComment.create params: " + params);
+  var videoCommentModel = new VideoComment();
+  console.log('video model : ' + videoCommentModel);
+  videoCommentModel.comment = params;
+  console.log('video model with comment : ' + videoCommentModel);
+  videoCommentModel.save(function(err, vidComment) {
+    console.log("err: " + err);
+    console.log(vidComment);
+  })
+
+};
 
 
-module.exports = new something();
+
+module.exports = new videoComment();
