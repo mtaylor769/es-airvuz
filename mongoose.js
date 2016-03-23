@@ -29,6 +29,7 @@ function loadModels() {
 function addConnectionEvent() {
   mongoose.connection.once('connected', function() {
     console.log('******************** Connected to database ********************');
+    require('./app/utils/acl');
   });
 
   mongoose.connection.on('error',function (err) {
