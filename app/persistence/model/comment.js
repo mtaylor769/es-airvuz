@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var videoCommentSchema = mongoose.Schema({
+var commentSchema = mongoose.Schema({
 
 	/*
 	 * The comment.
@@ -34,5 +34,4 @@ var videoCommentSchema = mongoose.Schema({
 	}
 
 });
-
-mongoose.model('Comment', videoCommentSchema);
+mongoose.model('Comment', commentSchema);

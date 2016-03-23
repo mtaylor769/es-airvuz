@@ -24,4 +24,4 @@ var videoCommentsSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('VideoComment', videoCommentsSchema);
+mongoose.model('VideoComment', videoCommentsSchema);

@@ -6,7 +6,7 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var DroneTypeModel							= require('../model/droneType');
+var DroneTypeModel							= mongoose.model('DroneType');
 
 var DroneType = function(){
 

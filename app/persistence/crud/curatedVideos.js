@@ -6,7 +6,7 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CuratedVideoModel						= require('../model/curatedVideos');
+var CuratedVideoModel						= mongoose.model('CuratedVideos');
 
 var CuratedVideo = function(){
 

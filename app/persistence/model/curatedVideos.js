@@ -24,5 +24,5 @@ var curatedVideosSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('CuratedVideos', curatedVideosSchema);
+mongoose.model('CuratedVideos', curatedVideosSchema);
 

@@ -8,6 +8,4 @@ var videoCommentCrud = require('../app/persistence/crud/videoComment');
 var mongoose = require('../mongoose');
 var id = '56f1807e64c3ebbd0fb261dc';
 
-videoCommentCrud.create({
-  comment: comment
-});
+videoCommentCrud.create(comment);

@@ -10,7 +10,7 @@ var VideoModel									= mongoose.model('Video');
 
 var Videos = function() {
 	
-}
+};
 
 /*
  * @param params {Object}
@@ -73,7 +73,7 @@ Videos.prototype.getPreCondition = function(params) {
 				
 	});
 	return(preCondition);
-}
+};
 
 /*
  * Create a new Video document.

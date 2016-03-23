@@ -39,6 +39,7 @@ describe('Videos', function() {
           var data = res.body;
           expect(data).to.have.property('title');
           expect(data).to.have.property('categories');
+
           done();
         })
 

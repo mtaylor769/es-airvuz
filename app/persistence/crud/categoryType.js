@@ -6,7 +6,7 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CategoryTypeModel						= require('../model/categoryType');
+var CategoryTypeModel						= mongoose.model('CategoryType');
 
 var CategoryType = function(){
 
