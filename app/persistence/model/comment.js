@@ -34,7 +34,7 @@ var mongoose = require('mongoose');
  * 
  * 
  */
-var videoCommentSchema = mongoose.Schema({
+var CommentSchema = mongoose.Schema({
 
 	/*
 	 * The comment.
@@ -82,8 +82,9 @@ var videoCommentSchema = mongoose.Schema({
 	 * The userId of the person who made the comment.
 	 */
 	userId : {
+		required: true,
 		type: mongoose.Schema.ObjectId, ref: 'User'
 	}
 
 });
-mongoose.model('Comment', commentSchema);
+mongoose.model('Comment', CommentSchema);

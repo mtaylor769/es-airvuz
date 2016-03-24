@@ -14,13 +14,7 @@ videoComment.prototype.create = function(params) {
   console.log(comment);
   comment.save()
   .then(function(comment) {
-    var videoCommentModel = new VideoComment();
-    console.log('video model : ' + videoCommentModel);
-    videoCommentModel.comment = comment._id;
-    console.log('video model with comment : ' + videoCommentModel);
-    videoCommentModel.save(function(err, vidComment) {
-      console.log("err: " + err);
-      console.log(vidComment);
+    console.log(comment);
     })
   });
 

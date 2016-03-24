@@ -1,4 +1,5 @@
 var Promise											= require('bluebird');
+                                  require('../../../mongoose');
 var mongoose										= require('mongoose');
 var log4js											= require('log4js');
 var logger											= log4js.getLogger('persistance.crud.CameraType');
@@ -7,14 +8,14 @@ var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
 var CommentModel							  = mongoose.model('Comment');
-var comment = function(){
+var Comment = function(){
 
 };
 /*
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
  */
-comment.prototype.getPreCondition = function(params){
+Comment.prototype.getPreCondition = function(params){
 
   /*
    * @type {string}
@@ -28,8 +29,8 @@ comment.prototype.getPreCondition = function(params){
   preCondition.setValidation(function(params){
     var errorMessage              = new ErrorMessage();
     this.data.comment             = params.comment || null;
-    this.data.commentCreatedDate  = params.commentCreatedDate || null;
     this.data.isVisible           = params.isVisible || null;
+    this.data.replyDepth          = params.replyDepth || null;
     this.data.userId              = params.userId || null;
 
 
@@ -43,11 +44,11 @@ comment.prototype.getPreCondition = function(params){
       })
     }
 
-    if(this.data.commentCreatedDate === null){
+    if(typeof this.data.replyDepth !== 'number'){
       this.errors = errorMessage.getErrorMessage({
-        errorId					: "VALIDA1000",
+        errorId					: "PARAM1020",
         templateParams	: {
-          name : "commentCreatedDate"
+          name : "replyDepth"
         },
         sourceLocation	: sourceLocation
       })
@@ -84,9 +85,9 @@ comment.prototype.getPreCondition = function(params){
  * @param params.userId        {ObjectId}
  */
 
-comment.prototype.create = function(params) {
+Comment.prototype.create = function(params) {
 
-  var preCondition = this.getPreCondition({sourceLocation: "persistence.crud.videoComment"})
+  var preCondition = this.getPreCondition({sourceLocation: "persistence.crud.videoComment"});
 
   return(new Promise(function(resolve, reject) {
 
@@ -121,18 +122,21 @@ comment.prototype.create = function(params) {
   );
 };
 
-comment.prototype.get = function() {
+Comment.prototype.get = function() {
   return CommentModel.find({}).exec();
 };
 
-comment.prototype.getById = function(id) {
+Comment.prototype.getById = function(id) {
   return CommentModel.findById({_id: id}).exec();
 };
 
-comment.prototype.update = function(params) {
+Comment.prototype.update = function(params) {
   return CommentModel.findByIdAndUpdate(params.id, params.update, { new: true }).exec();
 };
 
-comment.prototype.remove = function(id) {
+Comment.prototype.remove = function(id) {
   return CommentModel.findByIdAndRemove({_id: id}).exec();
 };
+
+
+module.exports = new Comment();
