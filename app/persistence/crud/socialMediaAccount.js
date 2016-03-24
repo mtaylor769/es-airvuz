@@ -13,6 +13,7 @@ var socialMediaAccount = function() {
 }
 
 socialMediaAccount.prototype.validateParams = function(params) {
+  console.log("persistence.crud.socialMediaAccount.create");
   var sourceLocation = "persistence.crud.socialMediaAccount.create"
   var returnParams= {};
   returnParams.data = {};
@@ -66,6 +67,7 @@ socialMediaAccount.prototype.create = function(params) {
   var validation = this.validateParams(params);
   return (new Promise(function(resolve, reject){
     if (validation.error) {
+      console.log(validation.error);
       reject(validation.error);
     }
 

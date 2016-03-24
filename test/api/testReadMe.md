@@ -13,3 +13,14 @@ AirVuz version 2
 
 ##3 Use either of the buttons to navigate
 -Successful authentication should bring you back to localhost or '/' the root index page.
+
+##Facebook Authentication
+#Use a registered developer's account
+
+##Google Authentication
+#Use a registered developer's account
+
+##Instagram validation
+#Use
+username: avzeke
+password: AV2015user1

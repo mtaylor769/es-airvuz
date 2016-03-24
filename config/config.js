@@ -23,8 +23,8 @@ module.exports = {
       callbackURL       : "http://localhost/api/auth/google/callback"
     },
     instagram: {
-      clientID          : "cb92ebeaf6514b4aa5356ef90ec89a6e",
-      clientSecret      : "ef72b26c4b9b42a38b188131745f32da",
+      clientID          : "d5339fbd8592442cb8657e9a040757c4",
+      clientSecret      : "92e873ab8a574cc294e6563c2ec4546a",
       callbackURL       : "http://localhost/api/auth/instagram/callback"
     },
 

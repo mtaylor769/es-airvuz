@@ -24,11 +24,19 @@ users.prototype.validateCreateUser = function(params) {
 	var userInfo 							= {};
 	
 	//need to pass in user data info
-	var errorMessage							= new ErrorMessage();
-	userInfo.data 								= {};
-	userInfo.data.emailAddress		= params.emailAddress || null;
-	userInfo.data.userName				= params.userName || null;
-  userInfo.data.password        = params.password || null;
+	var errorMessage										= new ErrorMessage();
+	userInfo.data 											= {};
+	userInfo.data.emailAddress					= params.emailAddress || null;
+	userInfo.data.userName							= params.userName || null;
+	userInfo.data.role 									= params.role || 'user-general';
+
+	if (params.password) {
+		userInfo.data.password        			= params.password;
+	}
+  
+  if (params.socialMediaAccounts) {
+  	userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
+  }
 
 		if(userInfo.data.emailAddress === null) {
 			userInfo.errors = errorMessage.getErrorMessage({
@@ -62,8 +70,6 @@ users.prototype.validateCreateUser = function(params) {
  * Create a new Users document.
  */
 users.prototype.create = function(params) {
-	console.log('params');
-	console.log(params);
 	var validation 				= this.validateCreateUser(params);
 	return(new Promise(function(resolve, reject) {
 
@@ -232,15 +238,18 @@ users.prototype.getUserBySocialId = function (socialId) {
 /*
 * Get a user by email
 */
-users.prototype.getUserByEmail = function (userEmail) {
+users.prototype.getUserByEmail = function (email) {
 	var validation = {};
-	if (userEmail) {
-		validation.userEmail 	= userEmail;
+	console.log('getUserByEmail: '+ email);
+	if (email) {
+		console.log(email);
+		validation.emailAddress 	= email;
 	} else {
-		validation.userEmail		= null;
+		validation.emailAddress		= null;
 		var errorMessage						= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
+			errorId 									: "PERS1000",
 			errorMessage 							: "Failed while getting user by Email",
 			sourceError								: "Invalid UserEmail",
 			sourceLocation						: "persistence.crud.Users.getUserByEmail"
@@ -250,20 +259,27 @@ users.prototype.getUserByEmail = function (userEmail) {
 	}
 
 	return(new Promise(function(resolve, reject) {
-		if (validation.userEmail === null) {
+		if (validation.errors) {
+			console.log(validation.errors);
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({emailAddress : validation.userEmail}, function(error, user){
+			console.log('searching user model for address');
+			UserModel.findOne({emailAddress : validation.emailAddress}, function(error, user){
 				if (error) {
+					console.log('error when trying to find user by email');
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
+						errorId 				: "PERS1000",
 						errorMessage 		: "Failed while getting user by Email",
 						sourceError			: error,
 						sourceLocation	: "persistence.crud.Users.getUserByEmail"
 					});
+					console.log(error);
 					reject(errorMessage.getErrors());
 				} else {
+					console.log('found user by email');
+					console.log(user);
 					resolve(user);
 				}
 			});
