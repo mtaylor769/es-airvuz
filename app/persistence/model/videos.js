@@ -82,7 +82,6 @@ var videoSchema = mongoose.Schema({
 		required	: true,
 		type			: Boolean
 	},
-	
 	/*
 	 * Old Name : Like
 	 * The number of times the video has been liked.
