@@ -68,7 +68,11 @@ var CommentSchema = mongoose.Schema({
 	parentCommentId : {
 		type	: String
 	},
-	
+
+	replyCount : {
+	default: 0,
+		type: number
+	},
 	/*
 	 * Indicates the depth of user replies. 0 indicates at the root, 1 indicates first reply depth.
 	 */
