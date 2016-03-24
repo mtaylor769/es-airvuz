@@ -35,6 +35,10 @@ var videoSchema = mongoose.Schema({
 		type: mongoose.Schema.ObjectId, ref: 'CategoryType'
 	}],	
 
+	commentCount: {
+		default: 0,
+		type: number
+	},
 	/*
 	 * Old Name: Channel
 	 */
@@ -87,7 +91,11 @@ var videoSchema = mongoose.Schema({
 		default	: 0,
 		type		: Number
 	},	
-	
+
+	openGraphCacheDate: {
+		default: Date.now(),
+		type: Date
+	},
 	/*
 	 * Old Name: RecordDate
 	 */

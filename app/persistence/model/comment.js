@@ -34,7 +34,7 @@ var mongoose = require('mongoose');
  * 
  * 
  */
-var videoCommentSchema = mongoose.Schema({
+var CommentSchema = mongoose.Schema({
 
 	/*
 	 * The comment.
@@ -68,7 +68,11 @@ var videoCommentSchema = mongoose.Schema({
 	parentCommentId : {
 		type	: String
 	},
-	
+
+	replyCount : {
+	default: 0,
+		type: number
+	},
 	/*
 	 * Indicates the depth of user replies. 0 indicates at the root, 1 indicates first reply depth.
 	 */
@@ -82,8 +86,9 @@ var videoCommentSchema = mongoose.Schema({
 	 * The userId of the person who made the comment.
 	 */
 	userId : {
+		required: true,
 		type: mongoose.Schema.ObjectId, ref: 'User'
 	}
 
 });
-mongoose.model('Comment', videoCommentSchema);
+mongoose.model('Comment', CommentSchema);
