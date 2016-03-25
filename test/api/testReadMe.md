@@ -1,6 +1,8 @@
 # AirVuz2
 AirVuz version 2
 
+## To create a local user run 'sudo node ./scripts/createVideoComment'
+
 ## Testing authentication to social media sites
 ###Currently only Facebook, Google, and Instagram have access.
 
