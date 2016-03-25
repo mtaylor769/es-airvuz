@@ -6,7 +6,8 @@ var SocialMedia         = require('../../persistence/crud/socialMediaAccount');
 var cameraType          = require('./cameraType');
 var categoryType        = require('./categoryType');
 var droneType           = require('./droneType');
-var curatedVideos       = require('./curatedVideos')
+var curatedVideos       = require('./curatedVideos');
+var comment             = require('./comment');
 
 /**
  * /api/auth
@@ -117,6 +118,11 @@ apiRouter.route('/api/curated-videos/:id')
   .put(curatedVideos.put)
   .delete(curatedVideos.delete);
 
+/**
+ * /api/comment/
+ */
+apiRouter.route('/api/comment')
+  .post(comment.post);
 
 
 var auth = require('./auth');

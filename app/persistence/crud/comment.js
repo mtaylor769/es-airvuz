@@ -30,8 +30,8 @@ Comment.prototype.getPreCondition = function(params){
     var errorMessage              = new ErrorMessage();
     this.data.comment             = params.comment || null;
     this.data.isVisible           = params.isVisible || null;
-    this.data.replyCount          = params.replyCount || null;
-    this.data.replyDepth          = params.replyDepth || null;
+    this.data.replyCount          = params.replyCount || 0;
+    this.data.replyDepth          = params.replyDepth || 0;
     this.data.userId              = params.userId || null;
 
 
@@ -45,7 +45,7 @@ Comment.prototype.getPreCondition = function(params){
       })
     }
 
-    if(this.data.replyDepth && typeof this.data.replyDepth !== "number"){
+    if(params.replyDepth && typeof params.replyDepth !== "number"){
       this.errors = errorMessage.getErrorMessage({
         errorId					: "PARAM1020",
         templateParams	: {
@@ -103,9 +103,6 @@ Comment.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
 
     var validation = preCondition.validate(params);
-      console.log('**********  validation *************');
-      console.log(validation.data);
-      console.log('***********************');
     if(validation.errors !== null) {
       var validationException = new ValidationException({errors: validation.errors});
       reject(validationException);
@@ -113,9 +110,6 @@ Comment.prototype.create = function(params) {
     }
 
     var videoCommentModel = new CommentModel(validation.data);
-      console.log('***********  creating model  ************');
-      console.log(validation.data);
-      console.log('***********************');
     videoCommentModel.save(function(error, videoComment) {
       if(error) {
         console.log(error);

@@ -14,6 +14,7 @@ var request    = request.agent(app);
 describe('Videos', function() {
 
   var video = testVideo;
+  video.userId = '56f1807e64c3ebbd0fb261dc';
   var API_URL = '/api/videos';
   var videoId;
   describe('POST' + API_URL, function() {

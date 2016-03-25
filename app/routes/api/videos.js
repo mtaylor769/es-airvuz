@@ -4,17 +4,17 @@ function Video() {
 
 }
 
-Video.prototype.get = function(req, res) {
+Video.prototype.post = function(req, res) {
   VideoCrud
-    .getById(req.params.id)
+    .create(req.body)
     .then(function(video) {
       res.send(video);
     })
 };
 
-Video.prototype.post = function(req, res) {
+Video.prototype.get = function(req, res) {
   VideoCrud
-    .create(req.body)
+    .getById(req.params.id)
     .then(function(video) {
       res.send(video);
     })
