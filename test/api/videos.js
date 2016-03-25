@@ -55,7 +55,7 @@ describe('Videos', function() {
         .expect(200)
         .end(function(err, res) {
           var title = res.body.title;
-          expect(title).to.equal('We are changing this')
+          expect(title).to.equal('We are changing this');
           done();
         })
     })

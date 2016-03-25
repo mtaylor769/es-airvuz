@@ -1,4 +1,4 @@
-var CategoryTypeCrud = require('../../persistence/crud/categorytype');
+var CategoryTypeCrud = require('../../persistence/crud/categoryType');
 
 function CategoryType() {
 
