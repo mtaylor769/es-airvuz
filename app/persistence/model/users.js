@@ -27,6 +27,14 @@ var userSchema 		= mongoose.Schema({
     type: Date,
     default: Date.now
 	},
+	
+	/*
+	 * Indicates if the next video is to be played automatically.
+	 */
+	autoPlay : {
+		default : true,
+		type		: Boolean
+	},
     
 	/*
 	 * The site url name of the user. 
