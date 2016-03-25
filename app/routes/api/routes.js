@@ -124,9 +124,4 @@ apiRouter.route('/api/curated-videos/:id')
 apiRouter.route('/api/comment')
   .post(comment.post);
 
-
-var auth = require('./auth');
-apiRouter.route('/api/auth/token')
-  .post(auth.login);
-
 module.exports = apiRouter;
