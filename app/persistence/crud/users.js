@@ -338,12 +338,10 @@ users.prototype.getUserByUserName = function (userName) {
 * Update user information
 */
 users.prototype.update = function (params) {
-	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Users.getUserByUserName"});
 	var validation = preCondition.validate(params);
-	//build validation for params
 
 	return(new Promise(function(resolve, reject){
-		if (validation.errors !== null) {
+		if (validation.errors) {
 			reject(validation.errors);
 		} else {
 			//Code to update user
