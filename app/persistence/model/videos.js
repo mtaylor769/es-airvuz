@@ -37,7 +37,7 @@ var videoSchema = mongoose.Schema({
 
 	commentCount: {
 		default: 0,
-		type: number
+		type: Number
 	},
 	/*
 	 * Old Name: Channel

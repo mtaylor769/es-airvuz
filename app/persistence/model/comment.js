@@ -70,8 +70,9 @@ var CommentSchema = mongoose.Schema({
 	},
 
 	replyCount : {
-	default: 0,
-		type: number
+		default: 0,
+		type: Number
+
 	},
 	/*
 	 * Indicates the depth of user replies. 0 indicates at the root, 1 indicates first reply depth.
