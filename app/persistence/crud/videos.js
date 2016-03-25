@@ -30,14 +30,14 @@ Videos.prototype.getPreCondition = function(params) {
 	preCondition.setValidation(function(params) {
 		var errorMessage				= new ErrorMessage();
 		var sessionId						= params.sessionId || null;
-		var userId							= params.userId || null;
+		this.data.userId				= params.userId || null;
 		this.data.title					= params.title || null;
 		this.data.description		= params.description || null;
 		this.data.duration			= params.duration || null;
 		this.data.videoPath			= params.videoPath || null;
 		this.data.thumbnailPath	= params.thumbnailPath || null;		
 		
-		if(userId === null) {
+		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
 				errorId					: "USERID1000",
 				sourceLocation	: sourceLocation
