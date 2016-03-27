@@ -13,6 +13,7 @@ global.IS_PRODUCTION = NODE_ENV === 'production';
 global.IS_DEVELOPMENT = NODE_ENV === 'development';
 global.IS_NODE = true;
 
+// Initialize database connections
 require('./app/persistence/database/database');
 
 // Enable Mongoose
@@ -28,6 +29,75 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var jwt         = require('jsonwebtoken');
 
+//SSL certs
+var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
+var https       = require('https').createServer(credentials, app).listen(443);
+var http        = require("http").createServer(app);
+var passport    = require('passport');
+
+
+var config      = require('./config/config')[global.NODE_ENV];
+
+// Makes a global variable for templates to get client code.
+// YOU MUST RUN WEBPACK FOR THE MANIFEST FILE TO EXIST.
+app.locals.sourceManifest = require('./public/manifest.json');
+
+//   __  __ _     _     _ _
+//  |  \/  (_) __| | __| | | _____      ____ _ _ __ ___
+//  | |\/| | |/ _` |/ _` | |/ _ \ \ /\ / / _` | '__/ _ \
+//  | |  | | | (_| | (_| | |  __/\ V  V / (_| | | |  __/
+//  |_|  |_|_|\__,_|\__,_|_|\___| \_/\_/ \__,_|_|  \___|su
+//
+
+var compression = require('compression');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+
+
+app.use(morgan('dev'));
+app.use(compression());
+app.use(express.static(path.resolve(__dirname, './public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use('/admin', express.static(path.resolve(__dirname, './admin')));
+app.use('/admin/*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, './admin/index.html'));
+});
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+require('./app/config/passport/local')(passport, config);
+require('./app/config/passport/facebook')(passport, config);
+require('./app/config/passport/google')(passport, config);
+require('./app/config/passport/instagram')(passport, config);
+
+
+
+//      _    ____ ___   ____             _
+//     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
+//    / _ \ | |_) | |  | |_) / _ \| | | | __/ _ \ __|
+//   / ___ \|  __/| |  |  _ < (_) | |_| | |_  __\__ \
+//  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
+//
+
+/*
+app.use(require('./app/routes/api/routes'));
+
+app.get('/play', function (req, res) {
+  res.render('play');
+});
+*/
+//app.get(/.*/, function (req, res) {
+//  res.render('index');
+//});
+
+
+
+app.listen(process.env.PORT || 80);
+
 
 setTimeout(function() {
 	logger.debug("loading crud ...");
@@ -36,3 +106,5 @@ setTimeout(function() {
 	loginCrud.create();
 	
 }, 100);
+
+module.exports = app;

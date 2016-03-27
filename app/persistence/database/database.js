@@ -5,6 +5,9 @@ var mongoose										= require('mongoose');
 var path												= require('path');
 
 var Database = function() {
+	logger.debug("constructor init ***********************************************");
+	
+	
 	var currentDir	= __dirname;
 	var rootDir			= currentDir + "/../../../";
 	var modelDir		= "app/persistence/model/";
