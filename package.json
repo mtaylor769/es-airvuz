@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "scripts": {
     "start": "node app/index.js",
+    "start:server": "node server.js",
     "build": "NODE_ENV=development webpack --config client/webpack.config.js",
     "build:prod": "NODE_ENV=production webpack --config client/webpack.config.js",
     "build:win": "set NODE_ENV=development&& webpack --config client/webpack.config.js",
