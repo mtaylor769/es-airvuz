@@ -152,12 +152,13 @@ Database.prototype.getModelByDotPath = function(params) {
 	var modelDotPath				= params.modelDotPath || null;
 	logger.debug(" modelDotPath: '" + modelDotPath + "'");
 	if(modelDotPath === null) {
+		logger.error("getModelByDotPath: params.modelDotPath missing.");
 		throw new Exception("app.persistence.database.Database.getModelByDotPath: params.modelDotPath missing.");
 	}
 	
 	var modelDotPathObject	= this.modelByDotPath[modelDotPath] || null;
 	if(modelDotPathObject === null) {
-		logger.debug(" bad");
+		logger.error("getModelByDotPath: params.modelDotPath : '" + modelDotPath + "' not found.");
 		throw new Exception("app.persistence.database.Database.getModelByDotPath: params.modelDotPath : '" + modelDotPath + "' not found.");
 	}
 	 
@@ -179,6 +180,7 @@ Database.prototype.getModelByName = function(params) {
 	connection			= this.dbConnections[connectionName] || null;
 	
 	if(connection === null) {
+		logger.error("getModelByName connectionName : '" + connectionName + "', modelName : '" + modelName + "'");
 		throw new Error("connection name:'" + connectionName + "' not found.");
 	}
 	
