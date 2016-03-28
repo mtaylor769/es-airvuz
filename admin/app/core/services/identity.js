@@ -25,6 +25,15 @@
 				 */
 				isAuthenticated: function () {
 					return !!this.currentUser;
+				},
+				canAccessAdmin: function () {
+					var canAccess = false;
+
+					if (this.currentUser && (this.currentUser.aclRoles.indexOf('root') > -1 || this.currentUser.aclRoles.indexOf('user-admin') > -1)) {
+						canAccess = true;
+					}
+
+					return canAccess;
 				}
 			};
 		}]);
