@@ -21,7 +21,7 @@ var loginSchema = mongoose.Schema({
 });
 
 module.exports = {
-	name		: "Login",
-	schema	: loginSchema
+	connectionName	: "events",
+	modelName				: "Login",
+	schema					: loginSchema
 }
-

@@ -49,9 +49,11 @@ var seoSchema = mongoose.Schema({
 	
 });
 
+
 module.exports = {
-	name		: "SEO",
-	schema	: seoSchema
+	connectionName	: "main",
+	modelName				: "SEO",
+	schema					: seoSchema
 }
 
 //mongoose.model('SEO', seoSchema);

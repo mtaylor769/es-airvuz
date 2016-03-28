@@ -1,23 +1,23 @@
-var database										= require('../../database/database');
-var LoginModel									= null;
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('app.persistence.crud.events.login');
-var Promise											= require('bluebird');
-
-logger.debug(" modual loaded ...");
-	
 try {
-	LoginModel = database.getModelByDotPath({
-			modelDotPath	: "app.persistence.model.events.login"
-		});
+	// import
+	var database										= require('../../database/database');
+	var LoginModel									= null;
+	var log4js											= require('log4js');
+	var logger											= log4js.getLogger('app.persistence.crud.events.login');
+	var Promise											= require('bluebird');
+
+
+	LoginModel = database.getModelByDotPath({	modelDotPath	: "app.persistence.model.events.login" });
+	
+	logger.debug("import complete");
 }
 catch(exception) {
-	logger.error(" error initializing model: Login");
+	logger.error(" import error:" + exception);
 }
 
 var Login = function() {
 	
-	logger.debug(" inited");
+	logger.debug("constructor: in");
 	
 }
 
