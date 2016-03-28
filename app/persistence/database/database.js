@@ -4,6 +4,9 @@ var logger											= log4js.getLogger('app.persistence.database');
 var mongoose										= require('mongoose');
 var path												= require('path');
 
+
+
+
 var Database = function() {
 	logger.debug("constructor init ***********************************************");
 	
@@ -12,12 +15,16 @@ var Database = function() {
 	var rootDir			= currentDir + "/../../../";
 	var modelDir		= "app/persistence/model/";
 	
-	logger.debug("rootDir:" + rootDir);
+	logger.debug("constructor - rootDir:" + rootDir);
+	
 	
 	this.config = {
 		modelDirFullPath : rootDir + modelDir,
 		modelDirSubPath  : modelDir
 	}
+	
+	logger.debug("constructor - this.config.modelDirFullPath: " + this.config.modelDirFullPath);
+	logger.debug("constructor - this.config.modelDirSubPath: " + this.config.modelDirSubPath);
 	
 	logger.debug("started");
 	this.dbConnections	= {};
@@ -29,57 +36,193 @@ var Database = function() {
 	 * }
 	 */
 	this.modelByDotPath					= {};
-	this._initConnections();
+	this._init();
 }
 
 Database.prototype._addConnectionEvents = function(params) {
 	var conn		= params.conn;
 	var dbInfo	= params.dbInfo;
 	
-	logger.debug("._addConnectionEvents: " + dbInfo.NAME);
+	logger.debug("_addConnectionEvents: " + dbInfo.connectionName);
   conn.once('connected', function() {
-		logger.debug("._addConnectionEvents: connected to [" + dbInfo.NAME + "] host: '" + dbInfo.HOST + "', dbname: '" + dbInfo.DBNAME + "'");
+		logger.debug("_addConnectionEvents: connected to [" + dbInfo.connectionName + "] host: '" + dbInfo.hostName + "', dbname: '" + dbInfo.databaseName + "'");
   });
 	
-	
   conn.on('error',function (err) {
-		logger.error("._addConnectionEvents: connected error to [" + dbInfo.NAME + "] host: '" + dbInfo.HOST + "', dbname: '" + dbInfo.DBNAME + "'");
+		logger.error("_addConnectionEvents: connected error to [" + dbInfo.connectionName + "] host: '" + dbInfo.hostName + "', dbname: '" + dbInfo.databaseName + "'");
   });
 
   conn.on('disconnected', function () {
-    logger.error("._addConnectionEvents: disconnected from [" + dbInfo.NAME + "] host: '" + dbInfo.HOST + "', dbname: '" + dbInfo.DBNAME + "'");
+    logger.error("_addConnectionEvents: disconnected from [" + dbInfo.connectionName + "] host: '" + dbInfo.hostName + "', dbname: '" + dbInfo.databaseName + "'");
   });
 
   process.on('SIGINT', function() {
     conn.close(function () {
-			logger.error("._addConnectionEvents: disconnected through app termination [" + dbInfo.NAME + "] host: '" + dbInfo.HOST + "', dbname: '" + dbInfo.DBNAME + "'");
-      //process.exit(0);
+			logger.error("_addConnectionEvents: disconnected through app termination [" + dbInfo.connectionName + "] host: '" + dbInfo.hostName + "', dbname: '" + dbInfo.databaseName + "'");
+      process.exit(0);
     });
   });	
 }
 
-Database.prototype._initConnections = function() {
-
+Database.prototype._init = function() {
+	var modelDirectory		= "";
+	
+	var connections = {
+		databaseConnections : [
+			{
+				connectionName	: "events",
+				hostName				: "localhost",
+				databaseName		: "AirVuzEvents"
+			},
+			{
+				connectionName	: "main",
+				hostName				: "localhost",
+				databaseName		: "AirVuz2"
+			}			
+		],
+		paths : [
+			{ 
+				path						: "events"
+			},
+			{
+				path						: "main"
+			}
+		]
+	}
+	
+	this._initConnections({ connections : connections });
+	
+	/*
 	this._initConnection({
 		dbInfo : {
-			NAME		: "events",
-			HOST		: "localhost",
-			DBNAME	: "AirVuzEvents"
+			connectionName	: "events",
+			hostName				: "localhost",
+			databaseName		: "AirVuzEvents",
+			path						: this.config.modelDirFullPath + path.sep + "events"
 		}
 	});	
 	
+	modelDirectory = this.config.modelDirFullPath + path.sep + "events";
 	
+	//logger.debug("_initConnections - this.config.modelDirFullPath: " + this.config.modelDirFullPath);
+	this._loadModelDirectory({ modelDirectory : modelDirectory });
+	
+	*/
+	
+	/*
 	this._initConnection({
 		dbInfo : {
-			NAME		: "main",
-			HOST		: "localhost",
-			DBNAME	: "AirVuzV2"
+			connectionName		: "main",
+			hostName		: "localhost",
+			databaseName	: "AirVuzV2"
 		}
 	});
-	
+	*/
 }
 
-Database.prototype._initConnection = function(params) {
+Database.prototype._initConnections = function(params) {
+	logger.debug("_initConnections: " + JSON.stringify(params));
+	
+	
+	var connections					= null;
+	var connectionsIndex		= -1;
+	var connectionsSize			= -1;
+	var connection					= null;
+	var connectionName			= null;
+	var connectionStr				= null;
+	var databaseConnection	= null;
+	var databaseConnections	= null;
+	var modelName						= "";
+	var modelObject					= null;
+	var modelPath						= "";
+	var schema							= null;
+	var pathIndex						= -1;
+	var pathSize						= -1;
+	//var path								= null;
+	var paths								= null;
+	var THIS								= this;
+	
+	connections					= params.connections;
+	databaseConnections = connections.databaseConnections;
+	connectionsSize			= databaseConnections.length;	
+	
+	// Init all the database connections
+	for(connectionsIndex = 0; connectionsIndex < connectionsSize; connectionsIndex++) {
+		databaseConnection	= databaseConnections[connectionsIndex];	
+		connectionStr				= 'mongodb://' + databaseConnection.hostName + '/' + databaseConnection.databaseName;
+
+		logger.debug("_initConnections: database [" + databaseConnection.connectionName + "] : " + connectionStr);
+
+		try {
+			connection = mongoose.createConnection(connectionStr);
+
+			this.dbConnections[databaseConnection.connectionName] = connection;
+
+			this._addConnectionEvents({
+				conn		: connection,
+				dbInfo	: databaseConnection
+			});	
+
+			logger.debug("_initConnections: connected - database [" + databaseConnection.connectionName + "] : " + connectionStr);
+		}
+		catch(exception) {
+			logger.error("_initConnections: error database [" + databaseConnection.connectionName + "] : " + connectionStr + " " + exception);
+		}
+		finally {
+
+		}
+	
+	}
+	
+	// Init all the paths
+	paths			= connections.paths;
+	pathSize	= paths.length;
+	for(pathIndex = 0; pathIndex < pathSize; pathIndex++) {
+		modelRootPath = THIS.config.modelDirFullPath + paths[pathIndex].path;
+		logger.debug("_initConnections: path: " + path);
+		
+		
+		fs.readdirSync(modelRootPath).forEach(function(file) {
+			modelPath = modelRootPath + path.sep + file;
+			logger.debug("_initConnections: modelPath: " + modelPath);
+			
+			modelObject			= require(modelPath);
+			connectionName	= modelObject.connectionName || null;
+			
+			if(connectionName !== null) {
+				
+				modelSubPath = THIS.config.modelDirSubPath + paths[pathIndex].path + path.sep + file;
+				logger.debug("_initConnections: modelSubPath: " + modelSubPath);
+				// remove .js file extension
+				modelDotName = modelSubPath.slice(0, -3);
+				// convert path separators to '.', ie '/' becomes '.'
+				modelDotName = modelDotName.split(path.sep).join(".");				
+				logger.debug("_initConnections: modelDotName: " + modelDotName);
+				
+				logger.debug("_initConnections: connectionName: " + connectionName);
+				modelName						= modelObject.modelName;
+				schema							= modelObject.schema;
+				
+				databaseConnection = THIS.dbConnections[connectionName];
+				databaseConnection.model(modelName, schema);
+				
+				
+				THIS.modelByDotPath[modelDotName] = {
+					connectionName	: connectionName,
+					modelName				: modelName
+				}
+				logger.debug("_initConnections loading model: '" + modelDotName + "' to connection: '" + connectionName + "'");	
+				
+			}
+			
+			
+		});
+		
+	}
+}
+
+
+Database.prototype._initConnection2 = function(params) {
 	/*
 	 * The database connection
 	 */
@@ -92,40 +235,35 @@ Database.prototype._initConnection = function(params) {
 	var modelSubPath	= "";
 	var THIS					= this;
 
-	dbInfo = params.dbInfo;
+	dbInfo				= params.dbInfo;
+	connectionStr = 'mongodb://' + dbInfo.hostName + '/' + dbInfo.databaseName;
 	
-	connectionStr = 'mongodb://' + dbInfo.HOST + '/' + dbInfo.DBNAME;
-	logger.debug("database [" + dbInfo.NAME + "] : " + connectionStr);
-
+	logger.debug("database [" + dbInfo.connectionName + "] : " + connectionStr);
 	connection = mongoose.createConnection(connectionStr);
-	
-  //fs.readdirSync(__dirname + '/../model/' + dbInfo.NAME).forEach(function(file) {
-	fs.readdirSync(THIS.config.modelDirFullPath + dbInfo.NAME).forEach(function(file) {
-		//modelPath = __dirname + "/../model/" +dbInfo.NAME + "/" + file;
-				
+
+	fs.readdirSync(THIS.config.modelDirFullPath + dbInfo.connectionName).forEach(function(file) {
+		modelPath = THIS.config.modelDirFullPath + dbInfo.connectionName + "/" + file;
 		
-		modelPath = THIS.config.modelDirFullPath + dbInfo.NAME + "/" + file;
 		logger.debug("._initMain modelPath:" + modelPath);
 		
-		modelSubPath = THIS.config.modelDirSubPath + dbInfo.NAME + path.sep + file;
+		modelSubPath = THIS.config.modelDirSubPath + dbInfo.connectionName + path.sep + file;
 		// remove .js file extension
 		modelDotName = modelSubPath.slice(0, -3);
 		// convert path separators to '.', ie '/' becomes '.'
 		modelDotName = modelDotName.split(path.sep).join(".");
-		logger.debug("._initMain modelDotName:" + modelDotName);
 		
 		model			= require(modelPath);
 		
-		logger.debug("._initMain model name:" + model.name);
+		logger.debug("._initMain model name:" + model.modelName);
 		logger.debug("._initMain schema:" + model.schema.constructor.name);
 		logger.debug("._initMain schema typeof:" + typeof(model.schema));
-		connection.model(model.name, model.schema);
+		connection.model(model.modelName, model.schema);
 
 		THIS.modelByDotPath[modelDotName] = {
-			connectionName	: dbInfo.NAME,
-			modelName				: model.name
+			connectionName	: dbInfo.connectionName,
+			modelName				: model.modelName
 		}
-		logger.debug("._initMain loading model:" + model.name);
+		logger.debug("._initMain loading model:" + model.modelName);
   });
 	
 	/*
@@ -140,7 +278,7 @@ Database.prototype._initConnection = function(params) {
 	logger.debug("._initMain aModel:" + aModel.constructor.name);
 	*/
 	
-	this.dbConnections[dbInfo.NAME] = connection;
+	this.dbConnections[dbInfo.connectionName] = connection;
 	
 	this._addConnectionEvents({
 		conn		: connection,
@@ -188,6 +326,18 @@ Database.prototype.getModelByName = function(params) {
 	model						= connection.model(modelName);
 	
 	return(model);
+}
+
+Database.prototype._loadModelDirectory = function(params) {
+	var modelDirectory = params.modelDirectory;
+	logger.debug("_loadModelDirectory - modelDirectory:" + modelDirectory);
+	
+	fs.readdirSync(modelDirectory).forEach(function(file) {
+		//modelPath = THIS.config.modelDirFullPath + dbInfo.connectionName + "/" + file;
+		logger.debug("_loadModelDirectory - file:" + file);
+		
+
+  });	
 }
 
 module.exports = new Database();

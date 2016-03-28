@@ -8,7 +8,7 @@ var acl = require('acl'),
  * @returns {Promise}
  */
 function addUserRoles(userId, roles) {
-  return this._acl.addUserRoles(userId, roles);
+  return this._acl.addUserRoles(userId.toString(), roles);
 }
 
 /**
@@ -18,7 +18,7 @@ function addUserRoles(userId, roles) {
  * @returns {Promise}
  */
 function removeUserRoles(userId, roles) {
-  return this._acl.removeUserRoles(userId, roles);
+  return this._acl.removeUserRoles(userId.toString(), roles);
 }
 
 /**
@@ -27,7 +27,7 @@ function removeUserRoles(userId, roles) {
  * @returns {Promise} [roles]
  */
 function userRoles(userId) {
-  return this._acl.userRoles(userId);
+  return this._acl.userRoles(userId.toString());
 }
 
 /**
@@ -46,7 +46,7 @@ function roleUsers(roleName) {
  * @returns {Promise} Boolean
  */
 function hasRole(userId, roleName) {
-  return this._acl.hasRole(userId, roleName);
+  return this._acl.hasRole(userId.toString(), roleName);
 }
 
 /**
@@ -93,12 +93,18 @@ function removeResource(resource) {
  * @param resources {String|Array} resource(s) to add permisisons to.
  * @param permissions {String|Array} permission(s) to add to the roles over the resources.
  * @returns {Promise}
- *
- * @note
- * library acl allow array to be pass to allow function
  */
 function allow(roles, resources, permissions) {
   return this._acl.allow(roles, resources, permissions);
+}
+
+/**
+ * Adds the given permissions to the given roles over the given resources.
+ * @param array
+ * @returns {Promise}
+ */
+function allowArray(array) {
+  return this._acl.allow(array);
 }
 
 /**
@@ -121,7 +127,7 @@ function removeAllow(role, resources, permissions) {
  * @returns {Promise}
  */
 function allowedPermissions(userId, resources) {
-  return this._acl.allowedPermissions(userId, resources);
+  return this._acl.allowedPermissions(userId.toString(), resources);
 }
 
 /**
@@ -132,7 +138,7 @@ function allowedPermissions(userId, resources) {
  * @returns {Promise}
  */
 function isAllowed(userId, resource, permissions) {
-  return this._acl.isAllowed(userId, resource, permissions);
+  return this._acl.isAllowed(userId.toString(), resource, permissions);
 }
 
 /**
@@ -172,6 +178,7 @@ ACL.prototype.removeRoleParents = removeRoleParents;
 ACL.prototype.removeRole = removeRole;
 ACL.prototype.removeResource = removeResource;
 ACL.prototype.allow = allow;
+ACL.prototype.allowArray = allowArray;
 ACL.prototype.removeAllow = removeAllow;
 ACL.prototype.allowedPermissions = allowedPermissions;
 ACL.prototype.isAllowed = isAllowed;
