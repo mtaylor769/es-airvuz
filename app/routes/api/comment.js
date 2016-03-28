@@ -13,5 +13,13 @@ Comment.prototype.post = function(req, res) {
   })
 };
 
+Comment.prototype.get = function(req, res) {
+  commentCrud
+  .get()
+  .then(function(comments) {
+    res.send(comments)
+  })
+};
+
 
 module.exports = new Comment();

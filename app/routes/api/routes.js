@@ -122,7 +122,8 @@ apiRouter.route('/api/curated-videos/:id')
  * /api/comment/
  */
 apiRouter.route('/api/comment')
-  .post(comment.post);
+  .post(comment.post)
+  .get(comment.get);
 
 
 var auth = require('./auth');

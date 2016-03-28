@@ -29,5 +29,19 @@ describe('Comment', function() {
     })
   });
 
+  describe('GET' + API_URL, function() {
+    it('should get all comments', function(done) {
+      request
+        .get(API_URL)
+        .send()
+        .expect(200)
+        .expect(function(response) {
+          var returnArray = response.body;
+
+          expect(returnArray).to.be.an('array');
+        })
+        .end(done);
+    })
+  });
 
 });
