@@ -1,5 +1,6 @@
 console.log("IN");
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+  fs = require('fs');
 
 var database = {
 	HOST : "localhost",
@@ -19,11 +20,13 @@ function connectToDatabase() {
 }
 
 function loadModels() {
-	console.log("__dirname" + __dirname);
-  require('fs').readdirSync('./app/persistence/model').forEach(function(file) {
-		console.log(file)
-    require('./app/persistence/model/' + file);
-  });	
+  console.log("__dirname" + __dirname);
+  fs.readdirSync('./app/persistence/model').forEach(function(file) {
+    console.log(file);
+    if (!fs.lstatSync('./app/persistence/model/' + file).isDirectory()) {
+      require('./app/persistence/model/' + file);
+    }
+  });
 }
 
 function addConnectionEvent() {
