@@ -30,7 +30,7 @@ function createRootUser() {
 
 function createAdminUser() {
   var Admin = {
-    aclRoles: ['admin'],
+    aclRoles: ['user-admin'],
     emailAddress: 'admin@airvuz.com',
     firstName: 'admin',
     lastName: 'airvuz',

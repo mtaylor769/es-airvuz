@@ -1,5 +1,5 @@
 <md-dialog>
-  <md-dialog-content>
+  <md-dialog-content layout-padding>
     <form name="loginForm" layout="column" layout-align="center center">
       <md-input-container>
         <label>Email</label>
@@ -15,10 +15,10 @@
           <div ng-message="required">This is required!</div>
         </div>
       </md-input-container>
-
-      <md-dialog-actions>
-        <md-button ng-click="loginCtrl.login()" class="md-primary">Login</md-button>
-      </md-dialog-actions>
+      <div ng-if="loginCtrl.isError">
+        {{loginCtrl.errorMessage}}
+      </div>
+      <md-button ng-click="loginCtrl.login()" class="md-primary md-raised">Login</md-button>
     </form>
   </md-dialog-content>
 </md-dialog>

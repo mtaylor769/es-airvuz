@@ -9,18 +9,13 @@
 
   function LoginController(auth, $state, $mdDialog) {
     function login() {
-      /********************************************************/
-      console.group('%cvm.user :', 'color:red;font:strait');
-      console.log(vm.user);
-      console.groupEnd();
-      /********************************************************/
       auth
         .login(vm.user)
         .then(function () {
           $mdDialog.hide();
-        }, function () {
-          vm.isLoading = false;
+        }, function (response) {
           vm.isError = true;
+          vm.errorMessage = response.error;
         });
 
     }
