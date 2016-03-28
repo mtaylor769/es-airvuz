@@ -28,7 +28,7 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data 											= {};
 	userInfo.data.emailAddress					= params.emailAddress || null;
 	userInfo.data.userName							= params.userName || null;
-	userInfo.data.role 									= params.role || 'user-general';
+	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 
 	if (params.password) {
 		userInfo.data.password        			= params.password;
