@@ -125,9 +125,4 @@ apiRouter.route('/api/comment')
   .post(comment.post)
   .get(comment.get);
 
-
-var auth = require('./auth');
-apiRouter.route('/api/auth/token')
-  .post(auth.login);
-
 module.exports = apiRouter;

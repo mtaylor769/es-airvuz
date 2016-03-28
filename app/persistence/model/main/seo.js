@@ -47,8 +47,11 @@ var seoSchema = mongoose.Schema({
 		type			: String
 	}
 	
-
-
 });
 
-mongoose.model('SEO', seoSchema);
+module.exports = {
+	name		: "SEO",
+	schema	: seoSchema
+}
+
+//mongoose.model('SEO', seoSchema);
