@@ -1,31 +1,30 @@
 // IMPORT: BEGIN
-	var log4js		= require('log4js');
-	var logger		= log4js.getLogger('app.views.data.index');
-	
-	try {
-		var Promise		= require('bluebird');
+var log4js		= require('log4js');
+var logger		= log4js.getLogger('app.views.data.index');
 
-		if(global.NODE_ENV === "production") {
-			logger.setLevel("WARN");	
-		}
+try {
+	var BaseView	= require('./baseView');
+	var Promise		= require('bluebird');
+	var util			= require('util');
 
-		logger.info("import complete");	
+	if(global.NODE_ENV === "production") {
+		logger.setLevel("WARN");	
 	}
-	catch(exception) {
-		logger.error(" import error:" + exception);
-	}
+
+	logger.info("import complete");	
+}
+catch(exception) {
+	logger.error(" import error:" + exception);
+}
 // IMPORT: END
 
-var Index = function() {
+var Index = function(params) {
 	logger.debug("constructor: IN");	
 	
-	this.viewConfig = {
-		cacheTimeout	: 5,
-		viewName			: 'app.views.index.dust',
-		viewPath			: './app/views/index.dust',
-		partials			: []
-	}
+	BaseView.apply(this, arguments);
 }
+
+util.inherits(Index, BaseView);
 
 Index.prototype.getData = function(params) {	
 	logger.info("getData ");	
@@ -53,6 +52,7 @@ Index.prototype.getData = function(params) {
 
 }
 
+/*
 Index.prototype.getViewConfig = function() {
 	return(this.viewConfig);
 }
@@ -60,5 +60,11 @@ Index.prototype.getViewConfig = function() {
 Index.prototype.getViewName = function() {
 	return(this.viewConfig.viewName);
 }
+*/
 
-module.exports = new Index();
+module.exports = new Index({
+		cacheTimeout	: 5,
+		viewName			: 'app.views.index.dust',
+		viewPath			: './app/views/index.dust',
+		partials			: []
+	});

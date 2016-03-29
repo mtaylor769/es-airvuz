@@ -75,21 +75,52 @@ ViewManager.prototype._getDustRender = function(params) {
 	});  	
 }
 
+ViewManager.prototype._isNewCacheViewNeeded = function(params) {
+	var view = params.view;
+	
+	if(view.cacheTimeout > 0) {
+		//logger.debug("_isNewCacheViewNeeded: checking cache ..." );
+		
+    var diffTime = new Date();
+    diffTime.setSeconds(diffTime.getSeconds() - view.cacheTimeout);
+		
+		if(
+			(view.lastRenderViewTime === -1)
+			|| (diffTime > view.lastRenderViewTime)
+		) {
+			//logger.debug("_isNewCacheViewNeeded: need to render a cache page" );
+			view.lastRenderViewTime = Date.now();
+			logger.debug("_isNewCacheViewNeeded: view.lastRenderViewTime: " + view.lastRenderViewTime );
+			return(true);
+		}
+		else {
+			//logger.debug("_isNewCacheViewNeeded: !need to render a cache page" );
+			return(false);
+		}
+		
+	}	
+	return(true);
+	
+}
+
 ViewManager.prototype.getView = function(params) {
 	logger.debug("getView: IN");
 	
-	var reloadView			= false;
-	var view						= null;
-	var viewConfig			= null;
-	var viewData				= null;
-	var viewName				= "";
-	var viewPrettyPrint = false;
-	var THIS						= this;
+	var cachedView				= "";
+	var reloadView				= false;
+	var renderCachedView	= false;
+	var renderNewView			= false;
+	var view							= null;
+	var viewConfig				= null;
+	var viewData					= null;
+	var viewName					= "";
+	var viewPrettyPrint		= false;
+	var THIS							= this;
 	
 	view = params.view || null;
 	
 	if(view === null) {
-		logger.error("getView: params.view === null");
+		//logger.error("getView: params.view === null");
 	}
 	delete params.view;
 	
@@ -99,17 +130,42 @@ ViewManager.prototype.getView = function(params) {
 	if(reloadView) {
 		viewConfig	= view.getViewConfig();
 		this._loadSource(viewConfig);
+		renderNewView = true;
 	}
+	
+	if(this._isNewCacheViewNeeded({ view : view })) {
+		//logger.debug("getView: need to render a cache page" );
+		renderNewView = true;
+	}
+	else {
+		//logger.debug("getView: using cached page" );
+		//renderCachedView = true;
+	}
+	
+
 	
 	
 	viewName				= view.getViewName();
 
-	logger.debug("getView: reloadView:" + reloadView);
-	logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
+	//logger.debug("getView: reloadView:" + reloadView);
+	//logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
 	
 	return new Promise(function(resolve, reject) {
-		logger.debug("getView: viewName:" + viewName);
-		logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
+		logger.debug("getView: renderNewView:" + renderNewView);
+		//logger.debug("getView: renderCachedView:" + renderCachedView);
+		//logger.debug("getView: viewName:" + viewName);
+		//logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
+		
+		if(!renderNewView) {
+			logger.debug("getView: rendering cached view");
+			cachedView = view.cachedView;
+			if(viewPrettyPrint === "true") {
+				//logger.debug("getView: doing pretty print");
+				cachedView = html.prettyPrint(cachedView, {indent_size: 2});
+			}
+			resolve(cachedView);			
+		}
+		return;
 
 		view
 			.getData(params)
@@ -121,12 +177,14 @@ ViewManager.prototype.getView = function(params) {
 					})
 				);
 			})
-			.then(function(view) {			
+			.then(function(htmlView) {		
+				logger.debug("getView: rendering new view");
+				view.cachedView = htmlView;
         if(viewPrettyPrint === "true") {
 					logger.debug("getView: doing pretty print");
-          view = html.prettyPrint(view, {indent_size: 2});
+          htmlView = html.prettyPrint(htmlView, {indent_size: 2});
         }
-				resolve(view);
+				resolve(htmlView);
 			})
 			.catch(function(error) {
 				logger.error("getView: forced failure");

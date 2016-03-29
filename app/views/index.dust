@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="public/{index.airvuz.css}">
     </head>
     <body>
-        <div class="home">viewName2: {index.viewName} </div>
+        <div class="home">viewName[]: {index.viewName} </div>
 
 
         
