@@ -1,6 +1,6 @@
 var fs													= require('fs');
 var log4js											= require('log4js');
-var logger											= log4js.getLogger('app.persistence.database');
+var logger											= log4js.getLogger('app.persistence.database.Database');
 var mongoose										= require('mongoose');
 var path												= require('path');
 

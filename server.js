@@ -97,8 +97,15 @@ viewManager.addView(indexData.getViewConfig());
 
 app.get("/", function(req, res) {
 	
-	var params = indexData.getData({ request : req, response : res });
-	logger.info("/ got params:");
+	//var viewPrettyPrint = req.query.viewPrettyPrint || "false";
+	//logger.debug("route[/]: viewPrettyPrint:" + viewPrettyPrint);
+	
+	var params = indexData.getData({ 
+		config		: config,
+		request		: req, 
+		response	: res 
+	});
+	
 	viewManager
 		.getView(params)
 		.then(function(view) {

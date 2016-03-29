@@ -46,6 +46,8 @@ ViewManager.prototype.addView = function(params) {
 	//var view = new View(params);
 	//this.views[params.pageName] = view;
 	
+	// load partials
+	
 	this._loadSource(params);
 	
 }
@@ -55,10 +57,12 @@ ViewManager.prototype.getView = function(params) {
 	logger.debug("getView: IN");
 	//logger.debug("getView: params:" + JSON.stringify(params));
 	
-	var viewPrettyPrint = params.request.query.pretty || "false";
+	var viewPrettyPrint = params.request.query.viewPrettyPrint || "false";
+	
+	logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
 	
 	return new Promise(function(resolve) {
-		var html = "<html><body>getView</body></html>";
+		//var html = "<html><body>getView</body></html>";
 
 		//resolve(html);
 		
@@ -70,6 +74,12 @@ ViewManager.prototype.getView = function(params) {
 			}
 			else {
 				//THIS.cachedPage[pageName].setCachedPage(output);
+				
+				logger.debug("getView: typeof(html):" + typeof(html));
+        if(viewPrettyPrint === "true") {
+            view = html.prettyPrint(view, {indent_size: 2});
+        }				
+				
 				logger.debug("getView: view:" + view);
 				resolve(view);
 			}

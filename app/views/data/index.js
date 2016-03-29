@@ -28,7 +28,7 @@ var Index = function() {
 }
 
 Index.prototype.getData = function(params) {	
-	params.viewName							= "app.views.index.dust";
+	params.viewName							= this.viewConfig.viewName;
 	params.data									= {};
 	params.data.index						= {};
 	params.data.index.viewName	= "Index PageV2";
