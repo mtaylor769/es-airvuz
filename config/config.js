@@ -29,10 +29,10 @@ module.exports = {
     },
 
     twitter_local: {
-    clientID            : "o1k5SYvBtqZOluOuZ5FP9YMja",
-    clientSecret        : "87Tpccs9rv0NPDCiKCie4biCyAjV1bWMkVaCTTCG1G5qFP1jGD",
-    callbackURL         : "http://127.0.0.1/api/auth/twitter/callback"
-   }, 
+			clientID            : "o1k5SYvBtqZOluOuZ5FP9YMja",
+			clientSecret        : "87Tpccs9rv0NPDCiKCie4biCyAjV1bWMkVaCTTCG1G5qFP1jGD",
+			callbackURL         : "http://127.0.0.1/api/auth/twitter/callback"
+		}, 
    
     twitter: {
       clientID: "NriwXWU7qTx47bsxlexZLg6aJ",
@@ -51,15 +51,20 @@ module.exports = {
       clientSecret: "e76efd4ccddb3ed7deb6968f1b27f6ee",
       callbackURL: "http://airvuz.com/auth/facebook/callback"
     },
-    linkedIn: {
-      clientID: "test",
-      clientSecret: "test",
-      callbackURL: "http://ec2-52-10-141-239.us-west-2.compute.amazonaws.com/auth/linkedin/callback"
-    },
     google: {
       "clientID": "783133684568-lgmtef1gfersdq4q8edtvh4gu4f9gslb.apps.googleusercontent.com",
       "clientSecret": "1xA-DeneT3IT2Ek-SGaHjnyB",
       "callbackURL": "http://airvuz.com/auth/google/callback"
+    },		
+    instagram: {
+      clientID          : "d5339fbd8592442cb8657e9a040757c4",
+      clientSecret      : "92e873ab8a574cc294e6563c2ec4546a",
+      callbackURL       : "http://localhost/api/auth/instagram/callback"
+    },		
+    linkedIn: {
+      clientID: "test",
+      clientSecret: "test",
+      callbackURL: "http://ec2-52-10-141-239.us-west-2.compute.amazonaws.com/auth/linkedin/callback"
     },
     twitter: {
       clientID: "NriwXWU7qTx47bsxlexZLg6aJ",
