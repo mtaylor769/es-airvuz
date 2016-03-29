@@ -108,19 +108,19 @@ ViewManager.prototype.getView = function(params) {
 	return new Promise(function(resolve, reject) {
 		logger.debug("getView: viewName:" + viewName);
 		logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
-		
-		
+
 		view
 			.getData(params)
-			.then(function(viewData) {
+			.then(function(viewParams) {
+				logger.debug("getView: viewData:" + JSON.stringify(viewParams.data));
 				return(THIS._getDustRender({
 						viewName	: viewName,
-						viewData	: viewData
+						viewData	: viewParams.data
 					})
 				);
 			})
 			.then(function(view) {
-					resolve(view);
+				resolve(view);
 			})
 			.catch(function(error) {
 				logger.error("getView: forced failure");

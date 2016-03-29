@@ -31,6 +31,7 @@ Index.prototype.getData = function(params) {
 	logger.info("getData ");	
 	var THIS = this;
 	return new Promise(function(resolve, reject) {
+		
 		params.viewName							= THIS.viewConfig.viewName;
 		params.data									= {};
 		params.data.index						= {};
@@ -41,17 +42,7 @@ Index.prototype.getData = function(params) {
 		resolve(params);
 
 	});  	
-		
-	
-	/*
-	params.viewName							= this.viewConfig.viewName;
-	params.data									= {};
-	params.data.index						= {};
-	params.data.index.viewName	= "Index PageV2";
-	
-	return(params);
-	*/
-	
+
 }
 
 Index.prototype.getViewConfig = function() {

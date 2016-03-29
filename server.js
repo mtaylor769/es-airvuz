@@ -96,21 +96,12 @@ var indexView		= require('./app/views/data/index');
 viewManager.addView({ view : indexView });
 
 app.get("/", function(req, res) {
-	
-	/*
-	var params = indexView.getData({ 
-		config		: config,
-		request		: req, 
-		response	: res 
-	});
-	*/
-	
 	viewManager
-			//.getView(params)
 		.getView({
-			view			: indexView,
-			request		: req,
-			response	: res
+			view						: indexView,
+			request					: req,
+			response				: res,
+			sourceManifest	: app.locals.sourceManifest
 		})
 		.then(function(view) {
 			res.send(view);
@@ -119,23 +110,6 @@ app.get("/", function(req, res) {
 			logger.error("view[/] error:" + error);
 		})
 
-/*
-    DustManager
-        .getPage(params)
-        .then(function(page) {
-					
-            //if(pretty === "true") {
-            //    page = html.prettyPrint(page, {indent_size: 2});
-           // }
-						
-            res.send(page);
-        });
-				*/
-    
-		// <video src='<path to file>' controls></video>
-		
-		
-		//res.send("<html><body>Index</body></html>");
 });
 
 
