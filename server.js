@@ -62,10 +62,13 @@ var compression = require('compression');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 
+var pubPath = path.resolve(__dirname, '/public');
+logger.debug("pubPath:" + pubPath);
 
 app.use(morgan('dev'));
 app.use(compression());
-app.use(express.static(path.resolve(__dirname, './public')));
+//app.use(express.static(path.resolve(__dirname, '/public')));
+app.use('/public', express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/admin', express.static(path.resolve(__dirname, './admin')));
@@ -91,7 +94,7 @@ require('./app/config/passport/instagram')(passport, config);
 //
 
 var viewManager = require('./app/views/manager/viewManager');
-var indexView		= require('./app/views/data/index');
+var indexView		= require('./app/views/view/index');
 
 viewManager.addView({ view : indexView });
 

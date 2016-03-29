@@ -65,15 +65,6 @@ ViewManager.prototype._getDustRender = function(params) {
 				logger.error("_getDustRender error:" + error);
 			}
 			else {
-				//THIS.cachedPage[pageName].setCachedPage(output);
-				
-				//logger.debug("_getDustRender: typeof(html):" + typeof(html));
-				/*
-        if(viewPrettyPrint === "true") {
-            view = html.prettyPrint(view, {indent_size: 2});
-        }		
-				*/
-				
 				logger.debug("_getDustRender: view:" + view);
 				resolve(view);
 			}
@@ -87,7 +78,9 @@ ViewManager.prototype._getDustRender = function(params) {
 ViewManager.prototype.getView = function(params) {
 	logger.debug("getView: IN");
 	
+	var reloadView			= false;
 	var view						= null;
+	var viewConfig			= null;
 	var viewData				= null;
 	var viewName				= "";
 	var viewPrettyPrint = false;
@@ -100,9 +93,18 @@ ViewManager.prototype.getView = function(params) {
 	}
 	delete params.view;
 	
+	reloadView			= params.request.query.reloadView || false;
 	viewPrettyPrint = params.request.query.viewPrettyPrint || "false";
+	
+	if(reloadView) {
+		viewConfig	= view.getViewConfig();
+		this._loadSource(viewConfig);
+	}
+	
+	
 	viewName				= view.getViewName();
 
+	logger.debug("getView: reloadView:" + reloadView);
 	logger.debug("getView: viewPrettyPrint:" + viewPrettyPrint);
 	
 	return new Promise(function(resolve, reject) {
@@ -112,14 +114,18 @@ ViewManager.prototype.getView = function(params) {
 		view
 			.getData(params)
 			.then(function(viewParams) {
-				logger.debug("getView: viewData:" + JSON.stringify(viewParams.data));
+				//logger.debug("getView: viewData:" + JSON.stringify(viewParams.data));
 				return(THIS._getDustRender({
 						viewName	: viewName,
 						viewData	: viewParams.data
 					})
 				);
 			})
-			.then(function(view) {
+			.then(function(view) {			
+        if(viewPrettyPrint === "true") {
+					logger.debug("getView: doing pretty print");
+          view = html.prettyPrint(view, {indent_size: 2});
+        }
 				resolve(view);
 			})
 			.catch(function(error) {

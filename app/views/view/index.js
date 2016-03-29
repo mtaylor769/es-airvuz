@@ -29,16 +29,24 @@ var Index = function() {
 
 Index.prototype.getData = function(params) {	
 	logger.info("getData ");	
-	var THIS = this;
+	var sourceManifest	= params.sourceManifest;
+	var THIS						= this;
 	return new Promise(function(resolve, reject) {
+		logger.info("getData 1.0");
+		logger.info("getData sourceManifest['airvuz.css']:" + sourceManifest["airvuz.css"]);
+		//logger.info("getData sourceManifest.airvuz.css:" + sourceManifest.airvuz.css);
+		params.viewName								= THIS.viewConfig.viewName;
+		params.data										= {};
+		params.data.airvuz						= {};
 		
-		params.viewName							= THIS.viewConfig.viewName;
-		params.data									= {};
-		params.data.index						= {};
-		params.data.index.viewName	= "Index PageV2";		
+		params.data.index							= {};
+		params.data.index.airvuz			= {};
+		params.data.index.airvuz.css	= sourceManifest["airvuz.css"];
+		params.data.index.viewName		= "Index PageV2";		
 		
 		//throw("Something went bad");
 		//reject("Something went bad");
+		logger.info("getData 2.0");
 		resolve(params);
 
 	});  	
