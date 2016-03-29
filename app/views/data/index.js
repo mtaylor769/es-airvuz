@@ -28,17 +28,38 @@ var Index = function() {
 }
 
 Index.prototype.getData = function(params) {	
+	logger.info("getData ");	
+	var THIS = this;
+	return new Promise(function(resolve, reject) {
+		params.viewName							= THIS.viewConfig.viewName;
+		params.data									= {};
+		params.data.index						= {};
+		params.data.index.viewName	= "Index PageV2";		
+		
+		//throw("Something went bad");
+		//reject("Something went bad");
+		resolve(params);
+
+	});  	
+		
+	
+	/*
 	params.viewName							= this.viewConfig.viewName;
 	params.data									= {};
 	params.data.index						= {};
 	params.data.index.viewName	= "Index PageV2";
 	
 	return(params);
+	*/
+	
 }
 
 Index.prototype.getViewConfig = function() {
 	return(this.viewConfig);
 }
 
+Index.prototype.getViewName = function() {
+	return(this.viewConfig.viewName);
+}
 
 module.exports = new Index();

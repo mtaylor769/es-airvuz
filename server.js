@@ -91,26 +91,33 @@ require('./app/config/passport/instagram')(passport, config);
 //
 
 var viewManager = require('./app/views/manager/viewManager');
-var indexData		= require('./app/views/data/index');
+var indexView		= require('./app/views/data/index');
 
-viewManager.addView(indexData.getViewConfig());
+viewManager.addView({ view : indexView });
 
 app.get("/", function(req, res) {
 	
-	//var viewPrettyPrint = req.query.viewPrettyPrint || "false";
-	//logger.debug("route[/]: viewPrettyPrint:" + viewPrettyPrint);
-	
-	var params = indexData.getData({ 
+	/*
+	var params = indexView.getData({ 
 		config		: config,
 		request		: req, 
 		response	: res 
 	});
+	*/
 	
 	viewManager
-		.getView(params)
+			//.getView(params)
+		.getView({
+			view			: indexView,
+			request		: req,
+			response	: res
+		})
 		.then(function(view) {
 			res.send(view);
-		});
+		})
+		.catch(function(error) {
+			logger.error("view[/] error:" + error);
+		})
 
 /*
     DustManager
