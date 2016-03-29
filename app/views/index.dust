@@ -6,9 +6,10 @@
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="public/{index.airvuz.css}">
     </head>
     <body>
-        <div class="home">viewName: {index.viewName} </div>
+        <div class="home">viewName[]: {index.viewName} </div>
 
 
         
