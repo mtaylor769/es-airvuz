@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html dust="app.views.index.dust">
+    <head>
+        <meta http-equiv="Cache-control" content="public">
+        <title>AirVuz</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="home">viewName: {index.viewName} </div>
+
+
+        
+
+        <script>
+            (function() {
+                console.log("doc loaded");
+            })();
+        </script>
+    </body>
+    
+</html>

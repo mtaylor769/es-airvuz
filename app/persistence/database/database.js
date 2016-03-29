@@ -5,7 +5,9 @@ var mongoose										= require('mongoose');
 var path												= require('path');
 
 
-
+if(global.NODE_ENV === "production") {
+	logger.setLevel("INFO");	
+}
 
 var Database = function() {
 	logger.debug("constructor init ***********************************************");
@@ -288,7 +290,7 @@ Database.prototype._initConnection2 = function(params) {
 
 Database.prototype.getModelByDotPath = function(params) {
 	var modelDotPath				= params.modelDotPath || null;
-	logger.debug(" modelDotPath: '" + modelDotPath + "'");
+	logger.debug("modelDotPath: '" + modelDotPath + "'");
 	if(modelDotPath === null) {
 		logger.error("getModelByDotPath: params.modelDotPath missing.");
 		throw new Exception("app.persistence.database.Database.getModelByDotPath: params.modelDotPath missing.");
