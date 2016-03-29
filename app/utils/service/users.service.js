@@ -6,28 +6,29 @@ function findSocialAccount(data) {
   account.then(function(accountInfo){
     if (accountInfo) {
       console.log('found a match in socialmediamodel now checking to see if user already exists');
-      var findUser = findUserByEmail(data, accountInfo);
-      return findUser;
+      //var findUser = findUserByEmail(data, accountInfo);
+      return accountInfo;
     } else {
       console.log('did not find a match in socialmediamodel');
-      var newAccount = SocialCrud.create(data);
-      console.log('newAccount');
-      console.log(newAccount);
-      newAccount.then(function(newAccountData){
-        if (newAccountData._id) {
-          console.log('created new socialmediamodel data');
-          var findUser = findUserByEmail(data, newAccountData);
-          return findUser;
-        } else {
-          console.log('error on creating new socialmediamodel data');
-          return error;
-        }
-      });
+      return null;
+      // var newAccount = SocialCrud.create(data);
+      // console.log('newAccount');
+      // console.log(newAccount);
+      // newAccount.then(function(newAccountData){
+      //   if (newAccountData._id) {
+      //     console.log('created new socialmediamodel data');
+      //     var findUser = findUserByEmail(data, newAccountData);
+      //     return findUser;
+      //   } else {
+      //     console.log('error on creating new socialmediamodel data');
+      //     return error;
+      //   }
+      // });
     }
   });
 }
 
-function findUserByEmail(data, accountData) {
+function findUserByEmail(data) {
   var emailUser = UsersCrud.getUserByEmail(data.email);
   emailUser.then(function(user){
     if (user && user._id) {
@@ -35,9 +36,8 @@ function findUserByEmail(data, accountData) {
       //update with social media id and return user
       return user;
     } else {
-      console.log('user email not found search for user by social id and provider');
-      var socialIdUser = findUserBySocialId(data, accountData);
-      return socialIdUser;
+      console.log('user with this email does not already exist');
+      return null;
     }
   });
 }
