@@ -66,5 +66,10 @@ module.exports = new Index({
 		cacheTimeout	: 5,
 		viewName			: 'app.views.index.dust',
 		viewPath			: './app/views/index.dust',
-		partials			: []
+		partials			: [
+			{
+				partialName: 'app.views.view.partials.header',
+				partialPath: './app/views/view/partial/header.dust' 
+			}			
+		]
 	});

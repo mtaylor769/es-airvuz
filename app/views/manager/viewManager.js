@@ -7,7 +7,6 @@ try {
 	var fs				= require("fs");
 	var html			= require("html");
 	var Promise		= require('bluebird');
-	var View			= require('./view');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -34,9 +33,43 @@ var ViewManager = function() {
  */
 ViewManager.prototype._loadSource = function(params) {
 	logger.debug("_loadSource: params:" + JSON.stringify(params));
+	
+	params.partials = params.partials || [];
+	
+	var compiled			= null;
+	var index					= 0;
+	var partial				= null;
+	var partialName		= "";
+	var partialPath		= "";
+	var partialSource = "";
+	var size					= params.partials.length;
+	
+	if(size > 0) {
+		logger.debug("_loadSource: loading partials ...");
+		
+		for(index = 0; index < size; index++) {
+			partial = params.partials[index];
+			partialName = partial.partialName;
+			partialPath = partial.partialPath;
+			
+			/*
+			partialSource = fs.readFileSync(partialPath);
+			compiled			= dust.compile(new String(partialSource), partialName);
+			dust.loadSource(compiled);			
+			
+			logger.debug("_loadSource: loading partials:" + partialPath);
+			*/
+		}
+	}	
+	
+	// load primary view
 	var source      = fs.readFileSync(params.viewPath);
 	var compiled    = dust.compile(new String(source), params.viewName);
 	dust.loadSource(compiled);
+	
+
+	
+	
 }
 
 

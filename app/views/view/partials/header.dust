@@ -1,0 +1,3 @@
+<div dust="dust.partials.header">
+    <div>HEADER: {header.name}</div>
+<div>
