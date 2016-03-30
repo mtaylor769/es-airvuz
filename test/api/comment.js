@@ -77,7 +77,7 @@ describe('Comment', function() {
   });
 
   describe('DELETE' + API_URL, function() {
-    xit('should delete the created comment', function(done) {
+    it('should delete the created comment', function(done) {
       request
       .delete(API_URL + '/' + commentId)
       .end()
