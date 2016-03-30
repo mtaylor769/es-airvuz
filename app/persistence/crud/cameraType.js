@@ -1,12 +1,16 @@
-var Promise											= require('bluebird');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.CameraType');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var PersistenceException				= require('../../utils/exceptions/PersistenceException');
-var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CameraTypeModel							= mongoose.model("cameraType");
+var Promise = require('bluebird');
+var mongoose = require('mongoose');
+var log4js = require('log4js');
+var logger = log4js.getLogger('app.persistence.crud.cameraType');
+var ErrorMessage = require('../../utils/errorMessage');
+var ObjectValidationUtil = require('../../utils/objectValidationUtil');
+var PersistenceException = require('../../utils/exceptions/PersistenceException');
+var ValidationException = require('../../utils/exceptions/ValidationException');
+var CameraTypeModel = null;
+var database = require('../database/database');
+
+  CameraTypeModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.cameraType"});
+logger.debug('loaded camera model');
 
 var CameraType = function(){
 
