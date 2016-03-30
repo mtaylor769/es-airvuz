@@ -1,30 +1,35 @@
-<h1>Users page</h1>
-<p>Search By Username</p>
-<div class="form-group search">
-    <input type="text" class="form-control" ng-model="username" placeholder="Search">
-    <button class="btn btn-primary" ng-click="searchUsername(username)">Submit</button>
-</div>
-<p>Search By User Url</p>
-<div class="form-group search">
-    <input type="text" class="form-control" ng-model="url" placeholder="Search">
-    <button class="btn btn-primary" ng-click="searchUserUrl(url)">Submit</button>
-</div>
-<table class="table table-striped table-hover table-condensed">
-    <thead>
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Username</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="user in users">
-        <td>{{user.first_name}}</td>
-        <td>{{user.last_name}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.user_name}}</td>
-        <th><button class="btn btn-danger pull-right" ng-click="removeUser(user)">Delete</button></th>
-    </tr>
-    </tbody>
-</table>
+<md-content layout="row" layout-align="center center" layout-padding>
+    <md-card flex="90" flex-gt-md="80" layout-padding >
+        <div>
+            <h2>Users</h2>
+            <p>Search by:</p>
+            <form name="vm.searchForm">
+                <md-input-container>
+                    <label>username</label>
+                    <input type="text" ng-model="vm.username" required/>
+                </md-input-container>
+                <md-button class="md-raised md-primary" ng-click="vm.searchUsername(vm.username)" ng-disabled="vm.searchForm.$invalid">
+                    Submit
+                </md-button>
+            </form>
+        </div>
+        <div>
+
+        </div>
+        <div layout="row" layout-align="center center" ng-if="vm.user" layout-margin layout-padding>
+
+            <md-whiteframe class="md-whiteframe-1dp" flex="90" >
+                <p>User Name: {{vm.user.userName}}</p>
+                <p>First Name: {{vm.user.firstName}}</p>
+                <p>Last Name: {{vm.user.lastName}}</p>
+                <p>Email Address: {{vm.user.emailAddress}}</p>
+                <p>Roles:</p>
+                <ul>
+                    <li ng-repeat="role in vm.user.aclRoles">{{role}}</li>
+                </ul>
+            </md-whiteframe>
+        </div>
+    </md-card>
+
+
+</md-content>
