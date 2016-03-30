@@ -124,6 +124,15 @@ apiRouter.route('/api/curated-videos/:id')
  * /api/comment/
  */
 apiRouter.route('/api/comment')
-  .post(comment.post);
+  .post(comment.post)
+  .get(comment.get);
+
+apiRouter.route('/api/comment/byParent')
+  .get(comment.getByParentCommentId);
+
+apiRouter.route('/api/comment/:id')
+  .get(comment.getById)
+  .put(comment.put)
+  .delete(comment.delete);
 
 module.exports = apiRouter;
