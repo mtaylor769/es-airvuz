@@ -52,13 +52,13 @@ ViewManager.prototype._loadSource = function(params) {
 			partialName = partial.partialName;
 			partialPath = partial.partialPath;
 			
-			/*
+			
 			partialSource = fs.readFileSync(partialPath);
 			compiled			= dust.compile(new String(partialSource), partialName);
 			dust.loadSource(compiled);			
 			
 			logger.debug("_loadSource: loading partials:" + partialPath);
-			*/
+			
 		}
 	}	
 	

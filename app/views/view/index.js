@@ -69,7 +69,7 @@ module.exports = new Index({
 		partials			: [
 			{
 				partialName: 'app.views.view.partials.header',
-				partialPath: './app/views/view/partial/header.dust' 
+				partialPath: './app/views/view/partials/header.dust' 
 			}			
 		]
 	});
