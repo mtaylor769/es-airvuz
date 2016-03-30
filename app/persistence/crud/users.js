@@ -297,7 +297,7 @@ users.prototype.getUserByUserName = function (userName) {
 	logger.debug(userName);
 	var validation = {};
 	if (userName) {
-		validation.userName 	= userName.username;
+		validation.userName 	= userName;
 	} else {
 		validation.userName		= null;
 		var errorMessage						= new ErrorMessage();
@@ -316,7 +316,7 @@ users.prototype.getUserByUserName = function (userName) {
 		if (validation.userName === null) {
 			reject(validation.errors);
 		} else {
-			var userFound = UserModel.find({userName : validation.userName}, function(error, user){
+			UserModel.findOne({userName : validation.userName}, 'aclRoles emailAddress userName firstName lastName', function(error, user) {
 				if (error) {
 					var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
@@ -332,7 +332,7 @@ users.prototype.getUserByUserName = function (userName) {
 			});
 		}
 	}));
-}
+};
 
 /*
 * Update user information

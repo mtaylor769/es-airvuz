@@ -1,15 +1,29 @@
 var usersCrud              = require('../../persistence/crud/users');
-var jwt                 = require('jsonwebtoken');
-var tokenConfig         = require('../../../config/token');
 
 function User() {
 
 }
 
-User.prototype.post = function(req, res) {
+function post(req, res) {
   usersCrud
-  .create(req.params)
-  .then(function(user) {
-    res.send(user);
-  })
-};
+    .create(req.params)
+    .then(function (user) {
+      res.send(user);
+    });
+}
+
+function search(req, res) {
+  if (req.query.username) {
+    return usersCrud
+      .getUserByUserName(req.query.username)
+      .then(function (user) {
+        res.json(user);
+      });
+  }
+  res.sendStatus(400);
+}
+
+User.prototype.post = post;
+User.prototype.search = search;
+
+module.exports = new User();
