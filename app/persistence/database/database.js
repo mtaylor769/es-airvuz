@@ -165,53 +165,52 @@ Database.prototype._initConnections = function(params) {
 		
 		fs.readdirSync(modelRootPath).forEach(function(file) {
 
-
-			
-			
 			//modelPath = modelRootPath + path.sep + file;
 			modelPath = modelRootPath + file;
-			logger.debug("_initConnections: modelPath: " + modelPath);
-			
-			
-			logger.debug("_initConnections: file: " + modelPath);
+			//logger.debug("_initConnections: modelPath: " + modelPath);
+			//logger.debug("_initConnections: file: " + modelPath);
 			
 			var isFile = fs.lstatSync(modelPath).isFile();
-			logger.debug("_initConnections: isFile: " + isFile);			
+			//logger.debug("_initConnections: isFile: " + isFile);			
 			if(isFile) {
-			modelObject			= require(modelPath);
-			connectionName	= modelObject.connectionName || null;
-			
-			/*
-			if(connectionName === null) {
-				logger.error("_initConnections model missing .export with connectionName: '" + modelRootPath);	
-				continue;
-			}*/
-			
-			if(connectionName !== null) {
-				
-				modelSubPath = THIS.config.modelDirSubPath + paths[pathIndex].path + file;
-				logger.debug("_initConnections: modelSubPath: " + modelSubPath);
-				// remove .js file extension
-				modelDotName = modelSubPath.slice(0, -3);
-				// convert path separators to '.', ie '/' becomes '.'
-				modelDotName = modelDotName.split(path.sep).join(".");				
-				logger.debug("_initConnections: modelDotName: " + modelDotName);
-				
-				logger.debug("_initConnections: connectionName: " + connectionName);
-				modelName						= modelObject.modelName;
-				schema							= modelObject.schema;
-				
-				databaseConnection = THIS.dbConnections[connectionName];
-				databaseConnection.model(modelName, schema);
-				
-				
-				THIS.modelByDotPath[modelDotName] = {
-					connectionName	: connectionName,
-					modelName				: modelName
+				modelObject			= require(modelPath);
+				connectionName	= modelObject.connectionName || null;
+
+				/*
+				if(connectionName === null) {
+					logger.error("_initConnections model missing .export with connectionName: '" + modelRootPath);	
+					continue;
+				}*/
+
+				if(connectionName !== null) {
+
+					modelSubPath = THIS.config.modelDirSubPath + paths[pathIndex].path + file;
+					//logger.debug("_initConnections: modelSubPath: " + modelSubPath);
+					// remove .js file extension
+					modelDotName = modelSubPath.slice(0, -3);
+					// convert path separators to '.', ie '/' becomes '.'
+					modelDotName = modelDotName.split(path.sep).join(".");				
+					//logger.debug("_initConnections: modelDotName: " + modelDotName);
+
+					//logger.debug("_initConnections: connectionName: " + connectionName);
+					modelName						= modelObject.modelName;
+					schema							= modelObject.schema;
+
+					databaseConnection = THIS.dbConnections[connectionName];
+					databaseConnection.model(modelName, schema);
+
+
+					THIS.modelByDotPath[modelDotName] = {
+						connectionName	: connectionName,
+						modelName				: modelName
+					}
+					logger.debug("_initConnections loading model: '" + modelDotName + "' to connection: '" + connectionName + "'");	
+
 				}
-				logger.debug("_initConnections loading model: '" + modelDotName + "' to connection: '" + connectionName + "'");	
-				
-			}
+				else {//if(connectionName === null) {
+					logger.error("_initConnections model missing .export with connectionName: '" + modelPath);	
+
+				}		
 			
 			}
 			
