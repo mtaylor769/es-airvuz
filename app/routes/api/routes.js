@@ -8,6 +8,8 @@ var categoryType        = require('./categoryType');
 var droneType           = require('./droneType');
 var curatedVideos       = require('./curatedVideos');
 var comment             = require('./comment');
+var protect             = require('../../middlewares/protect');
+var aclMiddleware             = require('../../middlewares/acl');
 
 /**
  * /api/auth
@@ -49,8 +51,8 @@ apiRouter.route('/api/auth/instagram/callback')
   //.get(users.getAll)
   //.post(users.post);
 //
-//apiRouter.route('/api/users/search')
-//  .get(users.search);
+apiRouter.route('/api/users/search')
+  .get(protect, aclMiddleware(['root', 'user-admin']), users.search);
 //
 //apiRouter.route('/api/users/:id');
 
@@ -122,6 +124,15 @@ apiRouter.route('/api/curated-videos/:id')
  * /api/comment/
  */
 apiRouter.route('/api/comment')
-  .post(comment.post);
+  .post(comment.post)
+  .get(comment.get);
+
+apiRouter.route('/api/comment/byParent')
+  .get(comment.getByParentCommentId);
+
+apiRouter.route('/api/comment/:id')
+  .get(comment.getById)
+  .put(comment.put)
+  .delete(comment.delete);
 
 module.exports = apiRouter;

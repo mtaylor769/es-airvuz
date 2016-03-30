@@ -45,7 +45,7 @@ Index.prototype.getData = function(params) {
 		
 		//throw("Something went bad");
 		//reject("Something went bad");
-		logger.info("getData 2.0");
+		//logger.info("getData 2.0");
 		resolve(params);
 
 	});  	
@@ -69,7 +69,7 @@ module.exports = new Index({
 		partials			: [
 			{
 				partialName: 'app.views.view.partials.header',
-				partialPath: './app/views/view/partial/header.dust' 
+				partialPath: './app/views/view/partials/header.dust' 
 			}			
 		]
 	});

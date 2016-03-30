@@ -28,6 +28,7 @@ Comment.prototype.getPreCondition = function(params){
 
   preCondition.setValidation(function(params){
     var errorMessage              = new ErrorMessage();
+    this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
     this.data.isVisible           = params.isVisible || null;
     this.data.replyCount          = params.replyCount || 0;
@@ -136,6 +137,10 @@ Comment.prototype.create = function(params) {
 
 Comment.prototype.get = function() {
   return CommentModel.find({}).exec();
+};
+
+Comment.prototype.getByParentCommentId = function(parentId) {
+  return CommentModel.find({parentCommentId: parentId}).exec();
 };
 
 Comment.prototype.getById = function(id) {
