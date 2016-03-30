@@ -3,7 +3,7 @@
 var Promise											= require('bluebird');
 var mongoose										= require('mongoose');
 var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.Users');
+var logger											= log4js.getLogger('app.persistance.crud.Users');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var UserModel										= require('../model/users');
@@ -74,20 +74,20 @@ users.prototype.create = function(params) {
 	return(new Promise(function(resolve, reject) {
 
 			if(validation.errors) {
-				console.log('validation errors found');
-				console.log(validation.errors);
+				logger.debug('validation errors found');
+				logger.debug(validation.errors);
 				reject(validation.errors);
         return;
 			}
 				// Persist
 				var saveUser 						= new UserModel(validation.data);
 				if (saveUser.password) {
-          console.log('hash password');
+          logger.debug('hash password');
 					saveUser.password 		= saveUser.generateHash(saveUser.password);
 				}
 				saveUser.save(function(error){
 					if (error) {
-						console.log('error while saving ' + error);
+						logger.debug('error while saving ' + error);
 						var errorMessage		= new ErrorMessage();
 						errorMessage.getErrorMessage({
 							statusCode			: "500",
@@ -99,8 +99,8 @@ users.prototype.create = function(params) {
 						reject(errorMessage.getErrors());
             return;
 					}
-						console.log('saving user');
-						console.log(saveUser);
+						logger.debug('saving user');
+						logger.debug(saveUser);
 						resolve(saveUser);
             return;
 				});
@@ -141,7 +141,7 @@ users.prototype.getAllUsers = function() {
 * Get a user by ID
 */
 users.prototype.getUserById = function (userId) {
-	console.log('searching for user by userId: ' + userId);
+	logger.debug('searching for user by userId: ' + userId);
 	var validation = {};
 
 	if (userId) {
@@ -188,7 +188,7 @@ users.prototype.getUserById = function (userId) {
 * Get a user by social media ID
 */
 users.prototype.getUserBySocialId = function (socialId) {
-	console.log('searching for user by socialId: ' + socialId);
+	logger.debug('searching for user by socialId: ' + socialId);
 	var validation = {};
 
 	if (socialId) {
@@ -209,7 +209,7 @@ users.prototype.getUserBySocialId = function (socialId) {
 
 	return(new Promise(function(resolve, reject){
 		if (validation.errors) {
-			console.log('validation errors exist');
+			logger.debug('validation errors exist');
 			reject(validation.errors);
 		} else {
 			UserModel.find({socialMediaAccounts : validation.socialId}, 
@@ -225,8 +225,8 @@ users.prototype.getUserBySocialId = function (socialId) {
 					});
 					reject(errorMessage.getErrors());
 				} else {
-					console.log('here is your user');
-					console.log(user);
+					logger.debug('here is your user');
+					logger.debug(user);
 					resolve(user);
 				}
 			});
@@ -240,9 +240,9 @@ users.prototype.getUserBySocialId = function (socialId) {
 */
 users.prototype.getUserByEmail = function (email) {
 	var validation = {};
-	console.log('getUserByEmail: '+ email);
+	logger.debug('getUserByEmail: '+ email);
 	if (email) {
-		console.log(email);
+		logger.debug(email);
 		validation.emailAddress 	= email;
 	} else {
 		validation.emailAddress		= null;
@@ -260,13 +260,13 @@ users.prototype.getUserByEmail = function (email) {
 
 	return(new Promise(function(resolve, reject) {
 		if (validation.errors) {
-			console.log(validation.errors);
+			logger.debug(validation.errors);
 			reject(validation.errors);
 		} else {
-			console.log('searching user model for address');
+			logger.debug('searching user model for address');
 			UserModel.findOne({emailAddress : validation.emailAddress}, function(error, user){
 				if (error) {
-					console.log('error when trying to find user by email');
+					logger.debug('error when trying to find user by email');
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
@@ -275,11 +275,11 @@ users.prototype.getUserByEmail = function (email) {
 						sourceError			: error,
 						sourceLocation	: "persistence.crud.Users.getUserByEmail"
 					});
-					console.log(error);
+					logger.debug(error);
 					reject(errorMessage.getErrors());
 				} else {
-					console.log('found user by email');
-					console.log(user);
+					logger.debug('found user by email');
+					logger.debug(user);
 					resolve(user);
 				}
 			});
@@ -293,11 +293,11 @@ users.prototype.getUserByEmail = function (email) {
 * Get a user by user name
 */
 users.prototype.getUserByUserName = function (userName) {
-	console.log('hitting getUserByUserName');
-	console.log(userName);
+	logger.debug('hitting getUserByUserName');
+	logger.debug(userName);
 	var validation = {};
 	if (userName) {
-		validation.userName 	= userName.username;
+		validation.userName 	= userName;
 	} else {
 		validation.userName		= null;
 		var errorMessage						= new ErrorMessage();
@@ -316,7 +316,7 @@ users.prototype.getUserByUserName = function (userName) {
 		if (validation.userName === null) {
 			reject(validation.errors);
 		} else {
-			var userFound = UserModel.find({userName : validation.userName}, function(error, user){
+			UserModel.findOne({userName : validation.userName}, 'aclRoles emailAddress userName firstName lastName', function(error, user) {
 				if (error) {
 					var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
@@ -332,7 +332,7 @@ users.prototype.getUserByUserName = function (userName) {
 			});
 		}
 	}));
-}
+};
 
 /*
 * Update user information

@@ -18,9 +18,14 @@
 				 */
 				login: function (user) {
 					var dfd = $q.defer();
-					$http.post('/api/auth/token', user).then(function (response) {
+					$http.post('/api/auth', user).then(function (response) {
 						var token = response.data.token;
 						identity.currentUser = jwtHelper.decodeToken(token);
+
+						if (!identity.canAccessAdmin()) {
+							return dfd.reject({error: "You aren't a pro drone pilot"});
+						}
+
 						localStorage.setItem('id_token', token);
 						dfd.resolve();
 					}, function (err) {
