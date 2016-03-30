@@ -45,7 +45,7 @@ Index.prototype.getData = function(params) {
 		
 		//throw("Something went bad");
 		//reject("Something went bad");
-		logger.info("getData 2.0");
+		//logger.info("getData 2.0");
 		resolve(params);
 
 	});  	

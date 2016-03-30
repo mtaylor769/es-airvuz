@@ -44,6 +44,7 @@ ViewManager.prototype._loadSource = function(params) {
 	var partialSource = "";
 	var size					= params.partials.length;
 	
+	// load partials
 	if(size > 0) {
 		logger.debug("_loadSource: loading partials ...");
 		
@@ -66,10 +67,6 @@ ViewManager.prototype._loadSource = function(params) {
 	var source      = fs.readFileSync(params.viewPath);
 	var compiled    = dust.compile(new String(source), params.viewName);
 	dust.loadSource(compiled);
-	
-
-	
-	
 }
 
 
