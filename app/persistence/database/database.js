@@ -197,6 +197,8 @@ Database.prototype._initConnections = function(params) {
 					schema							= modelObject.schema;
 
 					databaseConnection = THIS.dbConnections[connectionName];
+					logger.debug('connection name : ' + connectionName);
+					logger.debug('databaseConnection : ' + databaseConnection);
 					databaseConnection.model(modelName, schema);
 
 

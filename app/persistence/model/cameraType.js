@@ -30,7 +30,7 @@ var cameraTypeSchema = mongoose.Schema({
 });
 
 module.exports = {
-	connectionName	: "cameraType",
+	connectionName	: "main",
 	modelName				: "CameraType",
 	schema					: cameraTypeSchema
 };
