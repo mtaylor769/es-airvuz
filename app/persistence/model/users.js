@@ -65,7 +65,7 @@ var userSchema 		= mongoose.Schema({
 	isSuspended : {
 		default		: false,
 		required	: true,
-		type			: boolean
+		type			: Boolean
 	},
 	
 	// The user last login date
