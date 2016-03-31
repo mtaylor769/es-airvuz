@@ -6,7 +6,9 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('app.persistance.crud.Users');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var UserModel										= require('../model/users');
+var database										= require('../database/database');
+
+var UserModel									= database.getModelByDotPath({modelDotPath: "app.persistence.model.users"});
 
 var users = function() {
 	

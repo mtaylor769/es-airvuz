@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 var DATABASE = {
   HOST : "localhost",
-  NAME : "AirVuzV2"
+  NAME : "AirVuz2"
 };
 
 mongoose.Promise = require('bluebird');
@@ -124,7 +124,7 @@ function setPermission() {
       allows: [
         {
           resources: ['user'],
-          permissions: ['edit', 'hide', 'show', 'view']
+          permissions: ['edit', 'hide', 'show', 'view', 'search']
         }
       ]
     },

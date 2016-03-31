@@ -108,4 +108,8 @@ userSchema.methods.validPassword = function(password) {
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
 //userSchema.createIndex( { "socialMediaAccount.accountId": 1 }, { background: true } );
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "Users",
+	schema					: userSchema
+};
