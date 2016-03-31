@@ -7,7 +7,12 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CommentModel							  = mongoose.model('Comment');
+var CommentModel							  = null;
+var database                    = require('../database/database');
+
+    CommentModel                = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
+    logger.debug('loaded comment model');
+
 var Comment = function(){
 
 };
@@ -33,6 +38,7 @@ Comment.prototype.getPreCondition = function(params){
     this.data.isVisible           = params.isVisible || null;
     this.data.replyCount          = params.replyCount || 0;
     this.data.replyDepth          = params.replyDepth || 0;
+    this.data.videoId             = params.videoId || null;
     this.data.userId              = params.userId || null;
 
 
@@ -41,6 +47,16 @@ Comment.prototype.getPreCondition = function(params){
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "comment"
+        },
+        sourceLocation	: sourceLocation
+      })
+    }
+
+    if(this.data.videoId === null){
+      this.errors = errorMessage.getErrorMessage({
+        errorId					: "VALIDA1000",
+        templateParams	: {
+          name : "videoId"
         },
         sourceLocation	: sourceLocation
       })
@@ -135,12 +151,32 @@ Comment.prototype.create = function(params) {
   );
 };
 
+Comment.prototype.replyIncrament = function(videoId) {
+  CommentModel.find({videoId: videoId, parentCommentId: null}).exec()
+  .then(function(comment) {
+    if(comment) {
+      comment.replyCount = comment.replyCount + 1;
+      comment.save(function(error, videoComment) {
+        return videoComment
+      })
+    } else {
+      return false;
+    }
+  })
+};
+
 Comment.prototype.get = function() {
   return CommentModel.find({}).exec();
 };
 
+
 Comment.prototype.getByParentCommentId = function(parentId) {
-  return CommentModel.find({parentCommentId: parentId}).exec();
+  return CommentModel.find({parentCommentId: parentId}).sort({commentCreatedDate: -1}).limit(2).lean().exec();
+};
+
+Comment.prototype.getParentCommentByVideoId = function(params) {
+  console.log('params.videoId : ' + params.videoId);
+  return CommentModel.find( { videoId: params.videoId , replyDepth: 0} ).sort({commentCreatedDate: -1}).limit(10).lean().exec();
 };
 
 Comment.prototype.getById = function(id) {

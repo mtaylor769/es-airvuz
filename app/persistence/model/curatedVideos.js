@@ -24,5 +24,9 @@ var curatedVideosSchema = mongoose.Schema({
 
 });
 
-mongoose.model('CuratedVideos', curatedVideosSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "CuratedVideos",
+	schema					: curatedVideosSchema
+};
 

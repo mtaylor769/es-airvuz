@@ -89,7 +89,17 @@ var CommentSchema = mongoose.Schema({
 	userId : {
 		required: true,
 		type: mongoose.Schema.ObjectId, ref: 'User'
+	},
+
+	videoId : {
+		required: true,
+		type: mongoose.Schema.ObjectId, ref: 'Video'
 	}
 
 });
-mongoose.model('Comment', CommentSchema);
+
+module.exports = {
+	connectionName	: "main",
+	modelName				: "Comment",
+	schema					: CommentSchema
+};

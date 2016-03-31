@@ -190,4 +190,8 @@ var videoSchema = mongoose.Schema({
 
 //video_schema.index({VideoLocation: 1});
 
-mongoose.model('Video', videoSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "Video",
+	schema					: videoSchema
+};

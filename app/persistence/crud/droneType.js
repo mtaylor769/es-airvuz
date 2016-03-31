@@ -6,7 +6,11 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var DroneTypeModel							= mongoose.model('DroneType');
+var DroneTypeModel							= null;
+var database                    = require('../database/database');
+
+    DroneTypeModel              = database.getModelByDotPath({modelDotPath: "app.persistence.model.droneType"});
+    logger.debug('loaded drone model');
 
 var DroneType = function(){
 

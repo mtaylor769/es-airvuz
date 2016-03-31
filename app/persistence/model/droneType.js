@@ -29,4 +29,8 @@ var droneTypeSchema = mongoose.Schema({
 
 });
 
-mongoose.model('DroneType', droneTypeSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "DroneType",
+	schema					: droneTypeSchema
+};
