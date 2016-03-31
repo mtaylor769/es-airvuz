@@ -1,4 +1,6 @@
 var commentCrud = require('../../persistence/crud/comment');
+var Promise     = require('bluebird');
+var mongoose    = require('mongoose');
 
 
 function Comment() {
@@ -6,11 +8,20 @@ function Comment() {
 }
 
 Comment.prototype.post = function(req, res) {
-  commentCrud
-  .create(req.body)
-  .then(function(comment) {
-    res.send(comment);
-  })
+  if (!req.body.parentCommentId) {
+    commentCrud
+      .replyIncrament(videoId)
+      .create(req.body)
+      .then(function (comment) {
+        res.send(comment);
+      })
+  } else {
+    commentCrud
+      .create(req.body)
+      .then(function (comment) {
+        res.send(comment);
+      })
+  }
 };
 
 Comment.prototype.get = function(req, res) {
@@ -27,6 +38,28 @@ Comment.prototype.getByParentCommentId = function(req, res) {
   .getByParentCommentId(req.body.parentId)
   .then(function(comments) {
     res.send(comments);
+  })
+};
+
+Comment.prototype.getByVideoId = function(req, res) {
+  var videoId = mongoose.Types.ObjectId(req.query.videoId);
+  commentCrud
+  .getParentCommentByVideoId({videoId: videoId, replyDepth: 0})
+  .then(function(comments) {
+    var promises = [];
+    comments.forEach(function(comment) {
+      (function (currentComment) {
+        promises.push(commentCrud.getByParentCommentId(comment._id)
+          .then(function(responseComment) {
+            currentComment.children = responseComment;
+            return currentComment;
+          })
+        );
+      })(comment);
+    });
+    Promise.all(promises).then(function() {
+      res.json(comments);
+    });
   })
 };
 

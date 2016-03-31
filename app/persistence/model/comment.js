@@ -89,6 +89,11 @@ var CommentSchema = mongoose.Schema({
 	userId : {
 		required: true,
 		type: mongoose.Schema.ObjectId, ref: 'User'
+	},
+
+	videoId : {
+		required: true,
+		type: mongoose.Schema.ObjectId, ref: 'Video'
 	}
 
 });

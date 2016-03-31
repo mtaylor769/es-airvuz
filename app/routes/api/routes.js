@@ -129,6 +129,9 @@ apiRouter.route('/api/comment')
 apiRouter.route('/api/comment/byParent')
   .get(comment.getByParentCommentId);
 
+apiRouter.route('/api/comment/byVideo')
+  .get(comment.getByVideoId);
+
 apiRouter.route('/api/comment/:id')
   .get(comment.getById)
   .put(comment.put)
