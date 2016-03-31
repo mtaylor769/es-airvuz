@@ -62,6 +62,12 @@ var userSchema 		= mongoose.Schema({
     type : String
   },
 	
+	isSuspended : {
+		default		: false,
+		required	: true,
+		type			: boolean
+	},
+	
 	// The user last login date
 	lastLoginDate : {
     type: Date,
