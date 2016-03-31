@@ -92,4 +92,9 @@ var CommentSchema = mongoose.Schema({
 	}
 
 });
-mongoose.model('Comment', CommentSchema);
+
+module.exports = {
+	connectionName	: "main",
+	modelName				: "Comment",
+	schema					: CommentSchema
+};

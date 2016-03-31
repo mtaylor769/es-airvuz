@@ -6,8 +6,11 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CuratedVideoModel						= mongoose.model('CuratedVideos');
+var CuratedVideoModel						= null;
+var database                    = require('../database/database');
 
+    CuratedVideoModel           = database.getModelByDotPath({ modelDotPath: "app.persistence.model.curatedVideos" })
+    logger.debug('loaded curated videos model');
 var CuratedVideo = function(){
 
 };

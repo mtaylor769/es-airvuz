@@ -6,7 +6,11 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CategoryTypeModel						= mongoose.model('CategoryType');
+var CategoryTypeModel						= null;
+var database                    = require('../database/database');
+
+    CategoryTypeModel           = database.getModelByDotPath({ modelDotPath: "app.persistence.model.categoryType"})
+    logger.debug('loaded category model');
 
 var CategoryType = function(){
 

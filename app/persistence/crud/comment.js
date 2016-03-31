@@ -7,7 +7,12 @@ var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 var PersistenceException				= require('../../utils/exceptions/PersistenceException');
 var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CommentModel							  = mongoose.model('Comment');
+var CommentModel							  = null;
+var database                    = require('../database/database');
+
+    CommentModel                = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
+    logger.debug('loaded comment model');
+
 var Comment = function(){
 
 };

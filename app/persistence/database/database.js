@@ -15,7 +15,8 @@ var Database = function() {
 	
 	var currentDir	= __dirname;
 	var rootDir			= currentDir + "/../../../";
-	var modelDir		= "app/persistence/model/";
+	//var modelDir		= "app/persistence/model/";
+	var modelDir		= "app/persistence/model";
 	
 	logger.debug("constructor - rootDir:" + rootDir);
 	
@@ -84,42 +85,19 @@ Database.prototype._init = function() {
 		],
 		paths : [
 			{ 
-				path						: "events"
+				path						: "/"
+			},			
+			{ 
+				path						: "/events/"
 			},
 			{
-				path						: "main"
+				path						: "/main/"
 			}
 		]
 	}
 	
 	this._initConnections({ connections : connections });
-	
-	/*
-	this._initConnection({
-		dbInfo : {
-			connectionName	: "events",
-			hostName				: "localhost",
-			databaseName		: "AirVuzEvents",
-			path						: this.config.modelDirFullPath + path.sep + "events"
-		}
-	});	
-	
-	modelDirectory = this.config.modelDirFullPath + path.sep + "events";
-	
-	//logger.debug("_initConnections - this.config.modelDirFullPath: " + this.config.modelDirFullPath);
-	this._loadModelDirectory({ modelDirectory : modelDirectory });
-	
-	*/
-	
-	/*
-	this._initConnection({
-		dbInfo : {
-			connectionName		: "main",
-			hostName		: "localhost",
-			databaseName	: "AirVuzV2"
-		}
-	});
-	*/
+
 }
 
 Database.prototype._initConnections = function(params) {
@@ -181,42 +159,62 @@ Database.prototype._initConnections = function(params) {
 	pathSize	= paths.length;
 	for(pathIndex = 0; pathIndex < pathSize; pathIndex++) {
 		modelRootPath = THIS.config.modelDirFullPath + paths[pathIndex].path;
-		logger.debug("_initConnections: path: " + path);
+		logger.debug("_initConnections: path: " + modelRootPath);
+		logger.debug("_initConnections: -------------------------------------------- ");
 		
 		
 		fs.readdirSync(modelRootPath).forEach(function(file) {
-			modelPath = modelRootPath + path.sep + file;
-			logger.debug("_initConnections: modelPath: " + modelPath);
+
+			//modelPath = modelRootPath + path.sep + file;
+			modelPath = modelRootPath + file;
+			//logger.debug("_initConnections: modelPath: " + modelPath);
+			//logger.debug("_initConnections: file: " + modelPath);
 			
-			modelObject			= require(modelPath);
-			connectionName	= modelObject.connectionName || null;
-			
-			if(connectionName !== null) {
-				
-				modelSubPath = THIS.config.modelDirSubPath + paths[pathIndex].path + path.sep + file;
-				logger.debug("_initConnections: modelSubPath: " + modelSubPath);
-				// remove .js file extension
-				modelDotName = modelSubPath.slice(0, -3);
-				// convert path separators to '.', ie '/' becomes '.'
-				modelDotName = modelDotName.split(path.sep).join(".");				
-				logger.debug("_initConnections: modelDotName: " + modelDotName);
-				
-				logger.debug("_initConnections: connectionName: " + connectionName);
-				modelName						= modelObject.modelName;
-				schema							= modelObject.schema;
-				
-				databaseConnection = THIS.dbConnections[connectionName];
-				databaseConnection.model(modelName, schema);
-				
-				
-				THIS.modelByDotPath[modelDotName] = {
-					connectionName	: connectionName,
-					modelName				: modelName
+			var isFile = fs.lstatSync(modelPath).isFile();
+			//logger.debug("_initConnections: isFile: " + isFile);			
+			if(isFile) {
+				modelObject			= require(modelPath);
+				connectionName	= modelObject.connectionName || null;
+
+				/*
+				if(connectionName === null) {
+					logger.error("_initConnections model missing .export with connectionName: '" + modelRootPath);	
+					continue;
+				}*/
+
+				if(connectionName !== null) {
+
+					modelSubPath = THIS.config.modelDirSubPath + paths[pathIndex].path + file;
+					//logger.debug("_initConnections: modelSubPath: " + modelSubPath);
+					// remove .js file extension
+					modelDotName = modelSubPath.slice(0, -3);
+					// convert path separators to '.', ie '/' becomes '.'
+					modelDotName = modelDotName.split(path.sep).join(".");				
+					//logger.debug("_initConnections: modelDotName: " + modelDotName);
+
+					//logger.debug("_initConnections: connectionName: " + connectionName);
+					modelName						= modelObject.modelName;
+					schema							= modelObject.schema;
+
+					databaseConnection = THIS.dbConnections[connectionName];
+					logger.debug('connection name : ' + connectionName);
+					logger.debug('databaseConnection : ' + databaseConnection);
+					databaseConnection.model(modelName, schema);
+
+
+					THIS.modelByDotPath[modelDotName] = {
+						connectionName	: connectionName,
+						modelName				: modelName
+					}
+					logger.debug("_initConnections loading model: '" + modelDotName + "' to connection: '" + connectionName + "'");	
+
 				}
-				logger.debug("_initConnections loading model: '" + modelDotName + "' to connection: '" + connectionName + "'");	
-				
-			}
+				else {//if(connectionName === null) {
+					logger.error("_initConnections model missing .export with connectionName: '" + modelPath);	
+
+				}		
 			
+			}
 			
 		});
 		
@@ -267,18 +265,6 @@ Database.prototype._initConnection2 = function(params) {
 		}
 		logger.debug("._initMain loading model:" + model.modelName);
   });
-	
-	/*
-	 * works:
-	var aModel = connection.model(model.name);
-	var event = new aModel();
-	event.save(function(error, video) {
-		if(error) {
-			logger.debug("._initMain save failed:" + error);
-		}
-	});
-	logger.debug("._initMain aModel:" + aModel.constructor.name);
-	*/
 	
 	this.dbConnections[dbInfo.connectionName] = connection;
 	
