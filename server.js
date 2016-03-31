@@ -82,7 +82,7 @@ app.use(passport.session());
 require('./app/config/passport/local')(passport, config);
 require('./app/config/passport/facebook')(passport, config);
 require('./app/config/passport/google')(passport, config);
-require('./app/config/passport/instagram')(passport, config);
+//require('./app/config/passport/instagram')(passport, config);
 
 
 
