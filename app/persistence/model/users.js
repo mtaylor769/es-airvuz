@@ -3,7 +3,7 @@ var Schema  			= mongoose.Schema;
 var bcrypt        = require('bcrypt-nodejs');
 var uuid     			= require('uuid');
 
-var userSchema 		= mongoose.Schema({
+var usersSchema 		= mongoose.Schema({
 	
 	/*
 	 * User ACL Roles.
@@ -103,11 +103,11 @@ var userSchema 		= mongoose.Schema({
 	}
 });
 
-userSchema.methods.generateHash = function(password) {
+usersSchema.methods.generateHash = function(password) {
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 }
 
-userSchema.methods.validPassword = function(password) {
+usersSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.password);
 }
 
@@ -117,5 +117,6 @@ userSchema.methods.validPassword = function(password) {
 module.exports = {
 	connectionName	: "main",
 	modelName				: "Users",
-	schema					: userSchema
+	schema					: usersSchema
 };
+

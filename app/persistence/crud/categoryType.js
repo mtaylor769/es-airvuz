@@ -1,17 +1,21 @@
-var Promise											= require('bluebird');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.CategoryType');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var PersistenceException				= require('../../utils/exceptions/PersistenceException');
-var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CategoryTypeModel						= null;
-var database                    = require('../database/database');
+"use strict";
+try { 
+  var Promise											= require('bluebird');
+  var log4js											= require('log4js');
+  var logger											= log4js.getLogger('persistance.crud.CategoryType');
+  var ErrorMessage								= require('../../utils/errorMessage');
+  var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+  var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+  var ValidationException					= require('../../utils/exceptions/ValidationException');
+  var CategoryTypeModel						= null;
+  var database                    = require('../database/database');
 
-    CategoryTypeModel           = database.getModelByDotPath({ modelDotPath: "app.persistence.model.categoryType"})
-    logger.debug('loaded category model');
-
+  CategoryTypeModel           = database.getModelByDotPath({ modelDotPath: "app.persistence.model.categoryType"})
+  logger.debug('loaded category model');
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
 var CategoryType = function(){
 
 };

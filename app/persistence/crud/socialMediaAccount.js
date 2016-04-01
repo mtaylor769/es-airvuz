@@ -1,13 +1,19 @@
 "use strict";
+try {
+  var log4js                      = require('log4js');
+  var logger                      = log4js.getLogger('app.persistance.crud.socialMediaAccount');
 
-var Promise                     = require('bluebird');
-var mongoose                    = require('mongoose');
-var log4js                      = require('log4js');
-var logger                      = log4js.getLogger('app.persistance.crud.socialMediaAccount');
-var ErrorMessage                = require('../../utils/errorMessage');
-var ObjectValidationUtil        = require('../../utils/objectValidationUtil');
-var SocialModel                 = require('../model/socialMediaAccount');
+  var Promise                     = require('bluebird');
 
+  var ErrorMessage                = require('../../utils/errorMessage');
+  var ObjectValidationUtil        = require('../../utils/objectValidationUtil');
+  var database                    = require('../database/database');
+  var SocialModel                 = database.getModelByDotPath({  modelDotPath  : "app.persistence.model.socialMediaAccount" });
+
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
 var socialMediaAccount = function() {
   
 }
@@ -164,3 +170,4 @@ socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, pr
 
 
 module.exports = new socialMediaAccount();
+

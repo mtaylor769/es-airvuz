@@ -1,11 +1,16 @@
-var Promise											= require('bluebird');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.PlayList');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var PlaylistModel							= mongoose.model('PlayList');
-
+"use strict";
+try {
+  var Promise											= require('bluebird');
+  var log4js											= require('log4js');
+  var logger											= log4js.getLogger('persistance.crud.PlayList');
+  var ErrorMessage								= require('../../utils/errorMessage');
+  var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+  var database                    = require('../database/database');
+  var PlaylistModel							  = database.getModelByDotPath({  modelDotPath  : "app.persistence.model.playlist" });
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
 var Playlist = function(){
 
 };

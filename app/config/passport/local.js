@@ -1,7 +1,7 @@
 "use strict";
 
-var LocalStrategy = require('passport-local').Strategy;
-var Users =  require('../../persistence/crud/users');
+var LocalStrategy         = require('passport-local').Strategy;
+var Users                 = require('../../persistence/crud/users');
 
 module.exports = function(passport, config) {
 

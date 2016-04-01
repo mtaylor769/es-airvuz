@@ -1,16 +1,22 @@
-var Promise											= require('bluebird');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.CuratedVideos');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var PersistenceException				= require('../../utils/exceptions/PersistenceException');
-var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CuratedVideoModel						= null;
-var database                    = require('../database/database');
+"use strict";
+try {
+  var Promise											= require('bluebird');
+
+  var log4js											= require('log4js');
+  var logger											= log4js.getLogger('persistance.crud.CuratedVideos');
+  var ErrorMessage								= require('../../utils/errorMessage');
+  var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+  var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+  var ValidationException					= require('../../utils/exceptions/ValidationException');
+  var CuratedVideoModel						= null;
+  var database                    = require('../database/database');
 
     CuratedVideoModel           = database.getModelByDotPath({ modelDotPath: "app.persistence.model.curatedVideos" })
     logger.debug('loaded curated videos model');
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
 var CuratedVideo = function(){
 
 };

@@ -1,18 +1,22 @@
-var Promise											= require('bluebird');
-                                  require('../../../mongoose');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.CameraType');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var PersistenceException				= require('../../utils/exceptions/PersistenceException');
-var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CommentModel							  = null;
-var database                    = require('../database/database');
+"use strict";
+try {
+  var log4js                      = require('log4js');
+  var logger                      = log4js.getLogger('persistance.crud.CameraType');
+  var Promise											= require('bluebird');
 
-    CommentModel                = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
-    logger.debug('loaded comment model');
+  var ErrorMessage								= require('../../utils/errorMessage');
+  var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
+  var PersistenceException				= require('../../utils/exceptions/PersistenceException');
+  var ValidationException					= require('../../utils/exceptions/ValidationException');
+  var CommentModel							  = null;
+  var database                    = require('../database/database');
 
+  CommentModel                = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
+  logger.debug('loaded comment model');
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
 var Comment = function(){
 
 };

@@ -1,10 +1,12 @@
 "use strict";
 
 var FacebookStrategy    = require('passport-facebook').Strategy;
-var UsersCrud           = require('../../persistence/crud/users');
-var SocialCrud          = require('../../persistence/crud/socialMediaAccount');
+
 var log4js              = require('log4js');
 var logger              = log4js.getLogger('app.config.passport.facebook');
+var UsersCrud           = require('../../persistence/crud/users');
+var SocialCrud          = require('../../persistence/crud/socialMediaAccount');
+
 
 
 module.exports = function(passport, config) {

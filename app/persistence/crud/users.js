@@ -1,14 +1,22 @@
 "use strict";
+try {
+	var log4js											= require('log4js');
+	var logger											= log4js.getLogger('app.persistance.crud.Users');
 
-var Promise											= require('bluebird');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('app.persistance.crud.Users');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var database										= require('../database/database');
+	var Promise											= require('bluebird');
+	
+	var ErrorMessage								= require('../../utils/errorMessage');
+	var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 
-var UserModel									= database.getModelByDotPath({modelDotPath: "app.persistence.model.users"});
+	var database										= require('../database/database');
+	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
+
+} 
+catch(exception) {
+	logger.error(" import error:" + exception);
+}
+
+
 
 var users = function() {
 	

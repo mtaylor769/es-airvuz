@@ -161,7 +161,7 @@ Database.prototype._initConnections = function(params) {
 		
 		
 		fs.readdirSync(modelRootPath).forEach(function(file) {
-
+			logger.info(file);
 			//modelPath = modelRootPath + path.sep + file;
 			modelPath = modelRootPath + file;
 			//logger.debug("_initConnections: modelPath: " + modelPath);
