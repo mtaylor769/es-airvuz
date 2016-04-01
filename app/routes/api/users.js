@@ -30,7 +30,16 @@ function search(req, res) {
     .catch(logger.error);
 }
 
+function get(req, res) {
+  return usersCrud
+    .getUserById(req.params.id)
+    .then(function (user) {
+      res.json(user);
+    });
+}
+
 User.prototype.post = post;
 User.prototype.search = search;
+User.prototype.get = get;
 
 module.exports = new User();
