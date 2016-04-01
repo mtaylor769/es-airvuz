@@ -52,8 +52,9 @@ apiRouter.route('/api/auth/instagram/callback')
 //
 apiRouter.route('/api/users/search')
   .get(protect, users.search);
-//
-//apiRouter.route('/api/users/:id');
+
+apiRouter.route('/api/users/:id')
+  .get(users.get);
 
 /**
  * /api/videos/
