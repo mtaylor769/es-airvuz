@@ -1,17 +1,31 @@
-var Promise											= require('bluebird');
-                                  require('../../../mongoose');
-var mongoose										= require('mongoose');
-var log4js											= require('log4js');
-var logger											= log4js.getLogger('persistance.crud.CameraType');
-var ErrorMessage								= require('../../utils/errorMessage');
-var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var PersistenceException				= require('../../utils/exceptions/PersistenceException');
-var ValidationException					= require('../../utils/exceptions/ValidationException');
-var CommentModel							  = null;
-var database                    = require('../database/database');
+try {
+  var Promise = require('bluebird');
+  require('../../../mongoose');
+  var mongoose = require('mongoose');
+  var log4js = require('log4js');
+  var logger = log4js.getLogger('persistance.crud.CameraType');
+  var ErrorMessage = require('../../utils/errorMessage');
+  var ObjectValidationUtil = require('../../utils/objectValidationUtil');
+  var PersistenceException = require('../../utils/exceptions/PersistenceException');
+  var ValidationException = require('../../utils/exceptions/ValidationException');
+  var CommentModel = null;
+  var VideoModel = null;
+  var database = require('../database/database');
 
-    CommentModel                = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
-    logger.debug('loaded comment model');
+  CommentModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
+  VideoModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
+  logger.debug('loaded comment crud models');
+
+  if(global.NODE_ENV === "production") {
+    logger.setLevel("INFO");
+  }
+
+  logger.debug("import complete");
+
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
 
 var Comment = function(){
 
@@ -151,16 +165,32 @@ Comment.prototype.create = function(params) {
   );
 };
 
-Comment.prototype.replyIncrament = function(videoId) {
-  CommentModel.find({videoId: videoId, parentCommentId: null}).exec()
+Comment.prototype.replyIncrement = function(parentCommentId) {
+  CommentModel.findById({_id: parentCommentId}).exec()
   .then(function(comment) {
-    if(comment) {
-      comment.replyCount = comment.replyCount + 1;
-      comment.save(function(error, videoComment) {
-        return videoComment
+    if(typeof(comment) === 'object') {
+      comment.replyCount ++;
+      comment.save(function(error, comment) {
+        console.log(comment);
+        return comment
       })
     } else {
       return false;
+    }
+  })
+  .then(function(param) {
+    var videoId = param.videoId;
+    if(param === false) {
+      VideoModel.findById({_id: videoId}).exec()
+        .then(function (video) {
+          console.log('video : ' + video);
+          video.commentCount ++;
+          video.save(function (error, video) {
+            return param;
+          })
+        })
+    } else {
+      return param;
     }
   })
 };

@@ -1,3 +1,4 @@
+try{
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
 var log4js = require('log4js');
@@ -10,7 +11,20 @@ var CameraTypeModel = null;
 var database = require('../database/database');
 
   CameraTypeModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.cameraType"});
-logger.debug('loaded camera model');
+
+  logger.debug('loaded camera model');
+
+  if(global.NODE_ENV === "production") {
+    logger.setLevel("INFO");
+  }
+
+  logger.debug("import complete");
+
+}
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
+
 
 var CameraType = function(){
 
