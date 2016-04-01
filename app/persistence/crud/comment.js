@@ -164,31 +164,24 @@ Comment.prototype.create = function(params) {
 
 Comment.prototype.replyIncrement = function(parentCommentId) {
   CommentModel.findById({_id: parentCommentId}).exec()
-  .then(function(comment) {
-    if(typeof(comment) === 'object') {
-      comment.replyCount ++;
-      comment.save(function(error, comment) {
-        console.log(comment);
-        return comment
-      })
-    } else {
-      return false;
-    }
+  .then(function(parentComment) {
+    parentComment.replyCount = parentComment.replyCount + 1;
+    return parentComment.save()
   })
-  .then(function(param) {
-    var videoId = param.videoId;
-    if(param === false) {
-      VideoModel.findById({_id: videoId}).exec()
-        .then(function (video) {
-          console.log('video : ' + video);
-          video.commentCount ++;
-          video.save(function (error, video) {
-            return param;
-          })
-        })
-    } else {
-      return param;
-    }
+  .then(function(comment) {
+    var videoId = comment.videoId;
+    return VideoModel.findById({_id: videoId}).exec()
+  })
+  .then(function(video) {
+    video.commentCount = video.commentCount + 1;
+    return video.save()
+  })
+  .then(function() {
+    return 'success'
+  })
+  .catch(function(error) {
+    logger.error(error);
+    return error
   })
 };
 

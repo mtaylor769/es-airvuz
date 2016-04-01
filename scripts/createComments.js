@@ -3,9 +3,9 @@ var commentCrud = require('../app/persistence/crud/comment');
 var log4js											= require('log4js');
 var logger											= log4js.getLogger();
 var mongoose = require('../mongoose');
-var videoId = '56fe00d3457adaf65373ac87';
+var videoId = '56fec7bb07354aaa096db3b8';
 var parentCount = 3;
-var childCount = 3;
+var childCount = 1;
 
 comment.videoId = videoId;
 
@@ -32,15 +32,18 @@ for(var i = 0; i < parentWithChild; i++) {
     logger.debug('entering child create');
 
     for(var j = 0; j < childCount; j++) {
+      logger.debug('value of j 1 :' + j);
       comment.parentCommentId = comment._id;
       comment.comment = 'this is a child comment';
       comment.replyDepth = 1;
       commentCrud
         .create(comment)
-        .then(function(comment){
-          commentCrud.replyIncrement(comment.parentCommentId);
+        .then(function () {
+          return commentCrud.replyIncrement(comment.parentCommentId);
         })
     }
+    //promise.all.
+    // commentCrud.replyIncrement(cont);
 
     logger.debug('exiting child create');
   })

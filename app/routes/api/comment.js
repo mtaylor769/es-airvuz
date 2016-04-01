@@ -47,20 +47,7 @@ Comment.prototype.getByVideoId = function(req, res) {
   commentCrud
   .getParentCommentByVideoId({videoId: videoId, replyDepth: 0})
   .then(function(comments) {
-    var promises = [];
-    comments.forEach(function(comment) {
-      (function (currentComment) {
-        promises.push(commentCrud.getByParentCommentId(comment._id)
-          .then(function(responseComment) {
-            currentComment.children = responseComment;
-            return currentComment;
-          })
-        );
-      })(comment);
-    });
-    Promise.all(promises).then(function() {
-      res.json(comments);
-    });
+    res.json(comments);
   })
 };
 
