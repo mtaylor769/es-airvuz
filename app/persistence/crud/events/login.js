@@ -8,7 +8,7 @@ try {
 	var Promise											= require('bluebird');
 
 
-	LoginModel = database.getModelByDotPath({	modelDotPath	: "app.persistence.model.events.login" });
+	LoginModel = database.getModelByDotPath({	modelDotPath	: 'app.persistence.model.events.login' });
 	
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("INFO");	

@@ -11,9 +11,13 @@ if(global.NODE_ENV === "production") {
 var Database = function() {
 	logger.debug("constructor init ***********************************************");
 	var currentDir	= __dirname;
-	var rootDir			= currentDir + "/../../../";
+	
+	//var rootDir			= currentDir + "/../../../";
+	var rootDir			= currentDir + path.sep + ".." + path.sep + ".." + path.sep + ".." + path.sep;
 	//var modelDir		= "app/persistence/model/";
-	var modelDir		= "app/persistence/model";
+	var modelDir		= "app" + path.sep + "persistence" + path.sep + "model" + path.sep;
+	//var modelDir		= "app/persistence/model";
+	var modelDir		= "app" + path.sep + "persistence" + path.sep + "model";
 	logger.debug("constructor - currentDir:" + currentDir);
 	logger.debug("constructor - rootDir:" + rootDir);
 	
@@ -82,13 +86,13 @@ Database.prototype._init = function() {
 		],
 		paths : [
 			{ 
-				path						: "/"
+				path						: path.sep  //"/"
 			},			
 			{ 
-				path						: "/events/"
+				path						: path.sep + "events" + path.sep   // "/events/"
 			},
 			{
-				path						: "/main/"
+				path						: path.sep + "main" + path.sep // "/main/"
 			}
 		]
 	}
@@ -187,9 +191,9 @@ Database.prototype._initConnections = function(params) {
 					modelDotName = modelSubPath.slice(0, -3);
 					// convert path separators to '.', ie '/' becomes '.'
 					modelDotName = modelDotName.split(path.sep).join(".");				
-					//logger.debug("_initConnections: modelDotName: " + modelDotName);
+					logger.debug("_initConnections: modelDotName *******: " + modelDotName);
 
-					//logger.debug("_initConnections: connectionName: " + connectionName);
+					logger.debug("_initConnections: connectionName: " + connectionName);
 					modelName						= modelObject.modelName;
 					schema							= modelObject.schema;
 
@@ -250,6 +254,7 @@ Database.prototype._initConnection2 = function(params) {
 		modelDotName = modelSubPath.slice(0, -3);
 		// convert path separators to '.', ie '/' becomes '.'
 		modelDotName = modelDotName.split(path.sep).join(".");
+		logger.debug("")
 		
 		model			= require(modelPath);
 		
@@ -284,6 +289,8 @@ Database.prototype.getModelByDotPath = function(params) {
 	var modelDotPathObject	= this.modelByDotPath[modelDotPath] || null;
 	if(modelDotPathObject === null) {
 		logger.error("getModelByDotPath: params.modelDotPath : '" + modelDotPath + "' not found.");
+		logger.error("getModelByDotPath: typeof(modelDotPathObject):" + typeof(modelDotPathObject));
+		logger.error("getModelByDotPath: JSON.stringify(modelDotPathObject):" + JSON.stringify(this.modelByDotPath));
 		throw new Exception("app.persistence.database.Database.getModelByDotPath: params.modelDotPath : '" + modelDotPath + "' not found.");
 	}
 	 
