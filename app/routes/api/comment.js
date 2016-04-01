@@ -8,13 +8,14 @@ function Comment() {
 }
 
 Comment.prototype.post = function(req, res) {
-  if (!req.body.parentCommentId) {
+  var parentCommentId = req.body.parentCommentId;
+  if (parentCommentId) {
     commentCrud
-      .replyIncrament(videoId)
       .create(req.body)
       .then(function (comment) {
+        commentCrud.replyIncrement(parentCommentId);
         res.send(comment);
-      })
+      });
   } else {
     commentCrud
       .create(req.body)

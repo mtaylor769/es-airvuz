@@ -1,18 +1,23 @@
-"use strict";
 try {
-  var Promise											= require('bluebird');
+  var Promise = require('bluebird');
+  var log4js = require('log4js');
+  var logger = log4js.getLogger('persistance.crud.DroneType');
+  var ErrorMessage = require('../../utils/errorMessage');
+  var ObjectValidationUtil = require('../../utils/objectValidationUtil');
+  var PersistenceException = require('../../utils/exceptions/PersistenceException');
+  var ValidationException = require('../../utils/exceptions/ValidationException');
+  var DroneTypeModel = null;
+  var database = require('../database/database');
 
-  var log4js											= require('log4js');
-  var logger											= log4js.getLogger('persistance.crud.DroneType');
-  var ErrorMessage								= require('../../utils/errorMessage');
-  var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-  var PersistenceException				= require('../../utils/exceptions/PersistenceException');
-  var ValidationException					= require('../../utils/exceptions/ValidationException');
-  var DroneTypeModel							= null;
-  var database                    = require('../database/database');
+  DroneTypeModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.droneType"});
+  logger.debug('loaded drone model');
 
-    DroneTypeModel              = database.getModelByDotPath({modelDotPath: "app.persistence.model.droneType"});
-    logger.debug('loaded drone model');
+  if (global.NODE_ENV === "production") {
+    logger.setLevel("INFO");
+  }
+
+  logger.debug("import complete");
+
 }
 catch(exception) {
   logger.error(" import error:" + exception);

@@ -1,6 +1,6 @@
 var videoTest = {
   sessionId			: "sessionId" + new Date(),
-  userId				: "GUEST",
+  userId				: "56fdff4edc7083d853532661",
   userAclRoles	: {},
   title					: "Title of video",
   description		: "Description of video",
