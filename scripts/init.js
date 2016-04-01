@@ -10,9 +10,7 @@ var DATABASE = {
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://' + DATABASE.HOST + '/' + DATABASE.NAME);
 
-require('../app/persistence/model/users');
-
-function createRootUser() {
+function createSystemRootUser() {
   var Root = {
     aclRoles: ['root'],
     emailAddress: 'root@airvuz.com',
@@ -25,6 +23,22 @@ function createRootUser() {
   return userCrud.create(Root)
     .then(function (user) {
       return acl.addUserRoles(user._id, 'root');
+    });
+}
+
+function createRootUser() {
+  var Root = {
+    aclRoles: ['user-root'],
+    emailAddress: 'user.root@airvuz.com',
+    firstName: 'root',
+    lastName: 'airvuz',
+    password: '2016AVaDMin',
+    userName: 'userroot'
+  };
+
+  return userCrud.create(Root)
+    .then(function (user) {
+      return acl.addUserRoles(user._id, 'user-root');
     });
 }
 
@@ -85,6 +99,10 @@ function setPermission() {
         {
           resources: ['video'],
           permissions : ['*']
+        },
+        {
+          resources: ['acl'],
+          permissions: ['*']
         }
       ]
     },
@@ -125,6 +143,10 @@ function setPermission() {
         {
           resources: ['user'],
           permissions: ['edit', 'hide', 'show', 'view', 'search']
+        },
+        {
+          resources: ['acl'],
+          permissions: ['edit']
         }
       ]
     },
@@ -209,6 +231,7 @@ mongoose.connection.once('connected', function() {
   acl = require('../app/utils/acl');
 
   setPermission()
+    .then(createSystemRootUser)
     .then(createRootUser)
     .then(createAdminUser)
     .then(createGeneralUser)
