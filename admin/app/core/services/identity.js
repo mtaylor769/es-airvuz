@@ -26,10 +26,13 @@
 				isAuthenticated: function () {
 					return !!this.currentUser;
 				},
+				hasRole: function (role) {
+					return this.currentUser && this.currentUser.aclRoles.indexOf(role) > -1;
+				},
 				canAccessAdmin: function () {
 					var canAccess = false;
 
-					if (this.currentUser && (this.currentUser.aclRoles.indexOf('root') > -1 || this.currentUser.aclRoles.indexOf('user-admin') > -1)) {
+					if (this.hasRole('root') || this.hasRole('user-admin') || this.hasRole('user-root')) {
 						canAccess = true;
 					}
 

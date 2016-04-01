@@ -164,10 +164,14 @@ function whatResources(role) {
   return this._acl.whatResources(role);
 }
 
-function ACL() {
-  this._acl = new acl(new acl.mongodbBackend(mongoose.connection.db, 'acl_'));
+function init(connection) {
+  this._acl = new acl(new acl.mongodbBackend(connection, 'acl_'));
 }
 
+function ACL() {
+}
+
+ACL.prototype.init = init;
 ACL.prototype.addUserRoles = addUserRoles;
 ACL.prototype.removeUserRoles = removeUserRoles;
 ACL.prototype.userRoles = userRoles;

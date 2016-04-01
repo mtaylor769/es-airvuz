@@ -9,7 +9,6 @@ var droneType           = require('./droneType');
 var curatedVideos       = require('./curatedVideos');
 var comment             = require('./comment');
 var protect             = require('../../middlewares/protect');
-var aclMiddleware             = require('../../middlewares/acl');
 
 /**
  * /api/auth
@@ -52,9 +51,10 @@ apiRouter.route('/api/auth/instagram/callback')
   //.post(users.post);
 //
 apiRouter.route('/api/users/search')
-  .get(protect, aclMiddleware(['root', 'user-admin']), users.search);
-//
-//apiRouter.route('/api/users/:id');
+  .get(protect, users.search);
+
+apiRouter.route('/api/users/:id')
+  .get(users.get);
 
 /**
  * /api/videos/
@@ -129,6 +129,9 @@ apiRouter.route('/api/comment')
 
 apiRouter.route('/api/comment/byParent')
   .get(comment.getByParentCommentId);
+
+apiRouter.route('/api/comment/byVideo')
+  .get(comment.getByVideoId);
 
 apiRouter.route('/api/comment/:id')
   .get(comment.getById)

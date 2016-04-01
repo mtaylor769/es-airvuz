@@ -82,7 +82,7 @@ app.use(passport.session());
 require('./app/config/passport/local')(passport, config);
 require('./app/config/passport/facebook')(passport, config);
 require('./app/config/passport/google')(passport, config);
-require('./app/config/passport/instagram')(passport, config);
+//require('./app/config/passport/instagram')(passport, config);
 
 
 
@@ -92,6 +92,8 @@ require('./app/config/passport/instagram')(passport, config);
 //   / ___ \|  __/| |  |  _ < (_) | |_| | |_  __\__ \
 //  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
 //
+app.use(require('./app/routes/api/routes'));
+
 
 var viewManager = require('./app/views/manager/viewManager');
 var indexView		= require('./app/views/view/index');
@@ -115,10 +117,7 @@ app.get("/", function(req, res) {
 
 });
 
-
-
 /*
-app.use(require('./app/routes/api/routes'));
 
 app.get('/play', function (req, res) {
   res.render('play');

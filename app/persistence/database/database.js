@@ -4,20 +4,17 @@ var logger											= log4js.getLogger('app.persistence.database.Database');
 var mongoose										= require('mongoose');
 var path												= require('path');
 
-
 if(global.NODE_ENV === "production") {
 	logger.setLevel("INFO");	
 }
 
 var Database = function() {
 	logger.debug("constructor init ***********************************************");
-	
-	
 	var currentDir	= __dirname;
 	var rootDir			= currentDir + "/../../../";
 	//var modelDir		= "app/persistence/model/";
 	var modelDir		= "app/persistence/model";
-	
+	logger.debug("constructor - currentDir:" + currentDir);
 	logger.debug("constructor - rootDir:" + rootDir);
 	
 	
@@ -219,6 +216,8 @@ Database.prototype._initConnections = function(params) {
 		});
 		
 	}
+
+	require('../../../app/utils/acl').init(this.dbConnections['main'].db);
 }
 
 

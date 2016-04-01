@@ -1,0 +1,39 @@
+<md-content layout="row" layout-align="center center" layout-padding>
+  <md-card flex="90" flex-gt-md="80" layout-padding >
+    <div>
+      <md-input-container>
+        <label>User Name</label>
+        <input ng-model="vm.user.userName" disabled>
+      </md-input-container>
+      <md-input-container>
+        <label>First Name</label>
+        <input ng-model="vm.user.firstName">
+      </md-input-container>
+      <md-input-container>
+        <label>Last Name</label>
+        <input ng-model="vm.user.lastName">
+      </md-input-container>
+      <md-input-container>
+        <label>Email Address</label>
+        <input type="email" ng-model="vm.user.emailAddress">
+      </md-input-container>
+      <p>Roles: <a ng-show="!vm.showRoleForm" ng-click="vm.editRole()" href="#">add</a></p>
+      <div ng-show="vm.showRoleForm">
+        <md-input-container>
+          <md-select ng-model="vm.roleToAdd">
+            <md-option ng-repeat="role in vm.availableRoles">{{role}}</md-option>
+          </md-select>
+        </md-input-container>
+        <br/>
+        <md-button class="md-raised md-primary">
+          Save
+        </md-button>
+      </div>
+      <ul>
+        <li ng-repeat="role in vm.user.aclRoles">{{role}} - <a href="#" ng-click="vm.removeRole(role)">remove</a></li>
+      </ul>
+    </div>
+  </md-card>
+
+
+</md-content>

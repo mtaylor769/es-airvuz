@@ -19,14 +19,24 @@
         <div layout="row" layout-align="center center" ng-if="vm.user" layout-margin layout-padding>
 
             <md-whiteframe class="md-whiteframe-1dp" flex="90" >
-                <p>User Name: {{vm.user.userName}}</p>
-                <p>First Name: {{vm.user.firstName}}</p>
-                <p>Last Name: {{vm.user.lastName}}</p>
-                <p>Email Address: {{vm.user.emailAddress}}</p>
-                <p>Roles:</p>
-                <ul>
-                    <li ng-repeat="role in vm.user.aclRoles">{{role}}</li>
-                </ul>
+                <div layout="row">
+
+                    <div flex>
+                        <p>User Name: {{vm.user.userName}}</p>
+                        <p>First Name: {{vm.user.firstName}}</p>
+                        <p>Last Name: {{vm.user.lastName}}</p>
+                        <p>Email Address: {{vm.user.emailAddress}}</p>
+                        <p>Roles:</p>
+                        <ul>
+                            <li ng-repeat="role in vm.user.aclRoles">{{role}}</li>
+                        </ul>
+                    </div>
+                    <div layout-align="end center">
+                        <md-button class="md-fab md-primary" ui-sref="users.user({id: vm.user._id})">
+                            <md-icon class="material-icon">edit</md-icon>
+                        </md-button>
+                    </div>
+                </div>
             </md-whiteframe>
         </div>
     </md-card>

@@ -1,8 +1,7 @@
 var testComment = {
-  comment: 'this is a test comment',
-  parentCommentId: '56f574ecc1d6a2561f9d65dc',
+  comment: 'this is a parent comment',
   isVisible: true,
-  replyDepth: 1,
+  replyDepth: 0,
   userId: '56f1807e64c3ebbd0fb261dc'
 };
 

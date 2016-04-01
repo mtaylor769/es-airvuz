@@ -6,7 +6,9 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('app.persistance.crud.Users');
 var ErrorMessage								= require('../../utils/errorMessage');
 var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-var UserModel										= require('../model/users');
+var database										= require('../database/database');
+
+var UserModel									= database.getModelByDotPath({modelDotPath: "app.persistence.model.users"});
 
 var users = function() {
 	
@@ -164,7 +166,7 @@ users.prototype.getUserById = function (userId) {
 		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.find({_id : validation.userId},
+			UserModel.findOne({_id : validation.userId}, 'aclRoles emailAddress userName lastName firstName',
 				function(error, user){
 				if (error) {
 					var errorMessage		= new ErrorMessage();
@@ -391,6 +393,12 @@ users.prototype.delete = function(userId) {
 			});
 		}
 	}));
+};
+
+function updateRoles(params) {
+	// TODO: implement
 }
+
+users.prototype.updateRoles = updateRoles;
 
 module.exports = new users();
