@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html view="app.views.index.dust">
+<html view="app.views.view.template.index">
     <head>
         <meta http-equiv="Cache-control" content="public">
         <title>AirVuz</title>
@@ -11,8 +11,7 @@
     <body>
         <div class="home">viewName[]: {index.viewName} </div>
 
-        {> "app.views.view.partials.header" /}
-        
+        {> "app.views.view.partial.header" /}
 
         <script>
             (function() {

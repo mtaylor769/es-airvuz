@@ -31,11 +31,11 @@ util.inherits(IndexView, BaseView);
 module.exports = new IndexView({
 		cacheTimeout	: 5,
 		viewName			: 'app.views.index.dust',
-		viewPath			: './app/views/index.dust',
+		viewPath			: './app/views/view/template/index.dust',
 		partials			: [
 			{
-				partialName: 'app.views.view.partials.header',
-				partialPath: './app/views/view/partials/header.dust' 
+				partialName: 'app.views.view.partial.header',
+				partialPath: './app/views/view/partial/header.dust' 
 			}			
 		]
 	});

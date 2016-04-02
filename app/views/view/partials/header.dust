@@ -1,3 +1,0 @@
-<div partial="app.views.view.partials.header">
-    <div>HEADER-2: {header.name}</div>
-<div>
