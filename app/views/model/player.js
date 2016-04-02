@@ -1,9 +1,9 @@
 // IMPORT: BEGIN
 var log4js		= require('log4js');
-var logger		= log4js.getLogger('app.views.data.index');
+var logger		= log4js.getLogger('app.views.model.player');
 
 try {
-	var BaseView	= require('./baseView');
+	var BaseView	= require('./baseModel');
 	var Promise		= require('bluebird');
 	var util			= require('util');
 
@@ -18,15 +18,15 @@ catch(exception) {
 }
 // IMPORT: END
 
-var Index = function(params) {
+var Player = function(params) {
 	logger.debug("constructor: IN");	
 	
 	BaseView.apply(this, arguments);
 }
 
-util.inherits(Index, BaseView);
+util.inherits(Player, BaseModel);
 
-Index.prototype.getData = function(params) {	
+Player.prototype.getData = function(params) {	
 	logger.info("getData ");	
 	var sourceManifest	= params.sourceManifest;
 	var THIS						= this;
@@ -52,6 +52,8 @@ Index.prototype.getData = function(params) {
 
 }
 
+module.exports = Player;
+
 /*
 Index.prototype.getViewConfig = function() {
 	return(this.viewConfig);
@@ -61,7 +63,7 @@ Index.prototype.getViewName = function() {
 	return(this.viewConfig.viewName);
 }
 */
-
+/*
 module.exports = new Index({
 		cacheTimeout	: 5,
 		viewName			: 'app.views.index.dust',
@@ -72,4 +74,4 @@ module.exports = new Index({
 				partialPath: './app/views/view/partials/header.dust' 
 			}			
 		]
-	});
+	});*/

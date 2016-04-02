@@ -96,14 +96,27 @@ app.use(require('./app/routes/api/routes'));
 
 
 var viewManager = require('./app/views/manager/viewManager');
-var indexView		= require('./app/views/view/index');
+var indexView		= require('./app/views/view/indexView');
 
-viewManager.addView({ view : indexView });
+viewManager.addView({
+	viewName	: "index",
+	view			: indexView 
+});
+
+
+//var PlayerModel = require('./app/views/model/player');
+//var playerModel	= new PlayerModel();
+
+/*
+ * var playerModel = ...
+ * var playerView = new PlayerView({ model : });
+ */
 
 app.get("/", function(req, res) {
 	viewManager
 		.getView({
-			view						: indexView,
+			viewName				: "index",
+			//view						: indexView,
 			request					: req,
 			response				: res,
 			sourceManifest	: app.locals.sourceManifest

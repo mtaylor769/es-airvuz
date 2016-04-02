@@ -73,16 +73,14 @@ ViewManager.prototype._loadSource = function(params) {
 ViewManager.prototype.addView = function(params) {
 	logger.info("addView: IN");	
 	
-	//indexData.getViewConfig()
-	//var view = new View(params);
-	//this.views[params.pageName] = view;
+	var view				= null;
+	var viewConfig	= null;
 	
-	// load partials
-	var view				= params.view;
-	var viewConfig	= view.getViewConfig(); 
-	
-	this._loadSource(viewConfig);
-	
+	view												= params.view;
+	viewConfig									= view.getViewConfig();
+	this.views[params.viewName] = view;
+
+	this._loadSource(viewConfig);	
 }
 
 ViewManager.prototype._getDustRender = function(params) {
@@ -150,10 +148,13 @@ ViewManager.prototype.getView = function(params) {
 	var viewPrettyPrint		= false;
 	var THIS							= this;
 	
-	view = params.view || null;
+	viewName		= params.viewName;
+	view				= this.views[viewName];
+	viewConfig	= view.getViewConfig();
+	//view = params.view || null;
 	
 	if(view === null) {
-		//logger.error("getView: params.view === null");
+		logger.error("getView: this.view === null");
 	}
 	delete params.view;
 	
@@ -161,7 +162,7 @@ ViewManager.prototype.getView = function(params) {
 	viewPrettyPrint = params.request.query.viewPrettyPrint || "false";
 	
 	if(reloadView) {
-		viewConfig	= view.getViewConfig();
+		
 		this._loadSource(viewConfig);
 		renderNewView = true;
 	}
@@ -170,7 +171,7 @@ ViewManager.prototype.getView = function(params) {
 		renderNewView = true;
 	}
 	
-	viewName				= view.getViewName();
+	//viewName				= view.getViewName();
 	return new Promise(function(resolve, reject) {
 		logger.debug("getView: renderNewView:" + renderNewView);
 
@@ -186,10 +187,11 @@ ViewManager.prototype.getView = function(params) {
 		
 		// render a new view.
 		view
-			.getData(params)
+			.getModel(params)
 			.then(function(viewParams) {
 				return(THIS._getDustRender({
-						viewName	: viewName,
+						//viewName	: viewName,
+						viewName	: viewConfig.viewName,
 						viewData	: viewParams.data
 					})
 				);
