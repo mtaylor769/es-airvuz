@@ -30,7 +30,7 @@ util.inherits(LoginView, BaseView);
 
 module.exports = new LoginView({
     cacheTimeout  : 5,
-    viewName      : 'app.views.login.dust',
+    viewName      : 'app.views.view.template.login.dust',
     viewPath      : './app/views/view/template/login.dust',
     partials      : [
       {

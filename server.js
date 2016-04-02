@@ -126,7 +126,7 @@ app.get("/", function(req, res) {
 app.get("/login", function(req, res){
 	viewManager
 		.getView({
-			view 						: loginView.getViewName(),
+			viewName 				: loginView.getViewName(),
 			request 				: req,
 			response 				: res,
 			sourceManifest  : app.locals.sourceManifest
