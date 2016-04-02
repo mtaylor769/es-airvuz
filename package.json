@@ -6,6 +6,7 @@
     "start:cluster": "node cluster.js",
     "start:server": "node server.js",
     "start:server-debug": "node-debug --web-host 127.0.0.1 server.js",
+    "start:server-debug-nobrk": "node-debug --debug-brk=0 --web-host 127.0.0.1 server.js",
     "start:server-debug-win": "node-debugs server.js",
     "build": "NODE_ENV=development webpack --config client/webpack.config.js",
     "build:prod": "NODE_ENV=production webpack --config client/webpack.config.js",

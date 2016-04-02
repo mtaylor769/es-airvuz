@@ -99,7 +99,7 @@ var viewManager = require('./app/views/manager/viewManager');
 var indexView		= require('./app/views/view/indexView');
 
 viewManager.addView({
-	viewName	: "index",
+	//viewName	: "index",
 	view			: indexView 
 });
 
@@ -115,7 +115,7 @@ viewManager.addView({
 app.get("/", function(req, res) {
 	viewManager
 		.getView({
-			viewName				: "index",
+			viewName				: indexView.getViewName(),
 			//view						: indexView,
 			request					: req,
 			response				: res,

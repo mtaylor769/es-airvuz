@@ -78,7 +78,8 @@ ViewManager.prototype.addView = function(params) {
 	
 	view												= params.view;
 	viewConfig									= view.getViewConfig();
-	this.views[params.viewName] = view;
+	//this.views[params.viewName] = view;
+	this.views[view.getViewName()] = view;
 
 	this._loadSource(viewConfig);	
 }
@@ -191,7 +192,7 @@ ViewManager.prototype.getView = function(params) {
 			.then(function(viewParams) {
 				return(THIS._getDustRender({
 						//viewName	: viewName,
-						viewName	: viewConfig.viewName,
+						viewName	: view.getViewName(),
 						viewData	: viewParams.data
 					})
 				);
