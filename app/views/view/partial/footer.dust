@@ -1,0 +1,3 @@
+<div partial="app.views.view.partial.footer">
+    <div>FOOTER</div>
+<div>

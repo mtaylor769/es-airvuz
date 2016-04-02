@@ -3,10 +3,10 @@ var log4js		= require('log4js');
 var logger		= log4js.getLogger('app.views.data.index');
 
 try {
-	var BaseView		= require('./baseView');
-	var IndexModel	= require('../model/indexModel');
-	var Promise			= require('bluebird');
-	var util				= require('util');
+	var BaseView					= require('./baseView');
+	var VideoPlayerModel	= require('../model/videoPlayerModel');
+	var Promise						= require('bluebird');
+	var util							= require('util');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -23,15 +23,15 @@ var IndexView = function(params) {
 	logger.debug("constructor: IN");	
 	BaseView.apply(this, arguments);
 	
-	this.model = new IndexModel();
+	this.model = new VideoPlayerModel();
 }
 
 util.inherits(IndexView, BaseView);
 
 module.exports = new IndexView({
 		cacheTimeout	: 5,
-		viewName			: 'app.views.index.dust',
-		viewPath			: './app/views/view/template/index.dust',
+		viewName			: 'app.views.view.videoPlayer',
+		viewPath			: './app/views/view/template/videoPlayer.dust',
 		partials			: [
 			{
 				partialName: 'app.views.view.partial.header',

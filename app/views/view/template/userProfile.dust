@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html view="app.views.view.template.index">
+<html view="app.views.view.template.userProfile">
     <head>
         <meta http-equiv="Cache-control" content="public">
-        <title>AirVuz</title>
+        <title>{userProfile.title}</title>
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="public/{index.airvuz.css}">
+        <link rel="stylesheet" href="public/{userProfile.airvuz.css}">
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {index.viewName} </div>
+        <div class="home">viewName[]: {userProfile.viewName} </div>
         {> "app.views.view.partial.footer" /}
         <script>
             (function() {

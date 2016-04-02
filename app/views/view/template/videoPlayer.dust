@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html view="app.views.view.template.index">
+<html view="app.views.view.template.videoPlayer">
     <head>
         <meta http-equiv="Cache-control" content="public">
-        <title>AirVuz</title>
+        <title>{videoPlayer.title}</title>
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="public/{index.airvuz.css}">
+        <link rel="stylesheet" href="public/{videoPlayer.airvuz.css}">
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {index.viewName} </div>
+        <div class="home">viewName[]: {videoPlayer.viewName} </div>
         {> "app.views.view.partial.footer" /}
         <script>
             (function() {

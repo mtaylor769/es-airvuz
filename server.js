@@ -95,19 +95,16 @@ require('./app/config/passport/google')(passport, config);
 app.use(require('./app/routes/api/routes'));
 
 
-var viewManager = require('./app/views/manager/viewManager');
-var indexView		= require('./app/views/view/indexView');
+var viewManager				= require('./app/views/manager/viewManager');
+var indexView					= require('./app/views/view/indexView');
+var videoPlayerView		= require('./app/views/view/videoPlayerView');
+var userProfileView		= require('./app/views/view/userProfileView');
 
 viewManager.addView({	view : indexView });
+viewManager.addView({	view : userProfileView });
+viewManager.addView({	view : videoPlayerView });
 
 
-//var PlayerModel = require('./app/views/model/player');
-//var playerModel	= new PlayerModel();
-
-/*
- * var playerModel = ...
- * var playerView = new PlayerView({ model : });
- */
 
 app.get("/", function(req, res) {
 	viewManager
@@ -126,6 +123,39 @@ app.get("/", function(req, res) {
 
 });
 
+app.get("/userProfile", function(req, res) {
+	viewManager
+		.getView({
+			viewName				: userProfileView.getViewName(),
+			request					: req,
+			response				: res,
+			sourceManifest	: app.locals.sourceManifest
+		})
+		.then(function(view) {
+			res.send(view);
+		})
+		.catch(function(error) {
+			logger.error("view[/] error:" + error);
+		})
+
+});
+
+app.get("/videoPlayer", function(req, res) {
+	viewManager
+		.getView({
+			viewName				: videoPlayerView.getViewName(),
+			request					: req,
+			response				: res,
+			sourceManifest	: app.locals.sourceManifest
+		})
+		.then(function(view) {
+			res.send(view);
+		})
+		.catch(function(error) {
+			logger.error("view[/] error:" + error);
+		})
+
+});
 /*
 
 app.get('/play', function (req, res) {

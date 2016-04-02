@@ -18,32 +18,31 @@ catch(exception) {
 }
 // IMPORT: END
 
-var IndexModel = function(params) {
+var UserProfileModel = function(params) {
 	logger.debug("constructor: IN");	
 	
 	BaseModel.apply(this, arguments);
 }
 
-util.inherits(IndexModel, BaseModel);
+util.inherits(UserProfileModel, BaseModel);
 
-IndexModel.prototype.getData = function(params) {	
+UserProfileModel.prototype.getData = function(params) {	
 	logger.info("getData ");	
 	var sourceManifest	= params.sourceManifest;
 	var THIS						= this;
 	return new Promise(function(resolve, reject) {
 		logger.info("getData 1.0");
 		logger.info("getData sourceManifest['airvuz.css']:" + sourceManifest["airvuz.css"]);
-		params.data										= {};
-		params.data.airvuz						= {};
-		
-		params.data.index							= {};
-		params.data.index.airvuz			= {};
-		params.data.index.airvuz.css	= sourceManifest["airvuz.css"];
-		params.data.index.viewName		= "Index PageV2";		
+		params.data													= {};		
+		params.data.userProfile							= {};
+		params.data.userProfile.title				= "User Profile";
+		params.data.userProfile.airvuz			= {};
+		params.data.userProfile.airvuz.css	= sourceManifest["airvuz.css"];
+		params.data.userProfile.viewName		= "User Profile";		
 
 		resolve(params);
 	});  	
 
 }
 
-module.exports = IndexModel;
+module.exports = UserProfileModel;
