@@ -99,12 +99,12 @@ var viewManager				= require('./app/views/manager/viewManager');
 var indexView					= require('./app/views/view/indexView');
 var videoPlayerView		= require('./app/views/view/videoPlayerView');
 var userProfileView		= require('./app/views/view/userProfileView');
+var loginView 				= require('./app/views/view/loginView');
 
 viewManager.addView({	view : indexView });
 viewManager.addView({	view : userProfileView });
 viewManager.addView({	view : videoPlayerView });
-
-
+viewManager.addView({ view : loginView });
 
 app.get("/", function(req, res) {
 	viewManager
@@ -119,8 +119,24 @@ app.get("/", function(req, res) {
 		})
 		.catch(function(error) {
 			logger.error("view[/] error:" + error);
-		})
+		});
 
+});
+
+app.get("/login", function(req, res){
+	viewManager
+		.getView({
+			view 						: loginView.getViewName(),
+			request 				: req,
+			response 				: res,
+			sourceManifest  : app.locals.sourceManifest
+		})
+		.then(function(view){
+			res.send(view);
+		})
+		.catch(function(error) {
+			logger.error("view[/] error:" + error);
+		});
 });
 
 app.get("/userProfile", function(req, res) {
