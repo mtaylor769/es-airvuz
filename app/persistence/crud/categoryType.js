@@ -46,6 +46,9 @@ CategoryType.prototype.getPreCondition = function(params) {
     this.data.backGroundImage = params.backGroundImage || null;
     this.data.name = params.name || null;
     this.data.isVisible = params.isVisible || null;
+		
+		logger.debug("getPreCondition - params.backGroundImage:" + params.backGroundImage);
+		logger.debug("getPreCondition - params.name:" + params.name);
 
     if(this.data.backGroundImage === null) {
       this.errors = errorMessage.getErrorMessage({

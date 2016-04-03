@@ -1,34 +1,94 @@
 <!DOCTYPE html>
 <html view="app.views.view.template.index">
-    <head>
+  <head>
         <meta http-equiv="Cache-control" content="public">
 
         <title>{index.head.title}</title>
 
         <!-- BEGIN: OG -->
-        <meta property="og:url" content="http://airvuz.com/"/>
-        <meta property="og:type" content="website" >
-        <meta property="og:title" content="AirVūz – Drone Video Community" >
-        <meta property="og:updated_time" content="1458850844571">
-        <meta property="og:description" content="Discover, watch, and share aerial videos captured by cameras from drones, quadcopters, multi-copters, and radio controlled airplanes and helicopters." >
-        <meta property="og:image" content="http://airvuz.com/assets/img/airvuz_banner.png" >
-        <meta property="fb:app_id" content="441356432709973">
+        <meta property="og:url" content="{index.head.og.url}"/>
+        <meta property="og:type" content="{index.head.og.type}" >
+        <meta property="og:title" content="{index.head.og.title}" >
+        <meta property="og:updated_time" content="{index.head.og.updated_time}">
+        <meta property="og:description" content="{index.head.og.description}" >
+        <meta property="og:image" content="{index.head.og.image}" >
+        <meta property="fb:app_id" content="{index.fb.app_id}">
         <!-- END: OG -->
 
-
+        {> "app.views.view.partial.cdn-css" /}
+        
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="public/{index.airvuz.css}">
-    </head>
-    <body>
-        {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {index.viewName} </div>
-        {> "app.views.view.partial.footer" /}
+  </head>
+  <body>
+  
+    {> "app.views.view.partial.header" /}
+
+    <!-- BEG:Main Container -->
+    <div class="container main">
+      <div>Line</div>
+      <div>BEG</div>
+      <div class="home">viewName[]: {index.viewName} </div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>END</div>
+    </div>
+    <!-- END:Main Container -->
+
+    {> "app.views.view.partial.footer" /}
+
+    <script src="public/{index.airvuz.js}"></script>
         <script>
             (function() {
                 console.log("doc loaded");
             })();
         </script>
-    </body>
+  </body>
     
 </html>

@@ -1,3 +1,10 @@
-<div partial="app.views.view.partial.header">
-    <div>HEADER-2: {header.name}</div>
-<div>
+<div partial-beg="app.views.view.partial.header" class="navbar navbar-default navbar-fixed-top header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div>HEADER</div>
+      </div>
+    </div class="row">
+  </div>
+</div partial-end="app.views.view.partial.header">
+<div class="header-pad"></div>
