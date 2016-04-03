@@ -2,7 +2,19 @@
 <html view="app.views.view.template.index">
     <head>
         <meta http-equiv="Cache-control" content="public">
-        <title>AirVuz</title>
+
+        <title>{index.head.title}</title>
+
+        <!-- BEGIN: OG -->
+        <meta property="og:url" content="http://airvuz.com/"/>
+        <meta property="og:type" content="website" >
+        <meta property="og:title" content="AirVūz – Drone Video Community" >
+        <meta property="og:updated_time" content="1458850844571">
+        <meta property="og:description" content="Discover, watch, and share aerial videos captured by cameras from drones, quadcopters, multi-copters, and radio controlled airplanes and helicopters." >
+        <meta property="og:image" content="http://airvuz.com/assets/img/airvuz_banner.png" >
+        <meta property="fb:app_id" content="441356432709973">
+        <!-- END: OG -->
+
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
