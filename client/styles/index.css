@@ -4,15 +4,43 @@ body {
 }
 
 .footer {
-  background-color: black;
+  
+}
+
+.footer-sub1 {
+  background:#8f8f8f;
+}
+
+.footer-sub2 {
+  background: black;
+}
+
+.footer-sub2 ul {
+  list-style-type: none;
+}
+
+.footer-sub2 ul li {
+  display: inline;
 }
 
 .header {
-  background-color: black;
+  background: black;
+  height: 50px;
+}
+
+.height-100-percent {
+  height: 100%;
 }
 
 .header-pad {
   height: 50px;
+}
+
+.header-user {
+  background : #f48a4a;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .main {

@@ -1,8 +1,11 @@
 <div partial-beg="app.views.view.partial.header" class="navbar navbar-default navbar-fixed-top header">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
+  <div class="container height-100-percent">
+    <div class="row height-100-percent">
+      <div class="col-sm-9">
         <div>HEADER</div>
+      </div>
+      <div class="col-sm-3 header-user">
+        User Name
       </div>
     </div class="row">
   </div>

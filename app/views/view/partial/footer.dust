@@ -1,9 +1,30 @@
-<div partial-beg="app.views.view.partial.header" class="header">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div>FOOTER</div>
-      </div>
-    </div class="row">
+<div partial-beg="app.views.view.partial.header">
+  <div class="footer-sub1">
+    <div class="container">
+
+      <div class="row footer-sub1">
+        <div class="col-sm-12">
+          <div>FOOTER</div>
+        </div>
+      </div class="row">
+
+    </div>
+  </div >
+
+  <div class="footer-sub2">
+    <div class="container">
+
+      <div class="row footer-sub2">
+        <div class="col-sm-12">
+          <ul>
+            <li><a href="/terms-and-conditions">TERMS & CONDITIONS</a></li>
+            <li><a href="/terms-and-conditions">PRIVACY POLICY</a></li>
+            <li><a href="/terms-and-conditions">COPYRIGHT</a></li>
+            <li><a href="/terms-and-conditions">AIRVUZ. 2016</a></li>
+          <ul>
+        </div>
+      </div class="row">
+
+    </div>
   </div>
-</div partial-end="app.views.view.partial.header">
+</div>
