@@ -30,3 +30,12 @@ _**Note:** When setting an environmental variable for Windows make sure to not a
 - Disable SSL and force TSL on HTTPS. _98% of all browsers support some form of TSL._
 - At some point make Express start up webpack. [Documentation can be found here.](http://webpack.github.io/docs/node.js-api.html)
 - For E2E testing I recommend Cucumber.js it has support for Karma and is framework agnostic.
+
+
+
+## Creating new views
+
+- register accordingly in server.js
+- create view model in views/model/ directory
+- create exampleView.js in views/view directory
+- create dust template in views/view/template directory

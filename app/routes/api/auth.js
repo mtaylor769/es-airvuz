@@ -3,6 +3,10 @@ var jwt               = require('jsonwebtoken'),
   tokenConfig         = require('../../../config/token'),
   SocialMedia         = require('../../persistence/crud/socialMediaAccount');
 
+function Auth() {
+
+}
+
 function login(req, res, next) {
   passport.authenticate('local-login', function(error, user, info){
     if (error) {
@@ -70,14 +74,16 @@ function twitterCallback(req, res, next) {
   };
 }
 
-module.exports = {
-  login               : login,
-  facebook            : facebook,
-  facebookCallback    : facebookCallback,
-  google              : google,
-  googleCallback      : googleCallback,
-  twitter             : twitter,
-  twitterCallback     : twitterCallback,
-  instagram           : instagram,
-  instagramCallback   : instagramCallback
-};
+
+Auth.prototype.login               = login,
+Auth.prototype.facebook            = facebook,
+Auth.prototype.facebookCallback    = facebookCallback,
+Auth.prototype.google              = google,
+Auth.prototype.googleCallback      = googleCallback,
+Auth.prototype.twitter             = twitter,
+Auth.prototype.twitterCallback     = twitterCallback,
+Auth.prototype.instagram           = instagram,
+Auth.prototype.instagramCallback   = instagramCallback
+
+
+module.exports = new Auth();
