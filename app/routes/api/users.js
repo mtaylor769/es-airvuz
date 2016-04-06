@@ -38,8 +38,22 @@ function get(req, res) {
     });
 }
 
-User.prototype.post = post;
-User.prototype.search = search;
-User.prototype.get = get;
+function createUser(req, res) {
+  var params = {
+    emailAddress  : req.body.email,
+    username      : req.body.username,
+    password      : req.body.password
+  }
+  return usersCrud
+    .create(params)
+    .then(function(user){
+      res.json('OK');
+    });
+}
+
+User.prototype.post         = post;
+User.prototype.search       = search;
+User.prototype.get          = get;
+User.prototype.createUser   = createUser;
 
 module.exports = new User();

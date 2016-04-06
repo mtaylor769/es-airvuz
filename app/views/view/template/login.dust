@@ -1,24 +1,48 @@
 <!DOCTYPE html>
-<html view="app.views.login.dust">
+<html view="app.views.view.template.login">
     <head>
         <meta http-equiv="Cache-control" content="public">
         <title>AirVuz</title>
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="public/{index.airvuz.css}">
+        <link rel="stylesheet" href="public/{login.airvuz.css}">
     </head>
     <body>
-        <div class="home">viewName[]: {login.viewName} </div>
-
         {> "app.views.view.partial.header" /}
-        
+        <div class="home">viewName[]: {login.viewName} </div>
+        <div id="airvuz-app">
+            <div class="container">
 
-        <script>
-            (function() {
-                console.log("doc loaded");
-            })();
-        </script>
+              <div class="jumbotron text-center">
+                  <h1><span class="fa fa-lock"></span> Node Authentication</h1>
+
+                  <form action="" method="post">
+                    <div>
+                      <label>Email</label>
+                      <input name="email" required>
+                    </div>
+                    <div>
+                      <label>Password</label>
+                      <input type="password" name="password" required>
+                    </div>
+                    <button type="button">Login</button>
+                  </form>
+
+                  <p>Login or Register with:</p>
+
+                  <a href="/api/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+
+                  <a href="/api/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
+
+                  <a href="/api/auth/instagram" class="btn btn-info"><span class="fa fa-instagram"></span> Instagram</a>
+
+              </div>
+
+            </div>
+
+        </div>
+        {> "app.views.view.partial.footer" /}
     </body>
     
 </html>
