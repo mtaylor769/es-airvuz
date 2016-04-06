@@ -65,10 +65,14 @@
                 <div class="flex" style="border-bottom: inset grey">
                     <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
                     <div class="m-t-20">
-                        <p class="pos-absolute-r-15">{commentCreatedDate}</p>
+                        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>
                         <p class="m-b-0">{comment}</p>
                         <span>-> reply</span>
+                        <div class="flex">
+                            <textarea cols="80" rows="3" class="m-r-20" style="margin-bottom: 20px;"></textarea>
+                            <button class="btn background-orange border-radius-0 font-white" style="margin-bottom: 20px;">Submit</button>
+                        </div>
                     </div>
                 </div>
                 {/comments}
