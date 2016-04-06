@@ -1,34 +1,20 @@
 <!DOCTYPE html>
-<html view="app.views.view.template.login">
+<html view="app.views.view.template.createUser">
     <head>
         <meta http-equiv="Cache-control" content="public">
         <title>AirVuz</title>
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="public/{login.airvuz.css}">
+        <link rel="stylesheet" href="public/{createUser.airvuz.css}">
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {login.viewName} </div>
+        <div class="home">viewName[]: {createUser.viewName} </div>
         <div id="airvuz-app">
             <div class="container">
 
               <div class="jumbotron text-center">
-                  
-
-                  <form action="/api/auth" method="post" class="form-signin">
-                    <h2 class="form-signin-heading">Please sign in</h2>
-                    <div>
-                      <label for="login-email" class="sr-only">Email</label>
-                      <input id="login-email" name="email" placeholder="Email" class="form-control" required>
-                    </div>
-                    <div>
-                      <label for="login-password" class="sr-only">Password</label>
-                      <input id="login-password" type="password" name="password" placeholder="Password" class="form-control" required>
-                    </div>
-                    <button type="submit" value="Login" class="btn btn-lg btn-info">Login</button>
-                  </form>
 
                   <form action="/api/users/create" method="post" class="form-signin">
                     <h2 class="form-signin-heading">Create User</h2>
@@ -46,14 +32,6 @@
                     </div>
                     <button type="submit" value="Submit" class="btn btn-lg btn-success">Submit</button>
                   </form>
-
-                  <p>Login or Register with:</p>
-
-                  <a href="/api/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
-
-                  <a href="/api/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
-
-                  <a href="/api/auth/instagram" class="btn btn-info"><span class="fa fa-instagram"></span> Instagram</a>
 
               </div>
 

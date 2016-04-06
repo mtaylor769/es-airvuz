@@ -1,5 +1,5 @@
-<div partial-beg="app.views.view.partial.header" class="navbar navbar-default navbar-fixed-top header">
-  <div class="container height-100-percent container-shadow">
+<div partial-beg="app.views.view.partial.header" class="navbar navbar-fixed-top">
+  <div class="container height-100-percent container-shadow" id="header">
     <div class="row height-100-percent">
       <div class="col-sm-9">
         <div>HEADER</div>
@@ -7,7 +7,7 @@
       <div class="col-sm-3 header-user">
         User Name
       </div>
-    </div class="row">
+    </div>
   </div>
-</div partial-end="app.views.view.partial.header">
+</div>
 <div class="header-pad"></div>
