@@ -56,6 +56,9 @@ apiRouter.route('/api/users/search')
 apiRouter.route('/api/users/:id')
   .get(users.get);
 
+apiRouter.route('/api/users/create')
+  .post(users.createUser);
+
 /**
  * /api/videos/
  */
