@@ -1,22 +1,46 @@
 <!DOCTYPE html>
 <html view="app.views.view.template.userProfile">
-    <head>
-        <meta http-equiv="Cache-control" content="public">
-        <title>{userProfile.title}</title>
+  <head>
+    <meta http-equiv="Cache-control" content="public">
+    <title>{userProfile.title}</title>
 
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="public/{userProfile.airvuz.css}">
-    </head>
-    <body>
-        {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {userProfile.viewName} </div>
-        {> "app.views.view.partial.footer" /}
-        <script>
-            (function() {
-                console.log("doc loaded");
-            })();
-        </script>
-    </body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/{userProfile.airvuz.css}">
+  </head>
+  <body>
+    {> "app.views.view.partial.header" /}
+    <div class="container main">
+      <div class="jumbotron">
+        <div class="coverborder"></div>
+        <div class="profile-picture"></div>
+        <div class="profile-information">
+          <div class="profile-username">Zeke Thao</div>
+          <div class="profile-stats">
+            <div class="location">Minneapolis, MN</div>
+            <div class="horizontal-break">|</div>
+            <div class="Followers">
+              <span class="blue-font">300 </span><span>Followers</span>
+            </div>
+            <div>
+              <span class="blue-font">299</span><span>Following</span>
+            </div>
+            <div class="horizontal-break">|</div>
+            <div class="join-date">Member since November 2015</div>
+          </div>
+          <div class="profile-about">About stuff goes here.</div>
+          <!-- This stuff displays only if not your profile -->
+          <div class="profile-options">
+            <!-- Switch button depending if followed or unfollowed -->
+            <button>Follow</button>
+            <button>Donate</button>
+            <button>Hire</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    {> "app.views.view.partial.footer" /}
+  </body>
     
 </html>

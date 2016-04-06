@@ -41,13 +41,13 @@ function get(req, res) {
 function createUser(req, res) {
   var params = {
     emailAddress  : req.body.email,
-    username      : req.body.username,
+    userName      : req.body.username,
     password      : req.body.password
   }
   return usersCrud
     .create(params)
     .then(function(user){
-      res.json('OK');
+      res.redirect('/login');
     });
 }
 
