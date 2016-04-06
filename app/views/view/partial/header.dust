@@ -1,5 +1,5 @@
 <div partial-beg="app.views.view.partial.header" class="navbar navbar-default navbar-fixed-top header">
-  <div class="container height-100-percent">
+  <div class="container height-100-percent container-shadow">
     <div class="row height-100-percent">
       <div class="col-sm-9">
         <div>HEADER</div>
