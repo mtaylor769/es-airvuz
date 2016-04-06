@@ -1,30 +1,47 @@
-<div partial-beg="app.views.view.partial.header" class="">
-  <div class="">
-    <div class="container container-shadow">
+<div partial-beg="app.views.view.partial.header" id="footer">
+  <div class="container height-100-percent container-shadow">
+    <div class="row footer-sub1">
+      <div class="col-sm-2">
+        <ul class="list-unstyled">
+          <li><a href="#">About Airvuz</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Media</a></li>
+        </ul>
+      </div>
 
-      <div class="row footer-sub1">
-        <div class="col-sm-12">
-          <div>FOOTER</div>
-        </div>
-      </div class="row">
+      <div class="col-sm-2">
+        <ul class="list-unstyled">
+          <li><a href="#">Login</a></li>
+          <li><a href="#">Sign Up</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
 
+      <div class="col-sm-2">
+        <p class="text-uppercase">Follow us!</p>
+        <ul class="list-inline social-media">
+          <li>instagram</li>
+          <li>twitter</li>
+          <li>facebook</li>
+        </ul>
+      </div>
+      <div class="col-sm-3 col-sm-offset-3">
+        <p class="text-uppercase">Stay up to date with the latest AV NEWS!</p>
+        <input type="email" placeholder="Email Address"/>
+        <button class="btn btn-primary text-uppercase">Sign up</button>
+      </div>
     </div>
-  </div >
 
-  <div class="">
-    <div class="container container-shadow">
-
-      <div class="row footer-sub2">
-        <div class="col-sm-12">
-          <ul>
-            <li><a href="/terms-and-conditions">TERMS & CONDITIONS</a></li>
-            <li><a href="/terms-and-conditions">PRIVACY POLICY</a></li>
-            <li><a href="/terms-and-conditions">COPYRIGHT</a></li>
-            <li><a href="/terms-and-conditions">AIRVUZ. 2016</a></li>
-          <ul>
-        </div>
-      </div class="row">
-
+    <div class="row footer-sub2">
+      <div class="col-sm-12 text-center">
+        <ul class="list-inline">
+          <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
+          <li><a href="/terms-and-conditions">Privacy Policy</a></li>
+          <li><a href="/terms-and-conditions">Copyright</a></li>
+          <li><a href="/terms-and-conditions">&copy; Airvuz, 2016</a></li>
+        </ul>
+      </div>
     </div>
   </div>
+
 </div>
