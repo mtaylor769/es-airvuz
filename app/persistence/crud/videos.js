@@ -148,16 +148,20 @@ Videos.prototype.create = function(params) {
 //	})
 //};
 
+Videos.prototype.get5Videos = function() {
+	return VideoModel.find({}).limit(5).exec();
+}
+
 Videos.prototype.getById = function(id) {
-	return VideoModel.findById({_id: id}).exec()
+	return VideoModel.findById({_id: id}).exec();
 };
 
 Videos.prototype.remove = function(id) {
-	return VideoModel.findByIdAndRemove({_id: id}).exec()
+	return VideoModel.findByIdAndRemove({_id: id}).exec();
 };
 
 Videos.prototype.update = function(params) {
-	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec()
+	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec();
 };
 
 module.exports = new Videos();

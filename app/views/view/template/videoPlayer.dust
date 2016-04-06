@@ -66,7 +66,7 @@
                     <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
                     <div class="m-t-20">
                         <p class="pos-absolute-r-15">{commentCreatedDate}</p>
-                        <p class="m-b-0 airvuz-blue">{_id}</p>
+                        <p class="m-b-0 airvuz-blue">{userId.userName}</p>
                         <p class="m-b-0">{comment}</p>
                         <span>-> reply</span>
                     </div>
@@ -78,16 +78,18 @@
                     <h5>UP NEXT</h5>
                     <button class="btn pos-absolute-r-15">switch PH</button>
                 </div>
+                {#upNext}
                 <div>
                     <img src="tn_00001.jpg" width="255px" height="210px" class="m-t-34">
                     <div class="up-next-layer">
-                        <p class="font-white m-l-15 p-t-15">Title of the video</p>
+                        <p class="font-white m-l-15 p-t-15">{title}</p>
                         <div class="flex">
-                            <p class="font-white m-l-15">3:00</p>
-                            <p class="font-white pos-absolute-r-15">12K</p>
+                            <p class="font-white m-l-15">{duration}</p>
+                            <p class="font-white pos-absolute-r-15">{viewCount}</p>
                         </div>
                     </div>
                 </div>
+                {/upNext}
             </div>
         </div>
         {> "app.views.view.partial.footer" /}

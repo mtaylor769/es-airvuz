@@ -51,7 +51,14 @@ VideoPlayerModel.prototype.getData = function(params) {
 		dataObject.user = user;
 		return user;
 	})
-	.then(function(user){
+	.then(function(user) {
+		return videoCrud.get5Videos();
+	})
+	.then(function(videos) {
+		dataObject.upNext = videos;
+		return videos;
+	})
+	.then(function(videos){
 		return commentCrud.getParentCommentByVideoId({videoId: videoId});
 	})
 	.then(function(comments) {
