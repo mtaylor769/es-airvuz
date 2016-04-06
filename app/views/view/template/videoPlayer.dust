@@ -6,11 +6,92 @@
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="public/{videoPlayer.airvuz.css}">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {videoPlayer.viewName} </div>
+        <body>
+        <div class="container main">
+            <div class="col-md-9">
+                <div class="flex">
+                    <button class="btn btn primary"><</button>
+                    <span class="video-player-title airvuz-blue">{video.title}</span>
+                </div>
+                <video width="100%" height="10%" controls class="m-t-34">
+                    <source src="./Air-to-Air.mp4" type="video/mp4">
+                </video>
+                <div class="flex video-player-categories font-white">
+                    <p class="p-5-m-0 p-l-25">Drone Racing</p>
+                    <p class="p-5-m-0">|</p>
+                    <p class="p-5-m-0">Fails</p>
+                    <p class="p-5-m-0">|</p>
+                    <p class="p-5-m-0">Beaches</p>
+                </div>
+                <div class="flex video-user-info-height">
+                    <button class="btn background-orange border-radius-0 font-white add-button">+</button>
+                    <img src="./tn_00001.jpg" height="80" width="80" class="margin-auto border-radius-circle">
+                    <div class="margin-auto t-a-inherit">
+                        <p class="m-b-0 airvuz-blue">{user.userName}</p>
+                        <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
+                        <p class="m-b-0"><span class="airvuz-blue">150 </span>followers</p>
+                    </div>
+                    <div class="margin-auto t-a-inherit">
+                        <p class="m-b-0">Top Videos by</p>
+                        <p class="m-b-0">{user.userName}</p>
+                    </div>
+                    <img src="./tn_00001.jpg" height="75" width="150" class="margin-auto">
+                    <img src="./tn_00001.jpg" height="75" width="150" class="margin-auto">
+                    <button class="video-user-more border-radius-0">More</button>
+                </div>
+                <div class="gainsboro-background p-15-0">
+                    <div class="inline">
+                        <span class="p-l-25"><span class="bold">{video.viewCount} </span>VUZ |</span>
+                        <span><span class="bold"> {video.likeCount} </span>Likes |</span>
+                        <span><span class="bold"> {video.commentCount} </span>Comments</span>
+                    </div>
+                    <div class="video-action-icons pull-right">
+                        <span class="btn btn-primary">icon PH</span>
+                        <span class="btn btn-primary">icon PH</span>
+                        <span class="btn btn-primary">icon PH</span>
+                    </div>
+                </div>
+                <div class="flex write-comment gainsboro-background">
+                    <textarea cols="90" rows="3" class="m-r-20"></textarea>
+                    <button class="btn background-orange border-radius-0 font-white p-0-40">Comment</button>
+                </div>
+                {#comments}
+                <div class="flex" style="border-bottom: inset grey">
+                    <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
+                    <div class="m-t-20">
+                        <p class="pos-absolute-r-15">{commentCreatedDate}</p>
+                        <p class="m-b-0 airvuz-blue">{userId.userName}</p>
+                        <p class="m-b-0">{comment}</p>
+                        <span>-> reply</span>
+                    </div>
+                </div>
+                {/comments}
+            </div>
+            <div class="col-md-3">
+                <div class="flex">
+                    <h5>UP NEXT</h5>
+                    <button class="btn pos-absolute-r-15">switch PH</button>
+                </div>
+                {#upNext}
+                <div>
+                    <img src="tn_00001.jpg" width="255px" height="210px" class="m-t-34">
+                    <div class="up-next-layer">
+                        <p class="font-white m-l-15 p-t-15">{title}</p>
+                        <div class="flex">
+                            <p class="font-white m-l-15">{duration}</p>
+                            <p class="font-white pos-absolute-r-15">{viewCount}</p>
+                        </div>
+                    </div>
+                </div>
+                {/upNext}
+            </div>
+        </div>
         {> "app.views.view.partial.footer" /}
         <script>
             (function() {

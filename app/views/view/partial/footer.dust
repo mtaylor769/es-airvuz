@@ -1,6 +1,6 @@
-<div partial-beg="app.views.view.partial.header">
-  <div class="footer-sub1">
-    <div class="container">
+<div partial-beg="app.views.view.partial.header" class="">
+  <div class="">
+    <div class="container container-shadow">
 
       <div class="row footer-sub1">
         <div class="col-sm-12">
@@ -11,8 +11,8 @@
     </div>
   </div >
 
-  <div class="footer-sub2">
-    <div class="container">
+  <div class="">
+    <div class="container container-shadow">
 
       <div class="row footer-sub2">
         <div class="col-sm-12">

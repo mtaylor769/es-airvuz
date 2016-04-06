@@ -53,7 +53,7 @@ IndexModel.prototype.getData = function(params) {
 
 		CategoryType
 			.get()
-			.then(function() {
+			.then(function(data) {
 				logger.debug("CategoryType.get() ...");
 				resolve(params);
 			})

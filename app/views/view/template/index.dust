@@ -26,7 +26,7 @@
     {> "app.views.view.partial.header" /}
 
     <!-- BEG:Main Container -->
-    <div class="container main">
+    <div class="container main container-shadow">
       <div>Line</div>
       <div>BEG</div>
       <div class="home">viewName[]: {index.viewName} </div>

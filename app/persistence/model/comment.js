@@ -88,7 +88,7 @@ var CommentSchema = mongoose.Schema({
 	 */
 	userId : {
 		required: true,
-		type: mongoose.Schema.ObjectId, ref: 'User'
+		type: mongoose.Schema.ObjectId, ref: 'Users'
 	},
 
 	videoId : {

@@ -196,7 +196,7 @@ Comment.prototype.getByParentCommentId = function(parentId) {
 
 Comment.prototype.getParentCommentByVideoId = function(params) {
   console.log('params.videoId : ' + params.videoId);
-  return CommentModel.find( { videoId: params.videoId , replyDepth: 0} ).sort({commentCreatedDate: -1}).limit(10).lean().exec();
+  return CommentModel.find( { videoId: params.videoId , replyDepth: 0} ).sort({commentCreatedDate: -1}).limit(10).populate('userId').lean().exec();
 };
 
 Comment.prototype.getById = function(id) {
