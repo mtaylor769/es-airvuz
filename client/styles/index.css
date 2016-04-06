@@ -71,7 +71,7 @@ body {
 
 .video-player-categories {
   background: #2b2e38;
-  margin-top: -5;
+  margin-top: -5px;
 }
 
 .border-radius-0 {
@@ -145,4 +145,40 @@ body {
 
 .inline {
   display: inline;
+}
+
+.airvuz-blue {
+  color: #26bae5;
+}
+
+.m-t-34 {
+  margin-top: 34px;
+}
+
+.pos-absolute-r-15 {
+  position: absolute;
+  right: 15px;
+}
+
+.m-l-15 {
+  margin-left: 15px;
+}
+
+.m-t-20 {
+  margin-top: 20px;
+}
+
+.m-10-20 {
+  margin: 10px 20px;
+}
+
+.up-next-layer {
+  position: relative;
+  background: black;
+  opacity: 0.5;
+  margin-top: -75px;
+}
+
+.p-t-15 {
+  padding-top: 15px;
 }
