@@ -88,6 +88,77 @@ body {
  * End Header
 /**********************************/
 
+/**********************************
+ * Video Player
+ */
+
+/*
+ * End Video Player
+/**********************************/
+
+.categories li {
+  padding: 0 10px 0 5px;
+  margin: 0px;
+  margin-top: 10px;
+  border-right: solid #fff 1px;
+}
+
+.categories li:first-child {
+  padding-left: 25px;
+}
+
+.categories li:last-child {
+  border-right: none;
+}
+
+.up-next-layer {
+  position: relative;
+  background: black;
+  opacity: 0.5;
+  margin-top: -75px;
+}
+
+.video-player-categories {
+  background: #2b2e38;
+  margin-top: -5px;
+}
+
+.video-action-icons {
+  margin: -7px 20px 0 20px;
+}
+
+.video-player-title {
+  margin: auto 20px;
+}
+
+.video-user-info-height {
+  height: 110px;
+}
+
+.video-user-more {
+  width: 103px;
+}
+
+.video-user-more p{
+  margin-top: 45%;
+}
+
+.video-user-more:hover {
+  background-color: #f48a4a;
+  color: white;
+}
+
+.write-comment {
+  padding: 20px 40px;
+}
+
+/*
+ * End Video Player
+/**********************************/
+
+/**********************************
+ * misc helper
+ */
 .main {
   background: #fafafa;
   box-shadow: 1px 0 10px 0 rgba(128, 128, 128, 0.5);
@@ -97,55 +168,13 @@ body {
   display: flex;
 }
 
-.video-player-title {
-  margin: auto 20px;
-}
-
-.p-5-m-0 {
-  padding: 5px;
-  margin: 0;
-}
-
-.m-b-0 {
-  margin-bottom: 0;
-}
-
-.m-r-20 {
-  margin-right: 20px;
-}
-
-.video-player-categories {
-  background: #2b2e38;
-  margin-top: -5px;
-}
-
 .border-radius-0 {
   border-radius: 0;
-}
-
-.background-orange {
-  background-color: #f48a4a;
-}
-
-.font-white {
-  color: white;
-}
-
-.p-l-25 {
-  padding-left: 25px;
-}
-
-.video-user-info-height {
-  height: 110px;
 }
 
 .add-button {
   width: 40px;
   text-align: center;
-}
-
-.margin-auto {
-  margin: auto;
 }
 
 .t-a-inherit {
@@ -156,53 +185,28 @@ body {
   font-weight: bold;
 }
 
-.write-comment {
-  padding: 20px 40px;
-}
-
-.gainsboro-background {
-  background: gainsboro;
-}
-
-.p-15-0 {
-  padding: 15px 0;
-}
-
-.video-action-icons {
-  margin: -7px 20px 0 20px;
-}
-
-.p-0-40 {
-  padding: 0 40px;
-}
-
-.pull-right {
-  float: right;
-}
-
 .border-radius-circle {
   border-radius: 50%;
-}
-
-.video-user-more {
-  width: 103px;
 }
 
 .inline {
   display: inline;
 }
 
-.airvuz-blue {
-  color: #26bae5;
-}
-
-.m-t-34 {
-  margin-top: 34px;
-}
-
 .pos-absolute-r-15 {
   position: absolute;
   right: 15px;
+}
+
+/*
+ * End misc helper
+/**********************************/
+
+/**********************************
+ * margin
+ */
+.m-t-34 {
+  margin-top: 34px;
 }
 
 .m-l-15 {
@@ -217,13 +221,70 @@ body {
   margin: 10px 20px;
 }
 
-.up-next-layer {
-  position: relative;
-  background: black;
-  opacity: 0.5;
-  margin-top: -75px;
+.m-b-0 {
+  margin-bottom: 0;
 }
+
+.m-r-20 {
+  margin-right: 20px;
+}
+
+.margin-auto {
+  margin: auto;
+}
+/*
+ * End margin
+/**********************************/
+
+/**********************************
+ * padding
+ */
 
 .p-t-15 {
   padding-top: 15px;
 }
+
+.p-5-m-0 {
+  padding: 5px;
+  margin: 0;
+}
+
+.p-l-25 {
+  padding-left: 25px;
+}
+
+.p-15-0 {
+  padding: 15px 0;
+}
+
+.p-0-40 {
+  padding: 0 40px;
+}
+/*
+ * End padding
+/**********************************/
+
+
+/**********************************
+ * fonts and colors
+ */
+
+.background-orange {
+  background-color: #f48a4a;
+}
+
+.font-white {
+  color: white;
+}
+
+.gainsboro-background {
+  background: gainsboro;
+}
+
+.airvuz-blue {
+  color: #26bae5;
+}
+
+/*
+ * End fonts and colors
+/**********************************/
