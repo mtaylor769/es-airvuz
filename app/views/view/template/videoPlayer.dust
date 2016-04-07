@@ -31,11 +31,24 @@
                 categories
                 */
                 <div class="flex video-player-categories font-white">
+<<<<<<< HEAD
                     <ul class="list-inline categories">
                         {#video.categories}
                         <li>{name}</li>
                         {/video.categories}
                     </ul>
+=======
+                    <ul class="list-inline">
+                        {#video.categories}
+                        <li class="p-5-m-0 p-l-25">{name}</li>
+                        {/video.categories}
+                    </ul>
+                    {!<p class="p-5-m-0 p-l-25">Drone Racing</p>!}
+                    {!<p class="p-5-m-0">|</p>!}
+                    {!<p class="p-5-m-0">Fails</p>!}
+                    {!<p class="p-5-m-0">|</p>!}
+                    {!<p class="p-5-m-0">Beaches</p>!}
+>>>>>>> 5eddf5df5f9ee141764cc396863bdbe9e31f0761
                 </div>
                 /*
                 video owner info

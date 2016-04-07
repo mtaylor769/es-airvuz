@@ -62,6 +62,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer.viewName		= "Video Player";
 			logger.info(dataObject);
 			return params;
+
 	});
 
 }
