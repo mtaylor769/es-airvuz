@@ -53,7 +53,7 @@ config.watch   = IS_DEVELOPMENT;
 config.context      = path.resolve ( __dirname );
 config.entry        = {};
 config.entry.vendor = [
-  'lodash'
+  //'lodash'
 ];
 
 // Entry points for webpack to compile code.
