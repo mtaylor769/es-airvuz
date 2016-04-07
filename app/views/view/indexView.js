@@ -36,7 +36,11 @@ module.exports = new IndexView({
 			{
 				partialName: 'app.views.view.partial.cdn-css',
 				partialPath: './app/views/view/partial/cdn-css.dust' 
-			},			
+			},	
+			{
+				partialName: 'app.views.view.partial.cdn-js',
+				partialPath: './app/views/view/partial/cdn-js.dust' 
+			},				
 			{
 				partialName: 'app.views.view.partial.header',
 				partialPath: './app/views/view/partial/header.dust' 
