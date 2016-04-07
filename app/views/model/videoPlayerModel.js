@@ -4,12 +4,12 @@ var logger					= log4js.getLogger('app.views.model.index');
 
 
 try {
-	var BaseModel	= require('./baseModel');
-	var Promise		= require('bluebird');
-	var util			= require('util');
-	var videoCrud = require('../../persistence/crud/videos');
-	var userCrud  = require('../../persistence/crud/users');
-	var commentCrud = require('../../persistence/crud/comment');
+	var BaseModel	    = require('./baseModel');
+	var Promise		    = require('bluebird');
+	var util			    = require('util');
+	var videoCrud     = require('../../persistence/crud/videos');
+	var userCrud      = require('../../persistence/crud/users');
+	var commentCrud   = require('../../persistence/crud/comment');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -36,32 +36,30 @@ VideoPlayerModel.prototype.getData = function(params) {
 	var sourceManifest	= params.sourceManifest;
 
 	return videoCrud.getById(videoId)
-	.then(function(video) {
-		dataObject.video = video;
-		videoId = video._id;
-		return userCrud.getUserById(video.userId);
-	})
-	.then(function(user) {
-		dataObject.user = user;
-		return videoCrud.get5Videos();
-	})
-	.then(function(videos) {
-		dataObject.upNext = videos;
-		return commentCrud.getParentCommentByVideoId({videoId: videoId});
-	})
-	.then(function(comments) {
-		dataObject.comments = comments;
-		params.data													= dataObject;
-		params.data.videoPlayer							= {};
-		params.data.videoPlayer.title				= "Video Player";
-		params.data.videoPlayer.airvuz			= {};
-		params.data.videoPlayer.airvuz.css	= sourceManifest["airvuz.css"];
-		params.data.videoPlayer.viewName		= "Video Player";
-		logger.info(dataObject);
-		return params;
+		.then(function(video) {
+			dataObject.video = video;
+			videoId = video._id;
+			return userCrud.getUserById(video.userId);
+		})
+		.then(function(user) {
+			dataObject.user = user;
+			return videoCrud.get5Videos();
+		})
+		.then(function(videos) {
+			dataObject.upNext = videos;
+			return commentCrud.getParentCommentByVideoId({videoId: videoId});
+		})
+		.then(function(comments) {
+			dataObject.comments = comments;
+			params.data													= dataObject;
+			params.data.videoPlayer							= {};
+			params.data.videoPlayer.title				= "Video Player";
+			params.data.videoPlayer.airvuz			= {};
+			params.data.videoPlayer.airvuz.css	= sourceManifest["airvuz.css"];
+			params.data.videoPlayer.viewName		= "Video Player";
+			logger.info(dataObject);
+			return params;
 	});
-		logger.info("getData 1.0");
-		logger.info("getData sourceManifest['airvuz.css']:" + sourceManifest["airvuz.css"]);
 
 }
 
