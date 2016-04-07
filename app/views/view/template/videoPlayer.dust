@@ -23,11 +23,16 @@
                     <source src="./Air-to-Air.mp4" type="video/mp4">
                 </video>
                 <div class="flex video-player-categories font-white">
-                    <p class="p-5-m-0 p-l-25">Drone Racing</p>
-                    <p class="p-5-m-0">|</p>
-                    <p class="p-5-m-0">Fails</p>
-                    <p class="p-5-m-0">|</p>
-                    <p class="p-5-m-0">Beaches</p>
+                    <ul class="list-inline">
+                        {#video.categories}
+                        <li class="p-5-m-0 p-l-25">{name}</li>
+                        {/video.categories}
+                    </ul>
+                    {!<p class="p-5-m-0 p-l-25">Drone Racing</p>!}
+                    {!<p class="p-5-m-0">|</p>!}
+                    {!<p class="p-5-m-0">Fails</p>!}
+                    {!<p class="p-5-m-0">|</p>!}
+                    {!<p class="p-5-m-0">Beaches</p>!}
                 </div>
                 <div class="flex video-user-info-height">
                     <button class="btn background-orange border-radius-0 font-white add-button">+</button>
