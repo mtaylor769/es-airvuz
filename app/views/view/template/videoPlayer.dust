@@ -16,7 +16,7 @@
         <div class="container main">
             <div class="col-md-9">
                 <div class="flex">
-                    <button class="btn btn primary"><</button>
+                    <button class="btn btn-primary"><</button>
                     <span class="video-player-title airvuz-blue">{video.title}</span>
                 </div>
                 <video width="100%" height="10%" controls class="m-t-34">

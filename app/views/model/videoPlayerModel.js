@@ -1,6 +1,7 @@
 // IMPORT: BEGIN
-var log4js		= require('log4js');
-var logger		= log4js.getLogger('app.views.model.index');
+var log4js					= require('log4js');
+var logger					= log4js.getLogger('app.views.model.index');
+
 
 try {
 	var BaseModel	= require('./baseModel');
@@ -25,41 +26,26 @@ var VideoPlayerModel = function(params) {
 	logger.debug("constructor: IN");	
 	
 	BaseModel.apply(this, arguments);
-}
+};
 
 util.inherits(VideoPlayerModel, BaseModel);
 
 VideoPlayerModel.prototype.getData = function(params) {
-	//hoist vars, indentation, refactor, align equals
-	var videoId = '56fec7bb07354aaa096db3b8';
-	logger.info("getData ");	
+	var videoId         = '56fec7bb07354aaa096db3b8';
+	var dataObject      = {};
 	var sourceManifest	= params.sourceManifest;
-	var THIS						= this;
-	var videoId;
-	var dataObject = {};
-	logger.info("getData 2");
 	return videoCrud.getById(videoId)
 	.then(function(video) {
-		logger.info('video by id');
-	dataObject.video = video;
+		dataObject.video = video;
 		videoId = video._id;
-		return video;
-	})
-	.then(function(video){
 		return userCrud.getUserById(video.userId);
 	})
 	.then(function(user) {
 		dataObject.user = user;
-		return user;
-	})
-	.then(function(user) {
 		return videoCrud.get5Videos();
 	})
 	.then(function(videos) {
 		dataObject.upNext = videos;
-		return videos;
-	})
-	.then(function(videos){
 		return commentCrud.getParentCommentByVideoId({videoId: videoId});
 	})
 	.then(function(comments) {
