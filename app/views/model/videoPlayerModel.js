@@ -56,6 +56,9 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer.title				= "Video Player";
 			params.data.videoPlayer.airvuz			= {};
 			params.data.videoPlayer.airvuz.css	= sourceManifest["airvuz.css"];
+			params.data.videoPlayer.airvuz.js   = sourceManifest["airvuz.js"];
+			params.data.videoPlayer.vendor      = {};
+			params.data.videoPlayer.vendor.js   = sourceManifest["vendor.js"];
 			params.data.videoPlayer.viewName		= "Video Player";
 			logger.info(dataObject);
 			return params;
