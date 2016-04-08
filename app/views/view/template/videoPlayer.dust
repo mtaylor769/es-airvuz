@@ -14,22 +14,16 @@
         <body>
         <div class="container main">
             <div class="col-md-9">
-                /*
-                video title and back button
-                */
+                {!video title and back button!}
                 <div class="flex">
                     <button class="btn btn-primary"><</button>
                     <span class="video-player-title airvuz-blue">{video.title}</span>
                 </div>
-                /*
-                video player
-                */
+                {!video player!}
                 <video width="100%" height="10%" controls class="m-t-34">
                     <source src="./Air-to-Air.mp4" type="video/mp4">
                 </video>
-                /*
-                categories
-                */
+                {!categories!}
                 <div class="flex video-player-categories font-white">
                     <ul class="list-inline categories">
                         {#video.categories}
@@ -37,9 +31,7 @@
                         {/video.categories}
                     </ul>
                 </div>
-                /*
-                video owner info
-                */
+                {!video owner info!}
                 <div class="flex video-user-info-height">
                     <button class="btn background-orange border-radius-0 font-white add-button">+</button>
                     <img src="./tn_00001.jpg" height="80" width="80" class="margin-auto border-radius-circle">
@@ -58,9 +50,7 @@
                         <p>More</p>
                     </div>
                 </div>
-                /*
-                comments
-                */
+                {!comments!}
                 <div class="gainsboro-background p-15-0">
                     <div class="inline">
                         <span class="p-l-25"><span class="bold">{video.viewCount} </span>VUZ |</span>
@@ -78,20 +68,18 @@
                     <button class="btn background-orange border-radius-0 font-white p-0-40">Comment</button>
                 </div>
                 {#comments}
-                <div id="{_id}" class="flex" style="border-bottom: inset grey">
+                <div class="flex" style="border-bottom: inset grey">
                     <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
-                    <div class="m-t-20">
+                    <div id="{_id}" class="m-t-20">
                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>
                         <p class="m-b-0">{comment}</p>
-                        <button class="reply">-> reply</button>
+                        <button class="reply" value="{_id}">-> reply</button>
                     </div>
                 </div>
                 {/comments}
             </div>
-            /*
-            up next video list
-            */
+            {!up next video list!}
             <div class="col-md-3">
                 <div class="flex">
                     <h5>UP NEXT</h5>
@@ -112,12 +100,11 @@
             </div>
         </div>
         {> "app.views.view.partial.footer" /}
+        {> "app.views.view.partial.cdn-js" /}
         <script src="public/{videoPlayer.vendor.js}"></script>
         <script src="public/{videoPlayer.airvuz.js}"></script>
         <script>
-            (function() {
-                console.log("doc loaded");
-            })();
+            videoPlayer.init();
         </script>
     </body>
     
