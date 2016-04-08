@@ -29,12 +29,27 @@ function facebook(req, res, next) {
   passport.authenticate('facebook')(req, res, next);
 }
 
+// function facebookCallback(req, res, next) {
+//   passport.authenticate('facebook', { 
+//     successRedirect: '/login?login=success',
+//     failureRedirect: '/login?login=failed'
+//   })(req, res, next);
+// }
+
 function facebookCallback(req, res, next) {
-  passport.authenticate('facebook', { 
-    successRedirect: '/login?login=success',
-    failureRedirect: '/login?login=failed'
-  })(req, res, next);
+  passport.authenticate('facebook', { failureRedirect: '/login' })(req, res, next),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  };
 }
+
+// app.get('/auth/facebook/callback',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   });
 
 function google(req, res, next) {
   console.log('hitting google api');
