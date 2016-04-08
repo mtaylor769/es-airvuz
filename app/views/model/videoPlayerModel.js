@@ -60,6 +60,12 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer.vendor      = {};
 			params.data.videoPlayer.vendor.js   = sourceManifest["vendor.js"];
 			params.data.videoPlayer.viewName		= "Video Player";
+
+			params.data.airvuz = {};
+			params.data.vendor = {};
+			params.data.airvuz.js = sourceManifest["airvuz.js"];
+			params.data.airvuz.css = sourceManifest["airvuz.css"];
+			params.data.vendor.js = sourceManifest["vendor.js"];
 			logger.info(dataObject);
 			return params;
 	});

@@ -6,8 +6,7 @@
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {> "app.views.view.partial.cdn-css" /}
-        <link rel="stylesheet" href="public/{videoPlayer.airvuz.css}">
+        {>  "app.views.view.partial.css" /}
     </head>
     <body>
         {> "app.views.view.partial.header" /}
@@ -100,12 +99,7 @@
             </div>
         </div>
         {> "app.views.view.partial.footer" /}
-        {> "app.views.view.partial.cdn-js" /}
-        <script src="public/{videoPlayer.vendor.js}"></script>
-        <script src="public/{videoPlayer.airvuz.js}"></script>
-        <script>
-            videoPlayer.init();
-        </script>
+        {> "app.views.view.partial.js" /}
     </body>
     
 </html>
