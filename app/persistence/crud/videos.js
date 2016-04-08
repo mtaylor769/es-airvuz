@@ -153,7 +153,7 @@ Videos.prototype.get5Videos = function() {
 }
 
 Videos.prototype.getById = function(id) {
-	return VideoModel.findById({_id: id}).exec();
+	return VideoModel.findById({_id: id}).populate('categories').exec();
 };
 
 Videos.prototype.remove = function(id) {

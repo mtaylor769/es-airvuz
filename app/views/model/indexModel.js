@@ -36,6 +36,12 @@ IndexModel.prototype.getData = function(params) {
 		logger.info("getData 1.0");
 		logger.info("getData sourceManifest['airvuz.css']:" + sourceManifest["airvuz.css"]);
 		params.data										= {};
+
+		params.data.airvuz			= {};
+		params.data.airvuz.css	= sourceManifest["airvuz.css"];
+		params.data.airvuz.js		= sourceManifest["airvuz.js"];
+		params.data.vendor			= {};
+		params.data.vendor.js		= sourceManifest["vendor.js"];
 		
 		
 		params.data.index							= {};

@@ -15,11 +15,10 @@
         <meta property="fb:app_id" content="{index.fb.app_id}">
         <!-- END: OG -->
 
-        {> "app.views.view.partial.cdn-css" /}
-        
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="public/{index.airvuz.css}">
+
+        {> "app.views.view.partial.css" /}
   </head>
   <body>
   
@@ -83,12 +82,13 @@
 
     {> "app.views.view.partial.footer" /}
 
-    <script src="public/{index.airvuz.js}"></script>
-        <script>
-            (function() {
-                console.log("doc loaded");
-            })();
-        </script>
+    {> "app.views.view.partial.js" /}
+
+    <script>
+        (function() {
+            console.log("doc loaded");
+        })();
+    </script>
   </body>
     
 </html>

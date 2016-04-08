@@ -27,8 +27,12 @@
       </div>
       <div class="col-sm-3 col-sm-offset-3">
         <p class="text-uppercase">Stay up to date with the latest AV NEWS!</p>
-        <input type="email" placeholder="Email Address"/>
-        <button class="btn btn-primary text-uppercase">Sign up</button>
+
+        <form class="form-inline">
+          <input type="email" class="form-control" placeholder="Email Address"/>
+          <button class="btn btn-primary text-uppercase">Sign up</button>
+        </form>
+
       </div>
     </div>
 

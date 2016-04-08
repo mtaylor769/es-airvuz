@@ -1,7 +1,22 @@
 body {
-
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
 }
+
+/**********************************
+ * Override bootstrap
+ */
+
+.btn, .form-control {
+  border-radius: 0;
+}
+.btn-primary {
+  background-color: #30c1ed;
+  border-color: #30c1ed;
+}
+
+/*
+ * End Override bootstrap
+/**********************************/
 
 .container-shadow {
   box-shadow: 1px 0 10px 0 rgba(128, 128, 128, 0.5);
@@ -42,9 +57,9 @@ body {
 .footer-sub2 ul li:last-child {
   border-right: none;
 }
-/**********************************
+/*
  * End Footer
- */
+/**********************************/
 
 /**********************************
  * Header
@@ -69,9 +84,9 @@ body {
   margin: 0;
   padding: 0;
 }
-/**********************************
+/*
  * End Header
- */
+/**********************************/
 
 .main {
   background: #fafafa;
