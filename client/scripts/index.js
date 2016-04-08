@@ -5,8 +5,6 @@ var a = "a";
 
 exports.add = function (a, b) { return a+b };
 
-
-//exports.videoPlayer = require('./video-player');
 //
 // *************** start JQuery ***********************
 $(document).ready(function() {

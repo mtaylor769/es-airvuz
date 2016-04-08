@@ -10,7 +10,6 @@
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        <body>
         <div class="container main">
             <div class="col-md-9">
                 {!video title and back button!}
@@ -67,7 +66,7 @@
                     <button class="btn background-orange border-radius-0 font-white p-0-40">Comment</button>
                 </div>
                 {#comments}
-                <div class="flex" style="border-bottom: inset grey">
+                <div id="{_id}" class="flex" style="border-bottom: inset grey">
                     <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
                     <div id="{_id}" class="m-t-20">
                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
@@ -100,6 +99,11 @@
         </div>
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.js" /}
+        <script>
+            (function() {
+                console.log("doc loaded");
+            })();
+        </script>
     </body>
     
 </html>
