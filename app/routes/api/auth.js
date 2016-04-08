@@ -31,8 +31,8 @@ function facebook(req, res, next) {
 
 function facebookCallback(req, res, next) {
   passport.authenticate('facebook', { 
-    successRedirect: '/',
-    failureRedirect: '/play'
+    successRedirect: '/?login=success',
+    failureRedirect: '/?login=failed'
   })(req, res, next);
 }
 
@@ -43,8 +43,8 @@ function google(req, res, next) {
 
 function googleCallback(req, res, next) {
   passport.authenticate('google', { 
-    successRedirect: '/',
-    failureRedirect: '/play'
+    successRedirect: '/?login=success',
+    failureRedirect: '/?login=failed'
   })(req, res, next);
 }
 
@@ -55,8 +55,8 @@ function instagram(req, res, next) {
 
 function instagramCallback(req, res, next) {
   passport.authenticate('instagram', { 
-    successRedirect: '/',
-    failureRedirect: '/play'
+    successRedirect: '/?login=success',
+    failureRedirect: '/?login=failed'
   })(req, res, next);
 }
 
@@ -75,15 +75,15 @@ function twitterCallback(req, res, next) {
 }
 
 
-Auth.prototype.login               = login,
-Auth.prototype.facebook            = facebook,
-Auth.prototype.facebookCallback    = facebookCallback,
-Auth.prototype.google              = google,
-Auth.prototype.googleCallback      = googleCallback,
-Auth.prototype.twitter             = twitter,
-Auth.prototype.twitterCallback     = twitterCallback,
-Auth.prototype.instagram           = instagram,
-Auth.prototype.instagramCallback   = instagramCallback
+Auth.prototype.login               = login;
+Auth.prototype.facebook            = facebook;
+Auth.prototype.facebookCallback    = facebookCallback;
+Auth.prototype.google              = google;
+Auth.prototype.googleCallback      = googleCallback;
+Auth.prototype.twitter             = twitter;
+Auth.prototype.twitterCallback     = twitterCallback;
+Auth.prototype.instagram           = instagram;
+Auth.prototype.instagramCallback   = instagramCallback;
 
 
 module.exports = new Auth();

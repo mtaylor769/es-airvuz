@@ -6,6 +6,7 @@
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {> "app.views.view.partial.cdn-css" /}
         <link rel="stylesheet" href="public/{login.airvuz.css}">
     </head>
     <body>
@@ -15,9 +16,9 @@
             <div class="container">
 
               <div class="jumbotron text-center">
-                  
+                  <!-- convert to non-form and use ajax -->
 
-                  <form action="/api/auth" method="post" class="form-signin">
+                  <div class="form-signin">
                     <h2 class="form-signin-heading">Please sign in</h2>
                     <div>
                       <label for="login-email" class="sr-only">Email</label>
@@ -27,25 +28,25 @@
                       <label for="login-password" class="sr-only">Password</label>
                       <input id="login-password" type="password" name="password" placeholder="Password" class="form-control" required>
                     </div>
-                    <button type="submit" value="Login" class="btn btn-lg btn-info">Login</button>
-                  </form>
+                    <button onclick="login()" value="Login" class="btn btn-lg btn-info">Login</button>
+                  </div>
 
-                  <form action="/api/users/create" method="post" class="form-signin">
+                  <div class="form-signin">
                     <h2 class="form-signin-heading">Create User</h2>
                     <div>
-                      <label for="email" class="sr-only">Email</label>
-                      <input id="email" name="email" placeholder="Email" class="form-control" required>
+                      <label for="create-email" class="sr-only">Email</label>
+                      <input id="create-email" name="email" placeholder="Email" class="form-control" required>
                     </div>
                     <div>
-                      <label for="username" class="sr-only">Username</label>
-                      <input id="username" name="username" placeholder="Username" class="form-control" required>
+                      <label for="create-username" class="sr-only">Username</label>
+                      <input id="create-username" name="username" placeholder="Username" class="form-control" required>
                     </div>
                     <div>
-                      <label for="password" class="sr-only">Password</label>
-                      <input id="password" type="password" name="password" placeholder="Password" class="form-control" required>
+                      <label for="create-password" class="sr-only">Password</label>
+                      <input id="create-password" type="password" name="password" placeholder="Password" class="form-control" required>
                     </div>
-                    <button type="submit" value="Submit" class="btn btn-lg btn-success">Submit</button>
-                  </form>
+                    <button onclick="createUser()" value="Submit" class="btn btn-lg btn-success">Submit</button>
+                  </div>
 
                   <p>Login or Register with:</p>
 
@@ -60,6 +61,50 @@
             </div>
 
         </div>
+        <script src="public/{login.airvuz.js}"></script>
+        <script>
+            (function() {
+                
+            })();
+            function createUser() {
+              password    = document.getElementById("create-password").value;
+              email       = document.getElementById("create-email").value;
+              username    = document.getElementById("create-username").value;
+
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '/api/users/create', false);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.onload = function() {
+                  if (xhr.status === 200) {
+                      var userInfo = JSON.parse(xhr.responseText);
+                  }
+              };
+              xhr.send(JSON.stringify({
+                  email           : email,
+                  username        : username,
+                  password        : password
+              }));
+
+             }
+
+           function login() {
+            password    = document.getElementById("create-password").value;
+            email       = document.getElementById("create-email").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/auth', false);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var userInfo = JSON.parse(xhr.responseText);
+                }
+            };
+            xhr.send(JSON.stringify({
+                emailAddress           : email,
+                password        : password
+            }));
+           }
+        </script>
         {> "app.views.view.partial.footer" /}
     </body>
     

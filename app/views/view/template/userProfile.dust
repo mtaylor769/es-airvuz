@@ -18,14 +18,12 @@
           <div class="profile-username">Zeke Thao</div>
           <div class="profile-stats">
             <div class="location">Minneapolis, MN</div>
-            <div class="horizontal-break">|</div>
             <div class="Followers">
-              <span class="blue-font">300 </span><span>Followers</span>
+              <span class="av-primary">300 </span><span>Followers</span>
             </div>
             <div>
-              <span class="blue-font">299</span><span>Following</span>
+              <span class="av-primary">299</span><span>Following</span>
             </div>
-            <div class="horizontal-break">|</div>
             <div class="join-date">Member since November 2015</div>
           </div>
           <div class="profile-about">About stuff goes here.</div>
@@ -35,6 +33,13 @@
             <button>Follow</button>
             <button>Donate</button>
             <button>Hire</button>
+          </div>
+          <div>
+          <!-- Conditional only if user has social media links -->
+            <a href="/">Facebook</a>
+            <a href="/">Instagram</a>
+            <a href="/">Twitter</a>
+            <a href="/">Google+</a>
           </div>
         </div>
       </div>
