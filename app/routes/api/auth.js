@@ -31,8 +31,8 @@ function facebook(req, res, next) {
 
 function facebookCallback(req, res, next) {
   passport.authenticate('facebook', { 
-    successRedirect: '/?login=success',
-    failureRedirect: '/?login=failed'
+    successRedirect: '/login?login=success',
+    failureRedirect: '/login?login=failed'
   })(req, res, next);
 }
 

@@ -7,4 +7,5 @@
   <script src="public/{vendor.js}"></script>
 
   <script src="public/{airvuz.js}"></script>
+  <script src="client/scripts/login.js"></script>
 <!-- END: app.views.view.partial.js -->

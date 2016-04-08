@@ -6,8 +6,8 @@
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {> "app.views.view.partial.cdn-css" /}
-        <link rel="stylesheet" href="public/{login.airvuz.css}">
+        {> "app.views.view.partial.css" /}
+
     </head>
     <body>
         {> "app.views.view.partial.header" /}
@@ -61,11 +61,16 @@
             </div>
 
         </div>
-        <script src="public/{login.airvuz.js}"></script>
+        {> "app.views.view.partial.footer" /}
+
+        {> "app.views.view.partial.js" /}
         <script>
-            (function() {
+            // (function() {
+            //   // if (newUser) {
+            //     //test
+            //   // }
                 
-            })();
+            // })();
             function createUser() {
               password    = document.getElementById("create-password").value;
               email       = document.getElementById("create-email").value;
@@ -87,25 +92,29 @@
 
              }
 
-           function login() {
-            password    = document.getElementById("create-password").value;
-            email       = document.getElementById("create-email").value;
+            function login() {
+              password    = document.getElementById("create-password").value;
+              email       = document.getElementById("create-email").value;
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/auth', false);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var userInfo = JSON.parse(xhr.responseText);
-                }
-            };
-            xhr.send(JSON.stringify({
-                emailAddress           : email,
-                password        : password
-            }));
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '/api/auth', false);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.onload = function() {
+                  if (xhr.status === 200) {
+                      var userInfo = JSON.parse(xhr.responseText);
+                  }
+              };
+              xhr.send(JSON.stringify({
+                  emailAddress           : email,
+                  password        : password
+              }));
+           }
+
+           function facebookLogin() {
+
            }
         </script>
-        {> "app.views.view.partial.footer" /}
+        
     </body>
     
 </html>
