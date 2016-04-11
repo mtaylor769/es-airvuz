@@ -34,12 +34,22 @@ LoginModel.prototype.getData = function(params) {
     logger.info("getData 1.0");
     logger.info("getData sourceManifest['airvuz.css']:" + sourceManifest["airvuz.css"]);
     params.data                   = {};
-    params.data.airvuz            = {};
     
+    params.data.airvuz      = {};
+    params.data.airvuz.css  = sourceManifest["airvuz.css"];
+    params.data.airvuz.js   = sourceManifest["airvuz.js"];
+    params.data.vendor      = {};
+    params.data.vendor.js   = sourceManifest["vendor.js"];
+
     params.data.login             = {};
     params.data.login.airvuz      = {};
     params.data.login.airvuz.css  = sourceManifest["airvuz.css"];
-    params.data.login.viewName    = "Login Test";   
+    params.data.login.viewName    = "Login Test";
+
+    params.data.login.head        = {};
+    // params.data.login.head.og     = config.view.index.og;
+    params.data.login.head.title  = "AirVūz – Drone Video Community"
+    params.data.login.viewName    = "index";  
 
     resolve(params);
   });   
