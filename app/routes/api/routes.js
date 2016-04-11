@@ -22,7 +22,7 @@ apiRouter.route('/api/auth/facebook')
   .get(auth.facebook);
 
 apiRouter.route('/api/auth/facebook/callback')
-  .get(auth.facebookCallback);
+  .get(auth.facebookAuthFailure, auth.facebookCallback);
 
 apiRouter.route('/api/auth/google')
   .get(auth.google);

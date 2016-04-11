@@ -53,11 +53,14 @@ module.exports = function(passport, config) {
 
                 return cb(null, user);
               } else {
-
-                //req needs information about user data and social media id
-                data.socialMediaAccounts = account._id;
-                req.newUserInfo = data;
-                return cb(null, null);
+                user = {
+                  email               : data.email,
+                  firstName           : data.accountData.name.givenName,
+                  lastName            : data.accountData.name.familyName,
+                  socialMediaAccount  : account._id,
+                  provider            : data.provider
+                }
+                return cb(null, user);
               }
             });
           }
@@ -69,17 +72,19 @@ module.exports = function(passport, config) {
             findUser = UsersCrud.getUserByEmail(data.email);
             findUser.then(function(user){
               if (user && user._id) {
-
                 //add social media id to current user and return user
                 return cb(null, user);
               } else {
-
-                data.socialMediaAccounts = newAccount._id;
-                req.newUserInfo = data;
-                return cb(null, null);
+                user = {
+                  email               : data.email,
+                  firstName           : data.accountData.name.givenName,
+                  lastName            : data.accountData.name.familyName,
+                  socialMediaAccount  : newAccount._id,
+                  provider            : data.provider
+                }
+                return cb(null, user);
               }
             });
-            
           }
         });
       }
