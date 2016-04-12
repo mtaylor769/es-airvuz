@@ -1,7 +1,8 @@
 var jwt               = require('jsonwebtoken'),
   passport            = require('passport'),
   tokenConfig         = require('../../../config/token'),
-  SocialMedia         = require('../../persistence/crud/socialMediaAccount');
+  SocialMedia         = require('../../persistence/crud/socialMediaAccount'),
+  token               = null;
 
 function Auth() {
 
@@ -20,40 +21,27 @@ function login(req, res, next) {
       aclRoles: user.aclRoles,
       userName: user.userName
     };
-    var token =  jwt.sign(userToken, tokenConfig.secret, { expiresIn: tokenConfig.expires });
+    token =  jwt.sign(userToken, tokenConfig.secret, { expiresIn: tokenConfig.expires });
     res.json({token: token});
   })(req, res, next);
 }
 
-function facebook(req, res, next) {
-  passport.authenticate('facebook')(req, res, next);
+function facebook(){
+  passport.authenticate('facebook');
 }
 
-// function facebookCallback(req, res, next) {
-//   passport.authenticate('facebook', { 
-//     successRedirect: '/login?login=success',
-//     failureRedirect: '/login?login=failed'
-//   })(req, res, next);
-// }
+function facebookAuthFailure() {
+  passport.authenticate('facebook', { failureRedirect: '/login' });
+}
 
 function facebookCallback(req, res, next) {
-  passport.authenticate('facebook', { failureRedirect: '/login' })(req, res, next),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  };
+  token =  jwt.sign(req.user, tokenConfig.secret, { expiresIn: tokenConfig.expires });
+  debugger;
+  res.redirect('/login?token='+token);
 }
 
-// app.get('/auth/facebook/callback',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   });
-
-function google(req, res, next) {
-  console.log('hitting google api');
-  passport.authenticate('google', { scope : ['profile', 'email'] })(req, res, next);
+function google() {
+  passport.authenticate('google');
 }
 
 function googleCallback(req, res, next) {
@@ -91,7 +79,8 @@ function twitterCallback(req, res, next) {
 
 
 Auth.prototype.login               = login;
-Auth.prototype.facebook            = facebook;
+Auth.prototype.facebook            = passport.authenticate('facebook');
+Auth.prototype.facebookAuthFailure = passport.authenticate('facebook', { failureRedirect: '/login' });;
 Auth.prototype.facebookCallback    = facebookCallback;
 Auth.prototype.google              = google;
 Auth.prototype.googleCallback      = googleCallback;
@@ -99,6 +88,5 @@ Auth.prototype.twitter             = twitter;
 Auth.prototype.twitterCallback     = twitterCallback;
 Auth.prototype.instagram           = instagram;
 Auth.prototype.instagramCallback   = instagramCallback;
-
 
 module.exports = new Auth();
