@@ -27,4 +27,8 @@ var playListSchema = mongoose.Schema({
 
 });
 
-mongoose.model('PlayList', playListSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "PlayList",
+	schema					: playListSchema
+};

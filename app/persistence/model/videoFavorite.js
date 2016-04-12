@@ -27,4 +27,8 @@ var videoFavoriteSchema = mongoose.Schema({
 	
 });
 
-mongoose.model('VideoFavorite', videoFavoriteSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "VideoFavorite",
+	schema					: videoFavoriteSchema
+};

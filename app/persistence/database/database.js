@@ -3,6 +3,7 @@ var log4js											= require('log4js');
 var logger											= log4js.getLogger('app.persistence.database.Database');
 var mongoose										= require('mongoose');
 var path												= require('path');
+var ENV													= process.env;
 
 if(global.NODE_ENV === "production") {
 	logger.setLevel("INFO");	
@@ -75,12 +76,12 @@ Database.prototype._init = function() {
 		databaseConnections : [
 			{
 				connectionName	: "events",
-				hostName				: "localhost",
+				hostName				: ENV.DATABASE_HOST || "localhost",
 				databaseName		: "AirVuzEvents"
 			},
 			{
 				connectionName	: "main",
-				hostName				: "localhost",
+				hostName				: ENV.DATABASE_HOST || "localhost",
 				databaseName		: "AirVuz2"
 			}			
 		],
@@ -122,6 +123,13 @@ Database.prototype._initConnections = function(params) {
 	//var path								= null;
 	var paths								= null;
 	var THIS								= this;
+	var databaseOption			= {
+		user	: ENV.DATABASE_USER || '',
+		pass	: ENV.DATABASE_PASSWORD || '',
+		auth	: {
+			authdb: 'admin'
+		}
+	};
 	
 	connections					= params.connections;
 	databaseConnections = connections.databaseConnections;
@@ -135,7 +143,7 @@ Database.prototype._initConnections = function(params) {
 		logger.debug("_initConnections: database [" + databaseConnection.connectionName + "] : " + connectionStr);
 
 		try {
-			connection = mongoose.createConnection(connectionStr);
+			connection = mongoose.createConnection(databaseConnection.hostName, databaseConnection.databaseName, 27017, databaseOption);
 
 			this.dbConnections[databaseConnection.connectionName] = connection;
 
