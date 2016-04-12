@@ -43,6 +43,7 @@ Comment.prototype.getPreCondition = function(params){
   var preCondition = new ObjectValidationUtil();
 
   preCondition.setValidation(function(params){
+    console.log(typeof params.replyDepth);
     var errorMessage              = new ErrorMessage();
     this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
@@ -51,6 +52,10 @@ Comment.prototype.getPreCondition = function(params){
     this.data.replyDepth          = params.replyDepth || 0;
     this.data.videoId             = params.videoId || null;
     this.data.userId              = params.userId || null;
+
+    if(this.data.parentCommentId !== null) {
+      this.data.replyDepth = 1;
+    }
 
 
     if(this.data.comment === null){
@@ -73,7 +78,8 @@ Comment.prototype.getPreCondition = function(params){
       })
     }
 
-    if(params.replyDepth && typeof params.replyDepth !== "number"){
+    if(this.data.replyDepth && typeof this.data.replyDepth !== 'number'){
+      console.log(this.data.replyDepth);
       this.errors = errorMessage.getErrorMessage({
         errorId					: "PARAM1020",
         templateParams	: {
@@ -84,6 +90,7 @@ Comment.prototype.getPreCondition = function(params){
     }
 
     if(this.data.replyCount && typeof this.data.replyCount !== 'number'){
+      console.log('replyCount');
       this.errors = errorMessage.getErrorMessage({
         errorId					: "PARAM1020",
         templateParams	: {
