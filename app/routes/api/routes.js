@@ -8,6 +8,8 @@ var categoryType        = require('./categoryType');
 var droneType           = require('./droneType');
 var curatedVideos       = require('./curatedVideos');
 var comment             = require('./comment');
+var slide               = require('./slide');
+var slider              = require('./slider');
 var protect             = require('../../middlewares/protect');
 
 /**
@@ -140,5 +142,29 @@ apiRouter.route('/api/comment/:id')
   .get(comment.getById)
   .put(comment.put)
   .delete(comment.delete);
+
+/**
+ * /api/slider/
+ */
+
+apiRouter.route('/api/slider')
+  .get(slider.getAll)
+  .post(slider.post);
+
+apiRouter.route('/api/slider/:id')
+  .get(slider.get)
+  .put(slider.put);
+
+/**
+ * /api/slide/
+ */
+
+apiRouter.route('/api/slide')
+  .get(slide.getAll)
+  .post(slide.post);
+
+apiRouter.route('/api/slide/:id')
+  .get(slide.get)
+  .put(slide.put);
 
 module.exports = apiRouter;
