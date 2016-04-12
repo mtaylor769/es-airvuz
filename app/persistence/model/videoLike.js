@@ -27,4 +27,8 @@ var videoLikeSchema = mongoose.Schema({
 	
 });
 
-mongoose.model('VideoLike', videoLikeSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "VideoLike",
+	schema					: videoLikeSchema
+};
