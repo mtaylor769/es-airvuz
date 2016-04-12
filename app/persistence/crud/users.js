@@ -187,6 +187,7 @@ users.prototype.getUserById = function (userId) {
 					});
 					reject(errorMessage.getErrors());
 				} else {
+					console.log('user resolved');
 					resolve(user);
 				}
 			});

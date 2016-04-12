@@ -34,9 +34,9 @@ Comment.prototype.get = function(req, res) {
 };
 
 Comment.prototype.getByParentCommentId = function(req, res) {
-  console.log(req.body.parentId);
+  console.log(req.query.parentId);
   commentCrud
-  .getByParentCommentId(req.body.parentId)
+  .getByParentCommentId(req.query.parentId)
   .then(function(comments) {
     res.send(comments);
   })

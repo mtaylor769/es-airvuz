@@ -43,11 +43,11 @@ Comment.prototype.getPreCondition = function(params){
   var preCondition = new ObjectValidationUtil();
 
   preCondition.setValidation(function(params){
-    console.log(typeof params.replyDepth);
+    console.log(params);
     var errorMessage              = new ErrorMessage();
     this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
-    this.data.isVisible           = params.isVisible || null;
+    this.data.isVisible           = params.isVisible || true;
     this.data.replyCount          = params.replyCount || 0;
     this.data.replyDepth          = params.replyDepth || 0;
     this.data.videoId             = params.videoId || null;
@@ -198,7 +198,7 @@ Comment.prototype.get = function() {
 
 
 Comment.prototype.getByParentCommentId = function(parentId) {
-  return CommentModel.find({parentCommentId: parentId}).sort({commentCreatedDate: -1}).limit(2).lean().exec();
+  return CommentModel.find({parentCommentId: parentId}).sort({commentCreatedDate: -1}).limit(10).populate('userId').lean().exec();
 };
 
 Comment.prototype.getParentCommentByVideoId = function(params) {

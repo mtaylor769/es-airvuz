@@ -50,6 +50,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return commentCrud.getParentCommentByVideoId({videoId: videoId});
 		})
 		.then(function(comments) {
+			console.log('completed all checks');
 			dataObject.comments = comments;
 			params.data													= dataObject;
 			params.data.videoPlayer							= {};

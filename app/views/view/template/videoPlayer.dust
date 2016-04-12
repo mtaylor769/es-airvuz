@@ -18,9 +18,12 @@
                     <span class="video-player-title airvuz-blue">{video.title}</span>
                 </div>
                 {!video player!}
-                <video width="100%" height="10%" controls class="m-t-34">
+                <video width="100%" height="10%" class="m-t-34">
                     <source src="./Air-to-Air.mp4" type="video/mp4">
                 </video>
+                <div class="video-player-layer">
+                    {video.description}
+                </div>
                 {!categories!}
                 <div class="flex video-player-categories font-white">
                     <ul class="list-inline categories">
@@ -62,20 +65,26 @@
                     </div>
                 </div>
                 <div class="flex write-comment gainsboro-background">
-                    <textarea cols="90" rows="3" class="m-r-20"></textarea>
-                    <button class="btn background-orange border-radius-0 font-white p-0-40">Comment</button>
+                    <textarea cols="90" rows="3" id="comment-text" class="m-r-20"></textarea>
+                    <button class="btn background-orange border-radius-0 font-white p-0-40" value="{video._id}" id="commentSave">Comment</button>
                 </div>
+                <ul style="list-style: none" class="parentComs">
                 {#comments}
-                <div class="flex" style="border-bottom: inset grey">
-                    <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
-                    <div id="{_id}" class="m-t-20">
-                        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
-                        <p class="m-b-0 airvuz-blue">{userId.userName}</p>
-                        <p class="m-b-0">{comment}</p>
-                        <button class="reply" value="{_id}">-> reply</button>
-                    </div>
-                </div>
+                    <li>
+                        <div class="flex" style="border-bottom: inset grey">
+                            <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
+                            <div id="{_id}" class="m-t-20 comment-wrap">
+                                <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
+                                <p class="m-b-0 airvuz-blue">{userId.userName}</p>
+                                <p class="m-b-0 ">{comment}</p>
+                                <ul class="parentComment" style="list-style: none;"></ul>
+                                <button class="btn reply" value="{_id}">-> reply</button>
+                                <span>replies: <a class="commentReplies" value="{_id}">{replyCount}</a></span>
+                            </div>
+                        </div>
+                    </li>
                 {/comments}
+                </ul>
             </div>
             {!up next video list!}
             <div class="col-md-3">
