@@ -3,7 +3,6 @@ require('../styles/index.css');
 var test = require('./test');
 var a = "a";
 var zeke = require('./zeke');
-var login = require('./login');
 
 var a = "ab";
 

@@ -1,6 +1,4 @@
-exports.login = {
-
-  function createUser() {
+function createUser() {
     password    = document.getElementById("create-password").value;
     email       = document.getElementById("create-email").value;
     username    = document.getElementById("create-username").value;
@@ -38,5 +36,3 @@ exports.login = {
         password        : password
     }));
   }
-
-}
