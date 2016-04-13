@@ -100,11 +100,14 @@ var indexView					= require('./app/views/view/indexView');
 var videoPlayerView		= require('./app/views/view/videoPlayerView');
 var userProfileView		= require('./app/views/view/userProfileView');
 var loginView 				= require('./app/views/view/loginView');
+var videoUploadView		= require('./app/views/view/videoUploadView')
+
 
 viewManager.addView({	view : indexView });
 viewManager.addView({	view : userProfileView });
 viewManager.addView({	view : videoPlayerView });
 viewManager.addView({ view : loginView });
+viewManager.addView({ view : videoUploadView });
 
 app.get("/", function(req, res) {
 	viewManager
@@ -135,7 +138,7 @@ app.get("/login", function(req, res){
 			res.send(view);
 		})
 		.catch(function(error) {
-			logger.error("view[/] error:" + error);
+			logger.error("loginView error:" + error);
 		});
 });
 
@@ -151,7 +154,7 @@ app.get("/userProfile", function(req, res) {
 			res.send(view);
 		})
 		.catch(function(error) {
-			logger.error("view[/] error:" + error);
+			logger.error("userProfileView error:" + error);
 		})
 
 });
@@ -168,10 +171,30 @@ app.get("/videoPlayer", function(req, res) {
 			res.send(view);
 		})
 		.catch(function(error) {
-			logger.error("view[/] error:" + error);
+			logger.error("videoPlayerView error:" + error);
 		})
 
 });
+
+//
+app.get("/videoUpload", function(req, res) {
+	viewManager
+		.getView({
+			viewName				: videoUploadView.getViewName(),
+			request					: req,
+			response				: res,
+			sourceManifest	: app.locals.sourceManifest
+		})
+		.then(function(view) {
+			res.send(view);
+		})
+		.catch(function(error) {
+			logger.error("videoUploadView error:" + error);
+		})
+
+});
+
+
 /*
 
 app.get('/play', function (req, res) {
