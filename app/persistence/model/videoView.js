@@ -27,4 +27,8 @@ var videoViewSchema = mongoose.Schema({
 	
 });
 
-mongoose.model('VideoView', videoViewSchema);
+module.exports = {
+	connectionName	: "main",
+	modelName				: "VideoView",
+	schema					: videoViewSchema
+};

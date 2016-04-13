@@ -83,6 +83,11 @@
         url: '/admin/adminEdit/:id',
         templateUrl: '/admin/app/videos/partial/adminEdit.html',
         controller: 'adminEditCtrl'
+      })
+      .state('sliders', {
+        url: '/admin/sliders',
+        templateUrl: '/admin/app/sliders/partial/sliders.html',
+        controller: 'SlidersController'
       });
     $urlRouterProvider.otherwise('/admin');
   }

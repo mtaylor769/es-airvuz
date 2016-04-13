@@ -1,0 +1,35 @@
+<md-content layout="column" layout-padding>
+  <md-card flex="30" layout-padding >
+    <div>
+      <h2>Sliders</h2>
+    </div>
+  </md-card>
+  <md-card flex="30"  layout-padding >
+    <div>
+      <h2>Slide</h2>
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="item in todos">
+          <md-checkbox ng-model="item.done"></md-checkbox>
+          <div class="md-list-item-text">
+            <h3>{{item.title}}</h3>
+            <p>{{item.description}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
+    <md-list>
+      <md-list-item class="md-2-line" ng-repeat="item in todos">
+        <md-checkbox ng-model="item.done"></md-checkbox>
+        <div class="md-list-item-text">
+          <h3>{{item.title}}</h3>
+          <p>{{item.description}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-card>
+  <md-button class="md-fab md-primary">
+    <md-tooltip md-direction='top'>Add Slide</md-tooltip>
+    <md-icon class="material-icons">add</md-icon>
+  </md-button>
+
+</md-content>
