@@ -34,8 +34,8 @@ function getSlider() {
 
 }
 
-function createSlider() {
-
+function createSlider(params) {
+  return (new SliderModel(params)).save();
 }
 
 Slider.prototype.getAllSlider = getAllSlider;

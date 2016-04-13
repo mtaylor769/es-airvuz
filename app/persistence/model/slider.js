@@ -2,6 +2,7 @@ var mongoose      = require('mongoose');
 var Schema        = mongoose.Schema;
 
 var schema        = mongoose.Schema({
+  name            : String,
   startDate       : Date,
   endDate         : Date,
   isActive        : Boolean,

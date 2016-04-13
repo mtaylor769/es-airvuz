@@ -8,7 +8,7 @@ function Slide() {
 
 function post(req, res) {
   slideCrud
-    .createSlide(req.params)
+    .createSlide(req.body)
     .then(function (user) {
       res.send(user);
     });
