@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="public/{userProfile.airvuz.css}">
     <style>
       .container {
-        max-width: 1170px;
+        /*max-width: 1170px;*/
+        padding-left: 0;
+        padding-right: 0;
       }
 
       .coverborder {
@@ -33,10 +35,13 @@
         height: 180px;
         width: 100%;
       }
+      .profile-picture {
+        
+      }
 
       .profile-picture-img {
         border-radius: 50%;
-        width: 25%;  
+        width: 75%; 
       }
 
       .profile-picture, .profile-information {
@@ -44,11 +49,16 @@
       }
       
       .video {
-        pading: 10px;
+        margin-bottom: 25px;
       }
 
       .video-row-1, .video-row-2, .video-row-3{
         width: 100%;
+      }
+      
+      .video-sort {
+        padding-left: 15px;
+        padding-bottom: 15px;
       }
 
       .vid-thumb {
@@ -60,7 +70,7 @@
       }
 
       .video-list {
-        margin: 0 25px 0 25px;
+        margin: 25px 25px 0 25px;
       }
 
     </style>
@@ -73,10 +83,10 @@
             <img src="http://airvuz.com/assets/img/slider/G2.jpg" alt="coverpic" class="profile-banner">
           </div>
           <div class="profile">
-            <figure class="profile-picture">
+            <figure class="profile-picture col-md-2">
               <img src="http://airvuz.com/assets/img/default.png" class="profile-picture-img">
             </figure>
-            <figcaption class="profile-information">
+            <figcaption class="profile-information col-md-10">
               <div class="profile-username">Zeke Thao</div>
               <div class="profile-stats">
                 <div class="location">Minneapolis, MN</div>
@@ -90,13 +100,13 @@
               </div>
               <div class="profile-about">About stuff goes here.</div>
               <!-- This stuff displays only if not your profile -->
-              <div class="profile-options">
+              <div class="profile-options btn-group inline" role="group">
                 <!-- Switch button depending if followed or unfollowed -->
-                <button>Follow</button>
-                <button>Donate</button>
-                <button>Hire</button>
+                <button class="btn btn-default" type="button">Follow</button>
+                <button class="btn btn-default" type="button">Donate</button>
+                <button class="btn btn-default" type="button">Hire</button>
               </div>
-              <div>
+              <div class="inline pull-right">
               <!-- Conditional only if user has social media links -->
                 <a href="/">Facebook</a>
                 <a href="/">Instagram</a>
@@ -110,12 +120,19 @@
       <div class="clearfix"></div>
       <section class="video-list">
         <div class="video-sort">
-          <select name="sort-by" id="video-sorter" class="video-sort-control">
-            <option value="name">Name</option>
-            <option value="vuz">Vuz</option>
-            <option value="likes">Likes</option>
-          </select>
+          <div class="pull-left">
+            <select name="sort-by" id="video-sorter" class="video-sort-control">
+              <option value="name">Name</option>
+              <option value="vuz">Vuz</option>
+              <option value="likes">Likes</option>
+            </select>
+          </div>
+          <div class="pull-right">
+            <button class="btn btn-default" type="button">EDIT SHOWCASE</button>
+          </div>
+          
         </div>
+        <div class="clearfix"></div>
         <div class="video col-md-4">
           <div class="video-wrapper">
             <div class="video-thumbnail">
@@ -131,7 +148,10 @@
               </div>
             </div>
             <div class="video-row-2">
-              <span class="video-about">More to come</span>
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
             </div>
             <div class="video-row-3">
               <div class="video-likes inline pull-left">
@@ -159,7 +179,10 @@
               </div>
             </div>
             <div class="video-row-2">
-              <span class="video-about">More to come</span>
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
             </div>
             <div class="video-row-3">
               <div class="video-likes inline pull-left">
@@ -187,7 +210,103 @@
               </div>
             </div>
             <div class="video-row-2">
-              <span class="video-about">More to come</span>
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
             </div>
             <div class="video-row-3">
               <div class="video-likes inline pull-left">
