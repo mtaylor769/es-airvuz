@@ -18,8 +18,11 @@
                     <span class="video-player-title airvuz-blue">{video.title}</span>
                 </div>
                 {!video player!}
-                <video width="100%" height="10%" class="m-t-34">
-                    <source src="./Air-to-Air.mp4" type="video/mp4">
+                <video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen"
+                       controls preload="auto" width="600px" height="400px"
+                       poster="/public/videos/myPicture.jpg"
+                       data-setup='{"example_option":true}'>
+                    <source src="/public/videos/test.mp4" type="video/mp4" />
                 </video>
                 <div class="video-player-layer">
                     {video.description}
@@ -35,7 +38,7 @@
                 {!video owner info!}
                 <div class="flex video-user-info-height">
                     <button class="btn background-orange border-radius-0 font-white add-button">+</button>
-                    <img src="./tn_00001.jpg" height="80" width="80" class="margin-auto border-radius-circle">
+                    <img src="/public/videos/myPicture.jpg" height="80" width="80" class="margin-auto border-radius-circle">
                     <div class="margin-auto t-a-inherit">
                         <p class="m-b-0 airvuz-blue">{user.userName}</p>
                         <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
@@ -92,18 +95,22 @@
                     <h5>UP NEXT</h5>
                     <button class="btn pos-absolute-r-15">switch PH</button>
                 </div>
+                <ul style="list-style: none; padding-left: 0">
                 {#upNext}
-                <div>
-                    <img src="tn_00001.jpg" width="255px" height="210px" class="m-t-34">
-                    <div class="up-next-layer">
-                        <p class="font-white m-l-15 p-t-15">{title}</p>
-                        <div class="flex">
-                            <p class="font-white m-l-15">{duration}</p>
-                            <p class="font-white pos-absolute-r-15">{viewCount}</p>
+                    <li>
+                        <div>
+                            <img src="/public/videos/myPicture.jpg" width="255px" height="210px" class="m-t-34">
+                            <div class="up-next-layer">
+                                <p class="font-white m-l-15 p-t-15">{title}</p>
+                                <div class="flex">
+                                    <p class="font-white m-l-15">{duration}</p>
+                                    <p class="font-white pos-absolute-r-15">{viewCount}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </li>
                 {/upNext}
+                </ul>
             </div>
         </div>
         {> "app.views.view.partial.footer" /}
