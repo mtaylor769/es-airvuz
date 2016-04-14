@@ -121,7 +121,7 @@ $(document).ready(function() {
       var html = '';
       data.forEach(function(reply) {
         html += '<li>'+
-          '<div class="flex" style="border-bottom: inset grey">'+
+          '<div class="flex" style="border-bottom: inset">'+
           '<img src="./tn_00001.jpg" height="50" width="50" class="border-radius-circle m-10-20">'+
             '<div class="m-t-20">'+
               '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+

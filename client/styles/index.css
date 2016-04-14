@@ -140,7 +140,7 @@ body {
 }
 
 .video-user-more {
-  width: 103px;
+  width: 105px;
 }
 
 .video-user-more p{
@@ -154,6 +154,12 @@ body {
 
 .write-comment {
   padding: 20px 40px;
+}
+
+.video-helper {
+  position: relative;
+  height: 30%;
+  width: 100%;
 }
 
 /*
@@ -209,8 +215,8 @@ body {
 /**********************************
  * margin
  */
-.m-t-34 {
-  margin-top: 34px;
+.m-t-35 {
+  margin-top: 35px;
 }
 
 .m-l-15 {

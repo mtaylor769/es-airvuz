@@ -18,15 +18,12 @@
                     <span class="video-player-title airvuz-blue">{video.title}</span>
                 </div>
                 {!video player!}
-                <video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen"
-                       controls preload="auto" width="100%" height="30%" style="position: relative"
-                       poster="/public/videos/myPicture.jpg"
-                       data-setup='{"example_option":true}'>
-                    <source src="/public/videos/test.mp4" type="video/mp4" />
+                <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen video-helper m-t-35"
+                       controls preload="auto" autoplay width="100%" height="25%" style="position: relative"
+                       poster="video.thumbnailPath"
+                       data-setup=''>
+                    <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/1d8228f4adbb82c750f466a69b481274/1d8228f4adbb82c750f466a69b481274.mp4" type="video/mp4" />
                 </video>
-                <div class="video-player-layer">
-                    {video.description}
-                </div>
                 {!categories!}
                 <div class="flex video-player-categories font-white">
                     <ul class="list-inline categories">
@@ -62,9 +59,9 @@
                         <span><span class="bold"> {video.commentCount} </span>Comments</span>
                     </div>
                     <div class="video-action-icons pull-right">
-                        <span class="btn btn-primary">icon PH</span>
-                        <span class="btn btn-primary">icon PH</span>
-                        <span class="btn btn-primary">icon PH</span>
+                        <span class="btn btn-primary">PH</span>
+                        <span class="btn btn-primary">PH</span>
+                        <span class="btn btn-primary">PH</span>
                     </div>
                 </div>
                 <div class="flex write-comment gainsboro-background">
@@ -74,7 +71,7 @@
                 <ul style="list-style: none" class="parentComs">
                 {#comments}
                     <li>
-                        <div class="flex" style="border-bottom: inset grey">
+                        <div class="flex" style="border-bottom: inset">
                             <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
                             <div id="{_id}" class="m-t-20 comment-wrap">
                                 <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
@@ -97,9 +94,9 @@
                 </div>
                 <ul style="list-style: none; padding-left: 0">
                 {#upNext}
-                    <li>
+                    <li style="width: 100%">
                         <div>
-                            <img src="/public/videos/myPicture.jpg" width="255px" height="210px" class="m-t-34">
+                            <img src="{video.thumbnailPath}" width="100%" height="60%" class="m-t-35">
                             <div class="up-next-layer">
                                 <p class="font-white m-l-15 p-t-15">{title}</p>
                                 <div class="flex">
