@@ -12,9 +12,19 @@ textarea {
 .btn, .form-control {
   border-radius: 0;
 }
+.btn {
+  text-transform: uppercase;
+}
 .btn-primary {
   background-color: #30c1ed;
   border-color: #30c1ed;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary[disabled]:hover {
+  background-color: #238bab;
+  border-color: #238bab;
+}
+.progress-bar {
+  background-color: #f48a4a;
 }
 
 /*
@@ -89,6 +99,52 @@ textarea {
 }
 /*
  * End Header
+/**********************************/
+
+/**********************************
+ * Upload Page
+ */
+.upload-page {
+  min-height: 400px;
+  padding-top: 50px;
+}
+.upload-page .glyphicon {
+  font-size: 75px;
+  display: block;
+}
+.upload-page .upload-icon {
+  width: 200px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  height: 136px;
+  overflow: hidden;
+}
+.upload-page .upload-icon .glyphicon-plane {
+  position: absolute;
+  left: 60px;
+  top: 50px;
+}
+.upload-page .upload-icon input {
+  display: block;
+  width: 100%;
+  height: 175px;
+  position: absolute;
+  top: -30px;
+  cursor: pointer;
+  opacity: 0;
+}
+.upload-page .upload-icon input:focus {
+  outline: none;
+}
+.upload-page .upload-icon:hover .glyphicon {
+  color: #f48a4a;
+}
+.upload-page .icon-wrap {
+  margin-bottom: 150px;
+}
+/*
+ * End Upload Page
 /**********************************/
 
 /**********************************
@@ -257,6 +313,10 @@ textarea {
 
 .m-b-0 {
   margin-bottom: 0;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
 }
 
 .m-r-20 {
