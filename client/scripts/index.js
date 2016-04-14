@@ -3,6 +3,7 @@ require('../styles/index.css');
 var test = require('./test');
 var a = "a";
 var zeke = require('./zeke');
+window.Upload = require('./upload');
 
 var a = "ab";
 
