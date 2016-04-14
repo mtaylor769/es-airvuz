@@ -2,6 +2,9 @@ body {
   font-size: 12px;
 }
 
+textarea {
+  resize: none;
+}
 /**********************************
  * Override bootstrap
  */
@@ -115,7 +118,6 @@ body {
   position: relative;
   background: black;
   opacity: 0.5;
-  margin-top: -70px;
 }
 
 .video-player-layer {
@@ -128,7 +130,7 @@ body {
 }
 
 .video-action-icons {
-  margin: -7px 20px 0 20px;
+  margin: -7px 10px 0 20px;
 }
 
 .video-player-title {
@@ -153,7 +155,7 @@ body {
 }
 
 .write-comment {
-  padding: 20px 40px;
+
 }
 
 .video-helper {
@@ -162,6 +164,28 @@ body {
   width: 100%;
 }
 
+.mobile-display-none {
+  display: none;
+}
+
+.video-page .col-md-9 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.video-page .container {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.video-page .main {
+  box-shadow: none;
+}
+
+.parent-comment-picture {
+  height: 50px;
+  width: 50px;
+}
 /*
  * End Video Player
 /**********************************/
@@ -242,6 +266,9 @@ body {
 .margin-auto {
   margin: auto;
 }
+.m-l-10 {
+  margin-left: 10px;
+}
 /*
  * End margin
 /**********************************/
@@ -298,3 +325,56 @@ body {
 /*
  * End fonts and colors
 /**********************************/
+
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .video-page .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .video-page .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .write-comment {
+    padding: 20px 40px;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .video-page .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .video-page .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .write-comment {
+    padding: 20px 40px;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .video-page .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .video-page .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .write-comment {
+    padding: 20px 40px;
+  }
+}

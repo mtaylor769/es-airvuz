@@ -90,7 +90,7 @@ $(document).ready(function() {
       var comment = data;
       var html = '<li>'+
         '<div class="flex" style="border-bottom: inset grey">' +
-        '<img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">' +
+        '<img src="https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952" height="30" width="30" class="border-radius-circle m-10-20">' +
           '<div id="' + data._id + '" class="m-t-20 comment-wrap">' +
             '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>' +
             '<p class="m-b-0 airvuz-blue">' + comment.userId.userName + '</p>' +
@@ -122,7 +122,7 @@ $(document).ready(function() {
       data.forEach(function(reply) {
         html += '<li>'+
           '<div class="flex" style="border-bottom: inset">'+
-          '<img src="./tn_00001.jpg" height="50" width="50" class="border-radius-circle m-10-20">'+
+          '<img src="https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-20">'+
               '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
               '<p class="m-b-0 airvuz-blue">' + reply.userId.userName + '</p>'+
