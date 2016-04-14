@@ -36,7 +36,7 @@
                     {!video owner info!}
                     <div class="flex video-user-info-height">
                         <button class="btn background-orange border-radius-0 font-white add-button">+</button>
-                        <img src="/public/videos/myPicture.jpg" height="80" width="80" class="margin-auto border-radius-circle">
+                        <img src="{user.picture}" height="50" width="50" class="margin-auto border-radius-circle">
                         <div class="margin-auto t-a-inherit">
                             <p class="m-b-0 airvuz-blue">{user.userName}</p>
                             <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
@@ -54,7 +54,7 @@
                     </div>
                     {!comments!}
                     <div class="gainsboro-background p-15-0">
-                        <div class="inline m-l-20">
+                        <div class="inline m-l-10">
                             <span class="p-l-25 mobile-display-none"><span class="bold">{video.viewCount} </span>VUZ |</span>
                             <span><span class="bold"> {video.likeCount} </span>Likes |</span>
                             <span><span class="bold"> {video.commentCount} </span>Comments</span>
@@ -66,23 +66,25 @@
                         </div>
                     </div>
                     <div class="flex write-comment" style="width: 100%">
-                        <textarea cols="90" rows="1" id="comment-text" class="m-r-20"></textarea>
+                        <textarea cols="90" rows="1" id="comment-text"></textarea>
                         <button class="btn background-orange border-radius-0 font-white" value="{video._id}" id="commentSave">Comment</button>
                     </div>
-                    <ul style="list-style: none" class="parentComs">
+                    <ul style="list-style: none; padding-left: 0" class="parentComs">
                     {#comments}
                         <li class="comment-wrap" style="border-bottom: inset">
                             <div class="flex">
-                                <img src="./tn_00001.jpg" height="80" width="80" class="border-radius-circle m-10-20">
-                                <div id="{_id}" class="m-t-20">
+                                <img src="{user.picture}" height="10%" width="10%" class="border-radius-circle m-10-20">
+                                <div class="m-t-20">
                                     <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
                                     <p class="m-b-0 airvuz-blue">{userId.userName}</p>
                                     <p class="m-b-0 ">{comment}</p>
                                 </div>
                             </div>
-                            <ul class="parentComment" style="list-style: none;"></ul>
-                            <button class="btn reply" value="{_id}">-> reply</button>
-                            <span>replies: <a class="commentReplies" value="{_id}">{replyCount}</a></span>
+                            <div  id="{_id}">
+                                <ul class="parentComment" style="list-style: none; padding-left: 10px"></ul>
+                                <span class="reply" value="{_id}">-> reply</span>
+                                <span>replies: <a class="commentReplies" value="{_id}">{replyCount}</a></span>
+                            </div>
                         </li>
                     {/comments}
                     </ul>

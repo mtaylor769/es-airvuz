@@ -2,6 +2,9 @@ body {
   font-size: 12px;
 }
 
+textarea {
+  resize: none;
+}
 /**********************************
  * Override bootstrap
  */
@@ -127,7 +130,7 @@ body {
 }
 
 .video-action-icons {
-  margin: -7px 20px 0 20px;
+  margin: -7px 10px 0 20px;
 }
 
 .video-player-title {
@@ -152,7 +155,7 @@ body {
 }
 
 .write-comment {
-  padding: 20px 40px;
+
 }
 
 .video-helper {
@@ -173,6 +176,15 @@ body {
 .video-page .container {
   padding-right: 0;
   padding-left: 0;
+}
+
+.video-page .main {
+  box-shadow: none;
+}
+
+.parent-comment-picture {
+  height: 50px;
+  width: 50px;
 }
 /*
  * End Video Player
@@ -254,8 +266,8 @@ body {
 .margin-auto {
   margin: auto;
 }
-.m-l-20 {
-  margin-left: 20px;
+.m-l-10 {
+  margin-left: 10px;
 }
 /*
  * End margin
@@ -327,6 +339,10 @@ body {
     padding-right: 15px;
     padding-left: 15px;
   }
+
+  .write-comment {
+    padding: 20px 40px;
+  }
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -340,6 +356,10 @@ body {
     padding-right: 15px;
     padding-left: 15px;
   }
+
+  .write-comment {
+    padding: 20px 40px;
+  }
 }
 
 /* Large devices (large desktops, 1200px and up) */
@@ -352,5 +372,9 @@ body {
   .video-page .container {
     padding-right: 15px;
     padding-left: 15px;
+  }
+
+  .write-comment {
+    padding: 20px 40px;
   }
 }
