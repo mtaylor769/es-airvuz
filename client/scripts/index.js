@@ -1,11 +1,19 @@
 require('../styles/index.css');
 
-var test = require('./test');
-var a = "a";
-var zeke = require('./zeke');
+
+
+
+var a                   = "a";
+var auth                = require('./auth');
+var regexUrl            = null;
+var test                = require('./test');
+var token               = null;
+var urlParseResults     = null;
+var zeke                = require('./zeke');
+
 window.Upload = require('./upload');
 
-var a = "ab";
+
 
 exports.add = function (a, b) { return a+b };
 
@@ -150,9 +158,50 @@ $(document).ready(function() {
 // ***************  end video player JS ***********************
 //
 
+//
+// *************** start auth JS ***********************
+//
+$('.user-login').click(function(){
+  auth.login();
+});
+
+$('.user-create').click(function(){
+  auth.createUser();
+});
+
+token = getParameterByName('token');
+
+
+//
+// ***************  end auth JS ***********************
+//
+
 
 
 //
 });
 // ***************  end JQuery ***********************
 //
+
+//
+// ***************  Miscellaneous reusable functions ***********************
+//
+
+function getParameterByName(name, url) {
+  if (!url) 
+  {
+    url = window.location.href;
+  }
+  name = name.replace(/[\[\]]/g, "\\$&");
+  regexUrl = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
+  urlParseResults = regexUrl.exec(url);
+  if (!urlParseResults) 
+  {
+    return null;
+  }
+  if (!urlParseResults[2]) 
+  {
+    return '';
+  }
+  return decodeURIComponent(urlParseResults[2].replace(/\+/g, " "));
+}

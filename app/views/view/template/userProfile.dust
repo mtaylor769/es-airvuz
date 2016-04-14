@@ -320,8 +320,10 @@
         </div>
 
       </section>
+      
     </div>
     {> "app.views.view.partial.footer" /}
+    
   </body>
     
 </html>

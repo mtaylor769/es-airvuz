@@ -20,9 +20,11 @@ module.exports = function(passport, config) {
   });
   
   passport.use('local-login', new LocalStrategy({
-    usernameField: 'email'
+    usernameField: 'emailAddress',
+    passwordField: 'password'
   },
   function(emailAddress, password, done){
+    debugger;
     Users.getUserByEmail(emailAddress)
     .then(function(user) {
       if (!user) {

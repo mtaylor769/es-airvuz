@@ -28,7 +28,7 @@
                       <label for="login-password" class="sr-only">Password</label>
                       <input id="login-password" type="password" name="password" placeholder="Password" class="form-control" required>
                     </div>
-                    <button onclick="login()" value="Login" class="btn btn-lg btn-info">Login</button>
+                    <button value="Login" class="btn btn-lg btn-info user-login">Login</button>
                   </div>
 
                   <div class="form-signin">
@@ -45,7 +45,7 @@
                       <label for="create-password" class="sr-only">Password</label>
                       <input id="create-password" type="password" name="password" placeholder="Password" class="form-control" required>
                     </div>
-                    <button onclick="createUser()" value="Submit" class="btn btn-lg btn-success">Submit</button>
+                    <button value="Submit" class="btn btn-lg btn-success user-create">Submit</button>
                   </div>
 
                   <p>Login or Register with:</p>
@@ -64,56 +64,6 @@
         {> "app.views.view.partial.footer" /}
 
         {> "app.views.view.partial.js" /}
-        <script>
-            // (function() {
-            //   // if (newUser) {
-            //     //test
-            //   // }
-                
-            // })();
-            function createUser() {
-              password    = document.getElementById("create-password").value;
-              email       = document.getElementById("create-email").value;
-              username    = document.getElementById("create-username").value;
-
-              var xhr = new XMLHttpRequest();
-              xhr.open('POST', '/api/users/create', false);
-              xhr.setRequestHeader('Content-Type', 'application/json');
-              xhr.onload = function() {
-                  if (xhr.status === 200) {
-                      var userInfo = JSON.parse(xhr.responseText);
-                  }
-              };
-              xhr.send(JSON.stringify({
-                  email           : email,
-                  username        : username,
-                  password        : password
-              }));
-
-             }
-
-            function login() {
-              password    = document.getElementById("create-password").value;
-              email       = document.getElementById("create-email").value;
-
-              var xhr = new XMLHttpRequest();
-              xhr.open('POST', '/api/auth', false);
-              xhr.setRequestHeader('Content-Type', 'application/json');
-              xhr.onload = function() {
-                  if (xhr.status === 200) {
-                      var userInfo = JSON.parse(xhr.responseText);
-                  }
-              };
-              xhr.send(JSON.stringify({
-                  emailAddress           : email,
-                  password        : password
-              }));
-           }
-
-           function facebookLogin() {
-
-           }
-        </script>
         
     </body>
     

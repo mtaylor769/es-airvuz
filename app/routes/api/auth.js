@@ -8,26 +8,32 @@ function Auth() {
 
 }
 
+// function login(req, res, next) {
+//   passport.authenticate('local-login', function(error, user, info){
+//     if (error) {
+//       return next(error);
+//     }
+//     if (!user) {
+//       return res.status(401).json({error: 'No user found'});
+//     }
+//     var userToken = {
+//       _id: user._id,
+//       aclRoles: user.aclRoles,
+//       userName: user.userName
+//     };
+//     token =  jwt.sign(userToken, tokenConfig.secret, { expiresIn: tokenConfig.expires });
+//     res.json({token: token});
+//   })(req, res, next);
+// }
+
 function login(req, res, next) {
-  passport.authenticate('local-login', function(error, user, info){
-    if (error) {
-      return next(error);
-    }
-    if (!user) {
-      return res.status(401).json({error: 'No user found'});
-    }
-    var userToken = {
-      _id: user._id,
-      aclRoles: user.aclRoles,
-      userName: user.userName
-    };
-    token =  jwt.sign(userToken, tokenConfig.secret, { expiresIn: tokenConfig.expires });
-    res.json({token: token});
-  })(req, res, next);
+  passport.authenticate('local-login')(req, res, next);
 }
 
-function facebook(){
-  passport.authenticate('facebook');
+function facebook(req, res, next){
+  passport.authenticate('facebook')(req, res, next);
+  res.redirect('/login?success=true');
+  debugger;
 }
 
 function facebookAuthFailure() {
