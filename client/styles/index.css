@@ -115,7 +115,6 @@ body {
   position: relative;
   background: black;
   opacity: 0.5;
-  margin-top: -70px;
 }
 
 .video-player-layer {
@@ -162,6 +161,19 @@ body {
   width: 100%;
 }
 
+.mobile-display-none {
+  display: none;
+}
+
+.video-page .col-md-9 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.video-page .container {
+  padding-right: 0;
+  padding-left: 0;
+}
 /*
  * End Video Player
 /**********************************/
@@ -242,6 +254,9 @@ body {
 .margin-auto {
   margin: auto;
 }
+.m-l-20 {
+  margin-left: 20px;
+}
 /*
  * End margin
 /**********************************/
@@ -298,3 +313,44 @@ body {
 /*
  * End fonts and colors
 /**********************************/
+
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .video-page .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .video-page .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .video-page .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .video-page .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .video-page .col-md-9 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .video-page .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+}
