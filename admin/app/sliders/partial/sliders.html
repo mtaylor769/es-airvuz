@@ -1,35 +1,105 @@
 <md-content layout="column" layout-padding>
-  <md-card flex="30" layout-padding >
+  <md-card layout-padding >
     <div>
+      <md-button class="md-fab md-primary pull-right" ng-click="vm.showForm('slider')" ng-if="!vm.isOpen.slider">
+        <md-tooltip md-direction='top'>Add Slider</md-tooltip>
+        <md-icon class="material-icons">add</md-icon>
+      </md-button>
       <h2>Sliders</h2>
+      <form name="slider" ng-if="vm.isOpen.slider">
+        <span>Set Name</span>
+        <md-input-container>
+          <label>Set Name</label>
+          <input type="text" ng-model="vm.newSlider.name" required/>
+        </md-input-container>
+        <span>Start Date</span>
+        <md-datepicker ng-model="vm.newSlider.startDate" required></md-datepicker>
+        <span>End Date</span>
+        <md-datepicker ng-model="vm.newSlider.endDate" required></md-datepicker>
+        <div class="md-title">Slide</div>
+        <md-input-container>
+          <md-select ng-model="vm.selectedSlide">
+            <md-option ng-repeat="slide in vm.slides | orderBy: 'name'" ng-value="slide">{{slide.name}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-list>
+          <md-list-item class="md-2-line" ng-repeat="slide in vm.newSlider.slide">
+            <div class="md-list-item-text" layout="column">
+              <h3>{{slide.name}}</h3>
+              <p ng-bind-html="slide.videoUrl | linky"></p>
+              <p ng-bind-html="slide.imageUrl | linky"></p>
+              <p>{{slide.description}}</p>
+            </div>
+          </md-list-item>
+        </md-list>
+        <md-button class="md-raised md-primary" ng-click="vm.addSlideToSlider()">Add</md-button>
+
+        <md-button ng-disabled="slider.$invalid" class="md-raised md-primary pull-right" ng-click="vm.save('slider')">
+          Save
+        </md-button>
+        <md-button class="md-raised md-primary pull-right" ng-click="vm.hideForm('slider')">
+          Cancel
+        </md-button>
+      </form>
     </div>
   </md-card>
-  <md-card flex="30"  layout-padding >
+  <md-card layout-padding >
     <div>
+      <md-button class="md-fab md-primary pull-right" ng-click="vm.showForm('slide')" ng-if="!vm.isOpen.slide">
+        <md-tooltip md-direction='top'>Add Slide</md-tooltip>
+        <md-icon class="material-icons">add</md-icon>
+      </md-button>
       <h2>Slide</h2>
-      <md-list>
-        <md-list-item class="md-2-line" ng-repeat="item in todos">
-          <md-checkbox ng-model="item.done"></md-checkbox>
-          <div class="md-list-item-text">
-            <h3>{{item.title}}</h3>
-            <p>{{item.description}}</p>
+      <form name="slide" ng-if="vm.isOpen.slide">
+        <md-input-container>
+          <label>Name</label>
+          <input type="text" ng-model="vm.newSlide.name" required/>
+        </md-input-container>
+        <md-input-container>
+          <label>Video URL</label>
+          <input type="text" ng-model="vm.newSlide.videoUrl" required/>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <input type="file"/>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Description</label>
+          <textarea ng-model="vm.newSlide.description" rows="3"></textarea>
+        </md-input-container>
+        <md-button ng-disabled="slide.$invalid" class="md-raised md-primary pull-right" ng-click="vm.save('slide')">
+          Save
+        </md-button>
+        <md-button class="md-raised md-primary pull-right" ng-click="vm.hideForm('slide')">
+          Cancel
+        </md-button>
+      </form>
+      <div layout-gt-sm="row" layout-padding layout="column" layout-wrap layout-align="space-between center">
+        <md-card ng-repeat="slide in vm.slides" flex-gt-sm="40">
+          <div class="custom-speed-dial">
+            <md-fab-speed-dial md-open="slide.isOpen" md-direction="left" class="pull-right md-fling" ng-class="{ 'md-hover-full': hover }" ng-mouseenter='slide.isOpen=true' ng-mouseleave='slide.isOpen=false' ng-hide='hidden'>
+              <md-fab-trigger>
+                <md-icon class="material-icons pointer">more_vert</md-icon>
+              </md-fab-trigger>
+              <md-fab-actions>
+                <md-button class="md-fab md-raised md-mini md-warn">
+                  <md-tooltip md-direction='top'>Delete</md-tooltip>
+                  <md-icon class="material-icons">delete</md-icon>
+                </md-button>
+                <md-button class="md-fab md-raised md-mini md-primary">
+                  <md-tooltip md-direction='top'>Edit</md-tooltip>
+                  <md-icon class="material-icons">build</md-icon>
+                </md-button>
+              </md-fab-actions>
+            </md-fab-speed-dial>
+            <h3>{{slide.name}}</h3>
+            <p ng-bind-html="slide.videoUrl | linky"></p>
+            <p ng-bind-html="slide.imageUrl | linky"></p>
+            <p>{{slide.description}}</p>
           </div>
-        </md-list-item>
-      </md-list>
+        </md-card>
+      </div>
     </div>
-    <md-list>
-      <md-list-item class="md-2-line" ng-repeat="item in todos">
-        <md-checkbox ng-model="item.done"></md-checkbox>
-        <div class="md-list-item-text">
-          <h3>{{item.title}}</h3>
-          <p>{{item.description}}</p>
-        </div>
-      </md-list-item>
-    </md-list>
   </md-card>
-  <md-button class="md-fab md-primary">
-    <md-tooltip md-direction='top'>Add Slide</md-tooltip>
-    <md-icon class="material-icons">add</md-icon>
-  </md-button>
+
 
 </md-content>

@@ -4,6 +4,7 @@
   <!-- Angular Material style sheet -->
   <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="/admin/css/style.css"/>
 </head>
 <body ng-cloak ng-controller="BaseController as baseCtrl">
 <div layout="column" layout-fill>
@@ -61,11 +62,10 @@
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-resource.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js"></script>
 
 <!-- Angular Material Library -->
 <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-
-
 
 <script src="/admin/app/app.module.js"></script>
 <script src="/admin/app/app.config.js"></script>
@@ -88,6 +88,7 @@
 <script src="/admin/app/users/users.controller.js"></script>
 <script src="/admin/app/users/user.controller.js"></script>
 <script src="/admin/app/sliders/sliders.controller.js"></script>
+<script src="/admin/app/sliders/sliders.service.js"></script>
 
 <!-- ui router-->
 <script src="/admin/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -95,8 +96,3 @@
 
 </body>
 </html>
-
-<!--
-Copyright 2016 Google Inc. All Rights Reserved. 
-Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at //material.angularjs.org/license.
--->

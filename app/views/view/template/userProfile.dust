@@ -6,44 +6,320 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {> "app.views.view.partial.css" /}
     <link rel="stylesheet" href="public/{userProfile.airvuz.css}">
+    <style>
+      .container {
+        /*max-width: 1170px;*/
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .coverborder {
+        width: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      .inline{
+        display: inline-block;
+      }
+
+      .profile{
+        margin-top: -150px;
+      }
+
+      .profile-banner {
+        left: 0;
+        top: 0;
+        height: 180px;
+        width: 100%;
+      }
+      .profile-picture {
+        
+      }
+
+      .profile-picture-img {
+        border-radius: 50%;
+        width: 75%; 
+      }
+
+      .profile-picture, .profile-information {
+        display: inline-block;
+      }
+      
+      .video {
+        margin-bottom: 25px;
+      }
+
+      .video-row-1, .video-row-2, .video-row-3{
+        width: 100%;
+      }
+      
+      .video-sort {
+        padding-left: 15px;
+        padding-bottom: 15px;
+      }
+
+      .vid-thumb {
+        width: 100%;
+      }
+
+      .video-wrapper {
+        width: 90%;
+      }
+
+      .video-list {
+        margin: 25px 25px 0 25px;
+      }
+
+    </style>
   </head>
   <body>
     {> "app.views.view.partial.header" /}
     <div class="container main">
-      <div class="jumbotron">
-        <div class="coverborder"></div>
-        <div class="profile-picture"></div>
-        <div class="profile-information">
-          <div class="profile-username">Zeke Thao</div>
-          <div class="profile-stats">
-            <div class="location">Minneapolis, MN</div>
-            <div class="Followers">
-              <span class="av-primary">300 </span><span>Followers</span>
-            </div>
-            <div>
-              <span class="av-primary">299</span><span>Following</span>
-            </div>
-            <div class="join-date">Member since November 2015</div>
+      <section class="">
+          <div class="coverborder">
+            <img src="http://airvuz.com/assets/img/slider/G2.jpg" alt="coverpic" class="profile-banner">
           </div>
-          <div class="profile-about">About stuff goes here.</div>
-          <!-- This stuff displays only if not your profile -->
-          <div class="profile-options">
-            <!-- Switch button depending if followed or unfollowed -->
-            <button>Follow</button>
-            <button>Donate</button>
-            <button>Hire</button>
+          <div class="profile">
+            <figure class="profile-picture col-md-2">
+              <img src="http://airvuz.com/assets/img/default.png" class="profile-picture-img">
+            </figure>
+            <figcaption class="profile-information col-md-10">
+              <div class="profile-username">Zeke Thao</div>
+              <div class="profile-stats">
+                <div class="location">Minneapolis, MN</div>
+                <div class="Followers">
+                  <span class="av-primary">300 </span><span>Followers</span>
+                </div>
+                <div>
+                  <span class="av-primary">299</span><span>Following</span>
+                </div>
+                <div class="join-date">Member since November 2015</div>
+              </div>
+              <div class="profile-about">About stuff goes here.</div>
+              <!-- This stuff displays only if not your profile -->
+              <div class="profile-options btn-group inline" role="group">
+                <!-- Switch button depending if followed or unfollowed -->
+                <button class="btn btn-default" type="button">Follow</button>
+                <button class="btn btn-default" type="button">Donate</button>
+                <button class="btn btn-default" type="button">Hire</button>
+              </div>
+              <div class="inline pull-right">
+              <!-- Conditional only if user has social media links -->
+                <a href="/">Facebook</a>
+                <a href="/">Instagram</a>
+                <a href="/">Twitter</a>
+                <a href="/">Google+</a>
+              </div>
+            </figcaption>
           </div>
-          <div>
-          <!-- Conditional only if user has social media links -->
-            <a href="/">Facebook</a>
-            <a href="/">Instagram</a>
-            <a href="/">Twitter</a>
-            <a href="/">Google+</a>
+          
+      </section>
+      <div class="clearfix"></div>
+      <section class="video-list">
+        <div class="video-sort">
+          <div class="pull-left">
+            <select name="sort-by" id="video-sorter" class="video-sort-control">
+              <option value="name">Name</option>
+              <option value="vuz">Vuz</option>
+              <option value="likes">Likes</option>
+            </select>
+          </div>
+          <div class="pull-right">
+            <button class="btn btn-default" type="button">EDIT SHOWCASE</button>
+          </div>
+          
+        </div>
+        <div class="clearfix"></div>
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
 
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="video col-md-4">
+          <div class="video-wrapper">
+            <div class="video-thumbnail">
+              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+            </div>
+
+            <div class="video-row-1 inline">
+              <div class="video-views pull-left">
+                <span>2,882</span>&nbsp;<span>Views</span>
+              </div>
+              <div class="video-length pull-right">
+                <span>2:27</span>
+              </div>
+            </div>
+            <div class="video-row-2">
+              <h3>Video Title</h3>
+              <div>
+                <span class="video-about">Video details go here</span>
+              </div>
+            </div>
+            <div class="video-row-3">
+              <div class="video-likes inline pull-left">
+                <span>8</span>&nbsp;<span>LIKES</span>
+              </div>
+              <div class="video-comments inline pull-right">
+                <span>10</span>&nbsp;<span>COMMENTS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
     </div>
     {> "app.views.view.partial.footer" /}
   </body>

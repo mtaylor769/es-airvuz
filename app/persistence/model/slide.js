@@ -2,10 +2,11 @@ var mongoose      = require('mongoose');
 var Schema        = mongoose.Schema;
 
 var schema        = mongoose.Schema({
+  name            : String,
   imageUrl        : String,
+  imageAlt        : String,
   videoUrl        : String,
-  description     : String,
-  seo             : String
+  description     : String
 });
 
 module.exports = {

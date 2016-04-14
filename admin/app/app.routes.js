@@ -87,7 +87,8 @@
       .state('sliders', {
         url: '/admin/sliders',
         templateUrl: '/admin/app/sliders/partial/sliders.html',
-        controller: 'SlidersController'
+        controller: 'SlidersController',
+        controllerAs: 'vm'
       });
     $urlRouterProvider.otherwise('/admin');
   }

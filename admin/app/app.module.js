@@ -9,6 +9,7 @@
       // 3rd party
       'ui.router',
       'angular-jwt',
-      'ngMaterial'
+      'ngMaterial',
+      'ngSanitize'
     ]);
 })();

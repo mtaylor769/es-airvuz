@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html view="app.views.view.template.videoUpload">
+    <head>
+        <meta http-equiv="Cache-control" content="public">
+        <title>{videoUpload.title}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {>  "app.views.view.partial.css" /}
+    </head>
+    <body>
+        {> "app.views.view.partial.header" /}
+
+        <div class="container main">
+        </div>
+
+        {> "app.views.view.partial.footer" /}
+        {> "app.views.view.partial.js" /}
+    </body>
+    
+</html>
