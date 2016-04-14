@@ -24,6 +24,7 @@
   "dependencies": {
     "acl": "^0.4.9",
     "autoprefixer": "^6.3.3",
+    "aws-sdk": "^2.3.3",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.3.3",
     "body-parser": "^1.15.0",
@@ -46,6 +47,7 @@
     "lost": "^6.7.2",
     "mongoose": "^4.4.4",
     "morgan": "^1.6.1",
+    "node-ffprobe": "^1.2.2",
     "node-inspector": "^0.12.7",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",

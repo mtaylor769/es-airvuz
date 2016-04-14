@@ -80,7 +80,7 @@ function twitterCallback(req, res, next) {
 
 Auth.prototype.login               = login;
 Auth.prototype.facebook            = passport.authenticate('facebook');
-Auth.prototype.facebookAuthFailure = passport.authenticate('facebook', { failureRedirect: '/login' });;
+Auth.prototype.facebookAuthFailure = passport.authenticate('facebook', { failureRedirect: '/login' });
 Auth.prototype.facebookCallback    = facebookCallback;
 Auth.prototype.google              = google;
 Auth.prototype.googleCallback      = googleCallback;

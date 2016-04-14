@@ -10,6 +10,8 @@ var curatedVideos       = require('./curatedVideos');
 var comment             = require('./comment');
 var slide               = require('./slide');
 var slider              = require('./slider');
+var upload              = require('./upload');
+var amazon              = require('../../services/amazon.service.server.js');
 var protect             = require('../../middlewares/protect');
 
 /**
@@ -166,5 +168,21 @@ apiRouter.route('/api/slide')
 apiRouter.route('/api/slide/:id')
   .get(slide.get)
   .put(slide.put);
+
+/**
+ * /api/upload
+ */
+apiRouter.post('/api/upload', upload.post);
+//apiRouter.get('/api/upload/:id', upload.getStatus, amazon.getVideoInfo);
+
+/**
+ * /api/amazon
+ */
+
+apiRouter.get('api/amazon/sign-auth', amazon.signAuth);
+apiRouter.post('api/amazon/transcode/completion', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeCompletion);
+apiRouter.post('api/amazon/transcode/progression', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeProgression);
+apiRouter.post('api/amazon/transcode/failure', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeFailure);
+apiRouter.post('api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeWarning);
 
 module.exports = apiRouter;

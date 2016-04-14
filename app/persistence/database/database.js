@@ -5,6 +5,9 @@ var mongoose										= require('mongoose');
 var path												= require('path');
 var ENV													= process.env;
 
+// set Promise provider to bluebird
+mongoose.Promise = require('bluebird');
+
 if(global.NODE_ENV === "production") {
 	logger.setLevel("INFO");	
 }
