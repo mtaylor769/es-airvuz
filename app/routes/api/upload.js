@@ -1,6 +1,8 @@
 var UploadCrud              = require('../../persistence/crud/upload');
-var log4js                 = require('log4js');
-var logger                 = log4js.getLogger('app.routes.api.upload');
+var log4js                  = require('log4js');
+var logger                  = log4js.getLogger('app.routes.api.upload');
+var md5                     = require('md5');
+var uuid                    = require('node-uuid');
 
 /**
  * Upload Route
@@ -14,10 +16,19 @@ function Upload() {}
  * @param res
  */
 function post(req, res) {
+  var hashName = md5(Date.now() + req.body.file.name + uuid.v1());
+  var params = {
+    _id: hashName,
+    file: req.body,
+    //user: req.user._id,
+    status: 'uploading',
+    userAgent: req.headers['user-agent']
+  };
+
   UploadCrud
-    .createRecord(req.params)
-    .then(function (user) {
-      res.send(user);
+    .createRecord(params)
+    .then(function () {
+      res.send(hashName);
     });
 }
 

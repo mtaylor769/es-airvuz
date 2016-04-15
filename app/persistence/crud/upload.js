@@ -63,7 +63,7 @@ function getStatus(id) {
  * @returns {Promise}
  */
 function createRecord(params) {
-  return (new Upload(params)).save();
+  return (new UploadModel(params)).save();
 }
 
 ///////////////////////////////////////
@@ -72,6 +72,6 @@ Upload.prototype.getById                = getById;
 Upload.prototype.updateTranscodeStatus  = updateTranscodeStatus;
 Upload.prototype.updateMessageStatus    = updateMessageStatus;
 Upload.prototype.getStatus              = getStatus;
-Upload.prototype.createRecord          = createRecord;
+Upload.prototype.createRecord           = createRecord;
 
 module.exports = new Upload();
