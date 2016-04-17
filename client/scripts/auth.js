@@ -12,7 +12,7 @@ var auth = {
         username        : username,
         password        : password
       },
-      success : function() {
+      success : function(data)\ {
         console.log('User created');
       }
     });
@@ -28,10 +28,26 @@ var auth = {
         emailAddress    : email,
         password        : password
       },
-      success : function() {
+      success : function(data) {
         console.log('login success');
       }
     })
+  }
+
+  socialCreateUser : function() {
+    email       = $('#create-email').val();
+    username    = $('#create-username').val();
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/create',
+      data : {
+        email           : email,
+        username        : username
+      },
+      success : function(data)\ {
+        console.log('User created');
+      }
+    });
   }
 }
 

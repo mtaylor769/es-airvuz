@@ -169,7 +169,15 @@ $('.user-create').click(function(){
   auth.createUser();
 });
 
+$('.social-create-user-btn').click(function(){
+  auth.socialCreateUser();
+});
+
 token = getParameterByName('token');
+
+if (token) {
+  $( '.social-create-user' ).dialog();
+}
 
 
 //

@@ -60,6 +60,7 @@ module.exports = function(passport, config) {
                   socialMediaAccount  : account._id,
                   provider            : data.provider
                 }
+                req.newUser = true;
                 return cb(null, user);
               }
             });
@@ -82,6 +83,7 @@ module.exports = function(passport, config) {
                   socialMediaAccount  : newAccount._id,
                   provider            : data.provider
                 }
+                req.newUser = true;
                 return cb(null, user);
               }
             });

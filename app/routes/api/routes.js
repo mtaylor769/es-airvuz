@@ -20,7 +20,7 @@ var protect             = require('../../middlewares/protect');
 var auth = require('./auth');
 
 apiRouter.route('/api/auth')
-  .post(auth.login);
+  .post(auth.login, auth.loginSuccess);
 
 apiRouter.route('/api/auth/facebook')
   .get(auth.facebook);
