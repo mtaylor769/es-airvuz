@@ -1,10 +1,10 @@
 var auth = {
 
-  var password        = null;
-  var email           = null;
-  var token           = null;
-  var username        = null;
-  var socialCreate    = false;
+  password        : null,
+  email           : null,
+  token           : null,
+  username        : null,
+  socialCreate    : false,
 
   createUser : function() {
     password    = $('#create-password').val();
@@ -19,7 +19,7 @@ var auth = {
         username        : username,
         password        : password
       },
-      success : function(data)\ {
+      success : function(data) {
         console.log('User created');
       }
     });
@@ -39,7 +39,7 @@ var auth = {
         console.log('login success');
       }
     })
-  }
+  },
 
   socialCreateUser : function(token) {
     email       = $('#create-email').val();
@@ -57,6 +57,6 @@ var auth = {
       }
     });
   }
-}
+};
 
 module.exports = auth;
