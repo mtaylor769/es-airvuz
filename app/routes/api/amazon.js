@@ -8,7 +8,9 @@ function Amazon() {}
 
 function signAuth(req, res) {
   amazonService.signAuth(req.query.to_sign)
-    .then(res.send);
+    .then(function (signRequest) {
+      res.send(signRequest);
+    });
 }
 
 function getVideoInfo(req, res) {

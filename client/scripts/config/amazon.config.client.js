@@ -1,16 +1,15 @@
 var INPUT_BUCKET,
   OUTPUT_BUCKET;
 
-switch(process.env.NODE_ENV || 'development') {
-  case 'production':
+switch(window.location.host) {
+  case 'airvuz.com':
+  case 'www.airvuz.com':
     INPUT_BUCKET = 'airvuz-drone-video-input';
     OUTPUT_BUCKET = 'airvuz-drone-video';
     break;
   default:
-    // beta & development
     INPUT_BUCKET = 'airvuz-videos-beta-input';
     OUTPUT_BUCKET = 'airvuz-videos-beta';
-    break;
 }
 
 module.exports = {
