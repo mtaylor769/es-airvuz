@@ -154,7 +154,6 @@ $(document).ready(function() {
   });
   //screen toggling
   var screenWidth;
-
   var toggles = {
 
     toggleLeft: function (nextPage, videoPage) {
@@ -199,6 +198,20 @@ $(document).ready(function() {
     toggles.toggleRight(videoPage, nextPage);
   });
 
+  $('.up-next').on('click', function(e) {
+    e.preventDefault();
+    var videoPage = $(this).parents().find('.videoplayback');
+    var nextPage = videoPage.siblings();
+    toggles.toggleLeft(nextPage, videoPage);
+  });
+
+  $('.videoback').on('click', function(e) {
+    e.preventDefault();
+    var nextPage = $(this).parents().find('.nextVideos');
+    var videoPage = nextPage.siblings();
+    toggles.toggleRight(videoPage, nextPage);
+  });
+
 //
 // ***************  end video player JS ***********************
 //
@@ -225,6 +238,10 @@ if (token) {
   $( '.social-create-user' ).dialog();
 }
 
+
+  $('.onoffswitch input').on('click', function() {
+    alert($(this).val());
+  });
 
 //
 // ***************  end auth JS ***********************
