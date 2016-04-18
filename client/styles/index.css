@@ -5,6 +5,10 @@ body {
 textarea {
   resize: none;
 }
+
+a.btn + a.btn {
+  margin-left: 10px;
+}
 /**********************************
  * Override bootstrap
  */
@@ -205,8 +209,7 @@ textarea {
 
 .categories li {
   padding: 0 10px 0 5px;
-  margin: 0px;
-  margin-top: 10px;
+  margin: 10px 0 0;
   border-right: solid #fff 1px;
 }
 
