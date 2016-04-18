@@ -1,4 +1,11 @@
 var auth = {
+
+  var password        = null;
+  var email           = null;
+  var token           = null;
+  var username        = null;
+  var socialCreate    = false;
+
   createUser : function() {
     password    = $('#create-password').val();
     email       = $('#create-email').val();
@@ -34,17 +41,18 @@ var auth = {
     })
   }
 
-  socialCreateUser : function() {
+  socialCreateUser : function(token) {
     email       = $('#create-email').val();
     username    = $('#create-username').val();
     $.ajax({
       type: 'POST',
       url: '/api/users/create',
       data : {
-        email           : email,
-        username        : username
+        username        : username,
+        token           : token,
+        socialCreate    : true
       },
-      success : function(data)\ {
+      success : function(data) {
         console.log('User created');
       }
     });

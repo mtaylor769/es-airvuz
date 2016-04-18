@@ -16,8 +16,6 @@ catch(exception) {
 	logger.error(" import error:" + exception);
 }
 
-
-
 var users = function() {
 	
 }
@@ -40,39 +38,37 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data.userName							= params.userName || null;
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 
-	if (params.password) {
-		userInfo.data.password        			= params.password;
+	if (params.socialCreate) {
+		userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
+	} else {
+		userInfo.data.password        		= params.password || null;
 	}
-  
-  if (params.socialMediaAccounts) {
-  	userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
-  }
 
-		if(userInfo.data.emailAddress === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "emailAddress"
-				},
-				errorMessage		: "Email address is null",
-				sourceLocation	: sourceLocation
-			});
-		}
+	if(userInfo.data.emailAddress === null) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "emailAddress"
+			},
+			errorMessage		: "Email address is null",
+			sourceLocation	: sourceLocation
+		});
+	}
 
-		if(userInfo.data.userName === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "userName"
-				},
-				errorMessage		: "Username is null",
-				sourceLocation	: sourceLocation
-			});
-		}
+	if(userInfo.data.userName === null) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "userName"
+			},
+			errorMessage		: "Username is null",
+			sourceLocation	: sourceLocation
+		});
+	}
 
-		return userInfo;
+	return userInfo;
 }
 
 

@@ -170,7 +170,7 @@ $('.user-create').click(function(){
 });
 
 $('.social-create-user-btn').click(function(){
-  auth.socialCreateUser();
+  auth.socialCreateUser(token);
 });
 
 token = getParameterByName('token');

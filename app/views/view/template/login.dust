@@ -58,7 +58,7 @@
               </div>
               <div id="social-create-user" class="social-create-user">
                 <div>
-                  <input id="social-create-email" name="email" placeholder="Email" type="hidden">
+                  <input id="social-create-token" name="social-create-token" placeholder="token" type="hidden">
                 </div>
                 <div>
                   <label for="social-create-username" class="sr-only">Username</label>
