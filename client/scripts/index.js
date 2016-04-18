@@ -39,7 +39,7 @@ $(document).ready(function() {
     var elementId = '#'+$(this).attr('value');
     var parentCommentId = $(this).attr('value');
     var html = '<div style="display: none" class="flex commentBox">' +
-      '<textarea id="comment" cols="80" rows="3" class="m-r-20" style="margin-bottom: 20px;"></textarea>' +
+      '<textarea id="comment" cols="80" rows="1" style="margin-bottom: 20px;"></textarea>' +
       '<button class="btn background-orange border-radius-0 font-white" id="saveComment" style="margin-bottom: 20px;">Submit</button>' +
       '</div>';
     $(elementId).append(html);
@@ -66,7 +66,7 @@ $(document).ready(function() {
       .done(function(data) {
         console.log(data);
         //insert comment on DOM
-        var html = '<div class="flex placehold" style="border-bottom: inset grey">'+
+        var html = '<div class="flex placehold">'+
           '<img src="./tn_00001.jpg" height="50" width="50" class="border-radius-circle m-10-20">'+
           '<div class="m-t-20">'+
           '<p class="pos-absolute-r-15" datetime="' + data.commentCreatedDate + '"></p>'+
@@ -98,7 +98,7 @@ $(document).ready(function() {
     .done(function(data) {
       var comment = data;
       var html = '<li>'+
-        '<div class="flex" style="border-bottom: inset grey">' +
+        '<div class="flex placehold">' +
         '<img src="https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952" height="30" width="30" class="border-radius-circle m-10-20">' +
           '<div id="' + data._id + '" class="m-t-20 comment-wrap">' +
             '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>' +
@@ -130,7 +130,7 @@ $(document).ready(function() {
       var html = '';
       data.forEach(function(reply) {
         html += '<li>'+
-          '<div class="flex" style="border-bottom: inset">'+
+          '<div class="flex">'+
           '<img src="https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-20">'+
               '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
@@ -152,11 +152,57 @@ $(document).ready(function() {
       }
     })
   });
+  //screen toggling
+  var screenWidth;
 
+  var toggles = {
+
+    toggleLeft: function (nextPage, videoPage) {
+      screenWidth = videoPage.width();
+      nextPage.css("left", screenWidth);
+      nextPage.addClass('display');
+      nextPage.removeClass('mobile-display-none');
+      videoPage.addClass('mobile-display-none');
+      videoPage.removeClass('display');
+      nextPage.add(videoPage).animate( {
+        'left': '-=' + screenWidth + 'px'
+      }, 1000).promise().done(function() {
+      })
+    },
+
+    toggleRight: function (videoPage, nextPage) {
+      videoPage.css("right", screenWidth);
+      videoPage.addClass('display');
+      videoPage.removeClass('mobile-display-none');
+      nextPage.addClass('mobile-display-none');
+      nextPage.removeClass('display');
+      videoPage.add(nextPage).animate({
+        'left': '+=' + screenWidth + 'px'
+      }, 1000).promise().done(function(){
+
+      })
+    }
+  };
+
+
+  $('.up-next').on('click', function(e) {
+    e.preventDefault();
+    var videoPage = $(this).parents().find('.videoplayback');
+    var nextPage = videoPage.siblings();
+    toggles.toggleLeft(nextPage, videoPage);
+  });
+
+  $('.videoback').on('click', function(e) {
+    e.preventDefault();
+    var nextPage = $(this).parents().find('.nextVideos');
+    var videoPage = nextPage.siblings();
+    toggles.toggleRight(videoPage, nextPage);
+  });
 
 //
 // ***************  end video player JS ***********************
 //
+  $('input[type="checkbox"]').onoff();
 
 //
 // *************** start auth JS ***********************
@@ -185,6 +231,9 @@ if (token) {
 //
 
 
+  $('.onoffswitch input').on('click', function() {
+    alert($(this).val());
+  });
 
 //
 });

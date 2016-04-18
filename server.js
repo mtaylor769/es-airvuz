@@ -69,6 +69,7 @@ app.use(morgan('dev'));
 app.use(compression());
 //app.use(express.static(path.resolve(__dirname, '/public')));
 app.use('/public', express.static('public'));
+app.use('/client', express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/admin', express.static(path.resolve(__dirname, './admin')));
