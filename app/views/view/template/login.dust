@@ -62,7 +62,7 @@
                 </div>
                 <div>
                   <label for="social-create-username" class="sr-only">Username</label>
-                  <input id="social-create-username" name="username" placeholder="Username" class="form-control" required>
+                  <input id="social-create-username" name="username" placeholder="Username" class="form-control social-create-username" required>
                 </div>
                 <button value="Submit" class="btn btn-lg btn-success social-create-user-btn">Submit</button>
               </div>

@@ -3,7 +3,7 @@ var acl                    = require('../../utils/acl');
 var jwt                    = require('jsonwebtoken');
 var log4js                 = require('log4js');
 var logger                 = log4js.getLogger('app.routes.api.users');
-var tokenConfig            = require('../../../config/token')
+var tokenConfig            = require('../../../config/token');
 var tokenData              = null;
 var usersCrud              = require('../../persistence/crud/users');
 var userParams             = null;
@@ -44,21 +44,21 @@ function get(req, res) {
 }
 
 function createUser(req, res) {
-  if (req.body.socialCreate) {
+  if (req.body.token.length > 0) {
     //decrypt token for use
     jwt.verify(req.body.token, tokenConfig.secret, function(error, data){
       userParams = {
         emailAddress            : data.email,
         socialMediaAccounts     : data.socialMediaAccounts,
         userName                : req.body.username
-      }
+      };
     });
   } else {
     userParams = {
       emailAddress            : req.body.email,
       userName                : req.body.username,
       password                : req.body.password
-    }
+    };
   }
   
   return usersCrud

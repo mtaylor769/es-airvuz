@@ -38,19 +38,17 @@ var auth = {
       success : function(data) {
         console.log('login success');
       }
-    })
+    });
   },
 
   socialCreateUser : function(token) {
-    email       = $('#create-email').val();
-    username    = $('#create-username').val();
+    username    = $('.social-create-username').val();
     $.ajax({
       type: 'POST',
       url: '/api/users/create',
       data : {
         username        : username,
-        token           : token,
-        socialCreate    : true
+        token           : token
       },
       success : function(data) {
         console.log('User created');

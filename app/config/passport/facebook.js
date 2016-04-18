@@ -31,7 +31,7 @@ module.exports = function(passport, config) {
       accountData       : profile,
       accountId         : profile.id,
       email             : profile.emails[0].value
-    }
+    };
 
     logger.debug('Hitting facebook passport strategy');
     socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, data.provider);
@@ -57,9 +57,9 @@ module.exports = function(passport, config) {
                   email               : data.email,
                   firstName           : data.accountData.name.givenName,
                   lastName            : data.accountData.name.familyName,
-                  socialMediaAccount  : account._id,
+                  socialMediaAccounts  : account._id,
                   provider            : data.provider
-                }
+                };
                 req.newUser = true;
                 return cb(null, user);
               }
@@ -82,7 +82,7 @@ module.exports = function(passport, config) {
                   lastName            : data.accountData.name.familyName,
                   socialMediaAccount  : newAccount._id,
                   provider            : data.provider
-                }
+                };
                 req.newUser = true;
                 return cb(null, user);
               }
@@ -92,4 +92,4 @@ module.exports = function(passport, config) {
       }
     });
   }));
-}
+};
