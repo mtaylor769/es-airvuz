@@ -145,7 +145,7 @@ app.get("/login", function(req, res){
 		});
 });
 
-app.get("/userProfile", function(req, res) {
+app.get("/userProfile/:userid", function(req, res) {
 	viewManager
 		.getView({
 			viewName				: userProfileView.getViewName(),
@@ -158,7 +158,7 @@ app.get("/userProfile", function(req, res) {
 		})
 		.catch(function(error) {
 			logger.error("userProfileView error:" + error);
-		})
+		});
 
 });
 

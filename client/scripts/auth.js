@@ -54,6 +54,7 @@ var auth = {
         console.log('User created');
       }
     });
+    //TODO: close dialog
   }
 };
 

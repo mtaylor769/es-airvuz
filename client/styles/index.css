@@ -661,3 +661,71 @@ a.btn + a.btn {
     display: block;
   }
 }
+
+/*
+Begin userProfile CSS
+*/
+
+#user-profile .container {
+  /*max-width: 1170px;*/
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#user-profile .coverborder {
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+#user-profile .inline{
+  display: inline-block;
+}
+
+#user-profile .profile{
+  margin-top: -150px;
+}
+
+#user-profile .profile-banner {
+  left: 0;
+  top: 0;
+  height: 180px;
+  width: 100%;
+}
+#user-profile .profile-picture {
+  
+}
+
+#user-profile .profile-picture-img {
+  border-radius: 50%;
+  width: 75%; 
+}
+
+#user-profile .profile-picture, #user-profile .profile-information {
+  display: inline-block;
+}
+
+#user-profile .video {
+  margin-bottom: 25px;
+}
+
+#user-profile .video-row-1, .video-row-2, .video-row-3{
+  width: 100%;
+}
+
+#user-profile .video-sort {
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+
+#user-profile .video-thumbnail, #user-profile .video-thumbnail img {
+  width: 100%;
+}
+
+#user-profile .video-list {
+  margin: 25px 25px 0 25px;
+}
+
+/*
+End user profile CSS
+*/

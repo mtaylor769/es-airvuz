@@ -220,20 +220,22 @@ $(document).ready(function() {
 //
 // *************** start auth JS ***********************
 //
-$('.user-login').click(function(){
+$('.user-login').on('click', function(){
   auth.login();
 });
 
-$('.user-create').click(function(){
+$('.user-create').on('click', function(){
   auth.createUser();
 });
 
-$('.social-create-user-btn').click(function(){
+$('.social-create-user-btn').on('click', function(){
   auth.socialCreateUser(token);
 });
 
 token = getParameterByName('token');
 
+//This code should only run when a new user registers for the first time with a social media account
+//dialog opened should prompt for user name
 if (token) {
   $( '.social-create-user' ).dialog();
 }
@@ -261,6 +263,15 @@ if (token) {
 // ***************  Miscellaneous reusable functions ***********************
 //
 
+
+/*
+*method takes in
+name @string
+url @string
+
+example URL is login?userid=xyz
+calling getParameterByName('userid') => xyz
+*/
 function getParameterByName(name, url) {
   if (!url) 
   {
