@@ -24,7 +24,6 @@ module.exports = function(passport, config) {
     passwordField: 'password'
   },
   function(emailAddress, password, done){
-    debugger;
     Users.getUserByEmail(emailAddress)
     .then(function(user) {
       if (!user) {
@@ -33,7 +32,11 @@ module.exports = function(passport, config) {
       if (!user.validPassword(password)) {
         return done(null, false)
       }
-      return done(null, user);
+      return done(null, {
+        _id: user._id,
+        aclRoles: user.aclRoles,
+        userName: user.userName
+      });
     })
     .error(function(error){
       return done(null, false);

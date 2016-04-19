@@ -11,7 +11,6 @@ function Auth() {
 
 function loginSuccess(req, res, next) {
   token =  jwt.sign(req.user, tokenConfig.secret, { expiresIn: tokenConfig.expires });
-  debugger;
   res.json({token: token});
 }
 
