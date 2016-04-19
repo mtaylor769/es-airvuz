@@ -46,9 +46,9 @@ var usersSchema 		= mongoose.Schema({
 		
 	// The users email address
 	emailAddress : {
-		required	: true,
-		type		: String,
-		unique		: true
+		required	: false,
+		type		: String/*,
+		unique		: true*/
 	},
 		
   //user for password generating

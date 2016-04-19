@@ -109,8 +109,8 @@ users.prototype.create = function(params) {
 						reject(errorMessage.getErrors());
             return;
 					}
-						logger.debug('saving user');
-						logger.debug(saveUser);
+						//logger.debug('saving user');
+						//logger.debug(saveUser);
 						resolve(saveUser);
             return;
 				});
@@ -187,7 +187,7 @@ users.prototype.getUserById = function (userId) {
 					});
 					reject(errorMessage.getErrors());
 				} else {
-					console.log('user resolved');
+					//console.log('user resolved');
 					resolve(user);
 				}
 			});

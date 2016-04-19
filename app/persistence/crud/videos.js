@@ -42,6 +42,9 @@ Videos.prototype.getPreCondition = function(params) {
 	var preCondition		= new ObjectValidationUtil();
 	
 	preCondition.setValidation(function(params) {
+		
+		//logger.debug(".getPreCondition: params.description:" + params.description);
+		
 		var errorMessage				= new ErrorMessage();
 		var sessionId						= params.sessionId || null;
 		this.data.userId				= params.userId || null;
@@ -58,12 +61,13 @@ Videos.prototype.getPreCondition = function(params) {
 			});
 		}			
 		
+		/*
 		if(sessionId === null) {
 			this.errors = errorMessage.getErrorMessage({
 				errorId					: "SESSIONID1000",
 				sourceLocation	: sourceLocation
 			});
-		}
+		}*/
 		
 		if(this.data.description === null) {
 			this.errors = errorMessage.getErrorMessage({
@@ -99,7 +103,7 @@ Videos.prototype.getPreCondition = function(params) {
  * @param params.thumbnailPath {string}
  */
 Videos.prototype.create = function(params) {
-	console.log(params);
+	//console.log(params);
 	
 	
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Videos.create"});
@@ -117,7 +121,8 @@ Videos.prototype.create = function(params) {
 			var videoModel = new VideoModel(validation.data);
 			videoModel.save(function(error, video) {
 				if(error) {
-					console.log(error);
+					//console.log(error);
+					logger.error(error);
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						errorId					: "PERS1000",

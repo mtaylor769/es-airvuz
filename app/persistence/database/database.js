@@ -78,6 +78,11 @@ Database.prototype._init = function() {
 	var connections = {
 		databaseConnections : [
 			{
+				connectionName	: "AirVuz_v1",
+				hostName				: ENV.DATABASE_HOST || "localhost",
+				databaseName		: "airvuz"
+			},			
+			{
 				connectionName	: "events",
 				hostName				: ENV.DATABASE_HOST || "localhost",
 				databaseName		: "AirVuzEvents"
@@ -91,6 +96,9 @@ Database.prototype._init = function() {
 		paths : [
 			{ 
 				path						: path.sep  //"/"
+			},			
+			{ 
+				path						: path.sep + "airvuz_v1" + path.sep   // "/events/"
 			},			
 			{ 
 				path						: path.sep + "events" + path.sep   // "/events/"
