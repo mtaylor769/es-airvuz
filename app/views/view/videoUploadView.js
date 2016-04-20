@@ -48,6 +48,10 @@ module.exports = new IndexView({
 			{
 				partialName: 'app.views.view.partial.footer',
 				partialPath: './app/views/view/partial/footer.dust' 
-			}	
+			},
+			{
+				partialName: 'client.templates.upload.step-1',
+				partialPath: './client/templates/upload/step-1.dust'
+			}
 		]
 	});

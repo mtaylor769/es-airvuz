@@ -31,7 +31,8 @@ var VideoPlayerModel = function(params) {
 util.inherits(VideoPlayerModel, BaseModel);
 
 VideoPlayerModel.prototype.getData = function(params) {
-	var videoId         = '56fec7bb07354aaa096db3b8';
+	console.log(params.params);
+	var videoId         = params.request.params.id;
 	var dataObject      = {};
 	var sourceManifest	= params.sourceManifest;
 

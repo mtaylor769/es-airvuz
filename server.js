@@ -69,6 +69,7 @@ app.use(morgan('dev'));
 app.use(compression());
 //app.use(express.static(path.resolve(__dirname, '/public')));
 app.use('/public', express.static('public'));
+app.use('/client', express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/admin', express.static(path.resolve(__dirname, './admin')));
@@ -102,7 +103,7 @@ var indexView					= require('./app/views/view/indexView');
 var videoPlayerView		= require('./app/views/view/videoPlayerView');
 var userProfileView		= require('./app/views/view/userProfileView');
 var loginView 				= require('./app/views/view/loginView');
-var videoUploadView		= require('./app/views/view/videoUploadView')
+var videoUploadView		= require('./app/views/view/videoUploadView');
 
 
 viewManager.addView({	view : indexView });
@@ -144,7 +145,7 @@ app.get("/login", function(req, res){
 		});
 });
 
-app.get("/userProfile", function(req, res) {
+app.get("/userProfile/:userid", function(req, res) {
 	viewManager
 		.getView({
 			viewName				: userProfileView.getViewName(),
@@ -157,11 +158,11 @@ app.get("/userProfile", function(req, res) {
 		})
 		.catch(function(error) {
 			logger.error("userProfileView error:" + error);
-		})
+		});
 
 });
 
-app.get("/videoPlayer", function(req, res) {
+app.get("/videoPlayer/:id", function(req, res) {
 	viewManager
 		.getView({
 			viewName				: videoPlayerView.getViewName(),

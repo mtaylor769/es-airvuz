@@ -23,8 +23,8 @@ var droneTypeSchema = mongoose.Schema({
 	 * Identifies if the camera name is visible.
 	 */
 	isVisible: {
-		required	: true,
-		type			: Boolean
+		type			: Boolean,
+		default		: true
 	}
 
 });

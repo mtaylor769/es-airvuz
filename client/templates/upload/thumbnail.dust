@@ -1,0 +1,8 @@
+<label>Select a thumbnail <span class="text-danger">*</span></label>
+<input type="hidden" name="thumbnailPath"/>
+<ul>
+	{#thumbnails}
+	<li data-url="{.}" style="background: gray url('{url}{.}')">
+	</li>
+	{/thumbnails}
+</ul>

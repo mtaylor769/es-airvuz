@@ -16,11 +16,9 @@ catch(exception) {
 	logger.error(" import error:" + exception);
 }
 
-
-
 var users = function() {
 	
-}
+};
 
 /*
  * @param params {Object}
@@ -40,40 +38,38 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data.userName							= params.userName || null;
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 
-	if (params.password) {
-		userInfo.data.password        			= params.password;
+	if (params.socialMediaAccounts) {
+		userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
+	} else {
+		userInfo.data.password        		= params.password || null;
 	}
-  
-  if (params.socialMediaAccounts) {
-  	userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
-  }
 
-		if(userInfo.data.emailAddress === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "emailAddress"
-				},
-				errorMessage		: "Email address is null",
-				sourceLocation	: sourceLocation
-			});
-		}
+	if(userInfo.data.emailAddress === null) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "emailAddress"
+			},
+			errorMessage		: "Email address is null",
+			sourceLocation	: sourceLocation
+		});
+	}
 
-		if(userInfo.data.userName === null) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "userName"
-				},
-				errorMessage		: "Username is null",
-				sourceLocation	: sourceLocation
-			});
-		}
+	if(userInfo.data.userName === null) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "userName"
+			},
+			errorMessage		: "Username is null",
+			sourceLocation	: sourceLocation
+		});
+	}
 
-		return userInfo;
-}
+	return userInfo;
+};
 
 
 /*
@@ -95,7 +91,7 @@ users.prototype.create = function(params) {
           logger.debug('hash password');
 					saveUser.password 		= saveUser.generateHash(saveUser.password);
 				}
-				saveUser.save(function(error){
+				saveUser.save(function(error) {
 					if (error) {
 						logger.debug('error while saving ' + error);
 						var errorMessage		= new ErrorMessage();
@@ -115,14 +111,14 @@ users.prototype.create = function(params) {
             return;
 				});
 		}));
-}
+};
 
 /*
 * Get all users
 */
 users.prototype.getAllUsers = function() {
 	return(new Promise(function(resolve, reject){
-		UsersModel.find({}).exec()
+		UserModel.find({}).exec()
 		.then(function(allUsers){
 			var param = {
 				status 	: "200",
@@ -145,7 +141,7 @@ users.prototype.getAllUsers = function() {
 	}));
 
 	
-}
+};
 
 /*
 * Get a user by ID
@@ -187,13 +183,13 @@ users.prototype.getUserById = function (userId) {
 					});
 					reject(errorMessage.getErrors());
 				} else {
-					//console.log('user resolved');
+					logger.debug('user resolved');
 					resolve(user);
 				}
 			});
 		}
 	}));
-}
+};
 
 /*
 * Get a user by social media ID
@@ -244,7 +240,7 @@ users.prototype.getUserBySocialId = function (socialId) {
 		}
 
 	}));
-}
+};
 
 /*
 * Get a user by email
@@ -297,7 +293,7 @@ users.prototype.getUserByEmail = function (email) {
 		}
 	}));
 	
-}
+};
 
 
 /*
@@ -349,7 +345,7 @@ users.prototype.getUserByUserName = function (userName) {
 * Update user information
 */
 users.prototype.update = function (params) {
-	var validation = preCondition.validate(params);
+	var validation = null; // preCondition.validate(params);
 
 	return(new Promise(function(resolve, reject){
 		if (validation.errors) {
@@ -359,7 +355,7 @@ users.prototype.update = function (params) {
 		}
 
 	}));
-}
+};
 
 /*
 * Delete

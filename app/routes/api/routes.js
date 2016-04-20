@@ -20,7 +20,7 @@ var protect             = require('../../middlewares/protect');
 var auth = require('./auth');
 
 apiRouter.route('/api/auth')
-  .post(auth.login);
+  .post(auth.login, auth.loginSuccess);
 
 apiRouter.route('/api/auth/facebook')
   .get(auth.facebook);
@@ -131,7 +131,7 @@ apiRouter.route('/api/curated-videos/:id')
  * /api/comment/
  */
 apiRouter.route('/api/comment')
-  .post(comment.post)
+  .post(protect, comment.post)
   .get(comment.get);
 
 apiRouter.route('/api/comment/byParent')

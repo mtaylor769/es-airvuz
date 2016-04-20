@@ -1,5 +1,13 @@
+require('../styles/upload.css');
+
 var Evaporate     = require('evaporate'),
-    AmazonConfig  = require('./config/amazon.config.client');
+    AmazonConfig  = require('./config/amazon.config.client'),
+    identity      = require('./services/identity'),
+    camera        = require('./services/camera'),
+    drone         = require('./services/drone');
+
+var thumbnailTpl = require('../templates/upload/thumbnail.dust');
+
 
 var evaporate = new Evaporate({
   signerUrl : '/api/amazon/sign-auth',
@@ -9,7 +17,8 @@ var evaporate = new Evaporate({
 });
 
 
-var $progressbar,
+var $uploadPage,
+    $progressbar,
     $processingMessage,
     $videoPreview,
     $thumbnails,
@@ -73,17 +82,13 @@ function onTranscodeComplete(response) {
   $videoPreview.removeClass('hidden');
   $videoPreview.find('video').attr('src', AmazonConfig.OUTPUT_URL + response.videoUrl);
 
-  updateThumbnail(response.thumbnails);
+  renderThumbnail(response.thumbnails);
 }
 
-function updateThumbnail(thumbnails) {
-  var html = '';
-  thumbnails.forEach(function (thumbnail, index) {
-    html += '<li><input type="checkbox" id="tn'+ index +'"><label style="background-image: url('+ AmazonConfig.OUTPUT_URL + thumbnail +')" for="tn'+ index +'"></label></li>'
+function renderThumbnail(thumbnails) {
+  thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
+    $thumbnails.html(html);
   });
-
-  $thumbnails.find('ul').html(html);
-  $thumbnails.removeClass('hidden');
 }
 
 function onError(message) {
@@ -95,20 +100,54 @@ function onError(message) {
 }
 
 function goToStep(step) {
-  $('#step-1, #step-2, #step-3').addClass('hidden');
-  $('#step-' + step).removeClass('hidden');
+  switch(step) {
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+  }
+}
+
+function getData() {
+  camera.getAll()
+    .then(function (cameras) {
+      /********************************************************/
+      console.group('%ccameras :', 'color:red;font:strait');
+      console.log(cameras);
+      console.groupEnd();
+      /********************************************************/
+    });
+
+  drone.getAll()
+    .then(function (drones) {
+      /********************************************************/
+      console.group('%cdrones :', 'color:red;font:strait');
+      console.log(drones);
+      console.groupEnd();
+      /********************************************************/
+    });
 }
 
 function initialize() {
+  // If no user then redirect to home
+  if (!identity.isAuthenticated()) {
+    window.location.href = '/';
+  }
+
+  getData();
+
   $progressbar        = $('#progress-bar');
   $processingMessage  = $('#processing-message');
   $videoPreview       = $('#video-preview');
   $thumbnails         = $('#thumbnails');
+  $uploadPage         = $('#upload-page');
 
-  $('#publish-btn').on('click', function (event) {
+  $uploadPage.on('click', '#publish-btn', function (event) {
     event.preventDefault();
 
-    return goToStep(3);
+    //return goToStep(3);
 
     var params = {
       title       : 'Title',
@@ -130,7 +169,8 @@ function initialize() {
     });
 
   });
-  $('#file').on('change', function () {
+
+  $uploadPage.on('click', '#file', function () {
     currentUploadFile = this.files[0];
     var data = JSON.stringify({file: {type: currentUploadFile.type, size: currentUploadFile.size, name: currentUploadFile.name}});
 
@@ -164,6 +204,10 @@ function initialize() {
         error: onError
       });
     });
+  });
+
+  $uploadPage.on('click', '#thumbnail li', function () {
+
   });
 }
 

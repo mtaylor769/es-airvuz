@@ -12,7 +12,6 @@
     <body>
         {> "app.views.view.partial.header" /}
         <div class="home">viewName[]: {login.viewName} </div>
-        <div id="airvuz-app">
             <div class="container">
 
               <div class="jumbotron text-center">
@@ -57,10 +56,19 @@
                   <a href="/api/auth/instagram" class="btn btn-info"><span class="fa fa-instagram"></span> Instagram</a>
 
               </div>
+              <div id="social-create-user" class="social-create-user">
+                <div>
+                  <input id="social-create-token" name="social-create-token" placeholder="token" type="hidden">
+                </div>
+                <div>
+                  <label for="social-create-username" class="sr-only">Username</label>
+                  <input id="social-create-username" name="username" placeholder="Username" class="form-control social-create-username" required>
+                </div>
+                <button value="Submit" class="btn btn-lg btn-success social-create-user-btn">Submit</button>
+              </div>
 
             </div>
 
-        </div>
         {> "app.views.view.partial.footer" /}
 
         {> "app.views.view.partial.js" /}

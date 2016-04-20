@@ -24,7 +24,7 @@ var IndexView = function(params) {
 	BaseView.apply(this, arguments);
 	
 	this.model = new UserProfileModel();
-}
+};
 
 util.inherits(IndexView, BaseView);
 
