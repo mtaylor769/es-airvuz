@@ -50,16 +50,6 @@ CategoryType.prototype.getPreCondition = function(params) {
 		logger.debug("getPreCondition - params.backGroundImage:" + params.backGroundImage);
 		logger.debug("getPreCondition - params.name:" + params.name);
 
-    if(this.data.backGroundImage === null) {
-      this.errors = errorMessage.getErrorMessage({
-        errorId					: "VALIDA1000",
-        templateParams	: {
-          name : "backGroundImage"
-        },
-        sourceLocation	: sourceLocation
-      })
-    }
-
     if(this.data.name === null) {
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
