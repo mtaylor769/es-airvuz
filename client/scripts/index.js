@@ -1,4 +1,5 @@
 require('../styles/index.css');
+require('./config/jquery');
 
 
 

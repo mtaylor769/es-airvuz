@@ -45,6 +45,13 @@ var cssnano      = require ( 'cssnano' );
 
 var config = {};
 
+config.resolve = {
+  alias: {
+    dustjs: 'dustjs-linkedin',
+    'dust.core': 'dustjs-linkedin'
+  }
+};
+
 // Devtool
 config.devtool = 'source-map';
 config.watch   = IS_DEVELOPMENT;
@@ -77,6 +84,15 @@ config.module.loaders.push ( {
   ],
   loader:  ExtractTextPlugin.extract ( 'style', 'css?-minimize!postcss' )
 } );
+
+// DUST
+config.module.loaders.push ({
+  test: /\.dust$/,
+  loader: 'dust-loader-complete'
+  //query: {
+  //  path: path.resolve(__dirname,  "templates")
+  //}
+});
 
 // PostCSS Plugins
 config.postcss = function ( webpack ) {

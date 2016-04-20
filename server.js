@@ -103,7 +103,7 @@ var indexView					= require('./app/views/view/indexView');
 var videoPlayerView		= require('./app/views/view/videoPlayerView');
 var userProfileView		= require('./app/views/view/userProfileView');
 var loginView 				= require('./app/views/view/loginView');
-var videoUploadView		= require('./app/views/view/videoUploadView')
+var videoUploadView		= require('./app/views/view/videoUploadView');
 
 
 viewManager.addView({	view : indexView });

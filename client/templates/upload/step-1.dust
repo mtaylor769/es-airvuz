@@ -1,0 +1,10 @@
+<div class="text-center icon-wrap">
+  <div class="upload-icon">
+    <span class="glyphicon glyphicon-cloud-upload"></span>
+    <span class="glyphicon glyphicon-plane"></span>
+    <input type="file" id="file"/>
+  </div>
+  <p>Select file to upload</p>
+</div>
+<strong>HELP AND SUGGESTIONS</strong>
+<p>By submitting videos to AirVuz you acknowledge that you agree to AirVuz's Terms of Service and Community Guidelines. Please be sure not to violate others copyright or privacy rights.</p>
