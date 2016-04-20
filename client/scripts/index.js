@@ -165,7 +165,7 @@ $(document).ready(function() {
       videoPage.removeClass('display');
       nextPage.add(videoPage).animate( {
         'left': '-=' + screenWidth + 'px'
-      }, 1000).promise().done(function() {
+      }, 300).promise().done(function() {
       })
     },
 
@@ -177,7 +177,7 @@ $(document).ready(function() {
       nextPage.removeClass('display');
       videoPage.add(nextPage).animate({
         'left': '+=' + screenWidth + 'px'
-      }, 1000).promise().done(function(){
+      }, 300).promise().done(function(){
 
       })
     }
@@ -198,18 +198,19 @@ $(document).ready(function() {
     toggles.toggleRight(videoPage, nextPage);
   });
 
-  $('.up-next').on('click', function(e) {
-    e.preventDefault();
-    var videoPage = $(this).parents().find('.videoplayback');
-    var nextPage = videoPage.siblings();
-    toggles.toggleLeft(nextPage, videoPage);
+  $('.share').on('click', function() {
+    $('.social-icons').toggle();
   });
 
-  $('.videoback').on('click', function(e) {
-    e.preventDefault();
-    var nextPage = $(this).parents().find('.nextVideos');
-    var videoPage = nextPage.siblings();
-    toggles.toggleRight(videoPage, nextPage);
+  $('#dialog').dialog({
+    autoOpen:false,
+    modal:true
+  });
+
+  $('.embed').on('click', function() {
+    $('#dialog').dialog('open');
+    $('.ui-widget-overlay').css('background', 'black');
+    $('.social-icons').toggle();
   });
 
 //
@@ -238,18 +239,13 @@ if (token) {
   $( '.social-create-user' ).dialog();
 }
 
-
-  $('.onoffswitch input').on('click', function() {
-    alert($(this).val());
-  });
-
 //
 // ***************  end auth JS ***********************
 //
 
 
-  $('.onoffswitch input').on('click', function() {
-    alert($(this).val());
+  $('.onoffswitch input[type=checkbox]').on('click', function() {
+    console.log($(this).val('off'));
   });
 
 //

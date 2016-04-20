@@ -241,12 +241,8 @@ a.btn + a.btn {
 }
 
 .video-action-icons {
-  margin: auto 10px;
   font-size: 18px;
-}
-
-.video-action-icons span{
-  margin: 0 10px;
+  position: relative;
 }
 
 .video-player-title {
@@ -283,11 +279,6 @@ a.btn + a.btn {
 
 .mobile-display-none {
   display: none;
-}
-
-.videoplayback {
-  padding-right: 0;
-  padding-left: 0;
 }
 
 .video-page .container {
@@ -363,6 +354,39 @@ a.btn + a.btn {
   right: 90px;
 }
 
+.up-tag {
+  display: none;
+}
+
+.up-next-layer p {
+  font-size: 20px;
+}
+.up-next-subs p {
+  font-size: 16px;
+}
+
+.social-icons .social:hover {
+  color: white;
+}
+
+.social-icons .social {
+  padding: 10px 0;
+  margin: 0;
+  width: 55px;
+  text-align: center;
+  color: darkgray;
+}
+
+.share, .report, .like {
+  padding: 0px;
+  margin: 0;
+  width: 55px;
+  text-align: center
+}
+
+.ui-widget-overlay {
+  background: black;
+}
 
 /*
  * End Video Player
@@ -512,20 +536,6 @@ a.btn + a.btn {
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  .videoplayback {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-  .video-page .container {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-  .write-comment {
-    padding: 20px 40px;
-  }
-
   .write-comment textarea {
     height: 70px;
   }
@@ -547,44 +557,36 @@ a.btn + a.btn {
   }
 
   .page-top {
-    margin-top: 0px
+    margin: 20px 0;
   }
 
-  .mobile-display-none {
+  .up-tag {
     display: inherit;
   }
 
-  .video-user-more {
-    display: block;
+  .up-next-layer p {
+    font-size: 16px;
   }
 
-  .top-videos {
-    display: block;
+  .up-next-subs p {
+    font-size: 12px;
+  }
+
+  .videoplayback {
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  .nextVideos {
+    left: 0 !important;
+    right: 0 !important;
   }
 }
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-  .videoplayback {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-  .video-page .container {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
   .write-comment {
     padding: 20px 40px;
-  }
-
-  .write-comment textarea {
-    height: 70px;
-  }
-
-  .up-next {
-    display: none;
   }
 
   .video-helper {
@@ -593,10 +595,6 @@ a.btn + a.btn {
 
   .videoback {
     display: none;
-  }
-
-  .page-top {
-    margin-top: 0px
   }
 
   .mobile-display-none {
@@ -609,44 +607,28 @@ a.btn + a.btn {
 
   .top-videos {
     display: block;
+  }
+
+  .small-desktop-none {
+    display: none;
+  }
+
+  .up-next-layer p {
+    font-size: 18px;
+  }
+  .up-next-subs p {
+    font-size: 14px;
   }
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-  .videoplayback {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-  .video-page .container {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-
-  .write-comment {
-    padding: 20px 40px;
-  }
-
-  .write-comment textarea {
-    height: 70px;
-    padding: 10px;
-  }
-
-  .up-next {
-    display: none;
-  }
-
   .videoback {
     display: none;
   }
 
   .video-helper {
     margin-top: 35px;
-  }
-
-  .page-top {
-    margin-top: 0px
   }
 
   .mobile-display-none {
@@ -659,5 +641,16 @@ a.btn + a.btn {
 
   .top-videos {
     display: block;
+  }
+
+  .small-desktop-none {
+    display: inherit;
+  }
+
+  .up-next-layer p {
+    font-size: 20px;
+  }
+  .up-next-subs p {
+    font-size: 16px;
   }
 }

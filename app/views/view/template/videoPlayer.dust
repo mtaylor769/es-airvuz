@@ -10,127 +10,140 @@
     </head>
     <body>
         {> "app.views.view.partial.header" /}
+    <div id="dialog" title="Embed Code" style="display: none">
+        <p>Embed code goes here</p>
+    </div>
         <div class="video-page">
             <div class="container main">
-                <div class="col-sm-9 videoplayback">
-                    {!video title and back button!}
-                    <div class="flex page-top">
-                        <button class="btn btn-primary previous"><</button>
-                        <span class="video-player-title airvuz-blue">{video.title}</span>
-                        <div class="up-next">
-                            <span class="up">UP NEXT</span>
-                            <span class="glyphicon glyphicon-arrow-right"></span>
+                <div class="row">
+                    <div class="col-sm-8 videoplayback">
+                        {!video title and back button!}
+                        <div class="flex page-top">
+                            <button class="btn btn-primary previous"><</button>
+                            <span class="video-player-title airvuz-blue">{video.title}</span>
+                            <div class="up-next">
+                                <span class="up">UP NEXT</span>
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                            </div>
                         </div>
-                    </div>
-                    {!video player!}
-                    <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen video-helper"
-                           controls preload="auto" width="100%" height="25%" style="position: relative"
-                           poster="video.thumbnailPath"
-                           data-setup=''>
-                        <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/1d8228f4adbb82c750f466a69b481274/1d8228f4adbb82c750f466a69b481274.mp4" type="video/mp4" />
-                    </video>
-                    {!categories!}
-                    <div class="flex video-player-categories font-white">
-                        <ul class="list-inline categories">
-                            {#video.categories}
-                            <li>{name}</li>
-                            {/video.categories}
-                        </ul>
-                    </div>
-                    {!video owner info!}
-                    <div class="flex video-user-info-height">
-                        <button class="btn background-orange border-radius-0 font-white add-button">+</button>
-                        <img src="{user.picture}" height="50" width="50" class="margin-auto border-radius-circle">
-                        <div class="margin-auto t-a-inherit">
-                            <p class="m-b-0 airvuz-blue">{user.userName}</p>
-                            <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
-                            <p class="m-b-0"><span class="airvuz-blue">150 </span>followers</p>
+                        {!video player!}
+                        <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen video-helper"
+                               controls preload="auto" width="100%" height="25%" style="position: relative"
+                               poster="{video.thumbnailPath}"
+                               data-setup=''>
+                            <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/1d8228f4adbb82c750f466a69b481274/1d8228f4adbb82c750f466a69b481274.mp4" type="video/mp4" />
+                        </video>
+                        {!categories!}
+                        <div class="flex video-player-categories font-white">
+                            <ul class="list-inline categories">
+                                {#video.categories}
+                                <li>{name}</li>
+                                {/video.categories}
+                            </ul>
                         </div>
-                        <div class="top-videos margin-auto t-a-inherit mobile-display-none">
-                            <p class="m-b-0">Top Videos by</p>
-                            <p class="m-b-0">{user.userName}</p>
+                        {!video owner info!}
+                        <div class="flex video-user-info-height">
+                            <button class="btn background-orange border-radius-0 font-white add-button">+</button>
+                            <img src="{user.picture}" height="50" width="50" class="margin-auto border-radius-circle">
+                            <div class="margin-auto t-a-inherit">
+                                <p class="m-b-0 airvuz-blue">{user.userName}</p>
+                                <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
+                                <p class="m-b-0"><span class="airvuz-blue">150 </span>followers</p>
+                            </div>
+                            <div class="top-videos margin-auto t-a-inherit mobile-display-none">
+                                <p class="m-b-0">Top Videos by</p>
+                                <p class="m-b-0">{user.userName}</p>
+                            </div>
+                            <img src="{video.thumbnailPath}" height="75" width="150" class="margin-auto">
+                            <img src="{video.thumbnailPath}" height="75" width="150" class="margin-auto mobile-display-none small-desktop-none">
+                            <div class="video-user-more border-radius-0 text-center mobile-display-none">
+                                <p>More</p>
+                            </div>
                         </div>
-                        <img src="./tn_00001.jpg" height="75" width="150" class="margin-auto">
-                        <img src="./tn_00001.jpg" height="75" width="150" class="margin-auto mobile-display-none">
-                        <div class="video-user-more border-radius-0 text-center mobile-display-none">
-                            <p>More</p>
-                        </div>
-                    </div>
-                    {!comments!}
-                    <div class="gainsboro-background p-15-0">
-                        <div class="inline m-l-10">
-                            <span class="p-l-10 mobile-display-none"><span class="bold">{video.viewCount} </span>VUZ |</span>
-                            <span><span class="bold"> {video.likeCount} </span>Likes |</span>
-                            <span><span class="bold"> {video.commentCount} </span>Comments</span>
-                        </div>
-                        <div class="video-action-icons pull-right flex">
-                            <span class="glyphicon glyphicon-heart like"></span>
-                            <span class="glyphicon glyphicon-flag report"></span>
-                            <span class="glyphicon glyphicon-share share"></span>
-                        </div>
-                    </div>
-                    <div class="flex write-comment" style="width: 100%">
-                        <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
-                        <button class="btn background-orange border-radius-0 font-white" value="{video._id}" id="commentSave">Comment</button>
-                    </div>
-                    <ul class="parent-comments">
-                    {#comments}
-                        <li class="comment-wrap">
-                            <div class="flex">
-                                <img src="{user.picture}" height="50" width="50" class="border-radius-circle m-10-20">
-                                <div class="m-t-20">
-                                    <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
-                                    <p class="m-b-0 airvuz-blue">{userId.userName}</p>
-                                    <p class="m-b-0 ">{comment}</p>
+                        {!comments!}
+                        <div class="gainsboro-background p-15-0">
+                            <div class="inline m-l-10">
+                                <span class="p-l-10 mobile-display-none"><span class="bold">{video.viewCount} </span>VUZ |</span>
+                                <span><span class="bold"> {video.likeCount} </span>Likes |</span>
+                                <span><span class="bold"> {video.commentCount} </span>Comments</span>
+                            </div>
+                            <div class="video-action-icons pull-right flex">
+                                <span class="glyphicon glyphicon-heart like"></span>
+                                <span class="glyphicon glyphicon-flag report"></span>
+                                <span class="glyphicon glyphicon-share share"></span>
+                                <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
+                                <span class="glyphicon glyphicon-heart social embed"></span>
+                                <span class="glyphicon glyphicon-heart social"></span>
+                                <span class="glyphicon glyphicon-heart social"></span>
+                                <span class="glyphicon glyphicon-heart social"></span>
+                                <span class="glyphicon glyphicon-heart social"></span>
+                                <span class="glyphicon glyphicon-heart social"></span>
                                 </div>
                             </div>
-                            <div  id="{_id}">
-                                <ul class="parentComment"></ul>
-                                <span class="reply" value="{_id}" style="margin: 0 0 0 30px">-> reply</span>
-                                <span style="margin: 0 20px">replies: <a class="commentReplies" value="{_id}">{replyCount}</a></span>
-                            </div>
-                        </li>
-                    {/comments}
-                    </ul>
-                    <div>
-                        <p class="show-more">Show More</p>
-                    </div>
-                </div>
-                {!up next video list!}
-                <div class="col-sm-3 nextVideos mobile-display-none page-top" id="next">
-                    <div class="flex">
-                        <div class="videoback">
-                            <span class="glyphicon glyphicon-arrow-left"></span>
-                            <span class="up">VIDEO PLAYER</span>
                         </div>
-                        <h5 class="mobile-display-none">UP NEXT</h5>
-                        <div class="auto-play">
-                            <h5>AutoPlay</h5>
-                            <div class="onoffswitch">
-                                <input type="checkbox" class="onoffswitch-checkbox" id="myonoffswitch" />
-                                <label class="onoffswitch-label" for="myonoffswitch">
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                </label>
-                            </div>
+                        <div class="flex write-comment" style="width: 100%">
+                            <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
+                            <button class="btn background-orange border-radius-0 font-white" value="{video._id}" id="commentSave">Comment</button>
                         </div>
-                    </div>
-                    <ul style="list-style: none; padding-left: 0">
-                    {#upNext}
-                        <li style="width: 100%">
-                            <div>
-                                <img src="{video.thumbnailPath}" width="100%" height="60%" class="m-t-35">
-                                <div class="up-next-layer">
-                                    <p class="font-white m-l-15 p-t-15">{title}</p>
-                                    <div class="flex">
-                                        <p class="font-white m-l-15">{duration}</p>
-                                        <p class="font-white pos-absolute-r-15">{viewCount}</p>
+                        <ul class="parent-comments">
+                        {#comments}
+                            <li class="comment-wrap">
+                                <div class="flex">
+                                    <img src="{user.picture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                    <div class="m-t-20">
+                                        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
+                                        <p class="m-b-0 airvuz-blue">{userId.userName}</p>
+                                        <p class="m-b-0 ">{comment}</p>
                                     </div>
                                 </div>
+                                <div  id="{_id}">
+                                    <ul class="parentComment"></ul>
+                                    <span class="reply" value="{_id}" style="margin: 0 0 0 30px">-> reply</span>
+                                    <span style="margin: 0 20px">replies: <a class="commentReplies" value="{_id}">{replyCount}</a></span>
+                                </div>
+                            </li>
+                        {/comments}
+                        </ul>
+                        <div>
+                            <p class="show-more">Show More</p>
+                        </div>
+                    </div>
+                    {!up next video list!}
+                    <div class="col-sm-4 nextVideos mobile-display-none page-top" id="next">
+                        <div class="flex">
+                            <div class="videoback">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                                <span class="up">VIDEO PLAYER</span>
                             </div>
-                        </li>
-                    {/upNext}
-                    </ul>
+                            <h5 class="up-tag">UP NEXT</h5>
+                            <div class="auto-play">
+                                <h5>AutoPlay</h5>
+                                <div class="onoffswitch">
+                                    <input type="checkbox" class="onoffswitch-checkbox" id="myonoffswitch" value="1"/>
+                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <ul style="list-style: none; padding-left: 0">
+                        {#upNext}
+                            <li style="width: 100%">
+                                <div>
+                                    <img src="{video.thumbnailPath}" width="100%" height="60%" class="m-t-35">
+                                    <div class="up-next-layer">
+                                        <p class="font-white m-l-15 p-t-15 up-next-title">{title}</p>
+                                        <div class="flex up-next-subs">
+                                            <p class="font-white m-l-15">{duration}</p>
+                                            <p class="font-white pos-absolute-r-15">{viewCount}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {/upNext}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
