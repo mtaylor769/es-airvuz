@@ -174,26 +174,39 @@ UserUtils.prototype.getUserName = function(user_p) {
 
 UserUtils = new UserUtils();
 // UserUtils: ==================================================================
+/*
+var AggregateUserData = function(user_p) {
+	logger.debug(".AggregateUserData: BEG");
+	return(new Promise(function(resolve, reject) {
 
 
+			
+		})
+	);
+}
+*/
+
+/*
+ * AppendChannel
+ */
 var AppendChannel = function(user_p) {
-	logger.debug(".AppendChannel: BEG");
+	//logger.debug(".AppendChannel: BEG");
 	return(new Promise(function(resolve, reject) {
 
 			Channel_v1
 				.findOne({ User: user_p._id})
 				.exec()
 				.then(function(channel) {
-					logger.debug(".AppendChannel: Found a channel");
-
+					//logger.debug(".AppendChannel: Found a channel");
+					user_p.channel = null;
 					if(exists(channel)) {
-						logger.debug(".AppendChannel: channel exists");
+						//logger.debug(".AppendChannel: channel exists");
 						user_p.channel = channel;
 						resolve(user_p);
 						return;
 						//loggerUserUtils.debug(".AppendChannel: " + JSON.stringify(channel, null, 2));
 					};
-					user_p.channel = null;
+					
 					resolve(user_p);
 					return;
 				})
@@ -203,14 +216,54 @@ var AppendChannel = function(user_p) {
 					return;
 				});
 
-			
 		})
 	);
 }
 
-var AppendVideos = function(user_p) {
+/*
+ * AppendChannels
+ */
+var AppendChannels = function(users_p) {
+	logger.debug(".AppendChannels: BEG");
 	return(new Promise(function(resolve, reject) {
-				//loggerUserUtils.debug(".AppendVideos: 0");
+			var users_m						= [];
+			var callBackCount			= 0;
+			var userIndex					= 0;
+			var userSize					= users_p.length;
+			var user							= null;
+			
+			for(userIndex = 0; userIndex < userSize; userIndex++) {
+				user = users_p[userIndex];
+				
+				AppendChannel(user)
+					.then(function(user_p) {
+						callBackCount++;
+						//logger.debug(".AppendChannels: user_p.channel:" + user_p.channel);
+						users_m.push(user_p);
+						if(callBackCount === userSize) {
+							logger.debug(".AppendChannels: all callbacks complete");
+							logger.debug(".AppendChannels: END");
+							resolve(users_m);
+						}
+					}).catch(function(error) {
+						logger.debug(".AppendChannels: error:" + error);
+						reject(error);
+					});
+
+			}
+
+		})
+	);
+}
+
+
+
+/*
+ * AppendVideo
+ */
+var AppendVideo = function(user_p) {
+	return(new Promise(function(resolve, reject) {
+
 				if(
 					exists(user_p.channel)
 					&& exists(user_p.channel._id)
@@ -219,273 +272,74 @@ var AppendVideos = function(user_p) {
 						.find({ Channel: user_p.channel._id})
 						.exec()
 						.then(function(videos) {
-							//loggerUserUtils.debug(".AppendVideos: 2");
-							//loggerUserUtils.debug(".AppendVideos: user_p.channel._id:" + user_p.channel._id + " got video array:");
+							user_p.videos = [];
 							if(exists(videos)) {
-								//loggerUserUtils.debug(".AppendVideos: 2.5");
-								//loggerUsers.debug("BEG: exists(channel):" + channel._id);
-								//loggerUserUtils.debug(".AppendVideos: " + JSON.stringify(videos, null, 2));
 								user_p.videos = videos;
-								//loggerUserUtils.debug(".AppendVideos: 2.6");
-								//loggerUserUtils.debug(".AppendVideos: user_p.videos:" + JSON.stringify(user_p.videos, null, 2));
-								//loggerUserUtils.debug(".AppendVideos: user_p._id:" + user_p._id + ", user_p.videos.length:" + user_p.videos.length);
+								//logger.debug(".AppendVideo: user_p.video.length:" + user_p.videos.length);
 								resolve(user_p);
 								return;
 							};
-							user_p.videos = [];
+							
 							resolve(user_p);
 							return;
 						})
 						.catch(function(error) {
-							//loggerUserUtils.debug(".AppendVideos: 3");
-							//loggerUsers.error("AppendVideos error:" + error);
-							error.appendType = "AppendVideos";
+							//logger.debug(".AppendVideo: error:" + error);
+							logger.error(".AppendVideo: error:" + error);
 							reject(error);
 							return;
 						});				
 
 				}
 				else if(user_p.channel === null) {
-					//loggerUserUtils.debug(".AppendVideos: 4");
-					//loggerUserUtils.debug(".AppendVideos: user_p.channel === null");
+					resolve(user_p);
 				}
-				//resolve(user_p);
-				//return;
 		})
 	);
 
 }
 
-
-
-var MigrateUser = function(user_p) {
-	
+/*
+ * AppendVideos
+ */
+var AppendVideos = function(users_p) {
+	logger.debug(".AppendVideos: BEG");
 	return(new Promise(function(resolve, reject) {
-			var newUserData							= {};
-
-			newUserData.firstName				= UserUtils.getFirstName(user_p);
-			newUserData.lastName				= UserUtils.getLastName(user_p);
-			newUserData.userName				= UserUtils.getUserName(user_p);
-			newUserData.emailAddress		= UserUtils.getEmailAddress(user_p);
-						
-			if(newUserData.emailAddress === "no@url.com") {
-				emailAddressIsNoUrlCount++;
-				newUserData.emailAddress = newUserData.emailAddress + emailAddressIsNoUrlCount;
-			}
+			var users_m						= [];
+			var callBackCount			= 0;
+			var userIndex					= 0;
+			var userSize					= users_p.length;
+			var user							= null;
 			
-			if(
-				(newUserData.emailAddress === "jennymirkovic@gmail.com")
-				&& (user_p.user_type === "admin")
-			) {
-				newUserData.emailAddress = "jenny@airvuz.com";
-			}
-			
-			//loggerUserUtils.error(".MigrateUser:" + JSON.stringify(newUserData, null, 2));
-			
-			usersCrud
-				.create(newUserData)
-				.then(function(savedUser) {
-					resolve(savedUser);
-					return;
-				});
-
-		})
-	);	
-
-}
-
-
-
-
-var MigrateVideos = function(savedUser_p, origUserData_p) {
-	return(new Promise(function(resolve, reject) {	
-	
-			var newVideoData		= null;
-			var video						= null;
-			var videoIndex			= 0; 
-			var videoSize				= origUserData_p.videos.length;
-			var savedVideoCount = 0;
-
-
-			for(videoIndex = 0; videoIndex < videoSize; videoIndex++) {
-				video					= origUserData_p.videos[videoIndex];
-				newVideoData	= {};
-
-				newVideoData.description			= video.Description || "Drone Video";
-				newVideoData.duration					= video.Duration;
-				newVideoData.thumbnailPath		= video.Thumbnail || null;
-				newVideoData.title						= video.Title || "Drone Video";
-				newVideoData.userId						= savedUser_p;
-				newVideoData.videoPath				= video.FileName;
+			for(userIndex = 0; userIndex < userSize; userIndex++) {
+				user = users_p[userIndex];
 				
-
-
-				//loggerUserUtils.debug(".MigrateVideo origVideoData: " + JSON.stringify(video, null, 2));
-				//loggerUserUtils.debug(".MigrateVideo newVideoData: " + JSON.stringify(newVideoData, null, 2));
-
-				if(newVideoData.thumbnailPath === null) {
-					savedVideoCount++;
-				}
-				else {
-					
-					(function(newVideoData, oldVideoData) {
-
-						videosCrud
-							.create(newVideoData)
-							.then(function(savedVideo) {
-								savedVideoCount++;
-								loggerUsers.debug(".MigrateVideos: savedVideoCount:" + savedVideoCount + ", videoSize:" + videoSize);
-								if(savedVideoCount === videoSize) {
-									loggerUsers.debug(".MigrateVideos: all videos saved");
-									resolve();
-								}
-							})
-							.catch(function(error) {
-								var errorToString = util.inspect(error, {showHidden: false, depth: null});
-								loggerUsers.error(".MigrateVideos: descriptionWasForced:" + descriptionWasForced);
-								loggerUsers.error(".MigrateVideos: error:" + errorToString);
-								loggerUsers.error(".MigrateVideos: error - newVideoData" + JSON.stringify(newVideoData, null, 2));
-								loggerUsers.error(".MigrateVideos: error - oldVideoData" + JSON.stringify(oldVideoData, null, 2));
-							});					
-
-					})(newVideoData, video)
-					
-				}
-
-
-
-				/*
-				videosCrud
-					.create(newVideoData)
-					.then(function(savedVideo) {
-						savedVideoCount++;
-						loggerUsers.debug(".MigrateVideos: savedVideoCount:" + savedVideoCount + ", videoSize:" + videoSize);
-						if(savedVideoCount === videoSize) {
-							loggerUsers.debug(".MigrateVideos: all videos saved");
-							resolve();
+				AppendVideo(user)
+					.then(function(user_p) {
+						callBackCount++;
+						//logger.debug(".AppendChannels: user_p.channel:" + user_p.channel);
+						users_m.push(user_p);
+						if(callBackCount === userSize) {
+							logger.debug(".AppendVideos: all callbacks complete");
+							logger.debug(".AppendVideos: END");
+							resolve(users_m);
 						}
-					})
-					.catch(function(error) {
-						var errorToString = util.inspect(error, {showHidden: false, depth: null});
-						loggerUsers.debug(".MigrateVideos: error:" + errorToString);
+					}).catch(function(error) {
+						logger.debug(".AppendVideos: error:" + error);
+						reject(error);
 					});
-					*/
 
 			}
-	
+
 		})
-	);	
-	
+	);
 }
+
+
 
 /*
-var MigrateVideos = function(savedUser_p, origUserData_p) {
-	var newVideoData		= null;
-	var video						= null;
-	var videoIndex			= 0; 
-	var videoSize				= origUserData_p.videos.length;
-	var savedVideoCount = 0;
-	
-	
-	for(videoIndex = 0; videoIndex < videoSize; videoIndex++) {
-		video					= origUserData_p.videos[videoIndex];
-		newVideoData	= {};
-		
-		newVideoData.description			= video.Description;
-		newVideoData.duration					= video.Duration;
-		newVideoData.thumbnailPath		= video.Thumbnail;
-		newVideoData.title						= video.Title;
-		newVideoData.userId						= savedUser_p;
-		newVideoData.videoPath				= video.FileName;
-		
-		//loggerUserUtils.debug(".MigrateVideo origVideoData: " + JSON.stringify(video, null, 2));
-		//loggerUserUtils.debug(".MigrateVideo newVideoData: " + JSON.stringify(newVideoData, null, 2));
-		
-		videosCrud
-			.create(newVideoData)
-			.then(function(savedVideo) {
-				savedVideoCount++;
-				loggerUsers.debug(".MigrateVideos: savedVideoCount:" + savedVideoCount + ", videoSize:" + videoSize);
-				if(savedVideoCount === videoSize) {
-					loggerUsers.debug(".MigrateVideos: all videos saved");
-					resolved();
-				}
-			})
-			.catch(function(error) {
-				var errorToString = util.inspect(error, {showHidden: false, depth: null});
-				loggerUsers.debug(".MigrateVideos: error:" + errorToString);
-			});
-		
-	}
-	
-}
-*/
-
-
-var MergeUsers = function(users_p) {
-	var users_m = [];
-	
-	return(new Promise(function(resolve, reject) {
-
-
-		})
-	);	
-	
-}
-
-var LoadAllUserData = function() {
-	logger.debug(".LoadAllUserData: BEG");
-	return(new Promise(function(resolve, reject) {
-		var users_m											= [];
-		var appendVideoCallCount				= 0;
-		var appendVideoCallbackCount		= 0;
-		
-		Users_v1
-			.find({})
-			.exec()
-			.then(function(users) {			
-				logger.debug(".LoadAllUserData:" + users.length);
-				var user									= null;
-				var userIndex							= 0;
-				var userSize							= users.length;
-				var userVideoLoadedCount	= 0;
-
-				for(userIndex = userIndex; userIndex < userSize; userIndex++) {
-					user			= users[userIndex];
-
-					logger.debug(".LoadAllUserData index:" + userIndex);
-					AppendChannel(user)
-						.then(function(user) {
-							appendVideoCallCount++;
-							logger.debug(".LoadAllUserData appending video call data count:" + appendVideoCallCount);
-							return(AppendVideos(user));
-						})
-						.then(function(user) {
-							appendVideoCallbackCount++;
-							logger.debug(".LoadAllUserData appending video callback data count:" + appendVideoCallbackCount);
-							logger.debug(".LoadAllUserData all user video data has been loaded");
-							users_m.push(user);
-							userVideoLoadedCount++;
-							if(userVideoLoadedCount === userSize) {
-								logger.debug(".LoadAllUserData all user video data has been loaded");
-								logger.debug(".LoadAllUserData: END");
-								resolve(users_m);
-							}
-						})
-						.catch(function(error) {
-							var errorToString = util.inspect(error, {showHidden: false, depth: null});
-							logger.debug(".LoadAllUserData error:" + errorToString);
-							reject(error);
-						})
-
-				}
-
-			});
-
-		})
-	);	
-}
-
+ * CleanDestination
+ */
 var CleanDestination = function() {
 	logger.debug(".CleanDestination: BEG");
 	return(new Promise(function(resolve, reject) {
@@ -522,27 +376,344 @@ var CleanDestination = function() {
 
 }
 
+var MergeUserAccounts = function(user_ary_p) {
+	logger.debug(".MergeUserAccounts: BEG");
+	var user					= null;
+	var account				= null;
+	var accountIndex	= 0;
+	var accountSize		= user_ary_p.length;
+	
+	for(accountIndex = 0; accountIndex < accountSize; accountIndex++) {
+		account = user_ary_p[accountIndex];
+		
+		logger.debug(".MergeUserAccounts: account.videos.length: " + account.videos);
+		logger.debug(".MergeUserAccounts:" + JSON.stringify(account, null, 2));
+		
+	}
+	
+	logger.debug(".MergeUserAccounts: END");
+	return(user);
+}
+
+/*
+ * MergeUsers
+ */
+var MergeUsers = function(users_p) {
+	logger.debug(".MergeUsers: BEG");
+	logger.error(".MergeUsers: STILL NEED TO FIX MERGING OF USER ACCOUNTS");
+	MergeUsers_fixEmail_nourl(users_p);
+
+	var key										= null;
+	var emailAddress					= null;
+	var emailAddressKeys			= [];
+	var user									= null;
+	var usersTempAry					= [];
+	var users_m								= [];
+	//var usersById		= {};
+	var usersByEmailAddress		= {};
+
+	var userIndex							= 0;
+	var userSize							= users_p.length;
+	
+	// get a hash of email addresses, each its own array
+	for(userIndex = 0; userIndex < userSize; userIndex++) {
+		user					= users_p[userIndex];
+		emailAddress	= user.email || "";
+		
+		if(!exists(usersByEmailAddress[emailAddress])) {
+			usersByEmailAddress[emailAddress] = [];
+			usersByEmailAddress[emailAddress].push(user);
+		}
+		else {
+			//logger.debug(".MergeUsers: dup");
+			usersByEmailAddress[emailAddress].push(user);
+		}
+	}
+	
+	emailAddressKeys	= Object.keys(usersByEmailAddress);
+	userSize					= emailAddressKeys.length;
+	logger.debug(".MergeUsers: emailAddressKeys size: " + userSize);
+	
+	for(userIndex = 0; userIndex < userSize; userIndex++) {
+		key						= emailAddressKeys[userIndex];
+		usersTempAry	= usersByEmailAddress[key];
+		
+		if(usersTempAry.length === 1) {
+			user = usersTempAry[0];
+			users_m.push(user);
+		}
+		else if(usersTempAry.length > 1) {
+			//user = MergeUserAccounts(usersTempAry);
+			//logger.debug(".MergeUsers: email: [" + key + "] usersTempAry.length: " + usersTempAry.length);
+		}
+	}
+
+	logger.debug(".MergeUsers: END");
+	return(users_m);
+}
+
+var MergeUsers_fixEmail_nourl = function(users_p) {
+	logger.debug(".MergeUsers_fixEmail_nourl: BEG");
+	
+	var noUrlCount	= 0;
+	var user				= null;
+	var userIndex		= 0;
+	var userSize		= users_p.length;
+	
+	for(userIndex = 0; userIndex < userSize; userIndex++) {
+		user = users_p[userIndex];
+		
+		user.email = user.email || null;
+		if(user.email === "no@url.com") {
+			user.email = "no" + noUrlCount + "@url.com";
+			noUrlCount++;
+		}
+
+	}
+	
+	logger.debug(".MergeUsers_fixEmail_nourl: fixed: " + noUrlCount);
+	
+	logger.debug(".MergeUsers_fixEmail_nourl: END");
+}
+
+var MigrateUser = function(userV1_p) {
+	//logger.debug(".MigrateUser: BEG");
+	return(new Promise(function(resolve, reject) {
+
+			Users_v2.find({ userName : userV1_p.user_name})
+				.exec()
+				.then(function(user){
+					if(user) {
+
+						//logger.debug(".MigrateUser: createNewUser");
+						var newUserData								= {};
+						var emailAddressIsNoUrlCount	= 0;
+
+						newUserData.firstName					= UserUtils.getFirstName(userV1_p);
+						newUserData.lastName					= UserUtils.getLastName(userV1_p);
+						newUserData.userName					= UserUtils.getUserName(userV1_p);
+						newUserData.emailAddress			= UserUtils.getEmailAddress(userV1_p);
+						
+						if(newUserData.emailAddress === "no@url.com") {
+							emailAddressIsNoUrlCount++;
+							newUserData.emailAddress = newUserData.emailAddress + emailAddressIsNoUrlCount;
+						}
+
+						if(
+							(newUserData.emailAddress === "jennymirkovic@gmail.com")
+							&& (userV1_p.user_type === "admin")
+						) {
+							newUserData.emailAddress = "jenny@airvuz.com";
+						}
+
+						//loggerUserUtils.error(".MigrateUser:" + JSON.stringify(newUserData, null, 2));
+
+						usersCrud
+							.create(newUserData)
+							.then(function(savedUser) {
+								resolve(savedUser);
+								return;
+							});								
+						
+						
+					}
+					else {
+					
+						logger.debug(".MigrateUser: duplicate username");
+					
+					}
+					
+				});
+
+						
+
+				
+				
+
+		})
+	);	
+
+}
+
+
+
+
+var MigrateVideos = function(savedUser_p, origUserData_p) {
+	logger.debug(".MigrateVideos: BEG");
+	//logger.debug(".MigrateVideos: origUserData_p: " + JSON.stringify(origUserData_p, null, 2));
+	return(new Promise(function(resolve, reject) {	
+	
+			var newVideoData		= null;
+			var video						= null;
+			var videoIndex			= 0; 
+			var videoSize				= origUserData_p.videos.length;
+			var savedVideoCount = 0;
+			
+			logger.debug(".MigrateVideos: videoSize: " + videoSize);
+
+			for(videoIndex = 0; videoIndex < videoSize; videoIndex++) {
+				video					= origUserData_p.videos[videoIndex];
+				newVideoData	= {};
+
+				newVideoData.description			= video.Description || "Drone Video";
+				newVideoData.duration					= video.Duration;
+				newVideoData.thumbnailPath		= video.Thumbnail || null;
+				newVideoData.title						= video.Title || "Drone Video";
+				newVideoData.userId						= savedUser_p;
+				newVideoData.videoPath				= video.FileName;
+				
+				//loggerUserUtils.debug(".MigrateVideo origVideoData: " + JSON.stringify(video, null, 2));
+				//loggerUserUtils.debug(".MigrateVideo newVideoData: " + JSON.stringify(newVideoData, null, 2));
+
+				if(newVideoData.thumbnailPath === null) {
+					savedVideoCount++;
+				}
+				else {
+					
+					(function(newVideoData, oldVideoData) {
+
+						videosCrud
+							.create(newVideoData)
+							.then(function(savedVideo) {
+								savedVideoCount++;
+								logger.debug(".MigrateVideos: savedVideoCount:" + savedVideoCount + ", videoSize:" + videoSize);
+								if(savedVideoCount === videoSize) {
+									logger.debug(".MigrateVideos: all videos saved");
+									logger.debug(".MigrateVideos: BEG");
+									resolve();
+								}
+							})
+							.catch(function(error) {
+								var errorToString = util.inspect(error, {showHidden: false, depth: null});
+								loggerUsers.error(".MigrateVideos: descriptionWasForced:" + descriptionWasForced);
+								loggerUsers.error(".MigrateVideos: error:" + errorToString);
+								loggerUsers.error(".MigrateVideos: error - newVideoData" + JSON.stringify(newVideoData, null, 2));
+								loggerUsers.error(".MigrateVideos: error - oldVideoData" + JSON.stringify(oldVideoData, null, 2));
+							});					
+
+					})(newVideoData, video)
+					
+				}
+
+			}
+	
+		})
+	);	
+	
+}
+
+
+
+
+var LoadAllUserData = function() {
+	logger.debug(".LoadAllUserData: BEG");
+	return(new Promise(function(resolve, reject) {
+		
+		Users_v1
+			.find({})
+			.exec()
+			.then(function(users) {
+				
+				AppendChannels(users)
+					.then(function(users_p) {
+						
+						logger.debug(".LoadAllUserData: Got data from AppendChannels");
+						logger.debug(".LoadAllUserData: Got data from AppendChannels");
+						
+						AppendVideos(users_p)
+							.then(function() {
+								logger.debug(".LoadAllUserData: Got data from AppendVideos");
+								logger.debug(".LoadAllUserData: END");
+								resolve(users_p);
+							})
+							.catch(function(error) {
+								logger.error(".LoadAllUserData: AppendVideos error:" + error);
+								logger.debug(".LoadAllUserData: END");
+								reject(error);
+							});
+					})
+					.catch(function(error) {
+						logger.error(".LoadAllUserData: AppendChannels error:" + error);
+						logger.debug(".LoadAllUserData: END");
+						reject(error);
+					});
+								
+			})
+			.catch(function(error) {
+				logger.error(".LoadAllUserData: Users error:" + error);
+				logger.debug(".LoadAllUserData: END");
+				reject(error);
+			})
+
+		})
+	);	
+}
+
+
+
+/*
+ * MigrateData
+ */
 var MigrateData = function() {
 	logger.debug(".MigrateData: BEG");
+	logger.error(".MigrateData: FIX USER NAME");
 	
 	CleanDestination()
 		.then(function() {
 			LoadAllUserData()
 				.then(function(users_p) {
+					var users_m = null;
 					logger.debug(".MigrateData: users.length:" + users_p.length);
-				}).catch(function(error) {
+				
+					users_m = MergeUsers(users_p);
+					var userV1			= null;
+					var userIndex		= 0;
+					var userSize		= 50;//users_m.length;
+					for(userIndex		= 0; userIndex < userSize; userIndex++) {
+						userV1 = users_m[userIndex];
+						
+						if(userIndex < 5) {
+							//logger.debug(".MigrateData: user:" + JSON.stringify(user, null, 2));							
+						}
+						
+						userV1.user_name = userV1.user_name || null;
+						if(userV1.user_name !== null) {
+							userV1.user_name = userV1.user_name + userIndex;
+						(function(userV1_p) {
+							
+							MigrateUser(userV1_p)
+								.then(function(userV2) {
+									MigrateVideos(userV2, userV1_p)
+										.then(function() {
+											
+										})
+										.catch(function(error) {
+											
+										});
+								
+								
+								}).catch(function(error) {
+									logger.error(".MigrateData: user:" + JSON.stringify(userV1_p, null, 2));
+									logger.error(".MigrateData MigrateUser error:" + error);
+								});
+							
+						})(userV1)				
+						
+						}
+						
+					}
 					
+
+				}).catch(function(error) {
+					logger.error(".MigrateData LoadAllUserData error:" + error);
+					logger.debug(".MigrateData: END");
 				});
-			logger.debug(".MigrateData: END");
 		})
 		.catch(function(error) {
 			logger.error(".MigrateData error:" + error);
 			logger.debug(".MigrateData: END");
 			reject(error);
-		})
-	
-	
-	
+		});
 }
 
 var MigrateUsers = function() {
@@ -571,79 +742,7 @@ MigrateUsers.prototype.execute = function() {
 	
 	LoadAllUserData().then(function(users_p) {
 		
-	});
-	
-	/*
-	Users_v1
-		.find({})
-		.exec()
-		.then(function(users) {			
-			loggerUsers.debug("BEG: user count:" + users.length);
-			var user			= null;
-			var userIndex = 0;
-			var userSize	= users.length;
-			var userInfo	= null;
-			var invalidAccountSize = 0;
-			
-			for(userIndex = userIndex; userIndex < userSize; userIndex++) {
-				user			= users[userIndex];
-				
-				loggerUsers.debug("saving user #:" + userIndex);
-				
-				AppendChannel(user)
-					.then(function(user) {
-						//loggerUsers.debug("BEG: got appended channel");
-						return(AppendVideos(user));
-					})
-					.then(function(user) {
-						MigrateUser(user).
-							then(function(savedUser) {
-								return(MigrateVideos(savedUser, user));
-							})
-					})
-					.catch(function(error) {
-						var errorToString = util.inspect(error, {showHidden: false, depth: null});
-						loggerUsers.error(".execute error:" + errorToString);
-					})
-				
-				
-
-				//userInfo	= GetUserNames(user);
-			}
-		
-
-			loggerUsers.debug("END");
-			
-			
-		});
-		*/
-		
-		
-	
-/*
-		UsersModel.find({}).exec()
-		.then(function(allUsers){
-			var param = {
-				status 	: "200",
-				message : "Okay",
-				users 	: allUsers
-			};
-			resolve(param);
-		})
-		.error(function(e) {
-			var errorMessage		= new ErrorMessage();
-			errorMessage.getErrorMessage({
-				statusCode			: "500",
-				errorId 				: "PERS1000",
-				errorMessage 		: "Failed while getting users",
-				sourceError			: e,
-				sourceLocation	: "persistence.crud.Users.getAllAusers"
-			});
-			reject(errorMessage.getErrors());
-		});
- */	
-	
-	
+	});	
 	
 }
 
