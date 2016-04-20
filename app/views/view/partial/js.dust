@@ -5,9 +5,9 @@
     <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
   <!-- END: CDN -->
 
-  <script src="public/{vendor.js}"></script>
+  <script src="/public/{vendor.js}"></script>
 
-  <script src="public/{airvuz.js}"></script>
-  <script src="client/jquery.onoff.js"></script>
+  <script src="/public/{airvuz.js}"></script>
+  <script src="/client/jquery.onoff.js"></script>
 
 <!-- END: app.views.view.partial.js -->
