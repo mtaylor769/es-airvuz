@@ -12,6 +12,7 @@ var token               = null;
 var urlParseResults     = null;
 var zeke                = require('./zeke');
 
+window.Home = require('./home');
 window.Upload = require('./upload');
 
 

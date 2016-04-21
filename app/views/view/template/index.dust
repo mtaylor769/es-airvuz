@@ -25,60 +25,15 @@
     {> "app.views.view.partial.header" /}
 
     <!-- BEG:Main Container -->
-    <div class="container main container-shadow">
-      <div>Line</div>
-      <div>BEG</div>
-      <div class="home">viewName[]: {index.viewName} </div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>
-        <a href="/userProfile/57153beddeb1e35295946a96">User Profile</a>
-      </div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>&nbsp;</div>
-      <div>END</div>
+    <div id="home-page" class="container main container-shadow">
+
+      {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos"/}
+      <hr/>
+      {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos"/}
+      <hr/>
+      {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos"/}
+      <br/>
+      <br/>
     </div>
     <!-- END:Main Container -->
 
@@ -87,9 +42,9 @@
     {> "app.views.view.partial.js" /}
 
     <script>
-        (function() {
-            console.log("doc loaded");
-        })();
+        $(function () {
+          Home.initialize();
+        });
     </script>
   </body>
     

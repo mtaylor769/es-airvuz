@@ -53,9 +53,55 @@ IndexModel.prototype.getData = function(params) {
 		
 		params.data.index.head				= {};
 		params.data.index.head.og			= config.view.index.og;
-		params.data.index.head.title	= "AirVūz – Drone Video Community"
-		params.data.index.viewName		= "index";		
-		
+		params.data.index.head.title	= "AirVūz – Drone Video Community";
+		params.data.index.viewName		= "index";
+
+		var mockVideos = [
+			{
+				title: 'BallonFest Arial Time Lapse',
+				duration: '0:15',
+				viewCount: 2427,
+				userId: {
+					userName: 'BottomUpProductions'
+				},
+				categories: [
+					{
+						name: 'Concerts & Events'
+					}
+				]
+			},
+			{
+				title: 'Dolphins Playing off the Coast of Seaside Florida',
+				duration: '0:15',
+				viewCount: 2427,
+				userId: {
+					userName: '8 Fifty Productions'
+				},
+				categories: [
+					{
+						name: 'Nature & Wildlife'
+					}
+				]
+			},
+			{
+				title: 'DJI Phantom 4 | Powerful and Creative Germany 4k',
+				duration: '0:15',
+				viewCount: 2427,
+				userId: {
+					userName: 'cyber_drone_'
+				},
+				categories: [
+					{
+						name: 'Travel'
+					}
+				]
+			}
+		];
+
+		params.data.index.featuredVideos = mockVideos;
+		params.data.index.recentVideos = mockVideos;
+		params.data.index.trendingVideos = mockVideos;
+
 
 		CategoryType
 			.get()
