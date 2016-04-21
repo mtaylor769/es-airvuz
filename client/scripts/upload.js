@@ -86,7 +86,7 @@ function onTranscodeComplete(response) {
 }
 
 function renderThumbnail(thumbnails) {
-  thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
+   thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
     $thumbnails.html(html);
   });
 }

@@ -131,8 +131,7 @@ apiRouter.route('/api/curated-videos/:id')
  * /api/comment/
  */
 apiRouter.route('/api/comment')
-  .post(protect, comment.post)
-  .get(comment.get);
+  .post(protect, comment.post);
 
 apiRouter.route('/api/comment/byParent')
   .get(comment.getByParentCommentId);

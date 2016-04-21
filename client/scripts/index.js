@@ -18,6 +18,8 @@ window.Upload = require('./upload');
 
 exports.add = function (a, b) { return a+b };
 
+var identity      = require('./services/identity');
+var user = identity;
 //
 // *************** start JQuery ***********************
 $(document).ready(function() {
@@ -40,7 +42,7 @@ $(document).ready(function() {
     var elementId = '#'+$(this).attr('value');
     var parentCommentId = $(this).attr('value');
     var html = '<div style="display: none" class="flex commentBox">' +
-      '<textarea id="comment" cols="80" rows="1" style="margin-bottom: 20px;"></textarea>' +
+      '<textarea id="comment" cols="80" rows="1" style="margin-bottom: 20px; width: 80%%; margin-left: 18%"></textarea>' +
       '<button class="btn background-orange border-radius-0 font-white" id="saveComment" style="margin-bottom: 20px;">Submit</button>' +
       '</div>';
     $(elementId).append(html);
@@ -55,7 +57,7 @@ $(document).ready(function() {
       var comment = {};
       comment.comment = $('#comment').val();
       comment.parentCommentId = parentCommentId;
-      comment.userId = '56fdff4edc7083d853532661';
+      comment.userId = user._id;
       comment.videoId = '56fec7bb07354aaa096db3b8';
 
       $.ajax({
@@ -88,8 +90,8 @@ $(document).ready(function() {
     var comment = {};
     comment.videoId = $(this).attr('value');
     comment.comment = $('#comment-text').val();
-    comment.userId = '56fdff4edc7083d853532661';
-
+    comment.userId = user._id;
+    console.log(comment);
     $.ajax({
       type: 'POST',
       url: '/api/comment',
@@ -98,19 +100,24 @@ $(document).ready(function() {
     })
     .done(function(data) {
       var comment = data;
-      var html = '<li>'+
-        '<div class="flex placehold">' +
-        '<img src="https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952" height="30" width="30" class="border-radius-circle m-10-20">' +
-          '<div id="' + data._id + '" class="m-t-20 comment-wrap">' +
-            '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>' +
-            '<p class="m-b-0 airvuz-blue">' + comment.userId.userName + '</p>' +
-            '<p class="m-b-0 parentComment">' + comment.comment + '</p>' +
-            '<button class="btn reply" value="' + comment._id + '">-> reply</button>' +
-            '<span>replies: <a class="commentReplies" value="' + comment._id + '">' + comment.replyCount + '</a></span>' +
-          '</div>' +
-      '</div>'+
-      '</li>';
-      $('.parentComs').prepend(html);
+      console.log(user);
+      var html = '<li class="comment-wrap">'+
+        '<div class="flex">'+
+        '<img src="' + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
+        '<div class="m-t-20">'+
+        '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
+        '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+        '<p class="m-b-0 ">' + comment.comment + '</p>'+
+        '</div>'+
+        '</div>'+
+        '<div  id="' + comment._id + '">'+
+        '<ul class="parentComment"></ul>'+
+        '<span class="reply" value="' + comment._id + '" style="margin: 0 0 0 30px">-> reply</span>'+
+        '<span style="margin: 0 20px">replies: <a class="commentReplies" value="' + comment._id + '">' + comment.replyCount + '</a></span>'+
+        '</div>'+
+        '</li>';
+
+      $('.parent-comments').prepend(html);
       $('#comment-text').val('')
     })
   });
@@ -132,14 +139,14 @@ $(document).ready(function() {
       data.forEach(function(reply) {
         html += '<li>'+
           '<div class="flex">'+
-          '<img src="https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-20">'+
-              '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-              '<p class="m-b-0 airvuz-blue">' + reply.userId.userName + '</p>'+
-              '<p class="m-b-0">' + reply.comment + '</p>'+
-            '</div>'+
-        '</div>' +
-        '</li>'
+          '<img src="' + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
+          '<div class="m-t-20">'+
+          '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
+          '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+          '<p class="m-b-0">' + reply.comment + '</p>'+
+          '</div>'+
+          '</div>' +
+          '</li>'
       });
 
       //append child elements to DOM

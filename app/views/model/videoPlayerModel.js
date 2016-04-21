@@ -31,7 +31,6 @@ var VideoPlayerModel = function(params) {
 util.inherits(VideoPlayerModel, BaseModel);
 
 VideoPlayerModel.prototype.getData = function(params) {
-	console.log(params.params);
 	var videoId         = params.request.params.id;
 	var dataObject      = {};
 	var sourceManifest	= params.sourceManifest;
@@ -43,7 +42,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return userCrud.getUserById(video.userId);
 		})
 		.then(function(user) {
-			user.picture = 'https://scontent-ord1-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/12004767_1629862153963313_1943686358158111149_n.jpg?oh=d3d51baace10d6fbefb17b49ad9ad643&oe=57813952';
+			console.log(user);
+			user.picture = 'https://scontent-lga3-1.xx.fbcdn.net/hphotos-xta1/v/t1.0-9/10644863_520773331433556_7421786202668236448_n.jpg?oh=84dc5121c54e307a479dd5c67a9d9e2c&oe=57771A25';
 			dataObject.user = user;
 			return videoCrud.get5Videos();
 		})
@@ -69,7 +69,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.airvuz.js = sourceManifest["airvuz.js"];
 			params.data.airvuz.css = sourceManifest["airvuz.css"];
 			params.data.vendor.js = sourceManifest["vendor.js"];
-			logger.info(dataObject);
 			return params;
 	});
 

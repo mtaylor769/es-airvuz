@@ -170,7 +170,7 @@ users.prototype.getUserById = function (userId) {
 		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({_id : validation.userId}, 'aclRoles emailAddress userName lastName firstName',
+			UserModel.findOne({_id : validation.userId}, 'aclRoles emailAddress userName lastName firstName profilePicture',
 				function(error, user){
 				if (error) {
 					var errorMessage		= new ErrorMessage();

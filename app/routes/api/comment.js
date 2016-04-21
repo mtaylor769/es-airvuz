@@ -8,21 +8,16 @@ function Comment() {
 }
 
 Comment.prototype.post = function(req, res) {
+
   var parentCommentId = req.body.parentCommentId;
-  if (parentCommentId) {
-    commentCrud
-      .create(req.body)
-      .then(function (comment) {
-        commentCrud.replyIncrement(parentCommentId);
-        res.send(comment);
-      });
-  } else {
-    commentCrud
-      .create(req.body)
-      .then(function (comment) {
-        res.send(comment);
-      })
-  }
+  var videoId = req.body.videoId;
+
+  commentCrud
+    .create(req.body)
+    .then(function (comment) {
+      commentCrud.replyIncrement(parentCommentId, videoId);
+      res.send(comment);
+    });
 };
 
 Comment.prototype.get = function(req, res) {
