@@ -29,9 +29,9 @@
                         {!video player!}
                         <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen video-helper"
                                controls preload="auto" width="100%" height="25%" style="position: relative"
-                               poster="{video.thumbnailPath}"
+                               poster="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}"
                                data-setup=''>
-                            <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/1d8228f4adbb82c750f466a69b481274/1d8228f4adbb82c750f466a69b481274.mp4" type="video/mp4" />
+                            <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.videoPath}" type="video/mp4" />
                         </video>
                         {!categories!}
                         <div class="flex video-player-categories font-white">
@@ -44,7 +44,7 @@
                         {!video owner info!}
                         <div class="flex video-user-info-height">
                             <button class="btn background-orange border-radius-0 font-white add-button">+</button>
-                            <img src="{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
+                            <img src="http://airvuz.com{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
                             <div class="margin-auto t-a-inherit">
                                 <p class="m-b-0 airvuz-blue">{user.userName}</p>
                                 <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
@@ -131,7 +131,7 @@
                         {#upNext}
                             <li style="width: 100%">
                                 <div>
-                                    <img src="{video.thumbnailPath}" width="100%" height="60%" class="m-t-35">
+                                    <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%" class="m-t-35">
                                     <div class="up-next-layer">
                                         <p class="font-white m-l-15 p-t-15 up-next-title">{title}</p>
                                         <div class="flex up-next-subs">
