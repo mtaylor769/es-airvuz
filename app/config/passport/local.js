@@ -38,7 +38,8 @@ module.exports = function(passport, config) {
       return done(null, {
         _id: user._id,
         aclRoles: user.aclRoles,
-        userName: user.userName
+        userName: user.userName,
+        profilePicture: user.profilePicture
       });
     })
     .error(function(error){

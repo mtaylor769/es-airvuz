@@ -96,10 +96,7 @@ a.btn + a.btn {
 }
 
 .header-user {
-  background : #f48a4a;
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
 /*
  * End Header
@@ -187,7 +184,7 @@ a.btn + a.btn {
   display: none;
 }
 
-.video-page .container {
+.video-page .col-sm-8 {
   padding-right: 0;
   padding-left: 0;
 }

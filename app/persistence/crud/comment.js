@@ -169,13 +169,18 @@ Comment.prototype.create = function(params) {
   );
 };
 
-Comment.prototype.replyIncrement = function(parentCommentId) {
+Comment.prototype.replyIncrement = function(parentCommentId, videoId) {
   CommentModel.findById({_id: parentCommentId}).exec()
   .then(function(parentComment) {
-    parentComment.replyCount = parentComment.replyCount + 1;
-    return parentComment.save()
+    if(parentComment !== null) {
+      parentComment.replyCount = parentComment.replyCount + 1;
+      return parentComment.save()
+    } else {
+      return {videoId: videoId};
+    }
   })
   .then(function(comment) {
+    console.log('this is the comment :' + comment);
     var videoId = comment.videoId;
     return VideoModel.findById({_id: videoId}).exec()
   })

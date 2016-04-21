@@ -11,7 +11,7 @@
     <body>
         {> "app.views.view.partial.header" /}
     <div id="dialog" title="Embed Code" style="display: none">
-        <p>Embed code goes here</p>
+        <code>Embed code goes here</code>
     </div>
         <div class="video-page">
             <div class="container main">
@@ -44,7 +44,7 @@
                         {!video owner info!}
                         <div class="flex video-user-info-height">
                             <button class="btn background-orange border-radius-0 font-white add-button">+</button>
-                            <img src="{user.picture}" height="50" width="50" class="margin-auto border-radius-circle">
+                            <img src="{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
                             <div class="margin-auto t-a-inherit">
                                 <p class="m-b-0 airvuz-blue">{user.userName}</p>
                                 <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>

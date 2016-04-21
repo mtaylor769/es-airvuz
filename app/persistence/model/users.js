@@ -35,6 +35,10 @@ var usersSchema 		= mongoose.Schema({
 		default : true,
 		type		: Boolean
 	},
+
+	coverPicture : {
+		type: String
+	},
     
 	/*
 	 * The site url name of the user. 
@@ -82,7 +86,10 @@ var usersSchema 		= mongoose.Schema({
 	password : {
 		type		: String
 	},
-	
+
+	profilePicture : {
+		type: String
+	},
 	// Represents a list of social media account tied to this user account.
 	socialMediaAccounts: [{ 
 		type: mongoose.Schema.Types.ObjectId, ref: 'SocialMediaAccount' 
