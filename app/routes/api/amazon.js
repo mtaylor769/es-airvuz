@@ -55,12 +55,20 @@ function startTranscode(req, res) {
     });
 }
 
+function getVideoDuration(req, res) {
+  amazonService.getVideoDuration(req.query.key + '.mp4')
+    .then(function (duration) {
+      res.send(duration);
+    });
+}
+
 ////////////////////////////////////////////
 
 Amazon.prototype.signAuth               = signAuth;
 Amazon.prototype.getVideoInfo           = getVideoInfo;
 Amazon.prototype.confirmSubscription    = amazonService.confirmSubscription;
 Amazon.prototype.startTranscode         = startTranscode;
+Amazon.prototype.getVideoDuration       = getVideoDuration;
 
 module.exports = new Amazon();
 

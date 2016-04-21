@@ -80,3 +80,10 @@
     bottom: 10px;
     border-radius: 100%;
 }
+#upload-page #category-list li {
+    color: #fff;
+    background-color: #30c1ed;
+    margin: 2px 2px 2px 5px;
+    padding: 5px;
+    cursor: not-allowed;
+}

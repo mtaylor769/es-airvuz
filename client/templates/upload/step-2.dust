@@ -25,32 +25,37 @@
         <input type="text" class="form-control" id="tags" placeholder="Add Tags">
       </div>
       <div class="form-group">
-        <label for="description">Description</label>
-        <textarea name="description" id="description" rows="4" class="form-control" placeholder="Add video description"></textarea>
+        <label for="description">Description <span class="text-danger">*</span></label>
+        <textarea name="description" id="description" rows="4" class="form-control" placeholder="Add video description" required></textarea>
       </div>
       <div class="form-group">
         <label for="category">Category (Select up to 3 categories) <span class="text-danger">*</span></label>
+        <ul id="category-list" class="list-inline">
+        </ul>
+        <p id="category-message" class="text-danger"></p>
         <select class="form-control" id="category">
           <option value="">Select a category type</option>
-          <option>Collage</option>
-          <option>Drone</option>
-          <option>News</option>
+          {#categories}
+          <option value="{_id}">{name}</option>
+          {/categories}
         </select>
       </div>
       <div class="form-group">
         <label for="drone-type">Drone Type <span class="text-danger">*</span></label>
         <select class="form-control" id="drone-type" required>
           <option value="">Select a drone type</option>
-          <option>Phantom</option>
-          <option>Other</option>
+          {#drones}
+          <option value="{_id}">{manufacturer} - {model}</option>
+          {/drones}
         </select>
       </div>
       <div class="form-group">
         <label for="camera-type">Camera Type <span class="text-danger">*</span></label>
         <select class="form-control" id="camera-type" required>
           <option value="">Select a camera type</option>
-          <option>GoPro</option>
-          <option>Other</option>
+          {#cameras}
+          <option value="{_id}">{manufacturer} - {model}</option>
+          {/cameras}
         </select>
       </div>
       <div class="form-group text-center" id="thumbnails">

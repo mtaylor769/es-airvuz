@@ -2,7 +2,7 @@
 <input type="hidden" name="thumbnailPath"/>
 <ul>
 	{#thumbnails}
-	<li data-url="{.}" style="background: gray url('{url}{.}')">
+	<li data-url="{.}" style="background-color: gray; background-image: url('{url}{.}')">
 	</li>
 	{/thumbnails}
 </ul>
