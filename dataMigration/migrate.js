@@ -75,6 +75,19 @@ var UserUtils = function() {
 	
 }
 
+UserUtils.prototype.getCoverPicture = function(user_p) {
+	var coverPicture = null;
+	
+	if(exists(user_p.cover_picture)) {
+		coverPicture = user_p.cover_picture;
+	}
+	else {
+		coverPicture = "default";
+	}
+	
+	return(coverPicture);
+}
+
 UserUtils.prototype.getEmailAddress = function(user_p) {
 	var emailAddress = null;
 	
@@ -143,6 +156,19 @@ UserUtils.prototype.getLastName = function(user_p) {
 	}
 	
 	return(lastName);
+}
+
+UserUtils.prototype.getProfilePicture = function(user_p) {
+	var profilePicture = null;
+	
+	if(exists(user_p.profile_picture)) {
+		profilePicture = user_p.profile_picture;
+	}
+	else {
+		profilePicture = "";
+	}
+	
+	return(profilePicture);
 }
 
 UserUtils.prototype.getUserName = function(user_p) {
@@ -489,10 +515,12 @@ var MigrateUser = function(userV1_p) {
 						var newUserData								= {};
 						var emailAddressIsNoUrlCount	= 0;
 
+						newUserData.coverPicture			= UserUtils.getCoverPicture(userV1_p);
 						newUserData.firstName					= UserUtils.getFirstName(userV1_p);
 						newUserData.lastName					= UserUtils.getLastName(userV1_p);
 						newUserData.userName					= UserUtils.getUserName(userV1_p);
 						newUserData.emailAddress			= UserUtils.getEmailAddress(userV1_p);
+						newUserData.profilePicture		= UserUtils.getProfilePicture(userV1_p);
 						
 						// TODO: use their password
 						newUserData.password					= "airvuz1234";

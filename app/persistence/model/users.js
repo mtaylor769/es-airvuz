@@ -35,10 +35,6 @@ var usersSchema 		= mongoose.Schema({
 		default : true,
 		type		: Boolean
 	},
-
-	coverPicture : {
-		type: String
-	},
     
 	/*
 	 * The site url name of the user. 
@@ -47,6 +43,13 @@ var usersSchema 		= mongoose.Schema({
 	customizedUrl : {
 		type	: String
 	},
+		
+	/*
+	 * The users cover picture.
+	 */
+	coverPicture : {
+		type: String
+	},		
 		
 	// The users email address
 	emailAddress : {
@@ -90,6 +93,7 @@ var usersSchema 		= mongoose.Schema({
 	profilePicture : {
 		type: String
 	},
+	
 	// Represents a list of social media account tied to this user account.
 	socialMediaAccounts: [{ 
 		type: mongoose.Schema.Types.ObjectId, ref: 'SocialMediaAccount' 

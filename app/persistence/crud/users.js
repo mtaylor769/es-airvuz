@@ -34,9 +34,12 @@ users.prototype.validateCreateUser = function(params) {
 	//need to pass in user data info
 	var errorMessage										= new ErrorMessage();
 	userInfo.data 											= {};
+	userInfo.data.coverPicture					= params.coverPicture || "";
 	userInfo.data.emailAddress					= params.emailAddress || null;
 	userInfo.data.userName							= params.userName || null;
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
+	userInfo.data.profilePicture				= params.profilePicture || "";
+	
 
 	if (params.socialMediaAccounts) {
 		userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
