@@ -11,7 +11,7 @@
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        <div class="home">viewName[]: {login.viewName} </div>
+        <div class="home"></div>
             <div class="container">
 
               <div class="jumbotron text-center">

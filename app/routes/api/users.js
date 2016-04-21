@@ -44,7 +44,12 @@ function get(req, res) {
 }
 
 function createUser(req, res) {
-  if (req.body.token.length > 0) {
+	logger.debug(".createUser: BEG");
+	
+  if (
+		(req.body.token)
+		&& (req.body.token.length > 0)
+	) {
     //decrypt token for use
     jwt.verify(req.body.token, tokenConfig.secret, function(error, data){
       userParams = {

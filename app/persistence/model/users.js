@@ -89,7 +89,7 @@ var usersSchema 		= mongoose.Schema({
 	}],
 	
 	/* 
-
+	 *
 	 */
 	userName : {
 		required	: true,

@@ -1,5 +1,8 @@
 "use strict";
 
+var log4js = require('log4js');
+var logger = log4js.getLogger('app.config.passport.local');
+
 var LocalStrategy         = require('passport-local').Strategy;
 var Users                 = require('../../persistence/crud/users');
 

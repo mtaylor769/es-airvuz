@@ -494,6 +494,11 @@ var MigrateUser = function(userV1_p) {
 						newUserData.userName					= UserUtils.getUserName(userV1_p);
 						newUserData.emailAddress			= UserUtils.getEmailAddress(userV1_p);
 						
+						// TODO: use their password
+						newUserData.password					= "airvuz1234";
+						
+						
+						
 						if(newUserData.emailAddress === "no@url.com") {
 							emailAddressIsNoUrlCount++;
 							newUserData.emailAddress = newUserData.emailAddress + emailAddressIsNoUrlCount;
@@ -657,6 +662,7 @@ var LoadAllUserData = function() {
 var MigrateData = function() {
 	logger.debug(".MigrateData: BEG");
 	logger.error(".MigrateData: FIX USER NAME");
+	logger.error(".MigrateUser: FIX PASSWORD MIGRATION");
 	
 	CleanDestination()
 		.then(function() {
