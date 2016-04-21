@@ -2,10 +2,9 @@
   <div class="container height-100-percent container-shadow" id="header">
     <div class="row height-100-percent">
       <div class="col-sm-9">
-        <div>HEADER</div>
+        <a href="/"><img src="/client/images/airvuz-logo.jpg" alt="AirVuz Logo"/></a>
       </div>
       <div class="col-sm-3 header-user">
-        User Name
       </div>
     </div>
   </div>
