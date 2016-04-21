@@ -179,6 +179,7 @@ apiRouter.get('/api/upload/:id', /*upload.getStatus,*/ amazon.getVideoInfo);
  */
 
 apiRouter.get('/api/amazon/sign-auth', amazon.signAuth);
+apiRouter.get('/api/amazon/video-duration', amazon.getVideoDuration);
 apiRouter.post('/api/amazon/transcode/start', amazon.startTranscode);
 apiRouter.post('/api/amazon/transcode/completion', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeCompletion);
 apiRouter.post('/api/amazon/transcode/progression', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeProgression);

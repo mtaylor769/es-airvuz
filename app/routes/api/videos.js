@@ -8,8 +8,11 @@ Video.prototype.post = function(req, res) {
   VideoCrud
     .create(req.body)
     .then(function(video) {
-      res.send(video);
+      res.json(video);
     })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
 };
 
 Video.prototype.get = function(req, res) {

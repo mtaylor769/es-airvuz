@@ -43,7 +43,6 @@ Videos.prototype.getPreCondition = function(params) {
 	
 	preCondition.setValidation(function(params) {
 		var errorMessage				= new ErrorMessage();
-		var sessionId						= params.sessionId || null;
 		this.data.userId				= params.userId || null;
 		this.data.title					= params.title || null;
 		this.data.description		= params.description || null;
@@ -54,13 +53,6 @@ Videos.prototype.getPreCondition = function(params) {
 		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
 				errorId					: "USERID1000",
-				sourceLocation	: sourceLocation
-			});
-		}			
-		
-		if(sessionId === null) {
-			this.errors = errorMessage.getErrorMessage({
-				errorId					: "SESSIONID1000",
 				sourceLocation	: sourceLocation
 			});
 		}
@@ -110,8 +102,8 @@ Videos.prototype.create = function(params) {
 			var validation = preCondition.validate(params);
 			if(validation.errors !== null) {
 				var validationException = new ValidationException({ errors : validation.errors });
-				reject(validationException);
-			}		
+				return reject(validationException);
+			}
 
 			// Persist
 			var videoModel = new VideoModel(validation.data);
