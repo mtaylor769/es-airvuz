@@ -9,12 +9,11 @@ function Comment() {
 
 Comment.prototype.post = function(req, res) {
 
-  var parentCommentId = req.body.parentCommentId;
-  var videoId = req.body.videoId;
-
   commentCrud
     .create(req.body)
     .then(function (comment) {
+      var parentCommentId = comment.parentCommentId;
+      var videoId = comment.videoId;
       commentCrud.replyIncrement(parentCommentId, videoId);
       res.send(comment);
     });

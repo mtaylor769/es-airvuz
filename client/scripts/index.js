@@ -67,19 +67,22 @@ $(document).ready(function() {
         data: comment,
         dataType: 'json'
       })
-      .done(function(data) {
-        console.log(data);
+      .done(function(reply) {
         //insert comment on DOM
+        console.log(reply);
         var html = '<div class="flex placehold">'+
-          '<img src="./tn_00001.jpg" height="50" width="50" class="border-radius-circle m-10-20">'+
+          '<img src="' + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
           '<div class="m-t-20">'+
-          '<p class="pos-absolute-r-15" datetime="' + data.commentCreatedDate + '"></p>'+
-          '<p class="m-b-0 airvuz-blue">' + data.userId.userName + '</p>'+
-          '<p class="m-b-0">' + data.comment + '</p>'+
+          '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
+          '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+          '<p class="m-b-0">' + reply.comment + '</p>'+
           '</div>'+
           '</div>';
 
         $(self).parents('.comment-wrap').find('.parentComment').append(html);
+        var currentCount = $('.commentCount').text();
+        var toNumber = Number(currentCount);
+        $('.commentCount').text('  ' + (toNumber + 1) + '  ');
       })
     });
   });
@@ -120,6 +123,9 @@ $(document).ready(function() {
 
       $('.parent-comments').prepend(html);
       $('#comment-text').val('')
+      var currentCount = $('.commentCount').text();
+      var toNumber = Number(currentCount);
+      $('.commentCount').text('  ' + (toNumber + 1) + '  ');
     })
   });
 

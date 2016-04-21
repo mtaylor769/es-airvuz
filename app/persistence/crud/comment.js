@@ -1,7 +1,7 @@
 try {
   var Promise = require('bluebird');
   var log4js = require('log4js');
-  var logger = log4js.getLogger('persistance.crud.CameraType');
+  var logger = log4js.getLogger('persistance.crud.Comments');
   var ErrorMessage = require('../../utils/errorMessage');
   var ObjectValidationUtil = require('../../utils/objectValidationUtil');
   var PersistenceException = require('../../utils/exceptions/PersistenceException');
@@ -9,6 +9,7 @@ try {
   var CommentModel = null;
   var VideoModel = null;
   var database = require('../database/database');
+  var VideoCrud = require('./videos');
 
   CommentModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
   VideoModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
@@ -145,6 +146,7 @@ Comment.prototype.create = function(params) {
     }
 
     var videoCommentModel = new CommentModel(validation.data);
+      console.log(videoCommentModel);
     videoCommentModel.save(function(error, videoComment) {
       if(error) {
         console.log(error);
@@ -170,19 +172,21 @@ Comment.prototype.create = function(params) {
 };
 
 Comment.prototype.replyIncrement = function(parentCommentId, videoId) {
-  CommentModel.findById({_id: parentCommentId}).exec()
+  CommentModel.findById(parentCommentId).exec()
   .then(function(parentComment) {
+    logger.debug('.replyIncrament : parentComment : ' + parentComment);
     if(parentComment !== null) {
       parentComment.replyCount = parentComment.replyCount + 1;
-      return parentComment.save()
+      return parentComment.save();
     } else {
       return {videoId: videoId};
     }
   })
   .then(function(comment) {
-    console.log('this is the comment :' + comment);
+    logger.debug('replyIncrament : this is the comment : comment : ' + comment);
     var videoId = comment.videoId;
-    return VideoModel.findById({_id: videoId}).exec()
+    logger.debug('replyIncraement : videoId : ' + videoId);
+    return VideoCrud.getById(videoId);
   })
   .then(function(video) {
     video.commentCount = video.commentCount + 1;
@@ -212,7 +216,7 @@ Comment.prototype.getParentCommentByVideoId = function(params) {
 };
 
 Comment.prototype.getById = function(id) {
-  return CommentModel.findById({_id: id}).exec();
+  return CommentModel.findById(id).exec();
 };
 
 Comment.prototype.update = function(params) {

@@ -65,7 +65,7 @@
                             <div class="inline m-l-10">
                                 <span class="p-l-10 mobile-display-none"><span class="bold">{video.viewCount} </span>VUZ |</span>
                                 <span><span class="bold"> {video.likeCount} </span>Likes |</span>
-                                <span><span class="bold"> {video.commentCount} </span>Comments</span>
+                                <span><span class="bold commentCount"> {video.commentCount} </span>Comments</span>
                             </div>
                             <div class="video-action-icons pull-right flex">
                                 <span class="glyphicon glyphicon-heart like"></span>
@@ -93,7 +93,7 @@
                                     <div class="m-t-20">
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
                                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>
-                                        <p class="m-b-0 ">{comment}</p>
+                                        <p class="m-b-0">{comment}</p>
                                     </div>
                                 </div>
                                 <div  id="{_id}">
