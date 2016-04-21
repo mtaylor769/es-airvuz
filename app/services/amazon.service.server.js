@@ -87,6 +87,26 @@ function createPreset(key) {
   })
 }
 
+function getVideoDuration(key) {
+  return new Promise(function (resolve, reject) {
+    probe('https:' + amazonConfig.INPUT_URL + key, function(err, probeData) {
+      if (err) {
+        reject(err);
+      }
+      var duration = Math.floor(probeData.format.duration);
+      var min = duration / 60;
+      var sec = min - Math.floor(min);
+
+      sec = Math.floor(sec * 60);
+      duration = Math.floor(min) < 9 || Math.floor(min) == 9 ? '0' + Math.floor(min) : Math.floor(min);
+      duration += ':';
+      duration += sec < 9 || sec == 9 ? '0' + sec : sec;
+
+      resolve(duration);
+    });
+  });
+}
+
 function startTranscode(preset, key) {
   var transcoder = new AWS.ElasticTranscoder(awsOptions);
   var keyWithoutMp4 = key.replace('.mp4', '');
@@ -205,6 +225,7 @@ function signAuth(toSign) {
 
 module.exports = {
   createPreset        : createPreset,
+  getVideoDuration    : getVideoDuration,
   signAuth            : signAuth,
   startTranscode      : startTranscode,
   deletePreset        : deletePreset,
