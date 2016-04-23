@@ -1,0 +1,9 @@
+#home-page .video {
+    background-color: #fff;
+}
+#home-page .video .video-bottom {
+    padding: 15px;
+}
+#home-page .video .title {
+    min-height: 63px;
+}
