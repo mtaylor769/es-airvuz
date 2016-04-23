@@ -3,8 +3,7 @@ require('./config/jquery');
 
 
 
-
-var a                   = "a";
+var AVEventTracker			= require('./avEventTracker');
 var auth                = require('./auth');
 var regexUrl            = null;
 var test                = require('./test');
@@ -13,8 +12,6 @@ var urlParseResults     = null;
 var zeke                = require('./zeke');
 
 window.Upload = require('./upload');
-
-
 
 exports.add = function (a, b) { return a+b };
 
@@ -53,6 +50,9 @@ $(document).ready(function() {
     //comment submit function
 
     $('#saveComment').click(function() {
+			
+		
+			
       var self = this;
       var comment = {};
       comment.comment = $('#comment').val();
@@ -86,6 +86,12 @@ $(document).ready(function() {
   //create comment and append
 
   $('#commentSave').on('click', function() {
+		AVEventTracker({
+			codeSource	: "videoPlayer",
+			eventName		: "commentSave",
+			eventType		: "click"
+		});				
+		
     var self = this;
     var comment = {};
     comment.videoId = $(this).attr('value');

@@ -163,6 +163,9 @@ app.get("/userProfile/:userid", function(req, res) {
 });
 
 app.get("/videoPlayer/:id", function(req, res) {
+	
+	
+	
 	viewManager
 		.getView({
 			viewName				: videoPlayerView.getViewName(),
