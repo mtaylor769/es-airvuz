@@ -3,7 +3,6 @@
     <head>
         <meta http-equiv="Cache-control" content="public">
         <title>{videoPlayer.title}</title>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {>  "app.views.view.partial.css" /}
@@ -68,7 +67,7 @@
                                 <span><span class="bold commentCount"> {video.commentCount} </span>Comments</span>
                             </div>
                             <div class="video-action-icons pull-right flex">
-                                <span class="glyphicon glyphicon-heart like"></span>
+                                <span class="glyphicon glyphicon-heart like" data-videoId="{video._id}"></span>
                                 <span class="glyphicon glyphicon-flag report"></span>
                                 <span class="glyphicon glyphicon-share share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
@@ -129,7 +128,7 @@
                         </div>
                         <ul style="list-style: none; padding-left: 0">
                         {#upNext}
-                            <li style="width: 100%">
+                            <li style="width: 100%" class="go-to-video" value="{_id}">
                                 <div>
                                     <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%" class="m-t-35">
                                     <div class="up-next-layer">

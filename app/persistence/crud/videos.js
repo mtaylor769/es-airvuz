@@ -146,7 +146,7 @@ Videos.prototype.create = function(params) {
 
 Videos.prototype.get5Videos = function() {
 	return VideoModel.find({}).limit(5).exec();
-}
+};
 
 Videos.prototype.getById = function(id) {
 	logger.debug('.getByID : id : ' + id);
@@ -159,6 +159,20 @@ Videos.prototype.remove = function(id) {
 
 Videos.prototype.update = function(params) {
 	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec();
+};
+
+Videos.prototype.like = function(video, like) {
+	if(like === 'plus') {
+		video.likeCount = video.likeCount + 1;
+		return video.save();
+	} else {
+		video.likeCount = video.likeCount - 1;
+		return video.save();
+	}
+};
+
+Videos.prototype.getByUser = function(userId) {
+	return VideoModel.find({userId: userId}).sort({uploadDate: -1}).exec()
 };
 
 module.exports = new Videos();

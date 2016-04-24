@@ -17,6 +17,8 @@
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick-theme.css"/>
 
         {> "app.views.view.partial.css" /}
   </head>
@@ -26,6 +28,11 @@
 
     <!-- BEG:Main Container -->
     <div id="home-page" class="container main container-shadow">
+      <div class="row">
+        <div id="slider">
+          <img src="http://airvuz.com/assets/img/slider/N5.jpg" alt="" class="img-responsive"/>
+        </div>
+      </div>
 
       {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos"/}
       <hr/>
@@ -40,6 +47,8 @@
     {> "app.views.view.partial.footer" /}
 
     {> "app.views.view.partial.js" /}
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.min.js"></script>
 
     <script>
         $(function () {

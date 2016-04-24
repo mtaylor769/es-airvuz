@@ -95,6 +95,45 @@ IndexModel.prototype.getData = function(params) {
 						name: 'Travel'
 					}
 				]
+			},
+			{
+				title: 'BallonFest Arial Time Lapse',
+				duration: '0:15',
+				viewCount: 2427,
+				userId: {
+					userName: 'BottomUpProductions'
+				},
+				categories: [
+					{
+						name: 'Concerts & Events'
+					}
+				]
+			},
+			{
+				title: 'Dolphins Playing off the Coast of Seaside Florida',
+				duration: '0:15',
+				viewCount: 2427,
+				userId: {
+					userName: '8 Fifty Productions'
+				},
+				categories: [
+					{
+						name: 'Nature & Wildlife'
+					}
+				]
+			},
+			{
+				title: 'DJI Phantom 4 | Powerful and Creative Germany 4k',
+				duration: '0:15',
+				viewCount: 2427,
+				userId: {
+					userName: 'cyber_drone_'
+				},
+				categories: [
+					{
+						name: 'Travel'
+					}
+				]
 			}
 		];
 
