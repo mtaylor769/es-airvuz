@@ -1,20 +1,10 @@
-//node ./test/app/quickTestCrud
-
-
 
 var log4js									= require('log4js');
 var logger									= log4js.getLogger("test.quickTestCrud");
-
 var BaseException						= require('../app/utils/exceptions/BaseException');
 var PersistenceException		= require('../app/utils/exceptions/PersistenceException');
 var ValidationException			= require('../app/utils/exceptions/ValidationException');
-
-
 var CategoryType						= require('../app/persistence/crud/categoryType');
-
- 
-
-
 
 var catCreate = function(params) {
 	CategoryType.create(params)

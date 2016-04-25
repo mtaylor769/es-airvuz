@@ -3,8 +3,7 @@ require('./config/jquery');
 
 
 
-
-var a                   = "a";
+var AVEventTracker			= require('./avEventTracker');
 var auth                = require('./auth');
 var regexUrl            = null;
 var test                = require('./test');
@@ -15,8 +14,6 @@ var zeke                = require('./zeke');
 window.Home = require('./home');
 window.Upload = require('./upload');
 
-
-
 exports.add = function (a, b) { return a+b };
 
 var identity      = require('./services/identity');
@@ -25,7 +22,7 @@ var user = identity;
 // *************** start JQuery ***********************
 $(document).ready(function() {
 //
-
+	console.log("videoPage: document.ready")
 
 //
 // *************** start video player page JS ***********************
@@ -54,6 +51,9 @@ $(document).ready(function() {
     //comment submit function
 
     $('#saveComment').click(function() {
+			
+		
+			
       var self = this;
       var comment = {};
       comment.comment = $('#comment').val();
@@ -90,6 +90,12 @@ $(document).ready(function() {
   //create comment and append
 
   $('#commentSave').on('click', function() {
+		AVEventTracker({
+			codeSource	: "videoPlayer",
+			eventName		: "commentSave",
+			eventType		: "click"
+		});				
+		
     var self = this;
     var comment = {};
     comment.videoId = $(this).attr('value');

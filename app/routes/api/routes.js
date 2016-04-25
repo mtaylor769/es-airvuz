@@ -1,4 +1,5 @@
 var apiRouter           = require('express').Router();
+var avEventTracker			= require('./avEventTracker');
 var users               = require('./users');
 var videos              = require('./videos');
 var passport            = require('passport');
@@ -14,6 +15,12 @@ var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
 var protect             = require('../../middlewares/protect');
+
+
+apiRouter
+	.route('/api/avEventTracker')
+	.put(avEventTracker.put);
+
 
 /**
  * /api/auth

@@ -1,4 +1,19 @@
-var VideoCrud = require('../../persistence/crud/videos');
+try {
+	var log4js								= require('log4js');
+	var logger								= log4js.getLogger('persistance.crud.Videos');
+
+	var VideoCrud							= require('../../persistence/crud/videos');
+	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
+
+	if(global.NODE_ENV === "production") {
+		logger.setLevel("INFO");
+	}
+
+	logger.debug("import complete");
+}
+catch(exception) {
+	logger.error(" import error:" + exception);
+}
 
 function Video() {
 
@@ -16,6 +31,12 @@ Video.prototype.post = function(req, res) {
 };
 
 Video.prototype.get = function(req, res) {
+	logger.debug(".get: BEG");
+	EventTrackingCrud.create({
+		codeSource	: "app.persistence.crud.videos.get",
+		eventSource : "nodejs",
+		eventType		: "get"		
+	});
   VideoCrud
     .getById(req.params.id)
     .then(function(video) {

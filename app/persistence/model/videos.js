@@ -139,7 +139,7 @@ var videoSchema = mongoose.Schema({
 	 * Old Name : user
 	 */
 	userId: {
-	 	ref				: 'User',
+	 	ref				: 'Users',
 	 	required	: true,
 	 	type			: mongoose.Schema.ObjectId
 	},

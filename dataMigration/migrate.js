@@ -590,10 +590,15 @@ var MigrateVideos = function(savedUser_p, origUserData_p) {
 
 				newVideoData.description			= video.Description || "Drone Video";
 				newVideoData.duration					= video.Duration;
+				newVideoData.likeCount				= video.Like;
+				newVideoData.recordDate				= video.RecordDate;
 				newVideoData.thumbnailPath		= video.Thumbnail || null;
 				newVideoData.title						= video.Title || "Drone Video";
+				newVideoData.uploadDate				= video.UploadDate;
 				newVideoData.userId						= savedUser_p;
 				newVideoData.videoPath				= video.FileName;
+				newVideoData.viewCount				= video.ViewCount;
+				
 				
 				//loggerUserUtils.debug(".MigrateVideo origVideoData: " + JSON.stringify(video, null, 2));
 				//loggerUserUtils.debug(".MigrateVideo newVideoData: " + JSON.stringify(newVideoData, null, 2));
@@ -612,7 +617,7 @@ var MigrateVideos = function(savedUser_p, origUserData_p) {
 								logger.debug(".MigrateVideos: savedVideoCount:" + savedVideoCount + ", videoSize:" + videoSize);
 								if(savedVideoCount === videoSize) {
 									logger.debug(".MigrateVideos: all videos saved");
-									logger.debug(".MigrateVideos: BEG");
+									logger.debug(".MigrateVideos: END");
 									resolve();
 								}
 							})
