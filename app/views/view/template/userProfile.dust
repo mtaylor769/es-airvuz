@@ -3,80 +3,70 @@
   <head>
     <meta http-equiv="Cache-control" content="public">
     <title>{data.userProfile.title}</title>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {> "app.views.view.partial.css" /}
   </head>
   <body>
     {> "app.views.view.partial.header" /}
-    <div id="user-profile" class="container main user-profile">
-      
-      <section>
-
-          <div class="coverborder">
-            <img src="http://airvuz.com/assets/img/slider/G2.jpg" alt="coverpic" class="profile-banner">
-          </div>
-          <div class="profile">
-            <figure class="profile-picture col-md-2">
-              <img src="http://airvuz.com/assets/img/default.png" class="profile-picture-img">
-            </figure>
-            <figcaption class="profile-information col-md-10">
-              <div class="profile-username row">Zeke Thao</div>
-
-              <div class="location row">Minneapolis, MN</div>
-              <div class="row">
-                <span class="av-primary">300 </span><span>Followers</span>
-              </div>
-              <div class="row">
-                <span class="av-primary">299</span><span>Following</span>
-              </div>
-              <div class="join-date row">Member since November 2015</div>
-
-              <div class="profile-about row">About stuff goes here.</div>
-              <!-- This stuff displays only if not your profile -->
-              <div class="profile-options btn-group inline row" role="group">
+    <div id="user-profile" class="container main">
+      <div class="row">
+        <section>
+          <div class="coverborder" style="background-image: url('http://airvuz.com/assets/img/slider/G2.jpg');">
+            <div class="profile">
+              <figure class="profile-picture col-md-2">
+                <img src="http://airvuz.com/{user.profilePicture}" width="250px" height="250px" class="profile-picture-img">
+              </figure>
+              <figcaption class="profile-information col-md-10">
+                <div class="profile-username row">Zeke Thao</div>
+                <div class="location row">Minneapolis, MN</div>
+                <div class="row">
+                  <span class="av-primary">300 </span><span>Followers</span>
+                </div>
+                <div class="row">
+                  <span class="av-primary">299</span><span>Following</span>
+                </div>
+                <div class="join-date row">Member since November 2015</div>
+                <div class="profile-about row">About stuff goes here.</div>
+                <!-- This stuff displays only if not your profile -->
+                <div class="profile-options btn-group inline row" role="group">
                 <!-- Switch button depending if followed or unfollowed -->
-                <button class="btn btn-default" type="button">Follow</button>
-                <button class="btn btn-default" type="button">Donate</button>
-                <button class="btn btn-default" type="button">Hire</button>
-              </div>
-              <div class="inline pull-right row">
-              <!-- Conditional only if user has social media links -->
-                <a href="/">Facebook</a>
-                <a href="/">Instagram</a>
-                <a href="/">Twitter</a>
-                <a href="/">Google+</a>
-              </div>
-            </figcaption>
+                  <button class="btn btn-default" type="button">Follow</button>
+                  <button class="btn btn-default" type="button">Donate</button>
+                  <button class="btn btn-default" type="button">Hire</button>
+                </div>
+                <div class="inline pull-right row">
+                  <!-- Conditional only if user has social media links -->
+                  <a href="/">Facebook</a>
+                  <a href="/">Instagram</a>
+                  <a href="/">Twitter</a>
+                  <a href="/">Google+</a>
+                </div>
+              </figcaption>
+            </div>
           </div>
-          
-      </section>
-
+        </section>
+      </div>
       <div class="clearfix"></div>
-      
-      <section class="video-list">
-        data {userProfile}
-        <div class="video-sort row">
-          <div class="pull-left">
-            <select name="sort-by" id="video-sorter" class="video-sort-control">
+      <div class="row">
+        <section class="video-list">
+          <div class="video-sort row">
+            <div class="pull-left">
+              <select name="sort-by" id="video-sorter" class="video-sort-control">
               <option value="name">Name</option>
               <option value="vuz">Vuz</option>
               <option value="likes">Likes</option>
-            </select>
+              </select>
+            </div>
+            <div class="pull-right">
+              <button class="btn btn-default" type="button">EDIT SHOWCASE</button>
+            </div>
           </div>
-          <div class="pull-right">
-            <button class="btn btn-default" type="button">EDIT SHOWCASE</button>
-          </div>
-          
-        </div>
-        <div class="clearfix"></div>
-        
-        <div class="video col-md-4">
+          <div class="clearfix"></div>
+          <div class="video col-md-4">
             <div class="video-thumbnail">
               <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
             </div>
-
             <div class="row inline">
               <div class="video-views pull-left">
                 <span>2,882</span>&nbsp;<span>Views</span>
@@ -99,14 +89,11 @@
                 <span>10</span>&nbsp;<span>COMMENTS</span>
               </div>
             </div>
-        </div>
-        
-
-      </section>
-      
+          </div>
+        </section>
+      </div>
     </div>
     {> "app.views.view.partial.footer" /}
-    
+    {> "app.views.view.partial.js" /}
   </body>
-    
 </html>

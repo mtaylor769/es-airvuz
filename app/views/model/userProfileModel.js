@@ -8,10 +8,6 @@ try {
 	var util							= require('util');
 	var usersCrud					= require('../../persistence/crud/users');
 	var videoCrud					= require('../../persistence/crud/videos');
-	var sourceManifest 		= null;
-	var THIS 							= null;
-	var userProfile 			= null;
-	var dataObject 				= {};
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -32,24 +28,28 @@ var UserProfileModel = function(params) {
 
 util.inherits(UserProfileModel, BaseModel);
 
-UserProfileModel.prototype.getData = function(params) {	
-	logger.info("getData ");	
-	sourceManifest	= params.sourceManifest;
-	THIS						= this;
-	//why is this getting ran twice?  Once as the parameter, another as 'public'
-	// var userid 			= params.request.params.userid;
-	var userid 			= '57153beddeb1e35295946a96';
-	return usersCrud.getUserById(userid)
-		.then(function(user){
-			params.data 												= {};
-			params.data.userProfile							= user;
-			params.data.userProfile.title				= "User Profile";
-			params.data.userProfile.airvuz			= {};
-			params.data.userProfile.airvuz.css	= sourceManifest["airvuz.css"];
-			params.data.userProfile.viewName		= "User Profile";
-			//videoCrud currently does not have ability to get videos based on userid
-			return params;
-		});
+UserProfileModel.prototype.getData = function(params) {
+	var userName = params.request.params.userName;
+	var dataObject = {};
+	var sourceManifest 		= params.sourceManifest;
+
+	return usersCrud.getUserByUserName(userName)
+	.then(function(user) {
+		dataObject.user = user;
+		return videoCrud.getByUser(user._id)
+	})
+	.then(function(videos) {
+		dataObject.videos = videos;
+		console.log(dataObject);
+		params.data 												= dataObject;
+		params.data.userProfile							= {};
+		params.data.userProfile.title				= "User Profile";
+		params.data.userProfile.airvuz			= {};
+		params.data.userProfile.airvuz.css	= sourceManifest["airvuz.css"];
+		params.data.userProfile.viewName		= "User Profile";
+		console.log(params.data.userProfile);
+		return params;
+	});
 };
 
 module.exports = UserProfileModel;
