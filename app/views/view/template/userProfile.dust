@@ -12,10 +12,10 @@
     <div id="user-profile" class="container main">
       <div class="row">
         <section>
-          <div class="coverborder" style="background-image: url('http://airvuz.com/assets/img/slider/G2.jpg');">
+          <img src="http://airvuz.com{user.profilePicture}" class="img-responsive">
             <div class="profile">
               <figure class="profile-picture col-md-2">
-                <img src="http://airvuz.com/{user.profilePicture}" width="250px" height="250px" class="profile-picture-img">
+                <img src="http://airvuz.com/{user.coverPicture}" width="150px" height="150px" class="">
               </figure>
               <figcaption class="profile-information col-md-10">
                 <div class="profile-username row">Zeke Thao</div>
@@ -44,7 +44,7 @@
                 </div>
               </figcaption>
             </div>
-          </div>
+          </img>
         </section>
       </div>
       <div class="clearfix"></div>
@@ -63,9 +63,10 @@
             </div>
           </div>
           <div class="clearfix"></div>
+          {#videos}
           <div class="video col-md-4">
             <div class="video-thumbnail">
-              <img src="http://placehold.it/200x100" alt="thumbnail" class="vid-thumb">
+              <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" alt="thumbnail" class="vid-thumb">
             </div>
             <div class="row inline">
               <div class="video-views pull-left">
@@ -90,6 +91,7 @@
               </div>
             </div>
           </div>
+          {/videos}
         </section>
       </div>
     </div>

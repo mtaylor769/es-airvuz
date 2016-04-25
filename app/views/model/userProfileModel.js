@@ -47,6 +47,12 @@ UserProfileModel.prototype.getData = function(params) {
 		params.data.userProfile.airvuz			= {};
 		params.data.userProfile.airvuz.css	= sourceManifest["airvuz.css"];
 		params.data.userProfile.viewName		= "User Profile";
+
+		params.data.airvuz 									= {};
+		params.data.vendor 									= {};
+		params.data.airvuz.js 							= sourceManifest["airvuz.js"];
+		params.data.airvuz.css 							= sourceManifest["airvuz.css"];
+		params.data.vendor.js 							= sourceManifest["vendor.js"];
 		console.log(params.data.userProfile);
 		return params;
 	});
