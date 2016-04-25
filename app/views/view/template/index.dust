@@ -29,9 +29,9 @@
     <!-- BEG:Main Container -->
     <div id="home-page" class="container main container-shadow">
       <div class="row">
-        <div id="slider-slick" class="hidden">
+        <div id="slider-slick">
           {#index.banners}
-            <div class="slide">
+            <div class="slide hidden">
               <a href="{videoUrl}">
                 <img data-lazy="{imageUrl}" alt="{imageAlt}" class="img-responsive"/>
               </a>

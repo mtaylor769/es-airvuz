@@ -43,7 +43,7 @@ function initialize() {
     dots: true,
     fade: true,
     cssEase: 'linear'
-  }).removeClass('hidden');
+  }).find('.slide').removeClass('hidden');
 }
 
 module.exports = {
