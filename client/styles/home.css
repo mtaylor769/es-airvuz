@@ -7,3 +7,7 @@
 #home-page .video .title {
     min-height: 63px;
 }
+
+#home-page .slick-prev:before, #home-page .slick-next:before {
+    color: #30c1ed;
+}

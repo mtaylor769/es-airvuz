@@ -6,25 +6,26 @@
   </div>
 </div>
 <div class="row">
+
   <div class="col-md-12">
-	<div class="row">
-		{#index[videos]}
-          <div class="col-md-4 col-sm-6">
-            <div class="video">
-              <div class="text-center">
-                <img src="http://placehold.it/392x220" alt="" class="img-responsive"/>
-			  </div>
-              <div class="video-bottom">
-				<p>{viewCount} Views <span class="pull-right">{duration}</span></p>
-                <div class="title">
-                  <h4>{title}</h4>
-                  <h5>By {userId.userName}</h5>
-				</div>
-                <a href="#">{categories[0].name}</a>
+    <div class="video-slick">
+      {#index[videos]}
+        <div class="col-md-4 col-sm-6">
+          <div class="video">
+            <div class="text-center">
+              <img data-lazy="http://placehold.it/392x220" alt="{title}" class="img-responsive"/>
+            </div>
+            <div class="video-bottom">
+              <p>{viewCount} Views <span class="pull-right">{duration}</span></p>
+              <div class="title">
+                <h4>{title}</h4>
+                <h5>By {userId.userName}</h5>
               </div>
-			</div>
+              <a href="#">{categories[0].name}</a>
+            </div>
           </div>
-		{/index[videos]}
-	</div>
+        </div>
+      {/index[videos]}
+    </div>
   </div>
 </div>
