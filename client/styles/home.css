@@ -8,6 +8,10 @@
     min-height: 63px;
 }
 
+#home-page .video h4 a {
+    color: #000;
+}
+
 #home-page #slider-slick .slide {
     position: relative;
 }

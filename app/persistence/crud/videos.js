@@ -145,7 +145,7 @@ Videos.prototype.create = function(params) {
 //};
 
 Videos.prototype.get5Videos = function() {
-	return VideoModel.find({}).limit(5).exec();
+	return VideoModel.find({}).populate('userId').limit(5).exec();
 };
 
 Videos.prototype.getById = function(id) {
