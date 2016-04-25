@@ -50,8 +50,18 @@ VideoLike.prototype.create = function(params) {
 };
 
 VideoLike.prototype.videoLikeCheck = function(params) {
-  var videoId = mongoose.Types.ObjectId(params.videoId);
+  console.log('this is the Params : ');
+  console.log(params);
+  var videoId = mongoose.Types.ObjectId(params.video);
   params.videoIdCheck = videoId;
+  return VideoLikeModel.find({userId: params.user})
+  .then(function(likes) {
+    console.log('***********************');
+    console.log(likes);
+    console.log('***********************');
+    var likeCheck = _.find(likes, {'videoId' : params.videoIdCheck });
+    console.log('this is the likeCheck : ' + likeCheck)
+  })
 };
 
 VideoLike.prototype.delete = function(id) {
