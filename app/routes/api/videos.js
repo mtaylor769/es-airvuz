@@ -21,6 +21,9 @@ Video.prototype.get = function(req, res) {
     .then(function(video) {
       res.send(video);
     })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
 };
 
 Video.prototype.put = function(req, res) {
@@ -29,6 +32,9 @@ Video.prototype.put = function(req, res) {
     .then(function(video) {
       res.send(video);
     })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
 };
 
 Video.prototype.delete = function(req, res) {
@@ -37,6 +43,27 @@ Video.prototype.delete = function(req, res) {
     .then(function(video) {
       res.sendStatus(200);
     })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
+};
+
+Video.prototype.like = function(req, res) {
+  VideoCrud
+    .getById(req.body.id)
+    .then(function(video) {
+      VideoCrud
+        .like(video, req.body.like)
+        .then(function(comment) {
+          res.sendStatus(200);
+        })
+        .catch(function (err) {
+          res.sendStatus(500);
+        });
+    })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
 };
 
 module.exports = new Video();

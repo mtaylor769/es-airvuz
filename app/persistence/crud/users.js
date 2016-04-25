@@ -326,7 +326,7 @@ users.prototype.getUserByUserName = function (userName) {
 		if (validation.userName === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({userName : validation.userName}, 'aclRoles emailAddress userName firstName lastName', function(error, user) {
+			UserModel.findOne({userName : validation.userName}, '-password', function(error, user) {
 				if (error) {
 					var errorMessage		= new ErrorMessage();
 				errorMessage.getErrorMessage({
