@@ -141,6 +141,37 @@ IndexModel.prototype.getData = function(params) {
 		params.data.index.recentVideos = mockVideos;
 		params.data.index.trendingVideos = mockVideos;
 
+		var mockBanners = [
+			{
+				//name: '',
+				imageUrl: '//airvuz.com/assets/img/slider/N5.jpg',
+				imageAlt: 'Image Alt',
+				videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
+				description: 'Description'
+			}
+		];
+
+		if (params.request.query.banner) {
+			mockBanners = [
+				{
+					name: 'Name 1',
+					imageUrl: '//airvuz.com/assets/img/slider/N5.jpg',
+					imageAlt: 'Image Alt',
+					videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
+					description: 'Description'
+				},
+				{
+					name: 'Name 2',
+					imageUrl: '//airvuz.com/assets/img/slider/P1.jpg',
+					imageAlt: 'Image Alt',
+					videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
+					description: 'Description'
+				}
+			];
+		}
+
+		params.data.index.banners = mockBanners;
+
 
 		CategoryType
 			.get()
@@ -155,6 +186,6 @@ IndexModel.prototype.getData = function(params) {
 		
 	});  	
 
-}
+};
 
 module.exports = IndexModel;

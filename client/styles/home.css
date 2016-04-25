@@ -8,6 +8,33 @@
     min-height: 63px;
 }
 
+#home-page #slider-slick .slide {
+    position: relative;
+}
+
+#home-page #slider-slick .description {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+}
+
+/***************************
+ * Slick theme
+ */
+#home-page .slick-slider {
+    margin-bottom: 0;
+}
 #home-page .slick-prev:before, #home-page .slick-next:before {
     color: #30c1ed;
 }
+
+#home-page .slick-dots {
+    bottom: 0;
+}
+
+#home-page .slick-dots li.slick-active button:before {
+    color: #30c1ed;
+}
+/*
+ * End slick theme
+ ***************************/

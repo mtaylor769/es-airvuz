@@ -29,8 +29,19 @@
     <!-- BEG:Main Container -->
     <div id="home-page" class="container main container-shadow">
       <div class="row">
-        <div id="slider">
-          <img src="http://airvuz.com/assets/img/slider/N5.jpg" alt="" class="img-responsive"/>
+        <div id="slider-slick" class="hidden">
+          {#index.banners}
+            <div class="slide">
+              <a href="{videoUrl}">
+                <img data-lazy="{imageUrl}" alt="{imageAlt}" class="img-responsive"/>
+              </a>
+              <div class="description">
+                <h2>{name}</h2>
+                <p>{description}</p>
+                <a href="{videoUrl}" class="btn btn-primary">Watch now</a>
+              </div>
+            </div>
+          {/index.banners}
         </div>
       </div>
 
