@@ -184,11 +184,6 @@ a.btn + a.btn {
   display: none;
 }
 
-.video-page .col-sm-8 {
-  padding-right: 0;
-  padding-left: 0;
-}
-
 .video-page .main {
   box-shadow: none;
 }
@@ -197,6 +192,7 @@ a.btn + a.btn {
   height: 50px;
   width: 50px;
 }
+
 .parent-comments {
   list-style: none;
   padding-left: 0px;
@@ -566,6 +562,11 @@ Begin userProfile CSS
   /*max-width: 1170px;*/
   padding-left: 0;
   padding-right: 0;
+}
+
+.profile .row {
+  margin-right: 0;
+  margin-left: 0;
 }
 
 #user-profile .coverborder {
