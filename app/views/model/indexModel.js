@@ -59,7 +59,7 @@ IndexModel.prototype.getData = function(params) {
 
 		var mockBanners = [
 			{
-				//name: '',
+				name: 'Name 1',
 				imageUrl: '//airvuz.com/assets/img/slider/N5.jpg',
 				imageAlt: 'Image Alt',
 				videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
