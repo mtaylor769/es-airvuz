@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-sm-8 videoplayback">
                         {!video title and back button!}
-                        <div class="flex page-top">
+                        <div class="flex">
                             <button class="btn btn-primary previous"><</button>
                             <span class="video-player-title airvuz-blue">{video.title}</span>
                             <div class="up-next">
