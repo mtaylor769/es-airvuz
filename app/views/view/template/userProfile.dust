@@ -96,6 +96,7 @@
       </div>
     </div>
     {> "app.views.view.partial.footer" /}
+    {> "app.views.view.partial.cdn-js" /}
     {> "app.views.view.partial.js" /}
   </body>
 </html>
