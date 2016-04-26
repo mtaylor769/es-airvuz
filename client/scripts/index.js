@@ -11,6 +11,8 @@ var token               = null;
 var urlParseResults     = null;
 var zeke                = require('./zeke');
 
+require('./core');
+
 window.Home = require('./home');
 window.Upload = require('./upload');
 
@@ -247,10 +249,11 @@ $(document).ready(function() {
     $('.social-icons').toggle();
   });
 
-  $('#dialog').dialog({
-    autoOpen:false,
-    modal:true
-  });
+  // TODO: remove and use bootstrap dialog
+  //$('#dialog').dialog({
+  //  autoOpen:false,
+  //  modal:true
+  //});
 
   $('.embed').on('click', function() {
     $('#dialog').dialog('open');

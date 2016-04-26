@@ -1,10 +1,4 @@
 <!-- BEG: app.views.view.partial.js -->
-  <!-- BEG: CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
-  <!-- END: CDN -->
-
   <script src="/public/{vendor.js}"></script>
 
   <script src="/public/{airvuz.js}"></script>

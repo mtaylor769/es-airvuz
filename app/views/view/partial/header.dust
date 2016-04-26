@@ -1,8 +1,13 @@
 <div partial-beg="app.views.view.partial.header" class="navbar navbar-fixed-top">
   <div class="container height-100-percent container-shadow" id="header">
     <div class="row height-100-percent">
-      <div class="col-sm-9">
+      <div class="col-sm-9 col-xs-6">
         <a href="/"><img src="/client/images/airvuz-logo.jpg" alt="AirVuz Logo"/></a>
+      </div>
+      <div class="col-sm-3 col-xs-6">
+        <div class="text-right m-t-15">
+          <button class="btn btn-primary" id="login-btn" data-toggle="modal" data-target="#login-modal">Login</button>
+        </div>
       </div>
     </div>
   </div>

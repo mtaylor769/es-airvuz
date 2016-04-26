@@ -57,6 +57,7 @@
 
     {> "app.views.view.partial.footer" /}
 
+    {> "app.views.view.partial.cdn-js" /}
     {> "app.views.view.partial.js" /}
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.min.js"></script>

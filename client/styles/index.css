@@ -340,6 +340,9 @@ a.btn + a.btn {
 /**********************************
  * margin
  */
+.m-t-15 {
+  margin-top: 15px;
+}
 .m-t-35 {
   margin-top: 35px;
 }
