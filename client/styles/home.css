@@ -1,3 +1,9 @@
+#home-page hr {
+    margin-bottom: 0;
+}
+#home-page h3 {
+    margin-top: 15px;
+}
 #home-page .video {
     background-color: #fff;
 }
