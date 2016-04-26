@@ -10,6 +10,8 @@
       'ui.router',
       'angular-jwt',
       'ngMaterial',
-      'ngSanitize'
+      'ngSanitize',
+      'evaporate',
+      'ngMaterialDatePicker'
     ]);
 })();

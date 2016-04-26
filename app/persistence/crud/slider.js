@@ -23,7 +23,7 @@ function Slider() {
 }
 
 function getAllSlider(params) {
-  return SliderModel.find().lean().exec();
+  return SliderModel.find().populate('slides').lean().exec();
 }
 
 function updateSlider(params) {
@@ -31,16 +31,21 @@ function updateSlider(params) {
 }
 
 function getSlider() {
-
+  return SliderModel.findById(params._id, params).populate('slides').exec();
 }
 
 function createSlider(params) {
   return (new SliderModel(params)).save();
 }
 
+function removeSlider(id) {
+  return SliderModel.findOneAndRemove({_id: id}).exec();
+}
+
 Slider.prototype.getAllSlider = getAllSlider;
 Slider.prototype.updateSlider = updateSlider;
 Slider.prototype.getSlider    = getSlider;
 Slider.prototype.createSlider = createSlider;
+Slider.prototype.removeSlider = removeSlider;
 
 module.exports = new Slider();

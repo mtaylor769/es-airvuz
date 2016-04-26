@@ -223,6 +223,24 @@ function signAuth(toSign) {
   return Promise.resolve(hash);
 }
 
+function moveFile(params) {
+  var bucket = new AWS.S3(awsOptions);
+
+  return new Promise(function (resolve, reject) {
+    bucket.copyObject({
+      Bucket: 'airvuz-asset-beta/' + params.dir,
+      CopySource: 'airvuz-tmp/' + params.key,
+      Key: params.key,
+      ACL: 'public-read'
+    }, function (err, data) {
+      if (err) {
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+}
+
 module.exports = {
   createPreset        : createPreset,
   getVideoDuration    : getVideoDuration,
@@ -230,6 +248,7 @@ module.exports = {
   startTranscode      : startTranscode,
   deletePreset        : deletePreset,
   listVideoObjects    : listVideoObjects,
+  moveFile            : moveFile,
   // Middleware
   confirmSubscription : confirmSubscription
 };

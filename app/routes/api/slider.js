@@ -8,7 +8,7 @@ function Slider() {
 
 function post(req, res) {
   sliderCrud
-    .createSlider(req.params)
+    .createSlider(req.body)
     .then(function (user) {
       res.send(user);
     });
@@ -38,9 +38,21 @@ function put(req, res) {
     });
 }
 
+function remove(req, res) {
+  return sliderCrud
+    .removeSlider(req.params.id)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    })
+}
+
 Slider.prototype.post         = post;
 Slider.prototype.get          = get;
 Slider.prototype.getAll       = getAll;
 Slider.prototype.put          = put;
+Slider.prototype.remove       = remove;
 
 module.exports = new Slider();

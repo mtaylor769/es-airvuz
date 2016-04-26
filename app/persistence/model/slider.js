@@ -5,8 +5,11 @@ var schema        = mongoose.Schema({
   name            : String,
   startDate       : Date,
   endDate         : Date,
-  isActive        : Boolean,
-  slide           : [{type: mongoose.Schema.ObjectId, ref: 'Slide'}] // order matter
+  isActive        : {
+    type: Boolean,
+    default: true
+  },
+  slides          : [{type: Schema.Types.ObjectId, ref: 'Slide'}] // order matter
 });
 
 module.exports = {

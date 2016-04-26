@@ -3,9 +3,9 @@ var Schema        = mongoose.Schema;
 
 var schema        = mongoose.Schema({
   name            : String,
-  imageUrl        : String,
+  imagePath       : String,
   imageAlt        : String,
-  videoUrl        : String,
+  videoId         : String,
   description     : String
 });
 

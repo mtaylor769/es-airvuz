@@ -32,8 +32,13 @@ function getSlide(id) {
   return SlideModel.findById(id).lean().exec();
 }
 
+function removeSlide(id) {
+  return SlideModel.findOneAndRemove({_id: id}).exec();
+}
+
 Slide.prototype.getAllSlide = getAllSlide;
 Slide.prototype.createSlide = createSlide;
-Slide.prototype.getSlide = getSlide;
+Slide.prototype.getSlide    = getSlide;
+Slide.prototype.removeSlide = removeSlide;
 
 module.exports = new Slide();

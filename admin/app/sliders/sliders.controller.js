@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('SlidersController', SlidersController);
 
-  SlidersController.$inject = ['Sliders'];
+  SlidersController.$inject = ['Sliders', '$q', '$http'];
 
-  function SlidersController(Sliders) {
+  function SlidersController(Sliders, $q, $http) {
     var Slide = Sliders.createResource('slide');
     var Slider = Sliders.createResource('slider');
 
@@ -24,6 +24,7 @@
         };
       }
       vm.newSlide = {};
+      vm.imageUploadProgress = 0;
     }
     
     function save(type) {
@@ -34,8 +35,8 @@
     }
 
     function saveSlider() {
-      angular.forEach(vm.newSlider.slide, function (slide, index) {
-        vm.newSlider.slide[index] = slide._id;
+      angular.forEach(vm.newSlider.slides, function (slide, index) {
+        vm.newSlider.slides[index] = slide._id;
       });
       var newSlider = new Slider(vm.newSlider);
       newSlider.$save(function () {
@@ -44,17 +45,27 @@
     }
     
     function saveSlide() {
-      var newSlide = new Slide(vm.newSlide);
-      newSlide.$save(function () {
-        vm.slides.push(newSlide);
-      });
+      var params = {
+        key: vm.newSlide.hashName,
+        dir: 'slide'
+      };
+
+      $http.post('/api/amazon/move-file', params)
+        .then(function () {
+          vm.newSlide.imagePath = vm.newSlide.hashName;
+          var newSlide = new Slide(vm.newSlide);
+          newSlide.$save(function () {
+            vm.slides.push(newSlide);
+            hideForm('slide');
+          });
+        });
     }
 
     function addSlideToSlider() {
-      if (vm.newSlider.slide) {
-        return vm.newSlider.slide.push(vm.selectedSlide);
+      if (vm.newSlider.slides) {
+        return vm.newSlider.slides.push(vm.selectedSlide);
       }
-      vm.newSlider.slide = [vm.selectedSlide];
+      vm.newSlider.slides = [vm.selectedSlide];
     }
     
     function initialize() {
@@ -70,6 +81,49 @@
           vm.sliders = response;
         })
     }
+    function onStart(file) {
+      var part = file.name.split('.');
+      return $q.when(md5(Date.now() + part[0]) + '.' + part[1]);
+    }
+
+    function onImageUploadProgress(file) {
+      vm.imageUploadProgress = file.progress;
+    }
+
+    function onImageUploadComplete(file) {
+      vm.newSlide.hashName = file.hashName;
+    }
+
+    function onImageUploadError(file, message) {
+      console.log('******************** file, message ********************');
+      console.log(file, message);
+      console.log('************************************************');
+    }
+
+    function editSlider(slider) {
+      showForm('slider');
+      vm.newSlider = slider;
+    }
+
+    function removeSlider(slider) {
+      var index = vm.sliders.indexOf(slider);
+
+      slider.$remove(function () {
+        vm.sliders.splice(index, 1);
+      });
+    }
+
+    function removeSlide(slide) {
+      var index = vm.slides.indexOf(slide);
+
+      slide.$remove(function () {
+        vm.slides.splice(index, 1);
+      });
+    }
+
+    function editSlide() {
+
+    }
     
     ///////////////////////
     var vm = this;
@@ -77,16 +131,35 @@
     vm.hideForm = hideForm;
     vm.selectedSlide = '';
     vm.newSlider = {
-      slide: []
+      slides: []
     };
     vm.newSlide = {};
     vm.save = save;
     vm.slides = [];
     vm.sliders = [];
     vm.addSlideToSlider = addSlideToSlider;
+    vm.removeSlider = removeSlider;
+    vm.editSlider = editSlider;
+    vm.removeSlide = removeSlide;
+    vm.editSlide = editSlide;
     vm.isOpen = {
       slider: false,
       slide: false
+    };
+
+    vm.imageUploadProgress = 0;
+
+    vm.evaData = {
+      headersCommon: {
+        'Cache-Control': 'max-age=3600'
+      },
+      headersSigned: {
+        'x-amz-acl': 'public-read'
+      },
+      onStart: onStart,
+      onFileProgress: onImageUploadProgress,
+      onFileComplete: onImageUploadComplete,
+      onFileError: onImageUploadError
     };
 
     initialize();

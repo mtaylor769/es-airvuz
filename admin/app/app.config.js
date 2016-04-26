@@ -5,10 +5,19 @@
     .module('AirvuzAdmin')
     .config(config);
 
-  config.$inject = ['$locationProvider', '$compileProvider', '$mdThemingProvider', 'jwtInterceptorProvider', '$httpProvider'];
+  config.$inject = ['$locationProvider', '$compileProvider', '$mdThemingProvider', 'jwtInterceptorProvider', '$httpProvider', 'evaProvider'];
 
   /* @ngInject */
-  function config($locationProvider, $compileProvider, $mdThemingProvider, jwtInterceptorProvider, $httpProvider) {
+  function config($locationProvider, $compileProvider, $mdThemingProvider, jwtInterceptorProvider, $httpProvider, evaProvider) {
+
+    evaProvider.config({
+      signerUrl: '/api/amazon/sign-auth',
+      aws_key: 'AKIAIXDMGK4H4EX4BDOQ',
+      bucket: 'airvuz-tmp',
+      aws_url: 'https://s3-us-west-2.amazonaws.com',
+      logging: false
+    });
+
     // use html5 pushState if available
     if (window.history && history.pushState) {
       $locationProvider.html5Mode({

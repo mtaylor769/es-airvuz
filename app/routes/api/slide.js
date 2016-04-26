@@ -34,9 +34,22 @@ function put(req, res) {
   // TODO
 }
 
+function remove(req, res) {
+  return slideCrud
+    .removeSlide(req.params.id)
+    .then(function () {
+      // TODO: remove slide from slider also
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    })
+}
+
 Slide.prototype.post         = post;
 Slide.prototype.get          = get;
 Slide.prototype.getAll       = getAll;
 Slide.prototype.put          = put;
+Slide.prototype.remove       = remove;
 
 module.exports = new Slide();

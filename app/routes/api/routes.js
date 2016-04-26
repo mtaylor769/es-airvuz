@@ -168,6 +168,7 @@ apiRouter.route('/api/slider')
 
 apiRouter.route('/api/slider/:id')
   .get(slider.get)
+  .delete(slider.remove)
   .put(slider.put);
 
 /**
@@ -180,6 +181,7 @@ apiRouter.route('/api/slide')
 
 apiRouter.route('/api/slide/:id')
   .get(slide.get)
+  .delete(slide.remove)
   .put(slide.put);
 
 /**
@@ -194,6 +196,7 @@ apiRouter.get('/api/upload/:id', /*upload.getStatus,*/ amazon.getVideoInfo);
 
 apiRouter.get('/api/amazon/sign-auth', amazon.signAuth);
 apiRouter.get('/api/amazon/video-duration', amazon.getVideoDuration);
+apiRouter.post('/api/amazon/move-file', amazon.moveFile);
 apiRouter.post('/api/amazon/transcode/start', amazon.startTranscode);
 apiRouter.post('/api/amazon/transcode/completion', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeCompletion);
 apiRouter.post('/api/amazon/transcode/progression', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeProgression);

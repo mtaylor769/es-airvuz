@@ -62,6 +62,16 @@ function getVideoDuration(req, res) {
     });
 }
 
+function moveFile(req, res) {
+  amazonService.moveFile(req.body)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
+}
+
 ////////////////////////////////////////////
 
 Amazon.prototype.signAuth               = signAuth;
@@ -69,6 +79,7 @@ Amazon.prototype.getVideoInfo           = getVideoInfo;
 Amazon.prototype.confirmSubscription    = amazonService.confirmSubscription;
 Amazon.prototype.startTranscode         = startTranscode;
 Amazon.prototype.getVideoDuration       = getVideoDuration;
+Amazon.prototype.moveFile               = moveFile;
 
 module.exports = new Amazon();
 
