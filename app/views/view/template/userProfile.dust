@@ -9,33 +9,27 @@
   </head>
   <body>
     {> "app.views.view.partial.header" /}
-    <div id="user-profile" class="container main">
-      <div class="row">
-        <section>
-          <img src="http://airvuz.com{user.profilePicture}" class="img-responsive">
-            <div class="profile">
-              <figure class="profile-picture col-md-2">
-                <img src="http://airvuz.com/{user.coverPicture}" width="150px" height="150px" class="">
+    <div id="user-profile" class="container main profile">
+      <div class="row" style="margin-bottom: 100px;">
+        <section style="color: white; background: #fff url('http://airvuz.com/{user.profilePicture}') no-repeat center; min-height: 300px">
+            <div class="">
+              <figure class="profile-picture col-xs-12 col-md-4"  style="text-align: center; margin-top: 5%">
+                <img src="http://airvuz.com{user.coverPicture}" width="120px" height="120px" class="border-radius-circle">
               </figure>
-              <figcaption class="profile-information col-md-10">
-                <div class="profile-username row">Zeke Thao</div>
-                <div class="location row">Minneapolis, MN</div>
-                <div class="row">
-                  <span class="av-primary">300 </span><span>Followers</span>
-                </div>
-                <div class="row">
+              <figcaption class="profile-information col-xs-12 col-md-8">
+                <h4 class="profile-username row">{user.userName}</h4>
+                <h5 class="row">
+                  <span class="av-primary">300</span><span>Followers</span>
                   <span class="av-primary">299</span><span>Following</span>
-                </div>
-                <div class="join-date row">Member since November 2015</div>
-                <div class="profile-about row">About stuff goes here.</div>
+                </h5>
                 <!-- This stuff displays only if not your profile -->
-                <div class="profile-options btn-group inline row" role="group">
+                <div class="profile-options row" role="group">
                 <!-- Switch button depending if followed or unfollowed -->
                   <button class="btn btn-default" type="button">Follow</button>
                   <button class="btn btn-default" type="button">Donate</button>
                   <button class="btn btn-default" type="button">Hire</button>
                 </div>
-                <div class="inline pull-right row">
+                <div class="mobile-display-none pull-right row">
                   <!-- Conditional only if user has social media links -->
                   <a href="/">Facebook</a>
                   <a href="/">Instagram</a>
@@ -47,53 +41,57 @@
           </img>
         </section>
       </div>
-      <div class="clearfix"></div>
-      <div class="row">
-        <section class="video-list">
-          <div class="video-sort row">
-            <div class="pull-left">
-              <select name="sort-by" id="video-sorter" class="video-sort-control">
-              <option value="name">Name</option>
-              <option value="vuz">Vuz</option>
-              <option value="likes">Likes</option>
-              </select>
-            </div>
-            <div class="pull-right">
-              <button class="btn btn-default" type="button">EDIT SHOWCASE</button>
-            </div>
-          </div>
-          <div class="clearfix"></div>
-          {#videos}
-          <div class="video col-md-4">
-            <div class="video-thumbnail">
-              <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" alt="thumbnail" class="vid-thumb">
-            </div>
-            <div class="row inline">
-              <div class="video-views pull-left">
-                <span>2,882</span>&nbsp;<span>Views</span>
-              </div>
-              <div class="video-length pull-right">
-                <span>2:27</span>
-              </div>
-            </div>
-            <div class="row">
-              <h3>Video Title</h3>
-              <div>
-                <span class="video-about">Video details go here</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="video-likes inline pull-left">
-                <span>8</span>&nbsp;<span>LIKES</span>
-              </div>
-              <div class="video-comments inline pull-right">
-                <span>10</span>&nbsp;<span>COMMENTS</span>
-              </div>
-            </div>
-          </div>
-          {/videos}
-        </section>
-      </div>
+      {!<div class="clearfix"></div>!}
+      {!<div class="row">!}
+        {!<section class="video-list">!}
+          {!<div class="video-sort row">!}
+            {!<div class="pull-left">!}
+              {!<select name="sort-by" id="video-sorter" class="video-sort-control">!}
+              {!<option value="name">Name</option>!}
+              {!<option value="vuz">Vuz</option>!}
+              {!<option value="likes">Likes</option>!}
+              {!</select>!}
+            {!</div>!}
+            {!<div class="pull-right">!}
+              {!<button class="btn btn-default" type="button">EDIT SHOWCASE</button>!}
+            {!</div>!}
+          {!</div>!}
+          {!<div class="clearfix"></div>!}
+          {!<div class="row">!}
+            {!{#videos}!}
+            {!<div class="video col-sm-4">!}
+              {!<div class="video-thumbnail">!}
+                {!<img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" alt="thumbnail" class="vid-thumb">!}
+              {!</div>!}
+              {!<div class="video-bottom">!}
+                {!<div class="row">!}
+                  {!<div class="col-xs-6">!}
+                    {!<span>{viewCount}</span>&nbsp;<span>Views</span>!}
+                  {!</div>!}
+                  {!<div class="col-xs-6">!}
+                    {!<span class="pull-right">{duration}</span>!}
+                  {!</div>!}
+                {!</div>!}
+                {!<div class="row" style="margin-bottom: 10px">!}
+                  {!<h4>{title}</h4>!}
+                  {!<div style="height: 31px">!}
+                    {!<span class="video-about">{description}</span>!}
+                  {!</div>!}
+                {!</div>!}
+                {!<div class="row">!}
+                  {!<div class="col-xs-2">!}
+                    {!<span>{likeCount}</span>&nbsp;<span>LIKES</span>!}
+                  {!</div>!}
+                  {!<div class=" col-xs-6">!}
+                    {!<span>{commentCount}</span>&nbsp;<span>COMMENTS</span>!}
+                  {!</div>!}
+                {!</div>!}
+              {!</div>!}
+            {!</div>!}
+            {!{/videos}!}
+          {!</div>!}
+        {!</section>!}
+      {!</div>!}
     </div>
     {> "app.views.view.partial.footer" /}
     {> "app.views.view.partial.js" /}

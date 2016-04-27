@@ -76,11 +76,10 @@ apiRouter.route('/api/users/create')
  */
 apiRouter.route('/api/videos')
   .post(videos.post);
-//apiRouter.use('/videos', videos.router);
-//
-//apiRouter.route('/api/videos/category/:category')
-//  .get(videos.getByCategory);
-//
+
+apiRouter.route('/api/videos/loaded')
+	.post(videos.loaded);
+
 apiRouter.route('/api/videos/:id')
   .get(videos.get)
   .put(videos.put)

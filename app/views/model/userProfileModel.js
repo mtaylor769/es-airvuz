@@ -39,6 +39,16 @@ UserProfileModel.prototype.getData = function(params) {
 		return videoCrud.getByUser(user._id)
 	})
 	.then(function(videos) {
+		videos.forEach(function(video) {
+			video.title = video.title.substring(0, 48);
+			video.description = video.description.substring(0, 90);
+			if(video.title.length === 48) {
+				video.title = video.title + '...'
+			}
+			if(video.description.length === 90) {
+				video.description = video.description + '...';
+			}
+		});
 		dataObject.videos = videos;
 		console.log(dataObject);
 		params.data 												= dataObject;
