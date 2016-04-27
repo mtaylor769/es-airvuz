@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     {!up next video list!}
-                    <div class="col-sm-4 nextVideos mobile-display-none page-top" id="next">
+                    <div class="col-sm-4 nextVideos mobile-display-none" id="next">
                         <div class="flex">
                             <div class="videoback">
                                 <span class="glyphicon glyphicon-arrow-left"></span>

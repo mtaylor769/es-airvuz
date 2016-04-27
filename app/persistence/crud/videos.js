@@ -175,4 +175,8 @@ Videos.prototype.getByUser = function(userId) {
 	return VideoModel.find({userId: userId}).sort({uploadDate: -1}).exec()
 };
 
+Videos.prototype.upCount = function(video) {
+	return video.save()
+};
+
 module.exports = new Videos();

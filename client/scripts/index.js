@@ -22,9 +22,25 @@ var identity      = require('./services/identity');
 var user = identity;
 //
 // *************** start JQuery ***********************
+
 $(document).ready(function() {
 //
-	console.log("videoPage: document.ready")
+	console.log("videoPage: document.ready");
+  var videoId = {};
+  videoId.videoId = window.location.pathname.substring(13);
+
+  $.ajax({
+      type: 'POST',
+      url: '/api/videos/loaded',
+      data: videoId,
+      dataType: 'json'
+  })
+  .done(function(response) {
+    console.log(response);
+  })
+  .error(function(error) {
+    console.log(error);
+  });
 
 //
 // *************** start video player page JS ***********************

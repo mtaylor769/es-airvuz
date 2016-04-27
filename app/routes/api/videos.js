@@ -87,6 +87,26 @@ Video.prototype.like = function(req, res) {
     });
 };
 
+Video.prototype.loaded = function(req, res) {
+  console.log(req.body);
+  VideoCrud
+    .getById(req.body.videoId)
+    .then(function(video) {
+      video.viewCount = video.viewCount + 1;
+      VideoCrud
+        .upCount(video)
+        .then(function() {
+          res.sendStatus(200);
+        })
+        .catch(function(err) {
+        res.send(err);
+      })
+    })
+    .catch(function(err) {
+      res.send(err);
+    })
+};
+
 module.exports = new Video();
 
 //change crud and videos
