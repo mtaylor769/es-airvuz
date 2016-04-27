@@ -29,10 +29,20 @@
     position: relative;
 }
 
-#home-page #slider-slick .description {
+#home-page #slider-slick .btn {
     position: absolute;
-    left: 30px;
-    top: 30px;
+    bottom: 30px;
+    right: 30px;
+}
+
+#home-page #slider-description-row {
+    position: relative;
+}
+
+#home-page #slider-description-row .glyphicon {
+    position: relative;
+    bottom: -30px;
+    color: #30c1ed;
 }
 
 /***************************

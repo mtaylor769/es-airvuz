@@ -3,6 +3,21 @@
     <div class="row height-100-percent">
       <div class="col-sm-9 col-xs-6">
         <a href="/"><img src="/client/images/airvuz-logo.jpg" alt="AirVuz Logo"/></a>
+        <div class="dropdown" id="header-categories">
+          <a href="#" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="hidden-xs">
+            Categories
+            <span class="glyphicon glyphicon-chevron-down"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <ul class="list-unstyled">
+                {#index.categories}
+                  <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
+                {/index.categories}
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="col-sm-3 col-xs-6">
         <div class="text-right m-t-15">

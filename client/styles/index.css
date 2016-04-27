@@ -87,6 +87,46 @@ a.btn + a.btn {
   color: #fff;
 }
 
+#header-categories {
+  display: inline-block;
+}
+#header-categories > a {
+  font-size: 20px;
+  color: #fff;
+}
+
+#header-categories > a .glyphicon {
+  position: relative;
+  top: 4px;
+  left: 10px;
+}
+
+#header-categories .dropdown-menu {
+  top: -14px;
+  left: -18px;
+  border-radius: 0;
+  border-color: #353535;
+  background-color: #353535;
+}
+
+#header-categories .dropdown-menu > li {
+  padding: 10px 0 15px 20px;
+  column-count: 2;
+  width: 401px;
+}
+
+#header-categories .dropdown-menu .list-unstyled li {
+  margin-bottom: 5px;
+}
+
+#header-categories .dropdown-menu a {
+  color: #ccc;
+}
+
+#header-categories .dropdown-menu a.active {
+  color: #238bab;
+}
+
 .height-100-percent {
   height: 100%;
 }
@@ -506,6 +546,12 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  #header-categories .dropdown-menu {
+    top: 52px;
+  }
+  #header-categories .dropdown-menu > li {
+    width: 534px;
+  }
   .write-comment textarea {
     height: 70px;
   }
@@ -555,6 +601,10 @@ End user profile CSS
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
+  #header-categories .dropdown-menu > li {
+    width: 600px;
+    column-count: 3;
+  }
   .write-comment {
     padding: 20px 40px;
   }
@@ -598,6 +648,10 @@ End user profile CSS
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+  #header-categories .dropdown-menu > li {
+    width: 780px;
+    column-count: 4;
+  }
   .videoback {
     display: none;
   }

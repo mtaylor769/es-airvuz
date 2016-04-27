@@ -90,6 +90,7 @@ IndexModel.prototype.getData = function(params) {
 
 		Promise.all([CategoryType.get(), Videos.get5Videos()])
 			.then(function(data) {
+				params.data.index.categories = data[0];
 				params.data.index.featuredVideos = data[1];
 				params.data.index.recentVideos = data[1];
 				params.data.index.trendingVideos = data[1];
