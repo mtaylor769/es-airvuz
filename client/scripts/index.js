@@ -9,7 +9,6 @@ var regexUrl            = null;
 var test                = require('./test');
 var token               = null;
 var urlParseResults     = null;
-var zeke                = require('./zeke');
 
 require('./core');
 
