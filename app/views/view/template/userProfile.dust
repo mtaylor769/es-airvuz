@@ -10,91 +10,112 @@
   <body>
     {> "app.views.view.partial.header" /}
     <div id="user-profile" class="container main profile">
-      <div class="row" style="margin-bottom: 100px;">
+      <div class="row">
         <section style="color: white; background: #fff url('http://airvuz.com/{user.profilePicture}') no-repeat center; min-height: 300px">
             <div class="">
-              <figure class="profile-picture col-xs-12 col-md-4"  style="text-align: center; margin-top: 5%">
+              <figure class="profile-picture col-xs-12 col-md-3">
                 <img src="http://airvuz.com{user.coverPicture}" width="120px" height="120px" class="border-radius-circle">
               </figure>
-              <figcaption class="profile-information col-xs-12 col-md-8">
+              <figcaption class="profile-information col-xs-12 col-md-9">
                 <h4 class="profile-username row">{user.userName}</h4>
                 <h5 class="row">
-                  <span class="av-primary">300</span><span>Followers</span>
-                  <span class="av-primary">299</span><span>Following</span>
+                  <span class="av-primary word-space airvuz-blue">300</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
+                  <span class="av-primary word-space airvuz-blue">299</span><span style="text-shadow: 2px 2px 22px black">Following</span>
                 </h5>
+                <div class="hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
+                    <span>This section is where we put in the user description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+                </div>
                 <!-- This stuff displays only if not your profile -->
                 <div class="profile-options row" role="group">
                 <!-- Switch button depending if followed or unfollowed -->
-                  <button class="btn btn-default" type="button">Follow</button>
-                  <button class="btn btn-default" type="button">Donate</button>
-                  <button class="btn btn-default" type="button">Hire</button>
-                </div>
-                <div class="mobile-display-none pull-right row">
+                  <button class="btn btn-primary" type="button">Follow</button>
+                  <button class="btn btn-primary" type="button">Donate</button>
+                  <button class="btn btn-primary" type="button">Hire</button>
+                  <div class="pull-right row hidden-xs hidden-sm" style="margin: auto">
                   <!-- Conditional only if user has social media links -->
-                  <a href="/">Facebook</a>
-                  <a href="/">Instagram</a>
-                  <a href="/">Twitter</a>
-                  <a href="/">Google+</a>
+                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Facebook | </a>
+                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Instagram | </a>
+                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Twitter | </a>
+                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Google+ | </a>
+                  </div>
                 </div>
               </figcaption>
             </div>
           </img>
         </section>
       </div>
-      {!<div class="clearfix"></div>!}
-      {!<div class="row">!}
-        {!<section class="video-list">!}
-          {!<div class="video-sort row">!}
-            {!<div class="pull-left">!}
-              {!<select name="sort-by" id="video-sorter" class="video-sort-control">!}
-              {!<option value="name">Name</option>!}
-              {!<option value="vuz">Vuz</option>!}
-              {!<option value="likes">Likes</option>!}
-              {!</select>!}
-            {!</div>!}
-            {!<div class="pull-right">!}
-              {!<button class="btn btn-default" type="button">EDIT SHOWCASE</button>!}
-            {!</div>!}
-          {!</div>!}
-          {!<div class="clearfix"></div>!}
-          {!<div class="row">!}
-            {!{#videos}!}
-            {!<div class="video col-sm-4">!}
-              {!<div class="video-thumbnail">!}
-                {!<img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" alt="thumbnail" class="vid-thumb">!}
-              {!</div>!}
-              {!<div class="video-bottom">!}
-                {!<div class="row">!}
-                  {!<div class="col-xs-6">!}
-                    {!<span>{viewCount}</span>&nbsp;<span>Views</span>!}
-                  {!</div>!}
-                  {!<div class="col-xs-6">!}
-                    {!<span class="pull-right">{duration}</span>!}
-                  {!</div>!}
-                {!</div>!}
-                {!<div class="row" style="margin-bottom: 10px">!}
-                  {!<h4>{title}</h4>!}
-                  {!<div style="height: 31px">!}
-                    {!<span class="video-about">{description}</span>!}
-                  {!</div>!}
-                {!</div>!}
-                {!<div class="row">!}
-                  {!<div class="col-xs-2">!}
-                    {!<span>{likeCount}</span>&nbsp;<span>LIKES</span>!}
-                  {!</div>!}
-                  {!<div class=" col-xs-6">!}
-                    {!<span>{commentCount}</span>&nbsp;<span>COMMENTS</span>!}
-                  {!</div>!}
-                {!</div>!}
-              {!</div>!}
-            {!</div>!}
-            {!{/videos}!}
-          {!</div>!}
-        {!</section>!}
-      {!</div>!}
+      <div class="row">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">SHOWCASE</a></li>
+            <li><a href="#">ALL VIDEOS</a></li>
+            <li class="hidden-md hidden-lg"><a href="#">ABOUT</a></li>
+        </ul>
+      </div>
+      <div class="row m-t-15 m-b-20">
+          <div class="dropdown col-xs-6">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Sort By
+                  <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                  <li><a>Vuz</a></li>
+                  <li><a>Date</a></li>
+                  <li><a>Number of Likes</a></li>
+              </ul>
+          </div>
+          <div class="col-xs-6">
+              <div class="onoffswitch hidden-xs" style="right:170px">
+                  <input type="checkbox" class="onoffswitch-checkbox" id="myonoffswitch" value="1"/>
+                  <label class="onoffswitch-label" for="myonoffswitch">
+                      <span class="onoffswitch-inner"></span>
+                      <span class="onoffswitch-switch"></span>
+                  </label>
+              </div>
+              <button class="btn btn-default pull-right">Edit Showcase</button>
+          </div>
+      </div>
+      <div class="row m-b-20 profile-videos">
+          {#videos}
+          <div class="col-xs-12 col-sm-6 col-md-4" style="">
+              <div class="row profile-video" style="padding: 20px 0;">
+                  <div class="col-xs-6 col-sm-12">
+                      <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%">
+                  </div>
+                  <div class="col-xs-5 col-sm-12">
+                      <div class="row hidden-xs" style="padding: 5px 10px">
+                          <span>{viewCount} Views</span>
+                          <span class="pull-right">{duration}</span>
+                      </div>
+                      <div>
+                          <h4>{title}</h4>
+                      </div>
+                      <div class="visible-xs">
+                          <span>{viewCount} Views</span>
+                      </div>
+                      <div class="hidden-xs" style="height: 31px; margin: 0px 10px">
+                          <span>{description}</span>
+                      </div>
+                      <div class="row m-t-20 airvuz-blue hidden-xs" style="margin: 20px 10px">
+                          <span class="m-r-20">LIKES {likeCount}</span>
+                          <span>COMMENTS {commentCount}</span>
+                      </div>
+                  </div>
+                  <div class="col-xs-1 visible-xs">
+                      <span class="glyphicon glyphicon-option-vertical"></span>
+                  </div>
+              </div>
+          </div>
+          {/videos}
+      </div>
     </div>
     {> "app.views.view.partial.footer" /}
     {> "app.views.view.partial.cdn-js" /}
+    <script>
+        /* Global */
+        var profileUser = {user|js|s};
+        var profileVideos = {videos|js|s};
+    </script>
     {> "app.views.view.partial.js" /}
+
   </body>
 </html>

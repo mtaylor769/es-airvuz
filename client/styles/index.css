@@ -513,9 +513,9 @@ Begin userProfile CSS
   text-align: center;
 }
 
-#user-profile .profile-picture-img {
-  border-radius: 50%;
-  width: 75%;
+#user-profile .profile-picture {
+  text-align: center;
+  margin-top: 5%;
 }
 
 #user-profile .video {
@@ -537,6 +537,38 @@ Begin userProfile CSS
 
 #user-profile .video-list {
   margin: 25px 25px 0 25px;
+}
+
+#user-profile .word-space {
+  margin-right: 1%;
+}
+
+#user-profile .profile-space {
+  margin-right: 8%;
+}
+
+.profile-videos .col-xs-12 {
+  padding-right: 0px;
+  padding-left: 0px;
+  background: white;
+  border-bottom: inset
+}
+
+.profile-video .col-xs-6, .col-xs-5 {
+  padding-right: 0px;
+  padding-left: 10px;
+}
+
+.profile-video .col-xs-5 h4 {
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.profile-video .col-xs-1 {
+  font-size: 18px;
+  padding-left: 5px;
+  color: lightgray;
+  cursor: pointer;
 }
 
 /*
@@ -597,6 +629,18 @@ End user profile CSS
     left: 0 !important;
     right: 0 !important;
   }
+
+  .profile-videos .col-xs-12 {
+    padding-right: 10px;
+    padding-left: 10px;
+    background: none;
+    border-bottom: none;
+  }
+
+  .profile-video .col-xs-5 h4 {
+    font-size: 18px;
+    margin: 0 10px;
+  }
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -644,6 +688,23 @@ End user profile CSS
     text-align: left;
   }
 
+  #user-profile .profile-picture {
+    text-align: right;
+    margin-top: 3%;
+  }
+
+  #user-profile .profile-picture img {
+    height: 200px;
+    width: 200px;
+  }
+
+  #user-profile .profile-information {
+    margin-top: 2%;
+  }
+
+  #user-profile .profile-information h4 {
+    font-size: 32px;
+  }
 }
 
 /* Large devices (large desktops, 1200px and up) */
@@ -681,6 +742,10 @@ End user profile CSS
   }
   .up-next-subs p {
     font-size: 16px;
+  }
+
+  #user-profile .profile-space {
+    margin-right: 6%;
   }
 }
 
