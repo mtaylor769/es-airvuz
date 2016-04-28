@@ -87,8 +87,16 @@ a.btn + a.btn {
   color: #fff;
 }
 
+#header .airvuz-logo {
+  position: relative;
+  left: -5px;
+}
+
 #header-categories {
   display: inline-block;
+  position: relative;
+  left: 15px;
+  top: 4px;
 }
 #header-categories > a {
   font-size: 20px;
@@ -102,8 +110,8 @@ a.btn + a.btn {
 }
 
 #header-categories .dropdown-menu {
-  top: -14px;
-  left: -18px;
+  top: 26px;
+  left: -123px;
   border-radius: 0;
   border-color: #353535;
   background-color: #353535;
@@ -579,10 +587,11 @@ End user profile CSS
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   #header-categories .dropdown-menu {
-    top: 52px;
+    top: 47px;
+    left: -20px;
   }
   #header-categories .dropdown-menu > li {
-    width: 534px;
+    width: 515px;
   }
   .write-comment textarea {
     height: 70px;
