@@ -1,30 +1,37 @@
 <div partial-beg="app.views.view.partial.header" class="navbar navbar-fixed-top">
-  <div class="container height-100-percent container-shadow" id="header">
-    <div class="row height-100-percent">
-      <div class="col-sm-9 col-xs-6">
-        <a href="/"><img src="/client/images/airvuz-icon.png" alt="AirVuz Icon"/><img src="/client/images/airvuz.png" alt="AirVuz Logo" class="hidden-xs airvuz-logo"/></a>
-        <div class="dropdown" id="header-categories">
-          <a href="#" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="hidden-xs">
-            Categories
-            <span class="glyphicon glyphicon-chevron-down"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <ul class="list-unstyled">
-                {#index.categories}
-                  <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
-                {/index.categories}
-              </ul>
-            </li>
-          </ul>
+    <div class="container container-shadow" id="header">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <button type="button" class="navbar-toggle">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="/">
+            <img src="/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon"/>
+            <img src="/client/images/airvuz.png" alt="AirVuz Logo" class="hidden-xs airvuz-logo"/>
+        </a>
+        <ul class="right-nav">
+            <li><button class="btn btn-primary" id="login-btn" data-toggle="modal" data-target="#login-modal">Login</button></li>
+        </ul>
+        <div id="category-collapse">
+            <ul class="list-unstyled">
+                <li class="dropdown" id="header-categories">
+                    <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <ul class="list-unstyled">
+                              {#index.categories}
+                                  <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
+                              {/index.categories}
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
         </div>
-      </div>
-      <div class="col-sm-3 col-xs-6">
-        <div class="text-right m-t-15">
-          <button class="btn btn-primary" id="login-btn" data-toggle="modal" data-target="#login-modal">Login</button>
-        </div>
-      </div>
+
     </div>
-  </div>
 </div>
 <div class="header-pad"></div>

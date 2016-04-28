@@ -13,6 +13,10 @@ a.btn + a.btn {
  * Override bootstrap
  */
 
+body.modal-open {
+  /* bootstrap dialog bug where is shift the body and make the header misalign */
+  padding-right: 0 !important;
+}
 .btn, .form-control {
   border-radius: 0;
 }
@@ -81,10 +85,34 @@ a.btn + a.btn {
 /**********************************
  * Header
  */
+
 #header {
   background-color: #333333;
   height: 75px;
   color: #fff;
+  margin-right: -15px;
+  margin-left: -15px;
+  position: relative;
+}
+#header .navbar-toggle {
+  background-color: #f48a4a;
+  float: none;
+  margin: 0;
+  border-radius: 0;
+  padding: 26px 10px 33px;
+}
+#header .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+#header .nav .open > a, #header .nav .open > a:focus, #header .nav .open > a:hover, #header .nav>li>a:focus, #header .nav>li>a:hover {
+  background-color: #333;
+}
+#header .right-nav {
+  float: right;
+  list-style: none;
+}
+#header #login-btn {
+  padding: 26px 10px 27px;
 }
 
 #header .airvuz-logo {
@@ -92,6 +120,12 @@ a.btn + a.btn {
   left: -5px;
 }
 
+#header .airvuz-icon {
+  margin-left: 15px;
+}
+#header #category-collapse {
+  display: inline-block;
+}
 #header-categories {
   display: inline-block;
   position: relative;
@@ -113,7 +147,7 @@ a.btn + a.btn {
   top: 26px;
   left: -123px;
   border-radius: 0;
-  border-color: #353535;
+  border: #353535;
   background-color: #353535;
 }
 
@@ -586,12 +620,22 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  #header {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  #header .airvuz-icon {
+    margin-left: 0;
+  }
+  #header .right-nav {
+    margin-right: -15px;
+  }
   #header-categories .dropdown-menu {
     top: 47px;
-    left: -20px;
+    left: -5px;
   }
   #header-categories .dropdown-menu > li {
-    width: 515px;
+    width: 487px;
   }
   .write-comment textarea {
     height: 70px;
