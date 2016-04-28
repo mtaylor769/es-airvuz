@@ -94,7 +94,6 @@ ViewManager.prototype._getDustRender = function(params) {
 				logger.error("_getDustRender error:" + error);
 			}
 			else {
-				logger.debug("_getDustRender: view:" + view);
 				resolve(view);
 			}
 		})
@@ -102,7 +101,7 @@ ViewManager.prototype._getDustRender = function(params) {
 			logger.error("_getDustRender error:" + error);
 		});
 	});  	
-}
+};
 
 /*
  * Determine if the cache is stale.

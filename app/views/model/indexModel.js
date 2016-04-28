@@ -6,6 +6,7 @@ try {
 	var BaseModel			= require('./baseModel');
 	var CategoryType	= require('../../../app/persistence/crud/categoryType');
 	var Videos				= require('../../../app/persistence/crud/videos');
+	var Slider				= require('../../../app/persistence/crud/slider');
 	var config				= require('../../../config/config')[global.NODE_ENV];
 	var Promise				= require('bluebird');
 	var util					= require('util');
@@ -57,43 +58,13 @@ IndexModel.prototype.getData = function(params) {
 		params.data.index.head.title	= "AirVūz – Drone Video Community";
 		params.data.index.viewName		= "index";
 
-		var mockBanners = [
-			{
-				name: 'Name 1',
-				imageUrl: '//airvuz.com/assets/img/slider/N5.jpg',
-				imageAlt: 'Image Alt',
-				videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
-				description: 'Description'
-			}
-		];
-
-		if (params.request.query.banner) {
-			mockBanners = [
-				{
-					name: 'Name 1',
-					imageUrl: '//airvuz.com/assets/img/slider/N5.jpg',
-					imageAlt: 'Image Alt',
-					videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
-					description: 'Description'
-				},
-				{
-					name: 'Name 2',
-					imageUrl: '//airvuz.com/assets/img/slider/P1.jpg',
-					imageAlt: 'Image Alt',
-					videoUrl: '//airvuz.com/play?id=571142c22d8efb0ca430c27f',
-					description: 'Description'
-				}
-			];
-		}
-
-		params.data.index.banners = mockBanners;
-
-		Promise.all([CategoryType.get(), Videos.get5Videos()])
+		Promise.all([CategoryType.get(), Videos.get5Videos(), Slider.getHomeSlider(params.request.query.banner)])
 			.then(function(data) {
 				params.data.index.categories = data[0];
 				params.data.index.featuredVideos = data[1];
 				params.data.index.recentVideos = data[1];
 				params.data.index.trendingVideos = data[1];
+				params.data.index.slider = data[2];
 				resolve(params);
 			})
 			.catch(function(error) {

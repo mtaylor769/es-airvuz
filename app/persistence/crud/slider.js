@@ -9,6 +9,7 @@ try {
   var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 
   var database										= require('../database/database');
+  var mongoose                    = require('mongoose');
   var SliderModel									= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.slider" });
 
 }
@@ -42,10 +43,41 @@ function removeSlider(id) {
   return SliderModel.findOneAndRemove({_id: id}).exec();
 }
 
+/**
+ * Get current slide now between startDate and endDate
+ * @returns {Promise}
+ * @private
+ */
+function _getCurrentSlider() {
+  return SliderModel.findOne({
+    startDate: {$lte: new Date()},
+    endDate: {$gte: new Date()}
+  }).populate('slides').lean().exec();
+}
+
+/**
+ * Get slider for home page
+ * @param id {string} [optional] - id of slider set to show
+ * @returns {Promise}
+ */
+function getHomeSlider(id) {
+  if (id && mongoose.Types.ObjectId.isValid(id)) {
+    return SliderModel.findOne({_id: id}).populate('slides').lean().exec()
+      .then(function (slider) {
+        if (slider) {
+          return slider;
+        }
+        return _getCurrentSlider();
+      })
+  }
+  return _getCurrentSlider();
+}
+
 Slider.prototype.getAllSlider = getAllSlider;
 Slider.prototype.updateSlider = updateSlider;
 Slider.prototype.getSlider    = getSlider;
 Slider.prototype.createSlider = createSlider;
 Slider.prototype.removeSlider = removeSlider;
+Slider.prototype.getHomeSlider = getHomeSlider;
 
 module.exports = new Slider();
