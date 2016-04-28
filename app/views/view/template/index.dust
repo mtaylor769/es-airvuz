@@ -29,6 +29,7 @@
 
     <!-- BEG:Main Container -->
     <div id="home-page" class="container main container-shadow">
+      {?index.slider}
       <div class="row">
         <div id="slider-slick">
           {#index.slider.slides}
@@ -61,7 +62,7 @@
           </a>
         </div>
       </div>
-
+      {/index.slider}
       {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos"/}
       <hr/>
       {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos"/}

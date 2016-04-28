@@ -3,7 +3,8 @@ require('../styles/home.css');
 function initialize() {
   var SLIDER_DESCRIPTION_DELAY = 5000,
     $homePage = $('#home-page'),
-    $sliderDescriptionSlick = $('#slider-description-slick');
+    $sliderDescriptionSlick = $('#slider-description-slick'),
+    $sliderSlick = $('#slider-slick');
 
   $('.video-slick').slick({
     infinite: true,
@@ -39,32 +40,35 @@ function initialize() {
     ]
   });
 
-  $('#slider-slick').slick({
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    dots: true,
-    fade: true,
-    cssEase: 'linear',
-    asNavFor: '#slider-description-slick'
-  }).find('.slide').removeClass('hidden');
+  // has sliders
+  if ($sliderSlick.length > 0) {
+    $sliderSlick.slick({
+      infinite: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      dots: true,
+      fade: true,
+      cssEase: 'linear',
+      asNavFor: '#slider-description-slick'
+    }).find('.slide').removeClass('hidden');
 
-  $sliderDescriptionSlick.slick({
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    fade: true,
-    cssEase: 'linear',
-    asNavFor: '#slider-slick'
-  });
+    $sliderDescriptionSlick.slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: true,
+      cssEase: 'linear',
+      asNavFor: '#slider-slick'
+    });
 
-  $sliderDescriptionSlick.delay(SLIDER_DESCRIPTION_DELAY).slideUp();
+    $sliderDescriptionSlick.delay(SLIDER_DESCRIPTION_DELAY).slideUp();
 
-  $homePage.on('click', '#slider-description-row a', function (event) {
-    event.preventDefault();
-    $sliderDescriptionSlick.slideDown();
-  });
+    $homePage.on('click', '#slider-description-row a', function (event) {
+      event.preventDefault();
+      $sliderDescriptionSlick.slideDown();
+    });
+  }
 
 }
 
