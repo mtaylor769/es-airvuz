@@ -39,9 +39,9 @@
     position: relative;
 }
 
-#home-page #slider-description-row .glyphicon {
+#home-page #slider-description-row .arrow a {
     position: relative;
-    bottom: -30px;
+    bottom: -10px;
     color: #30c1ed;
 }
 
