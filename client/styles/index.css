@@ -136,6 +136,9 @@ body.modal-open {
   font-size: 20px;
   color: #fff;
 }
+#header-categories > a:hover {
+  text-decoration: none;
+}
 
 #header-categories > a .glyphicon {
   position: relative;
