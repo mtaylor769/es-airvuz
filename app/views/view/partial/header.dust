@@ -11,27 +11,27 @@
             <img src="/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon"/>
             <img src="/client/images/airvuz.png" alt="AirVuz Logo" class="hidden-xs airvuz-logo"/>
         </a>
+          <div id="category-collapse">
+            <ul class="list-unstyled">
+              <li class="dropdown" id="header-categories">
+                <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <ul class="list-unstyled">
+                        {#index.categories}
+                          <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
+                        {/index.categories}
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         <ul class="right-nav">
+            <li><span class="glyphicon glyphicon-search"></span></li>
+            <li><span class="glyphicon glyphicon-bell"></span></li>
             <li><button class="btn btn-primary" id="login-btn" data-toggle="modal" data-target="#login-modal">Login</button></li>
         </ul>
-        <div id="category-collapse">
-            <ul class="list-unstyled">
-                <li class="dropdown" id="header-categories">
-                    <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <ul class="list-unstyled">
-                              {#index.categories}
-                                  <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
-                              {/index.categories}
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
-
     </div>
 </div>
 <div class="header-pad"></div>

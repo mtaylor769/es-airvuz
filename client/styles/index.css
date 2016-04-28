@@ -111,6 +111,16 @@ body.modal-open {
   float: right;
   list-style: none;
 }
+#header .right-nav li {
+  display: inline-block;
+}
+
+#header .right-nav .glyphicon {
+  font-size: 20px;
+  margin: 0 5px 0 0;
+  position: relative;
+  top: 7px;
+}
 #header #login-btn {
   padding: 26px 10px 27px;
 }
@@ -620,6 +630,12 @@ Begin userProfile CSS
 End user profile CSS
 */
 
+/* mobile device L */
+@media (min-width: 425px) {
+  #header .right-nav .glyphicon {
+    margin: 0 20px 0 0;
+  }
+}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
@@ -631,7 +647,7 @@ End user profile CSS
     margin-left: 0;
   }
   #header .right-nav {
-    margin-right: -15px;
+    margin-right: -16px;
   }
   #header-categories .dropdown-menu {
     top: 47px;
