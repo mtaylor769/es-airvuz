@@ -31,12 +31,18 @@ util.inherits(UserProfileModel, BaseModel);
 UserProfileModel.prototype.getData = function(params) {
 	var userName = params.request.params.userName;
 	var dataObject = {};
+	var profileUser = null;
 	var sourceManifest 		= params.sourceManifest;
 
 	return usersCrud.getUserByUserName(userName)
 	.then(function(user) {
+		profileUser = user;
 		dataObject.user = user;
-		return videoCrud.getByUser(user._id)
+		return videoCrud.getShowcaseByUser(user._id)
+	})
+	.then(function(videos) {
+		dataObject.showcase = videos;
+		return videoCrud.getByUser(profileUser._id);
 	})
 	.then(function(videos) {
 		videos.forEach(function(video) {

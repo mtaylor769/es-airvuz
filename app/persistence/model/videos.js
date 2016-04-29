@@ -83,6 +83,14 @@ var videoSchema = mongoose.Schema({
 		type			: Boolean
 	},
 	/*
+	* Identifies videos added to user showcase
+	*/
+	isShowcase: {
+		default   : false,
+		required 	: true,
+		type 			: Boolean
+	},
+	/*
 	 * Old Name : Like
 	 * The number of times the video has been liked.
 	 */

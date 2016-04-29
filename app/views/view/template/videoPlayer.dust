@@ -120,13 +120,7 @@
                             <h5 class="up-tag">UP NEXT</h5>
                             <div class="auto-play">
                                 <h5>AutoPlay</h5>
-                                <div class="onoffswitch">
-                                    <input type="checkbox" class="onoffswitch-checkbox" id="myonoffswitch" value="1"/>
-                                    <label class="onoffswitch-label" for="myonoffswitch">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
-                                </div>
+                                <input type="checkbox" id="auto-play-input">
                             </div>
                         </div>
                         <ul style="list-style: none; padding-left: 0">
@@ -160,6 +154,9 @@
             (function() {
                 console.log("doc loaded");
             })();
+            $(function() {
+                videoPlayer.initialize();
+            });
         </script>
     </body>
     
