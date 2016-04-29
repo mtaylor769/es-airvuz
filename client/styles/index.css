@@ -113,6 +113,30 @@ body.modal-open {
 }
 #header .right-nav li {
   display: inline-block;
+  position: relative;
+}
+
+#header .right-nav a {
+  display: block;
+  color: #fff;
+}
+#header .right-nav a:hover {
+  color: #30c1ed;
+}
+#header .av-search input {
+  display: inline-block;
+  position: absolute;
+  right: 50px;
+  width: 0;
+  padding: 0;
+  background-color: #333333;
+  border-color: #333333;
+}
+#header .av-search input:focus {
+  background-color: #fff;
+  border-color: #ccc;
+  width: 300px;
+  padding: 6px 12px;
 }
 
 #header .right-nav .glyphicon {

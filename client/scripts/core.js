@@ -6,6 +6,7 @@ function renderProfileHeader() {
 
 function bindEvents() {
   var $loginModal = $('#login-modal');
+  var $searchBtn = $('.av-search a');
 
   $loginModal.on('hidden.bs.modal', function () {
     // TODO: reset tab to login
@@ -23,6 +24,11 @@ function bindEvents() {
       .fail(function (err) {
         $loginModal.find('.error-message').text('Wrong email or password').delay(5000).slideUp(300);
       })
+  });
+
+  $searchBtn.on('click', function (event) {
+    event.preventDefault();
+    $(this).parent().find('input').focus();
   });
 }
 
