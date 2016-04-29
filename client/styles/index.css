@@ -135,8 +135,10 @@ body.modal-open {
 #header .av-search input:focus {
   background-color: #fff;
   border-color: #ccc;
-  width: 300px;
   padding: 6px 12px;
+  width: 320px;
+  top: 54px;
+  left: -204px;
 }
 
 #header .right-nav .glyphicon {
@@ -654,10 +656,21 @@ Begin userProfile CSS
 End user profile CSS
 */
 
+/* mobile device M */
+@media (min-width: 375px) {
+  #header .av-search input:focus {
+    width: 378px;
+    left: -260px;
+  }
+}
 /* mobile device L */
 @media (min-width: 425px) {
   #header .right-nav .glyphicon {
     margin: 0 20px 0 0;
+  }
+  #header .av-search input:focus {
+    width: 425px;
+    left: -280px;
   }
 }
 
@@ -680,6 +693,12 @@ End user profile CSS
   #header-categories .dropdown-menu > li {
     width: 487px;
   }
+  #header .av-search input:focus {
+    width: 200px;
+    top: 0;
+    left: -220px;
+  }
+
   .write-comment textarea {
     height: 70px;
   }
@@ -744,6 +763,10 @@ End user profile CSS
   #header-categories .dropdown-menu > li {
     width: 600px;
     column-count: 3;
+  }
+  #header .av-search input:focus {
+    width: 300px;
+    left: -320px;
   }
   .write-comment {
     padding: 20px 40px;
