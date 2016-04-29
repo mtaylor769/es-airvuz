@@ -46,14 +46,16 @@
         </section>
       </div>
       <div class="row m-t-15">
-          <ul class="nav nav-tabs" role="">
-              <li class="active"><a href="#">SHOWCASE</a></li>
-              <li><a id="all-videos">ALL VIDEOS</a></li>
-              <li class="hidden-md hidden-lg"><a href="#">ABOUT</a></li>
+          <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#showcase" role="tab" data-toggle="tab">SHOWCASE</a></li>
+              <li role="presentation"><a href="#allvideos" role="tab" data-toggle="tab">ALL VIDEOS</a></li>
+              <li role="presentation" class="hidden-md hidden-lg"><a href="#about" role="tab" data-toggle="tab">ABOUT</a></li>
           </ul>
       </div>
-      <div id="user-profile-wrapper">
-        {> "client.templates.userProfile.showcase-user" /}
+      <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="showcase">{> "client.templates.userProfile.showcase-user" /}</div>
+          <div role="tabpanel" class="tab-pane" id="allvideos">{> "client.templates.userProfile.allvideos-user" /}</div>
+          <div role="tabpanel" class="tab-pane" id="about">{> "client.templates.userProfile.about" /}</div>
       </div>
     </div>
     {> "app.views.view.partial.footer" /}

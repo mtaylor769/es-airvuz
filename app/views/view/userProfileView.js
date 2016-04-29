@@ -56,6 +56,10 @@ module.exports = new IndexView({
 			{
 				partialName: 'client.templates.userProfile.allvideos-owner',
 				partialPath: './client/templates/userProfile/allvideos-owner.dust'
+			},
+			{
+				partialName: 'client.templates.userProfile.about',
+				partialPath: './client/templates/userProfile/about.dust'
 			}
 		]
 	});

@@ -26,31 +26,20 @@ function bindEvents() {
       })
     }
   });
-
-  $('#showcase').on('click', function(){
-    //if(user.userName === profileUser.userName) {
-    if('afroza0210' === profileUser.userName) {
-      ownerShowcase({videos: profileVideos}, function (err, html) {
-        $profilePage.html(html);
-      });
-    } else {
-      userShowcase({videos: profileVideos}, function (err, html) {
-        $profilePage.html(html)
-      })
-    }
-  });
-
-
 }
 
 
 function initialize() {
   $profilePage = $('#user-profile-wrapper');
+  console.log(profileUser.userName);
   //if(user.userName === profileUser.userName) {
   if('afroza0210' === profileUser.userName) {
     ownerShowcase({videos: profileVideos}, function (err, html) {
-      $profilePage.html(html);
+      $('#showcase').html(html);
     });
+    ownerAllVideos({videos: profileVideos}, function(err, html) {
+      $('#allvideos').html(html);
+    })
   }
   console.log('initalize');
   bindEvents();

@@ -32,13 +32,15 @@
                     <div class="hidden-xs" style="height: 31px; margin: 0px 10px">
                         <span>{description}</span>
                     </div>
-                    <div class="row m-t-20 airvuz-blue hidden-xs" style="margin: 20px 10px">
-                        <div class="col-sm-8">
-                            <span class="m-r-20">LIKES {likeCount}</span>
-                            <span>COMMENTS {commentCount}</span>
+                    <div class="row">
+                        <div class="col-sm-8 m-t-20 airvuz-blue hidden-xs">
+                            <div class="">
+                                <span class="m-r-20">LIKES {likeCount}</span>
+                                <span>COMMENTS {commentCount}</span>
+                            </div>
                         </div>
                         <div class="col-xs-12 col-sm-4">
-                            <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger pull-right">Delete</button>
                         </div>
                     </div>
                 </div>

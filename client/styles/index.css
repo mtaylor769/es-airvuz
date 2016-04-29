@@ -637,6 +637,10 @@ Begin userProfile CSS
   border-bottom: inset
 }
 
+.profile-video .col-xs-12 {
+  border-bottom: none;
+}
+
 .profile-video .col-xs-6, .col-xs-5 {
   padding-right: 0px;
   padding-left: 10px;
