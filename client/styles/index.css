@@ -482,6 +482,10 @@ body.modal-open {
   margin-bottom: 0;
 }
 
+.m-b-15 {
+  margin-bottom: 15px;
+}
+
 .m-b-20 {
   margin-bottom: 20px;
 }
@@ -736,6 +740,11 @@ End user profile CSS
   .profile-video .col-xs-5 h4 {
     font-size: 18px;
     margin: 0 10px;
+  }
+
+  .profile-video .col-xs-6, .col-xs-5 {
+    padding-right: 0px;
+    padding-left: 0px;
   }
 }
 

@@ -40,6 +40,22 @@ module.exports = new IndexView({
 			{
 				partialName: 'app.views.view.partial.footer',
 				partialPath: './app/views/view/partial/footer.dust' 
-			}	
+			},
+			{
+				partialName: 'client.templates.userProfile.showcase-user',
+				partialPath: './client/templates/userProfile/showcase-user.dust'
+			},
+			{
+				partialName: 'client.templates.userProfile.showcase-owner',
+				partialPath: './client/templates/userProfile/showcase-owner.dust'
+			},
+			{
+				partialName: 'client.templates.userProfile.allvideos-user',
+				partialPath: './client/templates/userProfile/allvideos-user.dust'
+			},
+			{
+				partialName: 'client.templates.userProfile.allvideos-owner',
+				partialPath: './client/templates/userProfile/allvideos-owner.dust'
+			}
 		]
 	});

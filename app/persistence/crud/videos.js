@@ -171,6 +171,10 @@ Videos.prototype.like = function(video, like) {
 	}
 };
 
+Videos.prototype.getShowcaseByUser = function(id) {
+	return VideoModel.find({userId: id, isShowcase: true}).exec()
+};
+
 Videos.prototype.getByUser = function(userId) {
 	return VideoModel.find({userId: userId}).sort({uploadDate: -1}).exec()
 };
