@@ -8,7 +8,9 @@
     background-color: #fff;
 }
 #home-page .video img {
-    min-height: 196px;
+    height: 120px;
+    margin: 0 auto;
+    padding-top: 15px;
 }
 #home-page .video .video-bottom {
     padding: 15px;
@@ -33,6 +35,11 @@
     position: absolute;
     bottom: 30px;
     right: 30px;
+}
+
+#home-page #slider-slick img {
+    height: 250px;
+    object-fit: cover;
 }
 
 #home-page #slider-description-row {
@@ -68,8 +75,15 @@
 
 
 @media (min-width: 768px) {
+    #home-page .video img {
+        min-height: 196px;
+    }
     #home-page #slider-slick {
         min-height: 280px;
+    }
+    #home-page #slider-slick img {
+        height: auto;
+        object-fit: initial;
     }
 }
 
