@@ -8,6 +8,7 @@ try {
 	var util							= require('util');
 	var usersCrud					= require('../../persistence/crud/users');
 	var videoCrud					= require('../../persistence/crud/videos');
+	var categoryCrud 			= require('../../persistence/crud/categoryType');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -34,6 +35,7 @@ UserProfileModel.prototype.getData = function(params) {
 	var profileUser = null;
 	var sourceManifest 		= params.sourceManifest;
 
+	// TODO: run parallel
 	return usersCrud.getUserByUserName(userName)
 	.then(function(user) {
 		profileUser = user;
@@ -42,6 +44,10 @@ UserProfileModel.prototype.getData = function(params) {
 	})
 	.then(function(videos) {
 		dataObject.showcase = videos;
+		return categoryCrud.get();
+	})
+	.then(function (categories) {
+		dataObject.categories = categories;
 		return videoCrud.getByUser(profileUser._id);
 	})
 	.then(function(videos) {
@@ -60,8 +66,6 @@ UserProfileModel.prototype.getData = function(params) {
 		params.data 												= dataObject;
 		params.data.userProfile							= {};
 		params.data.userProfile.title				= "User Profile";
-		params.data.userProfile.airvuz			= {};
-		params.data.userProfile.airvuz.css	= sourceManifest["airvuz.css"];
 		params.data.userProfile.viewName		= "User Profile";
 
 		params.data.airvuz 									= {};

@@ -7,9 +7,7 @@ try {
 	var BaseModel	    = require('./baseModel');
 	var Promise		    = require('bluebird');
 	var util			    = require('util');
-	var videoCrud     = require('../../persistence/crud/videos');
-	var userCrud      = require('../../persistence/crud/users');
-	var commentCrud   = require('../../persistence/crud/comment');
+	var CategoryType  = require('../../persistence/crud/categoryType');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -34,29 +32,22 @@ VideoUploadModel.prototype.getData = function(params) {
 
 	var sourceManifest	= params.sourceManifest;
 
-	return new Promise(function(resolve, reject) {
-		var dataObject											= {};
+	params.data							= {};
+	params.data.title				= "AirVūz – Upload";
+	params.data.airvuz			= {};
+	params.data.airvuz.css	= sourceManifest["airvuz.css"];
+	params.data.airvuz.js   = sourceManifest["airvuz.js"];
+	params.data.vendor      = {};
+	params.data.vendor.js   = sourceManifest["vendor.js"];
+	params.data.viewName		= "Upload";
 
-		params.data													= dataObject;
-		params.data.videoPlayer							= {};
-		params.data.videoPlayer.title				= "Video Player";
-		params.data.videoPlayer.airvuz			= {};
-		params.data.videoPlayer.airvuz.css	= sourceManifest["airvuz.css"];
-		params.data.videoPlayer.airvuz.js   = sourceManifest["airvuz.js"];
-		params.data.videoPlayer.vendor      = {};
-		params.data.videoPlayer.vendor.js   = sourceManifest["vendor.js"];
-		params.data.videoPlayer.viewName		= "Video Player";
+	var promise = CategoryType.get()
+			.then(function (categories) {
+				params.data.categories = categories;
+				return params;
+			});
 
-		params.data.airvuz = {};
-		params.data.vendor = {};
-		params.data.airvuz.js		= sourceManifest["airvuz.js"];
-		params.data.airvuz.css	= sourceManifest["airvuz.css"];
-		params.data.vendor.js		= sourceManifest["vendor.js"];
-		logger.info(dataObject);
-
-		resolve(params);
-	});
-
-}
+	return Promise.resolve(promise);
+};
 
 module.exports = VideoUploadModel;

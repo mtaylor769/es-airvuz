@@ -18,9 +18,9 @@
                 <ul class="dropdown-menu">
                   <li>
                     <ul class="list-unstyled">
-                        {#index.categories}
+                        {#categories}
                           <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
-                        {/index.categories}
+                        {/categories}
                     </ul>
                   </li>
                 </ul>

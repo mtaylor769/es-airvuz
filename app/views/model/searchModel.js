@@ -28,7 +28,7 @@ SearchModel.prototype.getData = function(params) {
 	var sourceManifest	= params.sourceManifest;
 
 	params.data							= {};
-	params.data.title				= "Search - AirVuz";
+	params.data.title				= "AirVūz – Search";
 	params.data.airvuz			= {};
 	params.data.airvuz.css	= sourceManifest["airvuz.css"];
 	params.data.airvuz.js   = sourceManifest["airvuz.js"];
