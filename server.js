@@ -33,7 +33,6 @@ var path        = require('path');
 var express     = require('express');
 var fs          = require('fs');
 var app         = express();
-var bodyParser  = require('body-parser');
 var jwt         = require('jsonwebtoken');
 
 //SSL certs
@@ -114,97 +113,10 @@ viewManager.addView({ view : loginView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
 
-app.get("/", function(req, res) {
-	viewManager
-		.getView({
-			viewName				: indexView.getViewName(),
-			request					: req,
-			response				: res,
-			sourceManifest	: app.locals.sourceManifest
-		})
-		.then(function(view) {
-			res.send(view);
-		})
-		.catch(function(error) {
-			logger.error("view[/] error:" + error);
-		});
-
-});
-
-app.get("/login", function(req, res){
-	viewManager
-		.getView({
-			viewName 				: loginView.getViewName(),
-			request 				: req,
-			response 				: res,
-			sourceManifest  : app.locals.sourceManifest
-		})
-		.then(function(view){
-			res.send(view);
-		})
-		.catch(function(error) {
-			logger.error("loginView error:" + error);
-		});
-});
-
-app.get("/userProfile/:userName", function(req, res) {
-	viewManager
-		.getView({
-			viewName				: userProfileView.getViewName(),
-			request					: req,
-			response				: res,
-			sourceManifest	: app.locals.sourceManifest
-		})
-		.then(function(view) {
-			res.send(view);
-		})
-		.catch(function(error) {
-			logger.error("userProfileView error:" + error);
-		});
-
-});
-
-app.get("/videoPlayer/:id", function(req, res) {
-	
-	
-	
-	viewManager
-		.getView({
-			viewName				: videoPlayerView.getViewName(),
-			request					: req,
-			response				: res,
-			sourceManifest	: app.locals.sourceManifest
-		})
-		.then(function(view) {
-			res.send(view);
-		})
-		.catch(function(error) {
-			logger.error("videoPlayerView error:" + error);
-		})
-
-});
-
-app.get("/videoUpload", function(req, res) {
-	viewManager
-		.getView({
-			viewName				: videoUploadView.getViewName(),
-			request					: req,
-			response				: res,
-			sourceManifest	: app.locals.sourceManifest
-		})
-		.then(function(view) {
-			res.send(view);
-		})
-		.catch(function(error) {
-			logger.error("videoUploadView error:" + error);
-		})
-
-});
-
-app.get("/search", function(req, res) {
+function loadView(req, res, name) {
 	viewManager
 			.getView({
-				viewName				: searchView.getViewName(),
+				viewName				: name,
 				request					: req,
 				response				: res,
 				sourceManifest	: app.locals.sourceManifest
@@ -213,21 +125,33 @@ app.get("/search", function(req, res) {
 				res.send(view);
 			})
 			.catch(function(error) {
-				logger.error("searchView error:" + error);
+				logger.error(name + " loading view error:" + error);
 			});
+}
+
+app.get("/", function(req, res) {
+	loadView(req, res, indexView.getViewName());
 });
 
-
-/*
-
-app.get('/play', function (req, res) {
-  res.render('play');
+app.get("/login", function(req, res){
+	loadView(req, res, loginView.getViewName());
 });
-*/
-//app.get(/.*/, function (req, res) {
-//  res.render('index');
-//});
 
+app.get("/userProfile/:userName", function(req, res) {
+	loadView(req, res, userProfileView.getViewName());
+});
+
+app.get("/videoPlayer/:id", function(req, res) {
+	loadView(req, res, videoPlayerView.getViewName());
+});
+
+app.get("/videoUpload", function(req, res) {
+	loadView(req, res, videoUploadView.getViewName());
+});
+
+app.get("/search", function(req, res) {
+	loadView(req, res, searchView.getViewName());
+});
 
 
 app.listen(process.env.PORT || 80);
