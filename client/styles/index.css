@@ -116,7 +116,6 @@ body.modal-open {
 }
 #header .navbar-toggle {
   background-color: #f48a4a;
-  float: none;
   margin: 0;
   border-radius: 0;
   padding: 26px 10px 33px;
@@ -158,7 +157,7 @@ body.modal-open {
   padding: 6px 12px;
   width: 320px;
   top: 54px;
-  left: -204px;
+  left: -160px;
 }
 
 #header .right-nav .glyphicon {
@@ -688,7 +687,7 @@ End user profile CSS
 @media (min-width: 375px) {
   #header .av-search input:focus {
     width: 378px;
-    left: -260px;
+    left: -217px;
   }
 }
 /* mobile device L */
@@ -698,7 +697,7 @@ End user profile CSS
   }
   #header .av-search input:focus {
     width: 425px;
-    left: -280px;
+    left: -235px;
   }
 }
 
