@@ -5,22 +5,7 @@
     margin-top: 15px;
 }
 #home-page .video {
-    background-color: #fff;
-}
-#home-page .video img {
-    height: 120px;
-    margin: 0 auto;
-    padding-top: 15px;
-}
-#home-page .video .video-bottom {
-    padding: 15px;
-}
-#home-page .video .title {
-    min-height: 63px;
-}
-
-#home-page .video h4 a {
-    color: #000;
+    margin-top: 0;
 }
 
 #home-page #slider-slick {
@@ -75,9 +60,6 @@
 
 
 @media (min-width: 768px) {
-    #home-page .video img {
-        min-height: 196px;
-    }
     #home-page #slider-slick {
         min-height: 280px;
     }

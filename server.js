@@ -104,6 +104,7 @@ var videoPlayerView		= require('./app/views/view/videoPlayerView');
 var userProfileView		= require('./app/views/view/userProfileView');
 var loginView 				= require('./app/views/view/loginView');
 var videoUploadView		= require('./app/views/view/videoUploadView');
+var searchView				= require('./app/views/view/searchView');
 
 
 viewManager.addView({	view : indexView });
@@ -111,6 +112,7 @@ viewManager.addView({	view : userProfileView });
 viewManager.addView({	view : videoPlayerView });
 viewManager.addView({ view : loginView });
 viewManager.addView({ view : videoUploadView });
+viewManager.addView({ view : searchView });
 
 app.get("/", function(req, res) {
 	viewManager
@@ -182,7 +184,6 @@ app.get("/videoPlayer/:id", function(req, res) {
 
 });
 
-//
 app.get("/videoUpload", function(req, res) {
 	viewManager
 		.getView({
@@ -198,6 +199,22 @@ app.get("/videoUpload", function(req, res) {
 			logger.error("videoUploadView error:" + error);
 		})
 
+});
+
+app.get("/search", function(req, res) {
+	viewManager
+			.getView({
+				viewName				: searchView.getViewName(),
+				request					: req,
+				response				: res,
+				sourceManifest	: app.locals.sourceManifest
+			})
+			.then(function(view) {
+				res.send(view);
+			})
+			.catch(function(error) {
+				logger.error("searchView error:" + error);
+			});
 });
 
 

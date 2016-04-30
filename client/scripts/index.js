@@ -16,6 +16,7 @@ window.Home = require('./home');
 window.Upload = require('./upload');
 window.videoPlayer = require('./videoPlayer');
 window.userProfile = require('./userProfile');
+window.Search = require('./search');
 
 exports.add = function (a, b) { return a+b };
 
