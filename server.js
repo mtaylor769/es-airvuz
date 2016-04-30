@@ -104,6 +104,7 @@ var userProfileView		= require('./app/views/view/userProfileView');
 var loginView 				= require('./app/views/view/loginView');
 var videoUploadView		= require('./app/views/view/videoUploadView');
 var searchView				= require('./app/views/view/searchView');
+var staticView				= require('./app/views/view/staticView');
 
 
 viewManager.addView({	view : indexView });
@@ -112,6 +113,12 @@ viewManager.addView({	view : videoPlayerView });
 viewManager.addView({ view : loginView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
+viewManager.addView({ view : staticView('terms') });
+viewManager.addView({ view : staticView('privacy') });
+viewManager.addView({ view : staticView('copyright') });
+viewManager.addView({ view : staticView('about') });
+viewManager.addView({ view : staticView('community') });
+viewManager.addView({ view : staticView('media') });
 
 function loadView(req, res, name) {
 	viewManager
@@ -153,6 +160,36 @@ app.get("/search", function(req, res) {
 	loadView(req, res, searchView.getViewName());
 });
 
+/**
+ * Static page
+ */
+app.get("/terms", function(req, res) {
+	loadView(req, res, 'terms');
+});
+
+app.get("/privacy", function(req, res) {
+	loadView(req, res, 'privacy');
+});
+
+app.get("/copyright", function(req, res) {
+	loadView(req, res, 'copyright');
+});
+
+app.get("/copyright", function(req, res) {
+	loadView(req, res, 'copyright');
+});
+
+app.get("/about", function(req, res) {
+	loadView(req, res, 'about');
+});
+
+app.get("/community", function(req, res) {
+	loadView(req, res, 'community');
+});
+
+app.get("/media", function(req, res) {
+	loadView(req, res, 'media');
+});
 
 app.listen(process.env.PORT || 80);
 
