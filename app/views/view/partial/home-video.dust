@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
 	<h3>{title}
-      <small><a href="#" class="pull-right">View All</a></small>
+      <small><a href="#" class="pull-right"><strong>View All</strong></a></small>
 	</h3>
   </div>
 </div>
@@ -10,23 +10,21 @@
   <div class="col-md-12">
     <div class="video-slick">
       {#index[videos]}
-        <div class="col-md-3 col-sm-6">
-          <div class="video">
-            <div class="text-center">
-              <a href="/videoPlayer/{_id}">
-                <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" alt="{title}" class="img-responsive"/>
-              </a>
+        <div class="video">
+          <div class="text-center">
+            <a href="/videoPlayer/{_id}">
+              <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" alt="{title}" class="img-responsive"/>
+            </a>
+          </div>
+          <div class="video-bottom">
+            <p>{viewCount} Views <span class="pull-right">{duration}</span></p>
+            <div class="title">
+              <h4>
+                <a href="/videoPlayer/{_id}">{title}</a>
+              </h4>
+              <h5>By {userId.userName}</h5>
             </div>
-            <div class="video-bottom">
-              <p>{viewCount} Views <span class="pull-right">{duration}</span></p>
-              <div class="title">
-                <h4>
-                  <a href="/videoPlayer/{_id}">{title}</a>
-                </h4>
-                <h5>By {userId.userName}</h5>
-              </div>
-              <a href="#">{categories[0].name}</a>
-            </div>
+            <a href="#">{categories[0].name}</a>
           </div>
         </div>
       {/index[videos]}

@@ -47,11 +47,6 @@ body.modal-open {
   background-color: #fff;
   margin-top: 15px;
 }
-.video img {
-  height: 120px;
-  margin: 0 auto;
-  padding-top: 15px;
-}
 .video .video-bottom {
   padding: 15px;
 }
@@ -703,9 +698,6 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  .video img {
-    min-height: 196px;
-  }
   #header {
     margin-right: auto;
     margin-left: auto;
