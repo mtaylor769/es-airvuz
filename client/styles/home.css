@@ -54,6 +54,20 @@
 #home-page .slick-dots li.slick-active button:before {
     color: #30c1ed;
 }
+
+#home-page .slick-prev, #home-page .slick-next {
+    color: #ccc;
+    font-size: 20px;
+}
+#home-page .slick-prev:before, #home-page .slick-next:before {
+    content: '';
+}
+#home-page .slick-next {
+    right: -15px;
+}
+#home-page .slick-prev {
+    left: -15px;
+}
 /*
  * End slick theme
  ***************************/
