@@ -10,7 +10,24 @@ function bindEvents() {
   var $searchInput = $('#search-input');
 
   $loginModal.on('hidden.bs.modal', function () {
-    // TODO: reset tab to login
+    // reset tab to login
+    $loginModal.find('#login-anchor-tab').click();
+  });
+
+  $loginModal.find('a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+    var target = $(event.target).attr('href'),
+        title = 'Login';
+
+    switch(target) {
+      case '#signup-tab':
+        title = 'Sign up';
+        break;
+      case '#forgot-password-tab':
+        title = 'Forgot password';
+        break;
+    }
+
+    $loginModal.find('.modal-title').text(title);
   });
 
   $loginModal.on('click', '#login-btn', function () {
