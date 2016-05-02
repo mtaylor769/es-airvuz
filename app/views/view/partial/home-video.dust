@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
 	<h3>{title}
-      <small><a href="#" class="pull-right"><strong>View All</strong></a></small>
+      <small><a href="#" class="pull-right m-t-10"><strong>View All</strong></a></small>
 	</h3>
   </div>
 </div>
@@ -22,7 +22,7 @@
               <h4>
                 <a href="/videoPlayer/{_id}">{title}</a>
               </h4>
-              <h5>By {userId.userName}</h5>
+              <p>By <a href="/userProfile/{userId.userName}">{userId.userName}</a></p>
             </div>
             <a href="#">{categories[0].name}</a>
           </div>

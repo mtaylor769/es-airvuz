@@ -1,6 +1,7 @@
 <!-- BEG: app.views.view.partial.css -->
   <!-- BEG: CDN -->
     <link rel="stylesheet" href="/client/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
   <!-- END: CDN -->
 
   <link rel="stylesheet" href="/public/{airvuz.css}">

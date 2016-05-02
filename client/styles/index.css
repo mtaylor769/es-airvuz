@@ -1,5 +1,6 @@
 body {
   font-size: 12px;
+  font-family: 'Roboto', sans-serif;
 }
 
 textarea {
@@ -44,17 +45,23 @@ body.modal-open {
 }
 
 .video {
-  background-color: #fff;
   margin-top: 15px;
 }
 .video .video-bottom {
-  padding: 15px;
+  padding: 5px 15px 0;
+}
+.video .video-bottom h4 {
+  font-size: 15px;
+  margin: 0 0 2px;
+}
+.video .video-bottom p {
+  margin-bottom: 0;
 }
 .video .title {
   min-height: 63px;
 }
 
-.video h4 a {
+.video a {
   color: #000;
 }
 
@@ -196,7 +203,7 @@ body.modal-open {
   font-size: 20px;
   color: #fff;
 }
-#header-categories > a:hover {
+#header-categories > a:hover, #header-categories > a:focus {
   text-decoration: none;
 }
 
@@ -440,7 +447,6 @@ body.modal-open {
  * misc helper
  */
 .main {
-  background: #fafafa;
   box-shadow: 1px 0 10px 0 rgba(128, 128, 128, 0.5);
 }
 
@@ -485,6 +491,9 @@ body.modal-open {
 /**********************************
  * margin
  */
+.m-t-10 {
+  margin-top: 10px;
+}
 .m-t-15 {
   margin-top: 15px;
 }
