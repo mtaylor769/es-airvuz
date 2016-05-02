@@ -21,8 +21,8 @@
                 <div class="row">
                     <div class="col-sm-8 videoplayback">
                         {!video title and back button!}
-                        <div class="flex">
-                            <button class="btn btn-primary previous"><</button>
+                        <div class="video-player-header flex">
+                            <span class="glyphicon glyphicon-menu-left"></span>
                             <span class="video-player-title airvuz-blue">{video.title}</span>
                             <div class="up-next">
                                 <span class="up">UP NEXT</span>
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         {!video player!}
-                        <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen video-helper"
+                        <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen"
                                controls preload="auto" autoplay width="100%" height="25%" style="position: relative"
                                poster="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}"
                                data-setup=''>
@@ -66,7 +66,7 @@
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
-                                <span class="p-l-10 mobile-display-none"><span class="bold">{video.viewCount} </span>VUZ |</span>
+                                <span class="p-l-10 hidden-xs"><span class="bold">{video.viewCount} </span>VUZ |</span>
                                 <span><span class="bold"> {video.likeCount} </span>Likes |</span>
                                 <span><span class="bold commentCount"> {video.commentCount} </span>Comments</span>
                             </div>
@@ -128,7 +128,7 @@
                         {#upNext}
                             <li style="width: 100%" class="go-to-video" value="{_id}">
                                 <div>
-                                    <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%" class="m-t-35">
+                                    <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%" class="m-t-10">
                                     <div class="up-next-layer">
                                         <p class="font-white m-l-15 p-t-15 up-next-title">{title}</p>
                                         <div class="flex up-next-subs">

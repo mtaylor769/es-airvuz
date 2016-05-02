@@ -2,7 +2,6 @@
   <!-- BEG: CDN -->
     <link rel="stylesheet" href="/client/lib/bootstrap/dist/css/bootstrap.min.css">
   <!-- END: CDN -->
-
+  <link rel="stylesheet" href="/client/jquery.onoff.css">
   <link rel="stylesheet" href="/public/{airvuz.css}">
-    <link rel="stylesheet" href="/client/jquery.onoff.css">
 <!-- END: app.views.view.partial.css -->

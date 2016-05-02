@@ -297,6 +297,10 @@ body.modal-open {
   margin: auto 20px;
 }
 
+.video-player-header {
+  margin: 10px 0;
+}
+
 .video-user-info-height {
   height: 110px;
 }
@@ -367,7 +371,7 @@ body.modal-open {
 
 .up-next {
   flex-grow: 5;
-  margin: auto 10px;
+  margin: auto 0px;
   text-align: right;
 }
 
@@ -380,7 +384,7 @@ body.modal-open {
 }
 
 .videoback {
-  margin: 10px 10px 0 10px;
+  margin: 10px 0 0;
   text-align: left;
 }
 
@@ -485,6 +489,9 @@ body.modal-open {
 /**********************************
  * margin
  */
+.m-t-10 {
+  margin-top: 10px;
+}
 .m-t-15 {
   margin-top: 15px;
 }
@@ -765,6 +772,16 @@ End user profile CSS
 
   .up-tag {
     display: inherit;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+
+  .onoffswitch {
+    top: 7px;
+  }
+
+  .auto-play h5 {
+    margin-top: 15px;
   }
 
   .up-next-layer p {
@@ -865,6 +882,14 @@ End user profile CSS
     margin-right: 1px;
     font-size: 24px;
     color: white;
+  }
+
+  .video-player-header span {
+    font-size: 18px;
+  }
+
+  .video-player-header .glyphicon-menu-left {
+    margin-top: 3px;
   }
 
 
