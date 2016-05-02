@@ -1,13 +1,25 @@
-var auth = require('./services/auth');
+var auth      = require('./services/auth');
+var identity  = require('./services/identity');
+
+/**
+ * Templates
+ */
+var headerProfileTpl = require('../templates/core/header-profile.dust');
+
+var $loginModal,
+    $headerProfile;
 
 function renderProfileHeader() {
-
+  headerProfileTpl(identity, function (err, html) {
+    $headerProfile.html(html);
+  });
 }
 
 function bindEvents() {
-  var $loginModal = $('#login-modal');
-  var $searchBtn = $('.av-search a');
-  var $searchInput = $('#search-input');
+  var $header = $('#header');
+
+  $headerProfile = $('#profile-header');
+  $loginModal = $('#login-modal');
 
   $loginModal.on('hidden.bs.modal', function () {
     // reset tab to login
@@ -44,20 +56,24 @@ function bindEvents() {
       })
   });
 
-  $searchBtn.on('click', function (event) {
+  $header.on('click', '.av-search a', function (event) {
     event.preventDefault();
-    $searchInput.focus();
+    $header.find('#search-input').focus();
   });
 
-  $searchInput.on('keyup', function (event) {
+  $header.find('#search-input').on('keyup', function (event) {
     if (event.keyCode === 13) {
-      window.location.href = '/search?q=' + $searchInput.val();
+      window.location.href = '/search?q=' + $(this).val();
     }
   });
 }
 
 function initialize() {
   bindEvents();
+
+  if (identity.isAuthenticated()) {
+    renderProfileHeader();
+  }
 }
 
 //////////////////////

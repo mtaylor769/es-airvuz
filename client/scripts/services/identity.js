@@ -36,6 +36,8 @@ function setToken(newToken) {
   newUser = jwtDecode(token);
 
   $.extend(user, newUser);
+
+  localStorage.setItem('id_token', token);
 }
 
 /**

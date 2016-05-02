@@ -125,6 +125,16 @@ body.modal-open {
   float: right;
   list-style: none;
 }
+#header .right-nav.is-login {
+  margin-top: 13px;
+}
+#header .right-nav img {
+  height: 50px;
+}
+
+#header .right-nav .profile-img-wrap {
+  margin-right: 10px;
+}
 #header .right-nav li {
   display: inline-block;
   position: relative;
@@ -702,6 +712,10 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  #header .navbar-toggle {
+    display: inline-block;
+    left: 15px;
+  }
   #header {
     margin-right: auto;
     margin-left: auto;
