@@ -8,15 +8,15 @@ function initialize() {
 
   $('.video-slick').slick({
     infinite: true,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     draggable: false,
     responsive: [
       {
         breakpoint: 992,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
+          slidesToShow: 3,
+          slidesToScroll: 3
         }
       },
       {
