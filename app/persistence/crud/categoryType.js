@@ -116,7 +116,7 @@ CategoryType.prototype.create = function(params) {
 };
 
 CategoryType.prototype.get = function() {
-  return CategoryTypeModel.find({isVisible: true}).exec();
+  return CategoryTypeModel.find({isVisible: true}).sort('name').exec();
 };
 
 CategoryType.prototype.getById = function(id) {
