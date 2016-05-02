@@ -1,7 +1,5 @@
-// IMPORT: BEGIN
 var log4js					= require('log4js');
-var logger					= log4js.getLogger('app.views.model.videoUpload');
-
+var logger					= log4js.getLogger('app.views.model.static');
 
 try {
 	var BaseModel	    = require('./baseModel');
@@ -10,36 +8,32 @@ try {
 	var CategoryType  = require('../../persistence/crud/categoryType');
 
 	if(global.NODE_ENV === "production") {
-		logger.setLevel("WARN");	
+		logger.setLevel("WARN");
 	}
-
-	logger.info("import complete");	
 }
 catch(exception) {
 	logger.error(" import error:" + exception);
 }
-// IMPORT: END
 
-var VideoUploadModel = function(params) {
-	logger.debug("constructor: IN");	
-	
+var StaticModel = function(params) {
 	BaseModel.apply(this, arguments);
 };
 
-util.inherits(VideoUploadModel, BaseModel);
+util.inherits(StaticModel, BaseModel);
 
-VideoUploadModel.prototype.getData = function(params) {
+StaticModel.prototype.getData = function(params) {
 
 	var sourceManifest	= params.sourceManifest;
-
+	var staticView = params.request.path.replace('/', '');
 	params.data							= {};
-	params.data.title				= "AirVūz – Upload";
+	params.data.title				= "AirVūz - " + staticView;
 	params.data.airvuz			= {};
 	params.data.airvuz.css	= sourceManifest["airvuz.css"];
 	params.data.airvuz.js   = sourceManifest["airvuz.js"];
 	params.data.vendor      = {};
 	params.data.vendor.js   = sourceManifest["vendor.js"];
-	params.data.viewName		= "Upload";
+	params.data.viewName		= staticView;
+	params.data.staticPage  = staticView;
 
 	var promise = CategoryType.get()
 			.then(function (categories) {
@@ -50,4 +44,4 @@ VideoUploadModel.prototype.getData = function(params) {
 	return Promise.resolve(promise);
 };
 
-module.exports = VideoUploadModel;
+module.exports = StaticModel;

@@ -43,6 +43,21 @@ body.modal-open {
   box-shadow: 1px 0 10px 0 rgba(128, 128, 128, 0.5);
 }
 
+.video {
+  background-color: #fff;
+  margin-top: 15px;
+}
+.video .video-bottom {
+  padding: 15px;
+}
+.video .title {
+  min-height: 63px;
+}
+
+.video h4 a {
+  color: #000;
+}
+
 /**********************************
  * Footer
  */
@@ -96,7 +111,6 @@ body.modal-open {
 }
 #header .navbar-toggle {
   background-color: #f48a4a;
-  float: none;
   margin: 0;
   border-radius: 0;
   padding: 26px 10px 33px;
@@ -138,7 +152,7 @@ body.modal-open {
   padding: 6px 12px;
   width: 320px;
   top: 54px;
-  left: -204px;
+  left: -160px;
 }
 
 #header .right-nav .glyphicon {
@@ -316,7 +330,7 @@ body.modal-open {
 
 .parent-comments {
   list-style: none;
-  padding-left: 0px;
+  padding-left: 0;
 }
 .parent-comments li:last-child{
   border-bottom: none;
@@ -398,7 +412,7 @@ body.modal-open {
 }
 
 .share, .report, .like {
-  padding: 0px;
+  padding: 0;
   margin: 0;
   width: 55px;
   text-align: center
@@ -633,8 +647,8 @@ Begin userProfile CSS
 }
 
 .profile-videos .col-xs-12 {
-  padding-right: 0px;
-  padding-left: 0px;
+  padding-right: 0;
+  padding-left: 0;
   background: white;
   border-bottom: inset
 }
@@ -644,7 +658,7 @@ Begin userProfile CSS
 }
 
 .profile-video .col-xs-6, .col-xs-5 {
-  padding-right: 0px;
+  padding-right: 0;
   padding-left: 10px;
 }
 
@@ -672,7 +686,7 @@ End user profile CSS
 @media (min-width: 375px) {
   #header .av-search input:focus {
     width: 378px;
-    left: -260px;
+    left: -217px;
   }
 }
 /* mobile device L */
@@ -682,7 +696,7 @@ End user profile CSS
   }
   #header .av-search input:focus {
     width: 425px;
-    left: -280px;
+    left: -235px;
   }
 }
 
@@ -770,8 +784,8 @@ End user profile CSS
   }
 
   .profile-video .col-xs-6, .col-xs-5 {
-    padding-right: 0px;
-    padding-left: 0px;
+    padding-right: 0;
+    padding-left: 0;
   }
 
   .profile-video-title {
@@ -913,7 +927,7 @@ End user profile CSS
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   #header-categories .dropdown-menu > li {
-    width: 780px;
+    width: 810px;
     column-count: 4;
   }
   .videoback {

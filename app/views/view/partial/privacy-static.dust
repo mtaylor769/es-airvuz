@@ -1,0 +1,18 @@
+<div class="row" id="privacy-page">
+    <div class="col-md-12">
+        <h3 class="text-center">
+            Privacy Policy
+        </h3>
+        <p>AirVūz respects the privacy of our users and has developed this policy (“Privacy Policy”) to demonstrate its commitment to protecting your privacy. This Privacy Policy is intended to describe for you, as an individual who is a user of the AirVūz website or any AirVūz product, app, software, data feed, and services provided to you on, from, or through the AirVūz website, the information we collect, how that information may be used, with whom it may be shared, and your choices about such uses and disclosures.</p>
+
+        <p>We encourage you to read this Privacy Policy carefully when using our website or services or transacting business with us. By using our websites or any of our applications, you are accepting the practices described in this Privacy Policy. If you have any questions about our privacy practices, please refer to the end of this Privacy Policy for information on how to contact us.</p>
+
+        {!1!}
+        <h4>1. <strong>Information We May Collect About You</strong></h4>
+        <p>
+            <strong><em style="margin-bottom:5px;">In General.</em></strong> We may collect personal information that can identify you, such as your name and email address, and other information that does not identify you. The information we collect may be sent to servers located in the United States and other countries around the world. We do not respond to "<strong>do-not-track</strong>" signals or other mechanisms that allow user to signal their preferences on the collection of their personal information over time and across third-party web sites or online services.
+        </p>
+
+        <p>...</p>
+    </div>
+</div>

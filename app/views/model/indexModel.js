@@ -60,10 +60,11 @@ IndexModel.prototype.getData = function(params) {
 
 		Promise.all([CategoryType.get(), Videos.get5Videos(), Slider.getHomeSlider(params.request.query.banner)])
 			.then(function(data) {
-				params.data.index.categories = data[0];
+				params.data.categories = data[0];
 				params.data.index.featuredVideos = data[1];
 				params.data.index.recentVideos = data[1];
 				params.data.index.trendingVideos = data[1];
+				params.data.index.staffPickVideos = data[1];
 				params.data.index.slider = data[2];
 				resolve(params);
 			})

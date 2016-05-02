@@ -13,6 +13,7 @@ try {
 	var userCrud      = require('../../persistence/crud/users');
 	var commentCrud   = require('../../persistence/crud/comment');
 	var videoLikeCrud = require('../../persistence/crud/videoLike');
+	var categoryCrud  = require('../../persistence/crud/categoryType');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -45,6 +46,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 	var sourceManifest	= params.sourceManifest;
 	var checkObject 		= {};
 
+	// TODO: run parallel
 	return videoCrud.getById(videoId)
 		.then(function(video) {
 			dataObject.video 	= video;
@@ -67,17 +69,16 @@ VideoPlayerModel.prototype.getData = function(params) {
 			dataObject.likeBoolean = likeBoolean;
 			return commentCrud.getParentCommentByVideoId({videoId: videoId});
 		})
-		.then(function(comments) {
-			console.log('completed all checks');
+		.then(function (comments) {
 			dataObject.comments = comments;
+				return categoryCrud.get();
+		})
+		.then(function(categories) {
+			console.log('completed all checks');
+			dataObject.categories = categories;
 			params.data													= dataObject;
 			params.data.videoPlayer							= {};
 			params.data.videoPlayer.title				= "Video Player";
-			params.data.videoPlayer.airvuz			= {};
-			params.data.videoPlayer.airvuz.css	= sourceManifest["airvuz.css"];
-			params.data.videoPlayer.airvuz.js   = sourceManifest["airvuz.js"];
-			params.data.videoPlayer.vendor      = {};
-			params.data.videoPlayer.vendor.js   = sourceManifest["vendor.js"];
 			params.data.videoPlayer.viewName		= "Video Player";
 
 			params.data.airvuz 									= {};
@@ -88,6 +89,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return params;
 	});
 
-}
+};
 
 module.exports = VideoPlayerModel;

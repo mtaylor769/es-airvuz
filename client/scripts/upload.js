@@ -1,3 +1,4 @@
+/* global Page */
 require('../styles/upload.css');
 
 var Evaporate     = require('evaporate'),
@@ -148,10 +149,7 @@ function getData() {
       VIEW_MODEL.drones = drones;
     });
 
-  category.getAll()
-    .then(function (categories) {
-      VIEW_MODEL.categories = categories;
-    })
+  VIEW_MODEL.categories = Page.categories;
 }
 
 function bindEvents() {

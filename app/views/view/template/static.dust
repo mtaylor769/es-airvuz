@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html view="app.views.view.template.videoUpload">
+<html view="app.views.view.template.static">
     <head>
         <meta http-equiv="Cache-control" content="public">
-        <title>{videoUpload.title}</title>
+        <title>{title}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
@@ -11,23 +11,13 @@
     <body>
         {> "app.views.view.partial.header" /}
 
-        <div id="upload-page" class="container main">
-            {> "client.templates.upload.step-1" /}
+        <div id="static-page" class="container main">
+            {> "app.views.view.partial.{staticPage}" /}
         </div>
 
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.cdn-js" /}
         {> "app.views.view.partial.js" /}
-        <script>
-          /** global page **/
-          var Page = {};
-          Page.categories = {categories|js|s};
-
-          $(function () {
-
-              Upload.initialize();
-          });
-        </script>
     </body>
 
 </html>

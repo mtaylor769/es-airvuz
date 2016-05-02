@@ -5,20 +5,7 @@
     margin-top: 15px;
 }
 #home-page .video {
-    background-color: #fff;
-}
-#home-page .video img {
-    min-height: 196px;
-}
-#home-page .video .video-bottom {
-    padding: 15px;
-}
-#home-page .video .title {
-    min-height: 63px;
-}
-
-#home-page .video h4 a {
-    color: #000;
+    margin: 0 5px;
 }
 
 #home-page #slider-slick {
@@ -33,6 +20,11 @@
     position: absolute;
     bottom: 30px;
     right: 30px;
+}
+
+#home-page #slider-slick img {
+    height: 250px;
+    object-fit: cover;
 }
 
 #home-page #slider-description-row {
@@ -62,6 +54,20 @@
 #home-page .slick-dots li.slick-active button:before {
     color: #30c1ed;
 }
+
+#home-page .slick-prev, #home-page .slick-next {
+    color: #ccc;
+    font-size: 20px;
+}
+#home-page .slick-prev:before, #home-page .slick-next:before {
+    content: '';
+}
+#home-page .slick-next {
+    right: -15px;
+}
+#home-page .slick-prev {
+    left: -15px;
+}
 /*
  * End slick theme
  ***************************/
@@ -70,6 +76,10 @@
 @media (min-width: 768px) {
     #home-page #slider-slick {
         min-height: 280px;
+    }
+    #home-page #slider-slick img {
+        height: auto;
+        object-fit: initial;
     }
 }
 
