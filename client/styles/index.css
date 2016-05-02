@@ -856,7 +856,7 @@ End user profile CSS
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   #header-categories .dropdown-menu > li {
-    width: 780px;
+    width: 810px;
     column-count: 4;
   }
   .videoback {
