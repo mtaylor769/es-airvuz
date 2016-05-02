@@ -61,7 +61,7 @@ function bindEvents() {
     $header.find('#search-input').focus();
   });
 
-  $header.find('#search-input').on('keyup', function (event) {
+  $header.on('keyup', '#search-input', function (event) {
     if (event.keyCode === 13) {
       window.location.href = '/search?q=' + $(this).val();
     }
