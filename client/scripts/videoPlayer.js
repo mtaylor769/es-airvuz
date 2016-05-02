@@ -1,3 +1,4 @@
+var AVEventTracker			= require('./avEventTracker');
 var identity      = require('./services/identity');
 var user          = identity;
 var screenWidth;
@@ -112,11 +113,13 @@ function bindEvents() {
   //create comment and append
 
   $('#commentSave').on('click', function() {
+    console.log('step one');
     AVEventTracker({
       codeSource	: "videoPlayer",
       eventName		: "commentSave",
       eventType		: "click"
     });
+    console.log('step 2');
 
     var self = this;
     var comment = {};
