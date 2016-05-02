@@ -64,6 +64,7 @@ IndexModel.prototype.getData = function(params) {
 				params.data.index.featuredVideos = data[1];
 				params.data.index.recentVideos = data[1];
 				params.data.index.trendingVideos = data[1];
+				params.data.index.staffPickVideos = data[1];
 				params.data.index.slider = data[2];
 				resolve(params);
 			})

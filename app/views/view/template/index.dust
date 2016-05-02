@@ -68,6 +68,8 @@
       {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos"/}
       <hr/>
       {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos"/}
+      <hr/>
+      {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos"/}
       <br/>
       <br/>
     </div>
