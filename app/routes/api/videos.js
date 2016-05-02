@@ -25,7 +25,7 @@ Video.prototype.post = function(req, res) {
     .then(function(video) {
       res.json(video);
     })
-    .catch(function (err) {
+    .catch(function (error) {
       res.sendStatus(500);
     });
 };
@@ -42,7 +42,7 @@ Video.prototype.get = function(req, res) {
     .then(function(video) {
       res.send(video);
     })
-    .catch(function (err) {
+    .catch(function (error) {
       res.sendStatus(500);
     });
 };
@@ -53,7 +53,7 @@ Video.prototype.put = function(req, res) {
     .then(function(video) {
       res.send(video);
     })
-    .catch(function (err) {
+    .catch(function (error) {
       res.sendStatus(500);
     });
 };
@@ -64,7 +64,7 @@ Video.prototype.delete = function(req, res) {
     .then(function(video) {
       res.sendStatus(200);
     })
-    .catch(function (err) {
+    .catch(function (error) {
       res.sendStatus(500);
     });
 };
@@ -78,11 +78,11 @@ Video.prototype.like = function(req, res) {
         .then(function(comment) {
           res.sendStatus(200);
         })
-        .catch(function (err) {
+        .catch(function (error) {
           res.sendStatus(500);
         });
     })
-    .catch(function (err) {
+    .catch(function (error) {
       res.sendStatus(500);
     });
 };
@@ -98,13 +98,27 @@ Video.prototype.loaded = function(req, res) {
         .then(function() {
           res.sendStatus(200);
         })
-        .catch(function(err) {
-        res.send(err);
+        .catch(function(error) {
+        res.send(error);
       })
     })
-    .catch(function(err) {
-      res.send(err);
+    .catch(function(error) {
+      res.send(error);
     })
+};
+
+Video.prototype.showcaseUpdate = function(req, res) {
+  var params = req.body;
+  VideoCrud
+    .update({id: params.id, update: params})
+    .then(function(video) {
+      console.log('post update : ' + video);
+      res.sendStatus(200);
+    })
+    .catch(function(error) {
+      res.send(error)
+    })
+
 };
 
 module.exports = new Video();

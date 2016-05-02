@@ -91,6 +91,9 @@ apiRouter.route('/api/video-like')
 apiRouter.route('/api/video-like/:id')
   .delete(videoLike.delete);
 
+apiRouter.route('/api/videos/showcase-update')
+	.post(videos.showcaseUpdate);
+
 
 /**
  * /api/camera-type/
