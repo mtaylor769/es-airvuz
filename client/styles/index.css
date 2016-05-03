@@ -76,6 +76,7 @@ body.modal-open {
 }
 #footer li a {
   color: #fff;
+  font-weight: 100;
 }
 
 .footer-sub1 {
@@ -133,10 +134,10 @@ body.modal-open {
   list-style: none;
 }
 #header .right-nav.is-login {
-  margin-top: 13px;
+  margin-top: 16px;
 }
 #header .right-nav img {
-  height: 50px;
+  height: 43px;
 }
 
 #header .right-nav .profile-img-wrap {
@@ -189,6 +190,8 @@ body.modal-open {
 
 #header .airvuz-icon {
   margin-left: 15px;
+}
+#header .airvuz-icon, #header .airvuz-logo {
   height: 60px;
   margin-top: 8px;
 }
@@ -747,9 +750,6 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  #header .airvuz-icon {
-    margin-top: 0;
-  }
   #header .navbar-toggle {
     display: inline-block;
     left: 15px;
