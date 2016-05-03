@@ -1,9 +1,19 @@
-<button type="button" class="navbar-toggle">
-  <span class="sr-only">Toggle navigation</span>
-  <span class="icon-bar"></span>
-  <span class="icon-bar"></span>
-  <span class="icon-bar"></span>
-</button>
+<span id="menu">
+  <button type="button" class="navbar-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <a href="/videoUpload" class="btn btn-link">Upload Video</a>
+    </li>
+    <li>
+      <a class="btn btn-link logout-btn">Log out</a>
+    </li>
+  </ul>
+</span>
 <ul class="right-nav is-login">
   <li class="av-search">
     <input type="text" class="form-control" placeholder="Search" id="search-input">

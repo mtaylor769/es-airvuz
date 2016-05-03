@@ -255,7 +255,21 @@ body.modal-open {
 .header-user {
   height: 100%;
 }
-
+#menu .dropdown-menu {
+  border-radius: 0;
+  font-size: 12px;
+  border: #fff;
+  background-color: #353535;
+  right: 0;
+  top: 70px;
+}
+#menu .dropdown-menu a {
+  color: #fff;
+}
+#menu .dropdown-menu a:hover {
+  color: #238bab;
+  background-color: #353535;
+}
 #notification .dropdown-menu {
   top: 51px;
   left: -195px;

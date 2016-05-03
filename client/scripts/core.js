@@ -5,6 +5,7 @@ var identity  = require('./services/identity');
  * Templates
  */
 var headerProfileTpl = require('../templates/core/header-profile.dust');
+var notLoginHeaderTpl = require('../templates/core/not-login-header.dust');
 
 var $loginModal,
     $headerProfile;
@@ -65,6 +66,15 @@ function bindEvents() {
     if (event.keyCode === 13) {
       window.location.href = '/search?q=' + $(this).val();
     }
+  });
+
+  $header.on('click', '.logout-btn', function () {
+    auth.logout()
+      .then(function () {
+        notLoginHeaderTpl({}, function (err, html) {
+          $headerProfile.html(html);
+        });
+      });
   });
 }
 
