@@ -55,8 +55,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return userCrud.getUserById(video.userId);
 		})
 		.then(function(user) {
-			console.log(user);
-			user.picture 			= 'https://scontent-lga3-1.xx.fbcdn.net/hphotos-xta1/v/t1.0-9/10644863_520773331433556_7421786202668236448_n.jpg?oh=84dc5121c54e307a479dd5c67a9d9e2c&oe=57771A25';
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
 			return videoCrud.get5Videos();

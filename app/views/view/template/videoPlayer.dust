@@ -45,13 +45,13 @@
                             </ul>
                         </div>
                         {!video owner info!}
-                        <div class="flex video-user-info-height">
+                        <div class="flex video-user-info-height" style="background: #fafafa;">
                             <button class="btn background-orange border-radius-0 font-white add-button">+</button>
                             <img src="http://airvuz.com{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
                             <div class="margin-auto t-a-inherit">
-                                <p class="m-b-0 airvuz-blue">{user.userName}</p>
-                                <p class="m-b-0"><span class="airvuz-blue">14 </span>Videos</p>
-                                <p class="m-b-0"><span class="airvuz-blue">150 </span>followers</p>
+                                <p class="m-b-0 bold"><a class="airvuz-blue" href="/userProfile/{user.userName}">{user.userName}</a></p>
+                                <p class="m-b-0"><span class="airvuz-blue bold">14 </span>Videos</p>
+                                <p class="m-b-0"><span class="airvuz-blue bold">150 </span>followers</p>
                             </div>
                             <div class="top-videos margin-auto t-a-inherit mobile-display-none">
                                 <p class="m-b-0">Top Videos by</p>
@@ -66,7 +66,7 @@
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
-                                <span class="p-l-10 hidden-xs"><span class="bold">{video.viewCount} </span>VUZ |</span>
+                                <span class="p-l-10 hidden-xs">{video.viewCount} <span class="bold airvuz-blue">VUZ</span> |</span>
                                 <span><span class="bold"> {video.likeCount} </span>Likes |</span>
                                 <span><span class="bold commentCount"> {video.commentCount} </span>Comments</span>
                             </div>
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex write-comment" style="width: 100%">
+                        <div class="flex write-comment" style="width: 100%; background: #fafafa;">
                             <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
                             <button class="btn background-orange border-radius-0 font-white" value="{video._id}" id="commentSave">Comment</button>
                         </div>
@@ -92,24 +92,28 @@
                         {#comments}
                             <li class="comment-wrap">
                                 <div class="flex">
-                                    <img src="{user.picture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                    <img src="http://www.airvuz.com/{user.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
                                     <div class="m-t-20">
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
                                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>
-                                        <p class="m-b-0">{comment}</p>
+                                        <p class="m-b-0" style="height: 60px">{comment}</p>
                                     </div>
                                 </div>
                                 <div  id="{_id}">
                                     <ul class="parentComment"></ul>
-                                    <span class="reply" value="{_id}" style="margin: 0 0 0 30px">-> reply</span>
-                                    <span style="margin: 0 20px">replies: <a class="commentReplies" value="{_id}">{replyCount}</a></span>
+                                    <div class="row">
+                                        <div class="reply col-xs-3 col-sm-2" value="{_id}" style="padding: 0 0 0 10px">
+                                            <span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>
+                                            <span style="font-size: 10px; margin-left: 2px">reply</span>
+                                        </div>
+                                        <div class="col-xs-3 col-md-2 commentReplies" value="{_id}">
+                                            <span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;">replies <a>{replyCount}</a></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         {/comments}
                         </ul>
-                        <div>
-                            <p class="show-more">Show More</p>
-                        </div>
                     </div>
                     {!up next video list!}
                     <div class="col-sm-4 nextVideos mobile-display-none" id="next">
@@ -133,7 +137,7 @@
                                         <p class="font-white m-l-15 p-t-15 up-next-title">{title}</p>
                                         <div class="flex up-next-subs">
                                             <p class="font-white m-l-15">{duration}</p>
-                                            <p class="font-white pos-absolute-r-15">{viewCount}</p>
+                                            <p class="font-white pos-absolute-r-15">{viewCount} <span class="airvuz-blue">VUZ</span></p>
                                         </div>
                                     </div>
                                 </div>

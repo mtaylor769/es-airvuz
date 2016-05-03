@@ -443,6 +443,10 @@ body.modal-open {
   background: black;
 }
 
+.go-to-video {
+  margin-bottom: 20px;
+}
+
 /*
  * End Video Player
 /**********************************/
