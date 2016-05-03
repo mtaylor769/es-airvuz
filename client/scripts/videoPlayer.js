@@ -136,19 +136,27 @@ function bindEvents() {
       .done(function(data) {
         var comment = data;
         console.log(user);
+
         var html = '<li class="comment-wrap">'+
           '<div class="flex">'+
           '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
           '<div class="m-t-20">'+
           '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
           '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
-          '<p class="m-b-0 ">' + comment.comment + '</p>'+
+          '<p class="m-b-0">' + comment.comment + '</p>'+
           '</div>'+
           '</div>'+
           '<div  id="' + comment._id + '">'+
           '<ul class="parentComment"></ul>'+
-          '<span class="reply" value="' + comment._id + '" style="margin: 0 0 0 30px">-> reply</span>'+
-          '<span style="margin: 0 20px">replies: <a class="commentReplies" value="' + comment._id + '">' + comment.replyCount + '</a></span>'+
+          '<div class="row">'+
+          '<div class="reply col-xs-3 col-sm-2" value="' + comment._id + '" style="padding: 0 0 0 10px">'+
+          '<span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>'+
+          '<span style="font-size: 10px; margin-left: 2px">reply</span>'+
+          '</div>'+
+          '<div class="col-xs-3 col-md-2 commentReplies" value="' + comment._id + '">'+
+          '<span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;">replies <a>' + comment.replyCount + '</a></span>'+
+          '</div>'+
+          '</div>'+
           '</div>'+
           '</li>';
 
@@ -204,7 +212,13 @@ function bindEvents() {
   });
 
   $('.like').on('click', function() {
-    $('.like').addClass('airvuz-blue');
+    $(this).toggleClass('airvuz-blue');
+
+    if($('.like-count').text() === "0") {
+      $('.like-count').text("1")
+    } else {
+      $('.like-count').text("0")
+    }
     //var likeObject = {};
     //likeObject.videoId = $(this).attr('data-videoId');
     //likeObject.userId = user._id;
@@ -250,6 +264,10 @@ function bindEvents() {
 
   $('.onoffswitch input[type=checkbox]').on('click', function() {
     console.log($(this).val('off'));
+  });
+
+  $('.report').on('click', function() {
+    $('#report-modal').modal('show');
   });
 }
 

@@ -13,8 +13,23 @@
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-    <div id="dialog" title="Embed Code" style="display: none">
-        <code>Embed code goes here</code>
+    <div class="modal fade" tabindex="-1" id="report-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Report Video</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please enter report info below</p>
+                    <textarea rows="5" style="width: 100%"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"> Send Report</button>
+                </div>
+            </div>
+        </div>
     </div>
         <div class="video-page">
             <div class="container main">
@@ -30,8 +45,8 @@
                             </div>
                         </div>
                         {!video player!}
-                        <video class="video-js vjs-default-skin vjs-big-play-centered vjs-fullscreen"
-                               controls preload="auto" autoplay width="100%" height="25%" style="position: relative"
+                        <video class="video-js vjs-big-play-centered vjs-fullscreen"
+                               controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
                                poster="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}"
                                data-setup=''>
                             <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.videoPath}" type="video/mp4" />
@@ -67,20 +82,19 @@
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
                                 <span class="p-l-10 hidden-xs">{video.viewCount} <span class="bold airvuz-blue">VUZ</span> |</span>
-                                <span><span class="bold"> {video.likeCount} </span>Likes |</span>
-                                <span><span class="bold commentCount"> {video.commentCount} </span>Comments</span>
+                                <span class="like-count">{video.likeCount}</span><span class="bold">  Likes |</span>
+                                <span> {video.commentCount} </span><span class="bold commentCount">Comments</span>
                             </div>
                             <div class="video-action-icons pull-right flex">
                                 <span class="glyphicon glyphicon-heart like" data-videoId="{video._id}"></span>
                                 <span class="glyphicon glyphicon-flag report"></span>
                                 <span class="glyphicon glyphicon-share share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
-                                <span class="glyphicon glyphicon-heart social embed"></span>
-                                <span class="glyphicon glyphicon-heart social"></span>
-                                <span class="glyphicon glyphicon-heart social"></span>
-                                <span class="glyphicon glyphicon-heart social"></span>
-                                <span class="glyphicon glyphicon-heart social"></span>
-                                <span class="glyphicon glyphicon-heart social"></span>
+                                    <span class="fa fa-code social embed"></span>
+                                    <span class="fa fa-google-plus-square social"></span>
+                                    <span class="fa fa-twitter-square social"></span>
+                                    <span class="fa fa-instagram social"></span>
+                                    <span class="fa fa-facebook-official social"></span>
                                 </div>
                             </div>
                         </div>

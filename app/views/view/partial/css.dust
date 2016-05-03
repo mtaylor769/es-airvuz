@@ -4,5 +4,6 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
   <!-- END: CDN -->
   <link rel="stylesheet" href="/client/jquery.onoff.css">
+  <link rel="stylesheet" href="/client/lib/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="/public/{airvuz.css}">
 <!-- END: app.views.view.partial.css -->
