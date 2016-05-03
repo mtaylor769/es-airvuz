@@ -94,7 +94,7 @@ function bindEvents() {
           //insert comment on DOM
           console.log(reply);
           var html = '<div class="flex placehold">'+
-            '<img src="' + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
+            '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-20">'+
             '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
             '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
@@ -138,7 +138,7 @@ function bindEvents() {
         console.log(user);
         var html = '<li class="comment-wrap">'+
           '<div class="flex">'+
-          '<img src="' + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
+          '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
           '<div class="m-t-20">'+
           '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
           '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
