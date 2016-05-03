@@ -20,9 +20,7 @@
       <div class="col-sm-2">
         <p class="text-uppercase">Follow us!</p>
         <ul class="list-inline social-media">
-          <li>instagram</li>
-          <li>twitter</li>
-          <li>facebook</li>
+          <li><img src="/client/images/social-icon.jpg" alt="social media icon" width="190"/></li>
         </ul>
       </div>
       <div class="col-sm-3 col-sm-offset-3">
