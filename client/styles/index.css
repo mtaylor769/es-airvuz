@@ -75,7 +75,7 @@ body.modal-open {
 }
 #footer li a {
   color: #fff;
-  font-weight: 100;
+  font-weight: 300;
 }
 
 .footer-sub1 {
@@ -803,7 +803,7 @@ End user profile CSS
     margin-left: 0;
   }
   #header .right-nav {
-    margin-right: -16px;
+    margin-right: -15px;
   }
   #header-categories .dropdown-menu {
     top: 47px;

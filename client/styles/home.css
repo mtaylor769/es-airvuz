@@ -4,6 +4,10 @@
 #home-page h3 {
     margin: 10px 5px;
 }
+#home-page .view-all {
+    margin-right: 5px;
+    font-weight: 500;
+}
 #home-page .video {
     margin: 0 5px;
 }
