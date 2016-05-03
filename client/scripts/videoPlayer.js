@@ -204,22 +204,23 @@ function bindEvents() {
   });
 
   $('.like').on('click', function() {
-    var likeObject = {};
-    likeObject.videoId = $(this).attr('data-videoId');
-    likeObject.userId = user._id;
-
-    $.ajax({
-        type: 'POST',
-        url: '/api/video-like',
-        data: likeObject,
-        dataType: 'json'
-      })
-      .done(function(response) {
-        $('.like').addClass('airvuz-blue');
-      })
-      .fail(function(error) {
-        alert(error.responseText);
-      })
+    $('.like').addClass('airvuz-blue');
+    //var likeObject = {};
+    //likeObject.videoId = $(this).attr('data-videoId');
+    //likeObject.userId = user._id;
+    //
+    //$.ajax({
+    //    type: 'POST',
+    //    url: '/api/video-like',
+    //    data: likeObject,
+    //    dataType: 'json'
+    //  })
+    //  .done(function(response) {
+    //    $('.like').addClass('airvuz-blue');
+    //  })
+    //  .fail(function(error) {
+    //    alert(error.responseText);
+    //  })
 
   });
 
