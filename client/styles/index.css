@@ -252,6 +252,22 @@ body.modal-open {
 .header-user {
   height: 100%;
 }
+
+#notification .dropdown-menu {
+  top: 51px;
+  left: -100px;
+  width: 248px;
+  color: #000;
+}
+#notification .dropdown-menu h3 {
+  margin-top: 5px;
+}
+#notification .dropdown-menu li {
+  display: block;
+}
+#notification .dropdown-menu .list-group {
+  margin-bottom: 0;
+}
 /*
  * End Header
 /**********************************/
