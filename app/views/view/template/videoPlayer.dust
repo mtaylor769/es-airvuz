@@ -96,7 +96,7 @@
                                     <div class="m-t-20">
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
                                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>
-                                        <p class="m-b-0" style="height: 60px">{comment}</p>
+                                        <p class="m-b-0">{comment}</p>
                                     </div>
                                 </div>
                                 <div  id="{_id}">
