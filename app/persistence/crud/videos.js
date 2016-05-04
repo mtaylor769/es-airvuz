@@ -144,8 +144,10 @@ Videos.prototype.create = function(params) {
 //	})
 //};
 
-Videos.prototype.get5Videos = function() {
-	return VideoModel.find({}).populate('userId').limit(5).exec();
+Videos.prototype.get5Videos = function(count) {
+	var random = Math.floor(Math.random() * 500);
+	var limit = count ? count : 5;
+	return VideoModel.find({}).skip(random).populate('userId').limit(limit).exec();
 };
 
 Videos.prototype.getById = function(id) {

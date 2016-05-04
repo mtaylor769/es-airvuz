@@ -58,14 +58,14 @@ IndexModel.prototype.getData = function(params) {
 		params.data.index.head.title	= "AirVūz – Drone Video Community";
 		params.data.index.viewName		= "index";
 
-		Promise.all([CategoryType.get(), Videos.get5Videos(), Slider.getHomeSlider(params.request.query.banner)])
+		Promise.all([CategoryType.get(), Videos.get5Videos(10), Videos.get5Videos(10), Videos.get5Videos(10), Videos.get5Videos(10), Slider.getHomeSlider(params.request.query.banner)])
 			.then(function(data) {
 				params.data.categories = data[0];
 				params.data.index.featuredVideos = data[1];
-				params.data.index.recentVideos = data[1];
-				params.data.index.trendingVideos = data[1];
-				params.data.index.staffPickVideos = data[1];
-				params.data.index.slider = data[2];
+				params.data.index.recentVideos = data[2];
+				params.data.index.trendingVideos = data[3];
+				params.data.index.staffPickVideos = data[4];
+				params.data.index.slider = data[5];
 				resolve(params);
 			})
 			.catch(function(error) {

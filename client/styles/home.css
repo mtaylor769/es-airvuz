@@ -26,6 +26,10 @@
     right: 30px;
 }
 
+#home-page .video-slick img {
+    min-height: 126px;
+}
+
 #home-page #slider-slick img {
     height: 250px;
     object-fit: cover;
