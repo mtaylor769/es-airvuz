@@ -28,7 +28,7 @@
                                     </a>
                                 </div>
                                 <div class="video-bottom">
-                                    <p>{viewCount} Views <span class="pull-right">{duration}</span></p>
+                                    <p>{viewCount} <span class="airvuz-blue">VUZ</span> <span class="pull-right">{duration}</span></p>
                                     <div class="title">
                                         <h4>
                                             <a href="/videoPlayer/{_id}">{title}</a>
