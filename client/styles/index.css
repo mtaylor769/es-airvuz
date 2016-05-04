@@ -265,6 +265,7 @@ body.modal-open {
 }
 #menu .dropdown-menu a {
   color: #fff;
+  text-align: left;
 }
 #menu .dropdown-menu a:hover {
   color: #238bab;
@@ -793,6 +794,15 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  #menu {
+    position: relative;
+    display: inline-block;
+    float: right;
+  }
+  #menu .dropdown-menu {
+    right: -15px;
+    left: inherit;
+  }
   #notification .dropdown-menu {
     color: #000;
     border: #353535;
