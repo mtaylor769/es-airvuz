@@ -12,7 +12,7 @@
                   <li>
                     <ul class="list-unstyled">
                         {#categories}
-                          <li><a href="#" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
+                          <li><a href="/category/{name}" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
                         {/categories}
                     </ul>
                   </li>
