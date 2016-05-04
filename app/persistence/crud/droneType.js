@@ -126,7 +126,7 @@ DroneType.prototype.create = function(params) {
 };
 
 DroneType.prototype.get = function() {
-  return DroneTypeModel.find({isVisible: true}).exec()
+  return DroneTypeModel.find({isVisible: true}).sort('name').exec()
 };
 
 DroneType.prototype.getById = function(id) {
