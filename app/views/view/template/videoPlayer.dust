@@ -9,7 +9,7 @@
         <meta property="og:title" content="{video.title}" >
         <meta property="og:updated_time" content="{video.uploadDate}">
         <meta property="og:description" content="{video.description}" >
-        <meta property="og:image" content="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
+        <meta property="og:image" content="s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
         <meta property="fb:app_id" content="868675893230044">
 
 
@@ -191,9 +191,10 @@
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.cdn-js" /}
         <div id="fb-root"></div>
+        {!facebook script!}
         <script>
             window.fbAsyncInit = function() {
-            FB.init({appId: '441356432709973', status: true, cookie: true,
+            FB.init({appId: {facebookAppId}, status: true, cookie: true,
             xfbml: true});
             };
             (function() {
@@ -207,9 +208,7 @@
         <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
         {> "app.views.view.partial.js" /}
         <script>
-            (function() {
-                console.log("doc loaded");
-            })();
+            var video = {video|js|s};
             $(function() {
                 videoPlayer.initialize();
             });

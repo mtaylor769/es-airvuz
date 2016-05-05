@@ -300,7 +300,20 @@ function bindEvents() {
     .error(function(error) {
 
     })
-  })
+  });
+
+  $('.share').click(function(e){
+    e.preventDefault();
+    FB.ui(
+      {
+        method: 'feed',
+        name: video.name,
+        link: window.location.href,
+        picture: 's3-us-west-2.amazonaws.com/airvuz-drone-video/'+video.thumbnailPath,
+        description: video.description,
+        message: ""
+      });
+  });
 
 }
 

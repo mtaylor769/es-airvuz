@@ -14,6 +14,7 @@ try {
 	var commentCrud   = require('../../persistence/crud/comment');
 	var videoLikeCrud = require('../../persistence/crud/videoLike');
 	var categoryCrud  = require('../../persistence/crud/categoryType');
+	var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -88,6 +89,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			console.log('completed all checks');
 			dataObject.categories = categories;
 			params.data													= dataObject;
+			params.data.facebookAppId 					= config.facebook.clientID;
 			params.data.videoPlayer							= {};
 			params.data.videoPlayer.title				= "Video Player";
 			params.data.videoPlayer.viewName		= "Video Player";
