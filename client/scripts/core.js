@@ -8,7 +8,8 @@ var headerProfileTpl = require('../templates/core/header-profile.dust');
 var notLoginHeaderTpl = require('../templates/core/not-login-header.dust');
 
 var $loginModal,
-    $headerProfile;
+    $headerProfile,
+    $footerSignup;
 
 function renderProfileHeader() {
   headerProfileTpl(identity, function (err, html) {
@@ -25,6 +26,12 @@ function bindEvents() {
   $loginModal.on('hidden.bs.modal', function () {
     // reset tab to login
     $loginModal.find('#login-anchor-tab').click();
+  });
+  
+  $loginModal.on('show.bs.modal', function (event) {
+    if ($(event.relatedTarget).data('footer')) {
+      $loginModal.find('#signup-anchor-tab').click();
+    }
   });
 
   $loginModal.find('a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
@@ -57,6 +64,14 @@ function bindEvents() {
       })
   });
 
+  $loginModal.on('click', '#signup-btn', function () {
+    var emailAddress = $loginModal.find('.email-input:visible').val();
+    var password = $loginModal.find('.password-input:visible').val();
+    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val();
+
+    // TODO: signup user
+  });
+
   $header.on('click', '.av-search a', function (event) {
     event.preventDefault();
     $header.find('#search-input').focus();
@@ -74,15 +89,18 @@ function bindEvents() {
         notLoginHeaderTpl({}, function (err, html) {
           $headerProfile.html(html);
         });
+        $footerSignup.removeClass('hidden');
       });
   });
 }
 
 function initialize() {
+  $footerSignup = $('.footer-signup');
   bindEvents();
 
   if (identity.isAuthenticated()) {
     renderProfileHeader();
+    $footerSignup.addClass('hidden');
   }
 }
 
