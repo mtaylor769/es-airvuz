@@ -3,6 +3,16 @@
     <head>
         <meta http-equiv="Cache-control" content="public">
         <title>AirVūz - {video.title}</title>
+
+        <meta property="og:url" content="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.videoPath}"/>
+        <meta property="og:type" content="video.other">
+        <meta property="og:title" content="{video.title}" >
+        <meta property="og:updated_time" content="{video.uploadDate}">
+        <meta property="og:description" content="{video.description}" >
+        <meta property="og:image" content="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
+        <meta property="fb:app_id" content="441356432709973">
+
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
@@ -110,7 +120,6 @@
                                     <span class="fa fa-code social embed"></span>
                                     <span class="fa fa-google-plus-square social"></span>
                                     <span class="fa fa-twitter-square social"></span>
-                                    <span class="fa fa-instagram social"></span>
                                     <span class="fa fa-facebook-official social"></span>
                                 </div>
                             </div>
@@ -181,10 +190,21 @@
         </div>
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.cdn-js" /}
-
+        <div id="fb-root"></div>
+        <script>
+            window.fbAsyncInit = function() {
+            FB.init({appId: '441356432709973', status: true, cookie: true,
+            xfbml: true});
+            };
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol +
+                        '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }());
+        </script>
         {!cdn page specfic!}
         <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
-
         {> "app.views.view.partial.js" /}
         <script>
             (function() {
