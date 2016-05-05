@@ -20,7 +20,24 @@
       <div class="col-sm-2">
         <p class="text-uppercase">Follow us!</p>
         <ul class="list-inline social-media">
-          <li><img src="/client/images/social-icon.jpg" alt="social media icon" width="190"/></li>
+          <li>
+            <a href="//www.facebook.com/AirVuz" target="_blank">
+              <span class="fa fa-facebook-official"></span>
+            </a>
+          </li>
+          <li>
+            <a href="//twitter.com/airvuz" target="_blank">
+              <span class="fa fa-twitter"></span>
+            </a>
+          </li>
+          <li>
+            <a href="//www.instagram.com/airvuz" target="_blank">
+              <span class="fa fa-instagram"></span>
+            </a>
+          </li>
+          <li>
+            #AIRVUZ
+          </li>
         </ul>
       </div>
       <div class="col-sm-3 col-sm-offset-3">

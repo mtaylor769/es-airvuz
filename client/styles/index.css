@@ -77,6 +77,18 @@ body.modal-open {
   color: #fff;
   font-weight: 300;
 }
+#footer .social-media {
+  color: #30c1ed;
+  font-size: 15px;
+}
+#footer .social-media a {
+  font-size: 20px;
+  color: #30c1ed;
+}
+
+#footer .social-media a:hover {
+  color: #fff;
+}
 
 .footer-sub1 {
   background-color: #333333;
