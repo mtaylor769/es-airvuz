@@ -1,5 +1,6 @@
 try {
 	var log4js								= require('log4js');
+  var nodemailer            = require('nodemailer');
 	var logger								= log4js.getLogger('persistance.crud.Videos');
 
 	var VideoCrud							= require('../../persistence/crud/videos');
@@ -118,6 +119,33 @@ Video.prototype.showcaseUpdate = function(req, res) {
     .catch(function(error) {
       res.send(error)
     })
+
+};
+
+Video.prototype.reportVideo = function(req, res) {
+  var params = req.body;
+  var transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user:'support@airvuz.com',
+      pass:'b5&YGG6n'
+    }
+  });
+
+  var mailOptions = {
+    from:'noreply <noreply@airvuz.com>',
+    to: 'mattb@airvuz.com',
+    subject: 'video reported : '+params.videoId,
+    html:'<p>A report has been submitted for video Id : '+params.videoId+ '.<br> Issue : ' +params.message+'<br><a href="beta2.airvuz.com/videoPlayer/' + params.videoId+'"> Click here to go to video</a></p>'
+  };
+
+  transport.sendMail(mailOptions, function(error, message) {
+    if(error) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  })
 
 };
 

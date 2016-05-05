@@ -272,7 +272,7 @@ function bindEvents() {
 
   $('.page-back').on('click', function() {
     window.history.back();
-  })
+  });
 
   $('#comment-text').on('click', function() {
     if(!user._id) {
@@ -281,7 +281,27 @@ function bindEvents() {
         $('#login-modal').modal('show');
       })
     }
+  });
+
+  $('#send-report').on('click', function() {
+    console.log('button pressed');
+    var reportData = {};
+    reportData.videoId = $(this).attr('data-videoid');
+    reportData.message = $('.report-text').val();
+    console.log(reportData);
+    $.ajax({
+      type: 'POST',
+      url: '/api/videos/report-video',
+      data: reportData
+    })
+    .done(function(response) {
+
+    })
+    .error(function(error) {
+
+    })
   })
+
 }
 
 function initialize() {
