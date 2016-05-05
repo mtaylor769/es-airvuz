@@ -6,13 +6,7 @@
           <li><a href="/about">About Airvuz</a></li>
           <li><a href="/community">Community</a></li>
           <li><a href="/media">Media</a></li>
-        </ul>
-      </div>
 
-      <div class="col-sm-2">
-        <ul class="list-unstyled">
-          <li><a href="#">Login</a></li>
-          <li><a href="#">Sign Up</a></li>
           <li><a href="#">Contact Us</a></li>
         </ul>
       </div>
@@ -40,14 +34,12 @@
           </li>
         </ul>
       </div>
-      <div class="col-sm-3 col-sm-offset-3">
-        <p class="text-uppercase">Stay up to date with the latest AV NEWS!</p>
-
-        <input type="email" class="form-control" placeholder="Email Address"/>
-        <div class="text-right m-t-15">
-            <button class="btn btn-primary text-uppercase">Sign up</button>
+      <div class="col-sm-5 col-sm-offset-3 footer-signup">
+        <div class="text-right">
+            <p class="text-uppercase">Stay up to date with the latest AV NEWS!
+              <button class="btn btn-primary text-uppercase m-l-15" data-toggle="modal" data-target="#login-modal" data-footer="true">Sign up</button>
+            </p>
         </div>
-
       </div>
     </div>
 
@@ -95,7 +87,7 @@
             <button class="btn btn-block btn-success">Instagram</button>
             <hr/>
             <div class="text-center">
-              <a href="#signup-tab" aria-controls="signup-tab" role="tab" data-toggle="tab">Sign up</a> | <a href="#forgot-password-tab" aria-controls="forgot-password-tab" role="tab" data-toggle="tab">Forgot password</a>
+              <a href="#signup-tab" aria-controls="signup-tab" role="tab" data-toggle="tab" id="signup-anchor-tab">Sign up</a> | <a href="#forgot-password-tab" aria-controls="forgot-password-tab" role="tab" data-toggle="tab">Forgot password</a>
             </div>
           </div>
           <div role="tabpanel" class="tab-pane" id="signup-tab">
@@ -107,8 +99,12 @@
               <label>Password <span class="text-danger">*</span></label>
               <input type="password" class="form-control password-input" placeholder="Password">
             </div>
+            <div class="form-group">
+              <label for="isSubscribeAirVuzNews">Subscribe to AirVuz News</label><br/>
+              <input type="checkbox" id="isSubscribeAirVuzNews" value="true" checked>
+            </div>
             <div class="text-right">
-              <button type="button" class="btn btn-primary">Sign up</button>
+              <button type="button" class="btn btn-primary" id="signup-btn">Sign up</button>
             </div>
             <hr/>
             <div class="text-center">

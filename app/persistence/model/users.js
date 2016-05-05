@@ -74,6 +74,10 @@ var usersSchema 		= mongoose.Schema({
 		required	: true,
 		type			: Boolean
 	},
+	isSubscribeAirVuzNews: {
+		default		: false,
+		type			: Boolean
+	},
 	
 	// The user last login date
 	lastLoginDate : {
