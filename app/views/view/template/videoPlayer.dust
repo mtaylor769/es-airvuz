@@ -22,11 +22,11 @@
                 </div>
                 <div class="modal-body">
                     <p>Please enter report info below</p>
-                    <textarea rows="5" style="width: 100%"></textarea>
+                    <textarea class="report-text" rows="5" style="width: 100%"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal"> Send Report</button>
+                    <button type="button" class="btn btn-primary" data-videoid="{video._id}" id="send-report"> Send Report</button>
                 </div>
             </div>
         </div>

@@ -94,6 +94,9 @@ apiRouter.route('/api/video-like/:id')
 apiRouter.route('/api/videos/showcase-update')
 	.post(videos.showcaseUpdate);
 
+apiRouter.route('/api/videos/report-video')
+	.post(videos.reportVideo);
+
 
 /**
  * /api/camera-type/
