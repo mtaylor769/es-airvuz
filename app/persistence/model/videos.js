@@ -55,7 +55,7 @@ var videoSchema = mongoose.Schema({
 		required	: true,
 		type			: String
 	},	
-	
+	airVuzDescription: String,
 	/*
 	 * The type of drone used to make the video.
 	 * @type {Object}
@@ -133,7 +133,7 @@ var videoSchema = mongoose.Schema({
 		required	: true,
 		type			: String
 	},
-	
+	airVuzTitle: String,
 	/*
 	 * Old Name : UploadDate
 	 * The date the video was uploaded.
