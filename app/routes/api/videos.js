@@ -134,7 +134,7 @@ Video.prototype.reportVideo = function(req, res) {
 
   var mailOptions = {
     from:'noreply <noreply@airvuz.com>',
-    to: 'mattb@airvuz.com',
+    to: 'support@airvuz.com',
     subject: 'video reported : '+params.videoId,
     html:'<p>A report has been submitted for video Id : '+params.videoId+ '.<br> Issue : ' +params.message+'<br><a href="beta2.airvuz.com/videoPlayer/' + params.videoId+'"> Click here to go to video</a></p>'
   };
