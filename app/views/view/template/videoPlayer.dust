@@ -65,7 +65,7 @@
                         {!video title and back button!}
                         <div class="video-player-header flex">
                             <span class="glyphicon glyphicon-menu-left page-back"></span>
-                            <span class="video-player-title airvuz-blue">{video.displayTitle}</span>
+                            <span class="video-player-title airvuz-blue">{video.title}</span>
                             <div class="up-next">
                                 <span class="up">UP NEXT</span>
                                 <span class="glyphicon glyphicon-arrow-right"></span>
