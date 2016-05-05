@@ -10,7 +10,7 @@
         <meta property="og:updated_time" content="{video.uploadDate}">
         <meta property="og:description" content="{video.description}" >
         <meta property="og:image" content="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
-        <meta property="fb:app_id" content="441356432709973">
+        <meta property="fb:app_id" content="868675893230044">
 
 
         <meta charset="UTF-8">
