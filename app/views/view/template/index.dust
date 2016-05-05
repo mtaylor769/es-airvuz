@@ -63,13 +63,13 @@
         </div>
       </div>
       {/index.slider}
-      {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos"/}
+      {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos" viewAll="Featured%20Videos"/}
       <hr/>
-      {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos"/}
+      {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos" viewAll="Recent%20Videos"/}
       <hr/>
-      {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos"/}
+      {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos" viewAll="Trending%20Videos"/}
       <hr/>
-      {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos"/}
+      {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos" viewAll="Staff%20Pick%20Videos"/}
       <br/>
       <br/>
     </div>
