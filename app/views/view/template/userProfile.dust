@@ -2,7 +2,7 @@
 <html view="app.views.view.template.userProfile">
   <head>
     <meta http-equiv="Cache-control" content="public">
-    <title>{data.userProfile.title}</title>
+    <title>AirVūz - {user.userName}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
@@ -32,12 +32,12 @@
                   <button class="btn btn-primary" type="button">Follow</button>
                   <button class="btn btn-primary" type="button">Donate</button>
                   <button class="btn btn-primary" type="button">Hire</button>
-                  <div class="pull-right row hidden-xs hidden-sm" style="margin: auto">
+                  <div class="pull-right row hidden-xs hidden-sm" style="font-size: 25px">
                   <!-- Conditional only if user has social media links -->
-                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Facebook | </a>
-                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Instagram | </a>
-                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Twitter | </a>
-                    <a href="/" class="font-white" style="text-shadow: 2px 2px 22px black">Google+ | </a>
+                    <span class="fa fa-facebook-square" style="margin-right: 10px"></span>
+                    <span class="fa fa-instagram" style="margin-right: 10px"></span>
+                    <span class="font-white fa fa-twitter-square" style="margin-right: 10px"></span>
+                    <span class="font-white fa fa-google-plus-square"></span>
                   </div>
                 </div>
               </figcaption>
@@ -47,7 +47,7 @@
       </div>
       <div class="row m-t-15">
           <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#showcase" role="tab" data-toggle="tab">SHOWCASE</a></li>
+              <li role="presentation" class="active"><a href="#showcase" id="showcase-tab" role="tab" data-toggle="tab">SHOWCASE</a></li>
               <li role="presentation"><a href="#allvideos" role="tab" data-toggle="tab">ALL VIDEOS</a></li>
               <li role="presentation" class="hidden-md hidden-lg"><a href="#about" role="tab" data-toggle="tab">ABOUT</a></li>
           </ul>
@@ -55,20 +55,18 @@
       <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="showcase">{> "client.templates.userProfile.showcase-user" /}</div>
           <div role="tabpanel" class="tab-pane" id="allvideos">{> "client.templates.userProfile.allvideos-user" /}</div>
-          <div role="tabpanel" class="tab-pane" id="about">{> "client.templates.userProfile.about" /}</div>
+          <div role="tabpanel" class="tab-pane hidden-md hidden-lg" id="about">{> "client.templates.userProfile.about" /}</div>
       </div>
     </div>
     {> "app.views.view.partial.footer" /}
     {> "app.views.view.partial.cdn-js" /}
+    {> "app.views.view.partial.js" /}
     <script>
-        /* Global */
         var profileUser = {user|js|s};
         var profileVideos = {videos|js|s};
         $(function() {
             userProfile.initialize();
         });
     </script>
-    {> "app.views.view.partial.js" /}
-
   </body>
 </html>

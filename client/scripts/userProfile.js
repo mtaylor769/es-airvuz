@@ -80,6 +80,13 @@ function bindEvents() {
     })
   });
 
+  $(window).on('resize', function() {
+    var windowWidth = $(window).width();
+    var isActive = $('#about').hasClass('active');
+    if(windowWidth >= 992 && isActive) {
+      $('#showcase-tab').click();
+    }
+  })
 
 }
 
@@ -87,8 +94,7 @@ function bindEvents() {
 function initialize() {
   $profilePage = $('#user-profile');
   console.log(profileUser.userName);
-  //if(user.userName === profileUser.userName) {
-  if('afroza0210' === profileUser.userName) {
+  if(user.userName === profileUser.userName) {
     ownerShowcase({videos: profileVideos}, function (err, html) {
       $('#showcase').html(html);
     });

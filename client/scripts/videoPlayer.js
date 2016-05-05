@@ -269,6 +269,19 @@ function bindEvents() {
   $('.report').on('click', function() {
     $('#report-modal').modal('show');
   });
+
+  $('.page-back').on('click', function() {
+    window.history.back();
+  })
+
+  $('#comment-text').on('click', function() {
+    if(!user._id) {
+      $('#comment-modal').modal('show');
+      $('.go-to-login').on('click', function() {
+        $('#login-modal').modal('show');
+      })
+    }
+  })
 }
 
 function initialize() {
