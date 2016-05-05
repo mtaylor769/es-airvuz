@@ -49,6 +49,9 @@ VideoPlayerModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return videoCrud.getById(videoId)
 		.then(function(video) {
+			if(video.title.length > 45) {
+				video.displayTitle = video.title.substring(0, 45) + '...';
+			}
 			dataObject.video 	= video;
 			checkObject.video = video._id;
 			videoId 					= video._id;
@@ -60,6 +63,16 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return videoCrud.get5Videos();
 		})
 		.then(function(videos) {
+			videos.forEach(function(video) {
+				video.title = video.title.substring(0, 45);
+				video.description = video.description.substring(0, 90);
+				if (video.title.length === 45) {
+					video.title = video.title + '...'
+				}
+				if (video.description.length === 90) {
+					video.description = video.description + '...';
+				}
+			});
 			dataObject.upNext = videos;
 			return videoLikeCrud.videoLikeCheck(checkObject)
 		})
