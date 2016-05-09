@@ -9,7 +9,7 @@
         <meta property="og:title" content="{video.title}" >
         <meta property="og:updated_time" content="{video.uploadDate}">
         <meta property="og:description" content="{video.description}" >
-        <meta property="og:image" content="s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
+        <meta property="og:image" content="https://s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
         <meta property="fb:app_id" content="868675893230044">
 
         <meta name="twitter:card" content="summary_large_image" />
@@ -145,7 +145,7 @@
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
                                     <span class="fa fa-code social embed"></span>
                                     <span class="fa fa-google-plus-square social" id="google"></span>
-                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social"></a>
+                                    <a href="https://twitter.com/intent/tweet?text={video.title}&via=airvuz" class="fa fa-twitter-square social"></a>
                                     <span class="fa fa-facebook-official social" id="facebook"></span>
                                 </div>
                             </div>
