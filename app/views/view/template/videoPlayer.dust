@@ -18,7 +18,7 @@
         <meta name="twitter:url" content="http://beta2.airvuz.com/videoPlayer/{video.videoPath}" />
         <meta name="twitter:title" content="{video.title}" />
         <meta name="twitter:description" content="{video.description}" />
-        <meta name="twitter:image" content="s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" />
+        <meta name="twitter:image" content="https://s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" />
 
 
 
