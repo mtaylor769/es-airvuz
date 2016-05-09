@@ -9,7 +9,7 @@ var notLoginHeaderTpl = require('../templates/core/not-login-header.dust');
 
 var $loginModal,
     $headerProfile,
-    $footerSignup;
+    $footerSub1;
 
 function renderProfileHeader() {
   headerProfileTpl(identity, function (err, html) {
@@ -57,6 +57,7 @@ function bindEvents() {
     auth.login({emailAddress: emailAddress, password: password})
       .done(function () {
         renderProfileHeader();
+        $footerSub1.addClass('is-login');
         $loginModal.modal('hide');
       })
       .fail(function (err) {
@@ -89,18 +90,18 @@ function bindEvents() {
         notLoginHeaderTpl({}, function (err, html) {
           $headerProfile.html(html);
         });
-        $footerSignup.removeClass('hidden');
+        $footerSub1.removeClass('is-login');
       });
   });
 }
 
 function initialize() {
-  $footerSignup = $('.footer-signup');
+  $footerSub1 = $('.footer-sub1');
   bindEvents();
 
   if (identity.isAuthenticated()) {
     renderProfileHeader();
-    $footerSignup.addClass('hidden');
+    $footerSub1.addClass('is-login');
   }
 }
 

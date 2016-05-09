@@ -1,46 +1,42 @@
 <div partial-beg="app.views.view.partial.header" id="footer">
   <div class="container height-100-percent container-shadow">
     <div class="row footer-sub1">
-      <div class="col-sm-2">
-        <ul class="list-unstyled">
+      <div class="col-sm-6">
+        <ul class="list-unstyled list-inline">
           <li><a href="/about">About Airvuz</a></li>
           <li><a href="/community">Community</a></li>
           <li><a href="/media">Media</a></li>
-
           <li><a href="#">Contact Us</a></li>
         </ul>
       </div>
-
-      <div class="col-sm-2">
-        <p class="text-uppercase">Follow us!</p>
-        <ul class="list-inline social-media">
-          <li>
-            <a href="//www.facebook.com/AirVuz" target="_blank">
-              <span class="fa fa-facebook-official"></span>
-            </a>
-          </li>
-          <li>
-            <a href="//twitter.com/airvuz" target="_blank">
-              <span class="fa fa-twitter"></span>
-            </a>
-          </li>
-          <li>
-            <a href="//www.instagram.com/airvuz" target="_blank">
-              <span class="fa fa-instagram"></span>
-            </a>
-          </li>
-          <li>
-            #AIRVUZ
-          </li>
-        </ul>
-      </div>
-      <div class="col-sm-5 col-sm-offset-3 footer-signup">
-        <div class="text-right">
-            <p class="text-uppercase">Stay up to date with the latest AV NEWS!
-              <button class="btn btn-primary text-uppercase m-l-15" data-toggle="modal" data-target="#login-modal" data-footer="true">Sign up</button>
-            </p>
+      <div class="col-sm-6 footer-signup">
+        <div class="text-right text-uppercase">
+          Stay up to date with the latest AV NEWS!
+            <button class="btn btn-primary text-uppercase m-l-15" data-toggle="modal" data-target="#login-modal" data-footer="true">Sign up</button>
         </div>
       </div>
+    </div>
+    <div class="row footer-sub1 text-center">
+      <ul class="list-inline social-media">
+        <li>
+          <a href="//www.facebook.com/AirVuz" target="_blank">
+            <span class="fa fa-facebook-official"></span>
+          </a>
+        </li>
+        <li>
+          <a href="//twitter.com/airvuz" target="_blank">
+            <span class="fa fa-twitter"></span>
+          </a>
+        </li>
+        <li>
+          <a href="//www.instagram.com/airvuz" target="_blank">
+            <span class="fa fa-instagram"></span>
+          </a>
+        </li>
+        <li>
+          #AIRVUZ
+        </li>
+      </ul>
     </div>
 
     <div class="row footer-sub2">
