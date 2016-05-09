@@ -10,10 +10,8 @@
         </ul>
       </div>
       <div class="col-sm-6 footer-signup">
-        <div class="text-right text-uppercase">
-          Stay up to date with the latest AV NEWS!
-            <button class="btn btn-primary text-uppercase m-l-15" data-toggle="modal" data-target="#login-modal" data-footer="true">Sign up</button>
-        </div>
+        Stay up to date with the latest AV NEWS!
+        <button class="btn btn-primary text-uppercase m-l-15 btn-sm" data-toggle="modal" data-target="#login-modal" data-footer="true">Sign up</button>
       </div>
     </div>
     <div class="row footer-sub1 text-center">

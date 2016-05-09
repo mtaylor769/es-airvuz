@@ -116,6 +116,15 @@ body.modal-open {
 .footer-sub1.is-login .col-sm-6 ul.list-unstyled {
   text-align: center;
 }
+.footer-sub1 .footer-signup {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.footer-sub1 .footer-signup button {
+  margin: 15px auto;
+  display: block;
+}
 
 .footer-sub2 {
   background-color: #000;
@@ -1091,6 +1100,13 @@ End user profile CSS
   .footer-sub1 ul.list-unstyled {
     text-align: left;
   }
+  .footer-sub1 .footer-signup {
+    text-align: right;
+  }
+  .footer-sub1 .footer-signup button {
+    margin: 15px 0 0 15px;
+    display: inline-block;
+  }
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -1165,6 +1181,9 @@ End user profile CSS
 
   #user-profile .profile-information h4 {
     font-size: 32px;
+  }
+  .footer-sub1 .footer-signup button {
+    margin: 0 0 0 15px;
   }
 }
 
