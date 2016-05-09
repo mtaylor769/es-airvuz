@@ -12,7 +12,7 @@
         <meta property="og:image" content="s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
         <meta property="fb:app_id" content="868675893230044">
 
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@airvuz" />
         <meta name="twitter:creator" content="@airvuz" />
         <meta name="twitter:url" content="http://beta2.airvuz.com/videoPlayer/{video.videoPath}" />

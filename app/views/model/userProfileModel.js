@@ -72,7 +72,6 @@ UserProfileModel.prototype.getData = function(params) {
 			}
 		});
 		dataObject.videos = videos;
-		console.log(dataObject);
 		params.data 												= dataObject;
 		params.data.userProfile							= {};
 		params.data.userProfile.title				= "User Profile";
@@ -83,7 +82,6 @@ UserProfileModel.prototype.getData = function(params) {
 		params.data.airvuz.js 							= sourceManifest["airvuz.js"];
 		params.data.airvuz.css 							= sourceManifest["airvuz.css"];
 		params.data.vendor.js 							= sourceManifest["vendor.js"];
-		console.log(params.data.userProfile);
 		return params;
 	});
 };

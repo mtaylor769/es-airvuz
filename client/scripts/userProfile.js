@@ -11,6 +11,10 @@ var ownerShowcase  = require('../templates/userProfile/showcase-owner.dust');
 var userAllVideos  = require('../templates/userProfile/allvideos-user.dust');
 var ownerAllVideos = require('../templates/userProfile/allvideos-owner.dust');
 
+var okHtml            = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
+var notSelectedHtml   = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
+var removeHtml        = '<div class="removed asdf"><span class="glyphicon glyphicon-minus"></span></div>';
+
 function showcaseAdd(videoId, boolean) {
   var data = {};
   data.id = videoId;
@@ -31,26 +35,6 @@ function showcaseAdd(videoId, boolean) {
 
 
 function bindEvents() {
-
-  var okHtml            = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
-  var notSelectedHtml   = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
-  var removeHtml        = '<div class="removed asdf"><span class="glyphicon glyphicon-minus"></span></div>';
-
-  $profilePage.on('click', '.asdf', function () {
-      console.log('running function');
-      var buttonDiv = $(this).parent();
-      var status = buttonDiv.attr('data-showcase');
-      $(this).remove();
-      if(status === 'true') {
-        $(buttonDiv).append(removeHtml);
-        $(buttonDiv).attr('data-showcase', 'false');
-        //showcaseAdd('', false);
-      } else {
-        $(buttonDiv).append(okHtml);
-        $(buttonDiv).attr('data-showcase', 'true');
-        //showcaseAdd('', true);
-      }
-  });
 
   $('#edit-showcase').on('click', function() {
     $('.showcase').each(function(i, link) {
@@ -88,12 +72,29 @@ function bindEvents() {
     }
   })
 
+  function asdf() {
+    console.log('running function');
+    var buttonDiv = $(this).parent();
+    var status = buttonDiv.attr('data-showcase');
+    $(this).remove();
+    if(status === 'true') {
+      $(buttonDiv).append(removeHtml);
+      $(buttonDiv).attr('data-showcase', 'false');
+      //showcaseAdd('', false);
+    } else {
+      $(buttonDiv).append(okHtml);
+      $(buttonDiv).attr('data-showcase', 'true');
+      //showcaseAdd('', true);
+    }
+  }
+
+  $profilePage
+    .on('click', '.asdf', asdf);
 }
 
 
 function initialize() {
   $profilePage = $('#user-profile');
-  console.log(profileUser.userName);
   if(user.userName === profileUser.userName) {
     ownerShowcase({videos: profileVideos}, function (err, html) {
       $('#showcase').html(html);
