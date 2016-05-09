@@ -212,29 +212,29 @@ function bindEvents() {
   });
 
   $('.like').on('click', function() {
-    $(this).toggleClass('airvuz-blue');
-
-    if($('.like-count').text() === "0") {
-      $('.like-count').text("1")
-    } else {
-      $('.like-count').text("0")
-    }
-    //var likeObject = {};
-    //likeObject.videoId = $(this).attr('data-videoId');
-    //likeObject.userId = user._id;
+    //$(this).toggleClass('airvuz-blue');
     //
-    //$.ajax({
-    //    type: 'POST',
-    //    url: '/api/video-like',
-    //    data: likeObject,
-    //    dataType: 'json'
-    //  })
-    //  .done(function(response) {
-    //    $('.like').addClass('airvuz-blue');
-    //  })
-    //  .fail(function(error) {
-    //    alert(error.responseText);
-    //  })
+    //if($('.like-count').text() === "0") {
+    //  $('.like-count').text("1")
+    //} else {
+    //  $('.like-count').text("0")
+    //}
+    var likeObject = {};
+    likeObject.videoId = $(this).attr('data-videoId');
+    likeObject.userId = user._id;
+
+    $.ajax({
+        type: 'POST',
+        url: '/api/video-like',
+        data: likeObject,
+        dataType: 'json'
+      })
+      .done(function(response) {
+        $('.like').addClass('airvuz-blue');
+      })
+      .fail(function(error) {
+        alert(error.responseText);
+      })
 
   });
 
@@ -302,7 +302,7 @@ function bindEvents() {
     })
   });
 
-  $('.share').click(function(e){
+  $('#facebook').click(function(e){
     e.preventDefault();
     FB.ui(
       {
@@ -312,8 +312,40 @@ function bindEvents() {
         picture: 's3-us-west-2.amazonaws.com/airvuz-drone-video/'+video.thumbnailPath,
         description: video.description,
         message: ""
-      });
+      },
+      function(response) {
+        console.log(response);
+      }
+    );
   });
+
+  $('#follow').on('click', function() {
+    if(user._id && user._id !== video.userId) {
+      var followData = {};
+      followData.userId = user._id;
+      followData.followingUserId = video.userId;
+      console.log(followData);
+      $.ajax({
+          type: 'POST',
+          url: '/api/follow',
+          data: followData
+        })
+        .success(function (response) {
+          console.log('response : ' + response)
+        })
+        .error(function (error) {
+          console.log('error: ' + error)
+        })
+    } else if(!user._id) {
+      console.log('login');
+    } else {
+      console.log('cannot follow yourself')
+    }
+  });
+
+  $('#google').on('click', function() {
+    $('#google-plus-modal').modal('show');
+  })
 
 }
 

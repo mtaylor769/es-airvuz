@@ -8,11 +8,15 @@ try {
   var PersistenceException = require('../../utils/exceptions/PersistenceException');
   var ValidationException = require('../../utils/exceptions/ValidationException');
   var VideoLikeModel = null;
+  var VideoModel = null;
   var database = require('../database/database');
   var mongoose = require('mongoose');
 
   VideoLikeModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videoLike"});
   logger.debug('loaded video like model');
+
+  VideoModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
+  logger.debug('loaded video model');
 
   if(global.NODE_ENV === "production") {
     logger.setLevel("INFO");
@@ -29,23 +33,39 @@ var VideoLike = function () {
 };
 
 VideoLike.prototype.create = function(params) {
-  var videoId = mongoose.Types.ObjectId(params.videoId);
-  params.videoIdCheck = videoId;
   return(new Promise(function(resolve, reject) {
-    VideoLikeModel.find({userId: params.userId}).exec()
-      .then(function(likes) {
-        var likeCheck = _.find(likes, {'videoId' : params.videoIdCheck });
-        console.log(likeCheck);
-        if(!likeCheck) {
-          var videoLikeModel = new VideoLikeModel(params);
-          videoLikeModel.save(function(error, videoLike){
-            resolve(videoLike);
-          });
+    VideoLikeModel.find({videoId: params.videoId, userId: params.userId}).exec()
+      .then(function(like) {
+        if(like.length === 0) {
+          return VideoModel.findById(params.videoId).exec()
+          .then(function(video) {
+            video.likeCount = video.likeCount + 1;
+            return video.save()
+          })
+          .then(function(video) {
+            var videLikeModel = new VideoLikeModel(params);
+            videLikeModel.save(function (error, videoLike) {
+              resolve(videoLike);
+            })
+          })
         } else {
           reject('already liked');
         }
       })
     })
+  )
+};
+
+VideoLike.prototype.likeCount = function(params) {
+  return(new Promise(function(resolve, reject) {
+    VideoModel.findById(params.videoId).exec()
+      .then(function(video) {
+        video.likeCount = video.likeCount + 1;
+        video.save(function(error, video) {
+          resolve(video);
+        })
+      })
+  })
   )
 };
 

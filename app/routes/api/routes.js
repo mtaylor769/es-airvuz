@@ -9,6 +9,8 @@ var categoryType        = require('./categoryType');
 var droneType           = require('./droneType');
 var curatedVideos       = require('./curatedVideos');
 var comment             = require('./comment');
+var follow							= require('./follow');
+var notifications				= require('./notifications');
 var videoLike           = require('./videoLike');
 var slide               = require('./slide');
 var slider              = require('./slider');
@@ -70,6 +72,18 @@ apiRouter.route('/api/users/:id')
 
 apiRouter.route('/api/users/create')
   .post(users.createUser);
+
+/**
+ * /api/follow/
+ */
+apiRouter.route('/api/follow')
+	.post(follow.post);
+
+/**
+ * /api/notifications/
+ */
+apiRouter.route('/api/notifications')
+	.post(notifications.post);
 
 /**
  * /api/videos/
