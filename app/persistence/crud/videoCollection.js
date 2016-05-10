@@ -52,17 +52,32 @@ function updateVideos(type, videos) {
   return VideoCollectionModel.findOneAndUpdate({name: type, user: null}, {videos: videos}).exec();
 }
 
-function getStaffPickVideos() {
-  return VideoCollectionModel.findOne({name: 'Staff Pick Videos', user: null}).lean().exec()
+function getStaffPickVideos(count, page) {
+  var limit = count ? count : 10;
+  var skip = (page ? page : 1) * limit;
+  return VideoCollectionModel.findOne({name: 'Staff Pick Videos', user: null}).populate('videos').lean().exec()
     .then(function (collection) {
-      return collection.videos;
+      return VideoCollectionModel.populate(collection, {path: 'videos.userId', model: 'Users'}).then(function (col) {
+        if (col.length === 0) {
+          return [];
+        }
+        // TODO: slice / limit / paging
+        return col.videos;
+      });
     });
 }
 
-function getFeaturedVideos() {
-  return VideoCollectionModel.findOne({name: 'Featured Videos', user: null}).lean().exec()
+function getFeaturedVideos(count, page) {
+  var limit = count ? count : 10;
+  var skip = (page ? page : 1) * limit;
+  return VideoCollectionModel.findOne({name: 'Featured Videos', user: null}).populate('videos').lean().exec()
     .then(function (collection) {
-      return collection.videos;
+      return VideoCollectionModel.populate(collection, {path: 'videos.userId', model: 'Users'}).then(function (col) {
+        if (col.length === 0) {
+          return [];
+        }
+        return col.videos;
+      });
     });
 }
 

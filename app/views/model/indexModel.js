@@ -3,13 +3,14 @@ var log4js		= require('log4js');
 var logger		= log4js.getLogger('app.views.model.index');
 
 try {
-	var BaseModel			= require('./baseModel');
-	var CategoryType	= require('../../../app/persistence/crud/categoryType');
-	var Videos				= require('../../../app/persistence/crud/videos');
-	var Slider				= require('../../../app/persistence/crud/slider');
-	var config				= require('../../../config/config')[global.NODE_ENV];
-	var Promise				= require('bluebird');
-	var util					= require('util');
+	var BaseModel				= require('./baseModel');
+	var CategoryType		= require('../../../app/persistence/crud/categoryType');
+	var Videos					= require('../../../app/persistence/crud/videos');
+	var Slider					= require('../../../app/persistence/crud/slider');
+	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
+	var config					= require('../../../config/config')[global.NODE_ENV];
+	var Promise					= require('bluebird');
+	var util						= require('util');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -58,7 +59,7 @@ IndexModel.prototype.getData = function(params) {
 		params.data.index.head.title	= "AirVūz – Drone Video Community";
 		params.data.index.viewName		= "index";
 
-		Promise.all([CategoryType.get(), Videos.get5Videos(10), Videos.get5Videos(10), Videos.get5Videos(10), Videos.get5Videos(10), Slider.getHomeSlider(params.request.query.banner)])
+		Promise.all([CategoryType.get(), VideoCollection.getFeaturedVideos(), Videos.getRecentVideos(), Videos.getTrendingVideos(), VideoCollection.getStaffPickVideos(), Slider.getHomeSlider(params.request.query.banner)])
 			.then(function(data) {
 				params.data.categories = data[0];
 				params.data.index.featuredVideos = data[1];

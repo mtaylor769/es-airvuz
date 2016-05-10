@@ -42,14 +42,17 @@
                     {/videos}
                 </div>
             </div>
-            <div class="row">
+            {#showLoadMore}
+              <div class="row">
                 <div class="col-md-12 m-b-20">
-                    <hr/>
-                    <div class="text-center">
-                      <button class="btn btn-primary" id="load-more-btn">Load more videos</button>
-                    </div>
+                  <hr/>
+                  <div class="text-center">
+                    <button class="btn btn-primary" id="load-more-btn">Load more videos</button>
+                  </div>
                 </div>
-            </div>
+              </div>
+            {/showLoadMore}
+
         </div>
 
         {> "app.views.view.partial.footer" /}

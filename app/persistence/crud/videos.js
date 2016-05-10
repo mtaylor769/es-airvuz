@@ -26,6 +26,18 @@ var Videos = function() {
 	
 };
 
+function getRecentVideos(count, page) {
+	var limit = count ? count : 10;
+	var skip = (page ? page : 1) * limit;
+	return VideoModel.find({}).sort('-uploadDate').skip(skip).populate('userId').limit(limit).exec();
+}
+
+function getTrendingVideos(count, page) {
+	var limit = count ? count : 10;
+	var skip = (page ? page : 1) * limit;
+	return VideoModel.find({}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
+}
+
 /*
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
@@ -184,5 +196,8 @@ Videos.prototype.getByUser = function(userId) {
 Videos.prototype.upCount = function(video) {
 	return video.save()
 };
+
+Videos.prototype.getRecentVideos = getRecentVideos;
+Videos.prototype.getTrendingVideos = getTrendingVideos;
 
 module.exports = new Videos();
