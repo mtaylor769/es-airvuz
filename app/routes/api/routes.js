@@ -13,6 +13,7 @@ var slide               = require('./slide');
 var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
+var videoCollection     = require('./videoCollection');
 var protect             = require('../../middlewares/protect');
 
 
@@ -187,6 +188,17 @@ apiRouter.route('/api/slide/:id')
   .get(slide.get)
   .delete(slide.remove)
   .put(slide.put);
+
+/**
+ * /api/featured-videos/
+ */
+apiRouter.route('/api/featured-videos')
+  .get(videoCollection.getVideos('Featured Videos'))
+  .put(videoCollection.updateVideo('Featured Videos'));
+
+apiRouter.route('/api/staff-pick-videos')
+  .get(videoCollection.getVideos('Staff Pick Videos'))
+  .put(videoCollection.updateVideo('Staff Pick Videos'));
 
 /**
  * /api/upload

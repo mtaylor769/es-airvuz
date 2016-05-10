@@ -62,12 +62,14 @@
       .state('featuredVideos', {
         url: '/admin/featuredVideos',
         templateUrl: '/admin/app/featuredVideos/partial/featuredVideos.html',
-        controller: 'featuredVideoController'
+        controller: 'featuredVideoController',
+        controllerAs: 'vm'
       })
       .state('staffVideos', {
         url: '/admin/staffVideos',
         templateUrl: '/admin/app/staffPickVideos/partial/staffVideos.html',
-        controller: 'staffVideoController'
+        controller: 'StaffPickVideoController',
+        controllerAs: 'vm'
       })
       .state('reports', {
         url: '/admin/reports',

@@ -3,37 +3,40 @@
 
   angular
     .module('AirvuzAdmin')
-    .controller('staffVideoController', staffVideoController);
+    .controller('StaffPickVideoController', StaffPickVideoController);
 
-  staffVideoController.$inject = ['StaffVideos', '$http', '$scope'];
+  StaffPickVideoController.$inject = ['$http'];
 
-  function staffVideoController(StaffVideos, $http, $scope) {
-    StaffVideos.query().$promise.then(function (videos) {
-      console.log(videos);
-      $scope.staffVideos = videos;
-    });
+  function StaffPickVideoController($http) {
 
-
-    function addVideo(id) {
-      var newVideo = new StaffVideos({staffpicksListId: id});
-      newVideo.$save().then(function(video){
-        $scope.staffVideos.push(video);
-      }).catch(function(err){
-        alert(err.data);
-      })
+    function initialize() {
+      $http.get('/api/staff-pick-videos')
+        .then(function (response) {
+          vm.videoCollection = response.data;
+        });
     }
 
-    function deleteVideo(video) {
-      StaffVideos.delete({id: video._id}).$promise.then(function(){
-        var index = $scope.staffVideos.indexOf(video);
-        var remove = $scope.staffVideos.splice(index, 1);
-      }).catch(function(err){
-        alert(err.data);
-      })
+    function addVideo(id) {
+      vm.videoCollection.videos.push(id);
+      _updateVideoCollection();
+    }
+
+    function _updateVideoCollection() {
+      $http.put('/api/staff-pick-videos', {videos: vm.videoCollection.videos})
+        .then(function (response) {
+        })
+    }
+
+    function removeVideo(index) {
+      vm.videoCollection.videos.splice(index, 1);
+      _updateVideoCollection();
     }
 
     ///////////////////////
-    $scope.addVideo = addVideo;
-    $scope.deleteVideo = deleteVideo;
+    var vm          = this;
+    vm.addVideo     = addVideo;
+    vm.removeVideo  = removeVideo;
+
+    initialize();
   }
 })();

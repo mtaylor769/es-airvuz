@@ -5,36 +5,38 @@
     .module('AirvuzAdmin')
     .controller('featuredVideoController', featuredVideoController);
 
-  featuredVideoController.$inject = ['FeaturedVideos', '$scope'];
+  featuredVideoController.$inject = ['$http'];
 
-  function featuredVideoController(FeaturedVideos, $scope) {
-    FeaturedVideos.query().$promise.then(function (videos) {
-      console.log(videos);
-      $scope.featuredVideos = videos;
-    });
+  function featuredVideoController($http) {
 
-
-    function addVideo(id) {
-      var newVideo = new FeaturedVideos({featureVideoListId: id});
-      newVideo.$save().then(function(video){
-        $scope.featuredVideos.push(video);
-      }).catch(function(err){
-        alert(err.data);
-      })
+    function initialize() {
+      $http.get('/api/featured-videos')
+        .then(function (response) {
+          vm.videoCollection = response.data;
+        });
     }
 
-    function deleteVideo(video) {
-      FeaturedVideos.delete({id: video._id}).$promise.then(function(){
-        var index = $scope.featuredVideos.indexOf(video);
-        var remove = $scope.featuredVideos.splice(index, 1);
-      }).catch(function(err){
-        console.log(err);
-        alert(err.data);
-      })
+    function addVideo(id) {
+      vm.videoCollection.videos.push(id);
+      _updateVideoCollection();
+    }
+
+    function _updateVideoCollection() {
+      $http.put('/api/featured-videos', {videos: vm.videoCollection.videos})
+        .then(function (response) {
+        })
+    }
+
+    function removeVideo(index) {
+      vm.videoCollection.videos.splice(index, 1);
+      _updateVideoCollection();
     }
 
     ///////////////////////
-    $scope.addVideo = addVideo;
-    $scope.deleteVideo = deleteVideo;
+    var vm          = this;
+    vm.addVideo     = addVideo;
+    vm.removeVideo  = removeVideo;
+
+    initialize();
   }
 })();
