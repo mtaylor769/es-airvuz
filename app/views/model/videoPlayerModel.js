@@ -51,7 +51,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 	return videoCrud.getById(videoId)
 		.then(function(video) {
 			if(video.title.length > 45) {
-				video.displayTitle = video.title.substring(0, 45) + '...';
+				video.title = video.title.substring(0, 45) + '...';
 			}
 			dataObject.video 	= video;
 			checkObject.video = video._id;
@@ -59,15 +59,18 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return userCrud.getUserById(video.userId);
 		})
 		.then(function(user) {
+			if(user.profilePicture.length === 0) {
+				user.profilePicture = "/assets/img/default.png"
+			}
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
 			return videoCrud.get5Videos();
 		})
 		.then(function(videos) {
 			videos.forEach(function(video) {
-				video.title = video.title.substring(0, 45);
+				video.title = video.title.substring(0, 30);
 				video.description = video.description.substring(0, 90);
-				if (video.title.length === 45) {
+				if (video.title.length === 30) {
 					video.title = video.title + '...'
 				}
 				if (video.description.length === 90) {

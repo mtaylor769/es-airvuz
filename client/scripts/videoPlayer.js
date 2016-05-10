@@ -1,6 +1,7 @@
 var AVEventTracker			= require('./avEventTracker');
-var identity      = require('./services/identity');
-var user          = identity;
+var identity            = require('./services/identity');
+var user                = identity;
+var $videoPage;
 var screenWidth;
 
 
@@ -53,62 +54,7 @@ function incrementVideoCount() {
 
 function bindEvents() {
   // all stuff with .on()
-  $('.reply').on('click', function () {
 
-    //remove other comment boxes from DOM when another is selected
-
-    $('.commentBox').remove();
-    $('.reply').show();
-
-    var elementId = '#'+$(this).attr('value');
-    var parentCommentId = $(this).attr('value');
-    var html = '<div style="display: none" class="flex commentBox">' +
-      '<textarea id="comment" cols="80" rows="1" style="margin-bottom: 20px; width: 80%%; margin-left: 18%"></textarea>' +
-      '<button class="btn background-orange border-radius-0 font-white" id="saveComment" style="margin-bottom: 20px;">Submit</button>' +
-      '</div>';
-    $(elementId).append(html);
-    $('.commentBox').delay(200).slideDown();
-    $(this).hide();
-
-
-    //comment submit function
-
-    $('#saveComment').click(function() {
-
-
-
-      var self = this;
-      var comment = {};
-      comment.comment = $('#comment').val();
-      comment.parentCommentId = parentCommentId;
-      comment.userId = user._id;
-      comment.videoId = '56fec7bb07354aaa096db3b8';
-
-      $.ajax({
-          type: 'POST',
-          url: '/api/comment',
-          data: comment,
-          dataType: 'json'
-        })
-        .done(function(reply) {
-          //insert comment on DOM
-          console.log(reply);
-          var html = '<div class="flex placehold">'+
-            '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-20">'+
-            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
-            '<p class="m-b-0">' + reply.comment + '</p>'+
-            '</div>'+
-            '</div>';
-
-          $(self).parents('.comment-wrap').find('.parentComment').append(html);
-          var currentCount = $('.commentCount').text();
-          var toNumber = Number(currentCount);
-          $('.commentCount').text('  ' + (toNumber + 1) + '  ');
-        })
-    });
-  });
 
   //create comment and append
 
@@ -168,57 +114,11 @@ function bindEvents() {
       })
   });
 
-//get child comments
-
-  $('.commentReplies').on('click', function() {
-    var parentId = $(this).attr('value');
-    var self = this;
-    $.ajax({
-        type:'GET',
-        url: '/api/comment/byParent',
-        data: {parentId: parentId}
-      })
-      .done(function(data) {
-
-        //create child comment DOM elements
-        var html = '';
-        data.forEach(function(reply) {
-          html += '<li>'+
-            '<div class="flex">'+
-            '<img src="' + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-20">'+
-            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
-            '<p class="m-b-0">' + reply.comment + '</p>'+
-            '</div>'+
-            '</div>' +
-            '</li>'
-        });
-
-        //append child elements to DOM
-        $(self).parents('div').find('.placehold').remove();
-        $(self).parents('.comment-wrap').find('.parentComment').append(html);
-        if(data.length === 10) {
-          html = '<span><a class="moreReplies" value="'+parentId+'">load More</a></span>';
-          $(self).parent().replaceWith(html);
-        } else {
-          $(self).parent().hide();
-        }
-      })
-  });
-
   $('.go-to-video').on('click', function() {
     window.location.href = $(this).attr('value');
   });
 
   $('.like').on('click', function() {
-    //$(this).toggleClass('airvuz-blue');
-    //
-    //if($('.like-count').text() === "0") {
-    //  $('.like-count').text("1")
-    //} else {
-    //  $('.like-count').text("0")
-    //}
     var likeObject = {};
     likeObject.videoId = $(this).attr('data-videoId');
     likeObject.userId = user._id;
@@ -345,14 +245,148 @@ function bindEvents() {
 
   $('#google').on('click', function() {
     $('#google-plus-modal').modal('show');
-  })
+  });
+
+
+  //event delegation start
+
+
+  function commentReply() {
+
+    //remove other comment boxes from DOM when another is selected
+
+    $('.commentBox').remove();
+    $('.reply').show();
+
+    var elementId = '#'+$(this).attr('value');
+    var parentCommentId = $(this).attr('value');
+    var html = '<div style="display: none" class="flex commentBox">' +
+      '<textarea id="comment" cols="80" rows="1" style="margin-bottom: 20px; width: 80%%; margin-left: 18%"></textarea>' +
+      '<button class="btn background-orange border-radius-0 font-white" id="saveComment" style="margin-bottom: 20px;">Submit</button>' +
+      '</div>';
+    $(elementId).append(html);
+    $('.commentBox').delay(200).slideDown();
+    $(this).hide();
+
+
+    //comment submit function
+
+    $('#saveComment').click(function() {
+      var self = this;
+      var comment = {};
+      comment.comment = $('#comment').val();
+      comment.parentCommentId = parentCommentId;
+      comment.userId = user._id;
+      comment.videoId = '56fec7bb07354aaa096db3b8';
+
+      $.ajax({
+          type: 'POST',
+          url: '/api/comment',
+          data: comment,
+          dataType: 'json'
+        })
+        .done(function(reply) {
+          //insert comment on DOM
+          console.log(reply);
+          var html = '<div class="flex">'+
+            '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
+            '<div class="m-t-10">'+
+            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
+            '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+            '<p class="m-b-0">' + reply.comment + '</p>'+
+            '</div>'+
+            '</div>';
+
+          $(self).parents('.comment-wrap').find('.parentComment').append(html);
+          var currentCount = $('.commentCount').text();
+          var toNumber = Number(currentCount);
+          $('.commentCount').text('  ' + (toNumber + 1) + '  ');
+        })
+    });
+  }
+
+
+
+  //get child comments
+
+  function commentReplies() {
+    var parentId = $(this).attr('value');
+    var self = this;
+    $.ajax({
+        type:'GET',
+        url: '/api/comment/byParent',
+        data: {parentId: parentId}
+      })
+      .done(function(data) {
+
+        //create child comment DOM elements
+        var html = '';
+        data.forEach(function(reply) {
+          html += '<li>'+
+            '<div class="flex">'+
+            '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
+            '<div class="m-t-10">'+
+            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
+            '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+            '<p class="m-b-0">' + reply.comment + '</p>'+
+            '</div>'+
+            '</div>' +
+            '</li>'
+        });
+
+        //append child elements to DOM
+        $(self).parents('.comment-wrap').find('.parentComment').append(html);
+        if(data.length === 10) {
+          html = '<div class="row m-t-10" style="text-align: center"><span><a class="moreReplies" value="'+parentId+'">load More</a></span></div>';
+          console.log($(self));
+          $(self).parent().siblings().append(html);
+          $(self).hide();
+        } else {
+          console.log($(self));
+          $(self).hide();
+        }
+      })
+  }
+
+
+
+  //description functions
+  function moreDescription() {
+    var html = '<div class="show-less-description"><span class="glyphicon glyphicon-chevron-up"></span></div>';
+      $('#video-description').slideDown();
+      $(this).hide();
+      $('.description-container').append(html);
+  }
+
+  function lessDescription() {
+    $('#video-description').slideUp();
+    $(this).hide();
+    $('.show-more-description').show();
+  }
+
+  ///////////////////////////////////////
+
+  $videoPage
+    .on('click', '.show-more-description', moreDescription)
+    .on('click', '.show-less-description', lessDescription)
+    .on('click', '.commentReplies', commentReplies)
+    .on('click', '.reply', commentReply);
 
 }
 
 function initialize() {
+  $videoPage = $('.video-page');
   incrementVideoCount();
   $('#auto-play-input').onoff();
   bindEvents();
+  setTimeout(function() {
+    $('#video-description').slideDown();
+  }, 1000);
+  setTimeout(function() {
+    var html = '<div class="show-more-description"><span class="glyphicon glyphicon-chevron-down"></span></div>';
+    $('#video-description').slideUp();
+    $('.description-container').append(html)
+  }, 5000);
 }
 
 module.exports = {

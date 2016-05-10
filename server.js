@@ -97,20 +97,22 @@ app.use(passport.session());
 app.use(require('./app/routes/api/routes'));
 
 
-var viewManager				= require('./app/views/manager/viewManager');
-var indexView					= require('./app/views/view/indexView');
-var videoPlayerView		= require('./app/views/view/videoPlayerView');
-var userProfileView		= require('./app/views/view/userProfileView');
-var loginView 				= require('./app/views/view/loginView');
-var videoUploadView		= require('./app/views/view/videoUploadView');
-var searchView				= require('./app/views/view/searchView');
-var categoryView			= require('./app/views/view/categoryView');
-var staticView				= require('./app/views/view/staticView');
+var viewManager							= require('./app/views/manager/viewManager');
+var indexView								= require('./app/views/view/indexView');
+var videoPlayerView					= require('./app/views/view/videoPlayerView');
+var userProfileView					= require('./app/views/view/userProfileView');
+var loginView 							= require('./app/views/view/loginView');
+var videoUploadView					= require('./app/views/view/videoUploadView');
+var searchView							= require('./app/views/view/searchView');
+var categoryView						= require('./app/views/view/categoryView');
+var staticView							= require('./app/views/view/staticView');
+var videoPlayerEmbedView 		= require('./app/views/view/videoPlayerEmbedView');
 
 
 viewManager.addView({	view : indexView });
 viewManager.addView({	view : userProfileView });
 viewManager.addView({	view : videoPlayerView });
+viewManager.addView({ view : videoPlayerEmbedView });
 viewManager.addView({ view : loginView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
@@ -152,6 +154,10 @@ app.get("/userProfile/:userName", function(req, res) {
 
 app.get("/videoPlayer/:id", function(req, res) {
 	loadView(req, res, videoPlayerView.getViewName());
+});
+
+app.get("/videoPlayerEmbed/:id", function(req, res) {
+	loadView(req, res, videoPlayerEmbedView.getViewName());
 });
 
 app.get("/videoUpload", function(req, res) {

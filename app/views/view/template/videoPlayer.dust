@@ -67,23 +67,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" id="google-plus-modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Login to comment</h4>
-                </div>
-                <div class="modal-body">
-                    <iframe src="https://"></iframe>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary go-to-login" data-dismiss="modal">Go To Login</button>
-                </div>
-            </div>
-        </div>
-    </div>
         <div class="video-page">
             <div class="container main">
                 <div class="row">
@@ -111,6 +94,11 @@
                                 <li>{name}</li>
                                 {/video.categories}
                             </ul>
+                            <div class="description-container">
+                                <div id="video-description" style="margin: 20px; border-top: 2px solid white; padding:10px; display: none">
+                                    <p>{video.description}</p>
+                                </div>
+                            </div>
                         </div>
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
@@ -134,7 +122,7 @@
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
-                                <span class="p-l-10 hidden-xs">{video.viewCount} <span class="bold airvuz-blue">VUZ</span> |</span>
+                                <span class="p-l-10 hidden-xs">{video.viewCount} <span class="bold airvuz-blue">VUZ</span> |  </span>
                                 <span class="like-count">{video.likeCount}</span><span class="bold">  Likes |</span>
                                 <span> {video.commentCount} </span><span class="bold commentCount">Comments</span>
                             </div>
@@ -198,12 +186,12 @@
                         {#upNext}
                             <li style="width: 100%; position: relative" class="go-to-video" value="{_id}">
                                 <div class="up-next-wrapper">
-                                    <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%" class="m-t-10">
+                                    <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" class="m-t-10">
                                     <div class="up-next-layer">
-                                        <p class="font-white m-l-15 p-t-15 up-next-title">{title}</p>
+                                        <p class="font-white m-l-15 up-next-title">{title}</p>
                                         <div class="flex up-next-subs">
-                                            <p class="font-white m-l-15">{duration}</p>
-                                            <p class="font-white pos-absolute-r-15">{viewCount} <span class="airvuz-blue">VUZ</span></p>
+                                            <p class="font-white m-l-15">{viewCount} <span class="airvuz-blue">VUZ</span></p>
+                                            <p class="font-white pos-absolute-r-15">{duration}</p>
                                         </div>
                                     </div>
                                 </div>

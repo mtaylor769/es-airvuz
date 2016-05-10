@@ -376,11 +376,6 @@ body.modal-open {
   border-bottom: inset;
 }
 
-.up-next-layer {
-  position: relative;
-  background-color: rgba(0,0,0,0.5);
-}
-
 .video-player-layer {
 
 }
@@ -510,9 +505,16 @@ body.modal-open {
 
 .up-next-layer p {
   font-size: 20px;
+  margin-bottom: 5px;
+}
+
+
+.up-next-layer .up-next-title {
+  margin-top: 5px;
+  margin-bottom: 0px;
 }
 .up-next-subs p {
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .social-icons .social:hover {
@@ -530,7 +532,7 @@ body.modal-open {
 .share, .report, .like {
   padding: 0;
   margin: 0;
-  width: 55px;
+  width: 50px;
   text-align: center
 }
 
@@ -539,7 +541,7 @@ body.modal-open {
 }
 
 .go-to-video {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 /*
@@ -801,6 +803,19 @@ Begin userProfile CSS
   background: white;
 }
 
+.description-container {
+  text-align: center;
+  width: 100%;
+}
+
+.show-more-description {
+  padding: 10px 0;
+}
+
+#video-description {
+  text-align: left;
+}
+
 /*
   use class="glyphicon glyphicon-ok"
   */
@@ -862,6 +877,7 @@ use class="glyphicon glyphicon-minus"
   width: 100%;
   position: absolute;
   bottom: 0;
+  background-color: rgba(0,0,0,0.5);
 }
 
 /*
@@ -1151,18 +1167,8 @@ End user profile CSS
     display: none;
   }
 
-  .up-next-layer {
-    margin-top: -102px;
-    background-color: rgba(0,0,0,0.5);
-  }
-
-  .up-next-title{
-    font-size: 18px;
-    height: 60px;
-  }
-
   .up-next-subs p {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .profile-information {
@@ -1222,10 +1228,10 @@ End user profile CSS
   }
 
   .up-next-layer p {
-    font-size: 20px;
+    font-size: 13px;
   }
   .up-next-subs p {
-    font-size: 16px;
+    font-size: 12px;
   }
 
   #user-profile .profile-space {
