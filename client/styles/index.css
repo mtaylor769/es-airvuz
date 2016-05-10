@@ -82,7 +82,7 @@ body.modal-open {
   font-size: 15px;
 }
 #footer .social-media a {
-  font-size: 20px;
+  font-size: 30px;
   color: #30c1ed;
 }
 
@@ -1106,6 +1106,10 @@ End user profile CSS
   .footer-sub1 .footer-signup button {
     margin: 15px 0 0 15px;
     display: inline-block;
+  }
+  #footer .social-media a {
+    font-size: 25px;
+    color: #30c1ed;
   }
 }
 
