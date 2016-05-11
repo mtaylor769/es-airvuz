@@ -37,14 +37,28 @@ CategoryModel.prototype.getData = function(params) {
 	params.data.vendor.js   = sourceManifest["vendor.js"];
 	params.data.viewName		= "Category";
 
-	var videoPromise;
-	if (params.request.params.category === 'Featured Videos') {
-		videoPromise = VideoCollection.getFeaturedVideos(12, 1);
-	} else if (params.request.params.category === 'Staff Pick Videos') {
-		videoPromise = VideoCollection.getStaffPickVideos(12, 1);
-	} else {
-		videoPromise = Videos.get5Videos(12);
+	var videoPromise,
+			TOTAL_PER_PAGE = 12;
+
+	switch(params.request.params.category) {
+		case 'Featured Videos':
+			videoPromise = VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, 1);
+			break;
+		case 'Staff Pick Videos':
+			videoPromise = VideoCollection.getStaffPickVideos(TOTAL_PER_PAGE, 1);
+			break;
+		case 'Recent Videos':
+			videoPromise = Videos.getRecentVideos(TOTAL_PER_PAGE, 1);
+			break;
+		case 'Trending Videos':
+			videoPromise = Videos.getTrendingVideos(TOTAL_PER_PAGE, 1);
+			break;
+		default:
+			// TODO: get by category
+			videoPromise = Videos.get5Videos(TOTAL_PER_PAGE);
+			break;
 	}
+
 	var promise = Promise.all([CategoryType.get(), videoPromise])
 			.then(function(data) {
 				params.data.category = params.request.params.category;
