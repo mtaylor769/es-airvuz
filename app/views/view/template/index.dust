@@ -37,7 +37,7 @@
               <a href="/videoPlayer/{videoId}">
                 <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-asset-beta/slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
               </a>
-              <a href="/videoPlayer/{videoId}" class="btn btn-primary">Watch now</a>
+              <a href="/videoPlayer/{videoId}" class="btn btn-default">Watch now</a>
             </div>
           {/index.slider.slides}
         </div>
@@ -46,19 +46,19 @@
         <div id="slider-description-slick">
             {#index.slider.slides}
               <div class="col-md-12">
+                <h3>{name}</h3>
+                By <a href="/userProfile/{video.userId.userName}">{video.userId.userName}</a>
                 <div class="slide-description">
-                  <h2>{name}</h2>
-                  <p>{description}</p>
+                    {description}
                 </div>
                 <hr/>
               </div>
-
             {/index.slider.slides}
         </div>
 
         <div class="text-center arrow">
-          <a href="#">
-            <span class="glyphicon glyphicon-chevron-down"></span>
+          <a href="#" class="btn btn-link">
+            <span class="glyphicon glyphicon-chevron-down fa-rotate-180"></span>
           </a>
         </div>
       </div>

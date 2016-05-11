@@ -31,6 +31,16 @@ body.modal-open {
   background-color: #238bab;
   border-color: #238bab;
 }
+.btn-default {
+  color: #fff;
+  background-color: #f48a4a;
+  border-color: #f48a4a;
+}
+.btn-default:hover, .btn-default:focus, .btn-default[disabled]:hover {
+  color: #fff;
+  background-color: #ff7827;
+  border-color: #ff7827;
+}
 .progress-bar {
   background-color: #f48a4a;
 }
@@ -57,7 +67,7 @@ body.modal-open {
   min-height: 63px;
 }
 
-.video a {
+.video h4 a {
   color: #000;
 }
 

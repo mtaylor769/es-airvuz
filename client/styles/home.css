@@ -45,6 +45,10 @@
     color: #30c1ed;
 }
 
+#home-page #slider-description-slick h3 {
+    margin: 10px 0 0;
+}
+
 /***************************
  * Slick theme
  */
