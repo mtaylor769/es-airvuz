@@ -51,6 +51,8 @@ function incrementVideoCount() {
 //bind events
 function bindEvents() {
 
+  //api calls
+
   //create comment and append
   $('#commentSave').on('click', function() {
     AVEventTracker({
@@ -103,12 +105,7 @@ function bindEvents() {
 
   //video like
   $('.like').on('click', function() {
-    if(!user._id) {
-      $('#like-modal').modal('show');
-      $('.go-to-login').on('click', function() {
-        $('#login-modal').modal('show');
-      })
-    } else {
+    if(user._id && user._id !== video.userId) {
       var likeObject = {};
       likeObject.videoId = $(this).attr('data-videoId');
       likeObject.userId = user._id;
@@ -141,6 +138,13 @@ function bindEvents() {
         })
         .fail(function (error) {
         });
+    } else if(!user._id) {
+      $('#like-modal').modal('show');
+      $('.go-to-login').on('click', function () {
+        $('#login-modal').modal('show');
+      })
+    } else {
+      $('#like-self-modal').modal('show');
     }
   });
 
@@ -389,7 +393,9 @@ function bindEvents() {
 function initialize() {
   $videoPage = $('.video-page');
   incrementVideoCount();
-  $('#auto-play-input').onoff();
+  $("[name='auto-play-input']").bootstrapSwitch({
+    size: 'mini'
+  });
   bindEvents();
   setTimeout(function() {
     $('#video-description').slideDown();

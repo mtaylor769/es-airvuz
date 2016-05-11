@@ -103,7 +103,9 @@ function initialize() {
       $('#allvideos').html(html);
     })
   }
-
+  $("[name='showcase-default']").bootstrapSwitch({
+    size: 'mini'
+  });
   console.log('initalize');
   bindEvents();
 }

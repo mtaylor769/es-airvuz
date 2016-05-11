@@ -541,6 +541,13 @@ body.modal-open {
   margin-bottom: 10px;
 }
 
+.video-page .bootstrap-switch {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+  border-radius: 50px;
+}
+
 #follow {
   font-size: 25px;
 }

@@ -8,6 +8,7 @@ try {
 	var BaseModel	    = require('./baseModel');
 	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
 	var Promise		    = require('bluebird');
+	var moment				= require('moment');
 	var util			    = require('util');
 	var videoCrud     = require('../../persistence/crud/videos');
 	var userCrud      = require('../../persistence/crud/users');
@@ -85,6 +86,10 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return commentCrud.getParentCommentByVideoId({videoId: videoId});
 		})
 		.then(function (comments) {
+			comments.forEach(function(comment) {
+				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+				console.log(comment.commentCreatedDate);
+			});
 			dataObject.comments = comments;
 				return categoryCrud.get();
 		})

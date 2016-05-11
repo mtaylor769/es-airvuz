@@ -28,6 +28,7 @@
 
         {!css page specific!}
         <link href="//vjs.zencdn.net/5.4.6/video-js.min.css" rel="stylesheet">
+        <link href="/client/lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
         {>  "app.views.view.partial.css" /}
     </head>
     <body>
@@ -114,7 +115,7 @@
                                 <div class="flex">
                                     <img src="http://www.airvuz.com/{user.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
                                     <div class="m-t-20">
-                                        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}"></p>
+                                        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
                                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>
                                         <p class="m-b-0">{comment}</p>
                                     </div>
@@ -145,7 +146,7 @@
                             <h5 class="up-tag">UP NEXT</h5>
                             <div class="auto-play">
                                 <h5>AutoPlay</h5>
-                                <input type="checkbox" id="auto-play-input">
+                                <input type="checkbox" name="auto-play-input" checked>
                             </div>
                         </div>
                         <ul style="list-style: none; padding-left: 0">
@@ -184,10 +185,10 @@
                 document.getElementById('fb-root').appendChild(e);
             }());
         </script>
-    <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
-    <script src="https://apis.google.com/js/client:platform.js" async defer></script>
-    {!cdn page specfic!}
+        {!cdn page specfic!}
         <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
+        <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+        <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
         {> "app.views.view.partial.js" /}
         <script>
             var video = {video|js|s};
