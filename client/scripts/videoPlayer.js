@@ -393,8 +393,10 @@ function bindEvents() {
 function initialize() {
   $videoPage = $('.video-page');
   incrementVideoCount();
+  console.log(user);
   $("[name='auto-play-input']").bootstrapSwitch({
-    size: 'mini'
+    size: 'mini',
+    state: user.autoPlay
   });
   bindEvents();
   setTimeout(function() {

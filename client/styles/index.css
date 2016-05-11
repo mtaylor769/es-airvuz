@@ -817,7 +817,8 @@ Begin userProfile CSS
 }
 
 .show-more-description {
-  padding: 10px 0;
+  margin-top: 20px;
+  display: block;
 }
 
 #video-description {
