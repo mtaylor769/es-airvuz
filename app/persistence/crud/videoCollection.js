@@ -49,13 +49,17 @@ function getFeaturedVideos(count, page) {
 function getVideoAndPopulate(type) {
   return VideoCollectionModel.findOne({name: type, user: null}).populate('videos').lean().exec()
     .then(function (collection) {
-      return VideoCollectionModel.populate(collection, {path: 'videos.userId', model: 'Users'}).then(function (col) {
-        if (col.length === 0) {
-          return [];
-        }
-        // TODO: slice / limit / paging
-        return col.videos;
-      });
+      if (collection) {
+        return VideoCollectionModel.populate(collection, {path: 'videos.userId', model: 'Users'}).then(function (col) {
+          if (col.length === 0) {
+            return [];
+          }
+          // TODO: slice / limit / paging
+          return col.videos;
+        });
+      } else {
+        return [];
+      }
     });
 }
 
