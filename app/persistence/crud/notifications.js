@@ -30,7 +30,17 @@ var Notifications = function() {
 
 
 Notifications.prototype.create = function(params) {
-
+  return(new Promise(function(resolve, reject) {
+    var notificationModel = new NotificationModel(params);
+      notificationModel.save(function(error, notification) {
+        if(error) {
+          reject(error);
+        } else {
+          resolve(notification);
+        }
+      })
+    })
+  )
 };
 
 

@@ -38,11 +38,16 @@ Follow.prototype.create = function(params) {
             resolve(follow);
           })
         } else {
-          reject('already following');
+          console.log(follow);
+          reject({followId: follow[0]._id});
         }
       })
     })
   )
+};
+
+Follow.prototype.delete = function(id) {
+  return FollowModel.findByIdAndRemove(id).exec();
 };
 
 

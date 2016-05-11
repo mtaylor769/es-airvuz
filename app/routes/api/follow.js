@@ -8,11 +8,15 @@ Follow.prototype.post = function(req, res) {
   FollowCrud
     .create(req.body)
     .then(function(follow) {
-      res.json(follow)
+      res.json({ status: 'followed' })
     })
     .catch(function(err) {
-      if(err === 'already following') {
-        res.send(err);
+      console.log(err);
+      if(err.followId) {
+        FollowCrud.delete(err.followId)
+        .then(function(follow) {
+          res.json({ status: 'unfollowed' })
+        })
       } else {
         res.send(500);
       }

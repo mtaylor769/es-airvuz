@@ -541,6 +541,10 @@ body.modal-open {
   margin-bottom: 10px;
 }
 
+#follow {
+  font-size: 25px;
+}
+
 /*
  * End Video Player
 /**********************************/

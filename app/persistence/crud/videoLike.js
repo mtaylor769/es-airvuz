@@ -35,25 +35,36 @@ var VideoLike = function () {
 VideoLike.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
     VideoLikeModel.find({videoId: params.videoId, userId: params.userId}).exec()
-      .then(function(like) {
-        if(like.length === 0) {
+      .then(function (like) {
+        if (like.length === 0) {
           return VideoModel.findById(params.videoId).exec()
-          .then(function(video) {
-            video.likeCount = video.likeCount + 1;
-            return video.save()
-          })
-          .then(function(video) {
-            var videLikeModel = new VideoLikeModel(params);
-            videLikeModel.save(function (error, videoLike) {
-              resolve(videoLike);
+            .then(function (video) {
+              video.likeCount = video.likeCount + 1;
+              return video.save()
             })
-          })
+            .then(function (video) {
+              var videLikeModel = new VideoLikeModel(params);
+              videLikeModel.save(function (error, videoLike) {
+                resolve(videoLike);
+              })
+            })
         } else {
-          reject('already liked');
+          return VideoModel.findById(params.videoId).exec()
+            .then(function (video) {
+              video.likeCount = video.likeCount - 1;
+              return video.save()
+                .then(function (video) {
+                  reject({likeId: like[0]._id});
+                })
+            })
         }
       })
-    })
+  })
   )
+};
+
+VideoLike.prototype.delete = function(id) {
+  return VideoLikeModel.findByIdAndRemove(id).exec()
 };
 
 VideoLike.prototype.likeCount = function(params) {

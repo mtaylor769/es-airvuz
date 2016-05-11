@@ -8,27 +8,20 @@ VideoLike.prototype.post = function(req, res) {
   VideoLikeCrud
     .create(req.body)
     .then(function(like) {
-      res.json(like);
+      res.json({status: 'liked' });
     })
     .catch(function(err) {
       console.log(err);
-      if(err === 'already liked') {
-        res.send(err)
+      if(err.likeId) {
+        VideoLikeCrud
+          .delete(err.likeId)
+          .then(function(like) {
+            res.json({ status: 'unliked' });
+          })
       } else {
         res.sendStatus(500);
       }
     });
-};
-
-VideoLike.prototype.delete = function(req, res) {
-  VideoLikeCrud
-  .delete(req.query.id)
-  .then(function() {
-    res.sendStatus(200);
-  })
-  .catch(function (err) {
-    res.sendStatus(500);
-  });
 };
 
 

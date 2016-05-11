@@ -4,36 +4,34 @@ var user                = identity;
 var $videoPage;
 var screenWidth;
 
+//toggle functions for mobile events
+var toggles = {
+      toggleLeft: function (nextPage, videoPage) {
+        screenWidth = videoPage.width();
+        nextPage.css("left", screenWidth);
+        nextPage.addClass('display');
+        nextPage.removeClass('mobile-display-none');
+        videoPage.addClass('mobile-display-none');
+        videoPage.removeClass('display');
+        nextPage.add(videoPage).animate( {
+          'left': '-=' + screenWidth + 'px'
+        }, 300).promise().done(function() {
+        })
+      },
+      toggleRight: function (videoPage, nextPage) {
+        videoPage.css("right", screenWidth);
+        videoPage.addClass('display');
+        videoPage.removeClass('mobile-display-none');
+        nextPage.addClass('mobile-display-none');
+        nextPage.removeClass('display');
+        videoPage.add(nextPage).animate({
+          'left': '+=' + screenWidth + 'px'
+        }, 300).promise().done(function(){
+        })
+      }
+    };
 
-var toggles       = {
-
-    toggleLeft: function (nextPage, videoPage) {
-      screenWidth = videoPage.width();
-      nextPage.css("left", screenWidth);
-      nextPage.addClass('display');
-      nextPage.removeClass('mobile-display-none');
-      videoPage.addClass('mobile-display-none');
-      videoPage.removeClass('display');
-      nextPage.add(videoPage).animate( {
-        'left': '-=' + screenWidth + 'px'
-      }, 300).promise().done(function() {
-      })
-    },
-
-    toggleRight: function (videoPage, nextPage) {
-      videoPage.css("right", screenWidth);
-      videoPage.addClass('display');
-      videoPage.removeClass('mobile-display-none');
-      nextPage.addClass('mobile-display-none');
-      nextPage.removeClass('display');
-      videoPage.add(nextPage).animate({
-        'left': '+=' + screenWidth + 'px'
-      }, 300).promise().done(function(){
-
-      })
-    }
-  };
-
+//video increment
 function incrementVideoCount() {
   var videoId = {};
   videoId.videoId = window.location.pathname.substring(13);
@@ -45,29 +43,21 @@ function incrementVideoCount() {
       dataType: 'json'
     })
     .done(function(response) {
-      console.log(response);
     })
     .error(function(error) {
-      console.log(error);
     });
 }
 
+//bind events
 function bindEvents() {
-  // all stuff with .on()
-
 
   //create comment and append
-
   $('#commentSave').on('click', function() {
-    console.log('step one');
     AVEventTracker({
       codeSource	: "videoPlayer",
       eventName		: "commentSave",
       eventType		: "click"
     });
-    console.log('step 2');
-
-    var self = this;
     var comment = {};
     comment.videoId = $(this).attr('value');
     comment.comment = $('#comment-text').val();
@@ -81,8 +71,6 @@ function bindEvents() {
       })
       .done(function(data) {
         var comment = data;
-        console.log(user);
-
         var html = '<li class="comment-wrap">'+
           '<div class="flex">'+
           '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
@@ -105,103 +93,114 @@ function bindEvents() {
           '</div>'+
           '</div>'+
           '</li>';
-
         $('.parent-comments').prepend(html);
-        $('#comment-text').val('')
+        $('#comment-text').val('');
         var currentCount = $('.commentCount').text();
         var toNumber = Number(currentCount);
         $('.commentCount').text('  ' + (toNumber + 1) + '  ');
       })
   });
 
-  $('.go-to-video').on('click', function() {
-    window.location.href = $(this).attr('value');
-  });
-
+  //video like
   $('.like').on('click', function() {
-    var likeObject = {};
-    likeObject.videoId = $(this).attr('data-videoId');
-    likeObject.userId = user._id;
-
-    $.ajax({
-        type: 'POST',
-        url: '/api/video-like',
-        data: likeObject,
-        dataType: 'json'
-      })
-      .done(function(response) {
-        $('.like').addClass('airvuz-blue');
-      })
-      .fail(function(error) {
-        alert(error.responseText);
-      })
-
-  });
-
-  $('.up-next').on('click', function(e) {
-    e.preventDefault();
-    var videoPage = $(this).parents().find('.videoplayback');
-    var nextPage = videoPage.siblings();
-    toggles.toggleLeft(nextPage, videoPage);
-  });
-
-  $('.videoback').on('click', function(e) {
-    e.preventDefault();
-    var nextPage = $(this).parents().find('.nextVideos');
-    var videoPage = nextPage.siblings();
-    toggles.toggleRight(videoPage, nextPage);
-  });
-
-  $('.share').on('click', function() {
-    $('.social-icons').toggle();
-  });
-
-  $('.embed').on('click', function() {
-    $('#dialog').dialog('open');
-    $('.ui-widget-overlay').css('background', 'black');
-    $('.social-icons').toggle();
-  });
-
-  $('.onoffswitch input[type=checkbox]').on('click', function() {
-    console.log($(this).val('off'));
-  });
-
-  $('.report').on('click', function() {
-    $('#report-modal').modal('show');
-  });
-
-  $('.page-back').on('click', function() {
-    window.history.back();
-  });
-
-  $('#comment-text').on('click', function() {
     if(!user._id) {
-      $('#comment-modal').modal('show');
+      $('#like-modal').modal('show');
       $('.go-to-login').on('click', function() {
         $('#login-modal').modal('show');
       })
+    } else {
+      var likeObject = {};
+      likeObject.videoId = $(this).attr('data-videoId');
+      likeObject.userId = user._id;
+
+      $.ajax({
+          type: 'POST',
+          url: '/api/video-like',
+          data: likeObject,
+          dataType: 'json'
+        })
+        .done(function (response) {
+          var likeLog = Number($('.like-count').text());
+          if (response.status === 'liked') {
+            AVEventTracker({
+              codeSource	: "videoPlayer",
+              eventName		: "videoLiked",
+              eventType		: "click"
+            });
+            $('.like').addClass('airvuz-blue');
+            $('.like-count').text(likeLog + 1)
+          } else if (response.status === 'unliked') {
+            AVEventTracker({
+              codeSource	: "videoPlayer",
+              eventName		: "videoUnliked",
+              eventType		: "click"
+            });
+            $('.like').removeClass('airvuz-blue');
+            $('.like-count').text(likeLog - 1)
+          }
+        })
+        .fail(function (error) {
+        });
     }
   });
 
+  //send report video info
   $('#send-report').on('click', function() {
-    console.log('button pressed');
     var reportData = {};
     reportData.videoId = $(this).attr('data-videoid');
     reportData.message = $('.report-text').val();
-    console.log(reportData);
     $.ajax({
-      type: 'POST',
-      url: '/api/videos/report-video',
-      data: reportData
-    })
-    .done(function(response) {
-
-    })
-    .error(function(error) {
-
-    })
+        type: 'POST',
+        url: '/api/videos/report-video',
+        data: reportData
+      })
+      .done(function(response) {
+      })
+      .error(function(error) {
+      })
   });
 
+  //follow video user
+  $('#follow').on('click', function() {
+    if(user._id && user._id !== video.userId) {
+      var followData = {};
+      followData.userId = user._id;
+      followData.followingUserId = video.userId;
+      $.ajax({
+          type: 'POST',
+          url: '/api/follow',
+          data: followData
+        })
+        .success(function (response) {
+          if(response.status === 'followed') {
+            AVEventTracker({
+              codeSource	: "videoPlayer",
+              eventName		: "followedUser",
+              eventType		: "click"
+            });
+            $('#follow').text('-');
+          } else if(response.status === 'unfollowed'){
+            AVEventTracker({
+              codeSource	: "videoPlayer",
+              eventName		: "unfollowedUser",
+              eventType		: "click"
+            });
+            $('#follow').text('+');
+          }
+        })
+        .error(function (error) {
+        })
+    } else if(!user._id) {
+      $('#follow-modal').modal('show');
+      $('.go-to-login').on('click', function() {
+        $('#login-modal').modal('show');
+      })
+    } else {
+      $('#follow-self-modal').modal('show');
+    }
+  });
+
+  //facebook modal event
   $('#facebook').click(function(e){
     e.preventDefault();
     FB.ui(
@@ -219,42 +218,62 @@ function bindEvents() {
     );
   });
 
-  $('#follow').on('click', function() {
-    if(user._id && user._id !== video.userId) {
-      var followData = {};
-      followData.userId = user._id;
-      followData.followingUserId = video.userId;
-      console.log(followData);
-      $.ajax({
-          type: 'POST',
-          url: '/api/follow',
-          data: followData
-        })
-        .success(function (response) {
-          console.log('response : ' + response)
-        })
-        .error(function (error) {
-          console.log('error: ' + error)
-        })
-    } else if(!user._id) {
-      console.log('login');
-    } else {
-      console.log('cannot follow yourself')
+  //functions to move mobile screen
+  $('.up-next').on('click', function(e) {
+    e.preventDefault();
+    var videoPage = $(this).parents().find('.videoplayback');
+    var nextPage = videoPage.siblings();
+    toggles.toggleLeft(nextPage, videoPage);
+  });
+
+  $('.videoback').on('click', function(e) {
+    e.preventDefault();
+    var nextPage = $(this).parents().find('.nextVideos');
+    var videoPage = nextPage.siblings();
+    toggles.toggleRight(videoPage, nextPage);
+  });
+
+  //share toggle
+  $('.share').on('click', function() {
+    $('.social-icons').toggle();
+  });
+
+  //embeded iframe modal
+  $('.embed').on('click', function() {
+    $('#dialog').dialog('open');
+    $('.ui-widget-overlay').css('background', 'black');
+    $('.social-icons').toggle();
+  });
+
+  // on off switch
+  $('.onoffswitch input[type=checkbox]').on('click', function() {
+    console.log($(this).val('off'));
+  });
+
+  //report modal
+  $('.report').on('click', function() {
+    $('#report-modal').modal('show');
+  });
+
+  //go to previous page
+  $('.page-back').on('click', function() {
+    window.history.back();
+  });
+
+  //comment modal
+  $('#comment-text').on('click', function() {
+    if(!user._id) {
+      $('#comment-modal').modal('show');
+      $('.go-to-login').on('click', function() {
+        $('#login-modal').modal('show');
+      })
     }
   });
 
-  $('#google').on('click', function() {
-    $('#google-plus-modal').modal('show');
-  });
-
-
   //event delegation start
-
-
   function commentReply() {
 
     //remove other comment boxes from DOM when another is selected
-
     $('.commentBox').remove();
     $('.reply').show();
 
@@ -268,9 +287,7 @@ function bindEvents() {
     $('.commentBox').delay(200).slideDown();
     $(this).hide();
 
-
     //comment submit function
-
     $('#saveComment').click(function() {
       var self = this;
       var comment = {};
@@ -305,10 +322,7 @@ function bindEvents() {
     });
   }
 
-
-
   //get child comments
-
   function commentReplies() {
     var parentId = $(this).attr('value');
     var self = this;
@@ -348,14 +362,12 @@ function bindEvents() {
       })
   }
 
-
-
   //description functions
   function moreDescription() {
     var html = '<div class="show-less-description"><span class="glyphicon glyphicon-chevron-up"></span></div>';
-      $('#video-description').slideDown();
-      $(this).hide();
-      $('.description-container').append(html);
+    $('#video-description').slideDown();
+    $(this).hide();
+    $('.description-container').append(html);
   }
 
   function lessDescription() {
