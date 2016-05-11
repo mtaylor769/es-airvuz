@@ -56,7 +56,7 @@
             {/index.slider.slides}
         </div>
 
-        <div class="text-center arrow">
+        <div class="text-center arrow invisible">
           <a href="#" class="btn btn-link">
             <span class="glyphicon glyphicon-chevron-down fa-rotate-180"></span>
           </a>

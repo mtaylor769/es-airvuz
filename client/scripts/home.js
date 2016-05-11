@@ -70,7 +70,7 @@ function initialize() {
         complete: function () {
           $('#slider-description-row')
             .find('.arrow span')
-            .removeClass('fa-rotate-180');
+            .removeClass('fa-rotate-180').parents('.arrow').removeClass('invisible');
         }
       });
 
