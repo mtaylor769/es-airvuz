@@ -7,12 +7,12 @@ var user    = {},
 // determine if there is current user login when load
 if (token) {
   user = jwtDecode(token);
-}
 
-if (userInfo) {
-  user.currentUser = JSON.parse(userInfo);
-} else {
-  getUserInfo();
+  if (userInfo) {
+    user.currentUser = JSON.parse(userInfo);
+  } else {
+    getUserInfo();
+  }
 }
 
 /**
