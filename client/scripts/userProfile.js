@@ -1,5 +1,5 @@
 var identity      = require('./services/identity');
-var user          = identity;
+var user          = identity.currentUser;
 var $profilePage  = null;
 
 
