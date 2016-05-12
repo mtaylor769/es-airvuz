@@ -1,6 +1,7 @@
 var identity      = require('./services/identity');
 var user          = identity.currentUser;
 var $profilePage  = null;
+var userData      = null;
 
 
 /*
@@ -31,7 +32,7 @@ function showcaseAdd(videoId, boolean) {
   })
   .error(function(error) {
     console.log('error : ' + error);
-  })
+  });
 }
 
 
@@ -90,9 +91,65 @@ function bindEvents() {
   }
 
   $profilePage
-    .on('click', '.asdf', asdf);
+    .on('click', '.asdf', asdf)
+    .on('click', '#save-edit-btn', editProfile);
 }
 
+function editProfile() {
+  var emailAddress        = $("#email").val();
+  var password            = $("#password").val();
+  var passwordVerify      = $("#verify-password").val();
+  var aboutMe             = $("#aboutme").val();
+  var facebook            = $("#facebook").val();
+  var googleplus          = $("#google").val();
+  var twitter             = $("#twitter").val();
+  var instagram           = $("#instagram").val();
+  var stopSubmit          = false;
+
+  if (emailAddress) {
+    //TODO check to see if email address is missing
+    userData.emailAddress = emailAddress;
+  }
+  if (password) {
+    if (password === passwordVerify) {
+      userData.password = password;
+    } 
+    else {
+      //TODO tooltip error passwords do not match
+      stopSubmit = true;
+    }
+    
+  }
+  if (aboutMe) {
+    userData.aboutMe = aboutMe;
+  }
+  if (facebook) {
+    userData.facebook = facebook;
+  }
+  if (google) {
+    userData.google = google;
+  }
+  if (twitter) {
+    userData.twitter = twitter;
+  }
+  if (instagram) {
+    userData.instagram = instagram;
+  }
+  if (!stopSubmit) {
+    $.ajax({
+      type:'PUT',
+      url: '/api/users/' + user._id,
+      data: userData
+    })
+    .success(function(response) {
+      user.autoPlay = response.autoPlay;
+    })
+    .error(function(error) {
+    });
+
+  }
+
+}
 
 function initialize() {
   $profilePage = $('#user-profile');

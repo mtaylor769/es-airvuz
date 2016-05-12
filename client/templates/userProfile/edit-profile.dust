@@ -7,7 +7,7 @@
       <form class="m-b-20">
         <div class="form-group">
           <label for="email">First Name</label>
-          <input type="text" class="form-control" id="firstname" placeholder="{?firstName}{firstName}{:else}First Name{/firstName}">
+          <input type="text" class="form-control" id="firstname" value="{firstName}" placeholder="First Name">
         </div>
         <div class="form-group">
           <label for="email">Last Name</label>
@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="text" class="form-control" id="email" placeholder="{?emailAddress}{emailAddress}{:else}Email{/emailAddress}">
+          <input type="text" class="form-control" id="email" placeholder="Email" value="{emailAddress}">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -27,27 +27,27 @@
         </div>
         <div class="form-group">
           <label for="aboutme">About Me <span class="text-danger">*</span></label>
-          <textarea name="aboutme" id="aboutme" rows="4" class="form-control" placeholder="{?aboutMe}{aboutMe}{:else}About Me{/aboutMe}" required></textarea>
+          <textarea name="aboutme" id="aboutme" rows="4" class="form-control" value="{aboutMe}" placeholder="About Me"></textarea>
         </div>
 
         <div class="form-group">
           <label for="facebook">Facebook Link</label>
-          <input type="text" class="form-control" id="facebook" placeholder="{?facebookUrl}{facebookUrl}{:else}Facebook Url{/facebookUrl}">
+          <input type="text" class="form-control" id="facebook" value="{facebookUrl}" placeholder="Facebook Url">
         </div>
 
         <div class="form-group">
           <label for="twitter">Twitter Link</label>
-          <input type="text" class="form-control" id="twitter" placeholder="{?twitterUrl}{twitterUrl}{:else}Twitter Url{/twitterUrl}">
+          <input type="text" class="form-control" id="twitter" value="{twitterUrl}" placeholder="Twitter Url">
         </div>
 
         <div class="form-group">
           <label for="instagram">Instagram Link</label>
-          <input type="text" class="form-control" id="instagram" placeholder="{?instagramUrl}{instagramUrl}{:else}Instagram Url{/instagramUrl}">
+          <input type="text" class="form-control" id="instagram" value="{instagramUrl}" placeholder="Instagram Url">
         </div>
 
         <div class="form-group">
           <label for="googleplus">Google+ Link</label>
-          <input type="text" class="form-control" id="googleplus" placeholder="{?googleUrl}{googleUrl}{:else}Google+ Url{/googleUrl}">
+          <input type="text" class="form-control" id="googleplus" value="{googleUrl}" placeholder="Google+ Url">
         </div>
 
         <div class="text-right">
