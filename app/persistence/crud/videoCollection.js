@@ -51,7 +51,7 @@ function getVideoAndPopulate(type) {
     .then(function (collection) {
       if (collection) {
         return VideoCollectionModel.populate(collection, {path: 'videos.userId', model: 'Users'}).then(function (col) {
-          if (col.length === 0) {
+          if (!col || col.length === 0) {
             return [];
           }
           // TODO: slice / limit / paging
