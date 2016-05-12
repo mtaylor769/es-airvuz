@@ -566,6 +566,39 @@ body.modal-open {
  * End Video Player
 /**********************************/
 
+#left-category {
+  background-color: #f4f4f4;
+  padding-top: 5px;
+}
+#left-category.is-open ul{
+  height: auto;
+  overflow: auto;
+}
+#left-category.is-open .glyphicon {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+#left-category ul {
+  height: 0;
+  overflow: hidden;
+}
+#left-category a {
+  display: inline-block;
+  width: 100%;
+  padding: 5px 0;
+  border-bottom: 1px solid #cecccc;
+  color: #000;
+  font-size: 14px;
+}
+
+#left-category a:hover {
+  color: #f48a4a;
+  text-decoration: none;
+  border-bottom: 1px solid #f48a4a;
+}
+
 /**********************************
  * misc helper
  */
@@ -605,6 +638,10 @@ body.modal-open {
 .pos-absolute-r-15 {
   position: absolute;
   right: 15px;
+}
+
+.border-left {
+  border-left: 1px solid #eee;
 }
 
 /*
@@ -1157,6 +1194,10 @@ End user profile CSS
   #header .av-search input:focus {
     width: 300px;
     left: -320px;
+  }
+  #left-category ul {
+    height: auto;
+    overflow: auto;
   }
   .write-comment {
     padding: 20px 40px;
