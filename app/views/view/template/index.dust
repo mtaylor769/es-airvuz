@@ -63,14 +63,30 @@
         </div>
       </div>
       {/index.slider}
-      {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos" viewAll="Featured%20Videos"/}
-      <hr/>
-      {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos" viewAll="Recent%20Videos"/}
-      <hr/>
-      {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos" viewAll="Trending%20Videos"/}
-      <hr/>
-      {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos" viewAll="Staff%20Pick%20Videos"/}
-      <br/>
+
+      <div class="row">
+        <div class="col-md-2" id="left-category">
+          <h5>
+            <span class="hidden-xs hidden-sm">SELECT A </span>CATEGORY
+            <span class="glyphicon glyphicon-chevron-down pull-right hidden-lg hidden-md"></span>
+          </h5>
+          <ul class="list-unstyled">
+            {#categories}
+              <li><a href="/category/{name}" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
+            {/categories}
+          </ul>
+        </div>
+        <div class="col-md-10 border-left">
+            {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos" viewAll="Featured%20Videos"/}
+          <hr/>
+            {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos" viewAll="Recent%20Videos"/}
+          <hr/>
+            {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos" viewAll="Trending%20Videos"/}
+          <hr/>
+            {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos" viewAll="Staff%20Pick%20Videos"/}
+        </div>
+      </div>
+
       <br/>
     </div>
     <!-- END:Main Container -->

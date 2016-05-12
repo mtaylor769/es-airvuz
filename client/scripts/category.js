@@ -8,6 +8,9 @@ function bindEvents() {
     console.groupEnd();
     /********************************************************/
   });
+  $('#left-category').on('click', 'h5', function () {
+    $(this).parent().toggleClass('is-open');
+  });
 }
 
 function initialize() {
