@@ -38,11 +38,16 @@
 #home-page #slider-description-row {
     position: relative;
 }
-
+#home-page #slider-description-row .arrow {
+    height: 15px;
+}
 #home-page #slider-description-row .arrow a {
-    position: relative;
-    bottom: -10px;
+    padding: 0;
     color: #30c1ed;
+}
+
+#home-page #slider-description-slick h3 {
+    margin: 10px 0 0;
 }
 
 /***************************

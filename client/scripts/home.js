@@ -64,11 +64,22 @@ function initialize() {
       asNavFor: '#slider-slick'
     });
 
-    $sliderDescriptionSlick.delay(SLIDER_DESCRIPTION_DELAY).slideUp();
+    $sliderDescriptionSlick.find('.slide-description')
+      .delay(SLIDER_DESCRIPTION_DELAY)
+      .slideUp({
+        complete: function () {
+          $('#slider-description-row')
+            .find('.arrow span')
+            .removeClass('fa-rotate-180').parents('.arrow').removeClass('invisible');
+        }
+      });
 
-    $homePage.on('click', '#slider-description-row a', function (event) {
+    $homePage.on('click', '#slider-description-row .arrow a', function (event) {
       event.preventDefault();
-      $sliderDescriptionSlick.slideDown();
+      $sliderDescriptionSlick.find('.slide-description').slideToggle();
+      $(this)
+        .find('span')
+        .toggleClass('fa-rotate-180');
     });
   }
 

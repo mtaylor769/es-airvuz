@@ -5,7 +5,10 @@ var schema        = mongoose.Schema({
   name            : String,
   imagePath       : String,
   imageAlt        : String,
-  videoId         : String,
+  video: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Video'
+  },
   description     : String
 });
 

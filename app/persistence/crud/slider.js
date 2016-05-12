@@ -52,7 +52,15 @@ function _getCurrentSlider() {
   return SliderModel.findOne({
     startDate: {$lte: new Date()},
     endDate: {$gte: new Date()}
-  }).populate('slides').lean().exec();
+  }).populate('slides').lean().exec()
+    .then(function (slider) {
+      if (slider) {
+        return SliderModel.populate(slider, {path: 'slides.video', model: 'Video'}).then(function (slider) {
+          return SliderModel.populate(slider, {path: 'slides.video.userId', model: 'Users'});
+        });
+      }
+      return {};
+    });
 }
 
 /**
@@ -65,7 +73,7 @@ function getHomeSlider(id) {
     return SliderModel.findOne({_id: id}).populate('slides').lean().exec()
       .then(function (slider) {
         if (slider) {
-          return slider;
+          return SliderModel.populate(slider, {path: 'slides.video', model: 'Video'});
         }
         return _getCurrentSlider();
       })
