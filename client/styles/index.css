@@ -419,6 +419,10 @@ body.modal-open {
   margin-top: 45%;
 }
 
+.video-user-more p:hover{
+  text-decoration: underline;
+}
+
 .write-comment textarea{
   width: 100%;
   padding: 10px;
