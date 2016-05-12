@@ -6,6 +6,7 @@ function initialize() {
     $sliderDescriptionSlick = $('#slider-description-slick'),
     $sliderSlick = $('#slider-slick');
 
+  // Featured Videos, Recent Videos, Trending Videos, Staff Pick Videos
   $('.video-slick').slick({
     infinite: true,
     slidesToShow: 4,
@@ -83,6 +84,13 @@ function initialize() {
     });
   }
 
+  bindEvents();
+}
+
+function bindEvents() {
+  $('#left-category').on('click', 'h5', function () {
+    $(this).parent().toggleClass('is-open');
+  });
 }
 
 module.exports = {

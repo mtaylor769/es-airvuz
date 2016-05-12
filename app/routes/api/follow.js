@@ -15,6 +15,7 @@ Follow.prototype.post = function(req, res) {
       if(err.followId) {
         FollowCrud.delete(err.followId)
         .then(function(follow) {
+          console.log(follow);
           res.json({ status: 'unfollowed' })
         })
       } else {

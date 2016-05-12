@@ -12,12 +12,25 @@
         {> "app.views.view.partial.header" /}
 
         <div id="category-page" class="container main">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2>{category}</h2>
-                </div>
+          <div class="row">
+            <div class="col-md-2" id="left-category">
+              <h5>
+                <span class="hidden-xs hidden-sm">SELECT A </span>CATEGORY
+                <span class="glyphicon glyphicon-chevron-down pull-right hidden-lg hidden-md"></span>
+              </h5>
+              <ul class="list-unstyled">
+                  {#categories}
+                    <li><a href="/category/{name}" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
+                  {/categories}
+              </ul>
             </div>
-            <div class="row" id="videos">
+            <div class="col-md-10 border-left">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{category}</h3>
+                </div>
+              </div>
+              <div class="row" id="videos">
                 <div class="col-md-12">
                     {#videos}
                       <div class="col-md-3 col-sm-6">
@@ -41,17 +54,20 @@
                       </div>
                     {/videos}
                 </div>
-            </div>
-            {#showLoadMore}
-              <div class="row">
-                <div class="col-md-12 m-b-20">
-                  <hr/>
-                  <div class="text-center">
-                    <button class="btn btn-primary" id="load-more-btn">Load more videos</button>
-                  </div>
-                </div>
               </div>
-            {/showLoadMore}
+                {#showLoadMore}
+                  <div class="row">
+                    <div class="col-md-12 m-b-20">
+                      <hr/>
+                      <div class="text-center">
+                        <button class="btn btn-primary" id="load-more-btn">Load more videos</button>
+                      </div>
+                    </div>
+                  </div>
+                {/showLoadMore}
+            </div>
+          </div>
+
 
         </div>
 

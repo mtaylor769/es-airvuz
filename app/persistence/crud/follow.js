@@ -46,6 +46,10 @@ Follow.prototype.create = function(params) {
   )
 };
 
+Follow.prototype.followCheck = function(params) {
+  return FollowModel.findOne({followingUserId:params.followingUserId, userId:params.userId}).exec()
+};
+
 Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();
 };

@@ -1,6 +1,7 @@
 var AVEventTracker			= require('./avEventTracker');
 var identity            = require('./services/identity');
-var user                = identity;
+var userIdentity        = identity;
+var user                = identity.currentUser;
 var $videoPage;
 var screenWidth;
 
@@ -46,6 +47,31 @@ function incrementVideoCount() {
     })
     .error(function(error) {
     });
+}
+
+function videoInfoCheck() {
+  console.log(user);
+  var checkObject = {};
+  checkObject.userId = user._id;
+  checkObject.videoId = video._id;
+  checkObject.videoUserId = video.userId;
+
+  $.ajax({
+    type: 'GET',
+    url: '/api/videos/videoInfoCheck',
+    data: checkObject
+  })
+  .success(function(response) {
+    console.log(response);
+    if(response.like === true) {
+      $('.like').addClass('airvuz-blue')
+    }
+    if(response.follow === true) {
+      $('#follow').text('-');
+    }
+  })
+  .error(function(error) {
+  })
 }
 
 //bind events
@@ -166,9 +192,9 @@ function bindEvents() {
 
   //follow video user
   $('#follow').on('click', function() {
-    if(user._id && user._id !== video.userId) {
+    if(userIdentity._id && userIdentity._id !== video.userId) {
       var followData = {};
-      followData.userId = user._id;
+      followData.userId = userIdentity._id;
       followData.followingUserId = video.userId;
       $.ajax({
           type: 'POST',
@@ -194,7 +220,7 @@ function bindEvents() {
         })
         .error(function (error) {
         })
-    } else if(!user._id) {
+    } else if(!userIdentity._id) {
       $('#follow-modal').modal('show');
       $('.go-to-login').on('click', function() {
         $('#login-modal').modal('show');
@@ -202,6 +228,11 @@ function bindEvents() {
     } else {
       $('#follow-self-modal').modal('show');
     }
+  });
+
+  $('#').on('click', function() {
+    var a = this;
+    console.log(a);
   });
 
   //facebook modal event
@@ -266,7 +297,7 @@ function bindEvents() {
 
   //comment modal
   $('#comment-text').on('click', function() {
-    if(!user._id) {
+    if(!userIdentity._id) {
       $('#comment-modal').modal('show');
       $('.go-to-login').on('click', function() {
         $('#login-modal').modal('show');
@@ -280,7 +311,6 @@ function bindEvents() {
     //remove other comment boxes from DOM when another is selected
     $('.commentBox').remove();
     $('.reply').show();
-
     var elementId = '#'+$(this).attr('value');
     var parentCommentId = $(this).attr('value');
     var html = '<div style="display: none" class="flex commentBox">' +
@@ -297,7 +327,7 @@ function bindEvents() {
       var comment = {};
       comment.comment = $('#comment').val();
       comment.parentCommentId = parentCommentId;
-      comment.userId = user._id;
+      comment.userId = userIdentity._id;
       comment.videoId = '56fec7bb07354aaa096db3b8';
 
       $.ajax({
@@ -319,6 +349,8 @@ function bindEvents() {
             '</div>';
 
           $(self).parents('.comment-wrap').find('.parentComment').append(html);
+          $('.commentBox').remove();
+          $('.reply').show();
           var currentCount = $('.commentCount').text();
           var toNumber = Number(currentCount);
           $('.commentCount').text('  ' + (toNumber + 1) + '  ');
@@ -391,14 +423,25 @@ function bindEvents() {
 }
 
 function initialize() {
+  //set video page
   $videoPage = $('.video-page');
+  //run init functions
   incrementVideoCount();
-  console.log(user);
-  $("[name='auto-play-input']").bootstrapSwitch({
-    size: 'mini',
-    state: user.autoPlay
-  });
+  //only run if user is logged in
+  if(userIdentity.isAuthenticated()){
+    videoInfoCheck();
+    $("[name='auto-play-input']").bootstrapSwitch({
+      size: 'mini',
+      state: user.autoPlay
+    });
+  } else {
+    //set autoplay switch
+    $("[name='auto-play-input']").bootstrapSwitch({
+      size: 'mini'
+    });
+  }
   bindEvents();
+  //video description functions
   setTimeout(function() {
     $('#video-description').slideDown();
   }, 1000);

@@ -120,8 +120,8 @@
                                         <p class="m-b-0">{comment}</p>
                                     </div>
                                 </div>
+                                <ul class="parentComment"></ul>
                                 <div  id="{_id}">
-                                    <ul class="parentComment"></ul>
                                     <div class="row">
                                         <div class="reply col-xs-3 col-sm-2" value="{_id}" style="padding: 0 0 0 10px">
                                             <span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>
@@ -146,7 +146,7 @@
                             <h5 class="up-tag">UP NEXT</h5>
                             <div class="auto-play">
                                 <h5>AutoPlay</h5>
-                                <input type="checkbox" name="auto-play-input" checked>
+                                <input type="checkbox" name="auto-play-input" id="auto-play" checked>
                             </div>
                         </div>
                         <ul style="list-style: none; padding-left: 0">

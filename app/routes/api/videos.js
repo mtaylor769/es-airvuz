@@ -4,6 +4,8 @@ try {
 	var logger								= log4js.getLogger('persistance.crud.Videos');
 
 	var VideoCrud							= require('../../persistence/crud/videos');
+  var VideoLikeCrud         = require('../../persistence/crud/videoLike');
+  var FollowCrud            = require('../../persistence/crud/follow');
 	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
 
 	if(global.NODE_ENV === "production") {
@@ -147,6 +149,38 @@ Video.prototype.reportVideo = function(req, res) {
     }
   })
 
+};
+
+Video.prototype.videoInfoCheck = function(req, res) {
+  var returnObject = {};
+  var userId = req.query.userId;
+  var videoId = req.query.videoId;
+  var videoUserId = req.query.videoUserId;
+  var likeObject = {};
+  likeObject.videoId = videoId;
+  likeObject.userId = userId;
+  var followObject = {};
+  followObject.userId = userId;
+  followObject.followingUserId = videoUserId;
+
+  console.log('1');
+
+  VideoLikeCrud
+    .videoLikeCheck(likeObject)
+    .then(function(like) {
+      returnObject.like = !!like;
+
+      return FollowCrud.followCheck(followObject);
+    })
+    .then(function(follow) {
+      console.log(follow);
+      returnObject.follow = !!follow;
+
+      res.json(returnObject);
+    })
+    .catch(function(error) {
+      res.sendStatus(500);
+    });
 };
 
 module.exports = new Video();
