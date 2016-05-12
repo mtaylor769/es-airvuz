@@ -183,6 +183,7 @@ body.modal-open {
 }
 #header .right-nav img {
   height: 43px;
+  width: 43px;
 }
 
 #header .right-nav .profile-img-wrap {
