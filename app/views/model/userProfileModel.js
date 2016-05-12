@@ -40,14 +40,14 @@ UserProfileModel.prototype.getData = function(params) {
 	.then(function(user) {
 		profileUser = user;
 		dataObject.user = user;
-		return videoCrud.getShowcaseByUser(user._id)
+		return videoCrud.getShowcaseByUser(user._id);
 	})
 	.then(function(videos) {
 		videos.forEach(function(video) {
 			video.title = video.title.substring(0, 48);
 			video.description = video.description.substring(0, 90);
 			if (video.title.length === 48) {
-				video.title = video.title + '...'
+				video.title = video.title + '...';
 			}
 			if (video.description.length === 90) {
 				video.description = video.description + '...';
@@ -65,7 +65,7 @@ UserProfileModel.prototype.getData = function(params) {
 			video.title = video.title.substring(0, 48);
 			video.description = video.description.substring(0, 90);
 			if(video.title.length === 48) {
-				video.title = video.title + '...'
+				video.title = video.title + '...';
 			}
 			if(video.description.length === 90) {
 				video.description = video.description + '...';

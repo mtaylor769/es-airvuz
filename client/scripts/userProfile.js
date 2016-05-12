@@ -6,10 +6,11 @@ var $profilePage  = null;
 /*
 * Templates
 */
-var userShowcase   = require('../templates/userProfile/showcase-user.dust');
-var ownerShowcase  = require('../templates/userProfile/showcase-owner.dust');
-var userAllVideos  = require('../templates/userProfile/allvideos-user.dust');
-var ownerAllVideos = require('../templates/userProfile/allvideos-owner.dust');
+var userShowcase      = require('../templates/userProfile/showcase-user.dust');
+var ownerShowcase     = require('../templates/userProfile/showcase-owner.dust');
+var userAllVideos     = require('../templates/userProfile/allvideos-user.dust');
+var ownerAllVideos    = require('../templates/userProfile/allvideos-owner.dust');
+var userProfileEdit   = require('../templates/userProfile/edit-profile.dust');
 
 var okHtml            = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml   = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
@@ -42,7 +43,7 @@ function bindEvents() {
       if(isShowcase === 'true') {
         $(link).append(okHtml);
       } else {
-        $(link).append(notSelectedHtml)
+        $(link).append(notSelectedHtml);
       }
     });
     var a = ($('.showcase')).children();
@@ -61,7 +62,7 @@ function bindEvents() {
         $(buttonDiv).attr('data-showcase', 'true');
         showcaseAdd(videoId, true);
       }
-    })
+    });
   });
 
   $(window).on('resize', function() {
@@ -70,7 +71,7 @@ function bindEvents() {
     if(windowWidth >= 992 && isActive) {
       $('#showcase-tab').click();
     }
-  })
+  });
 
   function asdf() {
     console.log('running function');
@@ -101,7 +102,10 @@ function initialize() {
     });
     ownerAllVideos({videos: profileVideos}, function(err, html) {
       $('#allvideos').html(html);
-    })
+    });
+    userProfileEdit({user: profileUser}, function (err, html) {
+      $('#edit-profile').html(html);
+    });
   }
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'
