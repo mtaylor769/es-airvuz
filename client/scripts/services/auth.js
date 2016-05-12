@@ -21,8 +21,9 @@ function login(user) {
       password        : user.password
     },
     success : function(response) {
-      identity.setToken(response.token);
-      dfd.resolve();
+      identity.setToken(response.token).then(function () {
+        dfd.resolve();
+      });
     },
     error: function (err) {
       dfd.reject(err);
