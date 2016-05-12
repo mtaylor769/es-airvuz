@@ -45,6 +45,8 @@ function setToken(newToken) {
   $.extend(user, newUser);
 
   localStorage.setItem('id_token', token);
+
+  return getUserInfo();
 }
 
 /**
@@ -58,13 +60,13 @@ function clear() {
 }
 
 function getUserInfo() {
-  $.ajax({
+  return $.ajax({
     url: '/api/users/' + user._id,
     contentType : 'application/json',
     type: 'GET'
-  }).done(function (user) {
-    localStorage.setItem('user_info', JSON.stringify(user));
-    user.currentUser = user;
+  }).done(function (currentUser) {
+    localStorage.setItem('user_info', JSON.stringify(currentUser));
+    user.currentUser = currentUser;
   });
 }
 
