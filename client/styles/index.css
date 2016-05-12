@@ -410,16 +410,13 @@ body.modal-open {
 }
 
 .video-user-more {
-  width: 105px;
+  width: 50px;
+  margin-top: 30px;
+  padding-right: 15px;
 }
 
 .video-user-more p{
   margin-top: 45%;
-}
-
-.video-user-more:hover {
-  background-color: #f48a4a;
-  color: white;
 }
 
 .write-comment textarea{

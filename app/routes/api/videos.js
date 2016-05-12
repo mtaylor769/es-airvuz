@@ -173,6 +173,7 @@ Video.prototype.videoInfoCheck = function(req, res) {
       return FollowCrud.followCheck(followObject);
     })
     .then(function(follow) {
+      console.log(follow);
       returnObject.follow = !!follow;
 
       res.json(returnObject);

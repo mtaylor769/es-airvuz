@@ -62,6 +62,7 @@ function videoInfoCheck() {
     data: checkObject
   })
   .success(function(response) {
+    console.log(response);
     if(response.like === true) {
       $('.like').addClass('airvuz-blue')
     }
