@@ -73,9 +73,25 @@ function createUser(req, res) {
     });
 }
 
+function put(req, res) {
+  console.log('hit this');
+  var updateObject = req.body;
+  var userId = req.params.id;
+  usersCrud.update(userId, updateObject)
+  .then(function(user) {
+    res.send(user);
+  })
+  .catch(function(error) {
+    res.sendStatus(500);
+  })
+
+
+}
+
 User.prototype.post         = post;
 User.prototype.search       = search;
 User.prototype.get          = get;
 User.prototype.createUser   = createUser;
+User.prototype.put          = put;
 
 module.exports = new User();

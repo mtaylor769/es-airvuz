@@ -347,14 +347,17 @@ users.prototype.getUserByUserName = function (userName) {
 /*
 * Update user information
 */
-users.prototype.update = function (params) {
+users.prototype.update = function (id, params) {
 	var validation = null; // preCondition.validate(params);
 
 	return(new Promise(function(resolve, reject){
-		if (validation.errors) {
+		if (validation !== null) {
 			reject(validation.errors);
 		} else {
-			//Code to update user
+			UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
+			.then(function(user) {
+				resolve(user);
+			})
 		}
 
 	}));

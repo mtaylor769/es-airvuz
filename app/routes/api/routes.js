@@ -66,7 +66,8 @@ apiRouter.route('/api/users/search')
   .get(protect, users.search);
 
 apiRouter.route('/api/users/:id')
-  .get(users.get);
+  .get(users.get)
+	.put(users.put);
 
 apiRouter.route('/api/users/create')
   .post(users.createUser);

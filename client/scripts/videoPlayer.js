@@ -74,6 +74,23 @@ function videoInfoCheck() {
   })
 }
 
+function onAutoPlayChange(event, state) {
+  var autoPlayObject = {};
+  autoPlayObject.userId = user._id;
+  autoPlayObject.autoPlay = state;
+
+  $.ajax({
+    type:'PUT',
+    url: '/api/users/' + user._id,
+    data: autoPlayObject
+  })
+  .success(function(response) {
+    user.autoPlay = response.autoPlay;
+  })
+  .error(function(error) {
+  })
+};
+
 //bind events
 function bindEvents() {
 
@@ -432,7 +449,8 @@ function initialize() {
     videoInfoCheck();
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini',
-      state: user.autoPlay
+      state: user.autoPlay,
+      onSwitchChange: onAutoPlayChange
     });
   } else {
     //set autoplay switch

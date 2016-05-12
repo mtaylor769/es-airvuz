@@ -94,14 +94,14 @@
                                 <span> {video.commentCount} </span><span class="bold commentCount">Comments</span>
                             </div>
                             <div class="video-action-icons pull-right flex">
-                                <span class="glyphicon glyphicon-heart like" data-videoId="{video._id}"></span>
-                                <span class="glyphicon glyphicon-flag report"></span>
-                                <span class="glyphicon glyphicon-share share"></span>
+                                <span class="glyphicon glyphicon-heart like" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
+                                <span class="glyphicon glyphicon-flag report" data-toggle="tooltip" data-placement="top" title="Report this video"></span>
+                                <span class="glyphicon glyphicon-share share" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
-                                    <span class="fa fa-code social embed"></span>
-                                    <a href="https://plus.google.com/share?url=http://beta2.airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google"></a>
-                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social"></a>
-                                    <span class="fa fa-facebook-official social" id="facebook"></span>
+                                    <span class="fa fa-code social embed" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
+                                    <a href="https://plus.google.com/share?url=http://beta2.airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
+                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
+                                    <span class="fa fa-facebook-official social" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
                                 </div>
                             </div>
                         </div>
@@ -194,6 +194,7 @@
             var video = {video|js|s};
             $(function() {
                 videoPlayer.initialize();
+                $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
     </body>
