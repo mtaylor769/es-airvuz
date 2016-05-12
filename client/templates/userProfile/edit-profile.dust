@@ -3,48 +3,58 @@
     <div class="text-center hidden">
       <strong>Edit Profile</strong>
     </div>
-    <form class="m-b-20">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" class="form-control" id="email" placeholder="Email">
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="text" class="form-control" id="password" placeholder="Password">
-      </div>
-      <div class="form-group">
-        <label for="verify-password">Verify Password</label>
-        <input type="text" class="form-control" id="verify-password" placeholder="Verify Password">
-      </div>
-      <div class="form-group">
-        <label for="aboutme">About Me <span class="text-danger">*</span></label>
-        <textarea name="aboutme" id="aboutme" rows="4" class="form-control" placeholder="About Me" required></textarea>
-      </div>
+    {#user}
+      <form class="m-b-20">
+        <div class="form-group">
+          <label for="email">First Name</label>
+          <input type="text" class="form-control" id="firstname" placeholder="{?firstName}{firstName}{:else}First Name{/firstName}">
+        </div>
+        <div class="form-group">
+          <label for="email">Last Name</label>
+          <input type="text" class="form-control" id="lastname" placeholder="{?lastName}{lastName}{:else}Last Name{/lastName}">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" id="email" placeholder="{?emailAddress}{emailAddress}{:else}Email{/emailAddress}">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" class="form-control" id="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="verify-password">Verify Password</label>
+          <input type="text" class="form-control" id="verify-password" placeholder="Verify Password">
+        </div>
+        <div class="form-group">
+          <label for="aboutme">About Me <span class="text-danger">*</span></label>
+          <textarea name="aboutme" id="aboutme" rows="4" class="form-control" placeholder="{?aboutMe}{aboutMe}{:else}About Me{/aboutMe}" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="facebook">Facebook Link</label>
-        <input type="text" class="form-control" id="facebook" placeholder="Facebook Link">
-      </div>
+        <div class="form-group">
+          <label for="facebook">Facebook Link</label>
+          <input type="text" class="form-control" id="facebook" placeholder="{?facebookUrl}{facebookUrl}{:else}Facebook Url{/facebookUrl}">
+        </div>
 
-      <div class="form-group">
-        <label for="twitter">Twitter Link</label>
-        <input type="text" class="form-control" id="twitter" placeholder="Twitter Link">
-      </div>
+        <div class="form-group">
+          <label for="twitter">Twitter Link</label>
+          <input type="text" class="form-control" id="twitter" placeholder="{?twitterUrl}{twitterUrl}{:else}Twitter Url{/twitterUrl}">
+        </div>
 
-      <div class="form-group">
-        <label for="instagram">Instagram Link</label>
-        <input type="text" class="form-control" id="instagram" placeholder="Instagram Link">
-      </div>
+        <div class="form-group">
+          <label for="instagram">Instagram Link</label>
+          <input type="text" class="form-control" id="instagram" placeholder="{?instagramUrl}{instagramUrl}{:else}Instagram Url{/instagramUrl}">
+        </div>
 
-      <div class="form-group">
-        <label for="googleplus">Google+ Link</label>
-        <input type="text" class="form-control" id="googleplus" placeholder="Google+ Link">
-      </div>
+        <div class="form-group">
+          <label for="googleplus">Google+ Link</label>
+          <input type="text" class="form-control" id="googleplus" placeholder="{?googleUrl}{googleUrl}{:else}Google+ Url{/googleUrl}">
+        </div>
 
-      <div class="text-right">
-        <a href="/" class="btn btn-primary">Cancel</a>
-        <a href="#" class="btn btn-primary" id="save-edit-btn">Save</a>
-      </div>
-    </form>
+        <div class="text-right">
+          <a href="/" class="btn btn-primary">Cancel</a>
+          <a href="#" class="btn btn-primary" id="save-edit-btn">Save</a>
+        </div>
+      </form>
+    {/user}
   </div>
 </div>
