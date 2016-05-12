@@ -92,6 +92,15 @@ apiRouter.route('/api/videos')
 apiRouter.route('/api/videos/loaded')
 	.post(videos.loaded);
 
+apiRouter.route('/api/videos/showcase-update')
+	.post(videos.showcaseUpdate);
+
+apiRouter.route('/api/videos/report-video')
+	.post(videos.reportVideo);
+
+apiRouter.route('/api/videos/videoInfoCheck')
+	.get(videos.videoInfoCheck);
+
 apiRouter.route('/api/videos/:id')
   .get(videos.get)
   .put(videos.put)
@@ -99,12 +108,6 @@ apiRouter.route('/api/videos/:id')
 
 apiRouter.route('/api/video-like')
   .post(videoLike.post);
-
-apiRouter.route('/api/videos/showcase-update')
-	.post(videos.showcaseUpdate);
-
-apiRouter.route('/api/videos/report-video')
-	.post(videos.reportVideo);
 
 
 /**

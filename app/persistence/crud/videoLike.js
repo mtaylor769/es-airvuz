@@ -81,18 +81,7 @@ VideoLike.prototype.likeCount = function(params) {
 };
 
 VideoLike.prototype.videoLikeCheck = function(params) {
-  console.log('this is the Params : ');
-  console.log(params);
-  var videoId = mongoose.Types.ObjectId(params.video);
-  params.videoIdCheck = videoId;
-  return VideoLikeModel.find({userId: params.user})
-  .then(function(likes) {
-    console.log('***********************');
-    console.log(likes);
-    console.log('***********************');
-    var likeCheck = _.find(likes, {'videoId' : params.videoIdCheck });
-    console.log('this is the likeCheck : ' + likeCheck)
-  })
+  return VideoLikeModel.findOne({videoId: params.videoId, userId: params.userId}).exec()
 };
 
 VideoLike.prototype.delete = function(id) {
