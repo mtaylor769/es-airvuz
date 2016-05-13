@@ -38,6 +38,8 @@
 
 #home-page #slider-description-row {
     position: relative;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #cecccc;
 }
 #home-page #slider-description-row .arrow {
     height: 15px;
@@ -45,6 +47,8 @@
 #home-page #slider-description-row .arrow a {
     padding: 0;
     color: #30c1ed;
+    position: relative;
+    top: -3px;
 }
 
 #home-page #slider-description-slick h3 {
