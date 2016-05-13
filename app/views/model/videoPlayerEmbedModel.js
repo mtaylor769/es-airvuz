@@ -35,14 +35,19 @@ VideoPlayerEmbedModel.prototype.getData = function(params) {
   var videoId         = params.request.params.id;
   return videoCrud.getById(videoId)
     .then(function(video) {
-
-      params.data													    = video;
-      params.data.facebookAppId 					    = config.facebook.clientID;
-      params.data.videoPlayerEmbed					  = {};
-      params.data.videoPlayerEmbed.title		  = "Video Player";
-      params.data.videoPlayerEmbed.viewName	  = "Video Player";
-      return params;
+      video.viewCount = video.viewCount + 1;
+      return videoCrud.upCount(video)
+    })
+    .then(function(video) {
+        console.log(video);
+        params.data = video;
+        params.data.facebookAppId = config.facebook.clientID;
+        params.data.videoPlayerEmbed = {};
+        params.data.videoPlayerEmbed.title = "Video Player";
+        params.data.videoPlayerEmbed.viewName = "Video Player";
+        return params;
     });
+
 };
 
 module.exports = VideoPlayerEmbedModel;

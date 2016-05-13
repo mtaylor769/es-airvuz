@@ -30,6 +30,13 @@ var NotificationsSchema = mongoose.Schema({
 		required	: true,
 		type			: String
 	},
+	/*
+	* The notification message
+	*/
+	notificationMessage : {
+		required: true,
+		type: String
+	},
 	
 	/*
 	 * The userId of the person who is being notified.

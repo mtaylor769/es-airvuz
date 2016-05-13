@@ -1,4 +1,5 @@
 var commentCrud = require('../../persistence/crud/comment');
+var NotificationCrud = require('../../persistence/crud/notifications');
 var Promise     = require('bluebird');
 var mongoose    = require('mongoose');
 
@@ -8,14 +9,23 @@ function Comment() {
 }
 
 Comment.prototype.post = function(req, res) {
+  var comment = req.body.comment;
+  var notification = req.body.notification;
 
   commentCrud
-    .create(req.body)
+    .create(comment)
     .then(function (comment) {
+      console.log(comment);
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
+      NotificationCrud.create(notification)
+      .then(function(notification) {
+        console.log(notification);
+      });
       commentCrud.replyIncrement(parentCommentId, videoId);
       res.send(comment);
+    })
+    .catch(function(error) {
     });
 };
 

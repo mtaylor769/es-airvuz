@@ -1,7 +1,10 @@
-var AVEventTracker			= require('./avEventTracker');
-var identity            = require('./services/identity');
-var userIdentity        = identity;
-var user                = identity.currentUser;
+var AVEventTracker			               = require('./avEventTracker');
+var identity                           = require('./services/identity');
+var userIdentity                       = identity;
+var user                               = identity.currentUser;
+var notificationObject                 = {};
+    notificationObject.notifiedUserId  = video.userId;
+    notificationObject.actionUserId    = user._id;
 var $videoPage;
 var screenWidth;
 
@@ -35,7 +38,7 @@ var toggles = {
 //video increment
 function incrementVideoCount() {
   var videoId = {};
-  videoId.videoId = window.location.pathname.substring(13);
+  videoId.videoId = video._id;
 
   $.ajax({
       type: 'POST',
@@ -49,6 +52,7 @@ function incrementVideoCount() {
     });
 }
 
+//check for user following and user video liked
 function videoInfoCheck() {
   console.log(user);
   var checkObject = {};
@@ -74,6 +78,7 @@ function videoInfoCheck() {
   })
 }
 
+//function to persist autoplay data
 function onAutoPlayChange(event, state) {
   var autoPlayObject = {};
   autoPlayObject.userId = user._id;
@@ -86,10 +91,11 @@ function onAutoPlayChange(event, state) {
   })
   .success(function(response) {
     user.autoPlay = response.autoPlay;
+    identity.save();
   })
   .error(function(error) {
   })
-};
+}
 
 //bind events
 function bindEvents() {
@@ -103,6 +109,8 @@ function bindEvents() {
       eventName		: "commentSave",
       eventType		: "click"
     });
+    notificationObject.notificationType = 'COMMENT';
+    notificationObject.notificationMessage = $(this).attr('value');
     var comment = {};
     comment.videoId = $(this).attr('value');
     comment.comment = $('#comment-text').val();
@@ -111,7 +119,7 @@ function bindEvents() {
     $.ajax({
         type: 'POST',
         url: '/api/comment',
-        data: comment,
+        data: {comment: comment, notification: notificationObject},
         dataType: 'json'
       })
       .done(function(data) {
@@ -292,9 +300,7 @@ function bindEvents() {
 
   //embeded iframe modal
   $('.embed').on('click', function() {
-    $('#dialog').dialog('open');
-    $('.ui-widget-overlay').css('background', 'black');
-    $('.social-icons').toggle();
+    $('#embed-modal').modal('show');
   });
 
   // on off switch
@@ -439,11 +445,15 @@ function bindEvents() {
 
 }
 
+//page init function
 function initialize() {
+
   //set video page
   $videoPage = $('.video-page');
+
   //run init functions
   incrementVideoCount();
+
   //only run if user is logged in
   if(userIdentity.isAuthenticated()){
     videoInfoCheck();
@@ -453,21 +463,27 @@ function initialize() {
       onSwitchChange: onAutoPlayChange
     });
   } else {
-    //set autoplay switch
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'
     });
   }
+
   bindEvents();
+
   //video description functions
+
+  //initial slide down function for video description
   setTimeout(function() {
     $('#video-description').slideDown();
   }, 1000);
+
+  //slide up function for description
   setTimeout(function() {
     var html = '<div class="show-more-description"><span class="glyphicon glyphicon-chevron-down"></span></div>';
     $('#video-description').slideUp();
     $('.description-container').append(html)
   }, 5000);
+
 }
 
 module.exports = {

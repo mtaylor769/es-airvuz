@@ -560,6 +560,10 @@ body.modal-open {
   border-radius: 50px;
 }
 
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+  background: #26bae5;
+}
+
 #follow {
   font-size: 25px;
 }
@@ -1185,6 +1189,10 @@ End user profile CSS
     font-size: 25px;
     color: #30c1ed;
   }
+
+  .up-next-wrapper img {
+    height: 125px;
+  }
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -1257,6 +1265,13 @@ End user profile CSS
   .footer-sub1 .footer-signup button {
     margin: 0 0 0 15px;
   }
+  .up-next-wrapper img {
+    height: 165px;
+  }
+
+  .videoUserName {
+    font-size: 14px;
+  }
 }
 
 /* Large devices (large desktops, 1200px and up) */
@@ -1303,6 +1318,14 @@ End user profile CSS
   .profile-video .col-xs-5 h4 {
     font-size: 18px;
     margin: 0 10px;
+  }
+
+  .up-next-wrapper img {
+    height: 202px;
+  }
+
+  .videoUserName {
+    font-size: 16px;
   }
 }
 

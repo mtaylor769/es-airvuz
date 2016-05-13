@@ -59,6 +59,13 @@ function clear() {
   userInfo = null;
 }
 
+/**
+ * update currentUser info in local storage
+ */
+function save() {
+  localStorage.setItem('user_info', JSON.stringify(user.currentUser));
+}
+
 function getUserInfo() {
   return $.ajax({
     url: '/api/users/' + user._id,
@@ -76,5 +83,6 @@ user.isAuthenticated = isAuthenticated;
 user.hasRole = hasRole;
 user.setToken = setToken;
 user.clear = clear;
+user.save = save;
 
 module.exports = user;

@@ -99,3 +99,19 @@
         </div>
     </div>
 </div>
+<div class="modal fade" tabindex="-1" id="embed-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Video iframe code</h4>
+            </div>
+            <div class="modal-body">
+                <code>&lt;iframe src="http://beta2.airvuz.com/videoPlayerEmbed/{video._id}" height="245" width="432"&gt;&lt;/iframe&gt;</code>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
