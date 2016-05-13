@@ -3,8 +3,6 @@ var identity                           = require('./services/identity');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
-    notificationObject.notifiedUserId  = video.userId;
-    notificationObject.actionUserId    = user._id;
 var $videoPage;
 var screenWidth;
 
@@ -462,6 +460,9 @@ function initialize() {
       state: user.autoPlay,
       onSwitchChange: onAutoPlayChange
     });
+
+    notificationObject.notifiedUserId  = video.userId;
+    notificationObject.actionUserId    = user._id;
   } else {
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'

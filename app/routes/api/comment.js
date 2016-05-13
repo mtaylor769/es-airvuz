@@ -11,7 +11,7 @@ function Comment() {
 Comment.prototype.post = function(req, res) {
   var comment = req.body.comment;
   var notification = req.body.notification;
-
+  console.log(req.body);
   commentCrud
     .create(comment)
     .then(function (comment) {
