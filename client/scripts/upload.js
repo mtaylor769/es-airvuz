@@ -24,6 +24,7 @@ var $uploadPage,
     VIEW_MODEL = {},
     evaporate,
     VIDEO_MODEL = {},
+    isUploading = false,
     POLLING_INTERVAL_TIME = 20000; // 20 sec
 
 function onProgress(progress) {
@@ -39,6 +40,7 @@ function onDurationReturn(duration) {
 }
 
 function onUploadComplete() {
+  isUploading = false;
   $uploadPage.find('#processing-message').removeClass('hidden');
 
   $.ajax({
@@ -110,7 +112,8 @@ function renderThumbnail(thumbnails) {
   });
 }
 
-function onError(message) {
+function onUploadError(message) {
+  isUploading = false;
   /********************************************************/
   console.group('%cError :', 'color:red;font:strait');
   console.log(message);
@@ -195,7 +198,7 @@ function bindEvents() {
       type        : 'POST',
       data        : JSON.stringify(data)
     }).done(function (hashName) {
-
+      isUploading = true;
       currentUploadFile.hashName = hashName;
 
       renderStep(2);
@@ -216,7 +219,7 @@ function bindEvents() {
         // event callbacks
         complete: onUploadComplete,
         progress: onProgress,
-        error: onError
+        error: onUploadError
       });
     });
   }
@@ -271,6 +274,13 @@ function bindEvents() {
     renderStep(1);
   }
 
+  function onBeforeUnload() {
+    if (isUploading) {
+      // browser doesn't actually use this message.
+      return 'You are current uploading video. Do you want to cancel?';
+    }
+  }
+
   //////////////////////////////////////////
 
   $uploadPage
@@ -280,6 +290,8 @@ function bindEvents() {
     .on('change', '#category', onCategorySelect)
     .on('click', '#category-list li', onCategoryRemove)
     .on('click', '#upload-again', onUploadAgain);
+
+  $(window).on('beforeunload', onBeforeUnload);
 
 }
 
