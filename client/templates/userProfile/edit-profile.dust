@@ -5,6 +5,11 @@
     </div>
     {#user}
       <form class="m-b-20">
+        
+        <div class="text-right">
+          <a href="#" class="btn btn-primary" id="change-password-btn">Change Profile Picture</a>
+        </div>
+
         <div class="form-group">
           <label for="email">First Name</label>
           <input type="text" class="form-control" id="firstname" value="{firstName}" placeholder="First Name">
@@ -17,14 +22,7 @@
           <label for="email">Email</label>
           <input type="text" class="form-control" id="email" placeholder="Email" value="{emailAddress}">
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="text" class="form-control" id="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-          <label for="verify-password">Verify Password</label>
-          <input type="text" class="form-control" id="verify-password" placeholder="Verify Password">
-        </div>
+
         <div class="form-group">
           <label for="aboutme">About Me <span class="text-danger">*</span></label>
           <textarea name="aboutme" id="aboutme" rows="4" class="form-control" value="{aboutMe}" placeholder="About Me"></textarea>
@@ -53,6 +51,10 @@
         <div class="text-right">
           <a href="/" class="btn btn-primary">Cancel</a>
           <a href="#" class="btn btn-primary" id="save-edit-btn">Save</a>
+        </div>
+
+        <div class="text-right">
+          <a href="#" class="btn btn-primary" id="change-password-btn">Change Password</a>
         </div>
       </form>
     {/user}

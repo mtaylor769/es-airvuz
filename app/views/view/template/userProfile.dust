@@ -46,6 +46,7 @@
           </img>
         </section>
       </div>
+      {> "client.templates.userProfile.userProfileModal" /}
       <div class="row m-t-15">
           <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#showcase" id="showcase-tab" role="tab" data-toggle="tab">SHOWCASE</a></li>
