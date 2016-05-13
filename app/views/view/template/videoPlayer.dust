@@ -89,7 +89,7 @@
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
-                                <span class="p-l-10 hidden-xs">{video.viewCount} <span class="bold airvuz-blue">VUZ</span> |  </span>
+                                <span class="p-l-10 hidden-xs"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
                                 <span class="like-count">{video.likeCount}</span><span class="bold">  Likes |</span>
                                 <span> {video.commentCount} </span><span class="bold commentCount">Comments</span>
                             </div>
@@ -157,7 +157,7 @@
                                     <div class="up-next-layer">
                                         <a href="{_id}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
                                         <div class="flex up-next-subs">
-                                            <p class="font-white m-l-15">{viewCount} <span class="airvuz-blue">VUZ</span></p>
+                                            <p class="font-white m-l-15"><span class="airvuz-blue">VŪZ</span> {viewCount}</p>
                                             <p class="font-white pos-absolute-r-15">{duration}</p>
                                         </div>
                                     </div>
