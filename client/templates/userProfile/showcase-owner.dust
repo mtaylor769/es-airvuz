@@ -19,7 +19,7 @@
 <div class="row m-b-20 profile-videos">
     {#videos}
         <div class="col-xs-12 col-sm-6 col-md-3" style="">
-            <div class="row profile-video" style="padding: 20px 0;"">
+            <div class="profile-video" style="padding: 20px 0;"">
                 <div class="col-xs-6 col-sm-12">
                     <a href="/videoPlayer/{_id}">
                         <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%">

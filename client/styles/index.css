@@ -768,11 +768,6 @@ Begin userProfile CSS
   padding-right: 0;
 }
 
-.profile .row {
-  margin-right: 0;
-  margin-left: 0;
-}
-
 #user-profile .coverborder {
   width: 100%;
   top: 0;
@@ -785,6 +780,10 @@ Begin userProfile CSS
 
 #user-profile .profile{
   margin-top: -150px;
+}
+
+#user-profile .profile-options .btn {
+  margin: 0 4px;
 }
 
 #user-profile .profile-banner {
@@ -843,8 +842,8 @@ Begin userProfile CSS
 }
 
 .profile-video .col-xs-6, .col-xs-5 {
-  padding-right: 0;
-  padding-left: 10px;
+  /*padding-right: 0;
+  padding-left: 10px;*/
 }
 
 .profile-video .col-xs-5 h4 {
@@ -1261,6 +1260,10 @@ End user profile CSS
 
   #user-profile .profile-information h4 {
     font-size: 32px;
+  }
+
+  #user-profile .profile-video .col-xs-5 h4 {
+    margin: 0;
   }
   .footer-sub1 .footer-signup button {
     margin: 0 0 0 15px;
