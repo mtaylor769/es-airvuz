@@ -805,6 +805,12 @@ Begin userProfile CSS
   margin-bottom: 25px;
 }
 
+#user-profile .profile-options .user-social-media {
+  font-size: 25px;
+  padding-right: 45px;
+  text-shadow: 2px 2px gray;
+}
+
 #user-profile .video-row-1, .video-row-2, .video-row-3{
   width: 100%;
 }

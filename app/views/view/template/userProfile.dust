@@ -33,7 +33,7 @@
                   <button class="btn btn-primary" type="button">Follow</button>
                   <button class="btn btn-primary" type="button">Donate</button>
                   <button class="btn btn-primary" type="button">Hire</button>
-                  <div class="pull-right row hidden-xs hidden-sm" style="font-size: 25px">
+                  <div class="user-social-media pull-right row hidden-xs hidden-sm">
                   <!-- Conditional only if user has social media links -->
                     <span class="fa fa-facebook-square" style="margin-right: 10px"></span>
                     <span class="fa fa-instagram" style="margin-right: 10px"></span>
