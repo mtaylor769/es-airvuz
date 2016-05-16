@@ -108,19 +108,27 @@ function editProfile() {
   var googleplus          = $("#google").val();
   var twitter             = $("#twitter").val();
   var instagram           = $("#instagram").val();
+  var lastName            = $("#lastname").val();
+  var firstName           = $("#firstname").val();
 
   if (emailAddress) {
     //TODO check to see if email address is missing
     userData.emailAddress = emailAddress;
   }
 
+  if (firstName) {
+    userData.firstName = firstName;
+  }
+  if (lastName) {
+    userData.lastName = lastName;
+  }
   if (aboutMe) {
     userData.aboutMe = aboutMe;
   }
   if (facebook) {
     userData.facebook = facebook;
   }
-  if (google) {
+  if (googleplus) {
     userData.google = google;
   }
   if (twitter) {
@@ -135,11 +143,11 @@ function editProfile() {
 
   $.ajax({
     type:'PUT',
-    //url: '/api/users/' + user._id,
+    url: '/api/users/' + user._id,
     data: userData
   })
   .success(function(response) {
-    user.autoPlay = response.autoPlay;
+    user = response;
   })
   .error(function(error) {
   });

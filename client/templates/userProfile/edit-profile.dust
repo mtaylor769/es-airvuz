@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
           <label for="email">Last Name</label>
-          <input type="text" class="form-control" id="lastname" placeholder="{?lastName}{lastName}{:else}Last Name{/lastName}">
+          <input type="text" class="form-control" id="lastname" value="{lastName}" placeholder="Last Name">
         </div>
         <div class="form-group">
           <label for="email">Email</label>

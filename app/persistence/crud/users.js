@@ -10,6 +10,7 @@ try {
 
 	var database										= require('../database/database');
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
+	var validation 									= {};
 
 } 
 catch(exception) {
@@ -74,14 +75,64 @@ users.prototype.validateCreateUser = function(params) {
 	return userInfo;
 };
 
+/*
+ * @param params {Object}
+ * @param params.sourceLocation {string} - location where the error initiates.
+ */
+users.prototype.validateUpdateUser = function(id, params) {
+	var sourceLocation				= "persistence.crud.Users.create";
+	var userInfo 							= {};
+	
+	//need to pass in user data info
+	var errorMessage										= new ErrorMessage();
+
+	if(params.userName) {
+		UserModel.findOne({userName : params.userName})
+		.then(function(user){
+			if (user._doc._id !== id) {
+				userInfo.errors = errorMessage.getErrorMessage({
+					statusCode			: "400",
+					errorId					: "VALIDA1000",
+					templateParams	: {
+						name : "userName"
+					},
+					errorMessage		: "Username already exists",
+					sourceLocation	: sourceLocation
+				});
+			}
+		});
+	}
+
+	if(params.emailAddress) {
+		UserModel.findOne({emailAddress : params.emailAddress})
+		.then(function(user){
+			if (user._doc._id !== id) {
+				userInfo.errors = errorMessage.getErrorMessage({
+					statusCode			: "400",
+					errorId					: "VALIDA1000",
+					templateParams	: {
+						name : "emailAddress"
+					},
+					errorMessage		: "Email already exists",
+					sourceLocation	: sourceLocation
+				});
+			} else {
+				logger.debug('nope');
+			}
+		});
+	}
+
+	return userInfo;
+}
+
 
 /*
  * Create a new Users document.
  */
 users.prototype.create = function(params) {
-	var validation 				= this.validateCreateUser(params);
+	validation 				= this.validateCreateUser(params);
 	return(new Promise(function(resolve, reject) {
-
+		
 			if(validation.errors) {
 				logger.debug('validation errors found');
 				logger.debug(validation.errors);
@@ -151,7 +202,6 @@ users.prototype.getAllUsers = function() {
 */
 users.prototype.getUserById = function (userId) {
 	logger.debug('searching for user by userId: ' + userId);
-	var validation = {};
 
 	if (userId) {
 		validation.userId 			= userId;
@@ -199,7 +249,6 @@ users.prototype.getUserById = function (userId) {
 */
 users.prototype.getUserBySocialId = function (socialId) {
 	logger.debug('searching for user by socialId: ' + socialId);
-	var validation = {};
 
 	if (socialId) {
 		validation.socialId 			= socialId;
@@ -249,7 +298,6 @@ users.prototype.getUserBySocialId = function (socialId) {
 * Get a user by email
 */
 users.prototype.getUserByEmail = function (email) {
-	var validation = {};
 	logger.debug('getUserByEmail: '+ email);
 	if (email) {
 		logger.debug(email);
@@ -305,7 +353,6 @@ users.prototype.getUserByEmail = function (email) {
 users.prototype.getUserByUserName = function (userName) {
 	logger.debug('hitting getUserByUserName');
 	logger.debug(userName);
-	var validation = {};
 	if (userName) {
 		validation.userName 	= userName;
 	} else {
@@ -348,16 +395,19 @@ users.prototype.getUserByUserName = function (userName) {
 * Update user information
 */
 users.prototype.update = function (id, params) {
-	var validation = null; // preCondition.validate(params);
-
+	validation = this.validateUpdateUser(id, params);
 	return(new Promise(function(resolve, reject){
-		if (validation !== null) {
-			reject(validation.errors);
+		
+		if (validation.errors) {
+			resolve(validation.errors);
 		} else {
 			UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
 			.then(function(user) {
+				if (user._doc.password) {
+					user._doc.password = null;
+				}
 				resolve(user);
-			})
+			});
 		}
 
 	}));
@@ -367,7 +417,6 @@ users.prototype.update = function (id, params) {
 * Delete
 */
 users.prototype.delete = function(userId) {
-	var validation 								= {};
 	if (userId) {
 		validation.userId 					= userId;
 	} else {
