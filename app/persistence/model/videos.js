@@ -168,7 +168,9 @@ var videoSchema = mongoose.Schema({
 	videoPath: {
 		required	: true,
 		type			: String 
-	}
+	},
+
+	videoLocation: String
 
 	//speed: {type: Number, default: 1},
 	//rating: {type: Number, default: 0},

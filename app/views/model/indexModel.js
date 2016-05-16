@@ -11,6 +11,7 @@ try {
 	var config					= require('../../../config/config')[global.NODE_ENV];
 	var Promise					= require('bluebird');
 	var util						= require('util');
+	var amazonConfig  	= require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -58,6 +59,8 @@ IndexModel.prototype.getData = function(params) {
 		params.data.index.head.og			= config.view.index.og;
 		params.data.index.head.title	= "AirVūz – Drone Video Community";
 		params.data.index.viewName		= "index";
+
+		params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
 
 		Promise.all([CategoryType.get(), VideoCollection.getFeaturedVideos(), Videos.getRecentVideos(), Videos.getTrendingVideos(), VideoCollection.getStaffPickVideos(), Slider.getHomeSlider(params.request.query.banner)])
 			.then(function(data) {

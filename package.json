@@ -29,6 +29,7 @@
     "bluebird": "^3.3.3",
     "body-parser": "^1.15.0",
     "bootstrap-switch": "^3.3.2",
+    "bootstrap-tagsinput": "^0.7.1",
     "clean-webpack-plugin": "^0.1.8",
     "compression": "^1.6.1",
     "css-loader": "^0.23.1",

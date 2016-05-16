@@ -1,4 +1,7 @@
 /* global Page */
+require('bootstrap-tagsinput');
+require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
+
 require('../styles/upload.css');
 
 var Evaporate     = require('evaporate'),
@@ -17,13 +20,13 @@ var step2Tpl = require('../templates/upload/step-2.dust');
 var step3Tpl = require('../templates/upload/step-3.dust');
 
 var $uploadPage,
+    $tags,
     currentUploadFile = {},
     intervalHandler,
     transcodeError,
     transcodeComplete,
     VIEW_MODEL = {},
     evaporate,
-    VIDEO_MODEL = {},
     isUploading = false,
     POLLING_INTERVAL_TIME = 20000; // 20 sec
 
@@ -131,6 +134,13 @@ function renderStep(step, video) {
     case 2:
       step2Tpl(VIEW_MODEL, function (err, html) {
         $uploadPage.html(html);
+
+        $tags = $('#tags');
+        // initalize plugin
+        $tags.tagsinput({
+          // enter, commas, and space
+          confirmKeys: [13, 188, 32]
+        });
       });
       break;
     case 3:
@@ -160,20 +170,24 @@ function bindEvents() {
   function onPublish(event) {
     event.preventDefault();
 
-    //return renderStep(3); // DEBUG
-
     var params = {
       title           : $uploadPage.find('#title').val(),
+      videoLocation   : $uploadPage.find('#location').val(),
       videoPath       : currentUploadFile.videoPath,
-      tags            : ['drone', 'flying'],
       duration        : currentUploadFile.duration,
       cameraType      : $uploadPage.find('#camera-type').val(),
       droneType       : $uploadPage.find('#drone-type').val(),
-      //categories      : currentUploadFile.thumbnailPath,
+      categories      : $uploadPage.find('#category-list li').map(function (index, li) {
+                          return $(li).data('id');
+                        }).toArray(),
       thumbnailPath   : currentUploadFile.thumbnailPath,
-      description     : $uploadPage.find('#description').val(),
+      description     : $uploadPage.find('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
       userId          : identity._id
     };
+
+    if ($tags.val()) {
+      params.tags = $tags.val().split(',');
+    }
 
     $.ajax({
       url         : '/api/videos',
@@ -187,8 +201,6 @@ function bindEvents() {
   }
 
   function onFileChange() {
-    //return renderStep(2); // DEBUG
-
     currentUploadFile = this.files[0];
     var data = {file: {type: currentUploadFile.type, size: currentUploadFile.size, name: currentUploadFile.name}};
 
@@ -251,18 +263,17 @@ function bindEvents() {
     }
 
     var category = getCategoryById(categoryId);
-    var list = '<li>' + category.name + '</li>';
+    var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
     var $categoryList = $uploadPage.find('#category-list');
 
     if ($categoryList.find('li').size() < 3) {
       $categoryList.append(list);
-      if (VIDEO_MODEL.categories) {
-        VIDEO_MODEL.categories.push(category._id);
-      } else {
-        VIDEO_MODEL.categories = [category._id];
-      }
     } else {
-      $uploadPage.find('#category-message').text('Max catgories').delay(500).text('');
+      $uploadPage.find('#category-message').text('Max catgories');
+
+      setTimeout(function () {
+        $uploadPage.find('#category-message').text('');
+      }, 2000);
     }
   }
 

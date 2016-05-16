@@ -2,6 +2,15 @@
     min-height: 400px;
     padding-top: 50px;
 }
+#upload-page .bootstrap-tagsinput {
+    width: 100%;
+    border-radius: 0;
+}
+#upload-page .bootstrap-tagsinput .label {
+    font-size: 100%;
+    border-radius: 0;
+    background-color: #30c1ed;
+}
 #upload-page .glyphicon {
     font-size: 75px;
     display: block;

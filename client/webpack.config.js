@@ -80,7 +80,8 @@ config.module = { loaders: [] };
 config.module.loaders.push ( {
   test:    /\.css$/,
   include: [
-    path.resolve ( __dirname, 'styles' )
+    path.resolve ( __dirname, 'styles' ),
+    path.resolve ( __dirname, '..', 'node_modules' )
   ],
   loader:  ExtractTextPlugin.extract ( 'style', 'css?-minimize!postcss' )
 } );
