@@ -3,6 +3,8 @@ var identity                           = require('./services/identity');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
+var videoUpNext                        = null;
+var $videoPlayer;
 var $videoPage;
 var screenWidth;
 
@@ -33,6 +35,11 @@ var toggles = {
       }
     };
 
+
+//get up next video info
+
+
+
 //video increment
 function incrementVideoCount() {
   var videoId = {};
@@ -52,7 +59,6 @@ function incrementVideoCount() {
 
 //check for user following and user video liked
 function videoInfoCheck() {
-  console.log(user);
   var checkObject = {};
   checkObject.userId = user._id;
   checkObject.videoId = video._id;
@@ -64,7 +70,6 @@ function videoInfoCheck() {
     data: checkObject
   })
   .success(function(response) {
-    console.log(response);
     if(response.like === true) {
       $('.like').addClass('airvuz-blue')
     }
@@ -108,17 +113,18 @@ function bindEvents() {
       eventType		: "click"
     });
     notificationObject.notificationType = 'COMMENT';
-    notificationObject.notificationMessage = $(this).attr('value');
+    notificationObject.notificationMessage = $('#comment-text').val();
+    var commentData = {};
     var comment = {};
     comment.videoId = $(this).attr('value');
     comment.comment = $('#comment-text').val();
     comment.userId = user._id;
-    console.log(comment);
+    commentData.comment = comment;
+    commentData.notification = notificationObject;
     $.ajax({
         type: 'POST',
         url: '/api/comment',
-        data: {comment: comment, notification: notificationObject},
-        dataType: 'json'
+        data: {data: JSON.stringify(commentData)}
       })
       .done(function(data) {
         var comment = data;
@@ -326,6 +332,57 @@ function bindEvents() {
     }
   });
 
+  //start player event delegation
+    function endFunction() {
+      AVEventTracker({
+        codeSource: "videoPlayer",
+        eventName: "ended",
+        eventType: "playerEvent"
+      });
+      var picture = $('.nextVideos').children('ul').children().first().find('img').attr('src');
+      $('.vjs-poster').attr('style', 'background-image: url("' + picture + '")');
+      this.posterImage.show();
+
+      setTimeout(function () {
+        var nextVideo = $('.nextVideos').children('ul').children().first().attr('value');
+        window.location.href = nextVideo;
+      }, 100000);
+    }
+
+
+    function timeFunction() {
+      AVEventTracker({
+        codeSource	: "videoPlayer",
+        eventName		: "buffering",
+        eventType		: "playerEvent"
+      });
+    }
+
+    function playFunction() {
+      AVEventTracker({
+        codeSource	: "videoPlayer",
+        eventName		: "playing",
+        eventType		: "playerEvent"
+      });
+    }
+
+    function pauseFunction() {
+      AVEventTracker({
+        codeSource	: "videoPlayer",
+        eventName		: "paused",
+        eventType		: "playerEvent"
+      });
+    }
+
+    videojs("video-player").ready(function() {
+      var player = this;
+      player
+      .on('ended', endFunction)
+      .on('waiting', timeFunction)
+      .on('playing', playFunction)
+      .on('pause', pauseFunction);
+    });
+
   //event delegation start
   function commentReply() {
 
@@ -448,6 +505,7 @@ function initialize() {
 
   //set video page
   $videoPage = $('.video-page');
+  $videoPlayer = $('#video-player');
 
   //run init functions
   incrementVideoCount();
@@ -470,6 +528,7 @@ function initialize() {
   }
 
   bindEvents();
+
 
   //video description functions
 

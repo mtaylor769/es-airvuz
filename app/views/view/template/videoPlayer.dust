@@ -48,11 +48,11 @@
                             </div>
                         </div>
                         {!video player!}
-                        <video class="video-js vjs-big-play-centered vjs-fullscreen"
+                        <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
                                controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
-                               poster="//s3-us-west-2.amazonaws.com/airvuz-videos-beta/{video.thumbnailPath}"
+                               poster="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}"
                                data-setup=''>
-                            <source src="//s3-us-west-2.amazonaws.com/airvuz-videos-beta/{video.videoPath}" type="video/mp4" />
+                            <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.videoPath}" type="video/mp4" />
                         </video>
                         {!categories!}
                         <div class="flex video-player-categories font-white">

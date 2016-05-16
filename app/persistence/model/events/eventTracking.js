@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 
 var eventTrackingSchema = mongoose.Schema({
-	
+	clientIp: {
+		required: false,
+		type: String
+	},
+
 	codeSource : {
 		required	: false,
 		type			: String
@@ -13,6 +17,11 @@ var eventTrackingSchema = mongoose.Schema({
 	createdDate : {
 		default: Date.now,
 		type: Date
+	},
+
+	eventMessage : {
+		required: false,
+		type: String
 	},
 	
 	eventName : {

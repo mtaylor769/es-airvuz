@@ -9,9 +9,10 @@ function Comment() {
 }
 
 Comment.prototype.post = function(req, res) {
-  var comment = req.body.comment;
-  var notification = req.body.notification;
-  console.log(req.body);
+  var json = JSON.parse(req.body.data);
+  console.log(json);
+  var comment = json.comment;
+  var notification = json.notification;
   commentCrud
     .create(comment)
     .then(function (comment) {

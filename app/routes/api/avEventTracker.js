@@ -17,7 +17,9 @@ AVEventTracker.prototype.put = function(req, res) {
 	params.codeSource		= req.body.codeSource;
 	params.eventName		= req.body.eventName;
 	params.eventSource	= req.body.eventSource;
-	params.eventType		= req.body.eventType;	
+	params.eventType		= req.body.eventType;
+	params.clientIp 		= req.body.clientIp;
+	params.eventMessage = req.body.eventMessage;
 			
 	EventTrackingCrud
 		.create(params)
