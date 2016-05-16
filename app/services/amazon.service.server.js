@@ -115,12 +115,32 @@ function startTranscode(preset, key) {
     var params = {
       Input: { Key: key },
       PipelineId: amazonConfig.PIPELINE_ID,
-      Outputs: [{
-        Key: key,
-        ThumbnailPattern: 'tn_{count}',
-        PresetId: preset
-        //PresetId: '1454691097318-4731nu'
-      }],
+      Outputs: [
+        {
+          // generic 320x340
+          Key: keyWithoutMp4 + '-100.mp4',
+          ThumbnailPattern: '',
+          PresetId: '1351620000001-000061'
+        },
+        {
+          // generic 720p
+          Key: keyWithoutMp4 + '-200.mp4',
+          ThumbnailPattern: '',
+          PresetId: '1351620000001-000010'
+        },
+        {
+          // original-300
+          Key: key,
+          ThumbnailPattern: 'tn_{count}',
+          PresetId: preset
+        },
+        {
+          // generic 1080p
+          Key: keyWithoutMp4 + '-400.mp4',
+          ThumbnailPattern: '',
+          PresetId: '1351620000001-000001'
+        }
+      ],
       OutputKeyPrefix: keyWithoutMp4 + '/'
     };
     transcoder.createJob(params, function (err, data) {
