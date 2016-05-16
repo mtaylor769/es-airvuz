@@ -102,6 +102,7 @@ function changeProfile() {
 }
 
 function editProfile() {
+  var userName            =$("$username").val();
   var emailAddress        = $("#email").val();
   var aboutMe             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
@@ -111,8 +112,10 @@ function editProfile() {
   var lastName            = $("#lastname").val();
   var firstName           = $("#firstname").val();
 
+  if (userName) {
+    userData.userName = userName;
+  }
   if (emailAddress) {
-    //TODO check to see if email address is missing
     userData.emailAddress = emailAddress;
   }
 

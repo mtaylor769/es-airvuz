@@ -1,19 +1,23 @@
 <div class="row m-t-15 m-b-15">
-    <div class="dropdown col-xs-6">
+    <div class="dropdown col-xs-9">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             Sort By
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
             <li><a>VŪZ</a></li>
-            <li><a>Date</a></li>
+            <li><a>Date Ascending</a></li>
+            <li><a>Date Descending</a></li>
             <li><a>Number of Likes</a></li>
         </ul>
     </div>
-        <div class="col-xs-6">
+        <div class="col-xs-1">
             <input type="checkbox" name="showcase-default" checked/>
         </div>
-        <button class="btn btn-default pull-right" id="edit-showcase">Edit Showcase</button>
+        <div class="col-xs-2">
+            <button class="btn btn-default" id="edit-showcase">Edit Showcase</button>
+        </div>
+        
     </div>
 </div>
 <div class="row m-b-20 profile-videos">

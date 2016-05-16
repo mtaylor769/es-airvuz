@@ -841,6 +841,12 @@ Begin userProfile CSS
   border-bottom: none;
 }
 
+#user-profile .profile-video-title a h4 {
+  color: #000;
+  text-decoration: none;
+  font-size: 14px;
+}
+
 .profile-video .col-xs-6, .col-xs-5 {
   /*padding-right: 0;
   padding-left: 10px;*/

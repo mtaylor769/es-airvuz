@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-xs-5 col-sm-12 profile-video-info">
                     <div class="row hidden-xs" style="padding: 5px 10px">
-                        <span>{viewCount} Views</span>
+                        <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>
                         <span class="pull-right">{duration}</span>
                     </div>
                     <div class="profile-video-title">
@@ -31,7 +31,7 @@
                         </a>
                     </div>
                     <div class="visible-xs">
-                        <span>{viewCount} Views</span>
+                        <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>
                     </div>
                     <div class="hidden-xs" style="height: 31px; margin: 0px 10px">
                         <span>{description}</span>

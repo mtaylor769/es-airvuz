@@ -9,7 +9,10 @@
         <div class="text-right">
           <a href="#" class="btn btn-primary" id="change-password-btn">Change Profile Picture</a>
         </div>
-
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" value="{userName}" placeholder="Username">
+        </div>
         <div class="form-group">
           <label for="email">First Name</label>
           <input type="text" class="form-control" id="firstname" value="{firstName}" placeholder="First Name">
