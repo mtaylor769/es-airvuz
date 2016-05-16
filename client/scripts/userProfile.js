@@ -102,7 +102,7 @@ function changeProfile() {
 }
 
 function editProfile() {
-  var userName            =$("$username").val();
+  var userName            = $("#username").val();
   var emailAddress        = $("#email").val();
   var aboutMe             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
