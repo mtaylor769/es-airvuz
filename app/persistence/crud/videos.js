@@ -28,13 +28,13 @@ var Videos = function() {
 
 function getRecentVideos(count, page) {
 	var limit = count ? count : 10;
-	var skip = (page ? page : 1) * limit;
+	var skip = (page ? (page - 1) : 0) * limit;
 	return VideoModel.find({}).sort('-uploadDate').skip(skip).populate('userId').limit(limit).exec();
 }
 
 function getTrendingVideos(count, page) {
 	var limit = count ? count : 10;
-	var skip = (page ? page : 1) * limit;
+	var skip = (page ? (page - 1) : 0) * limit;
 	return VideoModel.find({}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
 }
 
@@ -63,8 +63,13 @@ Videos.prototype.getPreCondition = function(params) {
 		this.data.description		= params.description || null;
 		this.data.duration			= params.duration || null;
 		this.data.videoPath			= params.videoPath || null;
-		this.data.thumbnailPath	= params.thumbnailPath || null;		
-		
+		this.data.thumbnailPath	= params.thumbnailPath || null;
+		this.data.tags					= params.tags || null;
+		this.data.categories		= params.categories || null;
+		this.data.droneType			= params.droneType || null;
+		this.data.cameraType		= params.cameraType || null;
+		this.data.videoLocation	= params.videoLocation || null;
+
 		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
 				errorId					: "USERID1000",
