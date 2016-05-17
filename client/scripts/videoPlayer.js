@@ -371,10 +371,12 @@ function bindEvents() {
         //setting layer html
         endCardLayer.html(html);
 
-        //countdown
+        //setting countdown pause on comment focus
         $(document).on('click', function() {
           activeEl = $(document.activeElement).attr('id');
         });
+
+        //setting countdown interval variable function
         var countdown = function() {
           if(countdownNumber !== 0) {
             if(activeEl !== 'comment-text')
@@ -385,6 +387,7 @@ function bindEvents() {
             window.location.href = nextVideo.attr('value');
           }
         };
+        //calling interval variable
         setInterval(countdown, 1000);
       } else {
         this.hasStarted(false);
