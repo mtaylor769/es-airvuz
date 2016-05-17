@@ -366,6 +366,16 @@ body.modal-open {
  * End Video Player
 /**********************************/
 
+.video-end-card {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: black;
+  opacity: .5;
+  z-index: 1;
+}
+
 .categories li {
   padding: 0 10px 0 5px;
   margin: 10px 0 0;

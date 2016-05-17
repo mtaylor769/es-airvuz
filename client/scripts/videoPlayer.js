@@ -339,16 +339,25 @@ function bindEvents() {
         eventName: "ended",
         eventType: "playerEvent"
       });
-      var picture = $('.nextVideos').children('ul').children().first().find('img').attr('src');
-      $('.vjs-poster').attr('style', 'background-image: url("' + picture + '")');
-      this.posterImage.show();
-
-      setTimeout(function () {
-        var nextVideo = $('.nextVideos').children('ul').children().first().attr('value');
-        window.location.href = nextVideo;
-      }, 100000);
+      if(!user || user.autoPlay === true) {
+        //set poster to next video image
+        var picture = $('.nextVideos').children('ul').children().first().find('img').attr('src');
+        $('.vjs-poster').attr('style', 'background-image: url("' + picture + '")');
+        //show poster
+        this.hasStarted(false);
+        this.bigPlayButton.hide();
+        //setting up end card layer
+        var endCardLayer = $('#video-player div:nth-child(2)');
+        endCardLayer.first().addClass('video-end-card');
+        //timeout for countdown
+        setTimeout(function () {
+          var nextVideo = $('.nextVideos').children('ul').children().first().attr('value');
+          window.location.href = nextVideo;
+        }, 100000);
+      } else {
+        this.hasStarted(false);
+      }
     }
-
 
     function timeFunction() {
       AVEventTracker({
