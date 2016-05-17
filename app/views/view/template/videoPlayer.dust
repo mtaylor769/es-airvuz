@@ -115,7 +115,7 @@
                         {#comments}
                             <li class="comment-wrap">
                                 <div class="flex">
-                                    <img src="http://www.airvuz.com/{user.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                    <img src="http://www.airvuz.com/{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
                                     <div class="m-t-20">
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
                                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>

@@ -1,14 +1,22 @@
 var VideoLikeCrud = require('../../persistence/crud/videoLike');
+var NotificationCrud = require('../../persistence/crud/notifications')
 
 function VideoLike() {
 
 }
 
 VideoLike.prototype.post = function(req, res) {
+  var json = JSON.parse(req.body.data);
+  console.log(json);
+  var like = json.like;
+  var notification = json.notification;
   VideoLikeCrud
-    .create(req.body)
+    .create(like)
     .then(function(like) {
-      res.json({status: 'liked' });
+      NotificationCrud.create(notification)
+      .then(function(notification) {
+        res.json({status: 'liked'})
+      })
     })
     .catch(function(err) {
       console.log(err);

@@ -35,10 +35,7 @@ var toggles = {
       }
     };
 
-
 //get up next video info
-
-
 
 //video increment
 function incrementVideoCount() {
@@ -161,14 +158,19 @@ function bindEvents() {
   //video like
   $('.like').on('click', function() {
     if(user._id && user._id !== video.userId) {
+      notificationObject.notificationType = 'LIKE';
+      notificationObject.notificationMessage = 'Liked your video';
+      var likeData = {};
       var likeObject = {};
       likeObject.videoId = $(this).attr('data-videoId');
       likeObject.userId = user._id;
+      likeData.like = likeObject;
+      likeData.notification = notificationObject;
 
       $.ajax({
           type: 'POST',
           url: '/api/video-like',
-          data: likeObject,
+          data: {data: JSON.stringify(likeData)},
           dataType: 'json'
         })
         .done(function (response) {
@@ -223,12 +225,18 @@ function bindEvents() {
   $('#follow').on('click', function() {
     if(userIdentity._id && userIdentity._id !== video.userId) {
       var followData = {};
-      followData.userId = userIdentity._id;
-      followData.followingUserId = video.userId;
+      var followObject = {};
+      followObject.userId = userIdentity._id;
+      followObject.followingUserId = video.userId;
+      notificationObject.notificationType = 'FOLLOW';
+      notificationObject.notificationMessage = 'followed you';
+      followData.follow = followObject;
+      followData.notification = notificationObject;
+      console.log(followData);
       $.ajax({
           type: 'POST',
           url: '/api/follow',
-          data: followData
+          data: {data: JSON.stringify(followData)}
         })
         .success(function (response) {
           if(response.status === 'followed') {
@@ -257,11 +265,6 @@ function bindEvents() {
     } else {
       $('#follow-self-modal').modal('show');
     }
-  });
-
-  $('#').on('click', function() {
-    var a = this;
-    console.log(a);
   });
 
   //facebook modal event
@@ -446,16 +449,21 @@ function bindEvents() {
     //comment submit function
     $('#saveComment').click(function() {
       var self = this;
-      var comment = {};
-      comment.comment = $('#comment').val();
-      comment.parentCommentId = parentCommentId;
-      comment.userId = userIdentity._id;
-      comment.videoId = '56fec7bb07354aaa096db3b8';
+      var replyData = {};
+      var replyObject = {};
+      replyObject.comment = $('#comment').val();
+      replyObject.parentCommentId = parentCommentId;
+      replyObject.userId = userIdentity._id;
+      replyObject.videoId = '56fec7bb07354aaa096db3b8';
+      notificationObject.notificationType = 'COMMENT REPLY';
+      notificationObject.notificationMessage = 'replied to your comment';
+      replyData.comment = replyObject;
+      replyData.notification = notificationObject;
 
       $.ajax({
           type: 'POST',
           url: '/api/comment',
-          data: comment,
+          data: {data: JSON.stringify(replyData)},
           dataType: 'json'
         })
         .done(function(reply) {
