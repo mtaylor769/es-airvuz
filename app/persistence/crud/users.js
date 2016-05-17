@@ -9,6 +9,7 @@ try {
 	var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 
 	var database										= require('../database/database');
+	var currentUser									= null;
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
 	var validation 									= {};
 
@@ -82,7 +83,7 @@ users.prototype.validateCreateUser = function(params) {
 users.prototype.validateUpdateUser = function(id, params) {
 	var sourceLocation				= "persistence.crud.Users.update";
 	var userInfo 							= {};
-	var errorMessage										= new ErrorMessage();
+	var errorMessage					= new ErrorMessage();
 
 	if(params.userName) {
 		UserModel.findOne({userName : params.userName})
@@ -123,12 +124,16 @@ users.prototype.validateUpdateUser = function(id, params) {
 	return userInfo;
 };
 
-users.prototype.validatePasswordChange = function(data) {
+users.prototype.validatePasswordChange = function(user, params) {
 	var sourceLocation									= "persistence.crud.Users.validatePasswordChange";
 	var userInfo 												= {};
 	var errorMessage										= new ErrorMessage();
+	// UserModel.findById(id).exec()
+	// 	.then(function (user) {
+	// 		hashUser = user;
+	// 	});
 
-	if(!UserModel.validPassword(data.oldPassword)) {
+	if(!user.validPassword(params.oldPassword)) {
 		userInfo.errors = errorMessage.getErrorMessage({
 			statusCode			: "400",
 			errorId					: "VALIDA1000",
@@ -139,7 +144,7 @@ users.prototype.validatePasswordChange = function(data) {
 			sourceLocation	: sourceLocation
 		});
 	}
-	if (data.newPassword !== data.confirmPassword) {
+	if (params.newPassword !== params.confirmPassword) {
 		userInfo.errors = errorMessage.getErrorMessage({
 			statusCode			: "400",
 			errorId					: "VALIDA1000",
@@ -421,21 +426,27 @@ users.prototype.getUserByUserName = function (userName) {
 * Update user information
 */
 users.prototype.update = function (id, params) {
+	var currentTransaction = this;
 	if (params.oldPassword) {
-		validation = this.validatePasswordChange(params);
+		UserModel.findById(id).exec()
+			.then(function (user) {
+				currentUser = user;
+			});
 	} else {
 		validation = this.validateUpdateUser(id, params);
 	}
+	validation = this.validatePasswordChange(currentUser, params);
 	return(new Promise(function(resolve, reject){
 		if(validation.errors || validation.errors[0] === '') {
 			resolve(validation.errors);
 		} else {
 			if (params.oldPassword) {
-				var pw = UserModel.generateHash(params.newPassword);
+				var hashUser 			= new UserModel();
+				var pw 						= hashUser.generateHash(params.newPassword);
 				delete params.oldPassword;
 				delete params.newPassword;
 				delete params.confirmPassword;
-				params.password = pw;
+				params.password 	= pw;
 			}
 			UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
 			.then(function(user) {
