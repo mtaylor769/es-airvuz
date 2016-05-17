@@ -69,6 +69,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(videos) {
 			videos.forEach(function(video) {
+				video.fullTitle = video.title;
 				video.title = video.title.substring(0, 30);
 				video.description = video.description.substring(0, 90);
 				if (video.title.length === 30) {

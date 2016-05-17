@@ -371,9 +371,23 @@ body.modal-open {
   top: 0;
   height: 100%;
   width: 100%;
-  background: black;
-  opacity: .5;
+  background-color: rgba(0,0,0,0.5);
   z-index: 1;
+  text-align: center;
+}
+
+.end-card-upnext {
+  padding-top: 15%;
+  font-size: 16px;
+}
+
+.end-card-title {
+  font-size: 20px;
+}
+
+.end-card-countdown {
+  padding-top: 30px;
+  font-size: 50px;
 }
 
 .categories li {

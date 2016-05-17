@@ -340,20 +340,52 @@ function bindEvents() {
         eventType: "playerEvent"
       });
       if(!user || user.autoPlay === true) {
+
         //set poster to next video image
-        var picture = $('.nextVideos').children('ul').children().first().find('img').attr('src');
+        var nextVideo = $('.nextVideos').children('ul').children().first();
+        var picture = nextVideo.find('img').attr('src');
+        var nextTitle = nextVideo.attr('data-title');
+
+        //set countdown variables
+        var countdownNumber = Number(10);
+        var activeEl = null;
+
+        //set layer html
+        var html = '<p class="end-card-upnext">UP NEXT</p>'+
+                   '<p class="end-card-title">' + nextTitle + '</p>'+
+                   '<p class="end-card-countdown">' + countdownNumber + '</p>';
+
+        //run function to change poster
         $('.vjs-poster').attr('style', 'background-image: url("' + picture + '")');
+
         //show poster
         this.hasStarted(false);
         this.bigPlayButton.hide();
+
         //setting up end card layer
         var endCardLayer = $('#video-player div:nth-child(2)');
+
+        //adding layer html
         endCardLayer.first().addClass('video-end-card');
-        //timeout for countdown
-        setTimeout(function () {
-          var nextVideo = $('.nextVideos').children('ul').children().first().attr('value');
-          window.location.href = nextVideo;
-        }, 100000);
+
+        //setting layer html
+        endCardLayer.html(html);
+
+        //countdown
+        $(document).on('click', function() {
+          activeEl = $(document.activeElement).attr('id');
+        });
+        var countdown = function() {
+          if(countdownNumber !== 0) {
+            if(activeEl !== 'comment-text')
+              countdownNumber = countdownNumber - 1;
+              $('.end-card-countdown').text(countdownNumber);
+          } else {
+            clearInterval(countdown);
+            window.location.href = nextVideo.attr('value');
+          }
+        };
+        setInterval(countdown, 1000);
       } else {
         this.hasStarted(false);
       }

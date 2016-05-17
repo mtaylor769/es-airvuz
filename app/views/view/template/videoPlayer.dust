@@ -153,7 +153,7 @@
                         </div>
                         <ul style="list-style: none; padding-left: 0">
                         {#upNext}
-                            <li style="width: 100%; position: relative" class="go-to-video" value="{_id}">
+                            <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
                                 <div class="up-next-wrapper">
                                     <a href="{_id}"><img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" class="m-t-10"></a>
                                     <div class="up-next-layer">
