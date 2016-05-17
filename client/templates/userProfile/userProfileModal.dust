@@ -23,18 +23,22 @@
           <div class="modal-body">
             <form class="m-b-20">
               <div class="form-group">
-                <label for="confirm-password">Twitter Link</label>
-                <input type="text" class="form-control" id="confirm-password" placeholder="Password">
+                <label for="old-password">Enter Current Password</label>
+                <input type="password" class="form-control" id="old-password" placeholder="Current Password">
+              </div>
+              <div class="form-group">
+                <label for="new-password">Enter New Password</label>
+                <input type="password" class="form-control" id="new-password" placeholder="New Password">
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">Confirm New Password</label>
+                <input type="password" class="form-control" id="confirm-password" placeholder="Confirm New Password">
               </div>
               <div class="text-right">
-                <a href="/" class="btn btn-primary">Cancel</a>
-                <a href="#" class="btn btn-primary" id="confirm-password-btn">Save</a>
+                <a href="#" class="btn btn-primary" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-primary" id="new-password-btn">Save</a>
               </div>
             </form>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-              <button type="button" class="btn btn-primary" id="save-changes">Yes</button>
           </div>
       </div>
   </div>

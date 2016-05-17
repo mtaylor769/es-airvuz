@@ -80,10 +80,8 @@ users.prototype.validateCreateUser = function(params) {
  * @param params.sourceLocation {string} - location where the error initiates.
  */
 users.prototype.validateUpdateUser = function(id, params) {
-	var sourceLocation				= "persistence.crud.Users.create";
+	var sourceLocation				= "persistence.crud.Users.update";
 	var userInfo 							= {};
-	
-	//need to pass in user data info
 	var errorMessage										= new ErrorMessage();
 
 	if(params.userName) {
@@ -106,6 +104,7 @@ users.prototype.validateUpdateUser = function(id, params) {
 	if(params.emailAddress) {
 		UserModel.findOne({emailAddress : params.emailAddress})
 		.then(function(user){
+			//TODO make sure this works
 			if (user._doc._id !== id) {
 				userInfo.errors = errorMessage.getErrorMessage({
 					statusCode			: "400",
@@ -121,9 +120,38 @@ users.prototype.validateUpdateUser = function(id, params) {
 			}
 		});
 	}
-
 	return userInfo;
-}
+};
+
+users.prototype.validatePasswordChange = function(data) {
+	var sourceLocation									= "persistence.crud.Users.validatePasswordChange";
+	var userInfo 												= {};
+	var errorMessage										= new ErrorMessage();
+
+	if(!UserModel.validPassword(data.oldPassword)) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "password"
+			},
+			errorMessage		: "Invalid Password",
+			sourceLocation	: sourceLocation
+		});
+	}
+	if (data.newPassword !== data.confirmPassword) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "password"
+			},
+			errorMessage		: "Passwords do not match",
+			sourceLocation	: sourceLocation
+		});
+	}
+	return userInfo;
+};
 
 
 /*
@@ -193,8 +221,6 @@ users.prototype.getAllUsers = function() {
 			reject(errorMessage.getErrors());
 		});
 	}));
-
-	
 };
 
 /*
@@ -395,18 +421,29 @@ users.prototype.getUserByUserName = function (userName) {
 * Update user information
 */
 users.prototype.update = function (id, params) {
-	validation = this.validateUpdateUser(id, params);
+	if (params.oldPassword) {
+		validation = this.validatePasswordChange(params);
+	} else {
+		validation = this.validateUpdateUser(id, params);
+	}
 	return(new Promise(function(resolve, reject){
-		
-		if (validation.errors) {
+		if(validation.errors || validation.errors[0] === '') {
 			resolve(validation.errors);
 		} else {
+			if (params.oldPassword) {
+				var pw = UserModel.generateHash(params.newPassword);
+				delete params.oldPassword;
+				delete params.newPassword;
+				delete params.confirmPassword;
+				params.password = pw;
+			}
 			UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
 			.then(function(user) {
 				if (user._doc.password) {
 					user._doc.password = null;
 				}
-				resolve(user);
+				//resolve(user);
+				resolve(null);
 			});
 		}
 

@@ -92,7 +92,42 @@ function bindEvents() {
 
   $profilePage
     .on('click', '.asdf', asdf)
-    .on('click', '#save-edit-btn', changeProfile);
+    .on('click', '#save-edit-btn', changeProfile)
+    .on('click', '#change-password-btn', changePassword);
+}
+
+function changePassword() {
+  $('#change-password').modal('show');
+  $('#change-password')
+  .on('click', '#new-password-btn', confirmPasswordChange);
+}
+
+function confirmPasswordChange() {
+  var data                  = {};
+  data.oldPassword          = $("#old-password").val();
+  data.newPassword          = $("#new-password").val();
+  data.confirmPassword      = $("#confirm-password").val();
+
+  if(!data.oldPassword || data.oldPassword === '') {
+    console.log('Please enter in current password');
+    return false;
+  }
+  if(data.newPassword === '' || data.newPassword !== data.confirmPassword) {
+    console.log('New Password Invalid');
+    return false;
+  } 
+  $.ajax({
+    type:'PUT',
+    url: '/api/users/' + user._id,
+    data: data
+  })
+  .success(function(response) {
+    user = response;
+    $('#save-changes').modal('hide');
+  })
+  .error(function(error) {
+  });
+
 }
 
 function changeProfile() {
@@ -140,8 +175,6 @@ function editProfile() {
   if (instagram) {
     userData.instagram = instagram;
   }
-
-  //TODO: pop dialog confirm
   
 
   $.ajax({
@@ -151,6 +184,7 @@ function editProfile() {
   })
   .success(function(response) {
     user = response;
+    $('#save-changes').modal('hide');
   })
   .error(function(error) {
   });
@@ -169,6 +203,8 @@ function initialize() {
     userProfileEdit({user: profileUser}, function (err, html) {
       $('#edit-profile').html(html);
     });
+  } else {
+
   }
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'

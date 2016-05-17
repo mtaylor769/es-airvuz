@@ -5,8 +5,9 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a>Vuz</a></li>
-            <li><a>Date</a></li>
+            <li><a>VŪZ</a></li>
+            <li><a>Date Ascending</a></li>
+            <li><a>Date Descending</a></li>
             <li><a>Number of Likes</a></li>
         </ul>
     </div>
