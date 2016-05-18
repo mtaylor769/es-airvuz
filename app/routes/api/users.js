@@ -75,16 +75,21 @@ function createUser(req, res) {
 
 function put(req, res) {
   console.log('hit this');
-  var updateObject = req.body;
-  var userId = req.params.id;
+  var updateObject  = req.body;
+  var userId        = req.params.id;
+  var data          = {};
   usersCrud.update(userId, updateObject)
   .then(function(user) {
-    res.send(user);
+    data.status       = 'OK';
+    data.statusCode   = 200;
+    data.data         = user;
   })
   .catch(function(error) {
-    res.send(error);
+    data.status       = 'Fail';
+    data.statusCode   = 500;
+    data.data         = error;
   });
-
+  res.send(data);
 
 }
 

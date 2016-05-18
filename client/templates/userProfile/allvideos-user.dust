@@ -30,6 +30,9 @@
                         <a href="/videoPlayer/{_id}">
                             <h4>{title}</h4>
                         </a>
+                        <p>By 
+                            <a href="/userProfile/{userId.userName}" tabindex="0">{userId.userName}</a>
+                        </p>
                     </div>
                     <div class="visible-xs">
                         <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>

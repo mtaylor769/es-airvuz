@@ -191,11 +191,11 @@ Videos.prototype.like = function(video, like) {
 };
 
 Videos.prototype.getShowcaseByUser = function(id) {
-	return VideoModel.find({userId: id, isShowcase: true}).exec()
+	return VideoModel.find({userId: id, isShowcase: true}).exec();
 };
 
 Videos.prototype.getByUser = function(userId) {
-	return VideoModel.find({userId: userId}).sort({uploadDate: -1}).exec()
+	return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').exec();
 };
 
 Videos.prototype.upCount = function(video) {

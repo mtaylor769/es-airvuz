@@ -123,16 +123,18 @@ function confirmPasswordChange() {
     data: data
   })
   .success(function(response) {
-    if(response.length>0){
-      console.log(response[0].errorMsg);
-      return false;
+    if(response.status==='OK') {
+      user = response.data;
+
     } else {
-      user = response;
-      $('#save-changes').modal('hide');
+      console.log(response);
+      
     }
   })
   .error(function(error) {
+
   });
+  $('#save-changes').modal('hide');
 
 }
 

@@ -80,37 +80,51 @@ users.prototype.validateCreateUser = function(params) {
 
 
 var ValidateUserName = function(id, params) {
+	var sourceLocation				= "persistence.crud.Users.update";
+	var errorMessage					= new ErrorMessage();
+
 	return(new Promise(function(resolve, reject) {
-			
-			UserModel.findOne({userName : params.userName})
-			.then(function(user){
-				if (user._doc._id !== id) {
-					var errors = errorMessage.getErrorMessage({
-						statusCode			: "400",
-						errorId					: "VALIDA1000",
-						templateParams	: {
-							name : "userName"
-						},
-						sourceError			: null,
-						errorMessage		: "Username already exists",
-						sourceLocation	: sourceLocation
-					});
-					reject(errors);
-				}
+			if (params.userName) {
+				UserModel.findOne({userName : params.userName})
+				.then(function(user){
+					if (user._doc._id !== id) {
+						var errors = errorMessage.getErrorMessage({
+							statusCode			: "400",
+							errorId					: "VALIDA1000",
+							templateParams	: {
+								name : "userName"
+							},
+							sourceError			: "Username already exists",
+							errorMessage		: "Username already exists",
+							sourceLocation	: sourceLocation
+						});
+						reject(errors);
+						return;
+					}
+					resolve();
+					return;
+				})
+				.catch(function(error) {
+					reject(error);
+					return;
+				});
+			} else {
 				resolve();
-			})
-			.catch(function(error) {
-				reject(error);
-			});
+				return;
+			}
+			
 		
 		})
 	);
-}
+};
 
 var ValidateEmailAddress = function(id, params) {
+	var sourceLocation				= "persistence.crud.Users.update";
+	var errorMessage					= new ErrorMessage();
+
 	return(new Promise(function(resolve, reject) {
-			
-			UserModel.findOne({userName : params.userName})
+		if (params.emailAddress) {
+			UserModel.findOne({emailAddress : params.emailAddress})
 			.then(function(user){
 				if (user._doc._id !== id) {
 					var errors = errorMessage.getErrorMessage({
@@ -119,7 +133,7 @@ var ValidateEmailAddress = function(id, params) {
 						templateParams	: {
 							name : "userName"
 						},
-						sourceError			: null,
+						sourceError			: "Username already exists",
 						errorMessage		: "Username already exists",
 						sourceLocation	: sourceLocation
 					});
@@ -133,10 +147,63 @@ var ValidateEmailAddress = function(id, params) {
 				reject(error);
 				return;
 			});
-		
-		})
-	);
-}
+		} else {
+			resolve();
+			return;
+		}
+		}));
+};
+
+var ValidatePassword = function(id, params) {
+	var sourceLocation				= "persistence.crud.Users.update";
+	var errorMessage					= new ErrorMessage();
+	
+	return(new Promise(function(resolve, reject) {
+		if (params.oldPassword) {
+			if (params.newPassword !== params.confirmPassword) {
+				var errors = errorMessage.getErrorMessage({
+					statusCode			: "400",
+					errorId					: "VALIDA1000",
+					templateParams	: {
+						name : "password"
+					},
+					sourceError			: "Passwords do not match",
+					errorMessage		: "Passwords do not match",
+					sourceLocation	: sourceLocation
+				});
+				reject(errors);
+				return;
+			} else {
+				UserModel.findById(id).exec()
+				.then(function (user) {
+					if(!user.validPassword(params.oldPassword)) {
+						var errors = errorMessage.getErrorMessage({
+							statusCode			: "400",
+							errorId					: "VALIDA1000",
+							templateParams	: {
+								name : "password"
+							},
+							sourceError			: "Password Invalid",
+							errorMessage		: "Invalid Password",
+							sourceLocation	: sourceLocation
+						});
+						reject(errors);
+						return;
+					} else {
+						resolve();
+						return;
+					}
+				})
+				.catch(function(error){
+					reject(error);
+				});
+			}
+		} else {
+			resolve();
+			return;
+		}
+		}));
+};
 
 /*
  * @param params {Object}
@@ -144,100 +211,40 @@ var ValidateEmailAddress = function(id, params) {
  */
 users.prototype.validateUpdateUser = function(id, params) {
 	var sourceLocation				= "persistence.crud.Users.update";
-	var userInfo 							= {};
 	var errorMessage					= new ErrorMessage();
+	var userInfo 							= {};
 
 	return(new Promise(function(resolve, reject) {
 		
-		/*
 		ValidateUserName(id, params)
-			.then(function() {
-				ValidateEmailAddress(id, params).then(function() {
-					
+		.then(function(validation) {
+			userInfo.errors = validation;
+			
+			ValidateEmailAddress(id, params)
+			.then(function(validation){
+				userInfo.errors = validation;
+				
+				ValidatePassword(id, params)
+				.then(function(validation){
+					userInfo.errors = validation;
+					resolve(userInfo);
+					return;
 				})
-				return ...
+				.catch(function(error){
+					reject(error);
+					return;
+				});
 			})
-		
-		
-		*/
-
-		
-		
-		
-		
-		if(params.userName) {
-			UserModel.findOne({userName : params.userName})
-			.then(function(user){
-				if (user._doc._id !== id) {
-					userInfo.errors = errorMessage.getErrorMessage({
-						statusCode			: "400",
-						errorId					: "VALIDA1000",
-						templateParams	: {
-							name : "userName"
-						},
-						sourceError			: null,
-						errorMessage		: "Username already exists",
-						sourceLocation	: sourceLocation
-					});
-				}
+			.catch(function(error){
+				reject(error);
+				return;
 			});
-		}
-
-		if(params.emailAddress) {
-			UserModel.findOne({emailAddress : params.emailAddress})
-			.then(function(user){
-				//TODO make sure this works
-				if (user._doc._id !== id) {
-					userInfo.errors = errorMessage.getErrorMessage({
-						statusCode			: "400",
-						errorId					: "VALIDA1000",
-						templateParams	: {
-							name : "emailAddress"
-						},
-						sourceError			: null,
-						errorMessage		: "Email already exists",
-						sourceLocation	: sourceLocation
-					});
-				} else {
-					logger.debug('nope');
-				}
-			});
-		}
-
-		if(params.oldPassword) {
-			UserModel.findById(id).exec()
-			.then(function (user) {
-				if(!user.validPassword(params.oldPassword)) {
-					userInfo.errors = errorMessage.getErrorMessage({
-						statusCode			: "400",
-						errorId					: "VALIDA1000",
-						templateParams	: {
-							name : "password"
-						},
-						sourceError			: "Password Invalid",
-						errorMessage		: "Invalid Password",
-						sourceLocation	: sourceLocation
-					});
-				}
-			});	
-		}
-		if (params.newPassword !== params.confirmPassword) {
-			userInfo.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "password"
-				},
-				sourceError			: "Passwords do not match",
-				errorMessage		: "Passwords do not match",
-				sourceLocation	: sourceLocation
-			});
-		}
-
-		return userInfo;
-
+		})
+		.catch(function(error){
+			reject(error);
+			return;
+		});
 	}));
-	
 };
 
 /*
@@ -511,7 +518,7 @@ users.prototype.update = function (id, params) {
 	return(new Promise(function(resolve, reject){
 
 		var validate = currentTransaction.validateUpdateUser(id, params);
-		validate.then(function(validation){
+		validate.then(function(validation) {
 			if(validation.errors) {
 				reject(validation.errors);
 				return;
@@ -534,10 +541,11 @@ users.prototype.update = function (id, params) {
 					return;
 				});
 			}
+		})
+		.catch(function(error){
+			reject(error);
+			return;
 		});
-		
-		
-
 	}));
 };
 
