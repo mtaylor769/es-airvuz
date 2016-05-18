@@ -78,6 +78,66 @@ users.prototype.validateCreateUser = function(params) {
 	return userInfo;
 };
 
+
+var ValidateUserName = function(id, params) {
+	return(new Promise(function(resolve, reject) {
+			
+			UserModel.findOne({userName : params.userName})
+			.then(function(user){
+				if (user._doc._id !== id) {
+					var errors = errorMessage.getErrorMessage({
+						statusCode			: "400",
+						errorId					: "VALIDA1000",
+						templateParams	: {
+							name : "userName"
+						},
+						sourceError			: null,
+						errorMessage		: "Username already exists",
+						sourceLocation	: sourceLocation
+					});
+					reject(errors);
+				}
+				resolve();
+			})
+			.catch(function(error) {
+				reject(error);
+			});
+		
+		})
+	);
+}
+
+var ValidateEmailAddress = function(id, params) {
+	return(new Promise(function(resolve, reject) {
+			
+			UserModel.findOne({userName : params.userName})
+			.then(function(user){
+				if (user._doc._id !== id) {
+					var errors = errorMessage.getErrorMessage({
+						statusCode			: "400",
+						errorId					: "VALIDA1000",
+						templateParams	: {
+							name : "userName"
+						},
+						sourceError			: null,
+						errorMessage		: "Username already exists",
+						sourceLocation	: sourceLocation
+					});
+					reject(errors);
+					return;
+				}
+				resolve();
+				return;
+			})
+			.catch(function(error) {
+				reject(error);
+				return;
+			});
+		
+		})
+	);
+}
+
 /*
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
@@ -88,6 +148,23 @@ users.prototype.validateUpdateUser = function(id, params) {
 	var errorMessage					= new ErrorMessage();
 
 	return(new Promise(function(resolve, reject) {
+		
+		/*
+		ValidateUserName(id, params)
+			.then(function() {
+				ValidateEmailAddress(id, params).then(function() {
+					
+				})
+				return ...
+			})
+		
+		
+		*/
+
+		
+		
+		
+		
 		if(params.userName) {
 			UserModel.findOne({userName : params.userName})
 			.then(function(user){
