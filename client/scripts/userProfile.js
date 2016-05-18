@@ -154,40 +154,45 @@ function editProfile() {
   var instagram           = $("#instagram").val();
   var lastName            = $("#lastname").val();
   var firstName           = $("#firstname").val();
-  var allowHire           = $("#hire").checked;
-  var allowDonation       = $("#donate").checked;
+  var allowHire           = $("#hire").prop('checked');
+  var allowDonation       = $("#donate").prop('checked');
 
-  if (userName) {
+  if (userName && userName !== profileUser.userName) {
     userData.userName = userName;
   }
-  if (emailAddress) {
+  if (emailAddress && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
   }
 
-  if (firstName) {
+  if (firstName && firstName !== profileUser.firstName) {
     userData.firstName = firstName;
   }
-  if (lastName) {
+  if (lastName && lastName !== profileUser.lastName) {
     userData.lastName = lastName;
   }
-  if (myAbout) {
+  if (myAbout && myAbout !== profileUser.myAbout) {
     userData.aboutMe = myAbout;
   }
-  if (facebook) {
+  if (facebook && facebook !== profileUser.socialMediaLinks.facebookUrl) {
     userData.socialMediaUrl.facebookUrl = facebook;
   }
-  if (googleplus) {
+  if (googleplus && googleplus !== profileUser.socialMediaUrl.googlePlusUrl ) {
     userData.socialMediaUrl.googlePlusUrl = google;
   }
-  if (twitter) {
+  if (twitter && twitter !== profileUser.socialMediaUrl.twitterUrl) {
     userData.socialMediaUrl.twitterUrl = twitter;
   }
-  if (instagram) {
+  if (instagram && instagram !== profileUser.socialMediaUrl.instagramUrl) {
     userData.socialMediaUrl.instagramUrl = instagram;
   }
-  userData.allowDonation = allowDonation;
-  userData.allowHire     = allowHire;
-
+  if (allowDonation !== profileUser.allowDonation) {
+    userData.allowDonation = allowDonation;
+  }
+  if (allowHire !== profileUser.allowHire) {
+    userData.allowHire     = allowHire;
+  }
+  
+  //TODO check if userData is empty then don't send back
   $.ajax({
     type:'PUT',
     url: '/api/users/' + user._id,

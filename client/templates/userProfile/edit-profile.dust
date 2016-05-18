@@ -55,7 +55,7 @@
           </div>
           <div class="form-group">
             <div class="row" style="margin-left:0;">
-              <input type="checkbox" id="donate" {?allowDonate}checked{/allowDonate}><label for="donate">&nbsp;&nbsp;Donate </label>
+              <input type="checkbox" id="donate" {?allowDonation}checked{/allowDonation}><label for="donate">&nbsp;&nbsp;Donate </label>
             </div>
             <div class="row" style="margin-left:0;">
               <input type="checkbox" id="hire" {?allowHire}checked{/allowHire}><label for="hire-">&nbsp;&nbsp;Hire </label>
