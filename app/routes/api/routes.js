@@ -84,6 +84,12 @@ apiRouter.route('/api/follow')
 apiRouter.route('/api/notifications')
 	.post(notifications.post);
 
+apiRouter.route('/api/notifications/:id')
+	.get(notifications.getUnseen);
+
+apiRouter.route('/api/notifications/get-all/:id')
+	.get(notifications.getAll);
+
 /**
  * /api/videos/
  */

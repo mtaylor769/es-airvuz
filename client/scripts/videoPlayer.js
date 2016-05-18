@@ -111,6 +111,7 @@ function bindEvents() {
     });
     notificationObject.notificationType = 'COMMENT';
     notificationObject.notificationMessage = $('#comment-text').val();
+    notificationObject.videoId = video._id;
     var commentData = {};
     var comment = {};
     comment.videoId = $(this).attr('value');
@@ -159,7 +160,8 @@ function bindEvents() {
   $('.like').on('click', function() {
     if(user._id && user._id !== video.userId) {
       notificationObject.notificationType = 'LIKE';
-      notificationObject.notificationMessage = 'Liked your video';
+      notificationObject.notificationMessage = 'liked your video';
+      notificationObject.videoId = video._id;
       var likeData = {};
       var likeObject = {};
       likeObject.videoId = $(this).attr('data-videoId');
@@ -229,7 +231,7 @@ function bindEvents() {
       followObject.userId = userIdentity._id;
       followObject.followingUserId = video.userId;
       notificationObject.notificationType = 'FOLLOW';
-      notificationObject.notificationMessage = 'followed you';
+      notificationObject.notificationMessage = 'started following you';
       followData.follow = followObject;
       followData.notification = notificationObject;
       console.log(followData);
@@ -283,6 +285,20 @@ function bindEvents() {
         console.log(response);
       }
     );
+  });
+
+  $('#twitter').on('click', function() {
+    notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-TWITTER';
+    notificationObject.notificationMessage = 'shared your video on Twitter';
+    $.ajax({
+      type: 'POST',
+      url: '/api/notifications',
+      data: notificationObject
+    })
+    .done(function(response) {
+    })
+    .error(function(error) {
+    })
   });
 
   //functions to move mobile screen
@@ -456,7 +472,8 @@ function bindEvents() {
       replyObject.userId = userIdentity._id;
       replyObject.videoId = '56fec7bb07354aaa096db3b8';
       notificationObject.notificationType = 'COMMENT REPLY';
-      notificationObject.notificationMessage = 'replied to your comment';
+      notificationObject.notificationMessage = $('#comment').val();
+      notificationObject.videoId = video._id;
       replyData.comment = replyObject;
       replyData.notification = notificationObject;
 

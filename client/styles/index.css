@@ -391,8 +391,8 @@ body.modal-open {
 }
 
 .categories li {
-  padding: 0 10px 0 5px;
-  margin: 10px 0 0;
+  padding: 0 15px 0 5px;
+  margin: 10px 5px 0;
   border-right: solid #fff 1px;
 }
 
@@ -413,7 +413,7 @@ body.modal-open {
 }
 
 .video-player-categories {
-  background: #2b2e38;
+  background: gainsboro;
   margin-top: -5px;
 }
 

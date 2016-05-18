@@ -57,16 +57,20 @@
                             </video>
                         </div>
                         {!categories!}
-                        <div class="flex video-player-categories font-white">
-                            <ul class="list-inline categories">
-                                {#video.categories}
-                                <li>{name}</li>
-                                {/video.categories}
-                            </ul>
+                        <div class="video-player-categories font-white">
+                            <div class="row">
+                                <ul class="list-inline categories">
+                                    {#video.categories}
+                                        <li>{name}</li>
+                                    {/video.categories}
+                                </ul>
+                            </div>
+                            <div class="row">
                             <div class="description-container">
-                                <div id="video-description" style="margin: 20px; border-top: 2px solid white; padding:10px; display: none">
+                                <div id="video-description" style="margin: 10px 20px; border-top: 2px solid white; padding: 10px; display: none">
                                     <p>{video.description|s}</p>
                                 </div>
+                            </div>
                             </div>
                         </div>
                         {!video owner info!}
@@ -102,7 +106,7 @@
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
                                     <span class="fa fa-code social embed" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
                                     <a href="https://plus.google.com/share?url=http://beta2.airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
-                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
+                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
                                     <span class="fa fa-facebook-official social" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
                                 </div>
                             </div>

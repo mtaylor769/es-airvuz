@@ -107,6 +107,7 @@ var searchView							= require('./app/views/view/searchView');
 var categoryView						= require('./app/views/view/categoryView');
 var staticView							= require('./app/views/view/staticView');
 var videoPlayerEmbedView 		= require('./app/views/view/videoPlayerEmbedView');
+var notificationView				= require('./app/views/view/notificationView');
 
 
 viewManager.addView({	view : indexView });
@@ -117,6 +118,7 @@ viewManager.addView({ view : loginView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
 viewManager.addView({ view : categoryView });
+viewManager.addView({ view : notificationView});
 viewManager.addView({ view : staticView('terms') });
 viewManager.addView({ view : staticView('privacy') });
 viewManager.addView({ view : staticView('copyright') });
@@ -170,6 +172,10 @@ app.get("/search", function(req, res) {
 
 app.get("/category/:category", function(req, res) {
 	loadView(req, res, categoryView.getViewName());
+});
+
+app.get("/notifications/:id", function(req, res) {
+	loadView(req, res, notificationView.getViewName());
 });
 
 /**

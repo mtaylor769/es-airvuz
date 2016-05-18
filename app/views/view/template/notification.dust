@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html view="app.views.view.template.videoPlayer">
+<head>
+    <meta http-equiv="Cache-control" content="public">
+    <title>Notifications</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
+    {!css page specific!}
+    <link href="//vjs.zencdn.net/5.4.6/video-js.min.css" rel="stylesheet">
+    <link href="/client/lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    {>  "app.views.view.partial.css" /}
+</head>
+<body>
+    {> "app.views.view.partial.header" /}
+    {> "client.templates.videoPlayer.videoPlayerModal" /}
+    <div id="notifications">
+        <div class="container main">
+            {#notifications}
+                <div class="notification row flex" style="padding: 15px; font-size: 13px; border-bottom: inset">
+                    <img src="http://airvuz.com{actionUserId.profilePicture}" height="50" width="50">
+                    <p style="margin: 10px"><a href="/userProfile/{actionUserId.userName}">{actionUserId.userName}</a> {notificationMessage|s}</p>
+                </div>
+            {/notifications}
+        </div>
+    </div>
+    {> "app.views.view.partial.footer" /}
+    {> "app.views.view.partial.cdn-js" /}
+<script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+{> "app.views.view.partial.js" /}
+<script>
+    $(function() {
+        notifications.initialize();
+    });
+</script>
+</body>
+
+</html>

@@ -51,6 +51,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return videoCrud.getById(videoId)
 		.then(function(video) {
+			console.log(video);
 			if(video.title.length > 45) {
 				video.title = video.title.substring(0, 45) + '...';
 			}

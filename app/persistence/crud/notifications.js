@@ -12,7 +12,7 @@ try {
   var mongoose = require('mongoose');
 
   NotificationModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.notifications"});
-  logger.debug('loaded video like model');
+  logger.debug('loaded notification model');
 
   if(global.NODE_ENV === "production") {
     logger.setLevel("INFO");
@@ -28,7 +28,6 @@ var Notifications = function() {
 
 };
 
-
 Notifications.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
     var notificationModel = new NotificationModel(params);
@@ -41,6 +40,18 @@ Notifications.prototype.create = function(params) {
       })
     })
   )
+};
+
+Notifications.prototype.getByUserId = function(id) {
+  return NotificationModel.find({notifiedUserId: id, notificationViewed: false}).sort({ createdDate:-1 }).limit(10).exec();
+};
+
+Notifications.prototype.getUnseenCount = function(id) {
+  return NotificationModel.find({notifiedUserId: id, notificationViewed: false}).count().exec();
+};
+
+Notifications.prototype.getAllByUserId = function(id) {
+  return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').populate('notifiedUserId').exec();
 };
 
 
