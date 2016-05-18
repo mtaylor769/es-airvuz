@@ -112,6 +112,23 @@ var usersSchema 		= mongoose.Schema({
 		type			: String
 	},
 	
+	aboutMe : {
+		type 			: String
+	},
+	socialMediaLinks : {
+		facebookUrl : {
+			type : String
+		},
+		twitterUrl : {
+			type : String
+		},
+		instagramUrl : {
+			type : String
+		},
+		googlePlusUrl : {
+			type : String
+		}
+	},
 	version : {
 		default	: "2.0.0",
 		type		: String
@@ -120,11 +137,11 @@ var usersSchema 		= mongoose.Schema({
 
 usersSchema.methods.generateHash = function(password) {
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-}
+};
 
 usersSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.password);
-}
+};
 
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
 //userSchema.createIndex( { "socialMediaAccount.accountId": 1 }, { background: true } );

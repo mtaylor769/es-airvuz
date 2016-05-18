@@ -82,8 +82,8 @@ function put(req, res) {
     res.send(user);
   })
   .catch(function(error) {
-    res.sendStatus(500);
-  })
+    res.send(error);
+  });
 
 
 }

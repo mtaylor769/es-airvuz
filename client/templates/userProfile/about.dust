@@ -1,9 +1,9 @@
-<div>
+<div id="about-me-section">
     <div>
         <h5>About Me</h5>
-        <p>This section is where we put in the user description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <h5>Location</h5>
-        <p>Minneapolis, MN</p>
+        <p>{aboutMe}</p>
+        <!-- <h5>Location</h5>
+        <p>Minneapolis, MN</p> -->
     </div>
     <div class="row" style="font-size: 35px; margin-bottom: 50px; margin-top: 50px; text-align: center">
         <span class="fa fa-facebook-square col-xs-3"></span>

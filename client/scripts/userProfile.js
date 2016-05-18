@@ -12,6 +12,7 @@ var ownerShowcase     = require('../templates/userProfile/showcase-owner.dust');
 var userAllVideos     = require('../templates/userProfile/allvideos-user.dust');
 var ownerAllVideos    = require('../templates/userProfile/allvideos-owner.dust');
 var userProfileEdit   = require('../templates/userProfile/edit-profile.dust');
+var aboutMe           = require('../templates/userProfile/about.dust');
 
 var okHtml            = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml   = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
@@ -122,8 +123,13 @@ function confirmPasswordChange() {
     data: data
   })
   .success(function(response) {
-    user = response;
-    $('#save-changes').modal('hide');
+    if(response.length>0){
+      console.log(response[0].errorMsg);
+      return false;
+    } else {
+      user = response;
+      $('#save-changes').modal('hide');
+    }
   })
   .error(function(error) {
   });
@@ -146,6 +152,8 @@ function editProfile() {
   var instagram           = $("#instagram").val();
   var lastName            = $("#lastname").val();
   var firstName           = $("#firstname").val();
+  var allowHire           = $("#hire").checked;
+  var allowDonation       = $("#donate").checked;
 
   if (userName) {
     userData.userName = userName;
@@ -164,18 +172,19 @@ function editProfile() {
     userData.aboutMe = aboutMe;
   }
   if (facebook) {
-    userData.facebook = facebook;
+    userData.socialMediaUrl.facebookUrl = facebook;
   }
   if (googleplus) {
-    userData.google = google;
+    userData.socialMediaUrl.googlePlusUrl = google;
   }
   if (twitter) {
-    userData.twitter = twitter;
+    userData.socialMediaUrl.twitterUrl = twitter;
   }
   if (instagram) {
-    userData.instagram = instagram;
+    userData.socialMediaUrl.instagramUrl = instagram;
   }
-  
+  userData.allowDonation = allowDonation;
+  userData.allowHire     = allowHire;
 
   $.ajax({
     type:'PUT',
@@ -200,9 +209,13 @@ function initialize() {
     ownerAllVideos({videos: profileVideos}, function(err, html) {
       $('#allvideos').html(html);
     });
+    aboutme({user: profileUser}, function(err, html){
+      $("#about-me-section").html(html);
+    });
     userProfileEdit({user: profileUser}, function (err, html) {
       $('#edit-profile').html(html);
     });
+
   } else {
 
   }

@@ -56,6 +56,7 @@ users.prototype.validateCreateUser = function(params) {
 			templateParams	: {
 				name : "emailAddress"
 			},
+			sourceError			: null,
 			errorMessage		: "Email address is null",
 			sourceLocation	: sourceLocation
 		});
@@ -68,6 +69,7 @@ users.prototype.validateCreateUser = function(params) {
 			templateParams	: {
 				name : "userName"
 			},
+			sourceError			: null,
 			errorMessage		: "Username is null",
 			sourceLocation	: sourceLocation
 		});
@@ -85,79 +87,81 @@ users.prototype.validateUpdateUser = function(id, params) {
 	var userInfo 							= {};
 	var errorMessage					= new ErrorMessage();
 
-	if(params.userName) {
-		UserModel.findOne({userName : params.userName})
-		.then(function(user){
-			if (user._doc._id !== id) {
-				userInfo.errors = errorMessage.getErrorMessage({
-					statusCode			: "400",
-					errorId					: "VALIDA1000",
-					templateParams	: {
-						name : "userName"
-					},
-					errorMessage		: "Username already exists",
-					sourceLocation	: sourceLocation
-				});
-			}
-		});
-	}
+	return(new Promise(function(resolve, reject) {
+		if(params.userName) {
+			UserModel.findOne({userName : params.userName})
+			.then(function(user){
+				if (user._doc._id !== id) {
+					userInfo.errors = errorMessage.getErrorMessage({
+						statusCode			: "400",
+						errorId					: "VALIDA1000",
+						templateParams	: {
+							name : "userName"
+						},
+						sourceError			: null,
+						errorMessage		: "Username already exists",
+						sourceLocation	: sourceLocation
+					});
+				}
+			});
+		}
 
-	if(params.emailAddress) {
-		UserModel.findOne({emailAddress : params.emailAddress})
-		.then(function(user){
-			//TODO make sure this works
-			if (user._doc._id !== id) {
-				userInfo.errors = errorMessage.getErrorMessage({
-					statusCode			: "400",
-					errorId					: "VALIDA1000",
-					templateParams	: {
-						name : "emailAddress"
-					},
-					errorMessage		: "Email already exists",
-					sourceLocation	: sourceLocation
-				});
-			} else {
-				logger.debug('nope');
-			}
-		});
-	}
-	return userInfo;
+		if(params.emailAddress) {
+			UserModel.findOne({emailAddress : params.emailAddress})
+			.then(function(user){
+				//TODO make sure this works
+				if (user._doc._id !== id) {
+					userInfo.errors = errorMessage.getErrorMessage({
+						statusCode			: "400",
+						errorId					: "VALIDA1000",
+						templateParams	: {
+							name : "emailAddress"
+						},
+						sourceError			: null,
+						errorMessage		: "Email already exists",
+						sourceLocation	: sourceLocation
+					});
+				} else {
+					logger.debug('nope');
+				}
+			});
+		}
+
+		if(params.oldPassword) {
+			UserModel.findById(id).exec()
+			.then(function (user) {
+				if(!user.validPassword(params.oldPassword)) {
+					userInfo.errors = errorMessage.getErrorMessage({
+						statusCode			: "400",
+						errorId					: "VALIDA1000",
+						templateParams	: {
+							name : "password"
+						},
+						sourceError			: "Password Invalid",
+						errorMessage		: "Invalid Password",
+						sourceLocation	: sourceLocation
+					});
+				}
+			});	
+		}
+		if (params.newPassword !== params.confirmPassword) {
+			userInfo.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "password"
+				},
+				sourceError			: "Passwords do not match",
+				errorMessage		: "Passwords do not match",
+				sourceLocation	: sourceLocation
+			});
+		}
+
+		return userInfo;
+
+	}));
+	
 };
-
-users.prototype.validatePasswordChange = function(user, params) {
-	var sourceLocation									= "persistence.crud.Users.validatePasswordChange";
-	var userInfo 												= {};
-	var errorMessage										= new ErrorMessage();
-	// UserModel.findById(id).exec()
-	// 	.then(function (user) {
-	// 		hashUser = user;
-	// 	});
-
-	if(!user.validPassword(params.oldPassword)) {
-		userInfo.errors = errorMessage.getErrorMessage({
-			statusCode			: "400",
-			errorId					: "VALIDA1000",
-			templateParams	: {
-				name : "password"
-			},
-			errorMessage		: "Invalid Password",
-			sourceLocation	: sourceLocation
-		});
-	}
-	if (params.newPassword !== params.confirmPassword) {
-		userInfo.errors = errorMessage.getErrorMessage({
-			statusCode			: "400",
-			errorId					: "VALIDA1000",
-			templateParams	: {
-				name : "password"
-			},
-			errorMessage		: "Passwords do not match",
-			sourceLocation	: sourceLocation
-		});
-	}
-	return userInfo;
-};
-
 
 /*
  * Create a new Users document.
@@ -427,36 +431,35 @@ users.prototype.getUserByUserName = function (userName) {
 */
 users.prototype.update = function (id, params) {
 	var currentTransaction = this;
-	if (params.oldPassword) {
-		UserModel.findById(id).exec()
-			.then(function (user) {
-				currentUser = user;
-			});
-	} else {
-		validation = this.validateUpdateUser(id, params);
-	}
-	validation = this.validatePasswordChange(currentUser, params);
 	return(new Promise(function(resolve, reject){
-		if(validation.errors || validation.errors[0] === '') {
-			resolve(validation.errors);
-		} else {
-			if (params.oldPassword) {
-				var hashUser 			= new UserModel();
-				var pw 						= hashUser.generateHash(params.newPassword);
-				delete params.oldPassword;
-				delete params.newPassword;
-				delete params.confirmPassword;
-				params.password 	= pw;
-			}
-			UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
-			.then(function(user) {
-				if (user._doc.password) {
-					user._doc.password = null;
+
+		var validate = currentTransaction.validateUpdateUser(id, params);
+		validate.then(function(validation){
+			if(validation.errors) {
+				reject(validation.errors);
+				return;
+			} else {
+				if (params.oldPassword) {
+					var hashUser 			= new UserModel();
+					var pw 						= hashUser.generateHash(params.newPassword);
+					delete params.oldPassword;
+					delete params.newPassword;
+					delete params.confirmPassword;
+					params.password 	= pw;
 				}
-				//resolve(user);
-				resolve(null);
-			});
-		}
+				UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
+				.then(function(user) {
+					if (user._doc.password) {
+						user._doc.password = null;
+					}
+					//resolve(user);
+					resolve(null);
+					return;
+				});
+			}
+		});
+		
+		
 
 	}));
 };
