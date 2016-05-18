@@ -83,14 +83,14 @@ function put(req, res) {
     data.status       = 'OK';
     data.statusCode   = 200;
     data.data         = user;
+    res.send(data);
   })
   .catch(function(error) {
     data.status       = 'Fail';
     data.statusCode   = 500;
     data.data         = error;
+    res.send(data);
   });
-  res.send(data);
-
 }
 
 User.prototype.post         = post;

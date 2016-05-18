@@ -134,7 +134,7 @@ function confirmPasswordChange() {
   .error(function(error) {
 
   });
-  $('#save-changes').modal('hide');
+  $('#change-password').modal('hide');
 
 }
 
