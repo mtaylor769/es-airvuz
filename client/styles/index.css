@@ -839,6 +839,10 @@ Begin userProfile CSS
   width: 100%;
 }
 
+#user-profile .profile-video-title p {
+  margin-bottom: 0;
+}
+
 #user-profile .video-sort {
   padding-left: 15px;
   padding-bottom: 15px;
@@ -885,7 +889,6 @@ Begin userProfile CSS
 .profile-video .col-xs-5 h4 {
   font-size: 11px;
   margin-top: 0;
-  height: 36px
 }
 
 .profile-video .col-xs-1 {

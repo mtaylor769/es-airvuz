@@ -145,7 +145,7 @@ function changeProfile() {
 function editProfile() {
   var userName            = $("#username").val();
   var emailAddress        = $("#email").val();
-  var aboutMe             = $("#aboutme").val();
+  var myAbout             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
   var googleplus          = $("#google").val();
   var twitter             = $("#twitter").val();
@@ -168,8 +168,8 @@ function editProfile() {
   if (lastName) {
     userData.lastName = lastName;
   }
-  if (aboutMe) {
-    userData.aboutMe = aboutMe;
+  if (myAbout) {
+    userData.aboutMe = myAbout;
   }
   if (facebook) {
     userData.socialMediaUrl.facebookUrl = facebook;
@@ -209,7 +209,7 @@ function initialize() {
     ownerAllVideos({videos: profileVideos}, function(err, html) {
       $('#allvideos').html(html);
     });
-    aboutme({user: profileUser}, function(err, html){
+    aboutMe({user: profileUser}, function(err, html){
       $("#about-me-section").html(html);
     });
     userProfileEdit({user: profileUser}, function (err, html) {
