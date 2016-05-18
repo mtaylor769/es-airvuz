@@ -198,6 +198,14 @@ Videos.prototype.getByUser = function(userId) {
 	return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').exec();
 };
 
+Videos.prototype.getVideoCount = function(userId) {
+	return VideoModel.find({userId: userId}).count().exec();
+};
+
+Videos.prototype.getTopTwoVideos = function(userId) {
+	return VideoModel.find({userId: userId}).sort({viewCount: -1}).limit(2).exec();
+};
+
 Videos.prototype.upCount = function(video) {
 	return video.save()
 };

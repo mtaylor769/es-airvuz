@@ -57,7 +57,7 @@
                             </video>
                         </div>
                         {!categories!}
-                        <div class="video-player-categories font-white">
+                        <div class="video-player-categories">
                             <div class="row">
                                 <ul class="list-inline categories">
                                     {#video.categories}
@@ -67,7 +67,7 @@
                             </div>
                             <div class="row">
                             <div class="description-container">
-                                <div id="video-description" style="margin: 10px 20px; border-top: 2px solid white; padding: 10px; display: none">
+                                <div id="video-description" style="margin: 10px 20px; border-top: 1px inset; padding: 10px; display: none">
                                     <p>{video.description|s}</p>
                                 </div>
                             </div>
@@ -79,15 +79,15 @@
                             <img src="http://airvuz.com{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
                             <div class="margin-auto t-a-inherit">
                                 <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/userProfile/{user.userName}">{user.userName}</a></p>
-                                <p class="m-b-0"><span class="airvuz-blue bold">14 </span>Videos</p>
-                                <p class="m-b-0"><span class="airvuz-blue bold">150 </span>followers</p>
+                                <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
+                                <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
                             </div>
                             <div class="top-videos margin-auto t-a-inherit mobile-display-none">
                                 <p class="m-b-0">Top Videos by</p>
                                 <p class="m-b-0">{user.userName}</p>
                             </div>
-                            <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" height="75" width="150" class="margin-auto">
-                            <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" height="75" width="150" class="margin-auto mobile-display-none small-desktop-none">
+                            <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{topTwoVideos.videoOne.thumbnailPath}" height="75" width="150" class="margin-auto">
+                            <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{topTwoVideos.videoTwo.thumbnailPath}" height="75" width="150" class="margin-auto mobile-display-none small-desktop-none">
                             <div class="video-user-more border-radius-0 text-center mobile-display-none">
                                 <p>More</p>
                             </div>

@@ -50,6 +50,10 @@ Follow.prototype.followCheck = function(params) {
   return FollowModel.findOne({followingUserId:params.followingUserId, userId:params.userId}).exec()
 };
 
+Follow.prototype.followCount = function(userId) {
+  return FollowModel.find({followingUserId: userId}).count().exec();
+};
+
 Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();
 };

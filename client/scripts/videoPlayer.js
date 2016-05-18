@@ -39,18 +39,24 @@ var toggles = {
 
 //video increment
 function incrementVideoCount() {
-  var videoId = {};
-  videoId.videoId = video._id;
+  var videoViewObject = {};
+  videoViewObject.videoId = video._id;
+  if(user) {
+    videoViewObject.userId = user._id;
+  }
+  videoViewObject.videoOwnerId = video.userId;
 
   $.ajax({
       type: 'POST',
       url: '/api/videos/loaded',
-      data: videoId,
+      data: videoViewObject,
       dataType: 'json'
     })
     .done(function(response) {
+      console.log(response);
     })
     .error(function(error) {
+      console.log(error);
     });
 }
 
@@ -92,6 +98,13 @@ function onAutoPlayChange(event, state) {
   .success(function(response) {
     user.autoPlay = response.autoPlay;
     identity.save();
+    //code for update
+    //
+    //console.log(response);
+    //if(response.status === 'OK'){
+    //  user.autoPlay = response.data.autoPlay;
+    //  identity.save();
+    //}
   })
   .error(function(error) {
   })
@@ -166,6 +179,7 @@ function bindEvents() {
       var likeObject = {};
       likeObject.videoId = $(this).attr('data-videoId');
       likeObject.userId = user._id;
+      likeObject.videoOwnerId = video.userId;
       likeData.like = likeObject;
       likeData.notification = notificationObject;
 
@@ -324,11 +338,6 @@ function bindEvents() {
   //embeded iframe modal
   $('.embed').on('click', function() {
     $('#embed-modal').modal('show');
-  });
-
-  // on off switch
-  $('.onoffswitch input[type=checkbox]').on('click', function() {
-    console.log($(this).val('off'));
   });
 
   //report modal

@@ -15,6 +15,7 @@ try {
 	var commentCrud   = require('../../persistence/crud/comment');
 	var videoLikeCrud = require('../../persistence/crud/videoLike');
 	var categoryCrud  = require('../../persistence/crud/categoryType');
+	var followCrud		= require('../../persistence/crud/follow');
 	var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];
 
 	if(global.NODE_ENV === "production") {
@@ -62,14 +63,14 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(user) {
 			if(user.profilePicture.length === 0) {
-				user.profilePicture = "/assets/img/default.png"
+				user.profilePicture = "/assets/img/default.png";
 			}
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
 			return videoCrud.get5Videos();
 		})
 		.then(function(videos) {
-			videos.forEach(function(video) {
+			videos.forEach(function (video) {
 				video.fullTitle = video.title;
 				video.title = video.title.substring(0, 30);
 				video.description = video.description.substring(0, 90);
@@ -81,7 +82,21 @@ VideoPlayerModel.prototype.getData = function(params) {
 				}
 			});
 			dataObject.upNext = videos;
-			return videoLikeCrud.videoLikeCheck(checkObject)
+			return videoCrud.getVideoCount(checkObject.user);
+		})
+		.then(function(videoCount) {
+			dataObject.videoCount = videoCount;
+			return videoCrud.getTopTwoVideos(checkObject.user);
+			})
+		.then(function(topTwoVideos) {
+			dataObject.topTwoVideos = {};
+			dataObject.topTwoVideos.videoOne = topTwoVideos[0];
+			dataObject.topTwoVideos.videoTwo = topTwoVideos[1];
+			return followCrud.followCount(checkObject.user);
+		})
+		.then(function(followCount) {
+			dataObject.followCount = followCount;
+			return videoLikeCrud.videoLikeCheck(checkObject);
 		})
 		.then(function(likeBoolean) {
 			dataObject.likeBoolean = likeBoolean;

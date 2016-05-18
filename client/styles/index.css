@@ -393,7 +393,7 @@ body.modal-open {
 .categories li {
   padding: 0 15px 0 5px;
   margin: 10px 5px 0;
-  border-right: solid #fff 1px;
+  border-right: solid #333 1px;
 }
 
 .categories li:first-child {
@@ -414,7 +414,12 @@ body.modal-open {
 
 .video-player-categories {
   background: gainsboro;
-  margin-top: -5px;
+  margin-top: 0px;
+  color: #333;
+}
+
+.video-player-categories ul{
+  margin-bottom: 10px;
 }
 
 .video-action-icons {
