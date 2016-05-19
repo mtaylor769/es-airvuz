@@ -8,6 +8,7 @@ try {
   var VideoViewCrud         = require('../../persistence/crud/videoViews');
   var FollowCrud            = require('../../persistence/crud/follow');
 	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
+  var amazonService         = require('../../services/amazon.service.server.js');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("INFO");
@@ -24,14 +25,32 @@ function Video() {
 }
 
 Video.prototype.post = function(req, res) {
-  VideoCrud
-    .create(req.body)
-    .then(function(video) {
-      res.json(video);
-    })
-    .catch(function (error) {
-      res.sendStatus(500);
-    });
+  if (req.body.isCustomThumbnail) {
+    // move custom thumbnail to the correct directory
+    // TODO: resize to 392x220
+    var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
+    req.body.thumbnailPath = req.body.hashName + '/' + newName;
+
+    amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
+      .then(function () {
+        return VideoCrud.create(req.body);
+      })
+      .then(function (video) {
+        res.json(video);
+      })
+      .catch(function () {
+        res.sendStatus(500);
+      })
+  } else {
+    VideoCrud
+      .create(req.body)
+      .then(function(video) {
+        res.json(video);
+      })
+      .catch(function (error) {
+        res.sendStatus(500);
+      });
+  }
 };
 
 Video.prototype.get = function(req, res) {

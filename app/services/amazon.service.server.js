@@ -243,14 +243,21 @@ function signAuth(toSign) {
   return Promise.resolve(hash);
 }
 
+/**
+ * use to move file in airvuz-tmp directory to another directory
+ * @param {Object} params
+ * @param {string} params.key - key in airvuz-temp
+ * @param {string} params.dir - new path
+ * @param {string} params.newName - default to key if doesn't exist
+ */
 function moveFile(params) {
   var bucket = new AWS.S3(awsOptions);
 
   return new Promise(function (resolve, reject) {
     bucket.copyObject({
-      Bucket: 'airvuz-asset-beta/' + params.dir,
+      Bucket: params.dir,
       CopySource: 'airvuz-tmp/' + params.key,
-      Key: params.key,
+      Key: params.newName || params.key,
       ACL: 'public-read'
     }, function (err, data) {
       if (err) {
@@ -269,6 +276,10 @@ module.exports = {
   deletePreset        : deletePreset,
   listVideoObjects    : listVideoObjects,
   moveFile            : moveFile,
+
   // Middleware
-  confirmSubscription : confirmSubscription
+  confirmSubscription : confirmSubscription,
+
+  // expose the amazon config just so you don't have to require the service + config
+  config              : amazonConfig
 };
