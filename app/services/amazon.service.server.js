@@ -190,7 +190,9 @@ function listVideoObjects(key) {
       response.Contents.forEach(function (content) {
         if (content.Key.indexOf('tn_') > 0) {
           thumbnails.push(content.Key);
-        } else {
+        }
+        // original transcode
+        if (content.Key === key + '/' + key + '.mp4') {
           videoUrl = content.Key;
         }
       });
