@@ -47,7 +47,7 @@
     function saveSlide() {
       var params = {
         key: vm.newSlide.hashName,
-        dir: 'slide'
+        dir: 'airvuz-asset-beta/slide'
       };
 
       $http.post('/api/amazon/move-file', params)
