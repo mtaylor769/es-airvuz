@@ -38,34 +38,47 @@ function showcaseAdd(videoId, boolean) {
 
 
 function bindEvents() {
+  $('#edit-showcase').on('click', editShowcase);
+}
 
-  $('#edit-showcase').on('click', function() {
-    $('.showcase').each(function(i, link) {
-      var isShowcase = $(link).attr('data-showcase');
-      if(isShowcase === 'true') {
-        $(link).append(okHtml);
-      } else {
-        $(link).append(notSelectedHtml);
-      }
-    });
-    var a = ($('.showcase')).children();
-    $(a).on('click', function() {
-      console.log('running function');
-      var buttonDiv = $(this).parent();
-      var videoId = buttonDiv.attr('data-videoid');
-      var status = buttonDiv.attr('data-showcase');
-      $(this).remove();
-      if(status === 'true') {
-        $(buttonDiv).append(removeHtml);
-        $(buttonDiv).attr('data-showcase', 'false');
-        showcaseAdd(videoId, false);
-      } else {
-        $(buttonDiv).append(okHtml);
-        $(buttonDiv).attr('data-showcase', 'true');
-        showcaseAdd(videoId, true);
-      }
-    });
+function doneEditShowcase(){
+  $('.asdf').hide();
+  $('.edit-showcase-btn').toggle();
+  $('.edit-done-btn').toggle();
+  $('#edit-showcase').on('click', editShowcase);
+  location.reload();
+}
+
+function editShowcase() {
+  $('.edit-showcase-btn').toggle();
+  $('.edit-done-btn').toggle();
+  $('.showcase').each(function(i, link) {
+    var isShowcase = $(link).attr('data-showcase');
+    if(isShowcase === 'true') {
+      $(link).append(okHtml);
+    } else {
+      $(link).append(notSelectedHtml);
+    }
   });
+  var a = ($('.showcase')).children();
+  $(a).on('click', function() {
+    console.log('running function');
+    var buttonDiv = $(this).parent();
+    var videoId = buttonDiv.attr('data-videoid');
+    var status = buttonDiv.attr('data-showcase');
+    $(this).remove();
+    if(status === 'true') {
+      $(buttonDiv).append(removeHtml);
+      $(buttonDiv).attr('data-showcase', 'false');
+      showcaseAdd(videoId, false);
+    } else {
+      $(buttonDiv).append(okHtml);
+      $(buttonDiv).attr('data-showcase', 'true');
+      showcaseAdd(videoId, true);
+    }
+  });
+
+  $('.edit-done-btn').on('click', doneEditShowcase);
 
   $(window).on('resize', function() {
     var windowWidth = $(window).width();

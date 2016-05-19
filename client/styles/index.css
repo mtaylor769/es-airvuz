@@ -720,6 +720,10 @@ body.modal-open {
   margin-bottom: 20px;
 }
 
+.m-b-30 {
+  margin-bottom: 30px;
+}
+
 .m-r-20 {
   margin-right: 20px;
 }
@@ -921,6 +925,13 @@ Begin userProfile CSS
   text-align: left;
 }
 
+#user-profile .edit-done-btn {
+  display: none;
+}
+
+#user-profile .edit-showcase-btn {
+  display: visible;
+}
 /*
   use class="glyphicon glyphicon-ok"
   */
@@ -951,6 +962,19 @@ use class="glyphicon glyphicon-option-plus"
   right: -25px;
   bottom: -20px;
 }
+
+/*.not-selected :hover {
+  background: green;
+}
+
+.removed :hover {
+  background: grey;
+}
+
+.ok :hover {
+  background: red;
+}*/
+
 
 .showcase .not-selected span {
   margin-top: 21%;
@@ -1156,7 +1180,7 @@ End user profile CSS
     text-align: center;
     position: absolute;
     right: 0;
-    bottom: 0;
+    top: 35px;
   }
 
   .showcase .ok span {
@@ -1174,7 +1198,7 @@ End user profile CSS
     text-align: center;
     position: absolute;
     right: 0;
-    bottom: 0;
+    top: 35px;
   }
 
   .showcase .not-selected span {
@@ -1193,7 +1217,7 @@ End user profile CSS
     text-align: center;
     position: absolute;
     right: 0;
-    bottom: 0;
+    top: 35px;
   }
 
   .showcase .removed span {
@@ -1203,6 +1227,17 @@ End user profile CSS
     color: white;
   }
 
+  /*.not-selected :hover {
+    background: green;
+  }
+
+  .removed :hover {
+    background: grey;
+  }
+
+  .ok :hover {
+    background: red;
+  }*/
   .video-player-header span {
     font-size: 18px;
   }
@@ -1313,7 +1348,7 @@ End user profile CSS
   #user-profile .margin-right-4 {
     margin-right: 4px;
   }
-  
+
   .footer-sub1 .footer-signup button {
     margin: 0 0 0 15px;
   }

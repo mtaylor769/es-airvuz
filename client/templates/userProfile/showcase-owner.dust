@@ -15,12 +15,13 @@
             <input type="checkbox" name="showcase-default" checked/>
         </div>
         <div class="col-xs-2">
-            <button class="btn btn-default" id="edit-showcase">Edit Showcase</button>
+            <button class="edit-showcase-btn btn btn-default" id="edit-showcase">Edit Showcase</button>
+            <button class="edit-done-btn btn btn-default" id=-"edit-done-btn">Done Editing</button>
         </div>
         
     </div>
 </div>
-<div class="row m-b-20 profile-videos">
+<div class="row m-b-30 profile-videos">
     {#videos}
         <div class="col-xs-12 col-sm-6 col-md-3" style="">
             <div class="profile-video" style="padding: 20px 0;">
