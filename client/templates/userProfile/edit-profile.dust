@@ -5,7 +5,7 @@
     {#user}
       <form style="margin-top: 20px;">
 
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="username" value="{userName}" placeholder="Username">
@@ -51,7 +51,7 @@
           </div>
           <div class="form-group">
             <label for="aboutme">About Me</label>
-            <textarea name="aboutme" id="aboutme" rows="4" class="form-control" value="{aboutMe}" placeholder="About Me"></textarea>
+            <textarea name="aboutme" id="aboutme" rows="4" class="form-control" value="{aboutMe}" placeholder="About Me">{aboutMe}</textarea>
           </div>
           <div class="form-group">
             <div class="row" style="margin-left:0;">

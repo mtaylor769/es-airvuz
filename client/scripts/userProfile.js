@@ -170,21 +170,38 @@ function editProfile() {
   if (lastName && lastName !== profileUser.lastName) {
     userData.lastName = lastName;
   }
-  if (myAbout && myAbout !== profileUser.myAbout) {
+  if (myAbout && myAbout !== profileUser.aboutMe) {
     userData.aboutMe = myAbout;
   }
-  if (facebook && facebook !== profileUser.socialMediaLinks.facebookUrl) {
-    userData.socialMediaUrl.facebookUrl = facebook;
+  if (profileUser.socialMediaLinks) {
+    if (facebook && facebook !== profileUser.socialMediaLinks.facebookUrl) {
+      userData.socialMediaLinks.facebookUrl = facebook;
+    }
+    if (googleplus && googleplus !== profileUser.socialMediaLinks.googlePlusUrl ) {
+      userData.socialMediaLinks.googlePlusUrl = google;
+    }
+    if (twitter && twitter !== profileUser.socialMediaLinks.twitterUrl) {
+      userData.socialMediaLinks.twitterUrl = twitter;
+    }
+    if (instagram && instagram !== profileUser.socialMediaLinks.instagramUrl) {
+      userData.socialMediaLinks.instagramUrl = instagram;
+    }
+  } else {
+    userData.socialMediaLinks = {};
+    if (facebook) {
+      userData.socialMediaLinks.facebookUrl = facebook;
+    }
+    if (googleplus) {
+      userData.socialMediaLinks.googlePlusUrl = google;
+    }
+    if (twitter) {
+      userData.socialMediaLinks.twitterUrl = twitter;
+    }
+    if (instagram) {
+      userData.socialMediaLinks.instagramUrl = instagram;
+    }
   }
-  if (googleplus && googleplus !== profileUser.socialMediaUrl.googlePlusUrl ) {
-    userData.socialMediaUrl.googlePlusUrl = google;
-  }
-  if (twitter && twitter !== profileUser.socialMediaUrl.twitterUrl) {
-    userData.socialMediaUrl.twitterUrl = twitter;
-  }
-  if (instagram && instagram !== profileUser.socialMediaUrl.instagramUrl) {
-    userData.socialMediaUrl.instagramUrl = instagram;
-  }
+
   if (allowDonation !== profileUser.allowDonation) {
     userData.allowDonation = allowDonation;
   }
@@ -192,7 +209,6 @@ function editProfile() {
     userData.allowHire     = allowHire;
   }
   
-  //TODO check if userData is empty then don't send back
   $.ajax({
     type:'PUT',
     url: '/api/users/' + user._id,
@@ -203,8 +219,9 @@ function editProfile() {
     $('#save-changes').modal('hide');
   })
   .error(function(error) {
+    console.log('error from serverside');
+    $('#save-changes').modal('hide');
   });
-
 }
 
 function initialize() {
