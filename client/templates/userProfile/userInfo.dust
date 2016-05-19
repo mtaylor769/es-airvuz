@@ -1,0 +1,42 @@
+<section style="color: white; background: #fff url('http://airvuz.com/{user.profilePicture}') no-repeat center; background-size: cover; min-height: 300px">
+  <div class="">
+    <figure class="profile-picture col-xs-12 col-md-3">
+      <img src="http://airvuz.com{user.coverPicture}" width="120px" height="120px" class="border-radius-circle">
+    </figure>
+    <figcaption class="profile-information col-xs-12 col-md-9">
+      <h4 class="profile-username row">{user.userName}</h4>
+      <h5 class="row">
+        <span class="av-primary word-space airvuz-blue">300</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
+        <span class="av-primary word-space airvuz-blue">299</span><span style="text-shadow: 2px 2px 22px black">Following</span>
+      </h5>
+      <div class="hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
+          <span>{user.aboutMe}</span>
+      </div>
+      <!-- This stuff displays only if not your profile -->
+      <div class="profile-options row" role="group">
+      <!-- Switch button depending if followed or unfollowed -->
+        <button class="follow-btn btn btn-primary" type="button">Follow</button>
+        <button class="donate-btn btn btn-primary" type="button">Donate</button>
+        
+        <button class="hire-btn btn btn-primary" type="button">Hire</button>
+        
+        <div class="user-social-media pull-right row hidden-xs hidden-sm">
+        <!-- Conditional only if user has social media links -->
+          {?user.socialMediaLinks.facebookUrl}
+            <span class="fa fa-facebook-square" style="margin-right: 10px"></span>
+          {/user.socialMediaLinks.facebookUrl}
+          {?user.socialMediaLinks.instagramUrl}
+            <span class="fa fa-instagram" style="margin-right: 10px"></span>
+          {/user.socialMediaLinks.instagramUrl}
+          {?user.socialMediaLinks.twitterUrl}
+            <span class="font-white fa fa-twitter-square" style="margin-right: 10px"></span>
+          {/user.socialMediaLinks.twitterUrl}
+          {?user.socialMediaLinks.googlePlusUrl}
+            <span class="font-white fa fa-google-plus-square"></span>
+          {/user.socialMediaLinks.googlePlusUrl}
+        </div>
+      </div>
+    </figcaption>
+  </div>
+</img>
+</section>

@@ -13,6 +13,7 @@ var userAllVideos     = require('../templates/userProfile/allvideos-user.dust');
 var ownerAllVideos    = require('../templates/userProfile/allvideos-owner.dust');
 var userProfileEdit   = require('../templates/userProfile/edit-profile.dust');
 var aboutMe           = require('../templates/userProfile/about.dust');
+var userInfo          = require('../templates/userProfile/userInfo.dust');
 
 var okHtml            = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml   = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
@@ -39,6 +40,34 @@ function showcaseAdd(videoId, boolean) {
 
 function bindEvents() {
   $('#edit-showcase').on('click', editShowcase);
+  $profilePage
+    .on('click', '.asdf', asdf)
+    .on('click', '#save-edit-btn', changeProfile)
+    .on('click', '#change-password-btn', changePassword);
+
+    $(window).on('resize', function() {
+      var windowWidth = $(window).width();
+      var isActive = $('#about').hasClass('active');
+      if(windowWidth >= 992 && isActive) {
+        $('#showcase-tab').click();
+      }
+    });
+
+  function asdf() {
+    console.log('running function');
+    var buttonDiv = $(this).parent();
+    var status = buttonDiv.attr('data-showcase');
+    $(this).remove();
+    if(status === 'true') {
+      $(buttonDiv).append(removeHtml);
+      $(buttonDiv).attr('data-showcase', 'false');
+      //showcaseAdd('', false);
+    } else {
+      $(buttonDiv).append(okHtml);
+      $(buttonDiv).attr('data-showcase', 'true');
+      //showcaseAdd('', true);
+    }
+  }
 }
 
 function doneEditShowcase(){
@@ -79,35 +108,6 @@ function editShowcase() {
   });
 
   $('.edit-done-btn').on('click', doneEditShowcase);
-
-  $(window).on('resize', function() {
-    var windowWidth = $(window).width();
-    var isActive = $('#about').hasClass('active');
-    if(windowWidth >= 992 && isActive) {
-      $('#showcase-tab').click();
-    }
-  });
-
-  function asdf() {
-    console.log('running function');
-    var buttonDiv = $(this).parent();
-    var status = buttonDiv.attr('data-showcase');
-    $(this).remove();
-    if(status === 'true') {
-      $(buttonDiv).append(removeHtml);
-      $(buttonDiv).attr('data-showcase', 'false');
-      //showcaseAdd('', false);
-    } else {
-      $(buttonDiv).append(okHtml);
-      $(buttonDiv).attr('data-showcase', 'true');
-      //showcaseAdd('', true);
-    }
-  }
-
-  $profilePage
-    .on('click', '.asdf', asdf)
-    .on('click', '#save-edit-btn', changeProfile)
-    .on('click', '#change-password-btn', changePassword);
 }
 
 function changePassword() {
@@ -169,6 +169,7 @@ function editProfile() {
   var firstName           = $("#firstname").val();
   var allowHire           = $("#hire").prop('checked');
   var allowDonation       = $("#donate").prop('checked');
+  var imgFile                = $("#profile-image").val();
 
   if (userName && userName !== profileUser.userName) {
     userData.userName = userName;
@@ -186,6 +187,10 @@ function editProfile() {
   if (myAbout && myAbout !== profileUser.aboutMe) {
     userData.aboutMe = myAbout;
   }
+  if (imgFile) {
+
+  }
+
   if (profileUser.socialMediaLinks) {
     if (facebook && facebook !== profileUser.socialMediaLinks.facebookUrl) {
       userData.socialMediaLinks.facebookUrl = facebook;
@@ -221,6 +226,18 @@ function editProfile() {
   if (allowHire !== profileUser.allowHire) {
     userData.allowHire     = allowHire;
   }
+
+  if (allowDonation) {
+    $('.donate-btn').show();
+  } else {
+    $('.donate-btn').hide();
+  }
+
+  if (allowHire) {
+    $('.hire-btn').show();
+  } else {
+    $('.hire-btn').hide();
+  }
   
   $.ajax({
     type:'PUT',
@@ -239,6 +256,21 @@ function editProfile() {
 
 function initialize() {
   $profilePage = $('#user-profile');
+  userInfo({user: profileUser}, function(err, html){
+    $("#userInfoData").html(html);
+  });
+  if (profileUser.allowDonation) {
+    $('.donate-btn').show();
+  } else {
+    $('.donate-btn').hide();
+  }
+
+  if (profileUser.allowHire) {
+    $('.hire-btn').show();
+  } else {
+    $('.hire-btn').hide();
+  }
+
   var userNameCheck = '';
 
   if (user) {

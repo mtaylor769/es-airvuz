@@ -68,6 +68,10 @@ module.exports = new IndexView({
 			{
 				partialName: 'client.templates.userProfile.userProfileModal',
 				partialPath: './client/templates/userProfile/userProfileModal.dust'
+			},
+			{
+				partialName: 'client.templates.userProfile.userInfo',
+				partialPath: './client/templates/userProfile/userInfo.dust'
 			}
 		]
 	});

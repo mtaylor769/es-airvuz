@@ -45,7 +45,8 @@
         
         <div class="col-xs-6">
           <div class="text-left">
-            <a href="#" class="btn btn-primary" id="change-picture-btn">Change Profile Picture
+            <a class="btn btn-primary" id="change-picture-btn">
+              <span>Change Profile Picture</span>
               <input type="file" id="profile-image" accept="image/x-png, image/gif, image/jpeg, image/*"/>
             </a>
           </div>
