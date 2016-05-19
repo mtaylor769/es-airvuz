@@ -628,7 +628,7 @@ body.modal-open {
   font-size: 14px;
 }
 
-#left-category a:hover {
+#left-category a:hover, #left-category a.active {
   color: #f48a4a;
   text-decoration: none;
   border-bottom: 1px solid #f48a4a;

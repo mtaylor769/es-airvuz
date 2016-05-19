@@ -38,6 +38,12 @@ function getTrendingVideos(count, page) {
 	return VideoModel.find({}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
 }
 
+function getVideoByCategory(count, page, categoryId) {
+	var limit = count ? count : 10;
+	var skip = (page ? (page - 1) : 0) * limit;
+	return VideoModel.find({categories: categoryId}).sort('-uploadDate').skip(skip).populate('userId').limit(limit).exec();
+}
+
 /*
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
@@ -212,5 +218,6 @@ Videos.prototype.upCount = function(video) {
 
 Videos.prototype.getRecentVideos = getRecentVideos;
 Videos.prototype.getTrendingVideos = getTrendingVideos;
+Videos.prototype.getVideoByCategory = getVideoByCategory;
 
 module.exports = new Videos();

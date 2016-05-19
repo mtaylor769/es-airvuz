@@ -24,7 +24,10 @@ var categoryTypeSchema = mongoose.Schema({
 	isVisible: {
 		required	: true,
 		type			: Boolean
-	}
+	},
+
+	// URL friendly
+	categoryTypeUrl: String
 
 });
 

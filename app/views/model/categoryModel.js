@@ -40,28 +40,27 @@ CategoryModel.prototype.getData = function(params) {
 	var videoPromise,
 			TOTAL_PER_PAGE = 12;
 
-	switch(params.request.params.category) {
-		case 'Featured Videos':
-			videoPromise = VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, 1);
-			break;
-		case 'Staff Pick Videos':
-			videoPromise = VideoCollection.getStaffPickVideos(TOTAL_PER_PAGE, 1);
-			break;
-		case 'Recent Videos':
-			videoPromise = Videos.getRecentVideos(TOTAL_PER_PAGE, 1);
-			break;
-		case 'Trending Videos':
-			videoPromise = Videos.getTrendingVideos(TOTAL_PER_PAGE, 1);
-			break;
-		default:
-			// TODO: get by category
-			videoPromise = Videos.get5Videos(TOTAL_PER_PAGE);
-			break;
-	}
+	videoPromise = CategoryType.getByUrl(params.request.params.category)
+		.then(function (category) {
+			params.data.category 		= params.request.params.category;
+			switch(params.request.params.category) {
+				case 'Featured Videos':
+					return VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, 1);
+				case 'Staff Pick Videos':
+					return VideoCollection.getStaffPickVideos(TOTAL_PER_PAGE, 1);
+				case 'Recent Videos':
+					return Videos.getRecentVideos(TOTAL_PER_PAGE, 1);
+				case 'Trending Videos':
+					return Videos.getTrendingVideos(TOTAL_PER_PAGE, 1);
+				default:
+					params.data.category = category.name;
+					return Videos.getVideoByCategory(TOTAL_PER_PAGE, 1, category._id);
+			}
+		});
+
 
 	var promise = Promise.all([CategoryType.get(), videoPromise])
 			.then(function(data) {
-				params.data.category = params.request.params.category;
 				params.data.categories = data[0];
 				params.data.videos = data[1];
 				params.data.showLoadMore = data[1].length > 11;

@@ -3,7 +3,7 @@ var log4js		= require('log4js');
 var logger		= log4js.getLogger('app.views.manager.viewManager');
 
 try {
-	var dust			= require("dustjs-linkedin");
+	var dust			= require("dustjs-helpers");
 	var fs				= require("fs");
 	var html			= require("html");
 	var Promise		= require('bluebird');

@@ -26,6 +26,10 @@ var CategoryType = function(){
 
 };
 
+function getByUrl(url) {
+  return CategoryTypeModel.findOne({categoryTypeUrl: url}).exec();
+}
+
 /*
  * @param params {Object}
  * @param params.sourceLocation {string} - location where the error initiates.
@@ -130,5 +134,7 @@ CategoryType.prototype.update = function(params) {
 CategoryType.prototype.remove = function(id) {
   return CategoryTypeModel.findByIdAndRemove({_id: id}).exec();
 };
+
+CategoryType.prototype.getByUrl = getByUrl;
 
 module.exports = new CategoryType();
