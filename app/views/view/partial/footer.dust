@@ -76,7 +76,7 @@
               <button type="button" class="btn btn-primary" id="login-btn">Login</button>
             </div>
             <hr/>
-            <button class="btn btn-block btn-primary facebook">Facebook</button>
+            <button class="btn btn-block btn-primary facebook" id="btn-facebook">Facebook</button>
             <button class="btn btn-block btn-danger">Google</button>
             <button class="btn btn-block btn-success">Instagram</button>
             <hr/>

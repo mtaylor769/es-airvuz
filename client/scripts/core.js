@@ -90,12 +90,15 @@ function bindEvents() {
         window.location.href = '/';
       });
   });
+
+  $loginModal.on('click', '#btn-facebook', function() {
+    window.location.href = '/api/auth/facebook';
+  });
 }
 
 function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
-
   if (identity.isAuthenticated()) {
     renderProfileHeader();
     $footerSub1.addClass('is-login');

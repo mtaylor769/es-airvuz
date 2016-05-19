@@ -15,6 +15,7 @@ function loginSuccess(req, res, next) {
 }
 
 function facebook(req, res, next){
+  console.log('hit route');
   passport.authenticate('facebook')(req, res, next);
 }
 
@@ -83,8 +84,8 @@ function twitterCallback(req, res, next) {
 
 Auth.prototype.login               = passport.authenticate('local-login');
 Auth.prototype.loginSuccess        = loginSuccess;
-Auth.prototype.facebook            = passport.authenticate('facebook');
-Auth.prototype.facebookAuthFailure = passport.authenticate('facebook', { failureRedirect: '/login' });
+Auth.prototype.facebook            = facebook;
+Auth.prototype.facebookAuthFailure = facebookAuthFailure;
 Auth.prototype.facebookCallback    = facebookCallback;
 Auth.prototype.google              = google;
 Auth.prototype.googleCallback      = googleCallback;
