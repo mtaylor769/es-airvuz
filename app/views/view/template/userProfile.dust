@@ -62,7 +62,7 @@
               <li role="presentation" class="active"><a href="#showcase" id="showcase-tab" role="tab" data-toggle="tab">SHOWCASE</a></li>
               <li role="presentation"><a href="#allvideos" role="tab" data-toggle="tab">ALL VIDEOS</a></li>
               <li role="presentation" class="hidden-md hidden-lg"><a href="#about" role="tab" data-toggle="tab">ABOUT</a></li>
-              <li role="presentation"><a href="#edit-profile" role="tab" data-toggle="tab">EDIT</a></li>
+              <li role="presentation"><a href="#edit-profile" role="tab" data-toggle="tab" class="edit-tab">EDIT</a></li>
           </ul>
       </div>
       <div class="tab-content">

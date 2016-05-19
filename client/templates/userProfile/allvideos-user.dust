@@ -15,14 +15,14 @@
 <div class="row m-b-20 profile-videos">
     {#videos}
         <div class="col-xs-12 col-sm-6 col-md-3" style="">
-            <div class="row profile-video" style="padding: 20px 0;">
+            <div class="profile-video" style="padding: 20px 0;">
                 <div class="col-xs-6 col-sm-12">
                     <a href="/videoPlayer/{_id}">
                         <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" height="60%">
                     </a>
                 </div>
                 <div class="col-xs-5 col-sm-12 profile-video-info">
-                    <div class="row hidden-xs" style="padding: 5px 10px">
+                    <div>
                         <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>
                         <span class="pull-right">{duration}</span>
                     </div>
@@ -34,16 +34,7 @@
                             <a href="/userProfile/{userId.userName}" tabindex="0">{userId.userName}</a>
                         </p>
                     </div>
-                    <div class="visible-xs">
-                        <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>
-                    </div>
-                    <div class="hidden-xs" style="height: 31px; margin: 0px 10px">
-                        <span>{description}</span>
-                    </div>
-                    <div class="row m-t-20 airvuz-blue hidden-xs" style="margin: 20px 10px">
-                        <span class="m-r-20">LIKES {likeCount}</span>
-                        <span>COMMENTS {commentCount}</span>
-                    </div>
+
                 </div>
                 <div class="col-xs-1 visible-xs">
                     <span class="glyphicon glyphicon-option-vertical"></span>

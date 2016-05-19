@@ -1,5 +1,5 @@
 var identity      = require('./services/identity');
-var user          = identity.currentUser;
+var user          = identity.currentUser || null;
 var $profilePage  = null;
 var userData      = {};
 
@@ -239,7 +239,12 @@ function editProfile() {
 
 function initialize() {
   $profilePage = $('#user-profile');
-  if(user.userName === profileUser.userName) {
+  var userNameCheck = '';
+
+  if (user) {
+    userNameCheck = user.userName;
+  }
+  if(userNameCheck === profileUser.userName) {
     ownerShowcase({videos: profileVideos}, function (err, html) {
       $('#showcase').html(html);
     });
@@ -252,9 +257,10 @@ function initialize() {
     userProfileEdit({user: profileUser}, function (err, html) {
       $('#edit-profile').html(html);
     });
+    $('.edit-tab').show();
 
   } else {
-
+    $('.edit-tab').hide();
   }
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'
