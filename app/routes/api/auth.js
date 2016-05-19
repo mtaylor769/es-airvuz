@@ -24,8 +24,6 @@ function facebookAuthFailure() {
 }
 
 function facebookCallback(req, res, next) {
-  
-  debugger;
   if (req.newUser) 
   {
     req.user.newUser = req.newUser;
