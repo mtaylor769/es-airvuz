@@ -15,7 +15,7 @@ switch(window.location.host) {
 module.exports = {
   INPUT_BUCKET    : INPUT_BUCKET,
   OUTPUT_BUCKET   : OUTPUT_BUCKET,
-
+  TEMP_BUCKET     : 'airvuz-tmp',
   OUTPUT_URL      : '//s3-us-west-2.amazonaws.com/' + OUTPUT_BUCKET + '/',
   INPUT_URL       : '//s3-us-west-2.amazonaws.com/' + INPUT_BUCKET + '/',
 

@@ -20,7 +20,7 @@ function getVideoInfo(req, res) {
       /**
        * quick hack for local uploading
        */
-      if (videoObjects.videoUrl) {
+      if (videoObjects.videoUrl && videoObjects.thumbnails.length > 0) {
         return res.json(videoObjects);
       }
       return res.send('processing');

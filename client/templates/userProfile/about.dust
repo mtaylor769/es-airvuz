@@ -1,7 +1,7 @@
 <div id="about-me-section">
     <div>
         <h5>About Me</h5>
-        <p>{aboutMe}</p>
+        <p>{user.aboutMe}</p>
         <!-- <h5>Location</h5>
         <p>Minneapolis, MN</p> -->
     </div>

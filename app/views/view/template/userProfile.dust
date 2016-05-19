@@ -25,30 +25,30 @@
                   <span class="av-primary word-space airvuz-blue">299</span><span style="text-shadow: 2px 2px 22px black">Following</span>
                 </h5>
                 <div class="hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
-                    <span>{aboutMe}</span>
+                    <span>{user.aboutMe}</span>
                 </div>
                 <!-- This stuff displays only if not your profile -->
                 <div class="profile-options row" role="group">
                 <!-- Switch button depending if followed or unfollowed -->
                   <button class="follow-btn btn btn-primary" type="button">Follow</button>
-                  {?allowDonate}<button class="donate-btn btn btn-primary" type="button">Donate</button>{/allowDonate}
+                  {?user.allowDonation}<button class="donate-btn btn btn-primary" type="button">Donate</button>{/user.allowDonation}
                   
-                  {?allowHire}<button class="hire-btn btn btn-primary" type="button">Hire</button>{/allowHire}
+                  {?user.allowHire}<button class="hire-btn btn btn-primary" type="button">Hire</button>{/user.allowHire}
                   
                   <div class="user-social-media pull-right row hidden-xs hidden-sm">
                   <!-- Conditional only if user has social media links -->
-                    {?socialMediaLinks.facebookUrl}
+                    {?user.socialMediaLinks.facebookUrl}
                       <span class="fa fa-facebook-square" style="margin-right: 10px"></span>
-                    {/socialMediaLinks.facebookUrl}
-                    {?socialMediaLinks.instagramUrl}
+                    {/user.socialMediaLinks.facebookUrl}
+                    {?user.socialMediaLinks.instagramUrl}
                       <span class="fa fa-instagram" style="margin-right: 10px"></span>
-                    {/socialMediaLinks.instagramUrl}
-                    {?socialMediaLinks.twitterUrl}
+                    {/user.socialMediaLinks.instagramUrl}
+                    {?user.socialMediaLinks.twitterUrl}
                       <span class="font-white fa fa-twitter-square" style="margin-right: 10px"></span>
-                    {/socialMediaLinks.twitterUrl}
-                    {?socialMediaLinks.googlePlusUrl}
+                    {/user.socialMediaLinks.twitterUrl}
+                    {?user.socialMediaLinks.googlePlusUrl}
                       <span class="font-white fa fa-google-plus-square"></span>
-                    {/socialMediaLinks.googlePlusUrl}
+                    {/user.socialMediaLinks.googlePlusUrl}
                   </div>
                 </div>
               </figcaption>

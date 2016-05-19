@@ -34,6 +34,7 @@ _**Note:** When setting an environmental variable for Windows make sure to not a
 ##URL Parameters
 #For debugging purposes and live reload when making front end changes append this to the end of the URL
 ?viewPrettyPrint=true&reloadView=true
+?reloadView=true
 
 ## Creating new views
 

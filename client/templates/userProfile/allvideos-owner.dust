@@ -22,7 +22,7 @@
                     </a>
                 </div>
                 <div class="col-xs-5 col-sm-12 profile-video-info">
-                    <div class="row" style="padding: 5px 10px">
+                    <div>
                         <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>
                         <span class="pull-right">{duration}</span>
                     </div>
@@ -36,11 +36,9 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-xs-12 col-sm-4">
-                            <button class="btn btn-primary pull-right">Edit</button>
-                        </div>
-                        <div class="col-xs-12 col-sm-4">
-                            <button class="btn btn-default pull-right">Delete</button>
+                        <div class="col-sm-12 hidden-xs">
+                            <button class="btn btn-primary" style="margin-right:4px;">Edit</button>
+                            <button class="btn btn-default">Delete</button>
                         </div>
                     </div>
                 </div>

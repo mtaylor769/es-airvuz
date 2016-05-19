@@ -154,40 +154,61 @@ function editProfile() {
   var instagram           = $("#instagram").val();
   var lastName            = $("#lastname").val();
   var firstName           = $("#firstname").val();
-  var allowHire           = $("#hire").checked;
-  var allowDonation       = $("#donate").checked;
+  var allowHire           = $("#hire").prop('checked');
+  var allowDonation       = $("#donate").prop('checked');
 
-  if (userName) {
+  if (userName && userName !== profileUser.userName) {
     userData.userName = userName;
   }
-  if (emailAddress) {
+  if (emailAddress && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
   }
 
-  if (firstName) {
+  if (firstName && firstName !== profileUser.firstName) {
     userData.firstName = firstName;
   }
-  if (lastName) {
+  if (lastName && lastName !== profileUser.lastName) {
     userData.lastName = lastName;
   }
-  if (myAbout) {
+  if (myAbout && myAbout !== profileUser.aboutMe) {
     userData.aboutMe = myAbout;
   }
-  if (facebook) {
-    userData.socialMediaUrl.facebookUrl = facebook;
+  if (profileUser.socialMediaLinks) {
+    if (facebook && facebook !== profileUser.socialMediaLinks.facebookUrl) {
+      userData.socialMediaLinks.facebookUrl = facebook;
+    }
+    if (googleplus && googleplus !== profileUser.socialMediaLinks.googlePlusUrl ) {
+      userData.socialMediaLinks.googlePlusUrl = google;
+    }
+    if (twitter && twitter !== profileUser.socialMediaLinks.twitterUrl) {
+      userData.socialMediaLinks.twitterUrl = twitter;
+    }
+    if (instagram && instagram !== profileUser.socialMediaLinks.instagramUrl) {
+      userData.socialMediaLinks.instagramUrl = instagram;
+    }
+  } else {
+    userData.socialMediaLinks = {};
+    if (facebook) {
+      userData.socialMediaLinks.facebookUrl = facebook;
+    }
+    if (googleplus) {
+      userData.socialMediaLinks.googlePlusUrl = google;
+    }
+    if (twitter) {
+      userData.socialMediaLinks.twitterUrl = twitter;
+    }
+    if (instagram) {
+      userData.socialMediaLinks.instagramUrl = instagram;
+    }
   }
-  if (googleplus) {
-    userData.socialMediaUrl.googlePlusUrl = google;
-  }
-  if (twitter) {
-    userData.socialMediaUrl.twitterUrl = twitter;
-  }
-  if (instagram) {
-    userData.socialMediaUrl.instagramUrl = instagram;
-  }
-  userData.allowDonation = allowDonation;
-  userData.allowHire     = allowHire;
 
+  if (allowDonation !== profileUser.allowDonation) {
+    userData.allowDonation = allowDonation;
+  }
+  if (allowHire !== profileUser.allowHire) {
+    userData.allowHire     = allowHire;
+  }
+  
   $.ajax({
     type:'PUT',
     url: '/api/users/' + user._id,
@@ -198,8 +219,9 @@ function editProfile() {
     $('#save-changes').modal('hide');
   })
   .error(function(error) {
+    console.log('error from serverside');
+    $('#save-changes').modal('hide');
   });
-
 }
 
 function initialize() {
