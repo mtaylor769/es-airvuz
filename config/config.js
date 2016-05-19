@@ -8,8 +8,8 @@ module.exports = {
       name: 'airvuz'
     },
     facebook: {
-      clientID          : "868675893230044",
-      clientSecret      : "916d3bbd7e46d2ff4ae05d173aef4cd7",
+      clientID          : "1095635343791580",
+      clientSecret      : "69d81985bac175bc84297fa3b8a1023e",
       callbackURL       : "http://localhost/api/auth/facebook/callback"
     },
     linkedIn: {

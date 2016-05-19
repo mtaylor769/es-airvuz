@@ -26,9 +26,10 @@ var $uploadPage,
     transcodeError,
     transcodeComplete,
     VIEW_MODEL = {},
-    evaporate,
     isUploading = false,
-    POLLING_INTERVAL_TIME = 20000; // 20 sec
+    POLLING_INTERVAL_TIME = 20000, // 20 sec
+    customThumbnailName,
+    isCustomThumbnail = false;
 
 function onProgress(progress) {
   currentUploadFile.progress = Math.round(progress * 10000) / 100;
@@ -59,6 +60,11 @@ function onUploadComplete() {
     type: 'GET',
     data: {key: currentUploadFile.hashName}
   }).done(onDurationReturn)
+}
+
+function onCustomThumbnailUploadComplete(name) {
+  $uploadPage.find('#custom-thumbnail-section .fa').addClass('hidden');
+  $uploadPage.find('.custom-thumbnail-display').css('background-image', 'url(//s3-us-west-2.amazonaws.com/airvuz-tmp/' + name +')');
 }
 
 /**
@@ -171,18 +177,21 @@ function bindEvents() {
     event.preventDefault();
 
     var params = {
-      title           : $uploadPage.find('#title').val(),
-      videoLocation   : $uploadPage.find('#location').val(),
-      videoPath       : currentUploadFile.videoPath,
-      duration        : currentUploadFile.duration,
-      cameraType      : $uploadPage.find('#camera-type').val(),
-      droneType       : $uploadPage.find('#drone-type').val(),
-      categories      : $uploadPage.find('#category-list li').map(function (index, li) {
-                          return $(li).data('id');
-                        }).toArray(),
-      thumbnailPath   : currentUploadFile.thumbnailPath,
-      description     : $uploadPage.find('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
-      userId          : identity._id
+      title             : $uploadPage.find('#title').val(),
+      videoLocation     : $uploadPage.find('#location').val(),
+      videoPath         : currentUploadFile.videoPath,
+      duration          : currentUploadFile.duration,
+      cameraType        : $uploadPage.find('#camera-type').val(),
+      droneType         : $uploadPage.find('#drone-type').val(),
+      categories        : $uploadPage.find('#category-list li').map(function (index, li) {
+                            return $(li).data('id');
+                          }).toArray(),
+      thumbnailPath     : currentUploadFile.thumbnailPath,
+      isCustomThumbnail : isCustomThumbnail,
+      customThumbnail   : customThumbnailName,
+      hashName          : currentUploadFile.hashName,
+      description       : $uploadPage.find('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
+      userId            : identity._id
     };
 
     if ($tags.val()) {
@@ -204,6 +213,13 @@ function bindEvents() {
     currentUploadFile = this.files[0];
     var data = {file: {type: currentUploadFile.type, size: currentUploadFile.size, name: currentUploadFile.name}};
 
+    var evaporate = new Evaporate({
+      signerUrl : '/api/amazon/sign-auth',
+      aws_key   : AmazonConfig.ACCESS_KEY,
+      bucket    : AmazonConfig.INPUT_BUCKET,
+      aws_url   : 'https://s3-us-west-2.amazonaws.com'
+    });
+
     $.ajax({
       url         : '/api/upload',
       contentType : 'application/json',
@@ -221,9 +237,6 @@ function bindEvents() {
         headersCommon: {
           'Cache-Control': 'max-age=3600'
         },
-        headersSigned: {
-          'x-amz-acl': 'public-read'
-        },
         // filename, relative to bucket
         name: currentUploadFile.hashName + '.mp4',
         // content
@@ -233,6 +246,44 @@ function bindEvents() {
         progress: onProgress,
         error: onUploadError
       });
+    });
+  }
+
+  function onCustomFileChange() {
+    var customThumbnailFile = this.files[0];
+
+    $uploadPage.find('.custom-thumbnail-display').css('background-image', 'none');
+    $uploadPage.find('#custom-thumbnail-section .fa').removeClass('hidden');
+
+    var evaporate = new Evaporate({
+      signerUrl : '/api/amazon/sign-auth',
+      aws_key   : AmazonConfig.ACCESS_KEY,
+      bucket    : AmazonConfig.TEMP_BUCKET,
+      aws_url   : 'https://s3-us-west-2.amazonaws.com'
+    });
+
+    // add Date.now() incase the user reupload again.
+    // without it the image won't change or reload because it is the same name
+    customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1];
+
+    evaporate.add({
+      // headers
+      contentType: customThumbnailFile.type || 'binary/octet-stream',
+      headersCommon: {
+        'Cache-Control': 'max-age=3600'
+      },
+      xAmzHeadersAtInitiate: {
+        'x-amz-acl': 'public-read'
+      },
+      // filename, relative to bucket
+      name: customThumbnailName,
+      // content
+      file: customThumbnailFile,
+      // event callbacks
+      complete: function () {
+        onCustomThumbnailUploadComplete(customThumbnailName);
+      },
+      error: onUploadError
     });
   }
 
@@ -282,6 +333,8 @@ function bindEvents() {
   }
 
   function onUploadAgain() {
+    isCustomThumbnail = false;
+    customThumbnailName = null;
     renderStep(1);
   }
 
@@ -292,15 +345,34 @@ function bindEvents() {
     }
   }
 
+  function onCustomThumbnailClick(event) {
+    event.preventDefault();
+    $uploadPage.find('#custom-thumbnail').addClass('hidden');
+    $uploadPage.find('#custom-thumbnail-section').removeClass('hidden');
+    $uploadPage.find('#thumbnails').addClass('hidden');
+    isCustomThumbnail = true;
+  }
+
+  function onCancelCustomThumbnailClick(event) {
+    event.preventDefault();
+    $uploadPage.find('#custom-thumbnail').removeClass('hidden');
+    $uploadPage.find('#custom-thumbnail-section').addClass('hidden');
+    $uploadPage.find('#thumbnails').removeClass('hidden');
+    isCustomThumbnail = false;
+  }
+
   //////////////////////////////////////////
 
   $uploadPage
-    .on('click', '#publish-btn', onPublish)
-    .on('change', '#file', onFileChange)
-    .on('click', '#thumbnails li', onThumbnailSelect)
     .on('change', '#category', onCategorySelect)
+    .on('change', '#file', onFileChange)
+    .on('change', '#custom-image-file', onCustomFileChange)
+    .on('click', '#btn-publish', onPublish)
+    .on('click', '#thumbnails li', onThumbnailSelect)
     .on('click', '#category-list li', onCategoryRemove)
-    .on('click', '#upload-again', onUploadAgain);
+    .on('click', '#upload-again', onUploadAgain)
+    .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
+    .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick);
 
   $(window).on('beforeunload', onBeforeUnload);
 
@@ -314,15 +386,26 @@ function initialize() {
 
   $uploadPage = $('#upload-page');
 
-  evaporate = new Evaporate({
-    signerUrl : '/api/amazon/sign-auth',
-    aws_key   : AmazonConfig.ACCESS_KEY,
-    bucket    : AmazonConfig.INPUT_BUCKET,
-    aws_url   : 'https://s3-us-west-2.amazonaws.com'
-  });
-
   getData();
   bindEvents();
+
+  // DEBUG
+  //setTimeout(function () {
+  //  renderStep(2);
+  //}, 500);
+  //
+  //var mockThumbnail = [
+  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00001.jpg',
+  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00002.jpg',
+  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00003.jpg',
+  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00004.jpg',
+  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00005.jpg',
+  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00006.jpg'
+  //];
+  //
+  //setTimeout(function () {
+  //  renderThumbnail(mockThumbnail);
+  //}, 2000);
 }
 
 module.exports = {

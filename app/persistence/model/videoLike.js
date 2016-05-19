@@ -23,6 +23,11 @@ var videoLikeSchema = mongoose.Schema({
 	 */
 	userId : {
 		type: mongoose.Schema.ObjectId, ref: 'User'
+	},
+
+	videoOwnerId : {
+		ref: 'Users',
+		type: mongoose.Schema.ObjectId
 	}
 	
 });

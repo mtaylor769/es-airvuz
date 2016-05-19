@@ -22,7 +22,13 @@ var videoViewSchema = mongoose.Schema({
 	 * The userId of the person who viewed the video.
 	 */
 	userId : {
+		required: false,
 		type: mongoose.Schema.ObjectId, ref: 'User'
+	},
+
+	videoOwnerId : {
+		ref: 'Users',
+		type: mongoose.Schema.ObjectId
 	}
 	
 });

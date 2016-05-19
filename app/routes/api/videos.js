@@ -5,8 +5,10 @@ try {
 
 	var VideoCrud							= require('../../persistence/crud/videos');
   var VideoLikeCrud         = require('../../persistence/crud/videoLike');
+  var VideoViewCrud         = require('../../persistence/crud/videoViews');
   var FollowCrud            = require('../../persistence/crud/follow');
 	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
+  var amazonService         = require('../../services/amazon.service.server.js');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("INFO");
@@ -23,14 +25,32 @@ function Video() {
 }
 
 Video.prototype.post = function(req, res) {
-  VideoCrud
-    .create(req.body)
-    .then(function(video) {
-      res.json(video);
-    })
-    .catch(function (error) {
-      res.sendStatus(500);
-    });
+  if (req.body.isCustomThumbnail) {
+    // move custom thumbnail to the correct directory
+    // TODO: resize to 392x220
+    var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
+    req.body.thumbnailPath = req.body.hashName + '/' + newName;
+
+    amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
+      .then(function () {
+        return VideoCrud.create(req.body);
+      })
+      .then(function (video) {
+        res.json(video);
+      })
+      .catch(function () {
+        res.sendStatus(500);
+      })
+  } else {
+    VideoCrud
+      .create(req.body)
+      .then(function(video) {
+        res.json(video);
+      })
+      .catch(function (error) {
+        res.sendStatus(500);
+      });
+  }
 };
 
 Video.prototype.get = function(req, res) {
@@ -76,14 +96,10 @@ Video.prototype.like = function(req, res) {
   VideoCrud
     .getById(req.body.id)
     .then(function(video) {
-      VideoCrud
-        .like(video, req.body.like)
-        .then(function(comment) {
-          res.sendStatus(200);
-        })
-        .catch(function (error) {
-          res.sendStatus(500);
-        });
+      return VideoCrud.like(video, req.body.like)
+    })
+    .then(function(comment) {
+      res.sendStatus(200);
     })
     .catch(function (error) {
       res.sendStatus(500);
@@ -91,19 +107,21 @@ Video.prototype.like = function(req, res) {
 };
 
 Video.prototype.loaded = function(req, res) {
-  console.log(req.body);
+  var params = req.body;
+  console.log(params);
   VideoCrud
-    .getById(req.body.videoId)
+    .getById(params.videoId)
     .then(function(video) {
       video.viewCount = video.viewCount + 1;
-      VideoCrud
-        .upCount(video)
-        .then(function() {
-          res.sendStatus(200);
-        })
-        .catch(function(error) {
-        res.send(error);
-      })
+      return VideoCrud.upCount(video);
+    })
+    .then(function(video) {
+      return VideoViewCrud.create(params);
+    })
+    .then(function(videoView) {
+      console.log('videoView');
+      console.log(videoView);
+      res.sendStatus(200);
     })
     .catch(function(error) {
       res.send(error);
@@ -115,7 +133,6 @@ Video.prototype.showcaseUpdate = function(req, res) {
   VideoCrud
     .update({id: params.id, update: params})
     .then(function(video) {
-      console.log('post update : ' + video);
       res.sendStatus(200);
     })
     .catch(function(error) {
@@ -169,13 +186,11 @@ Video.prototype.videoInfoCheck = function(req, res) {
     .videoLikeCheck(likeObject)
     .then(function(like) {
       returnObject.like = !!like;
-
       return FollowCrud.followCheck(followObject);
     })
     .then(function(follow) {
       console.log(follow);
       returnObject.follow = !!follow;
-
       res.json(returnObject);
     })
     .catch(function(error) {

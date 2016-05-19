@@ -58,12 +58,26 @@
           {/cameras}
         </select>
       </div>
+      <div class="form-group hidden" id="custom-thumbnail-section">
+        <p class="text-info">Best thumbnail size 392x220</p>
+        <div class="custom-thumbnail-display">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw hidden"></i>
+        </div>
+        <label for="custom-image-file">Select a custom thumbnail</label>
+        <input type="file" id="custom-image-file" accept="image/*" class="m-b-15"/>
+        <button class="btn btn-danger" id="btn-cancel-custom-thumbnail">Cancel</button>
+      </div>
+
       <div class="form-group text-center" id="thumbnails">
+        <p>Generating thumbnails...</p>
         {!generated!}
       </div>
+        <div class="form-group text-center" id="custom-thumbnail">
+          <button class="btn btn-primary" id="btn-custom-thumbnail">Upload custom thumbnail</button>
+        </div>
       <div class="text-right">
         <a href="/" class="btn btn-primary">Cancel</a>
-        <a href="#" class="btn btn-primary" id="publish-btn">Publish</a>
+        <a href="#" class="btn btn-primary" id="btn-publish">Publish</a>
       </div>
     </form>
   </div>

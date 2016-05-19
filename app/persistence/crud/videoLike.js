@@ -38,16 +38,16 @@ VideoLike.prototype.create = function(params) {
       .then(function (like) {
         if (like.length === 0) {
           return VideoModel.findById(params.videoId).exec()
-            .then(function (video) {
-              video.likeCount = video.likeCount + 1;
-              return video.save()
-            })
-            .then(function (video) {
-              var videLikeModel = new VideoLikeModel(params);
-              videLikeModel.save(function (error, videoLike) {
-                resolve(videoLike);
-              })
-            })
+      .then(function (video) {
+        video.likeCount = video.likeCount + 1;
+        return video.save()
+      })
+      .then(function (video) {
+        var videoLikeModel = new VideoLikeModel(params);
+        videoLikeModel.save(function (error, videoLike) {
+          resolve(videoLike);
+        })
+      })
         } else {
           return VideoModel.findById(params.videoId).exec()
             .then(function (video) {
