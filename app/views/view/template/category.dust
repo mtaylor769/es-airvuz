@@ -14,15 +14,7 @@
         <div id="category-page" class="container main">
           <div class="row">
             <div class="col-md-2" id="left-category">
-              <h5>
-                <span class="hidden-xs hidden-sm">SELECT A </span>CATEGORY
-                <span class="glyphicon glyphicon-chevron-down pull-right hidden-lg hidden-md"></span>
-              </h5>
-              <ul class="list-unstyled">
-                  {#categories}
-                    <li><a href="/category/{name}" class="{@eq key=$idx value=1}active{/eq}">{name}</a></li>
-                  {/categories}
-              </ul>
+                {> "app.views.view.partial.left-nav"/}
             </div>
             <div class="col-md-10 border-left">
               <div class="row">

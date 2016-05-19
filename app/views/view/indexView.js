@@ -60,6 +60,10 @@ module.exports = new IndexView({
 			{
 				partialName: 'app.views.view.partial.home-video',
 				partialPath: './app/views/view/partial/home-video.dust'
+			},
+			{
+				partialName: 'app.views.view.partial.left-nav',
+				partialPath: './app/views/view/partial/left-nav.dust'
 			}
 		]
 	});
