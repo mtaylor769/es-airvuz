@@ -296,7 +296,20 @@ function bindEvents() {
         message: ""
       },
       function(response) {
-        console.log(response);
+        notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-FACEBOOK';
+        notificationObject.notificationMessage = 'shared your video on Facebook';
+        notificationObject.videoId = video._id;
+        if(response.post_id) {
+          $.ajax({
+            type: 'POST',
+            url: '',
+            data: notificationObject
+          })
+          .done(function(response) {
+          })
+          .error(function(error) {
+          })
+        }
       }
     );
   });
@@ -304,6 +317,7 @@ function bindEvents() {
   $('#twitter').on('click', function() {
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-TWITTER';
     notificationObject.notificationMessage = 'shared your video on Twitter';
+    notificationObject.videoId = video._id;
     $.ajax({
       type: 'POST',
       url: '/api/notifications',
@@ -314,6 +328,21 @@ function bindEvents() {
     .error(function(error) {
     })
   });
+
+  $('#google').on('click', function() {
+    notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-GOOGLEPLUS';
+    notificationObject.notificationMessage = 'shared your video on Google Plus';
+    notificationObject.videoId = video._id;
+    $.ajax({
+        type: 'POST',
+        url: '/api/notifications',
+        data: notificationObject
+      })
+      .done(function(response) {
+      })
+      .error(function(error) {
+      })
+  })
 
   //functions to move mobile screen
   $('.up-next').on('click', function(e) {
@@ -338,6 +367,18 @@ function bindEvents() {
   //embeded iframe modal
   $('.embed').on('click', function() {
     $('#embed-modal').modal('show');
+    notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-EMBEDED';
+    notificationObject.notificationMessage = 'embeded your video';
+    notificationObject.videoId = video._id;
+    $.ajax({
+        type: 'POST',
+        url: '/api/notifications',
+        data: notificationObject
+      })
+      .done(function(response) {
+      })
+      .error(function(error) {
+      })
   });
 
   //report modal
@@ -584,6 +625,7 @@ function initialize() {
   //set video page
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
+  notificationObject.notifiedUserId  = video.userId;
 
   //run init functions
   incrementVideoCount();
@@ -596,9 +638,7 @@ function initialize() {
       state: user.autoPlay,
       onSwitchChange: onAutoPlayChange
     });
-
-    notificationObject.notifiedUserId  = video.userId;
-    notificationObject.actionUserId    = user._id;
+      notificationObject.actionUserId    = user._id;
   } else {
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'
@@ -617,9 +657,9 @@ function initialize() {
 
   //slide up function for description
   setTimeout(function() {
-    var html = '<div class="show-more-description"><span class="glyphicon glyphicon-chevron-down"></span></div>';
+    var html = '<div class="show-more-description"><span class="glyphicon glyphicon-chevron-down down-arrow"></span></div>';
     $('#video-description').slideUp();
-    $('.description-container').append(html)
+    $('.down-arrow').removeClass('hidden');
   }, 5000);
 
 }

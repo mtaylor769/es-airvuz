@@ -397,7 +397,7 @@ body.modal-open {
 }
 
 .categories li:first-child {
-  padding-left: 25px;
+  padding-left: 20px;
 }
 
 .categories li:last-child {
@@ -419,7 +419,7 @@ body.modal-open {
 }
 
 .video-player-categories ul{
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .video-action-icons {
@@ -559,6 +559,10 @@ body.modal-open {
   color: white;
 }
 
+.social-icons a {
+  text-decoration: none;
+}
+
 .social-icons .social {
   padding: 10px 0;
   margin: 0;
@@ -595,6 +599,10 @@ body.modal-open {
 
 #follow {
   font-size: 25px;
+}
+
+#facebook {
+  padding-bottom: 20px;
 }
 
 /*
@@ -931,7 +939,6 @@ Begin userProfile CSS
 }
 
 .show-more-description {
-  margin-top: 20px;
   display: block;
 }
 

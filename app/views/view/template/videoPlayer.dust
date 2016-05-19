@@ -59,18 +59,25 @@
                         {!categories!}
                         <div class="video-player-categories">
                             <div class="row">
-                                <ul class="list-inline categories">
-                                    {#video.categories}
-                                        <li>{name}</li>
-                                    {/video.categories}
-                                </ul>
-                            </div>
-                            <div class="row">
-                            <div class="description-container">
-                                <div id="video-description" style="margin: 10px 20px; border-top: 1px inset; padding: 10px; display: none">
-                                    <p>{video.description|s}</p>
+                                <div class="col-xs-12">
+                                    <ul class="list-inline categories">
+                                        {#video.categories}
+                                            <li>{name}</li>
+                                        {/video.categories}
+                                    </ul>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="description-container">
+                                        <div id="video-description" style="margin: 10px 20px;">
+                                            {video.description|s}
+                                        </div>
+                                        <div class="show-less-description">
+                                            <span class="glyphicon glyphicon-chevron-down down-arrow hidden"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         {!video owner info!}

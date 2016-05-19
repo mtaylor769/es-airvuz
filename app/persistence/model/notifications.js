@@ -10,7 +10,7 @@ var NotificationsSchema = mongoose.Schema({
 	 */
 	actionUserId : {
 		ref: 'Users',
-		required: true,
+		required: false,
 		type: mongoose.Schema.ObjectId
 	},	
 	

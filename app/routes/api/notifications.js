@@ -5,6 +5,7 @@ function Notification() {
 }
 
 Notification.prototype.post = function(req, res) {
+  console.log(req.body);
   NotificationCrud
     .create(req.body)
     .then(function(notification) {
