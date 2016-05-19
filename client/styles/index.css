@@ -1139,7 +1139,7 @@ End user profile CSS
   }
 
   .profile-video-title {
-    height: 40px;
+    height: 45px;
   }
 
   .profile-video-description {
@@ -1309,6 +1309,11 @@ End user profile CSS
   #user-profile .profile-video .col-xs-5 h4 {
     margin: 0;
   }
+
+  #user-profile .margin-right-4 {
+    margin-right: 4px;
+  }
+  
   .footer-sub1 .footer-signup button {
     margin: 0 0 0 15px;
   }
