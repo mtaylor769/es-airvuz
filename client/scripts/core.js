@@ -92,25 +92,13 @@ function bindEvents() {
   });
 
   $loginModal.on('click', '#btn-facebook', function() {
-    console.log('hitting ajax');
-    $.ajax({
-      type: 'GET',
-      url: '/api/auth/facebook',
-      dataType: 'jsonp'
-    })
-    .done(function(response) {
-      console.log(response);
-    })
-    .error(function(error) {
-      console.log(error);
-    })
+    window.location.href = '/api/auth/facebook';
   });
 }
 
 function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
-
   if (identity.isAuthenticated()) {
     renderProfileHeader();
     $footerSub1.addClass('is-login');
