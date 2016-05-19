@@ -90,6 +90,21 @@ function bindEvents() {
         window.location.href = '/';
       });
   });
+
+  $loginModal.on('click', '#btn-facebook', function() {
+    console.log('hitting ajax');
+    $.ajax({
+      type: 'GET',
+      url: '/api/auth/facebook',
+      dataType: 'jsonp'
+    })
+    .done(function(response) {
+      console.log(response);
+    })
+    .error(function(error) {
+      console.log(error);
+    })
+  });
 }
 
 function initialize() {
