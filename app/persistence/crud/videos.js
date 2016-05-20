@@ -7,10 +7,12 @@ try {
 	var PersistenceException = require('../../utils/exceptions/PersistenceException');
 	var ValidationException = require('../../utils/exceptions/ValidationException');
 	var VideoModel = null;
+	var UserModel = null;
 	var database = require('../database/database');
+	var moment = require('moment');
 
-	VideoModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
-	logger.debug('loaded videos model');
+	VideoModel 	= database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
+	UserModel 	= database.getModelByDotPath({modelDotPath: "app.persistence.model.users"});
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("INFO");
@@ -26,6 +28,12 @@ var Videos = function() {
 	
 };
 
+/**
+ * get the recent uploaded videos
+ * @param count
+ * @param page
+ * @returns {Promise}
+ */
 function getRecentVideos(count, page) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
@@ -36,12 +44,87 @@ function getTrendingVideos(count, page) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
 	return VideoModel.find({}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
+
+	// TODO: update when video migrate uploadDate is correct
+	//var thirtyDayAgo = moment().subtract(30, 'days').toDate();
+  //
+	//console.log('******************** thirtyDayAgo ********************');
+	//console.log(thirtyDayAgo);
+	//console.log('************************************************');
+	//return VideoModel.find({uploadedDate: {$gt: thirtyDayAgo}}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
 }
 
 function getVideoByCategory(count, page, categoryId) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
 	return VideoModel.find({categories: categoryId}).sort('-uploadDate').skip(skip).populate('userId').limit(limit).exec();
+}
+
+function search(query, page) {
+	// TODO: allow searching category, drone, and camera
+	var keywords = query,
+			commonWords = ['the', 'of', 'and'],
+			limit = 20,
+			words = keywords.split(' '),
+			keyWordNonCommon = '',
+			skip = (page ? (page - 1) : 0) * limit;
+
+	words.forEach(function (word) {
+		if (commonWords.indexOf(word) < 0) {
+			keyWordNonCommon += word + '.*';
+		}
+	});
+
+	keywords += '|' + keyWordNonCommon;
+
+	return UserModel.findOne({
+		$or: [
+			{
+				'userName': {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+			}
+		]
+	}).select('userName').exec()
+		.then(function (user) {
+			var userId = null,
+					criteria,
+					foundVideo,
+					videoCount;
+
+			if (user) {
+				userId = user._id;
+			}
+
+			criteria = {
+				isActive: true,
+				$or: [
+					{
+						userId: userId
+					},
+					{
+						description: {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+					},
+					{
+						title: {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+					},
+					{
+						videoLocation: {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+					},
+					{
+						'tags.text': {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+					}
+				]
+			};
+
+			foundVideo = VideoModel.find(criteria).populate('userId').skip(skip).limit(limit).sort({uploadDate: -1, viewCount: -1}).exec();
+			videoCount = VideoModel.count(criteria).exec();
+
+			return Promise.all([
+				foundVideo,
+				videoCount
+			]).spread(function (videos, count) {
+				return {videos: videos, totalVideo: count};
+			});
+		});
 }
 
 /*
@@ -243,8 +326,9 @@ Videos.prototype.upCount = function(video) {
 	return video.save();
 };
 
-Videos.prototype.getRecentVideos = getRecentVideos;
-Videos.prototype.getTrendingVideos = getTrendingVideos;
+Videos.prototype.getRecentVideos 		= getRecentVideos;
+Videos.prototype.getTrendingVideos 	= getTrendingVideos;
 Videos.prototype.getVideoByCategory = getVideoByCategory;
+Videos.prototype.search 						= search;
 
 module.exports = new Videos();

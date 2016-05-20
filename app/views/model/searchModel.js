@@ -35,11 +35,25 @@ SearchModel.prototype.getData = function(params) {
 	params.data.vendor      = {};
 	params.data.vendor.js   = sourceManifest["vendor.js"];
 	params.data.viewName		= "Search";
+	params.data.searchKeyWord = params.request.query.q;
+	params.data.currentPage = parseInt(params.request.query.page, 10) || 1;
 
-	var promise = Promise.all([CategoryType.get(), Videos.get5Videos()])
+	var promise = Promise.all([CategoryType.get(), Videos.search(params.request.query.q, params.data.currentPage)])
 			.then(function(data) {
 				params.data.categories = data[0];
-				params.data.videos = data[1].concat(data[1]);
+				params.data.videos = data[1].videos;
+				params.data.totalVideo = data[1].totalVideo;
+				params.data.totalPage = Math.ceil(data[1].totalVideo / 20);
+
+				params.data.pages = [];
+				for (var i = 1; i <= params.data.totalPage; i++) {
+					params.data.pages.push({
+						page: i,
+						isActive: params.data.currentPage === i
+					});
+				}
+
+				params.data.showPaging = data[1].totalVideo > 20;
 				return params;
 			});
 

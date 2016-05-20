@@ -736,6 +736,10 @@ body.modal-open {
   margin-right: 20px;
 }
 
+.m-r-10 {
+  margin-right: 10px;
+}
+
 .margin-auto {
   margin: auto;
 }
