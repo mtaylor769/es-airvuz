@@ -43,7 +43,7 @@ Notifications.prototype.create = function(params) {
 };
 
 Notifications.prototype.getByUserId = function(id) {
-  return NotificationModel.find({notifiedUserId: id, notificationViewed: false}).sort({ createdDate:-1 }).limit(10).exec();
+  return NotificationModel.find({notifiedUserId: id, notificationViewed: false}).sort({ createdDate:-1 }).limit(10).lean().exec();
 };
 
 Notifications.prototype.getUnseenCount = function(id) {

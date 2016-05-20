@@ -53,8 +53,14 @@ NotificationModel.prototype.getData = function(params) {
         } else if(notification.notificationType === 'LIKE') {
           notification.notificationMessage = 'Liked your <a href="/videoPlayer/' + notification.videoId + '">video</a>';
         }
+        logger.debug('type of action user : ' + notification.actionUserId);
+        logger.debug(typeof notification);
+        if(typeof notification.actionUserId === "undefined") {
+        logger.debug('type of action user inside function : ' + notification.actionUserId);
+          notification.actionUserId = new Object();
+        logger.debug('should be an object : ' + notification.actionUserId);
+        }
       });
-      console.log(notifications);
       dataObject.notifications = notifications;
 
       params.data													= dataObject;
