@@ -20,8 +20,8 @@ catch(exception) {
 // IMPORT: END
 
 dust.filters.t = function(value) {
-	if (value.length > 60) {
-		return value.substr(0, 60) + '...';
+	if (value.length > 55) {
+		return value.substr(0, 55) + '...';
 	}
 	return value;
 };
