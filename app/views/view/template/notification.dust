@@ -19,7 +19,11 @@
             {#notifications}
                 <div class="notification row flex" style="padding: 15px; font-size: 13px; border-bottom: inset">
                     <img src="http://airvuz.com{actionUserId.profilePicture}" height="50" width="50">
-                    <p style="margin: 10px"><a href="/userProfile/{actionUserId.userName}">{actionUserId.userName}</a> {notificationMessage|s}</p>
+                    {@eq key=actionUserId.userName value="Someone" }
+                        <p style="margin: 10px">{actionUserId.userName} {notificationMessage|s}</p>
+                    {:else}
+                        <p style="margin: 10px"><a href="/userProfile/{actionUserId.userName}">{actionUserId.userName}</a> {notificationMessage|s}</p>
+                    {/eq}
                 </div>
             {/notifications}
         </div>

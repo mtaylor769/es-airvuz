@@ -2,6 +2,7 @@
 var namespace				= 'app.views.model.videoPlayerModel';
 var log4js					= require('log4js');
 var logger					= log4js.getLogger(namespace);
+var _               = require('lodash');
 
 
 try {
@@ -45,23 +46,47 @@ NotificationModel.prototype.getData = function(params) {
 
   return notificationCrud.getAllByUserId(userId)
     .then(function(notifications) {
+
+      var notificationClone = [];
+
       notifications.forEach(function(notification) {
-        if(notification.notificationType === 'COMMENT'){
-          notification.notificationMessage = 'commented on your <a href="/videoPlayer/' + notification.videoId +'">video</a> : ' + '"' + notification.notificationMessage + '"';
-        } else if(notification.notificationType === 'COMMENT REPLY') {
-          notification.notificationMessage = 'replied to your <a href="/videoPlayer/' + notification.videoId + '">comment</a> : ' + '"' +notification.notificationMessage + '"'
-        } else if(notification.notificationType === 'LIKE') {
-          notification.notificationMessage = 'Liked your <a href="/videoPlayer/' + notification.videoId + '">video</a>';
-        }
-        logger.debug('type of action user : ' + notification.actionUserId);
-        logger.debug(typeof notification);
+
+        //new notification object for manual clone
+        var notificationObject = {};
+
+        //if statement checking for actionUserId
         if(typeof notification.actionUserId === "undefined") {
-        logger.debug('type of action user inside function : ' + notification.actionUserId);
-          notification.actionUserId = new Object();
-        logger.debug('should be an object : ' + notification.actionUserId);
+          notificationObject.actionUserId = {};
+          notificationObject.actionUserId.userName = "Someone";
+          notificationObject.actionUserId.profilePicture = '/assets/img/default.png';
+        } else {
+          notificationObject.actionUserId = notification.actionUserId;
+          notificationObject.actionUserId.userName = notification.actionUserId.userName;
+            //'<a href="/userProfile/' + notification.actionUserId.userName + '">'+notification.actionUserId.userName+'</a>';
         }
+
+        //setting the rest of the notificationObject
+        notificationObject.createdDate = notification.createdDate;
+        notificationObject.notificationType = notification.notificationType;
+        notificationObject.notificationMessage = notification.notificationMessage;
+        notificationObject.notifiedUserId = notification.notifiedUserId;
+        notificationObject.notificationViewed = notification.notificationViewed;
+        notificationObject.videoId = notification.videoId;
+
+        //creating display html for dust
+        if(notification.notificationType === 'COMMENT'){
+          notificationObject.notificationMessage = 'commented on your <a href="/videoPlayer/' + notification.videoId +'">video</a> : ' + '"' + notification.notificationMessage + '"';
+        } else if(notification.notificationType === 'COMMENT REPLY') {
+          notificationObject.notificationMessage = 'replied to your <a href="/videoPlayer/' + notification.videoId + '">comment</a> : ' + '"' +notification.notificationMessage + '"'
+        } else if(notification.notificationType === 'LIKE') {
+          notificationObject.notificationMessage = 'Liked your <a href="/videoPlayer/' + notification.videoId + '">video</a>';
+        }
+
+        notificationClone.push(notificationObject);
+
       });
-      dataObject.notifications = notifications;
+
+      dataObject.notifications = notificationClone;
 
       params.data													= dataObject;
       params.data.airvuz 									= {};
