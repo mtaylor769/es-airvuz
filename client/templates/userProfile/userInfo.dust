@@ -1,7 +1,7 @@
-<section style="color: white; background: #fff url('http://airvuz.com/{user.profilePicture}') no-repeat center; background-size: cover; min-height: 300px">
+<section style="color: white; background: #fff url('http://airvuz.com/{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
   <div class="">
     <figure class="profile-picture col-xs-12 col-md-3">
-      <img src="http://airvuz.com{user.coverPicture}" width="120px" height="120px" class="border-radius-circle">
+      <img src="http://airvuz.com{user.profilePicture}" width="120px" height="120px" class="border-radius-circle">
     </figure>
     <figcaption class="profile-information col-xs-12 col-md-9">
       <h4 class="profile-username row">{user.userName}</h4>

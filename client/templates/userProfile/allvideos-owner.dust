@@ -1,10 +1,10 @@
 <div class="row m-t-15 m-b-15">
     <div class="dropdown col-xs-6">
-        <button class="btn btn-default dropdown-toggle" type="button" id="sort-owner-all-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             Sort By
             <span class="caret"></span>
         </button>
-        <ul class="sort-owner-all-list" class="dropdown-menu">
+        <ul class="sort-owner-all-list dropdown-menu" class="dropdown-menu">
             <li><a class="sort-owner-all-vuz">VŪZ</a></li>
             <li><a class="sort-owner-all-dasc">Date Ascending</a></li>
             <li><a class="sort-owner-all-ddesc">Date Descending</a></li>

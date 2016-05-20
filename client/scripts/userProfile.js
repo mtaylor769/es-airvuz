@@ -1,5 +1,9 @@
 var identity      = require('./services/identity');
 var user          = identity.currentUser || null;
+var userNameCheck = '';
+  if (user) {
+    userNameCheck = user.userName;
+  }
 var $profilePage  = null;
 var userData      = {};
 
@@ -266,18 +270,9 @@ function requestVideoSort(sortBy, id) {
   .success(function(data) {
     if (data.status==='OK') {
       if(userNameCheck === profileUser.userName) {
-        ownerAllVideosHtml({videos: data.data}, function(err, html) {
-          $('#allvideos').html(html);
-          // $('#sort-owner-all-list')
-          //   .on('click', '#sort-owner-all-vuz', sortByVuz)
-          //   .on('click', '#sort-owner-all-dasc', sortByDasc)
-          //   .on('click', '#sort-owner-all-ddesc', sortByDdesc)
-          //   .on('click', '#sort-owner-all-likes', sortByLikes);
-        });
+        renderOwnerAllVideosHtml(data.data);
       } else {
-        userAllVideosHtml({videos: data.data}, function(err, html){
-          $('#allvideos').html(html);
-        });
+        renderUseAllVideosHtml(data.data);
       }
     } else {
       console.log('server side error' + data.data);
@@ -299,15 +294,9 @@ function sortShowcase(sortBy, id) {
   })
   .success(function(data) {
     if (data.status==='OK') {
-      if(userNameCheck === profileUser.userName) {
-        ownerShowcase({videos: data.data}, function(err, html) {
-          $('#allvideos').html(html);
-        });
-      } else {
-        userShowcase({showcase: data.data}, function(err, html){
-          $('#allvideos').html(html);
-        });
-      }
+      ownerShowcase({videos: data.data}, function(err, html) {
+        $('#allvideos').html(html);
+      });
     } else {
       console.log('server side error' + data.data);
     }
@@ -315,6 +304,22 @@ function sortShowcase(sortBy, id) {
   .error(function(error) {
     console.log('error : ' + error);
   });
+}
+
+function showcaseByVuz() {
+  sortShowcase('vuz', profileUser._id);
+}
+
+function showcaseByDasc() {
+  sortShowcase('dasc', profileUser._id);
+}
+
+function showcaseByDdesc() {
+  sortShowcase('ddesc', profileUser._id);
+}
+
+function showcaseByLikes() {
+  sortShowcase('likes', profileUser._id);
 }
 
 function sortByVuz() {
@@ -333,11 +338,44 @@ function sortByLikes() {
   requestVideoSort('likes', profileUser._id);
 }
 
+function renderOwnerAllVideosHtml(videos) {
+  ownerAllVideosHtml({videos: videos}, function(err, html) {
+    $('#allvideos').html(html);
+    $('.sort-owner-all-list')
+      .on('click', '.sort-owner-all-vuz', sortByVuz)
+      .on('click', '.sort-owner-all-dasc', sortByDasc)
+      .on('click', '.sort-owner-all-ddesc', sortByDdesc)
+      .on('click', '.sort-owner-all-likes', sortByLikes);
+  });
+}
+
+function renderUseAllVideosHtml(videos) {
+  userAllVideosHtml({videos: videos}, function(err, html) {
+    $('#allvideos').html(html);
+    $('.sort-owner-all-list')
+      .on('click', '.sort-owner-all-vuz', showcaseByVuz)
+      .on('click', '.sort-owner-all-dasc', showcaseByDasc)
+      .on('click', '.sort-owner-all-ddesc', showcaseByDdesc)
+      .on('click', '.sort-owner-all-likes', showcaseByLikes);
+  });
+}
+
+function renderOwnerShowcase(videos) {
+  ownerShowcase({videos: videos}, function(err, html) {
+    $('#allvideos').html(html);
+  });
+  // $('.sort-showcase')
+  //   .on('click', '.sort-showcase-vuz', sortShowcase('vuz', profileUser._id))
+  //   .on('click', '.sort-showcase-dasc', sortShowcase('dasc', profileUser._id))
+  //   .on('click', '.sort-showcase-ddesc', sortShowcase('ddesc', profileUser._id))
+  //   .on('click', '.sort-showcase-likes', sortShowcase('likes', profileUser._id));
+}
+
 function initialize() {
   $profilePage = $('#user-profile');
-  userInfo({user: profileUser}, function(err, html){
-    $("#userInfoData").html(html);
-  });
+  // userInfo({user: profileUser}, function(err, html){
+  //   $("#userInfoData").html(html);
+  // });
   if (profileUser.allowDonation) {
     $('.donate-btn').show();
   } else {
@@ -350,30 +388,12 @@ function initialize() {
     $('.hire-btn').hide();
   }
 
-  var userNameCheck = '';
-
-  $('.sort-owner-all-list')
-    .on('click', '.sort-owner-all-vuz', sortByVuz)
-    .on('click', '.sort-owner-all-dasc', sortByDasc)
-    .on('click', '.sort-owner-all-ddesc', sortByDdesc)
-    .on('click', '.sort-owner-all-likes', sortByLikes);
-
-  $('.sort-showcase')
-    .on('click', '.sort-showcase-vuz', sortShowcase('vuz', profileUser._id))
-    .on('click', '.sort-showcase-dasc', sortShowcase('dasc', profileUser._id))
-    .on('click', '.sort-showcase-ddesc', sortShowcase('ddesc', profileUser._id))
-    .on('click', '.sort-showcase-likes', sortShowcase('likes', profileUser._id));
-
-  if (user) {
-    userNameCheck = user.userName;
-  }
   if(userNameCheck === profileUser.userName) {
+    renderOwnerShowcase(showcaseOwnerVideos);
     ownerShowcase({videos: showcaseOwnerVideos}, function (err, html) {
       $('#showcase').html(html);
     });
-    ownerAllVideosHtml({videos: allOwnerVideos}, function(err, html) {
-      $('#allvideos').html(html);
-    });
+    renderOwnerAllVideosHtml(allOwnerVideos);
     aboutMe({user: profileUser}, function(err, html){
       $("#about-me-section").html(html);
     });

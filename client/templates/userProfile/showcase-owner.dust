@@ -4,7 +4,7 @@
             Sort By
             <span class="caret"></span>
         </button>
-        <ul class="sort-showcase" class="dropdown-menu">
+        <ul class="sort-showcase dropdown-menu" class="dropdown-menu">
             <li><a class="sort-showcase-vuz">VŪZ</a></li>
             <li><a class="sort-showcase-dasc">Date Ascending</a></li>
             <li><a class="sort-showcase-ddesc">Date Descending</a></li>
