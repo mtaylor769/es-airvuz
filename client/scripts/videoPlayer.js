@@ -597,10 +597,9 @@ function bindEvents() {
 
   //description functions
   function moreDescription() {
-    var html = '<div class="show-less-description"><span class="glyphicon glyphicon-chevron-up"></span></div>';
     $('#video-description').slideDown();
     $(this).hide();
-    $('.description-container').append(html);
+    $('.show-less-description').show();
   }
 
   function lessDescription() {
@@ -650,16 +649,10 @@ function initialize() {
 
   //video description functions
 
-  //initial slide down function for video description
-  setTimeout(function() {
-    $('#video-description').slideDown();
-  }, 1000);
-
   //slide up function for description
   setTimeout(function() {
-    var html = '<div class="show-more-description"><span class="glyphicon glyphicon-chevron-down down-arrow"></span></div>';
+    $('.show-more-description span').removeClass('invisible');
     $('#video-description').slideUp();
-    $('.down-arrow').removeClass('hidden');
   }, 5000);
 
 }

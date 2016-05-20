@@ -73,8 +73,11 @@
                                         <div id="video-description" style="margin: 10px 20px;">
                                             {video.description|s}
                                         </div>
-                                        <div class="show-less-description">
-                                            <span class="glyphicon glyphicon-chevron-down down-arrow hidden"></span>
+                                        <div class="show-more-description">
+                                            <span class="glyphicon glyphicon-chevron-down invisible"></span>
+                                        </div>
+                                        <div class="show-less-description" style="display: none">
+                                            <span class="glyphicon glyphicon-chevron-up"></span>
                                         </div>
                                     </div>
                                 </div>
