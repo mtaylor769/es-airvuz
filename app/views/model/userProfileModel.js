@@ -38,39 +38,58 @@ UserProfileModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return usersCrud.getUserByUserName(userName)
 	.then(function(user) {
-		profileUser = user;
-		dataObject.user = user;
+		if (!user.length) {
+			profileUser = null;
+			dataObject.user = null;
+		} else {
+			profileUser = user;
+			dataObject.user = user;
+		}
+		
 		return videoCrud.getShowcaseByUser(user._id);
 	})
 	.then(function(videos) {
-		videos.forEach(function(video) {
-			video.title = video.title.substring(0, 48);
-			video.description = video.description.substring(0, 90);
-			if (video.title.length === 48) {
-				video.title = video.title + '...';
-			}
-			if (video.description.length === 90) {
-				video.description = video.description + '...';
-			}
-		});
+		if(!videos.length) {
+			videos = null;
+		} else {
+			videos.forEach(function(video) {
+				video.title = video.title.substring(0, 48);
+				video.description = video.description.substring(0, 90);
+				if (video.title.length === 48) {
+					video.title = video.title + '...';
+				}
+				if (video.description.length === 90) {
+					video.description = video.description + '...';
+				}
+			});
+		}
 		dataObject.showcase = videos;
 		return categoryCrud.get();
 	})
 	.then(function (categories) {
-		dataObject.categories = categories;
+		if (!categories.length) {
+			dataObject.categories = null;
+		} else {
+			dataObject.categories = categories;
+		}
 		return videoCrud.getByUser(profileUser._id);
 	})
 	.then(function(videos) {
-		videos.forEach(function(video) {
-			video.title = video.title.substring(0, 48);
-			video.description = video.description.substring(0, 90);
-			if(video.title.length === 48) {
-				video.title = video.title + '...';
-			}
-			if(video.description.length === 90) {
-				video.description = video.description + '...';
-			}
-		});
+		if (videos.length) {
+			videos.forEach(function(video) {
+				video.title = video.title.substring(0, 48);
+				video.description = video.description.substring(0, 90);
+				if(video.title.length === 48) {
+					video.title = video.title + '...';
+				}
+				if(video.description.length === 90) {
+					video.description = video.description + '...';
+				}
+			});
+		} else {
+			videos = null;
+		}
+			
 		dataObject.videos 									= videos;
 		params.data 												= dataObject;
 		params.data.userProfile							= {};

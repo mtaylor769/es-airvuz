@@ -370,6 +370,19 @@ function renderOwnerShowcase(videos) {
   //   .on('click', '.sort-showcase-ddesc', sortShowcase('ddesc', profileUser._id))
   //   .on('click', '.sort-showcase-likes', sortShowcase('likes', profileUser._id));
 }
+function renderUserProfileEdit(profileData) {
+  userProfileEdit({user: profileData}, function (err, html) {
+    $('#edit-profile').html(html);
+  });
+  $('#donate').on('click', function(){
+    if ($('#donate').prop('checked')) {
+      //TODO display input for donate url
+      $('#donateUrl').show();
+    } else {
+      $('#donateUrl').hide();
+    }
+  });
+}
 
 function initialize() {
   /*
@@ -412,9 +425,7 @@ function initialize() {
     aboutMe({user: profileUser}, function(err, html){
       $("#about-me-section").html(html);
     });
-    userProfileEdit({user: profileUser}, function (err, html) {
-      $('#edit-profile').html(html);
-    });
+    renderUserProfileEdit(profileUser);
     $('.edit-tab').show();
     
   } else {
