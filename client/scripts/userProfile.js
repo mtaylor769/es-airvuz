@@ -1,11 +1,11 @@
 var identity      = require('./services/identity');
 var user          = identity.currentUser || null;
 var userNameCheck = '';
-  if (user) {
-    userNameCheck = user.userName;
-  }
+  
 var $profilePage  = null;
 var userData      = {};
+var allOwnerVideos = [];
+var showcaseOwnerVideos = [];
 
 
 /*
@@ -372,6 +372,21 @@ function renderOwnerShowcase(videos) {
 }
 
 function initialize() {
+  /*
+  *Null check on page dependent variables:
+  *profileVideos
+  *user
+  */
+  if (user) {
+    userNameCheck = user.userName;
+  }
+  if (!profileVideos) {
+    profileVideos = [];
+  } else {
+    allOwnerVideos = profileVideos;
+    showcaseOwnerVideos = profileVideos;
+  }
+
   $profilePage = $('#user-profile');
   // userInfo({user: profileUser}, function(err, html){
   //   $("#userInfoData").html(html);
