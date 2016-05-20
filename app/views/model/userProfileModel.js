@@ -38,14 +38,8 @@ UserProfileModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return usersCrud.getUserByUserName(userName)
 	.then(function(user) {
-		if (!user.length) {
-			profileUser = null;
-			dataObject.user = null;
-		} else {
-			profileUser = user;
-			dataObject.user = user;
-		}
-		
+		profileUser = user;
+		dataObject.user = user;
 		return videoCrud.getShowcaseByUser(user._id);
 	})
 	.then(function(videos) {

@@ -166,33 +166,59 @@ function editProfile() {
   var emailAddress        = $("#email").val();
   var myAbout             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
-  var googleplus          = $("#google").val();
+  var googleplus          = $("#googleplus").val();
   var twitter             = $("#twitter").val();
   var instagram           = $("#instagram").val();
   var lastName            = $("#lastname").val();
   var firstName           = $("#firstname").val();
   var allowHire           = $("#hire").prop('checked');
   var allowDonation       = $("#donate").prop('checked');
-  var imgFile                = $("#profile-image").val();
+  var imgFile             = $("#profile-image").val();
+  var donateUrl           = $("#donateUrl").val();
 
-  if (userName && userName !== profileUser.userName) {
+  if (userName && userName !== '' && userName !== profileUser.userName) {
     userData.userName = userName;
   }
-  if (emailAddress && emailAddress !== profileUser.emailAddress) {
+  if (emailAddress && emailAddress !== '' && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
   }
 
-  if (firstName && firstName !== profileUser.firstName) {
+  if (firstName && firstName !== '' && firstName !== profileUser.firstName) {
     userData.firstName = firstName;
   }
-  if (lastName && lastName !== profileUser.lastName) {
+  if (lastName && lastName !== '' && lastName !== profileUser.lastName) {
     userData.lastName = lastName;
   }
-  if (myAbout && myAbout !== profileUser.aboutMe) {
+  if (myAbout && myAbout !== '' && myAbout !== profileUser.aboutMe) {
     userData.aboutMe = myAbout;
   }
-  if (imgFile) {
 
+  if (donateUrl && donateUrl !== '') {
+
+    var paypal = donateUrl;
+    var allowPp = allowDonation;
+    var check = -1;
+    if ((typeof(paypal) !== 'undefined') && (paypal !== null) && (paypal.length !== 0)) {
+      check = paypal.indexOf('paypal');
+    }
+    if (check == -1 && (typeof(paypal) !== 'undefined') && paypal !== null) {
+      //$scope.payCheck = true;
+      console.log('test1');
+      //this means the url does not contain the word paypal
+    } else if ((allowPp === true) && (typeof(paypal) == 'undefined' || paypal === null)) {
+      //$scope.payCheck = true;
+      console.log('test2');
+      //this means the url is not valid
+    } else {
+      if (typeof(paypal) !== 'undefined' && paypal !== null) {
+        var check2 = paypal.indexOf('http://');
+        var check3 = paypal.indexOf('https://');
+        if (check2 && check3 < 0) {
+          paypal = 'https://' + paypal;
+          userData.donateUrl = paypal;
+        }
+      }
+    }
   }
 
   if (profileUser.socialMediaLinks) {
@@ -243,19 +269,19 @@ function editProfile() {
     $('.hire-btn').hide();
   }
   
-  $.ajax({
-    type:'PUT',
-    url: '/api/users/' + user._id,
-    data: userData
-  })
-  .success(function(response) {
-    user = response;
-    $('#save-changes').modal('hide');
-  })
-  .error(function(error) {
-    console.log('error from serverside');
-    $('#save-changes').modal('hide');
-  });
+  // $.ajax({
+  //   type:'PUT',
+  //   url: '/api/users/' + user._id,
+  //   data: userData
+  // })
+  // .success(function(response) {
+  //   user = response;
+  //   $('#save-changes').modal('hide');
+  // })
+  // .error(function(error) {
+  //   console.log('error from serverside');
+  //   $('#save-changes').modal('hide');
+  // });
 }
 
 function requestVideoSort(sortBy, id) {
@@ -373,6 +399,11 @@ function renderOwnerShowcase(videos) {
 function renderUserProfileEdit(profileData) {
   userProfileEdit({user: profileData}, function (err, html) {
     $('#edit-profile').html(html);
+    if ($('#donate').prop('checked')) {
+      $('#donateUrl').show();
+    } else {
+      $('#donateUrl').hide();
+    }
   });
   $('#donate').on('click', function(){
     if ($('#donate').prop('checked')) {
