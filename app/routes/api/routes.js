@@ -116,6 +116,12 @@ apiRouter.route('/api/videos/:id')
 apiRouter.route('/api/video-like')
   .post(videoLike.post);
 
+apiRouter.route('/api/videos/user/:id')
+  .get(videos.getVideosByUser);
+
+apiRouter.route('/api/videos/showcase/:id')
+  .get(videos.getShowcaseByUser);
+
 
 /**
  * /api/camera-type/

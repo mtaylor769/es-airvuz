@@ -198,6 +198,52 @@ Video.prototype.videoInfoCheck = function(req, res) {
     });
 };
 
+Video.prototype.getVideosByUser = function(req, res) {
+  var dataStatus = {};
+  EventTrackingCrud.create({
+    codeSource  : "app.persistence.crud.videos.user.get",
+    eventSource : "nodejs",
+    eventType   : "get"   
+  });
+  VideoCrud
+    .getByUser(req.params.id, req.query.sortBy)
+    .then(function(videos) {
+      dataStatus.status     = 'OK';
+      dataStatus.code       = 200;
+      dataStatus.data       = videos;
+      res.send(dataStatus);
+    })
+    .catch(function (error) {
+      dataStatus.status     = 'Fail';
+      dataStatus.code       = 500;
+      dataStatus.data       = error;
+      res.send(dataStatus);
+    });
+};
+
+Video.prototype.getShowcaseByUser = function(req, res) {
+  var dataStatus = {};
+  EventTrackingCrud.create({
+    codeSource  : "app.persistence.crud.videos.user.get",
+    eventSource : "nodejs",
+    eventType   : "get"   
+  });
+  VideoCrud
+  .getByUser(req.params.id, req.query.sortBy)
+  .then(function(videos) {
+    dataStatus.status     = 'OK';
+    dataStatus.code       = 200;
+    dataStatus.data       = videos;
+    res.send(dataStatus);
+  })
+  .catch(function (error) {
+    dataStatus.status     = 'Fail';
+    dataStatus.code       = 500;
+    dataStatus.data       = error;
+    res.send(dataStatus);
+  });
+};
+
 module.exports = new Video();
 
 //change crud and videos

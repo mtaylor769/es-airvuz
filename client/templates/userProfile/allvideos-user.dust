@@ -4,11 +4,11 @@
             Sort By
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
-            <li><a>VŪZ</a></li>
-            <li><a>Date Ascending</a></li>
-            <li><a>Date Descending</a></li>
-            <li><a>Number of Likes</a></li>
+        <ul class="sort-owner-all-list" class="dropdown-menu">
+            <li><a class="sort-owner-all-vuz">VŪZ</a></li>
+            <li><a class="sort-owner-all-dasc">Date Ascending</a></li>
+            <li><a class="sort-owner-all-ddesc">Date Descending</a></li>
+            <li><a class="sort-owner-all-likes">Number of Likes</a></li>
         </ul>
     </div>
 </div>

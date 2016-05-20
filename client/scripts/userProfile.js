@@ -7,17 +7,17 @@ var userData      = {};
 /*
 * Templates
 */
-var userShowcase      = require('../templates/userProfile/showcase-user.dust');
-var ownerShowcase     = require('../templates/userProfile/showcase-owner.dust');
-var userAllVideos     = require('../templates/userProfile/allvideos-user.dust');
-var ownerAllVideos    = require('../templates/userProfile/allvideos-owner.dust');
-var userProfileEdit   = require('../templates/userProfile/edit-profile.dust');
-var aboutMe           = require('../templates/userProfile/about.dust');
-var userInfo          = require('../templates/userProfile/userInfo.dust');
+var userShowcase          = require('../templates/userProfile/showcase-user.dust');
+var ownerShowcase         = require('../templates/userProfile/showcase-owner.dust');
+var userAllVideosHtml     = require('../templates/userProfile/allvideos-user.dust');
+var ownerAllVideosHtml    = require('../templates/userProfile/allvideos-owner.dust');
+var userProfileEdit       = require('../templates/userProfile/edit-profile.dust');
+var aboutMe               = require('../templates/userProfile/about.dust');
+var userInfo              = require('../templates/userProfile/userInfo.dust');
 
-var okHtml            = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
-var notSelectedHtml   = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
-var removeHtml        = '<div class="removed asdf"><span class="glyphicon glyphicon-minus"></span></div>';
+var okHtml                = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
+var notSelectedHtml       = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
+var removeHtml            = '<div class="removed asdf"><span class="glyphicon glyphicon-minus"></span></div>';
 
 function showcaseAdd(videoId, boolean) {
   var data = {};
@@ -254,6 +254,85 @@ function editProfile() {
   });
 }
 
+function requestVideoSort(sortBy, id) {
+  var params = {
+    sortBy : sortBy
+  };
+  $.ajax({
+    type: 'GET',
+    url: '/api/videos/user/'+id,
+    data: params
+  })
+  .success(function(data) {
+    if (data.status==='OK') {
+      if(userNameCheck === profileUser.userName) {
+        ownerAllVideosHtml({videos: data.data}, function(err, html) {
+          $('#allvideos').html(html);
+          // $('#sort-owner-all-list')
+          //   .on('click', '#sort-owner-all-vuz', sortByVuz)
+          //   .on('click', '#sort-owner-all-dasc', sortByDasc)
+          //   .on('click', '#sort-owner-all-ddesc', sortByDdesc)
+          //   .on('click', '#sort-owner-all-likes', sortByLikes);
+        });
+      } else {
+        userAllVideosHtml({videos: data.data}, function(err, html){
+          $('#allvideos').html(html);
+        });
+      }
+    } else {
+      console.log('server side error' + data.data);
+    }
+  })
+  .error(function(error) {
+    console.log('error : ' + error);
+  });
+}
+
+function sortShowcase(sortBy, id) {
+  var params = {
+    sortBy : sortBy
+  };
+  $.ajax({
+    type: 'GET',
+    url: '/api/videos/user/'+id,
+    data: params
+  })
+  .success(function(data) {
+    if (data.status==='OK') {
+      if(userNameCheck === profileUser.userName) {
+        ownerShowcase({videos: data.data}, function(err, html) {
+          $('#allvideos').html(html);
+        });
+      } else {
+        userShowcase({showcase: data.data}, function(err, html){
+          $('#allvideos').html(html);
+        });
+      }
+    } else {
+      console.log('server side error' + data.data);
+    }
+  })
+  .error(function(error) {
+    console.log('error : ' + error);
+  });
+}
+
+function sortByVuz() {
+  requestVideoSort('vuz', profileUser._id);
+}
+
+function sortByDasc() {
+  requestVideoSort('dasc', profileUser._id);
+}
+
+function sortByDdesc() {
+  requestVideoSort('ddesc', profileUser._id);
+}
+
+function sortByLikes() {
+  requestVideoSort('likes', profileUser._id);
+}
+
 function initialize() {
   $profilePage = $('#user-profile');
   userInfo({user: profileUser}, function(err, html){
@@ -273,14 +352,26 @@ function initialize() {
 
   var userNameCheck = '';
 
+  $('.sort-owner-all-list')
+    .on('click', '.sort-owner-all-vuz', sortByVuz)
+    .on('click', '.sort-owner-all-dasc', sortByDasc)
+    .on('click', '.sort-owner-all-ddesc', sortByDdesc)
+    .on('click', '.sort-owner-all-likes', sortByLikes);
+
+  $('.sort-showcase')
+    .on('click', '.sort-showcase-vuz', sortShowcase('vuz', profileUser._id))
+    .on('click', '.sort-showcase-dasc', sortShowcase('dasc', profileUser._id))
+    .on('click', '.sort-showcase-ddesc', sortShowcase('ddesc', profileUser._id))
+    .on('click', '.sort-showcase-likes', sortShowcase('likes', profileUser._id));
+
   if (user) {
     userNameCheck = user.userName;
   }
   if(userNameCheck === profileUser.userName) {
-    ownerShowcase({videos: profileVideos}, function (err, html) {
+    ownerShowcase({videos: showcaseOwnerVideos}, function (err, html) {
       $('#showcase').html(html);
     });
-    ownerAllVideos({videos: profileVideos}, function(err, html) {
+    ownerAllVideosHtml({videos: allOwnerVideos}, function(err, html) {
       $('#allvideos').html(html);
     });
     aboutMe({user: profileUser}, function(err, html){
@@ -290,7 +381,7 @@ function initialize() {
       $('#edit-profile').html(html);
     });
     $('.edit-tab').show();
-
+    
   } else {
     $('.edit-tab').hide();
   }

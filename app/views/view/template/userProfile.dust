@@ -38,6 +38,8 @@
     <script>
         var profileUser = {user|js|s};
         var profileVideos = {videos|js|s};
+        var allOwnerVideos = {videos|js|s};
+        var showcaseOwnerVideos = {videos|js|s};
         $(function() {
             userProfile.initialize();
         });
