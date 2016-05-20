@@ -4,12 +4,13 @@
             Sort By
             <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
-            <li><a>VŪZ</a></li>
-            <li><a>Date Ascending</a></li>
-            <li><a>Date Descending</a></li>
-            <li><a>Number of Likes</a></li>
+        <ul class="sort-showcase dropdown-menu" class="dropdown-menu">
+            <li><a class="sort-showcase-vuz">VŪZ</a></li>
+            <li><a class="sort-showcase-dasc">Date Ascending</a></li>
+            <li><a class="sort-showcase-ddesc">Date Descending</a></li>
+            <li><a class="sort-showcase-likes">Number of Likes</a></li>
         </ul>
+        
     </div>
         <div class="col-xs-1">
             <input type="checkbox" name="showcase-default" checked/>

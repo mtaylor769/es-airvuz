@@ -71,7 +71,7 @@ UserProfileModel.prototype.getData = function(params) {
 				video.description = video.description + '...';
 			}
 		});
-		dataObject.videos = videos;
+		dataObject.videos 									= videos;
 		params.data 												= dataObject;
 		params.data.userProfile							= {};
 		params.data.userProfile.title				= "User Profile";
