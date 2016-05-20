@@ -57,7 +57,7 @@
                                     <p>{viewCount} <span class="airvuz-blue">VUZ</span> <span class="pull-right">{duration}</span></p>
                                     <div class="title">
                                         <h4>
-                                            <a href="/videoPlayer/{_id}">{title}</a>
+                                            <a href="/videoPlayer/{_id}">{title|t}</a>
                                         </h4>
                                         <p>By <a href="/userProfile/{userId.userName}">{userId.userName}</a></p>
                                     </div>
