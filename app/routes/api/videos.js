@@ -4,6 +4,8 @@ try {
 	var logger								= log4js.getLogger('persistance.crud.Videos');
 
 	var VideoCrud							= require('../../persistence/crud/videos');
+	var VideoCollection				= require('../../persistence/crud/videoCollection');
+  var CategoryType	        = require('../../persistence/crud/categoryType');
   var VideoLikeCrud         = require('../../persistence/crud/videoLike');
   var VideoViewCrud         = require('../../persistence/crud/videoViews');
   var FollowCrud            = require('../../persistence/crud/follow');
@@ -20,8 +22,33 @@ catch(exception) {
 	logger.error(" import error:" + exception);
 }
 
-function Video() {
+function Video() {}
 
+function getVideosByCategory(req, res) {
+  var TOTAL_PER_PAGE  = 16,
+      PAGE            = req.params.page,
+      CATEGORY_TYPE   = req.params.category,
+      videoPromise;
+
+  videoPromise = CategoryType.getByUrl(CATEGORY_TYPE)
+    .then(function (category) {
+      switch(CATEGORY_TYPE) {
+        case 'Featured Videos':
+          return VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, PAGE);
+        case 'Staff Pick Videos':
+          return VideoCollection.getStaffPickVideos(TOTAL_PER_PAGE, PAGE);
+        case 'Recent Videos':
+          return VideoCrud.getRecentVideos(TOTAL_PER_PAGE, PAGE);
+        case 'Trending Videos':
+          return VideoCrud.getTrendingVideos(TOTAL_PER_PAGE, PAGE);
+        default:
+          return VideoCrud.getVideoByCategory(TOTAL_PER_PAGE, PAGE, category._id);
+      }
+    });
+
+  Promise.resolve(videoPromise).then(function (videos) {
+    res.json(videos);
+  });
 }
 
 Video.prototype.post = function(req, res) {
@@ -243,6 +270,8 @@ Video.prototype.getShowcaseByUser = function(req, res) {
     res.send(dataStatus);
   });
 };
+
+Video.prototype.getVideosByCategory = getVideosByCategory;
 
 module.exports = new Video();
 

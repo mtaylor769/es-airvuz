@@ -38,11 +38,14 @@ CategoryModel.prototype.getData = function(params) {
 	params.data.viewName		= "Category";
 
 	var videoPromise,
-			TOTAL_PER_PAGE = 12;
+			TOTAL_PER_PAGE = 16;
+
+	params.data.category = {};
 
 	videoPromise = CategoryType.getByUrl(params.request.params.category)
 		.then(function (category) {
-			params.data.category 		= params.request.params.category;
+			params.data.category.uri = params.request.params.category;
+			params.data.category.name = params.request.params.category;
 			switch(params.request.params.category) {
 				case 'Featured Videos':
 					return VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, 1);
@@ -53,7 +56,7 @@ CategoryModel.prototype.getData = function(params) {
 				case 'Trending Videos':
 					return Videos.getTrendingVideos(TOTAL_PER_PAGE, 1);
 				default:
-					params.data.category = category.name;
+					params.data.category.name = category.name;
 					return Videos.getVideoByCategory(TOTAL_PER_PAGE, 1, category._id);
 			}
 		});

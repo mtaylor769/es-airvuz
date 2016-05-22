@@ -1,0 +1,20 @@
+{#videos}
+<div class="col-md-3 col-sm-6">
+    <div class="video">
+        <div class="text-center">
+            <a href="/videoPlayer/{_id}">
+                <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" alt="{title}" class="img-responsive"/>
+            </a>
+        </div>
+        <div class="video-bottom">
+            <p><span class="airvuz-blue">VŪZ</span> {viewCount} <span class="pull-right">{duration}</span></p>
+            <div class="title">
+                <h4>
+                    <a href="/videoPlayer/{_id}">{title}</a>
+                </h4>
+                <p>By <a href="/userProfile/{userId.userName}">{userId.userName}</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{/videos}

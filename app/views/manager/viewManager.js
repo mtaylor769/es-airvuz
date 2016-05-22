@@ -19,13 +19,6 @@ catch(exception) {
 }
 // IMPORT: END
 
-dust.filters.t = function(value) {
-	if (value.length > 55) {
-		return value.substr(0, 55) + '...';
-	}
-	return value;
-};
-
 var ViewManager = function() {
 	
 	/*
@@ -33,7 +26,7 @@ var ViewManager = function() {
 	 */
 	this.views = {};
 	
-}
+};
 
 /*
  * Read a dust file, compile, and load source to dust.
@@ -74,22 +67,18 @@ ViewManager.prototype._loadSource = function(params) {
 	var source      = fs.readFileSync(params.viewPath);
 	var compiled    = dust.compile(new String(source), params.viewName);
 	dust.loadSource(compiled);
-}
+};
 
 
 ViewManager.prototype.addView = function(params) {
-	logger.info("addView: IN");	
+	logger.info("addView: IN");
 	
-	var view				= null;
-	var viewConfig	= null;
-	
-	view												= params.view;
-	viewConfig									= view.getViewConfig();
-	//this.views[params.viewName] = view;
-	this.views[view.getViewName()] = view;
+	var view				= params.view;
+	var viewConfig	= view.getViewConfig();
 
-	this._loadSource(viewConfig);	
-}
+	this.views[view.getViewName()] = view;
+	this._loadSource(viewConfig);
+};
 
 ViewManager.prototype._getDustRender = function(params) {
 	var viewName	= params.viewName;
@@ -136,36 +125,33 @@ ViewManager.prototype._isNewCacheViewNeeded = function(params) {
 		
 	}	
 	return(true);
-}
+};
 
 /*
  * Return a view of the page.
  */
 ViewManager.prototype.getView = function(params) {
 	logger.debug("getView: IN");
-	
+
 	var cachedView				= "";
-	var reloadView				= false;
+	var reloadView				= params.request.query.reloadView || false;
 	//var renderCachedView	= false;
 	var renderNewView			= false;
-	var view							= null;
-	var viewConfig				= null;
+
+
 	//var viewData					= null;
-	var viewName					= "";
+	var viewName					= params.viewName;
+	var view							= this.views[viewName];
+	var viewConfig				= view.getViewConfig();
 	var viewPrettyPrint		= false;
 	var THIS							= this;
-	
-	viewName		= params.viewName;
-	view				= this.views[viewName];
-	viewConfig	= view.getViewConfig();
 	//view = params.view || null;
-	
+
 	if(view === null) {
 		logger.error("getView: this.view === null");
 	}
 	delete params.view;
-	
-	reloadView			= params.request.query.reloadView || false;
+
 	viewPrettyPrint = params.request.query.viewPrettyPrint || "false";
 	
 	if(reloadView) {
@@ -218,7 +204,7 @@ ViewManager.prototype.getView = function(params) {
 			})
 
 	});
-}
+};
 
 var viewManager = new ViewManager();
 

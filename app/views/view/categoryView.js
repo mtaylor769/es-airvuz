@@ -50,6 +50,10 @@ module.exports = new SearchView({
 		{
 			partialName: 'app.views.view.partial.left-nav',
 			partialPath: './app/views/view/partial/left-nav.dust'
+		},
+		{
+			partialName: 'client.templates.category.category-video',
+			partialPath: './client/templates/category/category-video.dust'
 		}
 	]
 });

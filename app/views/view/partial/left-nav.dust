@@ -4,6 +4,6 @@
 </h5>
 <ul class="list-unstyled">
   {#categories}
-    <li><a href="/category/{categoryTypeUrl}" class="{@eq key=name value=category}active{/eq}">{name}</a></li>
+    <li><a href="/category/{categoryTypeUrl}" class="{@eq key=name value=category.name}active{/eq}">{name}</a></li>
   {/categories}
 </ul>

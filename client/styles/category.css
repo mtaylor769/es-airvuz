@@ -5,3 +5,19 @@
 #category-page #videos .col-md-3.col-sm-6 {
     padding: 0 5px;
 }
+
+@media (min-width: 992px) {
+    #category-page #videos .video img {
+        min-height: 103px;
+        max-height: 103px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1200px) {
+    #category-page #videos .video img {
+        min-height: 127px;
+        max-height: 127px;
+        margin: 0 auto;
+    }
+}

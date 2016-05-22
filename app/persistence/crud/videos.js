@@ -35,12 +35,14 @@ var Videos = function() {};
 function getRecentVideos(count, page) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
+
 	return VideoModel
 			.find()
 			.sort('-uploadDate')
 			.select('thumbnailPath title viewCount duration categories userId')
 			.skip(skip)
 			.populate('userId', 'userName')
+			.populate('categories', 'name categoryTypeUrl')
 			.limit(limit)
 			.exec();
 }
@@ -56,6 +58,7 @@ function getTrendingVideos(count, page) {
 			.select('thumbnailPath title viewCount duration categories userId')
 			.skip(skip)
 			.populate('userId', 'userName')
+			.populate('categories', 'name categoryTypeUrl')
 			.limit(limit)
 			.exec();
 }
@@ -70,6 +73,7 @@ function getVideoByCategory(count, page, categoryId) {
 			.select('thumbnailPath title viewCount duration categories userId')
 			.skip(skip)
 			.populate('userId', 'userName')
+			.populate('categories', 'name categoryTypeUrl')
 			.limit(limit)
 			.exec();
 }
@@ -129,8 +133,19 @@ function search(query, page) {
 				]
 			};
 
-			foundVideo = VideoModel.find(criteria).populate('userId').skip(skip).limit(limit).sort({uploadDate: -1, viewCount: -1}).exec();
-			videoCount = VideoModel.count(criteria).exec();
+			foundVideo = VideoModel
+					.find(criteria)
+					.select('thumbnailPath title viewCount duration categories userId')
+					.sort({uploadDate: -1, viewCount: -1})
+					.skip(skip)
+					.limit(limit)
+					.populate('userId', 'userName')
+					.populate('categories', 'name categoryTypeUrl')
+					.exec();
+
+			videoCount = VideoModel
+					.count(criteria)
+					.exec();
 
 			return Promise.all([
 				foundVideo,

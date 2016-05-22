@@ -96,6 +96,9 @@ apiRouter.route('/api/notifications/get-all/:id')
 apiRouter.route('/api/videos')
   .post(videos.post);
 
+apiRouter.route('/api/videos/category/:category/page/:page')
+	.get(videos.getVideosByCategory);
+
 apiRouter.route('/api/videos/loaded')
 	.post(videos.loaded);
 

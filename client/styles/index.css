@@ -59,12 +59,12 @@ body.modal-open {
 .video .video-bottom h4 {
   font-size: 14px;
   margin: 0 0 2px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .video .video-bottom p {
   margin-bottom: 0;
-}
-.video .title {
-  min-height: 63px;
 }
 
 .video h4 a {
