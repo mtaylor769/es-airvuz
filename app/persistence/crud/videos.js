@@ -24,9 +24,7 @@ catch(exception) {
 	logger.error(" import error:" + exception);
 }
 
-var Videos = function() {
-	
-};
+var Videos = function() {};
 
 /**
  * get the recent uploaded videos
@@ -37,27 +35,43 @@ var Videos = function() {
 function getRecentVideos(count, page) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
-	return VideoModel.find({}).sort('-uploadDate').skip(skip).populate('userId').limit(limit).exec();
+	return VideoModel
+			.find()
+			.sort('-uploadDate')
+			.select('thumbnailPath title viewCount duration categories userId')
+			.skip(skip)
+			.populate('userId', 'userName')
+			.limit(limit)
+			.exec();
 }
 
 function getTrendingVideos(count, page) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
-	return VideoModel.find({}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
+	var thirtyDayAgo = moment().subtract(30, 'days').toDate();
 
-	// TODO: update when video migrate uploadDate is correct
-	//var thirtyDayAgo = moment().subtract(30, 'days').toDate();
-  //
-	//console.log('******************** thirtyDayAgo ********************');
-	//console.log(thirtyDayAgo);
-	//console.log('************************************************');
-	//return VideoModel.find({uploadedDate: {$gt: thirtyDayAgo}}).sort('-viewCount').skip(skip).populate('userId').limit(limit).exec();
+	return VideoModel
+			.find({uploadDate: {$gte: thirtyDayAgo}})
+			.sort('-viewCount')
+			.select('thumbnailPath title viewCount duration categories userId')
+			.skip(skip)
+			.populate('userId', 'userName')
+			.limit(limit)
+			.exec();
 }
 
 function getVideoByCategory(count, page, categoryId) {
 	var limit = count ? count : 10;
 	var skip = (page ? (page - 1) : 0) * limit;
-	return VideoModel.find({categories: categoryId}).sort('-uploadDate').skip(skip).populate('userId').limit(limit).exec();
+
+	return VideoModel
+			.find({categories: categoryId})
+			.sort('-uploadDate')
+			.select('thumbnailPath title viewCount duration categories userId')
+			.skip(skip)
+			.populate('userId', 'userName')
+			.limit(limit)
+			.exec();
 }
 
 function search(query, page) {
