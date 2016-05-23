@@ -9,7 +9,15 @@ var socialAccount       = null;
 var findUser            = null;
 var account             = null;
 
+
+logger.debug('PASSPORT: In facebook.js ********************************************');
+
+
+
 module.exports = function(passport, config) {
+	logger.debug('clientID: ' + config.facebook.clientID);
+	logger.debug('clientSecret: ' + config.facebook.clientSecret);
+	logger.debug('callbackURL: ' + config.facebook.callbackURL);	
 
   passport.serializeUser(function(user, done) {
     done(null, user);
@@ -24,8 +32,10 @@ module.exports = function(passport, config) {
     clientSecret        : config.facebook.clientSecret,
     callbackURL         : config.facebook.callbackURL,
     passReqToCallback   : true,
-    profileFields       : ['id', 'email','link', 'locale', 'name', 'updated_time']
+    //profileFields       : ['id', 'email','link', 'locale', 'name', 'updated_time']
+		profileFields: ['email', 'first_name', 'last_name', 'gender', 'link', 'locale', 'timezone', 'updated_time', 'verified']
   }, function (req, accessToken, refreshToken, profile, cb) {
+		logger.debug('PASSPORT: Hitting facebook passport strategy ********************************************');
     var data = {
       provider          : profile.provider,
       accountData       : profile,
@@ -33,7 +43,7 @@ module.exports = function(passport, config) {
       email             : profile.emails[0].value
     };
 
-    logger.debug('Hitting facebook passport strategy');
+    
     socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, data.provider);
     socialAccount.then(function(account){
       if (account) {

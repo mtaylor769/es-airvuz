@@ -79,7 +79,8 @@ app.use('/admin/*', function (req, res) {
 
 
 require('./app/config/passport/local')(passport, config);
-require('./app/config/passport/facebook')(passport, config);
+var facebook	= require('./app/config/passport/facebook')(passport, config);
+var auth			= require('./app/routes/api/auth');
 require('./app/config/passport/google')(passport, config);
 //require('./app/config/passport/instagram')(passport, config);
 
@@ -94,6 +95,20 @@ app.use(passport.session());
 //   / ___ \|  __/| |  |  _ < (_) | |_| | |_  __\__ \
 //  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
 //
+
+app.get('/api/auth/facebook',
+	passport.authenticate('facebook', {
+		scope: ['email'],
+    failureRedirect: '/',
+    successRedirect: 'back'
+  })
+);
+
+app.get('/api/auth/facebook/callback',
+	passport.authenticate('facebook', {failureRedirect: '/facebook'}),
+	auth.facebookCallback
+);
+
 app.use(require('./app/routes/api/routes'));
 
 
@@ -207,6 +222,10 @@ app.get("/community", function(req, res) {
 
 app.get("/media", function(req, res) {
 	loadView(req, res, 'media');
+});
+
+app.get("/social-login", function(req, res) {
+	res.sendFile(path.join(__dirname, './client/social-login.html'));
 });
 
 app.listen(process.env.PORT || 80);

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Social Login</title>
+</head>
+<body>
+
+<script>
+  function getParameterByName(name) {
+    var url = window.location.href;
+
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regexUrl = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
+    var urlParseResults = regexUrl.exec(url);
+    if (!urlParseResults) {
+      return null;
+    }
+    if (!urlParseResults[2]) {
+      return '';
+    }
+    return decodeURIComponent(urlParseResults[2].replace(/\+/g, " "));
+  }
+
+  var token = getParameterByName('token');
+
+  if (token) {
+    localStorage.setItem('id_token', token);
+    window.location.href = '/';
+  }
+</script>
+</body>
+</html>
