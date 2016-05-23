@@ -67,13 +67,13 @@
             {> "app.views.view.partial.left-nav"/}
         </div>
         <div class="col-md-10 border-left">
-            {> "app.views.view.partial.home-video" title="Featured Videos" videos="featuredVideos" viewAll="Featured%20Videos"/}
+            {> "client.templates.home.home-video" title="Featured Videos" videos="featuredVideos" viewAll="Featured%20Videos"/}
           <hr/>
-            {> "app.views.view.partial.home-video" title="Recent Videos" videos="recentVideos" viewAll="Recent%20Videos"/}
+            {> "client.templates.home.home-video" title="Recent Videos" videos="recentVideos" viewAll="Recent%20Videos"/}
           <hr/>
-            {> "app.views.view.partial.home-video" title="Trending Videos" videos="trendingVideos" viewAll="Trending%20Videos"/}
+            {> "client.templates.home.home-video" title="Trending Videos" videos="trendingVideos" viewAll="Trending%20Videos"/}
           <hr/>
-            {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos" viewAll="Staff%20Pick%20Videos"/}
+            {> "client.templates.home.home-video" title="Staff Pick Videos" videos="staffPickVideos" viewAll="Staff%20Pick%20Videos"/}
         </div>
       </div>
     </div>

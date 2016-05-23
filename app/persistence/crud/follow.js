@@ -24,9 +24,15 @@ catch(exception) {
   logger.error(" import error:" + exception);
 }
 
-var Follow = function () {
+var Follow = function () {};
 
-};
+function getFollow(userId) {
+  return FollowModel
+    .find({userId: userId})
+    .select('followingUserId')
+    .lean()
+    .exec();
+}
 
 Follow.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
@@ -57,6 +63,8 @@ Follow.prototype.followCount = function(userId) {
 Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();
 };
+
+Follow.prototype.getFollow = getFollow;
 
 
 module.exports = new Follow();

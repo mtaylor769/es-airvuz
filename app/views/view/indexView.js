@@ -58,8 +58,8 @@ module.exports = new IndexView({
 				partialPath: './app/views/view/partial/footer.dust' 
 			},
 			{
-				partialName: 'app.views.view.partial.home-video',
-				partialPath: './app/views/view/partial/home-video.dust'
+				partialName: 'client.templates.home.home-video',
+				partialPath: './client/templates/home/home-video.dust'
 			},
 			{
 				partialName: 'app.views.view.partial.left-nav',

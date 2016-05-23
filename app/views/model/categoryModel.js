@@ -3,11 +3,12 @@ var logger					= log4js.getLogger('app.views.model.category');
 
 
 try {
-	var BaseModel	    = require('./baseModel');
-	var Promise		    = require('bluebird');
-	var util			    = require('util');
-	var Videos     = require('../../persistence/crud/videos');
-	var CategoryType	= require('../../../app/persistence/crud/categoryType');
+	var BaseModel				= require('./baseModel');
+	var Promise					= require('bluebird');
+	var util						= require('util');
+	var Videos					= require('../../persistence/crud/videos');
+	var CategoryType		= require('../../../app/persistence/crud/categoryType');
+	var FollowCrud			= require('../../../app/persistence/crud/follow');
 	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
 
 	if(global.NODE_ENV === "production") {

@@ -41,6 +41,12 @@ function getVideosByCategory(req, res) {
           return VideoCrud.getRecentVideos(TOTAL_PER_PAGE, PAGE);
         case 'Trending Videos':
           return VideoCrud.getTrendingVideos(TOTAL_PER_PAGE, PAGE);
+        case 'Follower Videos':
+          // follow should only be call if user is login
+          return FollowCrud.getFollow(req.user._id)
+            .then(function (users) {
+              return VideoCrud.getVideosByFollow(TOTAL_PER_PAGE, PAGE, users.map(function (user) {return user.followingUserId}));
+            });
         default:
           return VideoCrud.getVideoByCategory(TOTAL_PER_PAGE, PAGE, category._id);
       }

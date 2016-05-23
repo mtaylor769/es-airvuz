@@ -15,6 +15,7 @@ var upload              = require('./upload');
 var amazon              = require('./amazon');
 var videoCollection     = require('./videoCollection');
 var protect             = require('../../middlewares/protect');
+var token               = require('../../middlewares/token');
 
 
 apiRouter
@@ -97,7 +98,7 @@ apiRouter.route('/api/videos')
   .post(videos.post);
 
 apiRouter.route('/api/videos/category/:category/page/:page')
-	.get(videos.getVideosByCategory);
+	.get(token, videos.getVideosByCategory);
 
 apiRouter.route('/api/videos/loaded')
 	.post(videos.loaded);

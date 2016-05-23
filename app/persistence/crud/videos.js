@@ -78,6 +78,21 @@ function getVideoByCategory(count, page, categoryId) {
 			.exec();
 }
 
+function getVideosByFollow(count, page, users) {
+	var limit = count ? count : 10;
+	var skip = (page ? (page - 1) : 0) * limit;
+
+	return VideoModel
+		.find({userId: {$in: users}})
+		.sort('-uploadDate')
+		.select('thumbnailPath title viewCount duration categories userId')
+		.skip(skip)
+		.populate('userId', 'userName')
+		.populate('categories', 'name categoryTypeUrl')
+		.limit(limit)
+		.exec();
+}
+
 function search(query, page) {
 	// TODO: allow searching category, drone, and camera
 	var keywords = query,
@@ -359,5 +374,6 @@ Videos.prototype.getRecentVideos 		= getRecentVideos;
 Videos.prototype.getTrendingVideos 	= getTrendingVideos;
 Videos.prototype.getVideoByCategory = getVideoByCategory;
 Videos.prototype.search 						= search;
+Videos.prototype.getVideosByFollow 	= getVideosByFollow;
 
 module.exports = new Videos();
