@@ -50,7 +50,7 @@
   <li>
     <div class="profile-img-wrap">
       {#currentUser.profilePicture}
-        <img src="//airvuz.com/{currentUser.profilePicture}" alt="" class="img-circle"/>
+        <img src="{awsAssetUrl}{currentUser.profilePicture}" alt="" class="img-circle"/>
       {:else}
         <img src="//airvuz.com/assets/img/default.png" alt="" class="img-circle"/>
       {/currentUser.profilePicture}

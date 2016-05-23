@@ -1,5 +1,6 @@
-var auth      = require('./services/auth');
-var identity  = require('./services/identity');
+var auth          = require('./services/auth');
+var identity      = require('./services/identity');
+var amazonConfig  = require('./config/amazon.config.client');
 
 /**
  * Templates
@@ -11,7 +12,9 @@ var $loginModal,
     $footerSub1;
 
 function renderProfileHeader() {
-  headerProfileTpl(identity, function (err, html) {
+  // TODO: switch awsAssetUrl to amazonConfig.ASSET_URL + 'users/profile-pictures'
+  var awsAssetUrl = '//s3-us-west-2.amazonaws.com/airvuz-asset/users/profile-pictures';
+  headerProfileTpl({currentUser: identity.currentUser, awsAssetUrl: awsAssetUrl}, function (err, html) {
     $headerProfile.html(html);
   });
 }
