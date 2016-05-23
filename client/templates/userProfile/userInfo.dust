@@ -1,9 +1,9 @@
 <section style="color: white; background: #fff url('//s3-us-west-2.amazonaws.com/airvuz-asset/users/cover-pictures{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
   <div class="">
-    <figure class="profile-picture col-xs-12 col-md-3">
+    <div class="profile-picture col-xs-12 col-md-3">
       <img src="//s3-us-west-2.amazonaws.com/airvuz-asset/users/profile-pictures{user.profilePicture}" width="120px" height="120px" class="border-radius-circle">
-    </figure>
-    <figcaption class="profile-information col-xs-12 col-md-9">
+    </div>
+    <div class="profile-information col-xs-12 col-md-9">
       <h4 class="profile-username row">{user.userName}</h4>
       <h5 class="row">
         <span class="av-primary word-space airvuz-blue">300</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
@@ -36,7 +36,6 @@
           {/user.socialMediaLinks.googlePlusUrl}
         </div>
       </div>
-    </figcaption>
+    </div>
   </div>
-</img>
 </section>
