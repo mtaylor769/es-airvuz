@@ -14,6 +14,15 @@ var userData      = {};
 var allOwnerVideos = [];
 var showcaseOwnerVideos = [];
 
+/*
+Edit Video Variables
+ */
+var $uploadPage,
+  $tags,
+  VIEW_MODEL = {},
+  customThumbnailName,
+  currentUploadFile = {},
+  isCustomThumbnail = false;
 
 /*
 * Templates
@@ -369,14 +378,29 @@ function saveVideoEdit(vid) {
                               return $(li).data('id');
                             }).toArray(),
     droneType             : $('#drone-type').val(),
-    cameraType            : $('#camera-type').val()
+    cameraType            : $('#camera-type').val(),
+    thumbnailPath         : currentUploadFile.thumbnailPath,
+    isCustomThumbnail     : isCustomThumbnail,
+    customThumbnail       : customThumbnailName
   }
 
   if ($('#tags').val()) {
     params.tags = $('#tags').val().split(',');
   }
 
-  //TODO send data to backend to save
+  $.ajax({
+    url         : '/api/videos',
+    contentType : 'application/json',
+    type        : 'POST',
+    data        : JSON.stringify(params)
+  }).success(function (video) {
+    //TODO replace video in profileUser with new video or refresh page?
+    /********************************************************/
+    console.group('%cvideo :', 'color:red;font:strait');
+    console.log(video);
+    console.groupEnd();
+    /********************************************************/;
+  });
 }
 
 function requestVideoSort(sortBy, id) {
