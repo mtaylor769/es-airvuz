@@ -1,7 +1,7 @@
 /*
 *
 *
-* */
+*/
 var identity      = require('./services/identity');
 var user          = identity.currentUser || null;
 var userNameCheck = '';
@@ -32,6 +32,7 @@ var notSelectedHtml       = '<div class="not-selected asdf"><span class="glyphic
 var removeHtml            = '<div class="removed asdf"><span class="glyphicon glyphicon-minus"></span></div>';
 
 function showcaseAdd(videoId, boolean) {
+  event.preventDefault();
   var data = {};
   data.id = videoId;
   data.isShowcase = boolean;
@@ -191,6 +192,7 @@ function changePassword() {
 }
 
 function confirmPasswordChange() {
+  event.preventDefault();
   var data                  = {};
   data.oldPassword          = $("#old-password").val();
   data.newPassword          = $("#new-password").val();
@@ -232,6 +234,7 @@ function changeProfile() {
 }
 
 function editProfile() {
+  event.preventDefault();
   var userName            = $("#username").val();
   var emailAddress        = $("#email").val();
   var myAbout             = $("#aboutme").val();
@@ -353,8 +356,23 @@ function editProfile() {
   });
 }
 
-function saveVideoEdit() {
-  //TODO gather objects into data
+function saveVideoEdit(vid) {
+  event.preventDefault();
+  var params = {
+    title                 : $('#title').val(),
+    location              : $('#location').val(),
+    tags                  : $('#tags').val(),
+    description           : $('#description').html(),
+    category              : ('#category-list li').map(function (index, li) {
+                              return $(li).data('id');
+                            }).toArray(),
+    droneType             : $('#drone-type').val(),
+    cameraType            : $('#camera-type').val()
+  }
+
+  if ($('#tags').val()) {
+    params.tags = $('#tags').val().split(',');
+  }
 
   //TODO send data to backend to save
 }
@@ -423,27 +441,12 @@ function showcaseByLikes() {
   sortShowcase('likes', profileUser._id);
 }
 
-function sortByVuz() {
-  requestVideoSort('vuz', profileUser._id);
-}
-
-function sortByDasc() {
-  requestVideoSort('dasc', profileUser._id);
-}
-
-function sortByDdesc() {
-  requestVideoSort('ddesc', profileUser._id);
-}
-
-function sortByLikes() {
-  requestVideoSort('likes', profileUser._id);
-}
-
 function deleteVideo(item) {
   $('#delete-video-modal')
     .modal('show')
     .on('click', '#confirm-delete-video-btn', function(){
         var vidId = item.toElement.value;
+      event.preventDefault();
         $.ajax({
           type: 'DELETE',
           url: '/api/videos/' + vidId
@@ -474,11 +477,13 @@ function editVideo(item) {
 
 function renderEditVideoHtml(vid) {
   videoInfo({video: vid}, function(err, html){
-    $('#edit-video-modal')
-      .modal('show');
     $('#edit-video-content')
-      .html(html)
-      .on('click', '#btn-save-video-edit', saveVideoEdit);
+      .html(html);
+    $('#edit-video-modal')
+      .modal('show')
+      .on('click', '#btn-save-video-edit', function(){
+        saveVideoEdit(vid);
+      });
   });
 }
 
@@ -486,10 +491,18 @@ function renderOwnerAllVideosHtml(videos) {
   ownerAllVideosHtml({videos: videos}, function(err, html) {
     $('#allvideos').html(html);
     $('.sort-owner-all-list')
-      .on('click', '.sort-owner-all-vuz', sortByVuz)
-      .on('click', '.sort-owner-all-dasc', sortByDasc)
-      .on('click', '.sort-owner-all-ddesc', sortByDdesc)
-      .on('click', '.sort-owner-all-likes', sortByLikes);
+      .on('click', '.sort-owner-all-vuz', function(){
+        requestVideoSort('vuz', profileUser._id);
+      })
+      .on('click', '.sort-owner-all-dasc', function(){
+        requestVideoSort('dasc', profileUser._id);
+      })
+      .on('click', '.sort-owner-all-ddesc', function(){
+        requestVideoSort('ddesc', profileUser._id);
+      })
+      .on('click', '.sort-owner-all-likes', function(){
+        requestVideoSort('likes', profileUser._id);
+      });
     $('.video-options-btn')
       .on('click', '#edit-video-btn', function(item) {
         editVideo(item);
@@ -504,10 +517,18 @@ function renderUseAllVideosHtml(videos) {
   userAllVideosHtml({videos: videos}, function(err, html) {
     $('#allvideos').html(html);
     $('.sort-owner-all-list')
-      .on('click', '.sort-owner-all-vuz', showcaseByVuz)
-      .on('click', '.sort-owner-all-dasc', showcaseByDasc)
-      .on('click', '.sort-owner-all-ddesc', showcaseByDdesc)
-      .on('click', '.sort-owner-all-likes', showcaseByLikes);
+      .on('click', '.sort-owner-all-vuz', function(){
+        requestVideoSort('vuz', profileUser._id);
+      })
+      .on('click', '.sort-owner-all-dasc', function(){
+        requestVideoSort('dasc', profileUser._id);
+      })
+      .on('click', '.sort-owner-all-ddesc', function(){
+        requestVideoSort('ddesc', profileUser._id);
+      })
+      .on('click', '.sort-owner-all-likes', function(){
+        requestVideoSort('likes', profileUser._id);
+      });
   });
 }
 
@@ -521,6 +542,7 @@ function renderOwnerShowcase(videos) {
   //   .on('click', '.sort-showcase-ddesc', sortShowcase('ddesc', profileUser._id))
   //   .on('click', '.sort-showcase-likes', sortShowcase('likes', profileUser._id));
 }
+
 function renderUserProfileEdit(profileData) {
   userProfileEdit({user: profileData}, function (err, html) {
     $('#edit-profile').html(html);
