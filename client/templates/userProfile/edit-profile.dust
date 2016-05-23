@@ -44,12 +44,14 @@
         </div>
         
         <div class="col-xs-6">
-          <div class="text-left">
-            <a class="btn btn-primary" id="change-picture-btn">
-              <span>Change Profile Picture</span>
-              <input type="file" id="profile-image" accept="image/x-png, image/gif, image/jpeg, image/*"/>
-            </a>
-          </div>
+          <a class="btn btn-primary change-profile-btn">
+            <span>Change Profile Picture</span>
+            <input type="file" id="profile-image-input" accept="image/x-png, image/gif, image/jpeg, image/*"/>
+          </a>
+          <a class="btn btn-primary change-profile-btn">
+            <span>Change Cover Picture</span>
+            <input type="file" id="cover-image-input" accept="image/x-png, image/gif, image/jpeg, image/*"/>
+          </a>
           <div class="form-group">
             <label for="aboutme">About Me</label>
             <textarea name="aboutme" id="aboutme" rows="4" class="form-control" value="{aboutMe}" placeholder="About Me">{aboutMe}</textarea>
