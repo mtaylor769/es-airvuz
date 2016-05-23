@@ -13,9 +13,10 @@
     {> "app.views.view.partial.header" /}
     <div id="user-profile" class="container main profile">
       <div id="userInfoData" class="row">
-        {> "client.templates.userProfile.userInfo" /}
+        {> "client.templates.userProfile.user-info" /}
       </div>
-      {> "client.templates.userProfile.userProfileModal" /}
+        {> "client.templates.userProfile.user-profile-modal" /}
+        {> "client.templates.userProfile.edit-video" /}
       <div class="row m-t-15">
           <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#allvideos" role="tab" data-toggle="tab">ALL VIDEOS</a></li>

@@ -37,8 +37,8 @@
                     
                     <div class="row m-t-10 video-options-btn">
                         <div class="col-sm-12 hidden-xs">
-                            <button class="btn btn-primary" id="edit-video-btn" style="margin-right:4px;">Edit</button>
-                            <button class="btn btn-default" id="delete-video-btn">Delete</button>
+                            <button value="{_id}" class="btn btn-primary" id="edit-video-btn" style="margin-right:4px;">Edit</button>
+                            <button value="{_id}" class="btn btn-default" id="delete-video-btn">Delete</button>
                         </div>
                     </div>
                 </div>

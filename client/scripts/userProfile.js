@@ -1,3 +1,7 @@
+/*
+*
+*
+* */
 var identity      = require('./services/identity');
 var user          = identity.currentUser || null;
 var userNameCheck = '';
@@ -20,7 +24,8 @@ var userAllVideosHtml     = require('../templates/userProfile/allvideos-user.dus
 var ownerAllVideosHtml    = require('../templates/userProfile/allvideos-owner.dust');
 var userProfileEdit       = require('../templates/userProfile/edit-profile.dust');
 var aboutMe               = require('../templates/userProfile/about.dust');
-var userInfo              = require('../templates/userProfile/userInfo.dust');
+var userInfo              = require('../templates/userProfile/user-info.dust');
+var videoInfo             = require('../templates/userProfile/edit-video.dust');
 
 var okHtml                = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml       = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
@@ -101,6 +106,7 @@ function bindEvents() {
     });
   }
 
+  //TODO throw modal with error message
   function onUploadError() {
     alert('Error uploading iamge');
   }
@@ -179,9 +185,9 @@ function editShowcase() {
 }
 
 function changePassword() {
-  $('#change-password').modal('show');
   $('#change-password')
-  .on('click', '#new-password-btn', confirmPasswordChange);
+    .modal('show')
+    .on('click', '#new-password-btn', confirmPasswordChange);
 }
 
 function confirmPasswordChange() {
@@ -237,7 +243,6 @@ function editProfile() {
   var firstName           = $("#firstname").val();
   var allowHire           = $("#hire").prop('checked');
   var allowDonation       = $("#donate").prop('checked');
-  var imgFile             = $("#profile-image").val();
   var donateUrl           = $("#donateUrl").val();
 
   if (userName && userName !== '' && userName !== profileUser.userName) {
@@ -333,19 +338,25 @@ function editProfile() {
     $('.hire-btn').hide();
   }
   
-  // $.ajax({
-  //   type:'PUT',
-  //   url: '/api/users/' + user._id,
-  //   data: userData
-  // })
-  // .success(function(response) {
-  //   user = response;
-  //   $('#save-changes').modal('hide');
-  // })
-  // .error(function(error) {
-  //   console.log('error from serverside');
-  //   $('#save-changes').modal('hide');
-  // });
+  $.ajax({
+    type:'PUT',
+    url: '/api/users/' + user._id,
+    data: userData
+  })
+  .success(function(response) {
+    user = response;
+    $('#save-changes').modal('hide');
+  })
+  .error(function(error) {
+    console.log('error from serverside');
+    $('#save-changes').modal('hide');
+  });
+}
+
+function saveVideoEdit() {
+  //TODO gather objects into data
+
+  //TODO send data to backend to save
 }
 
 function requestVideoSort(sortBy, id) {
@@ -429,16 +440,46 @@ function sortByLikes() {
 }
 
 function deleteVideo(item) {
-  var test = item;
-  $('#delete-vido-modal').modal('show');
-  $('#delete-vido-modal')
+  $('#delete-video-modal')
+    .modal('show')
     .on('click', '#confirm-delete-video-btn', function(){
-        console.log('test');
+        var vidId = item.toElement.value;
+        $.ajax({
+          type: 'DELETE',
+          url: '/api/videos/' + vidId
+        })
+          .success(function(data){
+
+          })
+          .error(function(error){
+            /********************************************************/
+            console.group('%cerror :', 'color:red;font:strait');
+            console.log(error);
+            console.groupEnd();
+            /********************************************************/
+          })
     });
 }
 
-function editVideo() {
+function editVideo(item) {
+  var vidId = item.toElement.value;
+  var video = null;
+  profileVideos.forEach((function(vid){
+    if (vid._id === vidId) {
+      video = vid;
+    }
+  }));
+  renderEditVideoHtml(video);
+}
 
+function renderEditVideoHtml(vid) {
+  videoInfo({video: vid}, function(err, html){
+    $('#edit-video-modal')
+      .modal('show');
+    $('#edit-video-content')
+      .html(html)
+      .on('click', '#btn-save-video-edit', saveVideoEdit);
+  });
 }
 
 function renderOwnerAllVideosHtml(videos) {

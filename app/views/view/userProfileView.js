@@ -66,12 +66,16 @@ module.exports = new IndexView({
 				partialPath: './client/templates/userProfile/edit-profile.dust'
 			},
 			{
-				partialName: 'client.templates.userProfile.userProfileModal',
-				partialPath: './client/templates/userProfile/userProfileModal.dust'
+				partialName: 'client.templates.userProfile.user-profile-modal',
+				partialPath: './client/templates/userProfile/user-profile-modal.dust'
 			},
 			{
-				partialName: 'client.templates.userProfile.userInfo',
-				partialPath: './client/templates/userProfile/userInfo.dust'
+				partialName: 'client.templates.userProfile.user-info',
+				partialPath: './client/templates/userProfile/user-info.dust'
+			},
+			{
+				partialName: 'client.templates.userProfile.edit-video',
+				partialPath: './client/templates/userProfile/edit-video.dust'
 			}
 		]
 	});
