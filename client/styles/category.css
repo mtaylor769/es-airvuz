@@ -12,6 +12,10 @@
         max-height: 103px;
         margin: 0 auto;
     }
+
+    #category-page > .row {
+        display: flex;
+    }
 }
 
 @media (min-width: 1200px) {

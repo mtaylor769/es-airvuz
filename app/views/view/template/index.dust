@@ -62,7 +62,7 @@
         </div>
       </div>
       {/index.slider}
-      <div class="row">
+      <div class="row" id="main-row">
         <div class="col-md-2" id="left-category">
             {> "app.views.view.partial.left-nav"/}
         </div>
@@ -76,8 +76,6 @@
             {> "app.views.view.partial.home-video" title="Staff Pick Videos" videos="staffPickVideos" viewAll="Staff%20Pick%20Videos"/}
         </div>
       </div>
-
-      <br/>
     </div>
     <!-- END:Main Container -->
 

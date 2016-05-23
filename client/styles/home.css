@@ -105,6 +105,9 @@
     #home-page #slider-slick {
         min-height: 362px;
     }
+    #home-page #main-row {
+        display: flex;
+    }
 }
 
 @media (min-width: 1200px) {
