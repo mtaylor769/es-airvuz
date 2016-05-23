@@ -30,14 +30,14 @@ var videoInfo             = require('../templates/userProfile/edit-video.dust');
 var okHtml                = '<div class="ok showcase-edit-button"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml       = '<div class="not-selected showcase-edit-button"><span class="glyphicon glyphicon-plus"></span></div>';
 var removeHtml            = '<div class="removed showcase-edit-button"><span class="glyphicon glyphicon-minus"></span></div>';
- 
+
 function showcaseAdd(videoId) {
   event.preventDefault();
   console.log(videoId);
   var data = {};
   data.video = videoId;
   data.user = user._id;
-  
+
   $.ajax({
     type: 'POST',
     url: '/api/video-collection/update-collection',

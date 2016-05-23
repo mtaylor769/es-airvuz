@@ -47,21 +47,19 @@ UserProfileModel.prototype.getData = function(params) {
 	.then(function(collection) {
 		return videoCollection.getCollectionVideos(dataObject.user._id, 'showcase');
 	})
-		.then(function(videoCollection){
-				var videos = videoCollection.videos;
-				console.log(videos);
-				videos.forEach(function (video) {
-					video = unlock(video);
-					video.isShowcase = true;
-					video.title = video.title.substring(0, 48);
-					video.description = video.description.substring(0, 90);
-					if (video.title.length === 48) {
-						video.title = video.title + '...';
-					}
-					if (video.description.length === 90) {
-						video.description = video.description + '...';
-					}
-				});
+	.then(function(videoCollection){
+			var videos = videoCollection.videos;
+			videos.forEach(function (video) {
+				video.title = video.title.substring(0, 48);
+				video.description = video.description.substring(0, 90);
+				if (video.title.length === 48) {
+					video.title = video.title + '...';
+				}
+				if (video.description.length === 90) {
+					video.description = video.description + '...';
+				}
+				console.log(video);
+			});
 		dataObject.showcase = videos;
 		return categoryCrud.get();
 	})
@@ -76,6 +74,16 @@ UserProfileModel.prototype.getData = function(params) {
 	.then(function(videos) {
 		if (videos.length) {
 			videos.forEach(function(video) {
+				var videoString = JSON.stringify(video._id);
+				var showcaseString = JSON.stringify(dataObject.showcase);
+				var check = showcaseString.indexOf(videoString);
+				if(check !== -1) {
+					video = unlock(video);
+					video.isShowcase = true;
+				} else {
+					video.isShowcase = false
+				}
+				console.log(video.isShowcase);
 				video.title = video.title.substring(0, 48);
 				video.description = video.description.substring(0, 90);
 				if(video.title.length === 48) {
@@ -88,8 +96,9 @@ UserProfileModel.prototype.getData = function(params) {
 		} else {
 			videos = null;
 		}
-			
+		console.log(videos);
 		dataObject.videos 									= videos;
+		
 		params.data 												= dataObject;
 		params.data.userProfile							= {};
 		params.data.userProfile.title				= "User Profile";

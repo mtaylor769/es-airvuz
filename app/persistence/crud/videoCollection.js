@@ -72,7 +72,6 @@ function createVideoCollection(params) {
   return(new Promise(function(resolve, reject) {
     return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
       .then(function(videoCollection) {
-        console.log(videoCollection);
         if(!videoCollection) {
           var videoCollectionModel = new VideoCollectionModel(params);
           videoCollectionModel.save(function(error, videoCollection) {
@@ -98,12 +97,11 @@ function getCollectionVideos(userId, name) {
 function updateCollection(params) {
   return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
     .then(function(videoCollection) {
-      var found = _.find(videoCollection.videos, function(video) {
-        return video === params.video;
-      });
-
+      var videoId = JSON.stringify(params.video);
+      var videoCollectionString = JSON.stringify(videoCollection);
+      var found = videoCollectionString.indexOf(videoId);
       logger.debug(found);
-      if(found){
+      if(found !== -1){
         return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$pull: {videos: params.video}}, {safe: true}).exec();
       } else {
         return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$push: {videos: params.video}}, {safe: true, upsert: true}).exec();
