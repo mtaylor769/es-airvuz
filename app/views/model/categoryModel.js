@@ -56,6 +56,10 @@ CategoryModel.prototype.getData = function(params) {
 					return Videos.getRecentVideos(TOTAL_PER_PAGE, 1);
 				case 'Trending Videos':
 					return Videos.getTrendingVideos(TOTAL_PER_PAGE, 1);
+				case 'Follower Videos':
+					// Let the client side handle this because this server side render for the follower require
+					// current login user
+					return Promise.resolve([]);
 				default:
 					params.data.category.name = category.name;
 					return Videos.getVideoByCategory(TOTAL_PER_PAGE, 1, category._id);
@@ -67,7 +71,8 @@ CategoryModel.prototype.getData = function(params) {
 			.then(function(data) {
 				params.data.categories = data[0];
 				params.data.videos = data[1];
-				params.data.showLoadMore = data[1].length > 11;
+				// show the load more if there is data or category is 'Follower Videos'
+				params.data.showLoadMore = data[1].length > 11 || params.request.params.category === 'Follower Videos';
 				return params;
 			});
 

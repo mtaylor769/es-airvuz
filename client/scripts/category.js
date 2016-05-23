@@ -1,6 +1,7 @@
 require('../styles/category.css');
 
 var $categoryPage,
+    $loadMoreBtn,
     current_page = 1,
     CATEGORY_TYPE;
 
@@ -10,35 +11,55 @@ var $categoryPage,
 var categoryVideoTpl = require('../templates/category/category-video.dust');
 
 function bindEvents() {
-  $('#load-more-btn').on('click', function () {
-    var self = this,
-      // total per page should be same as the server side
-      TOTAL_PER_PAGE = 16;
+  $loadMoreBtn.on('click', onLoadMoreBtnClick);
 
-    current_page++;
-
-    $.ajax('/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page)
-      .then(function (videos) {
-        if (videos.length > 0) {
-          categoryVideoTpl({videos: videos}, function (err, html) {
-            $categoryPage.find('#videos > div').append(html);
-          });
-        }
-        if (videos.length < TOTAL_PER_PAGE) {
-          // remove load more button when there's none left
-          $(self).remove();
-        }
-      });
-  });
   $('#left-category').on('click', 'h5', function () {
     $(this).parent().toggleClass('is-open');
   });
 }
 
+function onLoadMoreBtnClick() {
+  current_page++;
+
+  _getVideos();
+}
+
+/**
+ * get videos
+ * @returns {Promise}
+ * @private
+ */
+function _getVideos() {
+  var TOTAL_PER_PAGE = 16;
+
+  return $.ajax('/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page)
+    .then(function (videos) {
+      if (videos.length > 0) {
+        categoryVideoTpl({videos: videos}, function (err, html) {
+          $categoryPage.find('#videos > div').append(html);
+        });
+      }
+      if (videos.length < TOTAL_PER_PAGE) {
+        // remove load more button when there's none left
+        $loadMoreBtn.remove();
+      }
+    });
+}
+
+function getFollowerVideos() {
+  _getVideos();
+}
+
 function initialize(categoryType) {
   $categoryPage = $('#category-page');
+  $loadMoreBtn = $('#load-more-btn');
 
   CATEGORY_TYPE = categoryType;
+
+  // only follower videos are render from client side because it require a user to get follower video
+  if (CATEGORY_TYPE === 'Follower Videos') {
+    getFollowerVideos();
+  }
 
   bindEvents();
 }
