@@ -5,6 +5,7 @@ try {
 
   var database              = require('../database/database');
   var VideoCollectionModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.videoCollection'});
+  var moment                = require('moment');
 
 } catch (exception) {
   logger.error(' import error:' + exception);
@@ -55,7 +56,10 @@ function getVideoAndPopulate(type) {
             return [];
           }
           // TODO: slice / limit / paging
-          return col.videos;
+          return col.videos.map(function (video) {
+            video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
+            return video;
+          });
         });
       } else {
         return [];

@@ -37,14 +37,28 @@ function getRecentVideos(count, page) {
 	var skip = (page ? (page - 1) : 0) * limit;
 
 	return VideoModel
-			.find()
-			.sort('-uploadDate')
-			.select('thumbnailPath title viewCount duration categories userId')
-			.skip(skip)
-			.populate('userId', 'userName')
-			.populate('categories', 'name categoryTypeUrl')
-			.limit(limit)
-			.exec();
+		.find()
+		.sort('-uploadDate')
+		.select('thumbnailPath title viewCount duration categories userId uploadDate')
+		.skip(skip)
+		.populate('userId', 'userName')
+		.populate('categories', 'name categoryTypeUrl')
+		.limit(limit)
+		.lean()
+		.exec()
+		.then(updateDateWithMoment);
+}
+
+/**
+ * helper to convert uploadDate to moment from now
+ * @param videos
+ * @returns {*}
+ */
+function updateDateWithMoment(videos) {
+	return videos.map(function (video) {
+		video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
+		return video;
+	});
 }
 
 function getTrendingVideos(count, page) {
@@ -53,14 +67,16 @@ function getTrendingVideos(count, page) {
 	var thirtyDayAgo = moment().subtract(30, 'days').toDate();
 
 	return VideoModel
-			.find({uploadDate: {$gte: thirtyDayAgo}})
-			.sort('-viewCount')
-			.select('thumbnailPath title viewCount duration categories userId')
-			.skip(skip)
-			.populate('userId', 'userName')
-			.populate('categories', 'name categoryTypeUrl')
-			.limit(limit)
-			.exec();
+		.find({uploadDate: {$gte: thirtyDayAgo}})
+		.sort('-viewCount')
+		.select('thumbnailPath title viewCount duration categories userId uploadDate')
+		.skip(skip)
+		.populate('userId', 'userName')
+		.populate('categories', 'name categoryTypeUrl')
+		.limit(limit)
+		.lean()
+		.exec()
+		.then(updateDateWithMoment);
 }
 
 function getVideoByCategory(count, page, categoryId) {
@@ -68,14 +84,16 @@ function getVideoByCategory(count, page, categoryId) {
 	var skip = (page ? (page - 1) : 0) * limit;
 
 	return VideoModel
-			.find({categories: categoryId})
-			.sort('-uploadDate')
-			.select('thumbnailPath title viewCount duration categories userId')
-			.skip(skip)
-			.populate('userId', 'userName')
-			.populate('categories', 'name categoryTypeUrl')
-			.limit(limit)
-			.exec();
+		.find({categories: categoryId})
+		.sort('-uploadDate')
+		.select('thumbnailPath title viewCount duration categories userId uploadDate')
+		.skip(skip)
+		.populate('userId', 'userName')
+		.populate('categories', 'name categoryTypeUrl')
+		.limit(limit)
+		.lean()
+		.exec()
+		.then(updateDateWithMoment);
 }
 
 function getVideosByFollow(count, page, users) {
@@ -85,12 +103,14 @@ function getVideosByFollow(count, page, users) {
 	return VideoModel
 		.find({userId: {$in: users}})
 		.sort('-uploadDate')
-		.select('thumbnailPath title viewCount duration categories userId')
+		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
 		.populate('userId', 'userName')
 		.populate('categories', 'name categoryTypeUrl')
 		.limit(limit)
-		.exec();
+		.lean()
+		.exec()
+		.then(updateDateWithMoment);
 }
 
 function search(query, page) {
@@ -149,14 +169,16 @@ function search(query, page) {
 			};
 
 			foundVideo = VideoModel
-					.find(criteria)
-					.select('thumbnailPath title viewCount duration categories userId')
-					.sort({uploadDate: -1, viewCount: -1})
-					.skip(skip)
-					.limit(limit)
-					.populate('userId', 'userName')
-					.populate('categories', 'name categoryTypeUrl')
-					.exec();
+				.find(criteria)
+				.select('thumbnailPath title viewCount duration categories userId uploadDate')
+				.sort({uploadDate: -1, viewCount: -1})
+				.skip(skip)
+				.limit(limit)
+				.populate('userId', 'userName')
+				.populate('categories', 'name categoryTypeUrl')
+				.lean()
+				.exec()
+				.then(updateDateWithMoment);
 
 			videoCount = VideoModel
 					.count(criteria)
