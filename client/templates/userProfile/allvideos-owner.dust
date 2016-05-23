@@ -35,10 +35,10 @@
                         </p>
                     </div>
                     
-                    <div class="row m-t-10">
+                    <div class="row m-t-10 video-options-btn">
                         <div class="col-sm-12 hidden-xs">
-                            <button class="btn btn-primary" style="margin-right:4px;">Edit</button>
-                            <button class="btn btn-default">Delete</button>
+                            <button class="btn btn-primary" id="edit-video-btn" style="margin-right:4px;">Edit</button>
+                            <button class="btn btn-default" id="delete-video-btn">Delete</button>
                         </div>
                     </div>
                 </div>

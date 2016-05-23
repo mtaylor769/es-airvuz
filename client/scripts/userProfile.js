@@ -428,6 +428,19 @@ function sortByLikes() {
   requestVideoSort('likes', profileUser._id);
 }
 
+function deleteVideo(item) {
+  var test = item;
+  $('#delete-vido-modal').modal('show');
+  $('#delete-vido-modal')
+    .on('click', '#confirm-delete-video-btn', function(){
+        console.log('test');
+    });
+}
+
+function editVideo() {
+
+}
+
 function renderOwnerAllVideosHtml(videos) {
   ownerAllVideosHtml({videos: videos}, function(err, html) {
     $('#allvideos').html(html);
@@ -436,6 +449,13 @@ function renderOwnerAllVideosHtml(videos) {
       .on('click', '.sort-owner-all-dasc', sortByDasc)
       .on('click', '.sort-owner-all-ddesc', sortByDdesc)
       .on('click', '.sort-owner-all-likes', sortByLikes);
+    $('.video-options-btn')
+      .on('click', '#edit-video-btn', function(item) {
+        editVideo(item);
+      })
+      .on('click', '#delete-video-btn', function(item) {
+        deleteVideo(item);
+      });
   });
 }
 
