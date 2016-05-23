@@ -25,7 +25,20 @@ function updateVideo(type) {
   }
 }
 
+function updateCollectionVideos(req, res) {
+  var params = {};
+  params.user = req.body.user;
+  params.video = req.body.video;
+  params.name = 'showcase';
+  videoCollectionCrud
+    .updateCollection(params)
+    .then(function(video) {
+      res.json({status: 'OK'});
+    })
+}
+
 VideoCollection.prototype.getVideos    = getVideos;
 VideoCollection.prototype.updateVideo  = updateVideo;
+VideoCollection.prototype.updateCollectionVideos = updateCollectionVideos;
 
 module.exports = new VideoCollection();

@@ -2,6 +2,7 @@
 try {
   var log4js                = require('log4js');
   var logger                = log4js.getLogger('app.persistance.crud.videoCollection');
+  var _                     = require('lodash');
 
   var database              = require('../database/database');
   var VideoCollectionModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.videoCollection'});
@@ -67,9 +68,61 @@ function getVideoAndPopulate(type) {
     });
 }
 
+function createVideoCollection(params) {
+  return(new Promise(function(resolve, reject) {
+    return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
+      .then(function(videoCollection) {
+        if(!videoCollection) {
+          var videoCollectionModel = new VideoCollectionModel(params);
+          videoCollectionModel.save(function(error, videoCollection) {
+            if(error) {
+              reject(error);
+            } else {
+              resolve(videoCollection);
+            }
+          });
+        } else {
+          resolve(videoCollection);
+        }
+      });
+    })
+  );
+}
+
+
+function getCollectionVideos(userId, name) {
+  return VideoCollectionModel.findOne({user: userId, name: name}).populate('videos').exec();
+}
+
+function updateCollection(params) {
+  return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
+    .then(function(videoCollection) {
+      var videoId = JSON.stringify(params.video);
+      var videoCollectionString = JSON.stringify(videoCollection);
+      var found = videoCollectionString.indexOf(videoId);
+      logger.debug(found);
+      if(found !== -1){
+        return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$pull: {videos: params.video}}, {safe: true}).exec();
+      } else {
+        return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$push: {videos: params.video}}, {safe: true, upsert: true}).exec();
+      }
+    })
+}
+
+function addToCollectionVideos(userId, name, video) {
+  return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$push: {videos: video}}, {safe: true, upsert: true}).exec();
+}
+
+function removeFromCollectionVideos(userId, name, video) {
+  return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: {video}}}, {safe: true}).exec();
+}
+
 VideoCollection.prototype.getFeaturedVideos     = getFeaturedVideos;
 VideoCollection.prototype.getStaffPickVideos    = getStaffPickVideos;
 VideoCollection.prototype.getVideo              = getVideo;
 VideoCollection.prototype.updateVideos          = updateVideos;
+VideoCollection.prototype.getCollectionVideos   = getCollectionVideos;
+VideoCollection.prototype.createVideoCollection = createVideoCollection;
+VideoCollection.prototype.updateCollection      = updateCollection;
 
 module.exports = new VideoCollection();

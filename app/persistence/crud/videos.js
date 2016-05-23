@@ -347,7 +347,7 @@ Videos.prototype.like = function(video, like) {
 
 Videos.prototype.getShowcaseByUser = function(id, sortBy) {
 	if (!sortBy) {
-		return VideoModel.find({userId: id, isShowcase: true}).populate('userId').exec();
+		return VideoModel.find({userId: id, isShowcase: true}).populate('userId').lean().exec();
 	} else {
 		switch(sortBy) {
 			case 'vuz' :
@@ -365,7 +365,7 @@ Videos.prototype.getShowcaseByUser = function(id, sortBy) {
 
 Videos.prototype.getByUser = function(userId, sortBy) {
 	if (!sortBy) {
-		return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').exec();
+		return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').lean().exec();
 	} else {
 		switch(sortBy) {
 			case 'vuz' :
@@ -385,7 +385,7 @@ Videos.prototype.getVideoCount = function(userId) {
 };
 
 Videos.prototype.getTopTwoVideos = function(userId) {
-	return VideoModel.find({userId: userId}).sort({viewCount: -1}).limit(2).exec();
+	return VideoModel.find({userId: userId}).sort({viewCount: -1}).limit(3).exec();
 };
 
 Videos.prototype.upCount = function(video) {
