@@ -1,9 +1,16 @@
+var log4js								= require('log4js');
+var logger								= log4js.getLogger('app.routes.api.auth');
+
 var jwt               = require('jsonwebtoken'),
   passport            = require('passport'),
   tokenConfig         = require('../../../config/token'),
   SocialMedia         = require('../../persistence/crud/socialMediaAccount'),
   token               = null,
   user                = null;
+
+
+
+logger.debug("IN: *************************************************************");
 
 function Auth() {
 
@@ -15,7 +22,8 @@ function loginSuccess(req, res, next) {
 }
 
 function facebook(req, res, next){
-  console.log('hit route');
+  //console.log('hit route');
+	logger.debug(".facebook IN: *************************************************************");
   passport.authenticate('facebook')(req, res, next);
 }
 
@@ -24,8 +32,10 @@ function facebookAuthFailure() {
 }
 
 function facebookCallback(req, res, next) {
+	logger.debug(".facebookCallback IN: *************************************************************");
   if (req.newUser) 
   {
+		logger.debug(".facebookCallback newUser");
     req.user.newUser = req.newUser;
     token =  jwt.sign(req.user, tokenConfig.secret, { expiresIn: tokenConfig.expires });
     req.user = '';
@@ -34,7 +44,9 @@ function facebookCallback(req, res, next) {
   }
   else 
   {
+		logger.debug(".facebookCallback existing user");
     token =  jwt.sign(req.user, tokenConfig.secret, { expiresIn: tokenConfig.expires });
+		logger.debug(".facebookCallback jwt: " + token);
     req.user = '';
     req.token = token;
     res.redirect('/login');

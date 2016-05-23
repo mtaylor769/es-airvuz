@@ -79,7 +79,8 @@ app.use('/admin/*', function (req, res) {
 
 
 require('./app/config/passport/local')(passport, config);
-require('./app/config/passport/facebook')(passport, config);
+var facebook	= require('./app/config/passport/facebook')(passport, config);
+var auth			= require('./app/routes/api/auth');
 require('./app/config/passport/google')(passport, config);
 //require('./app/config/passport/instagram')(passport, config);
 
@@ -94,6 +95,37 @@ app.use(passport.session());
 //   / ___ \|  __/| |  |  _ < (_) | |_| | |_  __\__ \
 //  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
 //
+
+
+// app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/facebook'}), users.authCallback);
+/*
+  app.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email', 'user_about_me'],
+    failureRedirect: '/',
+    successRedirect: 'back'
+  }));
+ */
+
+app.get('/api/auth/facebook', 
+	passport.authenticate('facebook', {
+		scope: ['email'],
+    failureRedirect: '/',
+    successRedirect: 'back'
+  })
+);
+
+app.get('/api/auth/facebook/callback', 
+	passport.authenticate('facebook', {failureRedirect: '/facebook'}),
+	auth.loginSuccess
+	//auth.facebookCallback
+	/*
+	function(req, res) {
+		logger.debug("/api/auth/facebook/callback: IN");
+		res.redirect('/');
+	}
+	*/
+);
+
 app.use(require('./app/routes/api/routes'));
 
 
