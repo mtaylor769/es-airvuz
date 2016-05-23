@@ -102,10 +102,10 @@ module.exports = {
       "callbackURL": "http://beta.airvuz.com/auth/google/callback"
     },
 
-    facebook: {
-      clientID: "868675893230044",
-      clientSecret: "916d3bbd7e46d2ff4ae05d173aef4cd7",
-      callbackURL: "http://beta.airvuz.com/auth/facebook/callback"
+    facebook: {			
+      clientID          : "1095635343791580",
+      clientSecret      : "69d81985bac175bc84297fa3b8a1023e",
+      callbackURL       : "http://beta2.airvuz.com/api/auth/facebook/callback"
     },
     linkedIn: {
       clientID: "test",
