@@ -2,6 +2,7 @@
 try {
   var log4js                = require('log4js');
   var logger                = log4js.getLogger('app.persistance.crud.videoCollection');
+  var _                     = require('lodash');
 
   var database              = require('../database/database');
   var VideoCollectionModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.videoCollection'});
@@ -69,8 +70,9 @@ function getVideoAndPopulate(type) {
 
 function createVideoCollection(params) {
   return(new Promise(function(resolve, reject) {
-    return VideoCollectionModel.findOne({user: params.userId, name: params.name}).exec()
+    return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
       .then(function(videoCollection) {
+        console.log(videoCollection);
         if(!videoCollection) {
           var videoCollectionModel = new VideoCollectionModel(params);
           videoCollectionModel.save(function(error, videoCollection) {
@@ -80,6 +82,8 @@ function createVideoCollection(params) {
               resolve(videoCollection);
             }
           });
+        } else {
+          resolve(videoCollection);
         }
       });
     })
@@ -89,6 +93,22 @@ function createVideoCollection(params) {
 
 function getCollectionVideos(userId, name) {
   return VideoCollectionModel.findOne({user: userId, name: name}).populate('videos').exec();
+}
+
+function updateCollection(params) {
+  return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
+    .then(function(videoCollection) {
+      var found = _.find(videoCollection.videos, function(video) {
+        return video === params.video;
+      });
+
+      logger.debug(found);
+      if(found){
+        return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$pull: {videos: params.video}}, {safe: true}).exec();
+      } else {
+        return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$push: {videos: params.video}}, {safe: true, upsert: true}).exec();
+      }
+    })
 }
 
 function addToCollectionVideos(userId, name, video) {
@@ -105,5 +125,6 @@ VideoCollection.prototype.getVideo              = getVideo;
 VideoCollection.prototype.updateVideos          = updateVideos;
 VideoCollection.prototype.getCollectionVideos   = getCollectionVideos;
 VideoCollection.prototype.createVideoCollection = createVideoCollection;
+VideoCollection.prototype.updateCollection      = updateCollection;
 
 module.exports = new VideoCollection();

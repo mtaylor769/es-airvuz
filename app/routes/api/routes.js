@@ -217,6 +217,9 @@ apiRouter.route('/api/staff-pick-videos')
   .get(videoCollection.getVideos('Staff Pick Videos'))
   .put(videoCollection.updateVideo('Staff Pick Videos'));
 
+apiRouter.route('/api/video-collection/update-collection')
+	.post(videoCollection.updateCollectionVideos);
+
 /**
  * /api/upload
  */

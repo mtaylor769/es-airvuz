@@ -6,9 +6,11 @@ try {
 	var BaseModel					= require('./baseModel');
 	var Promise						= require('bluebird');
 	var util							= require('util');
+	var unlock						= require('../../utils/unlockObject');
 	var usersCrud					= require('../../persistence/crud/users');
 	var videoCrud					= require('../../persistence/crud/videos');
 	var categoryCrud 			= require('../../persistence/crud/categoryType');
+	var videoCollection   = require('../../persistence/crud/videoCollection');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -40,23 +42,26 @@ UserProfileModel.prototype.getData = function(params) {
 	.then(function(user) {
 		profileUser = user;
 		dataObject.user = user;
-		return videoCrud.getShowcaseByUser(user._id);
+		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
 	})
-	.then(function(videos) {
-		if(!videos.length) {
-			videos = null;
-		} else {
-			videos.forEach(function(video) {
-				video.title = video.title.substring(0, 48);
-				video.description = video.description.substring(0, 90);
-				if (video.title.length === 48) {
-					video.title = video.title + '...';
-				}
-				if (video.description.length === 90) {
-					video.description = video.description + '...';
-				}
-			});
-		}
+	.then(function(collection) {
+		return videoCollection.getCollectionVideos(dataObject.user._id, 'showcase');
+	})
+		.then(function(videoCollection){
+				var videos = videoCollection.videos;
+				console.log(videos);
+				videos.forEach(function (video) {
+					video = unlock(video);
+					video.isShowcase = true;
+					video.title = video.title.substring(0, 48);
+					video.description = video.description.substring(0, 90);
+					if (video.title.length === 48) {
+						video.title = video.title + '...';
+					}
+					if (video.description.length === 90) {
+						video.description = video.description + '...';
+					}
+				});
 		dataObject.showcase = videos;
 		return categoryCrud.get();
 	})
