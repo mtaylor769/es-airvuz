@@ -12,7 +12,7 @@ switch(window.location.host) {
   default:
     INPUT_BUCKET = 'airvuz-videos-beta-input';
     OUTPUT_BUCKET = 'airvuz-videos-beta';
-    ASSET_BUCKET = 'beta-asset';
+    ASSET_BUCKET = 'airvuz-asset-beta';
 }
 
 module.exports = {

@@ -15,7 +15,7 @@ switch(process.env.NODE_ENV || 'development') {
     INPUT_BUCKET = 'airvuz-videos-beta-input';
     OUTPUT_BUCKET = 'airvuz-videos-beta';
     PIPELINE_ID   = '1452901546045-62g3bq';
-    ASSET_BUCKET  = 'beta-asset';
+    ASSET_BUCKET  = 'airvuz-asset-beta';
     break;
 }
 
