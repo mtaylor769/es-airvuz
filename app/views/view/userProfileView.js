@@ -20,7 +20,8 @@ catch(exception) {
 // IMPORT: END
 
 var IndexView = function(params) {
-	logger.debug("constructor: IN");	
+	logger.debug("constructor: IN");
+	logger.info(params);
 	BaseView.apply(this, arguments);
 	
 	this.model = new UserProfileModel();

@@ -67,9 +67,43 @@ function getVideoAndPopulate(type) {
     });
 }
 
+function createVideoCollection(params) {
+  return(new Promise(function(resolve, reject) {
+    return VideoCollectionModel.findOne({user: params.userId, name: params.name}).exec()
+      .then(function(videoCollection) {
+        if(!videoCollection) {
+          var videoCollectionModel = new VideoCollectionModel(params);
+          videoCollectionModel.save(function(error, videoCollection) {
+            if(error) {
+              reject(error);
+            } else {
+              resolve(videoCollection);
+            }
+          });
+        }
+      });
+    })
+  );
+}
+
+
+function getCollectionVideos(userId, name) {
+  return VideoCollectionModel.findOne({user: userId, name: name}).populate('videos').exec();
+}
+
+function addToCollectionVideos(userId, name, video) {
+  return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$push: {videos: video}}, {safe: true, upsert: true}).exec();
+}
+
+function removeFromCollectionVideos(userId, name, video) {
+  return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: {video}}}, {safe: true}).exec();
+}
+
 VideoCollection.prototype.getFeaturedVideos     = getFeaturedVideos;
 VideoCollection.prototype.getStaffPickVideos    = getStaffPickVideos;
 VideoCollection.prototype.getVideo              = getVideo;
 VideoCollection.prototype.updateVideos          = updateVideos;
+VideoCollection.prototype.getCollectionVideos   = getCollectionVideos;
+VideoCollection.prototype.createVideoCollection = createVideoCollection;
 
 module.exports = new VideoCollection();

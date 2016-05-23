@@ -385,7 +385,7 @@ Videos.prototype.getVideoCount = function(userId) {
 };
 
 Videos.prototype.getTopTwoVideos = function(userId) {
-	return VideoModel.find({userId: userId}).sort({viewCount: -1}).limit(2).exec();
+	return VideoModel.find({userId: userId}).sort({viewCount: -1}).limit(3).exec();
 };
 
 Videos.prototype.upCount = function(video) {

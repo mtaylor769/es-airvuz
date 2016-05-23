@@ -86,7 +86,7 @@
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
                             <button class="btn background-orange border-radius-0 font-white add-button" id="follow">+</button>
-                            <img src="http://airvuz.com{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
+                            <img src="{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
                             <div class="margin-auto t-a-inherit">
                                 <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/userProfile/{user.userName}">{user.userName}</a></p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
