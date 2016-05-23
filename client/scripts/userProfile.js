@@ -1,6 +1,9 @@
 var identity      = require('./services/identity');
 var user          = identity.currentUser || null;
 var userNameCheck = '';
+var Evaporate     = require('evaporate');
+var amazonConfig  = require('./config/amazon.config.client');
+var md5           = require('md5');
   
 var $profilePage  = null;
 var userData      = {};
@@ -43,8 +46,69 @@ function showcaseAdd(videoId, boolean) {
 
 
 function bindEvents() {
+
+  function uploadImage(params) {
+    var evaporate = new Evaporate({
+      signerUrl : '/api/amazon/sign-auth',
+      aws_key   : amazonConfig.ACCESS_KEY,
+      bucket    : amazonConfig.ASSET_BUCKET,
+      aws_url   : 'https://s3-us-west-2.amazonaws.com'
+    });
+
+    evaporate.add({
+      // headers
+      contentType: params.image.type || 'binary/octet-stream',
+      headersCommon: {
+        'Cache-Control': 'max-age=3600'
+      },
+      xAmzHeadersAtInitiate: {
+        'x-amz-acl': 'public-read'
+      },
+      // filename, relative to bucket
+      name: params.fileName,
+      // content
+      file: params.image,
+      // event callbacks
+      complete: params.onComplete,
+      error: onUploadError
+    });
+  }
+  function onProfileImageChange() {
+    var image = this.files[0],
+        hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
+        path = 'users/profile-pictures/';
+
+    uploadImage({
+      image: image,
+      fileName: path + hashName,
+      onComplete: function () {
+        // do request to save hashName to database
+      }
+    });
+  }
+
+  function onCoverImageChange() {
+    var image = this.files[0],
+        hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
+        path = 'users/cover-pictures/';
+
+    uploadImage({
+      image: image,
+      fileName: path + hashName,
+      onComplete: function () {
+        // do request to save hashName to database
+      }
+    });
+  }
+
+  function onUploadError() {
+    alert('Error uploading iamge');
+  }
+
   $('#edit-showcase').on('click', editShowcase);
   $profilePage
+    .on('change', '#profile-image-input', onProfileImageChange)
+    .on('change', '#cover-image-input', onCoverImageChange)
     .on('click', '.asdf', asdf)
     .on('click', '#save-edit-btn', changeProfile)
     .on('click', '#change-password-btn', changePassword);
