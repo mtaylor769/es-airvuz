@@ -96,17 +96,7 @@ app.use(passport.session());
 //  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
 //
 
-
-// app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/facebook'}), users.authCallback);
-/*
-  app.get('/auth/facebook', passport.authenticate('facebook', {
-    scope: ['email', 'user_about_me'],
-    failureRedirect: '/',
-    successRedirect: 'back'
-  }));
- */
-
-app.get('/api/auth/facebook', 
+app.get('/api/auth/facebook',
 	passport.authenticate('facebook', {
 		scope: ['email'],
     failureRedirect: '/',
@@ -114,16 +104,9 @@ app.get('/api/auth/facebook',
   })
 );
 
-app.get('/api/auth/facebook/callback', 
+app.get('/api/auth/facebook/callback',
 	passport.authenticate('facebook', {failureRedirect: '/facebook'}),
-	auth.loginSuccess
-	//auth.facebookCallback
-	/*
-	function(req, res) {
-		logger.debug("/api/auth/facebook/callback: IN");
-		res.redirect('/');
-	}
-	*/
+	auth.facebookCallback
 );
 
 app.use(require('./app/routes/api/routes'));
@@ -239,6 +222,10 @@ app.get("/community", function(req, res) {
 
 app.get("/media", function(req, res) {
 	loadView(req, res, 'media');
+});
+
+app.get("/social-login", function(req, res) {
+	res.sendFile(path.join(__dirname, './client/social-login.html'));
 });
 
 app.listen(process.env.PORT || 80);
