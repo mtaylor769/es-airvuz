@@ -2,17 +2,21 @@
 *
 *
 */
-var identity      = require('./services/identity');
-var user          = identity.currentUser || null;
-var userNameCheck = '';
-var Evaporate     = require('evaporate');
-var amazonConfig  = require('./config/amazon.config.client');
-var md5           = require('md5');
-  
-var $profilePage  = null;
-var userData      = {};
-var allOwnerVideos = [];
-var showcaseOwnerVideos = [];
+
+var Evaporate                 = require('evaporate');
+var AmazonConfig              = require('./config/amazon.config.client');
+var identity                  = require('./services/identity');
+var camera                    = require('./services/camera');
+var drone                     = require('./services/drone');
+var category                  = require('./services/category');
+var user                      = identity.currentUser || null;
+var userNameCheck             = '';
+var amazonConfig              = require('./config/amazon.config.client');
+var md5                       = require('md5');
+var $editVideo                = null;
+var userData                  = {};
+var allOwnerVideos            = [];
+var showcaseOwnerVideos       = [];
 
 /*
 Edit Video Variables
