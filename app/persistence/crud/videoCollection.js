@@ -114,7 +114,7 @@ function addToCollectionVideos(userId, name, video) {
 }
 
 function removeFromCollectionVideos(userId, name, video) {
-  return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: {video}}}, {safe: true}).exec();
+  return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: video}},{safe: true}).exec();
 }
 
 VideoCollection.prototype.getFeaturedVideos     = getFeaturedVideos;

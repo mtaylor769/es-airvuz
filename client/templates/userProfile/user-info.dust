@@ -19,24 +19,24 @@
       <!-- This stuff displays only if not your profile -->
       <div class="profile-options row" role="group">
       <!-- Switch button depending if followed or unfollowed -->
-        <button class="follow-btn btn btn-primary" type="button">Follow</button>
-        <button class="donate-btn btn btn-primary" type="button">Donate</button>
+        <a class="follow-btn btn btn-primary">Follow</a>
+        <a class="donate-btn btn btn-primary" href="{user.donationUrl}" target="_blank">Donate</a>
         
         <button class="hire-btn btn btn-primary" type="button">Hire</button>
         
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
         <!-- Conditional only if user has social media links -->
           {?user.socialMediaLinks.facebookUrl}
-            <span class="fa fa-facebook-square" style="margin-right: 10px"></span>
+            <a class="fa fa-facebook-square" href="{user.socialMediaLinks.facebookUrl}" style="margin-right: 10px"></a>
           {/user.socialMediaLinks.facebookUrl}
           {?user.socialMediaLinks.instagramUrl}
-            <span class="fa fa-instagram" style="margin-right: 10px"></span>
+            <a class="fa fa-instagram" href="{user.socialMediaLinks.instagramUrl}" style="margin-right: 10px"></a>
           {/user.socialMediaLinks.instagramUrl}
           {?user.socialMediaLinks.twitterUrl}
-            <span class="font-white fa fa-twitter-square" style="margin-right: 10px"></span>
+            <a class="font-white fa fa-twitter-square" href="{user.socialMediaLinks.twitterUrl}" style="margin-right: 10px"></a>
           {/user.socialMediaLinks.twitterUrl}
           {?user.socialMediaLinks.googlePlusUrl}
-            <span class="font-white fa fa-google-plus-square"></span>
+            <a class="font-white fa fa-google-plus-square" href="{user.socialMediaLinks.googlePlusUrl}"></a>
           {/user.socialMediaLinks.googlePlusUrl}
         </div>
       </div>
