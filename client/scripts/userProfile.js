@@ -517,48 +517,40 @@ function renderEditVideoHtml(vid) {
   });
 }
 
+function renderAllVideos(html) {
+  $('#allvideos').html(html);
+  $('.sort-owner-all-list')
+    .on('click', '.sort-owner-all-vuz', function(){
+      requestVideoSort('vuz', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-dasc', function(){
+      requestVideoSort('dasc', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-ddesc', function(){
+      requestVideoSort('ddesc', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-likes', function(){
+      requestVideoSort('likes', profileUser._id);
+    });
+}
+
 function renderOwnerAllVideosHtml(videos) {
   ownerAllVideosHtml({videos: videos}, function(err, html) {
-    $('#allvideos').html(html);
-    $('.sort-owner-all-list')
-      .on('click', '.sort-owner-all-vuz', function(){
-        requestVideoSort('vuz', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-dasc', function(){
-        requestVideoSort('dasc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-ddesc', function(){
-        requestVideoSort('ddesc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-likes', function(){
-        requestVideoSort('likes', profileUser._id);
-      });
-    $('.video-options-btn')
-      .on('click', '#edit-video-btn', function(item) {
-        editVideo(item);
-      })
-      .on('click', '#delete-video-btn', function(item) {
-        deleteVideo(item);
-      });
+    renderAllVideos(html);
   });
+  $editVideo = $('#edit-video-modal');
+  $('.video-options-btn')
+    .on('click', '#edit-video-btn', function(item) {
+      editVideo(item);
+    })
+    .on('click', '#delete-video-btn', function(item) {
+      deleteVideo(item);
+    });
 }
 
 function renderUseAllVideosHtml(videos) {
   userAllVideosHtml({videos: videos}, function(err, html) {
-    $('#allvideos').html(html);
-    $('.sort-owner-all-list')
-      .on('click', '.sort-owner-all-vuz', function(){
-        requestVideoSort('vuz', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-dasc', function(){
-        requestVideoSort('dasc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-ddesc', function(){
-        requestVideoSort('ddesc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-likes', function(){
-        requestVideoSort('likes', profileUser._id);
-      });
+    renderAllVideos(html);
   });
 }
 
