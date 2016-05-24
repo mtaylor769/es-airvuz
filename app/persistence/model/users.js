@@ -98,11 +98,13 @@ var usersSchema 		= mongoose.Schema({
 		type: String
 	},
 	
+	/*
 	// Represents a list of social media account tied to this user account.
 	socialMediaAccounts: [{ 
 		type: mongoose.Schema.Types.ObjectId, ref: 'SocialMediaAccount' 
 	}],
-	
+	*/
+ 
 	/* 
 	 *
 	 */
@@ -115,20 +117,20 @@ var usersSchema 		= mongoose.Schema({
 	aboutMe : {
 		type 			: String
 	},
-	socialMediaLinks : {
-		facebookUrl : {
-			type : String
-		},
-		twitterUrl : {
-			type : String
-		},
-		instagramUrl : {
-			type : String
-		},
-		googlePlusUrl : {
-			type : String
+	
+	socialMediaLinks : [
+		{
+			socialType : {
+				required	: true,
+				type			: String,
+				enum			: ['FACEBOOK', "GOOGLE+", "INSTAGRAM", "TWITTER", "VIMEO"]
+			},
+			url : {
+				type : String
+			}
 		}
-	},
+	],
+	
 	version : {
 		default	: "2.0.0",
 		type		: String

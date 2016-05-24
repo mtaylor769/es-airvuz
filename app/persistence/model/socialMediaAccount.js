@@ -3,14 +3,7 @@ var Schema		= mongoose.Schema;
 
 var socialMediaAccountSchema = mongoose.Schema({
 
-	/*
-	 * @type {string}
-	 */
-	provider : {
-		required	: true,
-		type			: String,
-		default		: ['FACEBOOK', "GOOGLE+", "INSTAGRAM", "TWITTER", "VIMEO"]
-	},
+
 	
 	accountData : {},
 
@@ -21,6 +14,19 @@ var socialMediaAccountSchema = mongoose.Schema({
 	accountId   : {
 		required	: true,
 		type			: String
+	},
+	
+	/*
+	 * @type {string}
+	 */
+	provider : {
+		required	: true,
+		type			: String,
+		enum			: ['FACEBOOK', "GOOGLE+", "INSTAGRAM", "TWITTER", "VIMEO"]
+	},
+	
+	userId: { 
+		type: mongoose.Schema.Types.ObjectId, ref: 'Users' 
 	}
 
 });
