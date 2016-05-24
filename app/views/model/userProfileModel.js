@@ -73,17 +73,17 @@ UserProfileModel.prototype.getData = function(params) {
 	})
 	.then(function(videos) {
 		if (videos.length) {
+			videos = unlock(videos);
 			videos.forEach(function(video) {
 				var videoString = JSON.stringify(video._id);
 				var showcaseString = JSON.stringify(dataObject.showcase);
 				var check = showcaseString.indexOf(videoString);
 				if(check !== -1) {
-					video = unlock(video);
 					video.isShowcase = true;
 				} else {
 					video.isShowcase = false
 				}
-				console.log(video.isShowcase);
+				logger.debug(video.isShowcase);
 				video.title = video.title.substring(0, 48);
 				video.description = video.description.substring(0, 90);
 				if(video.title.length === 48) {
@@ -96,7 +96,7 @@ UserProfileModel.prototype.getData = function(params) {
 		} else {
 			videos = null;
 		}
-		console.log(videos);
+		logger.debug(videos);
 		dataObject.videos 									= videos;
 		
 		params.data 												= dataObject;
