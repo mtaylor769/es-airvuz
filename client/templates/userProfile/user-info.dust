@@ -25,10 +25,10 @@
         <button class="hire-btn btn btn-primary" type="button">Hire</button>
         
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
-            <a class="facebook fa fa-facebook-square" style="margin-right: 10px"></a>
-            <a class="instagram fa fa-instagram" style="margin-right: 10px"></a>
-            <a class="twitter font-white fa fa-twitter-square" style="margin-right: 10px"></a>
-            <a class="google font-white fa fa-google-plus-square"></a>
+            <a class="facebook fa fa-facebook-square" target="_blank" style="margin-right: 10px"></a>
+            <a class="instagram fa fa-instagram" target="_blank" style="margin-right: 10px"></a>
+            <a class="twitter font-white fa fa-twitter-square" target="_blank" style="margin-right: 10px"></a>
+            <a class="google font-white fa fa-google-plus-square" target="_blank"></a>
         </div>
       </div>
     </div>

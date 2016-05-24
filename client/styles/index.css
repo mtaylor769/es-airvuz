@@ -955,10 +955,6 @@ Begin userProfile CSS
   margin-left:25px;
 }
 
-.user-social-media a {
-  display: none;
-}
-
 .profile-video .col-xs-6, .col-xs-5 {
   /*padding-right: 0;
   padding-left: 10px;*/

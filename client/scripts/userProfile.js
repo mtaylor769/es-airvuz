@@ -289,7 +289,6 @@ function editProfile() {
   var donateUrl           = $("#donateUrl").val();
   var sendData            = true;
   var errorMsg            = '';
-  var socialMediaLinks    = {};
 
   userData = {
     firstName             : firstName,
@@ -339,7 +338,7 @@ function editProfile() {
 
   userData.socialMediaLinks = [
     {
-      socialType      : 'FACEBOOOK',
+      socialType      : 'FACEBOOK',
       url             : facebook
     },
     {
@@ -671,6 +670,7 @@ function renderUserProfileEdit(profileData) {
       $('#donateUrl').hide();
     }
   });
+  renderSocialMediaLinks();
 }
 
 function renderSocialMediaLinks() {
@@ -678,32 +678,48 @@ function renderSocialMediaLinks() {
   var $editProfile = $('.edit-profile');
   profileUser.socialMediaLinks.forEach(function(account){
     switch (account.socialType) {
-      case 'FACEBOOK' :
+      case "FACEBOOK" :
         if (account.url && account.url !== '') {
-          $socialMedia.find('facebook').show();
+          $socialMedia.find('.facebook')
+            .show()
+            .attr('href', account.url);
           $editProfile.find('#facebook').val(account.url)
+        } else {
+          $socialMedia.find('.facebook').hide();
         }
         break;
       case 'GOOGLE+' :
         if (account.url && account.url !== '') {
-          $socialMedia.find('google').show();
+          $socialMedia.find('.google').show()
+            .show()
+            .attr('href', account.url);
           $editProfile.find('#googleplus').val(account.url);
+        } else {
+          $socialMedia.find('.google').hide();
         }
         break;
       case 'INSTAGRAM' :
         if (account.url && account.url !== '') {
-          $socialMedia.find('instagram').show();
+          $socialMedia.find('.instagram').show()
+            .show()
+            .attr('href', account.url);
           $editProfile.find('#instagram').val(account.url);
+        } else {
+          $socialMedia.find('.instagram').hide();
         }
         break;
       case 'TWITTER' :
         if (account.url && account.url !== '') {
-          $socialMedia.find('twitter').show();
+          $socialMedia.find('.twitter').show()
+            .show()
+            .attr('href', account.url);
           $editProfile.find('#twitter').val(account.url);
+        } else {
+          $socialMedia.find('.twitter').hide();
         }
         break;
-      default: console.log('No social media to display');//nothing happens
-    }
+      default : console.log('nothing happens');
+    };
   });
 }
 
@@ -738,8 +754,6 @@ function initialize() {
   } else {
     $('.hire-btn').hide();
   }
-
-  renderSocialMediaLinks();
   
   if(userNameCheck === profileUser.userName) {
     renderOwnerShowcase(showcaseOwnerVideos);
