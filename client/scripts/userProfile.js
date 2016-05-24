@@ -31,8 +31,8 @@ var okHtml                = '<div class="ok showcase-edit-button"><span class="g
 var notSelectedHtml       = '<div class="not-selected showcase-edit-button"><span class="glyphicon glyphicon-plus"></span></div>';
 var removeHtml            = '<div class="removed showcase-edit-button"><span class="glyphicon glyphicon-minus"></span></div>';
 
+
 function showcaseAdd(videoId) {
-  event.preventDefault();
   console.log(videoId);
   var data = {};
   data.video = videoId;
@@ -43,14 +43,13 @@ function showcaseAdd(videoId) {
     url: '/api/video-collection/update-collection',
     data: data
   })
-  .success(function(response) {
-    console.log('response : ' + response);
-  })
-  .error(function(error) {
-    console.log('error : ' + error);
-  });
+    .success(function(response) {
+      console.log('response : ' + response);
+    })
+    .error(function(error) {
+      console.log('error : ' + error);
+    });
 }
-
 
 function bindEvents() {
 
@@ -132,16 +131,17 @@ function bindEvents() {
   function showcaseButton() {
     console.log('running function');
     var buttonDiv = $(this).parent();
+    var videoId = buttonDiv.attr('data-videoid');
     var status = buttonDiv.attr('data-showcase');
     $(this).remove();
     if(status === 'true') {
       $(buttonDiv).append(removeHtml);
       $(buttonDiv).attr('data-showcase', 'false');
-      //showcaseAdd('', false);
+      showcaseAdd(videoId)
     } else {
       $(buttonDiv).append(okHtml);
       $(buttonDiv).attr('data-showcase', 'true');
-      //showcaseAdd('', true);
+      showcaseAdd(videoId)
     }
   }
 }
@@ -165,8 +165,8 @@ function editShowcase() {
       $(link).append(notSelectedHtml);
     }
   });
-  var a = ($('.showcase')).children();
-  $(a).on('click', function() {
+  var showcase = ($('.showcase')).children();
+  $(showcase).on('click', function() {
     console.log('running function');
     var buttonDiv = $(this).parent();
     console.log(buttonDiv.attr('data-videoid'));

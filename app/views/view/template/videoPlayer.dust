@@ -173,7 +173,7 @@
                                     <div class="up-next-layer">
                                         <a href="{_id}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
                                         <div class="flex up-next-subs">
-                                            <p class="font-white m-l-15"><span class="airvuz-blue">VŪZ</span> {viewCount}</p>
+                                            <p class="font-white m-l-15"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
                                             <p class="font-white pos-absolute-r-15">{duration}</p>
                                         </div>
                                     </div>
