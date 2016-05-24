@@ -23,6 +23,7 @@ Edit Video Variables
  */
 var $uploadModal,
   $tags,
+  $profilePage,
   VIEW_MODEL = {},
   customThumbnailName,
   currentUploadFile = {},
@@ -159,6 +160,29 @@ function bindEvents() {
       showcaseAdd(videoId)
     }
   }
+
+  function onVideoEditClick() {
+    editVideo($(this).data('videoId'));
+  }
+
+  function onVideoDeleteClick() {
+    var video = $(this).parents('.col-md-3');
+
+    deleteVideo($(this).data('videoId'))
+      .then(function () {
+        video.remove();
+      })
+      .fail(function () {
+        $('#error-message-modal')
+          .modal('show')
+          .find('.error-modal-body')
+          .html(error);
+      })
+  }
+
+  $profilePage.find('#allvideos')
+    .on('click', '.btn-edit', onVideoEditClick)
+    .on('click', '.btn-delete', onVideoDeleteClick);
 }
 
 function doneEditShowcase(){
@@ -505,55 +529,42 @@ function showcaseByLikes() {
   sortShowcase('likes', profileUser._id);
 }
 
-function deleteVideo(item) {
-  $('#delete-video-modal')
-    .modal('show')
-    .on('click', '#confirm-delete-video-btn', function(){
-        var vidId = item.toElement.value;
-      event.preventDefault();
+function deleteVideo(videoId) {
+  return $.Deferred(function (defer) {
+    $('#delete-video-modal')
+      .modal('show')
+      .on('click', '#confirm-delete-video-btn', function(){
+        event.preventDefault();
         $.ajax({
           type: 'DELETE',
-          url: '/api/videos/' + vidId
+          url: '/api/videos/' + videoId
         })
           .success(function(data){
-            $('#confirmation-message-modal')
-              .modal('show')
-              .find('.confirm-modal-body')
-              .html('Video has been removed.')
+            defer.resolve(data);
           })
           .error(function(error){
-            $('#error-message-modal')
-              .modal('show')
-              .find('.error-modal-body')
-              .html(error);
-            /********************************************************/
-            console.group('%cerror :', 'color:red;font:strait');
-            console.log(error);
-            console.groupEnd();
-            /********************************************************/
+            defer.reject(error);
           })
-    });
+      });
+  });
 }
 
-function editVideo(item) {
-  var vidId = item.toElement.value;
-  var video = null;
-  profileVideos.forEach((function(vid){
-    if (vid._id === vidId) {
-      video = vid;
-    }
-  }));
+function editVideo(videoId) {
+  var video = $.grep(profileVideos, function (video) {
+    return video._id === videoId;
+  });
+
   renderEditVideoHtml(video);
 }
 
-function renderEditVideoHtml(vid) {
-  videoInfo({video: vid}, function(err, html){
+function renderEditVideoHtml(video) {
+  videoInfo({video: video}, function(err, html){
     $('#edit-video-content')
       .html(html);
     $('#edit-video-modal')
       .modal('show')
       .on('click', '#btn-save-video-edit', function(){
-        saveVideoEdit(vid);
+        saveVideoEdit(video);
       })
       .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
   });
@@ -638,14 +649,6 @@ function renderOwnerAllVideosHtml(videos) {
   ownerAllVideosHtml({videos: videos}, function(err, html) {
     renderAllVideos(html);
   });
-  $editVideo = $('#edit-video-modal');
-  $('.video-options-btn')
-    .on('click', '#edit-video-btn', function(item) {
-      editVideo(item);
-    })
-    .on('click', '#delete-video-btn', function(item) {
-      deleteVideo(item);
-    });
 }
 
 function renderUseAllVideosHtml(videos) {

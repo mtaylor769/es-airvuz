@@ -34,12 +34,9 @@
                             <a href="/userProfile/{userId.userName}" tabindex="0">{userId.userName}</a>
                         </p>
                     </div>
-                    
-                    <div class="row m-t-10 video-options-btn">
-                        <div class="col-sm-12 hidden-xs">
-                            <button value="{_id}" class="btn btn-primary" id="edit-video-btn" style="margin-right:4px;">Edit</button>
-                            <button value="{_id}" class="btn btn-default" id="delete-video-btn">Delete</button>
-                        </div>
+                    <div class="m-t-10 hidden-xs">
+                        <a data-video-id="{_id}" class="btn btn-primary btn-edit">Edit</a>
+                        <a data-video-id="{_id}" class="btn btn-default btn-delete">Delete</a>
                     </div>
                 </div>
                 <div class="col-xs-1 visible-xs">
