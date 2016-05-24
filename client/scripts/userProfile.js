@@ -27,19 +27,20 @@ var aboutMe               = require('../templates/userProfile/about.dust');
 var userInfo              = require('../templates/userProfile/user-info.dust');
 var videoInfo             = require('../templates/userProfile/edit-video.dust');
 
-var okHtml                = '<div class="ok asdf"><span class="glyphicon glyphicon-ok"></span></div>';
-var notSelectedHtml       = '<div class="not-selected asdf"><span class="glyphicon glyphicon-plus"></span></div>';
-var removeHtml            = '<div class="removed asdf"><span class="glyphicon glyphicon-minus"></span></div>';
+var okHtml                = '<div class="ok showcase-edit-button"><span class="glyphicon glyphicon-ok"></span></div>';
+var notSelectedHtml       = '<div class="not-selected showcase-edit-button"><span class="glyphicon glyphicon-plus"></span></div>';
+var removeHtml            = '<div class="removed showcase-edit-button"><span class="glyphicon glyphicon-minus"></span></div>';
 
-function showcaseAdd(videoId, boolean) {
+function showcaseAdd(videoId) {
   event.preventDefault();
+  console.log(videoId);
   var data = {};
-  data.id = videoId;
-  data.isShowcase = boolean;
-  console.log(data);
+  data.video = videoId;
+  data.user = user._id;
+
   $.ajax({
     type: 'POST',
-    url: '/api/videos/showcase-update',
+    url: '/api/video-collection/update-collection',
     data: data
   })
   .success(function(response) {
@@ -116,7 +117,7 @@ function bindEvents() {
   $profilePage
     .on('change', '#profile-image-input', onProfileImageChange)
     .on('change', '#cover-image-input', onCoverImageChange)
-    .on('click', '.asdf', asdf)
+    .on('click', '.showcase-edit-button', showcaseButton)
     .on('click', '#save-edit-btn', changeProfile)
     .on('click', '#change-password-btn', changePassword);
 
@@ -128,7 +129,7 @@ function bindEvents() {
       }
     });
 
-  function asdf() {
+  function showcaseButton() {
     console.log('running function');
     var buttonDiv = $(this).parent();
     var status = buttonDiv.attr('data-showcase');
@@ -146,7 +147,7 @@ function bindEvents() {
 }
 
 function doneEditShowcase(){
-  $('.asdf').hide();
+  $('.showcase-edit-button').hide();
   $('.edit-showcase-btn').toggle();
   $('.edit-done-btn').toggle();
   $('#edit-showcase').on('click', editShowcase);
@@ -168,17 +169,18 @@ function editShowcase() {
   $(a).on('click', function() {
     console.log('running function');
     var buttonDiv = $(this).parent();
+    console.log(buttonDiv.attr('data-videoid'));
     var videoId = buttonDiv.attr('data-videoid');
     var status = buttonDiv.attr('data-showcase');
     $(this).remove();
     if(status === 'true') {
       $(buttonDiv).append(removeHtml);
       $(buttonDiv).attr('data-showcase', 'false');
-      showcaseAdd(videoId, false);
+      showcaseAdd(videoId);
     } else {
       $(buttonDiv).append(okHtml);
       $(buttonDiv).attr('data-showcase', 'true');
-      showcaseAdd(videoId, true);
+      showcaseAdd(videoId);
     }
   });
 

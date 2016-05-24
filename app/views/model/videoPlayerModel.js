@@ -63,10 +63,16 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(user) {
 			if(user.profilePicture.length === 0) {
-				user.profilePicture = "/assets/img/default.png";
+				user.profilePicture = "http://airvuz.com/assets/img/default.png";
+			} else if(user.profilePicture.indexOf('http') !== -1) {
+				user.profilePicture = user.profilePicture;
+			} else {
+				user.profilePicture = 'http://airvuz.com' + user.profilePicture;
 			}
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
+
+			// TODO: need to refactor for algorithm
 			return videoCrud.get5Videos();
 		})
 		.then(function(videos) {
@@ -88,10 +94,16 @@ VideoPlayerModel.prototype.getData = function(params) {
 			dataObject.videoCount = videoCount;
 			return videoCrud.getTopTwoVideos(checkObject.user);
 			})
-		.then(function(topTwoVideos) {
+		.then(function(topThreeVideos) {
+			var topVideos = [];
+			topThreeVideos.forEach(function(video) {
+				if(video._id !== videoId) {
+					topVideos.push(video);
+				}
+			});
 			dataObject.topTwoVideos = {};
-			dataObject.topTwoVideos.videoOne = topTwoVideos[0];
-			dataObject.topTwoVideos.videoTwo = topTwoVideos[1];
+			dataObject.topTwoVideos.videoOne = topVideos[0];
+			dataObject.topTwoVideos.videoTwo = topVideos[1];
 			return followCrud.followCount(checkObject.user);
 		})
 		.then(function(followCount) {
