@@ -25,19 +25,10 @@
         <button class="hire-btn btn btn-primary" type="button">Hire</button>
         
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
-        <!-- Conditional only if user has social media links -->
-          {?user.socialMediaLinks.facebookUrl}
-            <a class="fa fa-facebook-square" href="{user.socialMediaLinks.facebookUrl}" style="margin-right: 10px"></a>
-          {/user.socialMediaLinks.facebookUrl}
-          {?user.socialMediaLinks.instagramUrl}
-            <a class="fa fa-instagram" href="{user.socialMediaLinks.instagramUrl}" style="margin-right: 10px"></a>
-          {/user.socialMediaLinks.instagramUrl}
-          {?user.socialMediaLinks.twitterUrl}
-            <a class="font-white fa fa-twitter-square" href="{user.socialMediaLinks.twitterUrl}" style="margin-right: 10px"></a>
-          {/user.socialMediaLinks.twitterUrl}
-          {?user.socialMediaLinks.googlePlusUrl}
-            <a class="font-white fa fa-google-plus-square" href="{user.socialMediaLinks.googlePlusUrl}"></a>
-          {/user.socialMediaLinks.googlePlusUrl}
+            <a class="facebook fa fa-facebook-square" style="margin-right: 10px"></a>
+            <a class="instagram fa fa-instagram" style="margin-right: 10px"></a>
+            <a class="twitter font-white fa fa-twitter-square" style="margin-right: 10px"></a>
+            <a class="google font-white fa fa-google-plus-square"></a>
         </div>
       </div>
     </div>

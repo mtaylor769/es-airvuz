@@ -289,22 +289,21 @@ function editProfile() {
   var donateUrl           = $("#donateUrl").val();
   var sendData            = true;
   var errorMsg            = '';
+  var socialMediaLinks    = {};
 
-  if (userName && userName !== '' && userName !== profileUser.userName) {
+  userData = {
+    firstName             : firstName,
+    lastName              : lastName,
+    aboutMe               : myAbout,
+    allowDonation         : allowDonation,
+    allowHire             : allowHire
+  }
+
+  if (userName && userName !== profileUser.userName) {
     userData.userName = userName;
   }
-  if (emailAddress && emailAddress !== '' && emailAddress !== profileUser.emailAddress) {
+  if (emailAddress && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
-  }
-
-  if (firstName && firstName !== '' && firstName !== profileUser.firstName) {
-    userData.firstName = firstName;
-  }
-  if (lastName && lastName !== '' && lastName !== profileUser.lastName) {
-    userData.lastName = lastName;
-  }
-  if (myAbout && myAbout !== '' && myAbout !== profileUser.aboutMe) {
-    userData.aboutMe = myAbout;
   }
 
   if (donateUrl && donateUrl !== '') {
@@ -338,41 +337,24 @@ function editProfile() {
     }
   }
 
-  if (profileUser.socialMediaLinks) {
-    if (facebook && facebook !== profileUser.socialMediaLinks.facebookUrl) {
-      userData.socialMediaLinks.facebookUrl = facebook;
+  userData.socialMediaLinks = [
+    {
+      socialType      : 'FACEBOOOK',
+      url             : facebook
+    },
+    {
+      socialType      : 'GOOGLE+',
+      url             : googleplus
+    },{
+      socialType      : 'INSTAGRAM',
+      url             : instagram
+    },{
+      socialType      : 'TWITTER',
+      url             : twitter
     }
-    if (googleplus && googleplus !== profileUser.socialMediaLinks.googlePlusUrl ) {
-      userData.socialMediaLinks.googlePlusUrl = googleplus;
-    }
-    if (twitter && twitter !== profileUser.socialMediaLinks.twitterUrl) {
-      userData.socialMediaLinks.twitterUrl = twitter;
-    }
-    if (instagram && instagram !== profileUser.socialMediaLinks.instagramUrl) {
-      userData.socialMediaLinks.instagramUrl = instagram;
-    }
-  } else {
-    userData.socialMediaLinks = {};
-    if (facebook) {
-      userData.socialMediaLinks.facebookUrl = facebook;
-    }
-    if (googleplus) {
-      userData.socialMediaLinks.googlePlusUrl = googleplus;
-    }
-    if (twitter) {
-      userData.socialMediaLinks.twitterUrl = twitter;
-    }
-    if (instagram) {
-      userData.socialMediaLinks.instagramUrl = instagram;
-    }
-  }
+  ]
 
-  if (allowDonation !== profileUser.allowDonation) {
-    userData.allowDonation = allowDonation;
-  }
-  if (allowHire !== profileUser.allowHire) {
-    userData.allowHire     = allowHire;
-  }
+
 
   if (allowDonation) {
     $('.donate-btn').show();
@@ -393,13 +375,17 @@ function editProfile() {
       data: JSON.stringify(userData),
       contentType : 'application/json'
     })
-      .success(function(response) {
-        user = response;
-        $('#save-changes').modal('hide');
-        $('#confirmation-message-modal')
-          .modal('show')
-          .find('.confirm-modal-body')
-          .html('Changes have been saved.');
+      .done(function(response) {
+        if (response.statusCode === 500) {
+          //handle error
+        } else {
+          user = response;
+          $('#save-changes').modal('hide');
+          $('#confirmation-message-modal')
+            .modal('show')
+            .find('.confirm-modal-body')
+            .html('Changes have been saved.');
+        }
       })
       .error(function(error) {
         $('#save-changes').modal('hide');
@@ -687,6 +673,40 @@ function renderUserProfileEdit(profileData) {
   });
 }
 
+function renderSocialMediaLinks() {
+  var $socialMedia = $('.user-social-media');
+  var $editProfile = $('.edit-profile');
+  profileUser.socialMediaLinks.forEach(function(account){
+    switch (account.socialType) {
+      case 'FACEBOOK' :
+        if (account.url && account.url !== '') {
+          $socialMedia.find('facebook').show();
+          $editProfile.find('#facebook').val(account.url)
+        }
+        break;
+      case 'GOOGLE+' :
+        if (account.url && account.url !== '') {
+          $socialMedia.find('google').show();
+          $editProfile.find('#googleplus').val(account.url);
+        }
+        break;
+      case 'INSTAGRAM' :
+        if (account.url && account.url !== '') {
+          $socialMedia.find('instagram').show();
+          $editProfile.find('#instagram').val(account.url);
+        }
+        break;
+      case 'TWITTER' :
+        if (account.url && account.url !== '') {
+          $socialMedia.find('twitter').show();
+          $editProfile.find('#twitter').val(account.url);
+        }
+        break;
+      default: console.log('No social media to display');//nothing happens
+    }
+  });
+}
+
 function initialize() {
   /*
   *Null check on page dependent variables:
@@ -719,6 +739,8 @@ function initialize() {
     $('.hire-btn').hide();
   }
 
+  renderSocialMediaLinks();
+  
   if(userNameCheck === profileUser.userName) {
     renderOwnerShowcase(showcaseOwnerVideos);
     ownerShowcase({videos: showcaseOwnerVideos}, function (err, html) {

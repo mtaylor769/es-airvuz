@@ -3,7 +3,7 @@
       <strong>Edit Profile</strong>
     </div>
     {#user}
-      <form style="margin-top: 20px;">
+      <form class="edit-profile" style="margin-top: 20px;">
 
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
@@ -24,22 +24,22 @@
           </div>
           <div class="form-group">
             <label for="facebook">Facebook Link</label>
-            <input type="text" class="form-control" id="facebook" value="{socialMediaLinks.facebookUrl}" placeholder="Facebook Url">
+            <input type="text" class="form-control socialMediaLink" id="facebook" placeholder="Facebook Url">
           </div>
 
           <div class="form-group">
             <label for="twitter">Twitter Link</label>
-            <input type="text" class="form-control" id="twitter" value="{socialMediaLinks.twitterUrl}" placeholder="Twitter Url">
+            <input type="text" class="form-control socialMediaLink" id="twitter" placeholder="Twitter Url">
           </div>
 
           <div class="form-group">
             <label for="instagram">Instagram Link</label>
-            <input type="text" class="form-control" id="instagram" value="{socialMediaLinks.instagramUrl}" placeholder="Instagram Url">
+            <input type="text" class="form-control socialMediaLink" id="instagram" placeholder="Instagram Url">
           </div>
 
           <div class="form-group">
             <label for="googleplus">Google+ Link</label>
-            <input type="text" class="form-control" id="googleplus" value="{socialMediaLinks.googleUrl}" placeholder="Google+ Url">
+            <input type="text" class="form-control socialMediaLink" id="googleplus" placeholder="Google+ Url">
           </div>
         </div>
         

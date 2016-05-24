@@ -604,13 +604,12 @@ users.prototype.update = function (id, params) {
 				console.log('******************** params ********************');
 				console.log(params);
 				console.log('************************************************');
-				UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
+				UserModel.findByIdAndUpdate(id, params, {new: true}).populate('SocialMediaLinks').exec()
 				.then(function(user) {
 					if (user._doc.password) {
 						user._doc.password = null;
 					}
-					//resolve(user);
-					resolve(null);
+					resolve(user);
 					return;
 				});
 			}
