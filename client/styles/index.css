@@ -939,6 +939,18 @@ Begin userProfile CSS
   opacity: 0;
 }
 
+#user-profile .error-modal-body {
+  color: red;
+  font-size:25px;
+  margin-left:25px;
+}
+
+#user-profile .confirm-modal-body {
+  color: blue;
+  font-size:25px;
+  margin-left:25px;
+}
+
 .profile-video .col-xs-6, .col-xs-5 {
   /*padding-right: 0;
   padding-left: 10px;*/

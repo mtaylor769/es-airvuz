@@ -24,22 +24,22 @@
           </div>
           <div class="form-group">
             <label for="facebook">Facebook Link</label>
-            <input type="text" class="form-control" id="facebook" value="{facebookUrl}" placeholder="Facebook Url">
+            <input type="text" class="form-control" id="facebook" value="{socialMediaLinks.facebookUrl}" placeholder="Facebook Url">
           </div>
 
           <div class="form-group">
             <label for="twitter">Twitter Link</label>
-            <input type="text" class="form-control" id="twitter" value="{twitterUrl}" placeholder="Twitter Url">
+            <input type="text" class="form-control" id="twitter" value="{socialMediaLinks.twitterUrl}" placeholder="Twitter Url">
           </div>
 
           <div class="form-group">
             <label for="instagram">Instagram Link</label>
-            <input type="text" class="form-control" id="instagram" value="{instagramUrl}" placeholder="Instagram Url">
+            <input type="text" class="form-control" id="instagram" value="{socialMediaLinks.instagramUrl}" placeholder="Instagram Url">
           </div>
 
           <div class="form-group">
             <label for="googleplus">Google+ Link</label>
-            <input type="text" class="form-control" id="googleplus" value="{googleUrl}" placeholder="Google+ Url">
+            <input type="text" class="form-control" id="googleplus" value="{socialMediaLinks.googleUrl}" placeholder="Google+ Url">
           </div>
         </div>
         
@@ -59,7 +59,7 @@
           <div class="form-group">
             <div class="row" style="margin-left:0;">
               <input type="checkbox" id="donate" {?allowDonation}checked{/allowDonation}><label for="donate">&nbsp;&nbsp;Donate </label>
-              <input type="text" class="donateUrl" id="donateUrl" value="{donateUrl}" placeholder="Donate Url">
+              <input type="text" class="donateUrl" id="donateUrl" value="{donationUrl}" placeholder="Donate Url">
             </div>
             <div class="row" style="margin-left:0;">
               <input type="checkbox" id="hire" {?allowHire}checked{/allowHire}><label for="hire-">&nbsp;&nbsp;Hire </label>

@@ -2,18 +2,31 @@
 *
 *
 */
-var identity      = require('./services/identity');
-var user          = identity.currentUser || null;
-var userNameCheck = '';
-var Evaporate     = require('evaporate');
-var amazonConfig  = require('./config/amazon.config.client');
-var md5           = require('md5');
-  
-var $profilePage  = null;
-var userData      = {};
-var allOwnerVideos = [];
-var showcaseOwnerVideos = [];
 
+var Evaporate                 = require('evaporate');
+var AmazonConfig              = require('./config/amazon.config.client');
+var identity                  = require('./services/identity');
+var camera                    = require('./services/camera');
+var drone                     = require('./services/drone');
+var category                  = require('./services/category');
+var user                      = identity.currentUser || null;
+var userNameCheck             = '';
+var amazonConfig              = require('./config/amazon.config.client');
+var md5                       = require('md5');
+var $editVideo                = null;
+var userData                  = {};
+var allOwnerVideos            = [];
+var showcaseOwnerVideos       = [];
+
+/*
+Edit Video Variables
+ */
+var $uploadModal,
+  $tags,
+  VIEW_MODEL = {},
+  customThumbnailName,
+  currentUploadFile = {},
+  isCustomThumbnail = false;
 
 /*
 * Templates
@@ -107,9 +120,11 @@ function bindEvents() {
     });
   }
 
-  //TODO throw modal with error message
   function onUploadError() {
-    alert('Error uploading iamge');
+    $('#error-message-modal')
+      .modal('show')
+      .find('.error-modal-body')
+      .html('Error uploading iamge');
   }
 
   $('#edit-showcase').on('click', editShowcase);
@@ -236,7 +251,6 @@ function changeProfile() {
 }
 
 function editProfile() {
-  event.preventDefault();
   var userName            = $("#username").val();
   var emailAddress        = $("#email").val();
   var myAbout             = $("#aboutme").val();
@@ -249,6 +263,8 @@ function editProfile() {
   var allowHire           = $("#hire").prop('checked');
   var allowDonation       = $("#donate").prop('checked');
   var donateUrl           = $("#donateUrl").val();
+  var sendData            = true;
+  var errorMsg            = '';
 
   if (userName && userName !== '' && userName !== profileUser.userName) {
     userData.userName = userName;
@@ -276,12 +292,12 @@ function editProfile() {
       check = paypal.indexOf('paypal');
     }
     if (check == -1 && (typeof(paypal) !== 'undefined') && paypal !== null) {
-      //$scope.payCheck = true;
-      console.log('test1');
+      errorMsg = 'Invalid donation URL';
+      sendData = false;
       //this means the url does not contain the word paypal
     } else if ((allowPp === true) && (typeof(paypal) == 'undefined' || paypal === null)) {
-      //$scope.payCheck = true;
-      console.log('test2');
+      errorMsg = 'Invalid donation URL';
+      sendData = false;
       //this means the url is not valid
     } else {
       if (typeof(paypal) !== 'undefined' && paypal !== null) {
@@ -289,8 +305,11 @@ function editProfile() {
         var check3 = paypal.indexOf('https://');
         if (check2 && check3 < 0) {
           paypal = 'https://' + paypal;
-          userData.donateUrl = paypal;
+          userData.donationUrl = paypal;
         }
+      } else {
+        errorMsg = 'Invalid donation URL';
+        sendData = false;
       }
     }
   }
@@ -300,7 +319,7 @@ function editProfile() {
       userData.socialMediaLinks.facebookUrl = facebook;
     }
     if (googleplus && googleplus !== profileUser.socialMediaLinks.googlePlusUrl ) {
-      userData.socialMediaLinks.googlePlusUrl = google;
+      userData.socialMediaLinks.googlePlusUrl = googleplus;
     }
     if (twitter && twitter !== profileUser.socialMediaLinks.twitterUrl) {
       userData.socialMediaLinks.twitterUrl = twitter;
@@ -314,7 +333,7 @@ function editProfile() {
       userData.socialMediaLinks.facebookUrl = facebook;
     }
     if (googleplus) {
-      userData.socialMediaLinks.googlePlusUrl = google;
+      userData.socialMediaLinks.googlePlusUrl = googleplus;
     }
     if (twitter) {
       userData.socialMediaLinks.twitterUrl = twitter;
@@ -342,41 +361,84 @@ function editProfile() {
   } else {
     $('.hire-btn').hide();
   }
-  
-  $.ajax({
-    type:'PUT',
-    url: '/api/users/' + user._id,
-    data: userData
-  })
-  .success(function(response) {
-    user = response;
+
+  if (sendData) {
+    $.ajax({
+      type:'PUT',
+      url: '/api/users/' + user._id,
+      data: JSON.stringify(userData),
+      contentType : 'application/json'
+    })
+      .success(function(response) {
+        user = response;
+        $('#save-changes').modal('hide');
+        $('#confirmation-message-modal')
+          .modal('show')
+          .find('.confirm-modal-body')
+          .html('Changes have been saved.');
+      })
+      .error(function(error) {
+        $('#save-changes').modal('hide');
+        $('#error-message-modal')
+          .modal('show')
+          .find('.error-modal-body')
+          .html(error);
+      });
+  } else {
     $('#save-changes').modal('hide');
-  })
-  .error(function(error) {
-    console.log('error from serverside');
-    $('#save-changes').modal('hide');
-  });
+    $('#error-message-modal')
+      .modal('show')
+      .find('.error-modal-body')
+      .html(errorMsg);
+  }
+
 }
 
 function saveVideoEdit(vid) {
-  event.preventDefault();
+
   var params = {
+    _id                    : vid._id,
     title                 : $('#title').val(),
     location              : $('#location').val(),
-    tags                  : $('#tags').val(),
+    //tags                  : $('#tags').val(),
     description           : $('#description').html(),
-    category              : ('#category-list li').map(function (index, li) {
-                              return $(li).data('id');
-                            }).toArray(),
-    droneType             : $('#drone-type').val(),
-    cameraType            : $('#camera-type').val()
+    //category              : ('#category-list li').map(function (index, li) {
+                              //return $(li).data('id');
+                            //}).toArray(),
+    //droneType             : $('#drone-type').val(),
+    //cameraType            : $('#camera-type').val(),
+    //thumbnailPath         : currentUploadFile.thumbnailPath,
+    isCustomThumbnail     : true //isCustomThumbnail
+    //customThumbnail       : customThumbnailName
   }
 
   if ($('#tags').val()) {
     params.tags = $('#tags').val().split(',');
   }
 
-  //TODO send data to backend to save
+  $.ajax({
+    url         : '/api/videos/'+params.id,
+    contentType : 'application/json',
+    type        : 'PUT',
+    data        : JSON.stringify(params)
+  }).success(function (video) {
+    $('#confirmation-message-modal')
+      .modal('show')
+      .find('.confirm-modal-body')
+      .html('Changes to ' + video.title + ' have been saved.');
+    /********************************************************/
+    console.group('%cvideo :', 'color:red;font:strait');
+    console.log(video);
+    console.groupEnd();
+    /********************************************************/;
+    location.reload();
+  })
+    .error(function(error){
+      $('#error-message-modal')
+        .modal('show')
+        .find('.error-modal-body')
+        .html(error);
+    });
 }
 
 function requestVideoSort(sortBy, id) {
@@ -454,9 +516,16 @@ function deleteVideo(item) {
           url: '/api/videos/' + vidId
         })
           .success(function(data){
-
+            $('#confirmation-message-modal')
+              .modal('show')
+              .find('.confirm-modal-body')
+              .html('Video has been removed.')
           })
           .error(function(error){
+            $('#error-message-modal')
+              .modal('show')
+              .find('.error-modal-body')
+              .html(error);
             /********************************************************/
             console.group('%cerror :', 'color:red;font:strait');
             console.log(error);
@@ -485,52 +554,103 @@ function renderEditVideoHtml(vid) {
       .modal('show')
       .on('click', '#btn-save-video-edit', function(){
         saveVideoEdit(vid);
-      });
+      })
+      .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
   });
+  $uploadModal = $('edit-video-content');
+
+}
+
+function onCustomFileChange() {
+  var customThumbnailFile = this.files[0];
+
+  $uploadModal.find('.custom-thumbnail-display').css('background-image', 'none');
+  $uploadModal.find('#custom-thumbnail-section .fa').removeClass('hidden');
+
+  var evaporate = new Evaporate({
+    signerUrl : '/api/amazon/sign-auth',
+    aws_key   : AmazonConfig.ACCESS_KEY,
+    bucket    : AmazonConfig.TEMP_BUCKET,
+    aws_url   : 'https://s3-us-west-2.amazonaws.com'
+  });
+
+  // add Date.now() incase the user reupload again.
+  // without it the image won't change or reload because it is the same name
+  customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1];
+
+  evaporate.add({
+    // headers
+    contentType: customThumbnailFile.type || 'binary/octet-stream',
+    headersCommon: {
+      'Cache-Control': 'max-age=3600'
+    },
+    xAmzHeadersAtInitiate: {
+      'x-amz-acl': 'public-read'
+    },
+    // filename, relative to bucket
+    name: customThumbnailName,
+    // content
+    file: customThumbnailFile,
+    // event callbacks
+    complete: function () {
+      onCustomThumbnailUploadComplete(customThumbnailName);
+    },
+    error: onUploadError
+  });
+}
+
+function onCustomThumbnailClick(event) {
+  event.preventDefault();
+  $uploadModal.find('#custom-thumbnail').addClass('hidden');
+  $uploadModal.find('#custom-thumbnail-section').removeClass('hidden');
+  $uploadModal.find('#thumbnails').addClass('hidden');
+  isCustomThumbnail = true;
+}
+
+// function onThumbnailSelect() {
+//   $(this)
+//     .addClass('active')
+//     .parent()
+//     .find('li.active')
+//     .not(this).removeClass('active');
+//
+//   currentUploadFile.thumbnailPath = $(this).data('url');
+// }
+
+function renderAllVideos(html) {
+  $('#allvideos').html(html);
+  $('.sort-owner-all-list')
+    .on('click', '.sort-owner-all-vuz', function(){
+      requestVideoSort('vuz', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-dasc', function(){
+      requestVideoSort('dasc', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-ddesc', function(){
+      requestVideoSort('ddesc', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-likes', function(){
+      requestVideoSort('likes', profileUser._id);
+    });
 }
 
 function renderOwnerAllVideosHtml(videos) {
   ownerAllVideosHtml({videos: videos}, function(err, html) {
-    $('#allvideos').html(html);
-    $('.sort-owner-all-list')
-      .on('click', '.sort-owner-all-vuz', function(){
-        requestVideoSort('vuz', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-dasc', function(){
-        requestVideoSort('dasc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-ddesc', function(){
-        requestVideoSort('ddesc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-likes', function(){
-        requestVideoSort('likes', profileUser._id);
-      });
-    $('.video-options-btn')
-      .on('click', '#edit-video-btn', function(item) {
-        editVideo(item);
-      })
-      .on('click', '#delete-video-btn', function(item) {
-        deleteVideo(item);
-      });
+    renderAllVideos(html);
   });
+  $editVideo = $('#edit-video-modal');
+  $('.video-options-btn')
+    .on('click', '#edit-video-btn', function(item) {
+      editVideo(item);
+    })
+    .on('click', '#delete-video-btn', function(item) {
+      deleteVideo(item);
+    });
 }
 
 function renderUseAllVideosHtml(videos) {
   userAllVideosHtml({videos: videos}, function(err, html) {
-    $('#allvideos').html(html);
-    $('.sort-owner-all-list')
-      .on('click', '.sort-owner-all-vuz', function(){
-        requestVideoSort('vuz', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-dasc', function(){
-        requestVideoSort('dasc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-ddesc', function(){
-        requestVideoSort('ddesc', profileUser._id);
-      })
-      .on('click', '.sort-owner-all-likes', function(){
-        requestVideoSort('likes', profileUser._id);
-      });
+    renderAllVideos(html);
   });
 }
 

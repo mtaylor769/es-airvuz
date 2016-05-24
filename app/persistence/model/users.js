@@ -49,8 +49,14 @@ var usersSchema 		= mongoose.Schema({
 	 */
 	coverPicture : {
 		type: String
-	},		
-		
+	},
+/*
+* The users donation URL
+* */
+	donationUrl : {
+		type: String
+	},
+
 	// The users email address
 	emailAddress : {
 		required	: false,
