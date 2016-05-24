@@ -75,10 +75,10 @@ var usersSchema 		= mongoose.Schema({
     type : String
   },
 	
-	isSuspended : {
-		default		: false,
-		required	: true,
-		type			: Boolean
+	status : {
+		type: string,
+		default: 'email-confirm',
+		enum: ['active', 'email-confirm', 'suspended']
 	},
 	isSubscribeAirVuzNews: {
 		default		: false,
