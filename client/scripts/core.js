@@ -11,6 +11,39 @@ var $loginModal,
     $headerProfile,
     $footerSub1;
 
+
+//////////////////////////////////////////////////////
+
+//documentation for error message setup
+
+// var errors = errorMessage.getErrorMessage({
+//   statusCode			: "400",
+//   errorId					: "VALIDA1000",
+//   templateParams	: {
+//     name : "userName"
+//   },
+//   sourceError		: '#username',
+//   displayMsg			: "Username already exists",
+//   errorMessage		: "Username already exists",
+//   sourceLocation	: sourceLocation
+// });
+
+function appendErrorMessage(errorArray) {
+  errorArray.forEach(function(error) {
+    var inputId = $(error.sourceError);
+    console.log(inputId);
+    var errorMessage = error.displayMsg;
+    var html = '<div class="error text-danger m-t-5">' + errorMessage + '</div>';
+    inputId.parent().append(html);
+  })
+}
+
+function removeErrorMessage() {
+  $('.error').remove();
+}
+
+///////////////////////////////////////////////////////
+
 function renderProfileHeader() {
   // TODO: switch awsAssetUrl to amazonConfig.ASSET_URL + 'users/profile-pictures'
   var awsAssetUrl = '//s3-us-west-2.amazonaws.com/airvuz-asset/users/profile-pictures';
@@ -68,11 +101,35 @@ function bindEvents() {
   });
 
   $loginModal.on('click', '#signup-btn', function () {
-    var emailAddress = $loginModal.find('.email-input:visible').val();
-    var password = $loginModal.find('.password-input:visible').val();
+    removeErrorMessage();
+    //ajax object
+    var newUserObject = {};
+
+    // modal values
+    var emailAddress = $loginModal.find('#email:visible').val();
+    var username = $loginModal.find('#username:visible').val();
+    var password = $loginModal.find('#password:visible').val();
+    var confirmPassword = $loginModal.find('#confirm-password:visible').val();
     var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val();
 
-    // TODO: signup user
+    //setting object equal to modal values
+    newUserObject.email = emailAddress;
+    newUserObject.username = username;
+    newUserObject.password = password;
+    newUserObject.confirmPassword = confirmPassword;
+    
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/create',
+      data: newUserObject
+    })
+      .done(function(response) {
+        console.log(response);
+        appendErrorMessage(response);
+      })
+      .error(function(error) {
+        console.log(error);
+      })
   });
 
   $header.on('click', '.av-search a', function (event) {

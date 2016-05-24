@@ -62,7 +62,8 @@ function createUser(req, res) {
     userParams = {
       emailAddress            : req.body.email,
       userName                : req.body.username,
-      password                : req.body.password
+      password                : req.body.password,
+      confirmPassword         : req.body.confirmPassword
     };
   }
   
@@ -70,7 +71,10 @@ function createUser(req, res) {
     .create(userParams)
     .then(function(user){
       res.redirect('/login');
-    });
+    })
+    .catch(function(error) {
+      res.send(error)
+    })
 }
 
 function put(req, res) {

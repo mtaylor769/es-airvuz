@@ -144,7 +144,7 @@
                                             <span style="font-size: 10px; margin-left: 2px">reply</span>
                                         </div>
                                         <div class="col-xs-3 col-md-2 commentReplies" value="{_id}">
-                                            <span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;">replies <a>{replyCount}</a></span>
+                                            <span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;"><a>replies {replyCount}</a></span>
                                         </div>
                                     </div>
                                 </div>

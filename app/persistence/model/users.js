@@ -76,7 +76,7 @@ var usersSchema 		= mongoose.Schema({
   },
 	
 	status : {
-		type: string,
+		type: String,
 		default: 'email-confirm',
 		enum: ['active', 'email-confirm', 'suspended']
 	},

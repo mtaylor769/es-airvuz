@@ -45,8 +45,54 @@ users.prototype.validateCreateUser = function(params) {
 
 	if (params.socialMediaAccounts) {
 		userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
+		userInfo.data.status 								= 'active';
 	} else {
 		userInfo.data.password        		= params.password || null;
+		userInfo.data.confirmPassword     = params.confirmPassword || null;
+		userInfo.data.status 							= 'email-confirm';
+
+		
+		if(userInfo.data.password === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "password"
+				},
+				sourceError			: "#password",
+				displayMsg			: "This field is required",
+				errorMessage		: "Password is null",
+				sourceLocation	: sourceLocation
+			});
+		}
+		
+		if(userInfo.data.confirmPassword === null) {
+			userInfo.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "emailAddress"
+				},
+				sourceError			: "#confirm-password",
+				displayMsg			: "This field is required",
+				errorMessage		: "Confirm Password is null",
+				sourceLocation	: sourceLocation
+			});
+		}
+		
+		if(userInfo.data.password !== null && userInfo.data.confirmPassword !== null && userInfo.data.password !== userInfo.data.confirmPassword) {
+			userInfo.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "emailAddress"
+				},
+				sourceError			: "#password",
+				displayMsg			: "Passwords dont match",
+				errorMessage		: "Passwords dont match",
+				sourceLocation	: sourceLocation
+			});
+		}
 	}
 
 	if(userInfo.data.emailAddress === null) {
@@ -56,7 +102,8 @@ users.prototype.validateCreateUser = function(params) {
 			templateParams	: {
 				name : "emailAddress"
 			},
-			sourceError			: null,
+			sourceError			: "#email",
+			displayMsg			: "This field is required",
 			errorMessage		: "Email address is null",
 			sourceLocation	: sourceLocation
 		});
@@ -69,13 +116,47 @@ users.prototype.validateCreateUser = function(params) {
 			templateParams	: {
 				name : "userName"
 			},
-			sourceError			: null,
+			sourceError			: "#username",
+			displayMsg			: "This field is required",
 			errorMessage		: "Username is null",
 			sourceLocation	: sourceLocation
 		});
 	}
-
-	return userInfo;
+	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
+			.then(function(email) {
+				logger.debug('email : '+ email);
+				if (email) {
+					throw userInfo.errors = errorMessage.getErrorMessage({
+						statusCode: "400",
+						errorId: "VALIDA1000",
+						templateParams: {
+							name: "emailAddress"
+						},
+						sourceError: "#email",
+						displayMsg: "Email already exists",
+						errorMessage: "Email already exists",
+						sourceLocation: sourceLocation
+					});
+				}
+				return UserModel.findOne({userName: userInfo.data.userName}).exec()
+			})
+			.then(function (username) {
+						if (username) {
+							throw userInfo.errors = errorMessage.getErrorMessage({
+								statusCode: "400",
+								errorId: "VALIDA1000",
+								templateParams: {
+									name: "userName"
+								},
+								sourceError: '#username',
+								displayMsg: "Username already exists",
+								errorMessage: "Username already exists",
+								sourceLocation: sourceLocation
+							});
+						}
+				return userInfo;
+			});
+	
 };
 
 
@@ -94,7 +175,8 @@ var ValidateUserName = function(id, params) {
 							templateParams	: {
 								name : "userName"
 							},
-							sourceError			: "Username already exists",
+							sourceError			: '#username',
+							displayMsg			: "Username already exists",
 							errorMessage		: "Username already exists",
 							sourceLocation	: sourceLocation
 						});
@@ -131,10 +213,11 @@ var ValidateEmailAddress = function(id, params) {
 						statusCode			: "400",
 						errorId					: "VALIDA1000",
 						templateParams	: {
-							name : "userName"
+							name : "emailAddress"
 						},
-						sourceError			: "Username already exists",
-						errorMessage		: "Username already exists",
+						sourceError			: "#email",
+						displayMsg			: "Email already exists",
+						errorMessage		: "Email already exists",
 						sourceLocation	: sourceLocation
 					});
 					reject(errors);
@@ -252,40 +335,27 @@ users.prototype.validateUpdateUser = function(id, params) {
  */
 users.prototype.create = function(params) {
 	validation 				= this.validateCreateUser(params);
-	return(new Promise(function(resolve, reject) {
-		
-			if(validation.errors) {
-				logger.debug('validation errors found');
-				logger.debug(validation.errors);
-				reject(validation.errors);
-        return;
-			}
-				// Persist
-				var saveUser 						= new UserModel(validation.data);
-				if (saveUser.password) {
-          logger.debug('hash password');
-					saveUser.password 		= saveUser.generateHash(saveUser.password);
-				}
-				saveUser.save(function(error) {
-					if (error) {
-						logger.debug('error while saving ' + error);
-						var errorMessage		= new ErrorMessage();
-						errorMessage.getErrorMessage({
-							statusCode			: "500",
-							errorId 				: "PERS1000",
-							errorMessage 		: "Failed while creating new user",
-							sourceError			: error,
-							sourceLocation	: "persistence.crud.Users.create"
-						});
-						reject(errorMessage.getErrors());
-            return;
-					}
-						//logger.debug('saving user');
-						//logger.debug(saveUser);
-						resolve(saveUser);
-            return;
+	return validation.then(function (userInfo) {
+		// Persist
+		var saveUser 						= new UserModel(userInfo.data);
+		if (saveUser.password) {
+			logger.debug('hash password');
+			saveUser.password 		= saveUser.generateHash(saveUser.password);
+		}
+		return saveUser.save(function(error) {
+			if (error) {
+				logger.debug('error while saving ' + error);
+				var errorMessage		= new ErrorMessage();
+				throw errorMessage.getErrorMessage({
+					statusCode			: "500",
+					errorId 				: "PERS1000",
+					errorMessage 		: "Failed while creating new user",
+					sourceError			: error,
+					sourceLocation	: "persistence.crud.Users.create"
 				});
-		}));
+			}
+		});
+	});
 };
 
 /*

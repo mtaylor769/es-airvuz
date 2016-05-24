@@ -33,6 +33,6 @@ var FollowersSchema = mongoose.Schema({
 
 module.exports = {
 	connectionName	: "main",
-	modelName				: "FollowersSchema",
+	modelName				: "Followers",
 	schema					: FollowersSchema
 };

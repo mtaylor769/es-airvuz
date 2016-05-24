@@ -68,6 +68,6 @@ var NotificationsSchema = mongoose.Schema({
 
 module.exports = {
 	connectionName	: "main",
-	modelName				: "NotificationsSchema",
+	modelName				: "Notifications",
 	schema					: NotificationsSchema
 };
