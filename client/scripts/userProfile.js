@@ -724,7 +724,7 @@ function renderSocialMediaLinks() {
 }
 
 function updateFollow() {
-  //encapsulate data around this
+  //encapsulate data around 'data' object
   var follow = {
     followingUserId   : profileUser._id,
     userId            : user._id
