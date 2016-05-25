@@ -45,8 +45,7 @@ function removeErrorMessage() {
 ///////////////////////////////////////////////////////
 
 function renderProfileHeader() {
-  // TODO: switch awsAssetUrl to amazonConfig.ASSET_URL + 'users/profile-pictures'
-  var awsAssetUrl = '//s3-us-west-2.amazonaws.com/airvuz-asset/users/profile-pictures';
+  var awsAssetUrl = amazonConfig.ASSET_URL + 'users/profile-pictures';
   headerProfileTpl({currentUser: identity.currentUser, awsAssetUrl: awsAssetUrl}, function (err, html) {
     $headerProfile.html(html);
   });
