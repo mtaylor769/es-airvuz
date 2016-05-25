@@ -50,7 +50,6 @@ module.exports = function(passport, config) {
         findUser = UsersCrud.getUserByEmail(data.email);
         findUser.then(function (user) {
           if (user && user._id) {
-            // TODO: add userId to the social media account
             account.userId = user._id;
             account.save()
               .then(function(account) {
@@ -87,8 +86,11 @@ module.exports = function(passport, config) {
               findUser = UsersCrud.getUserByEmail(data.email);
               findUser.then(function (user) {
                 if (user && user._id) {
-                  //add social media id to current user and return user
-                  return cb(null, user);
+                  account.userId = user._id;
+                  account.save()
+                    .then(function(account) {
+                      return cb(null, user);
+                    })
                 } else {
                   user = {
                     email: data.email,
