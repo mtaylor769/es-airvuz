@@ -9,7 +9,7 @@ logger.info("starting a server ...");
 
 global.NODE_ENV = process.env.NODE_ENV || 'development';
 global.IS_PRODUCTION = NODE_ENV === 'production';
-global.IS_DEVELOPMENT = NODE_ENV === 'development';
+global.IS_DEVELOPMENT = NODE_ENV === 'development' || NODE_ENV === 'beta';
 global.IS_NODE = true;
 
 if(global.NODE_ENV === "production") {
