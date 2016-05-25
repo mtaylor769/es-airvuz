@@ -11,6 +11,7 @@ try {
 	var videoCrud					= require('../../persistence/crud/videos');
 	var categoryCrud 			= require('../../persistence/crud/categoryType');
 	var videoCollection   = require('../../persistence/crud/videoCollection');
+	var followCrud				= require('../../persistence/crud/follow')
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -32,10 +33,10 @@ var UserProfileModel = function(params) {
 util.inherits(UserProfileModel, BaseModel);
 
 UserProfileModel.prototype.getData = function(params) {
-	var userName = params.request.params.userName;
-	var dataObject = {};
-	var profileUser = null;
-	var sourceManifest 		= params.sourceManifest;
+	var userName 										= params.request.params.userName;
+	var dataObject 									= {};
+	var profileUser 								= null;
+	var sourceManifest 							= params.sourceManifest;
 
 	// TODO: run parallel
 	return usersCrud.getUserByUserName(userName)
@@ -69,8 +70,16 @@ UserProfileModel.prototype.getData = function(params) {
 		} else {
 			dataObject.categories = categories;
 		}
-		return videoCrud.getByUser(profileUser._id);
+		return followCrud.followingCount(profileUser._id);
 	})
+		.then(function(following){
+			dataObject.following = following;
+			return followCrud.followCount(profileUser._id);
+		})
+		.then(function(followers){
+			dataObject.followers = followers;
+			return videoCrud.getByUser(profileUser._id);
+		})
 	.then(function(videos) {
 		if (videos.length) {
 			videos = unlock(videos);
