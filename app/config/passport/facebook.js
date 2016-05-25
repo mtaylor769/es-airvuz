@@ -43,63 +43,68 @@ module.exports = function(passport, config) {
       email             : profile.emails[0].value
     };
 
-    
+    logger.debug("data.profile : " + JSON.stringify(profile, null, 2));
     socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, data.provider);
     socialAccount.then(function(account){
       if (account) {
         findUser = UsersCrud.getUserByEmail(data.email);
-        findUser.then(function(user){
+        findUser.then(function (user) {
           if (user && user._id) {
-
-            if (user.socialMediaAccounts.indexOf(account._id) < 0) {
-              //add social media id to user
+            // TODO: add userId to the social media account
+            account.userId = user._id;
+            account.save()
+              .then(function(account) {
+                return cb(null, user);
+              })
+          }
+        });
+          //   } else {
+          //
+          //     findUser = UsersCrud.getUserBySocialId(account._id);
+          //     findUser.then(function(user){
+          //       if (user && user._id) {
+          //
+          //         return cb(null, user);
+          //       } else {
+          //         user = {
+          //           email               : data.email,
+          //           firstName           : data.accountData.name.givenName,
+          //           lastName            : data.accountData.name.familyName,
+          //           socialMediaAccounts  : account._id,
+          //           provider            : data.provider
+          //         };
+          //         req.newUser = true;
+          //         return cb(null, user);
+          //       }
+          //     });
+          //   }
+          // });
+        } else {
+          // SocialMediaAccount does NOT exist
+          account = SocialCrud.create(data);
+          account.then(function (newAccount) {
+            if (newAccount && newAccount._id) {
+              findUser = UsersCrud.getUserByEmail(data.email);
+              findUser.then(function (user) {
+                if (user && user._id) {
+                  //add social media id to current user and return user
+                  return cb(null, user);
+                } else {
+                  user = {
+                    email: data.email,
+                    firstName: data.accountData.name.givenName,
+                    lastName: data.accountData.name.familyName,
+                    socialMediaAccount: newAccount._id,
+                    provider: data.provider
+                  };
+                  req.newUser = true;
+                  return cb(null, user);
+                }
+              });
             }
-            return cb(null, user);
-          } else {
-
-            findUser = UsersCrud.getUserBySocialId(account._id);
-            findUser.then(function(user){
-              if (user && user._id) {
-
-                return cb(null, user);
-              } else {
-                user = {
-                  email               : data.email,
-                  firstName           : data.accountData.name.givenName,
-                  lastName            : data.accountData.name.familyName,
-                  socialMediaAccounts  : account._id,
-                  provider            : data.provider
-                };
-                req.newUser = true;
-                return cb(null, user);
-              }
-            });
-          }
-        });
-      } else {
-        account = SocialCrud.create(data);
-        account.then(function(newAccount){
-          if (newAccount && newAccount._id) {
-            findUser = UsersCrud.getUserByEmail(data.email);
-            findUser.then(function(user){
-              if (user && user._id) {
-                //add social media id to current user and return user
-                return cb(null, user);
-              } else {
-                user = {
-                  email               : data.email,
-                  firstName           : data.accountData.name.givenName,
-                  lastName            : data.accountData.name.familyName,
-                  socialMediaAccount  : newAccount._id,
-                  provider            : data.provider
-                };
-                req.newUser = true;
-                return cb(null, user);
-              }
-            });
-          }
-        });
+          });
+        }
       }
-    });
+      );
   }));
 };

@@ -42,7 +42,7 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 	userInfo.data.profilePicture				= params.profilePicture || "";
 	
-
+	logger.debug(params.socialMediaAccounts);
 	if (params.socialMediaAccounts) {
 		userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
 		userInfo.data.status 								= 'active';
@@ -124,7 +124,6 @@ users.prototype.validateCreateUser = function(params) {
 	}
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
-				logger.debug('email : '+ email);
 				if (email) {
 					throw userInfo.errors = errorMessage.getErrorMessage({
 						statusCode: "400",
