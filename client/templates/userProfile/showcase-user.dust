@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-xs-5 col-sm-12 profile-video-info">
                     <div>
-                        <span><span class="airvuz-blue">VŪZ</span> {viewCount}</span>
+                        <span><span class="airvuz-blue">VŪZ</span> {viewCount} | {uploadDate}</span>
                         <span class="pull-right">{duration}</span>
                     </div>
                     <div class="profile-video-title">

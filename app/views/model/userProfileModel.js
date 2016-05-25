@@ -5,6 +5,7 @@ var logger							= log4js.getLogger('app.views.model.index');
 try {
 	var BaseModel					= require('./baseModel');
 	var Promise						= require('bluebird');
+	var moment					  = require('moment');
 	var util							= require('util');
 	var unlock						= require('../../utils/unlockObject');
 	var usersCrud					= require('../../persistence/crud/users');
@@ -51,7 +52,9 @@ UserProfileModel.prototype.getData = function(params) {
 	})
 	.then(function(videoCollection){
 			var videos = videoCollection.videos;
+			videos = unlock(videos);
 			videos.forEach(function (video) {
+				video.uploadDate = moment(video.uploadDate).fromNow();
 				video.title = video.title.substring(0, 48);
 				video.description = video.description.substring(0, 90);
 				if (video.title.length === 48) {
@@ -102,6 +105,7 @@ UserProfileModel.prototype.getData = function(params) {
 					video.isShowcase = false
 				}
 				logger.debug(video.isShowcase);
+				video.uploadDate = moment(video.uploadDate).fromNow();
 				video.title = video.title.substring(0, 48);
 				video.description = video.description.substring(0, 90);
 				if(video.title.length === 48) {
