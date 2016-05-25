@@ -39,7 +39,7 @@ CategoryModel.prototype.getData = function(params) {
 	params.data.viewName		= "Category";
 
 	var videoPromise,
-			TOTAL_PER_PAGE = 16;
+			TOTAL_PER_PAGE = 20;
 
 	params.data.category = {};
 

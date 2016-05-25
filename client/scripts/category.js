@@ -30,7 +30,7 @@ function onLoadMoreBtnClick() {
  * @private
  */
 function _getVideos() {
-  var TOTAL_PER_PAGE = 16;
+  var TOTAL_PER_PAGE = 20;
 
   return $.ajax('/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page)
     .then(function (videos) {

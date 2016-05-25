@@ -25,7 +25,7 @@ catch(exception) {
 function Video() {}
 
 function getVideosByCategory(req, res) {
-  var TOTAL_PER_PAGE  = 16,
+  var TOTAL_PER_PAGE  = 20,
       PAGE            = req.params.page,
       CATEGORY_TYPE   = req.params.category,
       videoPromise;
