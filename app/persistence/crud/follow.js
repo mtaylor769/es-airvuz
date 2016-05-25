@@ -36,7 +36,7 @@ function getFollow(userId) {
 
 Follow.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
-      if (params.followingUserId === params.userId) {
+      if (params.followingUserId !== params.userId) {
         //Cannot follow self
         FollowModel.find({followingUserId : params.followingUserId, userId : params.userId}).exec()
           .then(function(follow) {
