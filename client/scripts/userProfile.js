@@ -27,7 +27,7 @@ var $videoEditModal,
   $profilePage,
   VIEW_MODEL = {},
   customThumbnailName,
-  currentUploadFile = {},
+  currentEditVideo = {},
   isCustomThumbnail = false;
 
 /*
@@ -140,9 +140,12 @@ function bindEvents() {
 
   $videoEditModal
     .on('change', '#category', onCategorySelect)
+    .on('change', '#custom-image-file', onCustomFileChange)
     .on('click', '#selected-category-list li', onCategoryRemove)
     .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
     .on('click', '#generated-thumbnails li', onThumbnailSelect)
+    .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick)
+    .on('click', '#btn-save-video-edit', onSaveVideoEdit);
 
     $(window).on('resize', function() {
       var windowWidth = $(window).width();
@@ -411,22 +414,23 @@ function editProfile() {
 
 }
 
-function saveVideoEdit(video) {
+function onSaveVideoEdit() {
 
   var params = {
-    _id                    : video._id,
+    _id                   : currentEditVideo._id,
     title                 : $('#title').val(),
-    videoLocation           : $('#location').val(),
+    videoLocation         : $('#location').val(),
     tags                  : $tags.val(),
     description           : $('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
-    categories              : $('#selected-category-list li').map(function (index, li) {
+    categories            : $('#selected-category-list li').map(function (index, li) {
                               return $(li).data('id');
                             }).toArray(),
     droneType             : $('#drone-type').val(),
-    cameraType            : $('#camera-type').val()
-    //thumbnailPath         : currentUploadFile.thumbnailPath,
-    // isCustomThumbnail     : true //isCustomThumbnail
-    //customThumbnail       : customThumbnailName
+    cameraType            : $('#camera-type').val(),
+    thumbnailPath         : currentEditVideo.thumbnailPath,
+    isCustomThumbnail     : isCustomThumbnail,
+    hashName              : currentEditVideo.videoPath.split('/')[0],
+    customThumbnail       : customThumbnailName
   };
 
   if ($('#tags').val()) {
@@ -575,16 +579,20 @@ function onCategoryRemove() {
   $(this).remove();
 }
 
-function renderThumbnail(thumbnails) {
+function renderThumbnail(thumbnails, selectedThumbnail) {
   // var url = AmazonConfig.OUTPUT_URL;
   var url = '//s3-us-west-2.amazonaws.com/airvuz-drone-video/';
-  thumbnailTpl({thumbnails: thumbnails, url: url}, function (err, html) {
+  thumbnailTpl({thumbnails: thumbnails, url: url, selectedThumbnail: selectedThumbnail}, function (err, html) {
     $videoEditModal.find('#generated-thumbnails').html(html);
   });
 }
 
 function renderEditVideoHtml(video) {
   var selectedCategory = [];
+
+  // reset
+  currentEditVideo = video;
+  isCustomThumbnail = video.thumbnailPath.indexOf('custom') > 0;
 
   video.categories.forEach(function (video) {
     selectedCategory.push(getCategoryById(video));
@@ -617,13 +625,17 @@ function renderEditVideoHtml(video) {
       confirmKeys: [13, 188, 32]
     });
 
-    renderThumbnail(thumbnails);
+    renderThumbnail(thumbnails, video.thumbnailPath);
+
+    if (isCustomThumbnail) {
+      toggleThumbnailLayout(true);
+      $videoEditModal
+        .find('.custom-thumbnail-display')
+        .css('background-image', 'url(' + AmazonConfig.OUTPUT_URL + currentEditVideo.thumbnailPath +')');
+    }
 
     $videoEditModal
-      .modal('show')
-      .on('click', '#btn-save-video-edit', function(){
-        saveVideoEdit(video);
-      });
+      .modal('show');
   });
 }
 
@@ -642,7 +654,7 @@ function onCustomFileChange() {
 
   // add Date.now() incase the user reupload again.
   // without it the image won't change or reload because it is the same name
-  customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1];
+  customThumbnailName = 'tn_custom-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1];
 
   evaporate.add({
     // headers
@@ -664,13 +676,37 @@ function onCustomFileChange() {
     error: onUploadError
   });
 }
+function onUploadError(message) {
+  // isUploading = false;
+  /********************************************************/
+  console.group('%cError :', 'color:red;font:strait');
+  console.log(message);
+  console.groupEnd();
+  /********************************************************/
+}
+function onCustomThumbnailUploadComplete(name) {
+  $videoEditModal.find('#custom-thumbnail-section .fa').addClass('hidden');
+  $videoEditModal.find('.custom-thumbnail-display').css('background-image', 'url(//s3-us-west-2.amazonaws.com/airvuz-tmp/' + name +')');
+}
+
+/**
+ * toggle thumbnail layout
+ */
+function toggleThumbnailLayout(isCustom) {
+  $videoEditModal.find('#custom-thumbnail')[isCustom ? 'addClass' : 'removeClass']('hidden');
+  $videoEditModal.find('#custom-thumbnail-section')[isCustom ? 'removeClass' : 'addClass']('hidden');
+  $videoEditModal.find('#generated-thumbnails')[isCustom ? 'addClass' : 'removeClass']('hidden');
+  isCustomThumbnail = isCustom;
+}
 
 function onCustomThumbnailClick(event) {
   event.preventDefault();
-  $videoEditModal.find('#custom-thumbnail').addClass('hidden');
-  $videoEditModal.find('#custom-thumbnail-section').removeClass('hidden');
-  $videoEditModal.find('#generated-thumbnails').addClass('hidden');
-  isCustomThumbnail = true;
+  toggleThumbnailLayout(true);
+}
+
+function onCancelCustomThumbnailClick(event) {
+  event.preventDefault();
+  toggleThumbnailLayout(false);
 }
 
 function onThumbnailSelect() {

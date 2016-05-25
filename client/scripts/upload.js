@@ -346,18 +346,22 @@ function bindEvents() {
 
   function onCustomThumbnailClick(event) {
     event.preventDefault();
-    $uploadPage.find('#custom-thumbnail').addClass('hidden');
-    $uploadPage.find('#custom-thumbnail-section').removeClass('hidden');
-    $uploadPage.find('#generated-thumbnails').addClass('hidden');
-    isCustomThumbnail = true;
+    toggleThumbnailLayout(true);
   }
 
   function onCancelCustomThumbnailClick(event) {
     event.preventDefault();
-    $uploadPage.find('#custom-thumbnail').removeClass('hidden');
-    $uploadPage.find('#custom-thumbnail-section').addClass('hidden');
-    $uploadPage.find('#generated-thumbnails').removeClass('hidden');
-    isCustomThumbnail = false;
+    toggleThumbnailLayout(false);
+  }
+
+  /**
+   * toggle thumbnail layout
+   */
+  function toggleThumbnailLayout(isCustom) {
+    $uploadPage.find('#custom-thumbnail')[isCustom ? 'addClass' : 'removeClass']('hidden');
+    $uploadPage.find('#custom-thumbnail-section')[isCustom ? 'removeClass' : 'addClass']('hidden');
+    $uploadPage.find('#generated-thumbnails')[isCustom ? 'addClass' : 'removeClass']('hidden');
+    isCustomThumbnail = isCustom;
   }
 
   //////////////////////////////////////////

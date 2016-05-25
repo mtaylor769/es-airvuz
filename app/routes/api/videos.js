@@ -104,14 +104,32 @@ Video.prototype.get = function(req, res) {
 };
 
 Video.prototype.put = function(req, res) {
-  VideoCrud
-    .update({id: req.body._id, update: req.body})
-    .then(function(video) {
-      res.send(video);
-    })
-    .catch(function (error) {
-      res.sendStatus(500);
-    });
+  if (req.body.isCustomThumbnail) {
+    // move custom thumbnail to the correct directory
+    // TODO: resize to 392x220
+    var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
+    req.body.thumbnailPath = req.body.hashName + '/' + newName;
+
+    amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
+      .then(function () {
+        return VideoCrud.update({id: req.body._id, update: req.body})
+      })
+      .then(function (video) {
+        res.json(video);
+      })
+      .catch(function () {
+        res.sendStatus(500);
+      })
+  } else {
+    VideoCrud
+      .update({id: req.body._id, update: req.body})
+      .then(function(video) {
+        res.send(video);
+      })
+      .catch(function (error) {
+        res.sendStatus(500);
+      });
+  }
 };
 
 Video.prototype.delete = function(req, res) {
