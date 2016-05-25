@@ -847,16 +847,24 @@ function getData() {
 }
 
 function updateFollow() {
-  //encapsulate data around 'data' object
-  var follow = {
-    followingUserId   : profileUser._id,
-    userId            : user._id
-  }
+  var followData = {
+    follow : {
+      userId : user._id,
+      followingUserId : profileUser._id
+    },
+    notification : {
+      notificationType : 'FOLLOW',
+      notificationMessage : 'started following you',
+      actionUserId : user._id,
+      notifiedUserId : profileUser._id
+    }
+  };
+
   $.ajax({
     type:'POST',
     url: '/api/follow',
-    data: JSON.stringify(follow),
-    contentType : 'application/json'
+    data: {data: JSON.stringify(followData)}
+    //contentType : 'application/json'
   })
     .done(function(response){
       //TODO Update current profile page with new amount of followers
@@ -868,6 +876,51 @@ function updateFollow() {
         .html(errorMsg);
     });
 }
+
+// $('#follow').on('click', function() {
+//   if(userIdentity._id && userIdentity._id !== video.userId) {
+//     var followData = {};
+//     var followObject = {};
+//     followObject.userId = userIdentity._id;
+//     followObject.followingUserId = video.userId;
+//     notificationObject.notificationType = 'FOLLOW';
+//     notificationObject.notificationMessage = 'started following you';
+//     followData.follow = followObject;
+//     followData.notification = notificationObject;
+//     console.log(followData);
+//     $.ajax({
+//       type: 'POST',
+//       url: '/api/follow',
+//       data: {data: JSON.stringify(followData)}
+//     })
+//       .success(function (response) {
+//         if(response.status === 'followed') {
+//           AVEventTracker({
+//             codeSource	: "videoPlayer",
+//             eventName		: "followedUser",
+//             eventType		: "click"
+//           });
+//           $('#follow').text('-');
+//         } else if(response.status === 'unfollowed'){
+//           AVEventTracker({
+//             codeSource	: "videoPlayer",
+//             eventName		: "unfollowedUser",
+//             eventType		: "click"
+//           });
+//           $('#follow').text('+');
+//         }
+//       })
+//       .error(function (error) {
+//       })
+//   } else if(!userIdentity._id) {
+//     $('#follow-modal').modal('show');
+//     $('.go-to-login').on('click', function() {
+//       $('#login-modal').modal('show');
+//     })
+//   } else {
+//     $('#follow-self-modal').modal('show');
+//   }
+// });
 
 function initialize() {
   /*
