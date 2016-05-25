@@ -34,13 +34,11 @@ var $videoEditModal,
 /*
 * Templates
 */
-var userShowcase          = require('../templates/userProfile/showcase-user.dust');
 var ownerShowcase         = require('../templates/userProfile/showcase-owner.dust');
 var userAllVideosHtml     = require('../templates/userProfile/allvideos-user.dust');
 var ownerAllVideosHtml    = require('../templates/userProfile/allvideos-owner.dust');
 var userProfileEdit       = require('../templates/userProfile/edit-profile.dust');
 var aboutMe               = require('../templates/userProfile/about.dust');
-var userInfo              = require('../templates/userProfile/user-info.dust');
 var videoInfo             = require('../templates/userProfile/edit-video.dust');
 var thumbnailTpl          = require('../templates/upload/thumbnail.dust');
 
@@ -749,7 +747,7 @@ function renderUseAllVideosHtml(videos) {
 }
 
 function renderOwnerShowcase(videos) {
-  ownerShowcase({videos: videos}, function(err, html) {
+  ownerShowcase({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
     $('#allvideos').html(html);
   });
   // $('.sort-showcase')
@@ -948,9 +946,7 @@ function initialize() {
 
   $profilePage = $('#user-profile');
   $videoEditModal = $('#edit-video-modal');
-  // userInfo({user: profileUser}, function(err, html){
-  //   $("#userInfoData").html(html);
-  // });
+
   if (profileUser.allowDonation) {
     $('.donate-btn').show();
   } else {
@@ -968,7 +964,7 @@ function initialize() {
   
   if(userNameCheck === profileUser.userName) {
     renderOwnerShowcase(showcaseOwnerVideos);
-    ownerShowcase({videos: showcaseOwnerVideos}, function (err, html) {
+    ownerShowcase({videos: showcaseOwnerVideos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
       $('#showcase').html(html);
     });
     renderOwnerAllVideosHtml(allOwnerVideos);
