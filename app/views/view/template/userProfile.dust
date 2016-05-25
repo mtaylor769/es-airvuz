@@ -38,10 +38,10 @@
     <script>
         /** global page **/
         var Page = {};
-        Page.categories = {categories|js|s};
+        Page.categories = {?categories}{categories|js|s}{:else}[]{/categories};
 
-        var profileUser = {user|js|s};
-        var profileVideos = {videos|js|s};
+        var profileUser = {?user}{user|js|s}{:else}[]{/user};
+        var profileVideos = {?videos}{videos|js|s}{:else}[]{/videos};
         $(function() {
             userProfile.initialize();
         });

@@ -10,8 +10,12 @@
     <div class="profile-information col-xs-12 col-md-9">
       <h4 class="profile-username row">{user.userName}</h4>
       <h5 class="row">
-        <span class="av-primary word-space airvuz-blue">300</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
-        <span class="av-primary word-space airvuz-blue">299</span><span style="text-shadow: 2px 2px 22px black">Following</span>
+        {?followers}
+        <span class="av-primary word-space airvuz-blue">{followers}</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
+        {/followers}
+        {?following}
+        <span class="av-primary word-space airvuz-blue">{following}</span><span style="text-shadow: 2px 2px 22px black">Following</span>
+        {/following}
       </h5>
       <div class="hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
           <span>{user.aboutMe}</span>

@@ -36,20 +36,40 @@ function getFollow(userId) {
 
 Follow.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
-      FollowModel.find({followingUserId : params.followingUserId, userId : params.userId}).exec()
-      .then(function(follow) {
-        if(follow.length === 0) {
-          var followModel = new FollowModel(params);
-          followModel.save(function(error, follow) {
-            resolve(follow);
+      if (params.followingUserId === params.userId) {
+        //Cannot follow self
+        FollowModel.find({followingUserId : params.followingUserId, userId : params.userId}).exec()
+          .then(function(follow) {
+            if(follow.length === 0) {
+              var followModel = new FollowModel(params);
+              followModel.save(function(error, follow) {
+                resolve(follow);
+                return;
+              })
+            } else {
+              console.log(follow);
+              reject({followId: follow[0]._id});
+              return;
+            }
           })
-        } else {
-          console.log(follow);
-          reject({followId: follow[0]._id});
-        }
-      })
+          .error(function(error){
+            reject(error);
+            return;
+          })
+      } else {
+        var errorMessage						= new ErrorMessage();
+        errorMessage.getErrorMessage({
+          statusCode								: "500",
+          errorId 									: "PERS1000",
+          errorMessage 							: "Cannot follow self",
+          sourceError								: "Cannot follow self",
+          sourceLocation						: "persistence.crud.Users.delete"
+        });
+        reject(errorMessage);
+        return;
+      }
     })
-  )
+  );
 };
 
 Follow.prototype.followCheck = function(params) {
@@ -59,6 +79,10 @@ Follow.prototype.followCheck = function(params) {
 Follow.prototype.followCount = function(userId) {
   return FollowModel.find({followingUserId: userId}).count().exec();
 };
+
+Follow.prototype.followingCount = function(userId) {
+  return FollowModel.find({userId: userId}).count().exec();
+}
 
 Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();

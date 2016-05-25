@@ -746,6 +746,9 @@ function renderUserProfileEdit(profileData) {
 function renderSocialMediaLinks() {
   var $socialMedia = $('.user-social-media');
   var $editProfile = $('.edit-profile');
+  if (profileUser.socialMediaLinks.length===0) {
+    $('.user-social-media').find('a').hide();
+  }
   profileUser.socialMediaLinks.forEach(function(account){
     switch (account.socialType) {
       case "FACEBOOK" :
@@ -807,6 +810,29 @@ function getData() {
   VIEW_MODEL.categories = Page.categories;
 }
 
+function updateFollow() {
+  //encapsulate data around 'data' object
+  var follow = {
+    followingUserId   : profileUser._id,
+    userId            : user._id
+  }
+  $.ajax({
+    type:'POST',
+    url: '/api/follow',
+    data: JSON.stringify(follow),
+    contentType : 'application/json'
+  })
+    .done(function(response){
+      //TODO Update current profile page with new amount of followers
+    })
+    .error(function(error){
+      $('#error-message-modal')
+        .modal('show')
+        .find('.error-modal-body')
+        .html(errorMsg);
+    });
+}
+
 function initialize() {
   /*
   *Null check on page dependent variables:
@@ -839,6 +865,9 @@ function initialize() {
   } else {
     $('.hire-btn').hide();
   }
+
+  $('.profile-options')
+    .on('click', '.follow-btn', updateFollow);
   
   if(userNameCheck === profileUser.userName) {
     renderOwnerShowcase(showcaseOwnerVideos);
@@ -851,10 +880,15 @@ function initialize() {
     });
     renderUserProfileEdit(profileUser);
     $('.edit-tab').show();
+
+    $('.profile-options')
+      .find('.follow-btn')
+      .hide();
     
   } else {
     $('.edit-tab').hide();
   }
+  renderSocialMediaLinks();
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'
   });
@@ -865,4 +899,4 @@ function initialize() {
 
 module.exports = {
   initialize: initialize
-};
+}
