@@ -244,6 +244,14 @@ body.modal-open {
 #header #category-collapse {
   display: inline-block;
 }
+
+#header #notification .badge {
+  position: absolute;
+  left: 10px;
+  top: -10px;
+  background-color: #a94442;
+}
+
 #header-categories {
   display: inline-block;
   position: relative;
@@ -1146,7 +1154,7 @@ End user profile CSS
 /* mobile device L */
 @media (min-width: 425px) {
   #notification .dropdown-menu {
-    left: -285px;
+    left: -288px;
     width: 425px;
   }
   #header .right-nav .glyphicon {

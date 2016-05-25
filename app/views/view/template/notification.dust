@@ -25,6 +25,11 @@
                         <p style="margin: 10px"><a href="/userProfile/{actionUserId.userName}">{actionUserId.userName}</a> {notificationMessage|s}</p>
                     {/eq}
                 </div>
+            {:else}
+                <br>
+                <div class="alert alert-info text-center">
+                  No notifications
+                </div>
             {/notifications}
         </div>
     </div>
@@ -32,11 +37,7 @@
     {> "app.views.view.partial.cdn-js" /}
 <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
 {> "app.views.view.partial.js" /}
-<script>
-    $(function() {
-        notifications.initialize();
-    });
-</script>
+
 </body>
 
 </html>

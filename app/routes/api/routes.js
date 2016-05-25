@@ -86,10 +86,8 @@ apiRouter.route('/api/follow/check')
  * /api/notifications/
  */
 apiRouter.route('/api/notifications')
-	.post(notifications.post);
-
-apiRouter.route('/api/notifications/:id')
-	.get(notifications.getUnseen);
+	.post(notifications.post)
+	.get(protect, notifications.getUnseen);
 
 apiRouter.route('/api/notifications/get-all/:id')
 	.get(notifications.getAll);

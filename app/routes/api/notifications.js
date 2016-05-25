@@ -17,9 +17,10 @@ Notification.prototype.post = function(req, res) {
 };
 
 Notification.prototype.getUnseen = function(req, res) {
-  var userId = req.query.id;
+  var userId = req.user._id;
+
   NotificationCrud
-  .getByUserId(userId)
+  .getUnseen(userId)
   .then(function(notifications) {
     notifications.forEach(function(notification) {
       if(notification.notificationType === 'COMMENT'){
@@ -28,11 +29,7 @@ Notification.prototype.getUnseen = function(req, res) {
         notification.notificationMessage = 'replied to your comment : ' + notification.notificationMessage
       }
     });
-    NotificationCrud
-    .getUnseenCount(userId)
-    .then(function(notificationCount) {
-      res.json({notifications: notifications, notificationCount: notificationCount});
-    })
+    res.json({notifications: notifications, total: notifications.length});
   })
   .catch(function(err) {
     res.sendStatus(500);

@@ -24,9 +24,17 @@ catch(exception) {
   logger.error(" import error:" + exception);
 }
 
-var Notifications = function() {
+var Notifications = function() {};
 
-};
+function getUnseen(userId) {
+  return NotificationModel
+    .find({notifiedUserId: userId, notificationViewed: false})
+    .sort('-createdDate')
+    .limit(10)
+    .populate('actionUserId', 'userName')
+    .lean()
+    .exec();
+}
 
 Notifications.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
@@ -53,6 +61,8 @@ Notifications.prototype.getUnseenCount = function(id) {
 Notifications.prototype.getAllByUserId = function(id) {
   return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').populate('notifiedUserId').exec();
 };
+
+Notifications.prototype.getUnseen = getUnseen;
 
 
 module.exports = new Notifications();

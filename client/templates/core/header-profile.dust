@@ -27,22 +27,33 @@
   <li>
     <div class="dropdown" id="notification">
       <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="btn-link">
-        <span class="glyphicon glyphicon-bell"></span>
+        <span class="glyphicon glyphicon-bell">
+        </span>
+        {#hasNotification}
+        <span class="badge text-danger">{notification.total}</span>
+        {/hasNotification}
       </a>
-
       <ul class="dropdown-menu">
         <li>
           <h4 class="visible-xs text-center">Your Notifications</h4>
           <ul class="list-group">
-            <li class="list-group-item"><a href="">afroza0210</a> liked your video</li>
-            <li class="list-group-item"><a href="">afroza0210</a> commented on your video: This is such an awesome video! Thanks for sharing! looking forward to more of your videos!</li>
-            <li class="list-group-item"><a href="">afroza0210</a> started following you</li>
-            <li class="list-group-item"><a href="">brendan_</a> liked your video.</li>
-            <li class="list-group-item"><a href="">brendan_</a> commented on your video: Wow! This is amazing! love it..</li>
+            {#notification.notifications}
+              <li class="list-group-item">
+                {#actionUserId}
+                  <a href="/userProfile/{actionUserId.userName}">{actionUserId.userName}</a> {notificationMessage|s}
+                {:else}
+                  Someone {notificationMessage|s}
+                {/actionUserId}
+              </li>
+            {:else}
+              <li>
+                No new notifications
+              </li>
+            {/notification.notifications}
           </ul>
         </li>
         <li class="text-center">
-          <a href="#" class="">See All</a>
+          <a href="/notifications/{currentUser._id}">See All</a>
         </li>
       </ul>
     </div>

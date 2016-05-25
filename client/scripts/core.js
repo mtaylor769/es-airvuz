@@ -44,11 +44,32 @@ function removeErrorMessage() {
 
 ///////////////////////////////////////////////////////
 
-function renderProfileHeader() {
-  var awsAssetUrl = amazonConfig.ASSET_URL + 'users/profile-pictures';
-  headerProfileTpl({currentUser: identity.currentUser, awsAssetUrl: awsAssetUrl}, function (err, html) {
+function renderProfileHeader(notification) {
+  var awsAssetUrl = amazonConfig.ASSET_URL + 'users/profile-pictures',
+      viewData = {
+        currentUser: identity.currentUser,
+        awsAssetUrl: awsAssetUrl,
+        notification: notification,
+        hasNotification: notification.total > 0
+      };
+
+  headerProfileTpl(viewData, function (err, html) {
     $headerProfile.html(html);
   });
+}
+
+function getNewNotification() {
+  // notifications are render from server side so no need to get it in the client side
+  var isInNotificationPage = window.location.pathname.indexOf('/notifications/') > -1,
+      ajaxOption = {
+        type: 'GET',
+        url: '/api/notifications'
+      };
+
+  if (!isInNotificationPage) {
+    return $.ajax(ajaxOption);
+  }
+  return $.Deferred().resolve({notifications: [], total: 0}).promise();
 }
 
 function bindEvents() {
@@ -90,7 +111,8 @@ function bindEvents() {
 
     auth.login({emailAddress: emailAddress, password: password})
       .done(function () {
-        renderProfileHeader();
+        getNewNotification()
+          .then(renderProfileHeader);
         $footerSub1.addClass('is-login');
         $loginModal.modal('hide');
       })
@@ -159,7 +181,8 @@ function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
   if (identity.isAuthenticated()) {
-    renderProfileHeader();
+    getNewNotification()
+      .then(renderProfileHeader);
     $footerSub1.addClass('is-login');
   }
 }
