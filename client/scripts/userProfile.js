@@ -796,6 +796,28 @@ function renderSocialMediaLinks() {
   });
 }
 
+function updateFollow() {
+  //encapsulate data around 'data' object
+  var follow = {
+    followingUserId: profileUser._id,
+    userId: user._id
+  }
+  $.ajax({
+    type: 'POST',
+    url: '/api/follow',
+    data: JSON.stringify(follow),
+    contentType: 'application/json'
+  })
+    .done(function (response) {
+      //TODO Update current profile page with new amount of followers
+    })
+    .error(function (error) {
+      $('#error-message-modal')
+        .modal('show')
+        .find('.error-modal-body')
+        .html(errorMsg);
+    });
+}
 function getData() {
   camera.getAll()
     .then(function (cameras) {
