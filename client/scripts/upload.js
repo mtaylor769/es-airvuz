@@ -8,8 +8,7 @@ var Evaporate     = require('evaporate'),
     AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
     camera        = require('./services/camera'),
-    drone         = require('./services/drone'),
-    category      = require('./services/category');
+    drone         = require('./services/drone');
 
 /**
  * Templates
@@ -183,7 +182,7 @@ function bindEvents() {
       duration          : currentUploadFile.duration,
       cameraType        : $uploadPage.find('#camera-type').val(),
       droneType         : $uploadPage.find('#drone-type').val(),
-      categories        : $uploadPage.find('#category-list li').map(function (index, li) {
+      categories        : $uploadPage.find('#selected-category-list li').map(function (index, li) {
                             return $(li).data('id');
                           }).toArray(),
       thumbnailPath     : currentUploadFile.thumbnailPath,
@@ -315,7 +314,7 @@ function bindEvents() {
 
     var category = getCategoryById(categoryId);
     var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
-    var $categoryList = $uploadPage.find('#category-list');
+    var $categoryList = $uploadPage.find('#selected-category-list');
 
     if ($categoryList.find('li').size() < 3) {
       $categoryList.append(list);
@@ -369,7 +368,7 @@ function bindEvents() {
     .on('change', '#custom-image-file', onCustomFileChange)
     .on('click', '#btn-publish', onPublish)
     .on('click', '#thumbnails li', onThumbnailSelect)
-    .on('click', '#category-list li', onCategoryRemove)
+    .on('click', '#selected-category-list li', onCategoryRemove)
     .on('click', '#upload-again', onUploadAgain)
     .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
     .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick);

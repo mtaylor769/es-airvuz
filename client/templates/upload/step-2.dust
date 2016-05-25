@@ -30,7 +30,7 @@
       </div>
       <div class="form-group">
         <label for="category">Category (Select up to 3 categories) <span class="text-danger">*</span></label>
-        <ul id="category-list" class="list-inline">
+        <ul id="selected-category-list" class="list-inline">
         </ul>
         <p id="category-message" class="text-danger"></p>
         <select class="form-control" id="category">

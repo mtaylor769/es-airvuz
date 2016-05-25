@@ -1,7 +1,8 @@
-/*
-*
-*
-*/
+/**
+ * External library
+ */
+require('bootstrap-tagsinput');
+require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
 var Evaporate                 = require('evaporate');
 var AmazonConfig              = require('./config/amazon.config.client');
@@ -21,7 +22,7 @@ var showcaseOwnerVideos       = [];
 /*
 Edit Video Variables
  */
-var $uploadModal,
+var $videoEditModal,
   $tags,
   $profilePage,
   VIEW_MODEL = {},
@@ -136,6 +137,10 @@ function bindEvents() {
     .on('click', '#save-edit-btn', changeProfile)
     .on('click', '#change-password-btn', changePassword);
 
+  $videoEditModal
+    .on('change', '#category', onCategorySelect)
+    .on('click', '#selected-category-list li', onCategoryRemove);
+
     $(window).on('resize', function() {
       var windowWidth = $(window).width();
       var isActive = $('#about').hasClass('active');
@@ -181,8 +186,8 @@ function bindEvents() {
   }
 
   $profilePage.find('#allvideos')
-    .on('click', '.btn-edit', onVideoEditClick)
-    .on('click', '.btn-delete', onVideoDeleteClick);
+    .on('click', '.btn-edit-video', onVideoEditClick)
+    .on('click', '.btn-delete-video', onVideoDeleteClick);
 }
 
 function doneEditShowcase(){
@@ -403,43 +408,34 @@ function editProfile() {
 
 }
 
-function saveVideoEdit(vid) {
+function saveVideoEdit(video) {
 
   var params = {
-    _id                    : vid._id,
+    _id                    : video._id,
     title                 : $('#title').val(),
-    location              : $('#location').val(),
-    //tags                  : $('#tags').val(),
+    videoLocation           : $('#location').val(),
+    tags                  : $tags.val(),
     description           : $('#description').html(),
-    //category              : ('#category-list li').map(function (index, li) {
-                              //return $(li).data('id');
-                            //}).toArray(),
-    //droneType             : $('#drone-type').val(),
-    //cameraType            : $('#camera-type').val(),
+    categories              : $('#selected-category-list li').map(function (index, li) {
+                              return $(li).data('id');
+                            }).toArray(),
+    droneType             : $('#drone-type').val(),
+    cameraType            : $('#camera-type').val()
     //thumbnailPath         : currentUploadFile.thumbnailPath,
-    isCustomThumbnail     : true //isCustomThumbnail
+    // isCustomThumbnail     : true //isCustomThumbnail
     //customThumbnail       : customThumbnailName
-  }
+  };
 
   if ($('#tags').val()) {
     params.tags = $('#tags').val().split(',');
   }
 
   $.ajax({
-    url         : '/api/videos/'+params.id,
+    url         : '/api/videos/' + params.id,
     contentType : 'application/json',
     type        : 'PUT',
     data        : JSON.stringify(params)
   }).success(function (video) {
-    $('#confirmation-message-modal')
-      .modal('show')
-      .find('.confirm-modal-body')
-      .html('Changes to ' + video.title + ' have been saved.');
-    /********************************************************/
-    console.group('%cvideo :', 'color:red;font:strait');
-    console.log(video);
-    console.groupEnd();
-    /********************************************************/;
     location.reload();
   })
     .error(function(error){
@@ -538,30 +534,84 @@ function editVideo(videoId) {
   var video = $.grep(profileVideos, function (video) {
     return video._id === videoId;
   });
+  renderEditVideoHtml(video[0]);
+}
 
-  renderEditVideoHtml(video);
+function getCategoryById(id) {
+  var found = null;
+  $.each(VIEW_MODEL.categories, function (index, category) {
+    if (category._id === id) {
+      found = category;
+    }
+  });
+  return found;
+}
+
+function onCategorySelect() {
+  var categoryId = $(this).val();
+  if (!categoryId) {
+    return;
+  }
+
+  var category = getCategoryById(categoryId);
+  var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
+  var $categoryList = $videoEditModal.find('#selected-category-list');
+
+  if ($categoryList.find('li').size() < 3) {
+    $categoryList.append(list);
+  } else {
+    $videoEditModal.find('#category-message').text('Max catgories');
+
+    setTimeout(function () {
+      $videoEditModal.find('#category-message').text('');
+    }, 2000);
+  }
+}
+
+function onCategoryRemove() {
+  $(this).remove();
 }
 
 function renderEditVideoHtml(video) {
-  videoInfo({video: video}, function(err, html){
-    $('#edit-video-content')
+  var selectedCategory = [];
+
+  video.categories.forEach(function (video) {
+    selectedCategory.push(getCategoryById(video));
+  });
+
+  var viewData = {
+    video: video,
+    categoryType: VIEW_MODEL.categories,
+    drones: VIEW_MODEL.drones,
+    cameras: VIEW_MODEL.cameras,
+    selectedCategory: selectedCategory
+  };
+
+  videoInfo(viewData, function(err, html) {
+    $videoEditModal.find('#edit-video-content')
       .html(html);
-    $('#edit-video-modal')
+
+    $tags = $('#tags');
+    // initalize plugin
+    $tags.tagsinput({
+      // enter, commas, and space
+      confirmKeys: [13, 188, 32]
+    });
+
+    $videoEditModal
       .modal('show')
       .on('click', '#btn-save-video-edit', function(){
         saveVideoEdit(video);
       })
       .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
   });
-  $uploadModal = $('edit-video-content');
-
 }
 
 function onCustomFileChange() {
   var customThumbnailFile = this.files[0];
 
-  $uploadModal.find('.custom-thumbnail-display').css('background-image', 'none');
-  $uploadModal.find('#custom-thumbnail-section .fa').removeClass('hidden');
+  $videoEditModal.find('.custom-thumbnail-display').css('background-image', 'none');
+  $videoEditModal.find('#custom-thumbnail-section .fa').removeClass('hidden');
 
   var evaporate = new Evaporate({
     signerUrl : '/api/amazon/sign-auth',
@@ -597,9 +647,9 @@ function onCustomFileChange() {
 
 function onCustomThumbnailClick(event) {
   event.preventDefault();
-  $uploadModal.find('#custom-thumbnail').addClass('hidden');
-  $uploadModal.find('#custom-thumbnail-section').removeClass('hidden');
-  $uploadModal.find('#thumbnails').addClass('hidden');
+  $videoEditModal.find('#custom-thumbnail').addClass('hidden');
+  $videoEditModal.find('#custom-thumbnail-section').removeClass('hidden');
+  $videoEditModal.find('#thumbnails').addClass('hidden');
   isCustomThumbnail = true;
 }
 
@@ -723,6 +773,20 @@ function renderSocialMediaLinks() {
   });
 }
 
+function getData() {
+  camera.getAll()
+    .then(function (cameras) {
+      VIEW_MODEL.cameras = cameras;
+    });
+
+  drone.getAll()
+    .then(function (drones) {
+      VIEW_MODEL.drones = drones;
+    });
+
+  VIEW_MODEL.categories = Page.categories;
+}
+
 function initialize() {
   /*
   *Null check on page dependent variables:
@@ -740,6 +804,7 @@ function initialize() {
   }
 
   $profilePage = $('#user-profile');
+  $videoEditModal = $('#edit-video-modal');
   // userInfo({user: profileUser}, function(err, html){
   //   $("#userInfoData").html(html);
   // });
@@ -775,6 +840,7 @@ function initialize() {
   });
   console.log('initalize');
   bindEvents();
+  getData();
 }
 
 module.exports = {
