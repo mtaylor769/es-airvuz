@@ -939,7 +939,7 @@ Begin userProfile CSS
   opacity: 0;
 }
 
-#user-profile .error-modal-body {
+#error-message-modal .error-modal-body {
   color: red;
   font-size:25px;
   margin-left:25px;

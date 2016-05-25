@@ -284,6 +284,20 @@ function changeProfile() {
     .on('click', '#save-changes-btn', editProfile);
 }
 
+function renderUserInfo() {
+  if (profileUser.allowDonation) {
+    $('.donate-btn').show();
+  } else {
+    $('.donate-btn').hide();
+  }
+
+  if (profileUser.allowHire) {
+    $('.hire-btn').show();
+  } else {
+    $('.hire-btn').hide();
+  }
+}
+
 function editProfile() {
   var userName            = $("#username").val();
   var emailAddress        = $("#email").val();
@@ -363,20 +377,6 @@ function editProfile() {
     }
   ]
 
-
-
-  if (allowDonation) {
-    $('.donate-btn').show();
-  } else {
-    $('.donate-btn').hide();
-  }
-
-  if (allowHire) {
-    $('.hire-btn').show();
-  } else {
-    $('.hire-btn').hide();
-  }
-
   if (sendData) {
     $.ajax({
       type:'PUT',
@@ -388,12 +388,9 @@ function editProfile() {
         if (response.statusCode === 500) {
           //handle error
         } else {
-          user = response;
-          $('#save-changes').modal('hide');
-          $('#confirmation-message-modal')
-            .modal('show')
-            .find('.confirm-modal-body')
-            .html('Changes have been saved.');
+          profileUser = response.data;
+          renderUserInfo();
+          renderSocialMediaLinks();
         }
       })
       .error(function(error) {
@@ -401,16 +398,15 @@ function editProfile() {
         $('#error-message-modal')
           .modal('show')
           .find('.error-modal-body')
-          .html(error);
+          .html('Error ' +error);
       });
   } else {
-    $('#save-changes').modal('hide');
     $('#error-message-modal')
       .modal('show')
       .find('.error-modal-body')
-      .html(errorMsg);
+      .html('Error, unable to save data. ' + errorMsg);
   }
-
+  $('#save-changes').modal('hide');
 }
 
 function onSaveVideoEdit() {
@@ -768,7 +764,6 @@ function renderUserProfileEdit(profileData) {
   });
   $('#donate').on('click', function(){
     if ($('#donate').prop('checked')) {
-      //TODO display input for donate url
       $('#donateUrl').show();
     } else {
       $('#donateUrl').hide();
@@ -893,11 +888,17 @@ function swapFollowBtn(bool) {
   if (bool) {
     $('.profile-options')
       .find('.follow-btn')
-      .html('UNFOLLOW');
+      .html('UNFOLLOW')
+      .removeClass('btn-primary');
+    $('.profile-options')
+      .find('.follow-btn').addClass('btn-default');
   } else {
     $('.profile-options')
       .find('.follow-btn')
-      .html('FOLLOW');
+      .html('FOLLOW')
+      .removeClass('btn-default');
+    $('.profile-options')
+      .find('.follow-btn').addClass('btn-primary');
   }
 }
 
@@ -913,7 +914,6 @@ function checkFollowStatus(){
     contentType : 'application/json'
   })
     .done(function(response){
-    //TODO set user.following to true or false depending if following profileUser or not
       if (response.status === 'followed') {
         swapFollowBtn(true);
       } else if (response.status === 'unfollowed') {
@@ -980,7 +980,6 @@ function initialize() {
     
   } else {
     $('.edit-tab').hide();
-    //TODO check to see if following
 
     checkFollowStatus();
   }
