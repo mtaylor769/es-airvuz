@@ -746,6 +746,9 @@ function renderUserProfileEdit(profileData) {
 function renderSocialMediaLinks() {
   var $socialMedia = $('.user-social-media');
   var $editProfile = $('.edit-profile');
+  if (profileUser.socialMediaLinks.length===0) {
+    $('.user-social-media').find('a').hide();
+  }
   profileUser.socialMediaLinks.forEach(function(account){
     switch (account.socialType) {
       case "FACEBOOK" :
@@ -885,6 +888,7 @@ function initialize() {
   } else {
     $('.edit-tab').hide();
   }
+  renderSocialMediaLinks();
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'
   });
