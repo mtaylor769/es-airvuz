@@ -4,6 +4,7 @@ var jwt                    = require('jsonwebtoken');
 var log4js                 = require('log4js');
 var logger                 = log4js.getLogger('app.routes.api.users');
 var tokenConfig            = require('../../../config/token');
+var aclRoles               = require('../../utils/acl');
 var tokenData              = null;
 var usersCrud              = require('../../persistence/crud/users');
 var userParams             = null;
@@ -69,8 +70,11 @@ function createUser(req, res) {
   
   return usersCrud
     .create(userParams)
-    .then(function(user){
-      res.redirect('/login');
+    .then(function(user) {
+      return aclRoles.addUserRoles(user._id, ['user-general']);
+    })
+    .then(function() {
+      res.redirect('/');
     })
     .catch(function(error) {
       res.send(error)
