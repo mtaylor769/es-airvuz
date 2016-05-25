@@ -1,4 +1,5 @@
 require('../styles/category.css');
+var AmazonConfig              = require('./config/amazon.config.client');
 
 var $categoryPage,
     $loadMoreBtn,
@@ -35,7 +36,7 @@ function _getVideos() {
   return $.ajax('/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page)
     .then(function (videos) {
       if (videos.length > 0) {
-        categoryVideoTpl({videos: videos}, function (err, html) {
+        categoryVideoTpl({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
           $categoryPage.find('#videos > div').append(html);
         });
       }

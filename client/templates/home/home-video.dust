@@ -12,9 +12,7 @@
         <div class="video">
           <div class="text-center">
             <a href="/videoPlayer/{_id}">
-              {!TODO: remove hard code url!}
-              {!<img data-lazy="{s3Bucket}{thumbnailPath}" alt="{title}" class="img-responsive"/>!}
-              <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" alt="{title}" class="img-responsive"/>
+              <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{title}" class="img-responsive"/>
             </a>
           </div>
           <div class="video-bottom">

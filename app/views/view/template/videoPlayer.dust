@@ -9,7 +9,7 @@
         <meta property="og:title" content="{video.title}" >
         <meta property="og:updated_time" content="{video.uploadDate}">
         <meta property="og:description" content="{video.description}" >
-        <meta property="og:image" content="https://s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" >
+        <meta property="og:image" content="https:{s3Bucket}{video.thumbnailPath}" >
         <meta property="fb:app_id" content="868675893230044">
 
         <meta name="twitter:card" content="summary_large_image" />
@@ -18,7 +18,7 @@
         <meta name="twitter:url" content="http://beta2.airvuz.com/videoPlayer/{video.videoPath}" />
         <meta name="twitter:title" content="{video.title}" />
         <meta name="twitter:description" content="{video.description}" />
-        <meta name="twitter:image" content="https://s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}" />
+        <meta name="twitter:image" content="https:{s3Bucket}{video.thumbnailPath}" />
 
 
 
@@ -51,9 +51,9 @@
                         <div>
                             <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
                                    controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
-                                   poster="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.thumbnailPath}"
+                                   poster="{s3Bucket}{video.thumbnailPath}"
                                    data-setup="{}">
-                                <source src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{video.videoPath}" type="video/mp4" />
+                                <source src="{s3Bucket}{video.videoPath}" type="video/mp4" />
                             </video>
                         </div>
                         {!categories!}
@@ -96,8 +96,8 @@
                                 <p class="m-b-0">Top Videos by</p>
                                 <p class="m-b-0">{user.userName}</p>
                             </div>
-                            <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{topTwoVideos.videoOne.thumbnailPath}" height="75" width="150" class="margin-auto">
-                            <img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{topTwoVideos.videoTwo.thumbnailPath}" height="75" width="150" class="margin-auto mobile-display-none small-desktop-none">
+                            <img src="{s3Bucket}{topTwoVideos.videoOne.thumbnailPath}" height="75" width="150" class="margin-auto">
+                            <img src="{s3Bucket}{topTwoVideos.videoTwo.thumbnailPath}" height="75" width="150" class="margin-auto mobile-display-none small-desktop-none">
                             <div class="video-user-more border-radius-0 text-center mobile-display-none">
                                 <p>More</p>
                             </div>
@@ -169,7 +169,7 @@
                         {#upNext}
                             <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
                                 <div class="up-next-wrapper">
-                                    <a href="{_id}"><img src="//s3-us-west-2.amazonaws.com/airvuz-drone-video/{thumbnailPath}" width="100%" class="m-t-10"></a>
+                                    <a href="{_id}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
                                     <div class="up-next-layer">
                                         <a href="{_id}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
                                         <div class="flex up-next-subs">
@@ -207,7 +207,7 @@
         <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
         {> "app.views.view.partial.js" /}
         <script>
-            var video = {video|js|s};
+            var video = {?video}{video|js|s}{:else}[]{/video};
             $(function() {
                 videoPlayer.initialize();
                 $('[data-toggle="tooltip"]').tooltip();

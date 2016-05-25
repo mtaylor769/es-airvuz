@@ -490,7 +490,7 @@ function sortShowcase(sortBy, id) {
   })
   .success(function(data) {
     if (data.status==='OK') {
-      ownerShowcase({videos: data.data}, function(err, html) {
+      ownerShowcase({videos: data.data, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
         $('#allvideos').html(html);
       });
     } else {
@@ -581,8 +581,7 @@ function onCategoryRemove() {
 }
 
 function renderThumbnail(thumbnails, selectedThumbnail) {
-  // var url = AmazonConfig.OUTPUT_URL;
-  var url = '//s3-us-west-2.amazonaws.com/airvuz-drone-video/';
+  var url = AmazonConfig.OUTPUT_URL;
   thumbnailTpl({thumbnails: thumbnails, url: url, selectedThumbnail: selectedThumbnail}, function (err, html) {
     $videoEditModal.find('#generated-thumbnails').html(html);
   });
@@ -738,13 +737,13 @@ function renderAllVideos(html) {
 }
 
 function renderOwnerAllVideosHtml(videos) {
-  ownerAllVideosHtml({videos: videos}, function(err, html) {
+  ownerAllVideosHtml({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
     renderAllVideos(html);
   });
 }
 
 function renderUseAllVideosHtml(videos) {
-  userAllVideosHtml({videos: videos}, function(err, html) {
+  userAllVideosHtml({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
     renderAllVideos(html);
   });
 }

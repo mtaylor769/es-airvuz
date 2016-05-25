@@ -17,6 +17,7 @@ try {
 	var categoryCrud  = require('../../persistence/crud/categoryType');
 	var followCrud		= require('../../persistence/crud/follow');
 	var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];
+	var amazonConfig  = require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -137,6 +138,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.airvuz.js 							= sourceManifest["airvuz.js"];
 			params.data.airvuz.css 							= sourceManifest["airvuz.css"];
 			params.data.vendor.js 							= sourceManifest["vendor.js"];
+
+			params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
 			return params;
 	});
 

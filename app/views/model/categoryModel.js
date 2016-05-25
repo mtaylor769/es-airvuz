@@ -10,6 +10,7 @@ try {
 	var CategoryType		= require('../../../app/persistence/crud/categoryType');
 	var FollowCrud			= require('../../../app/persistence/crud/follow');
 	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
+	var amazonConfig  	= require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -37,6 +38,8 @@ CategoryModel.prototype.getData = function(params) {
 	params.data.vendor      = {};
 	params.data.vendor.js   = sourceManifest["vendor.js"];
 	params.data.viewName		= "Category";
+
+	params.data.s3Bucket 		= amazonConfig.OUTPUT_URL;
 
 	var videoPromise,
 			TOTAL_PER_PAGE = 20;
