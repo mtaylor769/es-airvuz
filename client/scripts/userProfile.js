@@ -723,6 +723,29 @@ function renderSocialMediaLinks() {
   });
 }
 
+function updateFollow() {
+  //encapsulate data around this
+  var follow = {
+    followingUserId   : profileUser._id,
+    userId            : user._id
+  }
+  $.ajax({
+    type:'POST',
+    url: '/api/follow',
+    data: JSON.stringify(follow),
+    contentType : 'application/json'
+  })
+    .done(function(response){
+      //TODO Update current profile page with new amount of followers
+    })
+    .error(function(error){
+      $('#error-message-modal')
+        .modal('show')
+        .find('.error-modal-body')
+        .html(errorMsg);
+    });
+}
+
 function initialize() {
   /*
   *Null check on page dependent variables:
@@ -754,6 +777,9 @@ function initialize() {
   } else {
     $('.hire-btn').hide();
   }
+
+  $('.profile-options')
+    .on('click', '.follow-btn', updateFollow);
   
   if(userNameCheck === profileUser.userName) {
     renderOwnerShowcase(showcaseOwnerVideos);
@@ -766,6 +792,10 @@ function initialize() {
     });
     renderUserProfileEdit(profileUser);
     $('.edit-tab').show();
+
+    $('.profile-options')
+      .find('.follow-btn')
+      .hide();
     
   } else {
     $('.edit-tab').hide();
