@@ -41,6 +41,7 @@ var userProfileEdit       = require('../templates/userProfile/edit-profile.dust'
 var aboutMe               = require('../templates/userProfile/about.dust');
 var userInfo              = require('../templates/userProfile/user-info.dust');
 var videoInfo             = require('../templates/userProfile/edit-video.dust');
+var thumbnailTpl          = require('../templates/upload/thumbnail.dust');
 
 var okHtml                = '<div class="ok showcase-edit-button"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml       = '<div class="not-selected showcase-edit-button"><span class="glyphicon glyphicon-plus"></span></div>';
@@ -139,7 +140,9 @@ function bindEvents() {
 
   $videoEditModal
     .on('change', '#category', onCategorySelect)
-    .on('click', '#selected-category-list li', onCategoryRemove);
+    .on('click', '#selected-category-list li', onCategoryRemove)
+    .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
+    .on('click', '#generated-thumbnails li', onThumbnailSelect)
 
     $(window).on('resize', function() {
       var windowWidth = $(window).width();
@@ -415,7 +418,7 @@ function saveVideoEdit(video) {
     title                 : $('#title').val(),
     videoLocation           : $('#location').val(),
     tags                  : $tags.val(),
-    description           : $('#description').html(),
+    description           : $('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
     categories              : $('#selected-category-list li').map(function (index, li) {
                               return $(li).data('id');
                             }).toArray(),
@@ -431,7 +434,7 @@ function saveVideoEdit(video) {
   }
 
   $.ajax({
-    url         : '/api/videos/' + params.id,
+    url         : '/api/videos/' + params._id,
     contentType : 'application/json',
     type        : 'PUT',
     data        : JSON.stringify(params)
@@ -572,6 +575,14 @@ function onCategoryRemove() {
   $(this).remove();
 }
 
+function renderThumbnail(thumbnails) {
+  // var url = AmazonConfig.OUTPUT_URL;
+  var url = '//s3-us-west-2.amazonaws.com/airvuz-drone-video/';
+  thumbnailTpl({thumbnails: thumbnails, url: url}, function (err, html) {
+    $videoEditModal.find('#generated-thumbnails').html(html);
+  });
+}
+
 function renderEditVideoHtml(video) {
   var selectedCategory = [];
 
@@ -587,6 +598,14 @@ function renderEditVideoHtml(video) {
     selectedCategory: selectedCategory
   };
 
+  // generated thumbnail
+  var thumbnails = [1,2,3,4,5,6],
+      videoHash = video.thumbnailPath.split('/')[0];
+
+  thumbnails.forEach(function (value, index) {
+    thumbnails[index] = videoHash + '/' + 'tn_0000' + value + '.jpg';
+  });
+
   videoInfo(viewData, function(err, html) {
     $videoEditModal.find('#edit-video-content')
       .html(html);
@@ -598,12 +617,13 @@ function renderEditVideoHtml(video) {
       confirmKeys: [13, 188, 32]
     });
 
+    renderThumbnail(thumbnails);
+
     $videoEditModal
       .modal('show')
       .on('click', '#btn-save-video-edit', function(){
         saveVideoEdit(video);
-      })
-      .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
+      });
   });
 }
 
@@ -649,19 +669,19 @@ function onCustomThumbnailClick(event) {
   event.preventDefault();
   $videoEditModal.find('#custom-thumbnail').addClass('hidden');
   $videoEditModal.find('#custom-thumbnail-section').removeClass('hidden');
-  $videoEditModal.find('#thumbnails').addClass('hidden');
+  $videoEditModal.find('#generated-thumbnails').addClass('hidden');
   isCustomThumbnail = true;
 }
 
-// function onThumbnailSelect() {
-//   $(this)
-//     .addClass('active')
-//     .parent()
-//     .find('li.active')
-//     .not(this).removeClass('active');
-//
-//   currentUploadFile.thumbnailPath = $(this).data('url');
-// }
+function onThumbnailSelect() {
+  $(this)
+    .addClass('active')
+    .parent()
+    .find('li.active')
+    .not(this).removeClass('active');
+
+  currentEditVideo.thumbnailPath = $(this).data('url');
+}
 
 function renderAllVideos(html) {
   $('#allvideos').html(html);

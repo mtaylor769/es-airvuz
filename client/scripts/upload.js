@@ -116,7 +116,7 @@ function onTranscodeComplete(response) {
 
 function renderThumbnail(thumbnails) {
   thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
-    $uploadPage.find('#thumbnails').html(html);
+    $uploadPage.find('#generated-thumbnails').html(html);
   });
 }
 
@@ -348,7 +348,7 @@ function bindEvents() {
     event.preventDefault();
     $uploadPage.find('#custom-thumbnail').addClass('hidden');
     $uploadPage.find('#custom-thumbnail-section').removeClass('hidden');
-    $uploadPage.find('#thumbnails').addClass('hidden');
+    $uploadPage.find('#generated-thumbnails').addClass('hidden');
     isCustomThumbnail = true;
   }
 
@@ -356,7 +356,7 @@ function bindEvents() {
     event.preventDefault();
     $uploadPage.find('#custom-thumbnail').removeClass('hidden');
     $uploadPage.find('#custom-thumbnail-section').addClass('hidden');
-    $uploadPage.find('#thumbnails').removeClass('hidden');
+    $uploadPage.find('#generated-thumbnails').removeClass('hidden');
     isCustomThumbnail = false;
   }
 
@@ -367,7 +367,7 @@ function bindEvents() {
     .on('change', '#file', onFileChange)
     .on('change', '#custom-image-file', onCustomFileChange)
     .on('click', '#btn-publish', onPublish)
-    .on('click', '#thumbnails li', onThumbnailSelect)
+    .on('click', '#generated-thumbnails li', onThumbnailSelect)
     .on('click', '#selected-category-list li', onCategoryRemove)
     .on('click', '#upload-again', onUploadAgain)
     .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
