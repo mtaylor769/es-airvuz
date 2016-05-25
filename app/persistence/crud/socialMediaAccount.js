@@ -147,27 +147,30 @@ socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, pr
       reject(validation.error);
     } else {
       logger.debug('no validation errors');
-      SocialModel.findOne({ $or : [{accountId : validation.accountId}, { provider : validation.provider}]}, 
-        function(error, account){
-        if (error) {
+      SocialModel.findOne({accountId : validation.accountId, provider : validation.provider})
+        .then(function(account){
+          logger.debug('success in finding by account id and provider '+ account);
+          resolve(account);
+        })
+        .catch(function(error) {
           var errorMessage    = new ErrorMessage();
           errorMessage.getErrorMessage({
             statusCode      : "500",
             errorId         : "PERS1000",
             errorMessage    : "Failed while getting social media account by id and provider",
-            sourceError     : error,
+            sourceError     :  error,
             sourceLocation  : "persistence.crud.socialMediaAccount.findAccountByIdandProvider"
           });
           reject(errorMessage.getErrors());
-        } else {
-          logger.debug('success in finding by account id and provider '+ account);
-          resolve(account);
-        }
-      });
+        })
     }
-  }));
-}
+  })
+  );
+};
 
+socialMediaAccount.prototype.update = function(id, userId) {
+  return SocialModel.findByIdAndUpdate(id, {userId: userId}).exec();
+};
 
 module.exports = new socialMediaAccount();
 

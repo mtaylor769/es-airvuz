@@ -32,7 +32,6 @@ users.prototype.validateCreateUser = function(params) {
 	 */
 	var sourceLocation				= "persistence.crud.Users.create";
 	var userInfo 							= {};
-	
 	//need to pass in user data info
 	var errorMessage										= new ErrorMessage();
 	userInfo.data 											= {};
@@ -42,9 +41,7 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 	userInfo.data.profilePicture				= params.profilePicture || "";
 	
-
-	if (params.socialMediaAccounts) {
-		userInfo.data.socialMediaAccounts 	= params.socialMediaAccounts;
+	if (params.social) {
 		userInfo.data.status 								= 'active';
 	} else {
 		userInfo.data.password        		= params.password || null;
@@ -124,7 +121,6 @@ users.prototype.validateCreateUser = function(params) {
 	}
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
-				logger.debug('email : '+ email);
 				if (email) {
 					throw userInfo.errors = errorMessage.getErrorMessage({
 						statusCode: "400",
@@ -334,10 +330,14 @@ users.prototype.validateUpdateUser = function(id, params) {
  * Create a new Users document.
  */
 users.prototype.create = function(params) {
+	logger.debug('made it into user create');
 	validation 				= this.validateCreateUser(params);
 	return validation.then(function (userInfo) {
 		// Persist
 		var saveUser 						= new UserModel(userInfo.data);
+		if(params.social) {
+			saveUser.userName = saveUser._id;
+		}
 		if (saveUser.password) {
 			logger.debug('hash password');
 			saveUser.password 		= saveUser.generateHash(saveUser.password);
@@ -511,6 +511,7 @@ users.prototype.getUserByEmail = function (email) {
 			reject(validation.errors);
 		} else {
 			logger.debug('searching user model for address');
+			logger.debug(validation.emailAddress);
 			UserModel.findOne({emailAddress : validation.emailAddress}, function(error, user){
 				if (error) {
 					logger.debug('error when trying to find user by email');
