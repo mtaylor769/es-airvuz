@@ -10,6 +10,7 @@ var identity                  = require('./services/identity');
 var camera                    = require('./services/camera');
 var drone                     = require('./services/drone');
 var category                  = require('./services/category');
+var AVEventTracker			      = require('./avEventTracker');
 var user                      = identity.currentUser || null;
 var userNameCheck             = '';
 var amazonConfig              = require('./config/amazon.config.client');
@@ -847,26 +848,87 @@ function getData() {
 }
 
 function updateFollow() {
-  //encapsulate data around 'data' object
-  var follow = {
-    followingUserId   : profileUser._id,
-    userId            : user._id
-  }
+  var followData = {
+    follow : {
+      userId : user._id,
+      followingUserId : profileUser._id
+    },
+    notification : {
+      notificationType : 'FOLLOW',
+      notificationMessage : 'started following you',
+      actionUserId : user._id,
+      notifiedUserId : profileUser._id
+    }
+  };
+
   $.ajax({
     type:'POST',
     url: '/api/follow',
-    data: JSON.stringify(follow),
-    contentType : 'application/json'
+    data: {data: JSON.stringify(followData)}
   })
     .done(function(response){
+      if(response.status === 'followed') {
+        swapFollowBtn(true);
+        AVEventTracker({
+          codeSource	: "videoPlayer",
+          eventName		: "followedUser",
+          eventType		: "click"
+        });
+        $('#follow').text('-');
+      } else if(response.status === 'unfollowed'){
+        swapFollowBtn(false);
+          AVEventTracker({
+            codeSource	: "videoPlayer",
+            eventName		: "unfollowedUser",
+            eventType		: "click"
+          });
       //TODO Update current profile page with new amount of followers
-    })
+    }})
     .error(function(error){
       $('#error-message-modal')
         .modal('show')
         .find('.error-modal-body')
-        .html(errorMsg);
+        .html('Error ' + errorMsg);
     });
+}
+
+function swapFollowBtn(bool) {
+  if (bool) {
+    $('.profile-options')
+      .find('.follow-btn')
+      .html('UNFOLLOW');
+  } else {
+    $('.profile-options')
+      .find('.follow-btn')
+      .html('FOLLOW');
+  }
+}
+
+function checkFollowStatus(){
+  var data = {
+    followingUserId     : profileUser._id,
+    userId              : user._id
+  }
+  $.ajax({
+    type:'POST',
+    url: '/api/follow/check',
+    data: JSON.stringify(data),
+    contentType : 'application/json'
+  })
+    .done(function(response){
+    //TODO set user.following to true or false depending if following profileUser or not
+      if (response.status === 'followed') {
+        swapFollowBtn(true);
+      } else if (response.status === 'unfollowed') {
+        swapFollowBtn(false);
+      }
+      console.log(response);
+    })
+    .error(function(error){
+    //TODO server side error, pop modal
+      console.log(error);
+    });
+
 }
 
 function initialize() {
@@ -923,6 +985,9 @@ function initialize() {
     
   } else {
     $('.edit-tab').hide();
+    //TODO check to see if following
+
+    checkFollowStatus();
   }
   renderSocialMediaLinks();
   $("[name='showcase-default']").bootstrapSwitch({
