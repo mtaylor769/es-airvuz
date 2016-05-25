@@ -10,6 +10,7 @@ var identity                  = require('./services/identity');
 var camera                    = require('./services/camera');
 var drone                     = require('./services/drone');
 var category                  = require('./services/category');
+var AVEventTracker			      = require('./avEventTracker');
 var user                      = identity.currentUser || null;
 var userNameCheck             = '';
 var amazonConfig              = require('./config/amazon.config.client');
@@ -864,63 +865,71 @@ function updateFollow() {
     type:'POST',
     url: '/api/follow',
     data: {data: JSON.stringify(followData)}
-    //contentType : 'application/json'
   })
     .done(function(response){
+      if(response.status === 'followed') {
+        swapFollowBtn(true);
+        AVEventTracker({
+          codeSource	: "videoPlayer",
+          eventName		: "followedUser",
+          eventType		: "click"
+        });
+        $('#follow').text('-');
+      } else if(response.status === 'unfollowed'){
+        swapFollowBtn(false);
+          AVEventTracker({
+            codeSource	: "videoPlayer",
+            eventName		: "unfollowedUser",
+            eventType		: "click"
+          });
       //TODO Update current profile page with new amount of followers
-    })
+    }})
     .error(function(error){
       $('#error-message-modal')
         .modal('show')
         .find('.error-modal-body')
-        .html(errorMsg);
+        .html('Error ' + errorMsg);
     });
 }
 
-// $('#follow').on('click', function() {
-//   if(userIdentity._id && userIdentity._id !== video.userId) {
-//     var followData = {};
-//     var followObject = {};
-//     followObject.userId = userIdentity._id;
-//     followObject.followingUserId = video.userId;
-//     notificationObject.notificationType = 'FOLLOW';
-//     notificationObject.notificationMessage = 'started following you';
-//     followData.follow = followObject;
-//     followData.notification = notificationObject;
-//     console.log(followData);
-//     $.ajax({
-//       type: 'POST',
-//       url: '/api/follow',
-//       data: {data: JSON.stringify(followData)}
-//     })
-//       .success(function (response) {
-//         if(response.status === 'followed') {
-//           AVEventTracker({
-//             codeSource	: "videoPlayer",
-//             eventName		: "followedUser",
-//             eventType		: "click"
-//           });
-//           $('#follow').text('-');
-//         } else if(response.status === 'unfollowed'){
-//           AVEventTracker({
-//             codeSource	: "videoPlayer",
-//             eventName		: "unfollowedUser",
-//             eventType		: "click"
-//           });
-//           $('#follow').text('+');
-//         }
-//       })
-//       .error(function (error) {
-//       })
-//   } else if(!userIdentity._id) {
-//     $('#follow-modal').modal('show');
-//     $('.go-to-login').on('click', function() {
-//       $('#login-modal').modal('show');
-//     })
-//   } else {
-//     $('#follow-self-modal').modal('show');
-//   }
-// });
+function swapFollowBtn(bool) {
+  if (bool) {
+    $('.profile-options')
+      .find('.follow-btn')
+      .html('UNFOLLOW');
+  } else {
+    $('.profile-options')
+      .find('.follow-btn')
+      .html('FOLLOW');
+  }
+}
+
+function checkFollowStatus(){
+  var data = {
+    followingUserId     : profileUser._id,
+    userId              : user._id
+  }
+  $.ajax({
+    type:'POST',
+    url: '/api/follow/check',
+    data: JSON.stringify(data),
+    contentType : 'application/json'
+  })
+    .done(function(response){
+    //TODO set user.following to true or false depending if following profileUser or not
+      if (response.status === 'followed') {
+        swapFollowBtn(true);
+      } else if (response.status === 'unfollowed') {
+        swapFollowBtn(false);
+      }
+      console.log(response);
+    })
+    .error(function(error){
+    //TODO server side error, pop modal
+      console.log(error);
+    });
+
+}
 
 function initialize() {
   /*
@@ -976,6 +985,9 @@ function initialize() {
     
   } else {
     $('.edit-tab').hide();
+    //TODO check to see if following
+
+    checkFollowStatus();
   }
   renderSocialMediaLinks();
   $("[name='showcase-default']").bootstrapSwitch({

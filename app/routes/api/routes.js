@@ -79,6 +79,9 @@ apiRouter.route('/api/users/create')
 apiRouter.route('/api/follow')
 	.post(follow.post);
 
+apiRouter.route('/api/follow/check')
+	.post(follow.getCheckFollowing);
+
 /**
  * /api/notifications/
  */
