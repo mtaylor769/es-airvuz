@@ -62,7 +62,7 @@
                                 <div class="col-xs-12">
                                     <ul class="list-inline categories">
                                         {#video.categories}
-                                            <li>{name}</li>
+                                            <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
                                         {/video.categories}
                                     </ul>
                                 </div>
