@@ -317,7 +317,8 @@ Videos.prototype.create = function(params) {
 //};
 
 Videos.prototype.get5Videos = function(count) {
-	var random = Math.floor(Math.random() * 500);
+	var isProd = process.env.NODE_ENV === 'production';
+	var random = isProd ? Math.floor(Math.random() * 500) : 0;
 	var limit = count ? count : 5;
 	return VideoModel.find({}).skip(random).populate('userId').limit(limit).exec();
 };
