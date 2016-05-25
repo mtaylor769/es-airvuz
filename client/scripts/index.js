@@ -1,5 +1,6 @@
 require('../styles/index.css');
 require('./config/jquery');
+require('dustjs-helpers');
 
 var AVEventTracker			= require('./avEventTracker');
 

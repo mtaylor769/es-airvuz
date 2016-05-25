@@ -36,6 +36,10 @@
     <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
     {> "app.views.view.partial.js" /}
     <script>
+        /** global page **/
+        var Page = {};
+        Page.categories = {categories|js|s};
+
         var profileUser = {user|js|s};
         var profileVideos = {videos|js|s};
         $(function() {

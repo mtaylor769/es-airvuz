@@ -8,8 +8,7 @@ var Evaporate     = require('evaporate'),
     AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
     camera        = require('./services/camera'),
-    drone         = require('./services/drone'),
-    category      = require('./services/category');
+    drone         = require('./services/drone');
 
 /**
  * Templates
@@ -117,7 +116,7 @@ function onTranscodeComplete(response) {
 
 function renderThumbnail(thumbnails) {
   thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
-    $uploadPage.find('#thumbnails').html(html);
+    $uploadPage.find('#generated-thumbnails').html(html);
   });
 }
 
@@ -183,7 +182,7 @@ function bindEvents() {
       duration          : currentUploadFile.duration,
       cameraType        : $uploadPage.find('#camera-type').val(),
       droneType         : $uploadPage.find('#drone-type').val(),
-      categories        : $uploadPage.find('#category-list li').map(function (index, li) {
+      categories        : $uploadPage.find('#selected-category-list li').map(function (index, li) {
                             return $(li).data('id');
                           }).toArray(),
       thumbnailPath     : currentUploadFile.thumbnailPath,
@@ -315,7 +314,7 @@ function bindEvents() {
 
     var category = getCategoryById(categoryId);
     var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
-    var $categoryList = $uploadPage.find('#category-list');
+    var $categoryList = $uploadPage.find('#selected-category-list');
 
     if ($categoryList.find('li').size() < 3) {
       $categoryList.append(list);
@@ -349,7 +348,7 @@ function bindEvents() {
     event.preventDefault();
     $uploadPage.find('#custom-thumbnail').addClass('hidden');
     $uploadPage.find('#custom-thumbnail-section').removeClass('hidden');
-    $uploadPage.find('#thumbnails').addClass('hidden');
+    $uploadPage.find('#generated-thumbnails').addClass('hidden');
     isCustomThumbnail = true;
   }
 
@@ -357,7 +356,7 @@ function bindEvents() {
     event.preventDefault();
     $uploadPage.find('#custom-thumbnail').removeClass('hidden');
     $uploadPage.find('#custom-thumbnail-section').addClass('hidden');
-    $uploadPage.find('#thumbnails').removeClass('hidden');
+    $uploadPage.find('#generated-thumbnails').removeClass('hidden');
     isCustomThumbnail = false;
   }
 
@@ -368,8 +367,8 @@ function bindEvents() {
     .on('change', '#file', onFileChange)
     .on('change', '#custom-image-file', onCustomFileChange)
     .on('click', '#btn-publish', onPublish)
-    .on('click', '#thumbnails li', onThumbnailSelect)
-    .on('click', '#category-list li', onCategoryRemove)
+    .on('click', '#generated-thumbnails li', onThumbnailSelect)
+    .on('click', '#selected-category-list li', onCategoryRemove)
     .on('click', '#upload-again', onUploadAgain)
     .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
     .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick);

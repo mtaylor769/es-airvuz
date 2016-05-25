@@ -20,31 +20,32 @@
                 </div>
                 <div class="form-group">
                     <label for="category">Category (Select up to 3 categories) <span class="text-danger">*</span></label>
-                    <ul id="category-list" class="list-inline">
+                    <ul id="selected-category-list" class="list-inline">
+                      {#selectedCategory}
+                        <li data-id="{_id}">{name}</li>
+                      {/selectedCategory}
                     </ul>
                     <p id="category-message" class="text-danger"></p>
                     <select class="form-control" id="category">
                         <option value="">Select a category type</option>
-                        {#categories}
+                        {#categoryType}
                         <option value="{_id}">{name}</option>
-                        {/categories}
+                        {/categoryType}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="drone-type">Drone Type <span class="text-danger">*</span></label>
                     <select class="form-control" id="drone-type" required>
-                        <option value="">Select a drone type</option>
                         {#drones}
-                        <option value="{_id}">{manufacturer} - {model}</option>
+                        <option value="{._id}" {@eq key=_id value=droneType}selected{/eq}>{manufacturer} - {model}</option>
                         {/drones}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="camera-type">Camera Type <span class="text-danger">*</span></label>
                     <select class="form-control" id="camera-type" required>
-                        <option value="">Select a camera type</option>
                         {#cameras}
-                        <option value="{_id}">{manufacturer} - {model}</option>
+                        <option value="{_id}" {@eq key=_id value=cameraType}selected{/eq}>{manufacturer} - {model}</option>
                         {/cameras}
                     </select>
                 </div>
@@ -58,14 +59,11 @@
                     <button class="btn btn-danger" id="btn-cancel-custom-thumbnail">Cancel</button>
                 </div>
 
-                <div class="form-group text-center" id="thumbnails">
-                    <p>Generating thumbnails...</p>
-                    {!generated!}
+                <div class="form-group text-center" id="generated-thumbnails">
                 </div>
                 <div class="form-group text-center" id="custom-thumbnail">
                     <button class="btn btn-primary" id="btn-custom-thumbnail">Upload custom thumbnail</button>
                 </div>
-
             </form>
         </div>
     </div>

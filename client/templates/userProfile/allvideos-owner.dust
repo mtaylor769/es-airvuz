@@ -35,8 +35,8 @@
                         </p>
                     </div>
                     <div class="m-t-10 hidden-xs">
-                        <a data-video-id="{_id}" class="btn btn-primary btn-edit">Edit</a>
-                        <a data-video-id="{_id}" class="btn btn-default btn-delete">Delete</a>
+                        <a data-video-id="{_id}" class="btn btn-primary btn-edit-video">Edit</a>
+                        <a data-video-id="{_id}" class="btn btn-default btn-delete-video">Delete</a>
                     </div>
                 </div>
                 <div class="col-xs-1 visible-xs">
