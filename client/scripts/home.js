@@ -1,6 +1,7 @@
 require('../styles/home.css');
 
-var identity      = require('./services/identity');
+var identity      = require('./services/identity'),
+    AmazonConfig  = require('./config/amazon.config.client');
 
 /**
  * Templates
@@ -49,7 +50,17 @@ function getFollowerVideos() {
   $.ajax('/api/videos/category/Follower%20Videos/page/1')
       .then(function (videos) {
         if (videos.length > 0) {
-          homeVideoTpl({title: 'Follower Videos', viewAll: 'Follower%20Videos', index: {follower: videos}, videos: 'follower'}, function (err, html) {
+          var viewData = {
+            title: 'Follower Videos',
+            viewAll: 'Follower%20Videos',
+            index: {
+              follower: videos
+            },
+            videos: 'follower',
+            s3Bucket: AmazonConfig.OUTPUT_URL
+          };
+
+          homeVideoTpl(viewData, function (err, html) {
             $homePage.find('#main-row > .border-left').append('<hr/>').append(html);
             $homePage.find('.video-slick').last().slick(SLICK_CONFIG);
           });
