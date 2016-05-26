@@ -814,7 +814,7 @@ function renderSocialMediaLinks() {
         if (account.url && account.url !== '') {
           $socialMedia.find('.facebook')
             .show()
-            .attr('href', account.url);
+            .attr('href', '//'+account.url);
           $editProfile.find('#facebook').val(account.url)
         } else {
           $socialMedia.find('.facebook').hide();
@@ -824,7 +824,7 @@ function renderSocialMediaLinks() {
         if (account.url && account.url !== '') {
           $socialMedia.find('.google').show()
             .show()
-            .attr('href', account.url);
+            .attr('href', '//'+account.url);
           $editProfile.find('#googleplus').val(account.url);
         } else {
           $socialMedia.find('.google').hide();
@@ -834,7 +834,7 @@ function renderSocialMediaLinks() {
         if (account.url && account.url !== '') {
           $socialMedia.find('.instagram').show()
             .show()
-            .attr('href', account.url);
+            .attr('href', '//'+account.url);
           $editProfile.find('#instagram').val(account.url);
         } else {
           $socialMedia.find('.instagram').hide();
@@ -844,7 +844,7 @@ function renderSocialMediaLinks() {
         if (account.url && account.url !== '') {
           $socialMedia.find('.twitter').show()
             .show()
-            .attr('href', account.url);
+            .attr('href', '//'+account.url);
           $editProfile.find('#twitter').val(account.url);
         } else {
           $socialMedia.find('.twitter').hide();
@@ -978,7 +978,8 @@ function sendHireMeEmail() {
   $.ajax({
     type: 'POST',
     url: '/api/users/hireme',
-    data: hireData
+    data: JSON.stringify(hireData),
+    contentType : 'application/json'
   })
     .done(function(response){
       if (response.statusCode === 200) {
@@ -1006,14 +1007,6 @@ console.groupEnd();
 }
 
 function initialize() {
-  /*
-  *Null check on page dependent variables:
-  *profileVideos
-  *user
-  */
-  if (user) {
-    userNameCheck = user.userName;
-  }
   if (!profileVideos) {
     profileVideos = [];
   } else {
@@ -1024,43 +1017,58 @@ function initialize() {
   $profilePage = $('#user-profile');
   $videoEditModal = $('#edit-video-modal');
 
-  if (profileUser.allowDonation) {
-    $('.donate-btn').show();
-  } else {
-    $('.donate-btn').hide();
-  }
-
-  if (profileUser.allowHire) {
-    $('.hire-btn').show();
-  } else {
-    $('.hire-btn').hide();
-  }
 
   $('.profile-options')
     .on('click', '.follow-btn', updateFollow)
     .on('click', '.hire-btn', displayHireMeModal);
-  //TODO hide donate an hire button when anonymous user
-  if(userNameCheck === profileUser.userName) {
-    renderOwnerShowcase(showcaseOwnerVideos);
-    ownerShowcase({videos: showcaseOwnerVideos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
-      $('#showcase').html(html);
-    });
-    renderOwnerAllVideosHtml(allOwnerVideos);
-    aboutMe({user: profileUser}, function(err, html){
-      $("#about-me-section").html(html);
-    });
-    renderUserProfileEdit(profileUser);
-    $('.edit-tab').show();
 
-    $('.profile-options')
-      .find('.follow-btn')
-      .hide();
-    
+  if (user) {
+    //Logic for when viewing self
+    userNameCheck = user.userName;
+    if(userNameCheck === profileUser.userName) {
+      renderOwnerShowcase(showcaseOwnerVideos);
+      ownerShowcase({videos: showcaseOwnerVideos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
+        $('#showcase').html(html);
+      });
+      renderOwnerAllVideosHtml(allOwnerVideos);
+      aboutMe({user: profileUser}, function(err, html){
+        $("#about-me-section").html(html);
+      });
+      renderUserProfileEdit(profileUser);
+      $('.edit-tab').show();
+
+      $('.profile-options')
+        .find('.follow-btn')
+        .hide();
+      $('.donate-btn').hide();
+      $('.hire-btn').hide();
+    } else {
+      //Logic for when viewing other profile
+      if (profileUser.allowDonation) {
+        $('.donate-btn').show();
+      } else {
+        $('.donate-btn').hide();
+      }
+
+      if (profileUser.allowHire) {
+        $('.hire-btn').show();
+      } else {
+        $('.hire-btn').hide();
+      }
+      $('.edit-tab').hide();
+      checkFollowStatus();
+
+    }
   } else {
+    //TODO user does not exist, or no one logged in
+    $('.donate-btn').hide();
+    $('.hire-btn').hide();
+    $('.follow-btn').hide();
     $('.edit-tab').hide();
 
-    checkFollowStatus();
   }
+
+
   renderSocialMediaLinks();
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'

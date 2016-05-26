@@ -30,8 +30,8 @@
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
             <a class="facebook fa fa-facebook-square" target="_blank" style="margin-right: 10px"></a>
             <a class="instagram fa fa-instagram" target="_blank" style="margin-right: 10px"></a>
-            <a class="twitter font-white fa fa-twitter-square" target="_blank" style="margin-right: 10px"></a>
-            <a class="google font-white fa fa-google-plus-square" target="_blank"></a>
+            <a class="twitter fa fa-twitter-square" target="_blank" style="margin-right: 10px"></a>
+            <a class="google fa fa-google-plus-square" target="_blank"></a>
         </div>
       </div>
     </div>

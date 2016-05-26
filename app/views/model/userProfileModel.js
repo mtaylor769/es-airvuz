@@ -1,6 +1,6 @@
 // IMPORT: BEGIN
 var log4js							= require('log4js');
-var logger							= log4js.getLogger('app.views.model.index');
+var logger							= log4js.getLogger('app.views.model.userProfileModel');
 
 try {
 	var BaseModel					= require('./baseModel');

@@ -851,6 +851,10 @@ Begin userProfile CSS
   color: black;
 }
 
+#user-profile .user-social-media a {
+  text-decoration: none;
+}
+
 #user-profile .inline{
   display: inline-block;
 }

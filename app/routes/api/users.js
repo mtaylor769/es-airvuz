@@ -105,7 +105,7 @@ function put(req, res) {
   });
 }
 
-function hireMe(res, req) {
+function hireMe(req, res) {
   var sendData = {};
   var params = req.body;
   var transport = nodemailer.createTransport({
@@ -118,7 +118,7 @@ function hireMe(res, req) {
 
   var mailOptions = {
     from:'AirVuz Hire Request <noreply@airvuz.com>',
-    to: params.emailAddress,
+    to: params.profileUser.emailAddress,
     subject: 'Request for hire',
     html: HireMe.hireMeTemplate(params)
   };
