@@ -1,6 +1,6 @@
 <div class="row m-t-15 m-b-15">
     <div class="dropdown col-xs-9">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             Sort By
             <span class="caret"></span>
         </button>
@@ -9,11 +9,11 @@
             <li><a class="sort-showcase-dasc">Date Ascending</a></li>
             <li><a class="sort-showcase-ddesc">Date Descending</a></li>
             <li><a class="sort-showcase-likes">Number of Likes</a></li>
-        </ul>
+        </ul> -->
         
     </div>
         <div class="col-xs-1">
-            <input type="checkbox" name="showcase-default" checked/>
+            <input type="checkbox" name="showcase-default" unchecked/>
         </div>
         <div class="col-xs-2">
             <button class="edit-showcase-btn btn btn-default" id="edit-showcase">Edit Showcase</button>

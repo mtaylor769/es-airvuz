@@ -416,7 +416,22 @@ function editProfile() {
     })
       .done(function(response) {
         if (response.statusCode === 500) {
-          //handle error
+          var strBuilder = '';
+          response.data.forEach(function(item){
+            if (item.displayMsg) {
+              strBuilder += item.displayMsg;
+            }
+          });
+          $('#save-changes').modal('hide');
+          /********************************************************/
+          console.group('%cstrBuilder :', 'color:red;font:strait');
+          console.log(strBuilder);
+          console.groupEnd();
+          /********************************************************/
+          $('#error-message-modal')
+            .modal('show')
+            .find('.error-modal-body')
+            .html('Error ' + strBuilder);
         } else {
           profileUser = response.data;
           renderUserInfo();
@@ -514,9 +529,10 @@ function sortShowcase(sortBy, id) {
   })
   .success(function(data) {
     if (data.status==='OK') {
-      ownerShowcase({videos: data.data, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
-        $('#allvideos').html(html);
-      });
+      renderOwnerShowcase(data.data)
+      // ownerShowcase({videos: data.data, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
+      //   $('#allvideos').html(html);
+      // });
     } else {
       console.log('server side error' + data.data);
     }
@@ -524,22 +540,6 @@ function sortShowcase(sortBy, id) {
   .error(function(error) {
     console.log('error : ' + error);
   });
-}
-
-function showcaseByVuz() {
-  sortShowcase('vuz', profileUser._id);
-}
-
-function showcaseByDasc() {
-  sortShowcase('dasc', profileUser._id);
-}
-
-function showcaseByDdesc() {
-  sortShowcase('ddesc', profileUser._id);
-}
-
-function showcaseByLikes() {
-  sortShowcase('likes', profileUser._id);
 }
 
 function deleteVideo(videoId) {
@@ -776,11 +776,19 @@ function renderOwnerShowcase(videos) {
   ownerShowcase({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
     $('#allvideos').html(html);
   });
-  // $('.sort-showcase')
-  //   .on('click', '.sort-showcase-vuz', sortShowcase('vuz', profileUser._id))
-  //   .on('click', '.sort-showcase-dasc', sortShowcase('dasc', profileUser._id))
-  //   .on('click', '.sort-showcase-ddesc', sortShowcase('ddesc', profileUser._id))
-  //   .on('click', '.sort-showcase-likes', sortShowcase('likes', profileUser._id));
+  $('.sort-showcase')
+    .on('click', '.sort-showcase-vuz', function(){
+      sortShowcase('vuz', profileUser._id);
+    })
+    .on('click', '.sort-showcase-dasc', function(){
+      sortShowcase('dasc', profileUser._id);
+    })
+    .on('click', '.sort-showcase-ddesc', function(){
+      sortShowcase('ddesc', profileUser._id);
+    })
+    .on('click', '.sort-showcase-likes', function(){
+      sortShowcase('likes', profileUser._id);
+    });
 }
 
 function renderUserProfileEdit(profileData) {
