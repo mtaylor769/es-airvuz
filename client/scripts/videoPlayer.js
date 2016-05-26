@@ -1,5 +1,6 @@
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
+var AmazonConfig                       = require('./config/amazon.config.client');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
@@ -139,9 +140,10 @@ function bindEvents() {
       })
       .done(function(data) {
         var comment = data;
+        // TODO: use dust template rendering
         var html = '<li class="comment-wrap">'+
           '<div class="flex">'+
-          '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
+          '<img src="' + AmazonConfig.ASSET_URL + 'users/profile-pictures' + user.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
           '<div class="m-t-20">'+
           '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
           '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
