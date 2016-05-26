@@ -62,13 +62,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return userCrud.getUserById(video.userId);
 		})
 		.then(function(user) {
-			if(user.profilePicture.length === 0) {
-				user.profilePicture = "http://airvuz.com/assets/img/default.png";
-			} else if(user.profilePicture.indexOf('http') !== -1) {
-				user.profilePicture = user.profilePicture;
-			} else {
-				user.profilePicture = 'http://airvuz.com' + user.profilePicture;
-			}
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
 
@@ -143,6 +136,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.vendor.js 							= sourceManifest["vendor.js"];
 
 			params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
+			params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;
 			return params;
 	});
 
