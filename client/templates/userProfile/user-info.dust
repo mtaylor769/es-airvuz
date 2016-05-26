@@ -1,8 +1,8 @@
-<section style="color: white; background: #fff url('//s3-us-west-2.amazonaws.com/airvuz-asset/users/cover-pictures{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
+<section style="color: white; background: #fff url('{s3AssetUrl}users/cover-pictures{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
   <div class="">
     <div class="profile-picture col-xs-12 col-md-3">
       {#user.profilePicture}
-        <img src="//s3-us-west-2.amazonaws.com/airvuz-asset/users/profile-pictures{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
+        <img src="{s3AssetUrl}users/profile-pictures{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
       {:else}
         <img src="/client/images/default.png" alt="user profile picture" class="border-radius-circle">
       {/user.profilePicture}

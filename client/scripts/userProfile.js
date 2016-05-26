@@ -94,6 +94,35 @@ function bindEvents() {
       error: onUploadError
     });
   }
+
+  function updateUserPicture(hashName, type) {
+    var data = {};
+
+    data[type] = '/' + hashName;
+
+    var ajaxOptions = {
+        type        : 'PUT',
+        url         : '/api/users/' + identity._id,
+        contentType : 'application/json',
+        data        : JSON.stringify(data)
+      };
+
+    $.ajax(ajaxOptions)
+      .then(function (response) {
+        var $userInfoData = $('#userInfoData');
+
+        if (type === 'profilePicture') {
+          $userInfoData
+            .find('.profile-picture img')
+            .attr('src', amazonConfig.ASSET_URL + '/users/profile-pictures' + hashName);
+        } else {
+          $userInfoData
+            .find('> section')
+            .css('background', '#fff url(' + amazonConfig.ASSET_URL + 'users/cover-pictures' + hashName + ') no-repeat center');
+        }
+      });
+  }
+
   function onProfileImageChange() {
     var image = this.files[0],
         hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
@@ -103,7 +132,7 @@ function bindEvents() {
       image: image,
       fileName: path + hashName,
       onComplete: function () {
-        // do request to save hashName to database
+        updateUserPicture(hashName, 'profilePicture');
       }
     });
   }
@@ -118,6 +147,7 @@ function bindEvents() {
       fileName: path + hashName,
       onComplete: function () {
         // do request to save hashName to database
+        updateUserPicture(hashName, 'coverPicture');
       }
     });
   }

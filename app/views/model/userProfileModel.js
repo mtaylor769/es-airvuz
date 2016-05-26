@@ -129,6 +129,7 @@ UserProfileModel.prototype.getData = function(params) {
 		params.data.vendor.js 							= sourceManifest["vendor.js"];
 
 		params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
+		params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;
 		return params;
 	});
 };

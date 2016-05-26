@@ -82,7 +82,6 @@ function createUser(req, res) {
 }
 
 function put(req, res) {
-  console.log('hit this');
   var updateObject  = req.body;
   var userId        = req.params.id;
   var data          = {};
