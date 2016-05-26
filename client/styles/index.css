@@ -374,6 +374,14 @@ body.modal-open {
  * End Video Player
 /**********************************/
 
+.video-user-picture {
+  margin: 31px 15px;
+}
+
+.video-user-about {
+  margin: 25px 15px;
+}
+
 .video-end-card {
   position: absolute;
   top: 0;
@@ -1150,9 +1158,18 @@ use class="glyphicon glyphicon-minus"
 /*
 End user profile CSS
 */
+.top-two-videos {
+  display: none;
+}
+@media (min-width: 320px) {
 
+}
 /* mobile device M */
-@media (min-width: 375px) {
+@media (min-width: 376px) {
+  .top-two-videos {
+    display: block;
+  }
+
   #notification .dropdown-menu {
     left: -250px;
     width: 375px;

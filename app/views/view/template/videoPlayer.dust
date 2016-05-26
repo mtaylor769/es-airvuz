@@ -33,7 +33,6 @@
     </head>
     <body>
         {> "app.views.view.partial.header" /}
-        {> "client.templates.videoPlayer.videoPlayerModal" /}
         <div class="video-page">
             <div class="container main">
                 <div class="row">
@@ -86,12 +85,13 @@
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
                             <button class="btn background-orange border-radius-0 font-white add-button" id="follow">+</button>
-                            <img src="{user.profilePicture}" height="50" width="50" class="margin-auto border-radius-circle">
-                            <div class="margin-auto t-a-inherit">
+                            <img src="{user.profilePicture}" height="50" width="50" class="border-radius-circle video-user-picture">
+                            <div class="video-user-about t-a-inherit">
                                 <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/userProfile/{user.userName}">{user.userName}</a></p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
                             </div>
+                            {?topTwoVideos}
                             <div class="top-videos margin-auto t-a-inherit mobile-display-none">
                                 <p class="m-b-0">Top Videos by</p>
                                 <p class="m-b-0">{user.userName}</p>
@@ -102,8 +102,9 @@
                                 {/topTwoVideos}
                             </div>
                             <div class="video-user-more border-radius-0 text-center mobile-display-none">
-                                <p>More</p>
+                                <a href="/userProfile/{user.userName}">More Videos</a>
                             </div>
+                            {/topTwoVideos}
                         </div>
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
@@ -188,6 +189,7 @@
                 </div>
             </div>
         </div>
+        {> "client.templates.videoPlayer.videoPlayerModal" /}
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.cdn-js" /}
         <div id="fb-root"></div>

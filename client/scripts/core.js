@@ -145,8 +145,11 @@ function bindEvents() {
       data: newUserObject
     })
       .done(function(response) {
-        console.log(response);
-        appendErrorMessage(response);
+        if(typeof response === 'array'){
+          appendErrorMessage(response);
+        } else {
+          
+        }
       })
       .error(function(error) {
         console.log(error);
