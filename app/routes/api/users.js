@@ -9,6 +9,7 @@ try {
   var userParams             = null;
   var nodemailer            = require('nodemailer');
   var tokenData              = null;
+var authCrud                 = require('./auth');
   var HireMe                 = require('../../utils/emails/hireMe');
 }
 
@@ -76,10 +77,14 @@ function createUser(req, res) {
   return usersCrud
     .create(userParams)
     .then(function(user) {
-      return aclRoles.addUserRoles(user._id, ['user-general']);
+      aclRoles.addUserRoles(user._id, ['user-general']).then(function() {
+      });
+      return user;
     })
-    .then(function() {
-      res.redirect('/');
+    .then(function(user) {
+      logger.debug(user);
+      var token =  jwt.sign({_id: user._id, aclRoles: user.aclRoles}, tokenConfig.secret, { expiresIn: tokenConfig.expires });
+      res.json({token: token});
     })
     .catch(function(error) {
       res.send(error)
@@ -108,6 +113,7 @@ function put(req, res) {
 function hireMe(req, res) {
   var sendData = {};
   var params = req.body;
+  logger.debug(params);
   var transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -120,15 +126,15 @@ function hireMe(req, res) {
     from:'AirVuz Hire Request <noreply@airvuz.com>',
     to: params.profileUser.emailAddress,
     subject: 'Request for hire',
-    html: HireMe.hireMeTemplate(params)
+    html: '<div>hello</div>'
   };
-
+  logger.debug(mailOptions.html);
   transport.sendMail(mailOptions, function(error, message) {
     if(error) {
       sendData = {
         statusCode    : 400,
-        data          : error,
-        msg           : error
+        data          : JSON.stringify(error),
+        msg           : JSON.stringify(error)
 
       }
     } else {

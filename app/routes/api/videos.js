@@ -206,7 +206,7 @@ Video.prototype.reportVideo = function(req, res) {
     from:'noreply <noreply@airvuz.com>',
     to: 'support@airvuz.com',
     subject: 'video reported : '+params.videoId,
-    html:'<p>A report has been submitted for video Id : '+params.videoId+ '.<br> Issue : ' +params.message+'<br><a href="beta2.airvuz.com/videoPlayer/' + params.videoId+'"> Click here to go to video</a></p>'
+    html:'<p>A report has been submitted for video Id : '+params.videoId+ '.<br> Issue : ' +params.message+'<br><a href="www.airvuz.com/videoPlayer/' + params.videoId+'"> Click here to go to video</a></p>'
   };
 
   transport.sendMail(mailOptions, function(error, message) {

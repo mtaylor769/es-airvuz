@@ -33,6 +33,10 @@ function login(user) {
   return dfd.promise();
 }
 
+function signupLogin(token) {
+  return identity.setToken(token);
+}
+
 function logout() {
   identity.clear();
 
@@ -43,5 +47,6 @@ function logout() {
 
 auth.login = login;
 auth.logout = logout;
+auth.signupLogin = signupLogin;
 
 module.exports = auth;

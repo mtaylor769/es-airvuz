@@ -30,6 +30,7 @@ users.prototype.validateCreateUser = function(params) {
 	/*
 	 * @type {string}
 	 */
+	logger.debug('made it to validation');
 	var sourceLocation				= "persistence.crud.Users.create";
 	var userInfo 							= {};
 	//need to pass in user data info

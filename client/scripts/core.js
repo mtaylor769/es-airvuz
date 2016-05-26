@@ -152,11 +152,14 @@ function bindEvents() {
       data: newUserObject
     })
       .done(function(response) {
-        if(typeof response === 'array'){
-          appendErrorMessage(response);
-        } else {
-          
+        console.log(response);
+        if(response.token) {
+          auth.signupLogin(response.token)
+            .then(function () {
+               window.location.reload();
+            })
         }
+          // appendErrorMessage(response);
       })
       .error(function(error) {
         console.log(error);

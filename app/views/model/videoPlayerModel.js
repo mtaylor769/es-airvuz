@@ -91,11 +91,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function(topThreeVideos) {
 			var topVideos = [];
 			topThreeVideos.forEach(function(video) {
-				logger.debug(typeof video._id);
-				logger.debug('video._id : ' + video._id);
-				logger.debug(typeof videoId);
-				logger.debug('videoId : ' + videoId);
-				
 				if(video._id.toString() !== videoId && topVideos.length < 2) {
 					topVideos.push(video);
 				}
