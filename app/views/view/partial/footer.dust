@@ -77,7 +77,7 @@
             </div>
             <hr/>
             <button class="btn btn-block btn-primary facebook" id="btn-facebook">Facebook</button>
-            <button class="btn btn-block btn-danger">Google</button>
+            <button class="btn btn-block btn-danger" id="btn-google">Google</button>
             <button class="btn btn-block btn-success">Instagram</button>
             <hr/>
             <div class="text-center">

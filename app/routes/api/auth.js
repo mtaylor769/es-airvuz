@@ -43,7 +43,8 @@ function facebookCallback(req, res, next) {
 }
 
 function google() {
-  passport.authenticate('google');
+  logger.debug('making it to google function');
+  passport.authenticate('google', {scope: ['profile', 'email']})
 }
 
 function googleCallback(req, res, next) {

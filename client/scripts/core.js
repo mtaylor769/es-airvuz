@@ -175,6 +175,10 @@ function bindEvents() {
   $loginModal.on('click', '#btn-facebook', function() {
     window.location.href = '/api/auth/facebook';
   });
+  
+  $loginModal.on('click', '#btn-google', function() {
+    window.location.href = '/api/auth/google';
+  })
 }
 
 function initialize() {

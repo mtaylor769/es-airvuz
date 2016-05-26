@@ -96,8 +96,11 @@
                                 <p class="m-b-0">Top Videos by</p>
                                 <p class="m-b-0">{user.userName}</p>
                             </div>
-                            <img src="{s3Bucket}{topTwoVideos.videoOne.thumbnailPath}" height="75" width="150" class="margin-auto">
-                            <img src="{s3Bucket}{topTwoVideos.videoTwo.thumbnailPath}" height="75" width="150" class="margin-auto mobile-display-none small-desktop-none">
+                            <div class="top-two-videos">
+                                {#topTwoVideos}
+                                <a href="/videoPlayer/{_id}"><img src="{s3Bucket}{thumbnailPath}" height="75" width="150" class="margin-auto"></a>
+                                {/topTwoVideos}
+                            </div>
                             <div class="video-user-more border-radius-0 text-center mobile-display-none">
                                 <p>More</p>
                             </div>

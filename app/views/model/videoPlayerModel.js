@@ -99,13 +99,11 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function(topThreeVideos) {
 			var topVideos = [];
 			topThreeVideos.forEach(function(video) {
-				if(video._id !== videoId) {
+				if(video._id !== videoId && topVideos.length < 2) {
 					topVideos.push(video);
 				}
 			});
-			dataObject.topTwoVideos = {};
-			dataObject.topTwoVideos.videoOne = topVideos[0];
-			dataObject.topTwoVideos.videoTwo = topVideos[1];
+			dataObject.topTwoVideos = topVideos;
 			return followCrud.followCount(checkObject.user);
 		})
 		.then(function(followCount) {

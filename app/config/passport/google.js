@@ -26,7 +26,7 @@ module.exports = function(passport, config) {
       accountData : profile,
       accountId   : profile.id,
       email       : profile.emails[0].value
-    }
+    };
     
 
     logger.debug('Hitting google passport strategy');
