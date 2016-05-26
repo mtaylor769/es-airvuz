@@ -1,7 +1,18 @@
 var NotificationCrud = require('../../persistence/crud/notifications');
 
-function Notification() {
+function Notification() {}
 
+function seen(req, res) {
+  var userId = req.user._id;
+
+  NotificationCrud
+    .markAsSeen(userId)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
 }
 
 Notification.prototype.post = function(req, res) {
@@ -47,6 +58,8 @@ Notification.prototype.getAll = function(req, res) {
       res.sendStatus(500);
     })
 
-}
+};
+
+Notification.prototype.seen = seen;
 
 module.exports = new Notification();

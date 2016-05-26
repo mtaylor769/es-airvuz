@@ -172,13 +172,27 @@ function bindEvents() {
       });
   });
 
+  $header.on('click', '#notification', function () {
+    var ajaxOptions = {
+          type: 'POST',
+          url: '/api/notifications/seen'
+        },
+        $badge = $(this).find('.badge');
+      
+    
+    $.ajax(ajaxOptions)
+      .then(function () {
+        $badge.remove();
+      });
+  });
+
   $loginModal.on('click', '#btn-facebook', function() {
     window.location.href = '/api/auth/facebook';
   });
   
   $loginModal.on('click', '#btn-google', function() {
     window.location.href = '/api/auth/google';
-  })
+  });
 }
 
 function initialize() {

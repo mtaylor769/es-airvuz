@@ -36,6 +36,15 @@ function getUnseen(userId) {
     .exec();
 }
 
+function markAsSeen(userId) {
+  return NotificationModel
+    .update({notifiedUserId: userId, notificationViewed: false}, {notificationViewed: true}, {multi: true})
+    .sort('-createdDate')
+    .limit(10)
+    .lean()
+    .exec();
+}
+
 Notifications.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
     var notificationModel = new NotificationModel(params);
@@ -68,6 +77,7 @@ Notifications.prototype.markAllAsRead = function(id) {
 
 
 Notifications.prototype.getUnseen = getUnseen;
+Notifications.prototype.markAsSeen = markAsSeen;
 
 
 

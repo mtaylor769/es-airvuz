@@ -89,6 +89,9 @@ apiRouter.route('/api/notifications')
 	.post(notifications.post)
 	.get(protect, notifications.getUnseen);
 
+apiRouter.route('/api/notifications/seen')
+	.post(protect, notifications.seen);
+
 apiRouter.route('/api/notifications/get-all/:id')
 	.get(notifications.getAll);
 
