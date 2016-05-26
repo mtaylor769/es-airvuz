@@ -273,18 +273,24 @@ function changePassword() {
 }
 
 function confirmPasswordChange() {
-  event.preventDefault();
   var data                  = {};
-  data.oldPassword          = $("#old-password").val();
-  data.newPassword          = $("#new-password").val();
-  data.confirmPassword      = $("#confirm-password").val();
+  var $changePasswordModal  = $('#change-password');
+  data.oldPassword          = $changePasswordModal.find("#old-password").val();
+  data.newPassword          = $changePasswordModal.find("#new-password").val();
+  data.confirmPassword      = $changePasswordModal.find("#confirm-password").val();
 
   if(!data.oldPassword || data.oldPassword === '') {
-    console.log('Please enter in current password');
+    $('#error-message-modal')
+      .modal('show')
+      .find('.error-modal-body')
+      .html('Please enter in current password');
     return false;
   }
-  if(data.newPassword === '' || data.newPassword !== data.confirmPassword) {
-    console.log('New Password Invalid');
+  if(data.newPassword !== data.confirmPassword) {
+    $('#error-message-modal')
+      .modal('show')
+      .find('.error-modal-body')
+      .html('New Password Invalid');
     return false;
   } 
   $.ajax({
@@ -294,15 +300,21 @@ function confirmPasswordChange() {
   })
   .success(function(response) {
     if(response.status==='OK') {
-      user = response.data;
-
+     //Do nothing, password has been changed
     } else {
-      console.log(response);
-      
+      var strBuilder = '';
+      response.data.forEach(function(item){
+        if (item.displayMsg) {
+          strBuilder += item.displayMsg;
+        }
+      });
     }
   })
   .error(function(error) {
-
+    $('#error-message-modal')
+      .modal('show')
+      .find('.error-modal-body')
+      .html('Error: ' + error);
   });
   $('#change-password').modal('hide');
 
@@ -423,15 +435,10 @@ function editProfile() {
             }
           });
           $('#save-changes').modal('hide');
-          /********************************************************/
-          console.group('%cstrBuilder :', 'color:red;font:strait');
-          console.log(strBuilder);
-          console.groupEnd();
-          /********************************************************/
           $('#error-message-modal')
             .modal('show')
             .find('.error-modal-body')
-            .html('Error ' + strBuilder);
+            .html('Error: ' + strBuilder);
         } else {
           profileUser = response.data;
           renderUserInfo();
