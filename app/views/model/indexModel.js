@@ -61,6 +61,7 @@ IndexModel.prototype.getData = function(params) {
 		params.data.index.viewName		= "index";
 
 		params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
+		params.data.s3AssetUrl 				= amazonConfig.ASSET_URL;
 
 		Promise.all([CategoryType.get(), VideoCollection.getFeaturedVideos(), Videos.getRecentVideos(), Videos.getTrendingVideos(), VideoCollection.getStaffPickVideos(), Slider.getHomeSlider(params.request.query.banner)])
 			.then(function(data) {

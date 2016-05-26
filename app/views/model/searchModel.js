@@ -6,8 +6,9 @@ try {
 	var BaseModel	    = require('./baseModel');
 	var Promise		    = require('bluebird');
 	var util			    = require('util');
-	var Videos     = require('../../persistence/crud/videos');
+	var Videos				= require('../../persistence/crud/videos');
 	var CategoryType	= require('../../../app/persistence/crud/categoryType');
+	var amazonConfig  = require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -37,6 +38,8 @@ SearchModel.prototype.getData = function(params) {
 	params.data.viewName		= "Search";
 	params.data.searchKeyWord = params.request.query.q;
 	params.data.currentPage = parseInt(params.request.query.page, 10) || 1;
+
+	params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
 
 	var promise = Promise.all([CategoryType.get(), Videos.search(params.request.query.q, params.data.currentPage)])
 			.then(function(data) {
