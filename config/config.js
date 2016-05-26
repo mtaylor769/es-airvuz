@@ -66,7 +66,7 @@ module.exports = {
     facebook: {
       clientID: "441356432709973",
       clientSecret: "e76efd4ccddb3ed7deb6968f1b27f6ee",
-      callbackURL: "http://airvuz.com/auth/facebook/callback"
+      callbackURL: "http://54.213.44.149/auth/facebook/callback"
     },
     google: {
       "clientID": "783133684568-lgmtef1gfersdq4q8edtvh4gu4f9gslb.apps.googleusercontent.com",
