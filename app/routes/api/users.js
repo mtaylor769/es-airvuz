@@ -5,7 +5,6 @@ var log4js                 = require('log4js');
 var logger                 = log4js.getLogger('app.routes.api.users');
 var tokenConfig            = require('../../../config/token');
 var aclRoles               = require('../../utils/acl');
-var tokenData              = null;
 var usersCrud              = require('../../persistence/crud/users');
 var userParams             = null;
 

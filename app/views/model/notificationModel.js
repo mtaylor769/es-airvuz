@@ -8,11 +8,11 @@ var _               = require('lodash');
 try {
   var BaseModel	          = require('./baseModel');
   var EventTrackingCrud		= require('../../persistence/crud/events/eventTracking');
-  var Promise		          = require('bluebird');
   var notificationCrud    = require('../../persistence/crud/notifications');
   var moment				      = require('moment');
   var util			          = require('util');
   var config				      = require('../../../config/config')[process.env.NODE_ENV || 'development'];
+  var amazonConfig			  = require('../../config/amazon.config');
 
   if(global.NODE_ENV === "production") {
     logger.setLevel("WARN");
@@ -58,11 +58,9 @@ NotificationModel.prototype.getData = function(params) {
         if(typeof notification.actionUserId === "undefined") {
           notificationObject.actionUserId = {};
           notificationObject.actionUserId.userName = "Someone";
-          notificationObject.actionUserId.profilePicture = '/assets/img/default.png';
         } else {
           notificationObject.actionUserId = notification.actionUserId;
           notificationObject.actionUserId.userName = notification.actionUserId.userName;
-            //'<a href="/userProfile/' + notification.actionUserId.userName + '">'+notification.actionUserId.userName+'</a>';
         }
 
         //setting the rest of the notificationObject
@@ -94,6 +92,8 @@ NotificationModel.prototype.getData = function(params) {
       params.data.airvuz.js 							= sourceManifest["airvuz.js"];
       params.data.airvuz.css 							= sourceManifest["airvuz.css"];
       params.data.vendor.js 							= sourceManifest["vendor.js"];
+
+      params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;
       return params;
     });
 

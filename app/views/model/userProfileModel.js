@@ -4,7 +4,6 @@ var logger							= log4js.getLogger('app.views.model.index');
 
 try {
 	var BaseModel					= require('./baseModel');
-	var Promise						= require('bluebird');
 	var moment					  = require('moment');
 	var util							= require('util');
 	var unlock						= require('../../utils/unlockObject');

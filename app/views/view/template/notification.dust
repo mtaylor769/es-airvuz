@@ -18,7 +18,12 @@
         <div class="container main">
             {#notifications}
                 <div class="notification row flex" style="padding: 15px; font-size: 13px; border-bottom: inset">
-                    <img src="http://airvuz.com{actionUserId.profilePicture}" height="50" width="50">
+                    {#actionUserId.profilePicture}
+                      <img src="{s3AssetUrl}users/profile-pictures{actionUserId.profilePicture}" height="50" width="50" class="img-circle">
+                    {:else}
+                      <img src="/client/images/default.png" height="50" width="50" class="img-circle">
+                    {/actionUserId.profilePicture}
+
                     {@eq key=actionUserId.userName value="Someone" }
                         <p style="margin: 10px">{actionUserId.userName} {notificationMessage|s}</p>
                     {:else}
