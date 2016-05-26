@@ -30,7 +30,7 @@ var IndexView = function(params) {
 util.inherits(IndexView, BaseView);
 
 module.exports = new IndexView({
-		cacheTimeout	: 5,
+		cacheTimeout	: 0,
 		viewName			: 'app.views.view.userProfile',
 		viewPath			: './app/views/view/template/userProfile.dust',
 		partials			: [

@@ -23,7 +23,7 @@ var SearchView = function(params) {
 util.inherits(SearchView, BaseView);
 
 module.exports = new SearchView({
-	cacheTimeout	: 2,
+	cacheTimeout	: 0,
 	viewName			: 'app.views.view.template.search',
 	viewPath			: './app/views/view/template/search.dust',
 	partials			: [
