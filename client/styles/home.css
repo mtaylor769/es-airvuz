@@ -29,6 +29,7 @@
 
 #home-page .video-slick img {
     min-height: 126px;
+    margin: 0 auto;
 }
 
 #home-page #slider-slick img {
@@ -89,7 +90,11 @@
 /*
  * End slick theme
  ***************************/
-
+@media (min-width: 450px) {
+    #home-page .video-slick img {
+        max-height: 126px;
+    }
+}
 
 @media (min-width: 768px) {
     #home-page #slider-slick {
@@ -98,6 +103,9 @@
     #home-page #slider-slick img {
         height: auto;
         object-fit: initial;
+    }
+    #home-page .video-slick img {
+        max-height: 129px;
     }
 }
 
@@ -108,10 +116,16 @@
     #home-page #main-row {
         display: flex;
     }
+    #home-page .video-slick img {
+        max-height: 126px;
+    }
 }
 
 @media (min-width: 1200px) {
     #home-page #slider-slick {
         min-height: 438px;
+    }
+    #home-page .video-slick img {
+        max-height: 127px;
     }
 }
