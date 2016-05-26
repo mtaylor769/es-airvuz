@@ -52,8 +52,7 @@ module.exports = {
 					title						: "AirVūz – Drone Video Community",
 					type						: "website",
 					updated_time		: "1458850844571",
-					url							: "http://www.airvuz.com",
-					
+					url							: "http://www.airvuz.com"
 				}
 			}
 			
@@ -88,6 +87,21 @@ module.exports = {
       clientID: "NriwXWU7qTx47bsxlexZLg6aJ",
       clientSecret: "Y65uFqPE2oT2xE9wMxbbPGXXkGmJlhrYSGMGYcQy7JsiUBC7hQ",
       callbackURL: "http://airvuz.com/auth/twitter/callback"
+    },
+    view : {
+      fb : {
+        app_id : "441356432709973"
+      },
+      index : {
+        og : {
+          description			: "Discover, watch, and share aerial videos captured by cameras from drones, quadcopters, multi-copters, and radio controlled airplanes and helicopters.",
+          image						: "http://airvuz.com/assets/img/airvuz_banner.png",
+          title						: "AirVūz – Drone Video Community",
+          type						: "website",
+          updated_time		: "1458850844571",
+          url							: "http://www.airvuz.com"
+        }
+      }
     }
   },
   beta: {
@@ -129,8 +143,7 @@ module.exports = {
 					title						: "AirVūz – Drone Video Community",
 					type						: "website",
 					updated_time		: "1458850844571",
-					url							: "http://www.airvuz.com",
-					
+					url							: "http://www.airvuz.com"
 				}
 			}
 			
