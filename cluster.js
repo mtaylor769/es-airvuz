@@ -2,8 +2,8 @@ console.log("starting cluster ...");
 
 var cluster   = require('cluster');
 var os        = require('os');
-var cpuNumber = os.cpus().length;
-cpuNumber = 2;
+var cpuNumber = os.cpus().length - 1;
+//cpuNumber = 2;
 
 if(cluster.isMaster) {
   var workerIndex = 0;
