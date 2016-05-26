@@ -3,6 +3,7 @@ var INPUT_BUCKET,
   ASSET_BUCKET;
 
 switch(window.location.host) {
+  case '54.213.44.149': // prod2
   case 'airvuz.com':
   case 'www.airvuz.com':
     INPUT_BUCKET = 'airvuz-drone-video-input';
