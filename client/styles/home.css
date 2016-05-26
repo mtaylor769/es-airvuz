@@ -1,9 +1,9 @@
 #home-page hr {
     margin-bottom: 0;
-    margin-top: 0;
+    margin-top: 10px;
 }
 #home-page h3 {
-    margin: 5px;
+    margin: 10px 5px;
 }
 #home-page .view-all {
     margin-right: 5px;
