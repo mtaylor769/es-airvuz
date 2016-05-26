@@ -5,7 +5,8 @@ var amazonConfig  = require('./config/amazon.config.client');
 /**
  * Templates
  */
-var headerProfileTpl = require('../templates/core/header-profile.dust');
+var headerProfileTpl      = require('../templates/core/header-profile.dust');
+var headerLoginTpl = require('../templates/core/header-login.dust');
 
 var $loginModal,
     $headerProfile,
@@ -54,6 +55,12 @@ function renderProfileHeader(notification) {
       };
 
   headerProfileTpl(viewData, function (err, html) {
+    $headerProfile.html(html);
+  });
+}
+
+function renderLoginHeader() {
+  headerLoginTpl({}, function (err, html) {
     $headerProfile.html(html);
   });
 }
@@ -205,6 +212,8 @@ function initialize() {
     getNewNotification()
       .then(renderProfileHeader);
     $footerSub1.addClass('is-login');
+  } else {
+    renderLoginHeader();
   }
 }
 

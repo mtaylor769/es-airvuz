@@ -1,16 +1,22 @@
-
-var acl                    = require('../../utils/acl');
-var jwt                    = require('jsonwebtoken');
-var log4js                 = require('log4js');
-var logger                 = log4js.getLogger('app.routes.api.users');
-var tokenConfig            = require('../../../config/token');
-var aclRoles               = require('../../utils/acl');
-var usersCrud              = require('../../persistence/crud/users');
-var userParams             = null;
-
-function User() {
-
+try {
+  var log4js                 = require('log4js');
+  var logger                 = log4js.getLogger('app.routes.api.users');
+  var acl                    = require('../../utils/acl');
+  var jwt                    = require('jsonwebtoken');
+  var tokenConfig            = require('../../../config/token');
+  var aclRoles               = require('../../utils/acl');
+  var usersCrud              = require('../../persistence/crud/users');
+  var userParams             = null;
+  var nodemailer            = require('nodemailer');
+  var tokenData              = null;
+  var HireMe                 = require('../../utils/emails/hireMe');
 }
+
+catch(exception) {
+  logger.error(" import error:" + exception);
+}
+
+function User() {}
 
 function post(req, res) {
   usersCrud
@@ -99,7 +105,44 @@ function put(req, res) {
   });
 }
 
-User.prototype.post         = post;
+function hireMe(res, req) {
+  var sendData = {};
+  var params = req.body;
+  var transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user:'support@airvuz.com',
+      pass:'b5&YGG6n'
+    }
+  });
+
+  var mailOptions = {
+    from:'AirVuz Hire Request <noreply@airvuz.com>',
+    to: params.emailAddress,
+    subject: 'Request for hire',
+    html: HireMe.hireMeTemplate(params)
+  };
+
+  transport.sendMail(mailOptions, function(error, message) {
+    if(error) {
+      sendData = {
+        statusCode    : 400,
+        data          : error,
+        msg           : error
+
+      }
+    } else {
+      sendData = {
+        statusCode    : 200,
+        data          : message,
+        msg           : 'Message Sent'
+      }
+    }
+    res.send(sendData);
+  })
+}
+
+User.prototype.hireMe         = hireMe;
 User.prototype.search       = search;
 User.prototype.get          = get;
 User.prototype.createUser   = createUser;

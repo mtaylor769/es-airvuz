@@ -84,8 +84,13 @@
                         </div>
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
-                            <button class="btn background-orange border-radius-0 font-white add-button" id="follow">+</button>
-                            <img src="{user.profilePicture}" height="50" width="50" class="border-radius-circle video-user-picture">
+                            <button class="btn background-orange border-radius-0 font-white add-button" id="follow" data-toggle="tooltip" data-placement="right" title="Follow / Unfollow">+</button>
+                            {#user.profilePicture}
+                              <img src="{s3AssetUrl}users/profile-pictures{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
+                            {:else}
+                              <img src="/client/images/default.png" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
+                            {/user.profilePicture}
+
                             <div class="video-user-about t-a-inherit">
                                 <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/userProfile/{user.userName}">{user.userName}</a></p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
@@ -133,7 +138,12 @@
                         {#comments}
                             <li class="comment-wrap">
                                 <div class="flex">
-                                    <img src="http://www.airvuz.com/{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                    {#userId.profilePicture}
+                                      <img src="{s3AssetUrl}users/profile-pictures{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                    {:else}
+                                      <img src="/client/images/default.png" height="50" width="50" class="border-radius-circle m-10-20">
+                                    {/userId.profilePicture}
+
                                     <div class="m-t-20">
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
                                         <p class="m-b-0 airvuz-blue">{userId.userName}</p>

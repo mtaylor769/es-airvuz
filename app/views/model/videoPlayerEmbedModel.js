@@ -7,10 +7,10 @@ var logger					= log4js.getLogger(namespace);
 try {
   var BaseModel	    = require('./baseModel');
   var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
-  var Promise		    = require('bluebird');
   var util			    = require('util');
   var videoCrud     = require('../../persistence/crud/videos');
   var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];
+  var amazonConfig  = require('../../config/amazon.config');
 
   if(global.NODE_ENV === "production") {
     logger.setLevel("WARN");
@@ -45,6 +45,7 @@ VideoPlayerEmbedModel.prototype.getData = function(params) {
         params.data.videoPlayerEmbed = {};
         params.data.videoPlayerEmbed.title = "Video Player";
         params.data.videoPlayerEmbed.viewName = "Video Player";
+        params.data.s3Bucket = amazonConfig.OUTPUT_URL;
         return params;
     });
 

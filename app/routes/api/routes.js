@@ -73,6 +73,9 @@ apiRouter.route('/api/users/:id')
 apiRouter.route('/api/users/create')
   .post(users.createUser);
 
+apiRouter.route('/api/users/hireme')
+	.post(users.hireMe);
+
 /**
  * /api/follow/
  */

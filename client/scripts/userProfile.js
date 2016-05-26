@@ -156,7 +156,7 @@ function bindEvents() {
     $('#error-message-modal')
       .modal('show')
       .find('.error-modal-body')
-      .html('Error uploading iamge');
+      .html('Error uploading image');
   }
 
   $('#edit-showcase').on('click', editShowcase);
@@ -958,6 +958,53 @@ function checkFollowStatus(){
 
 }
 
+function displayHireMeModal() {
+  $('#hire-me-modal')
+    .modal('show')
+    .on('click', '#send-hire-me', sendHireMeEmail);
+}
+
+function sendHireMeEmail() {
+  var $hireMe = $('#hire-me-modal');
+  var hireData = {
+        profileUser       : profileUser,
+        name              : $($hireMe).find('#hire-name').val(),
+        email             : $($hireMe).find('#hire-email').val(),
+        message           : $($hireMe).find('#project-description').val()
+  }
+  $('#hire-me-modal')
+    .modal('hide');
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/users/hireme',
+    data: hireData
+  })
+    .done(function(response){
+      if (response.statusCode === 200) {
+        console.log('open dialog that says message has been sent');
+      } else {
+        $('#error-message-modal')
+          .modal('show')
+          .find('.error-modal-body')
+          .html('Unable to send email. ' +response.data);
+      }
+    })
+    .error(function(error){
+      $('#error-message-modal')
+        .modal('show')
+        .find('.error-modal-body')
+        .html('Unable to send email. '+error);
+    });
+
+/********************************************************/
+console.group('%chireData :', 'color:red;font:strait');
+console.log(hireData);
+console.groupEnd();
+/********************************************************/
+
+}
+
 function initialize() {
   /*
   *Null check on page dependent variables:
@@ -990,8 +1037,9 @@ function initialize() {
   }
 
   $('.profile-options')
-    .on('click', '.follow-btn', updateFollow);
-  
+    .on('click', '.follow-btn', updateFollow)
+    .on('click', '.hire-btn', displayHireMeModal);
+  //TODO hide donate an hire button when anonymous user
   if(userNameCheck === profileUser.userName) {
     renderOwnerShowcase(showcaseOwnerVideos);
     ownerShowcase({videos: showcaseOwnerVideos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
