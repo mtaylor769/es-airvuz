@@ -84,7 +84,7 @@
                         </div>
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
-                            <button class="btn background-orange border-radius-0 font-white add-button" id="follow">+</button>
+                            <button class="btn background-orange border-radius-0 font-white add-button" id="follow" data-toggle="tooltip" data-placement="right" title="Follow / Unfollow">+</button>
                             <img src="{user.profilePicture}" height="50" width="50" class="border-radius-circle video-user-picture">
                             <div class="video-user-about t-a-inherit">
                                 <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/userProfile/{user.userName}">{user.userName}</a></p>
