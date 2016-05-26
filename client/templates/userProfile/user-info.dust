@@ -17,7 +17,7 @@
         <span class="av-primary word-space airvuz-blue">{following}</span><span style="text-shadow: 2px 2px 22px black">Following</span>
         {/following}
       </h5>
-      <div class="hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
+      <div class="profile-aboutme hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
           <span>{user.aboutMe}</span>
       </div>
       <!-- This stuff displays only if not your profile -->
@@ -25,8 +25,7 @@
       <!-- Switch button depending if followed or unfollowed -->
         <a class="follow-btn btn btn-primary">Follow</a>
         <a class="donate-btn btn btn-primary" href="{user.donationUrl}" target="_blank">Donate</a>
-        
-        <button class="hire-btn btn btn-primary" type="button">Hire</button>
+        <a class="hire-btn btn btn-primary">Hire</a>
         
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
             <a class="facebook fa fa-facebook-square" target="_blank" style="margin-right: 10px"></a>

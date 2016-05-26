@@ -846,6 +846,11 @@ Begin userProfile CSS
   left: 0;
 }
 
+#user-profile .profile-username, #user-profile .profile-aboutme  {
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  color: black;
+}
+
 #user-profile .inline{
   display: inline-block;
 }
