@@ -1,7 +1,6 @@
 <div class="text-center icon-wrap">
   <div class="upload-icon">
     <span class="glyphicon glyphicon-cloud-upload"></span>
-    <span class="glyphicon glyphicon-plane"></span>
     <input type="file" id="file" accept="video/mp4,video/x-m4v,video/*"/>
   </div>
   <p>Select file to upload</p>

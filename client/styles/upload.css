@@ -23,11 +23,6 @@
     height: 136px;
     overflow: hidden;
 }
-#upload-page .upload-icon .glyphicon-plane {
-    position: absolute;
-    left: 60px;
-    top: 50px;
-}
 #upload-page .upload-icon input {
     display: block;
     width: 100%;
