@@ -106,7 +106,7 @@
                                 <a href="/videoPlayer/{_id}"><img src="{s3Bucket}{thumbnailPath}" height="75" width="150" class="margin-auto"></a>
                                 {/topTwoVideos}
                             </div>
-                            <div class="video-user-more border-radius-0 text-center mobile-display-none">
+                            <div class="video-user-more border-radius-0 text-center margin-auto mobile-display-none">
                                 <a href="/userProfile/{user.userName}">More Videos</a>
                             </div>
                             {/topTwoVideos}
