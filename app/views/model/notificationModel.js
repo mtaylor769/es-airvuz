@@ -48,7 +48,7 @@ NotificationModel.prototype.getData = function(params) {
     .then(function(notifications) {
 
       var notificationClone = [];
-
+      
       notifications.forEach(function(notification) {
 
         //new notification object for manual clone

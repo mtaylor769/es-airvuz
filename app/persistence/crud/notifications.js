@@ -62,7 +62,13 @@ Notifications.prototype.getAllByUserId = function(id) {
   return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').populate('notifiedUserId').exec();
 };
 
+Notifications.prototype.markAllAsRead = function(id) {
+  return NotificationModel.update({notifiedUserId: id, notificationViewed: false}, {notificationViewed:true}).exec();
+};
+
+
 Notifications.prototype.getUnseen = getUnseen;
+
 
 
 module.exports = new Notifications();
