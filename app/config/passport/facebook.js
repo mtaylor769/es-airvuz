@@ -47,7 +47,7 @@ module.exports = function(passport, config) {
     logger.debug("data.profile : " + JSON.stringify(profile, null, 2));
     
     //try to find social media account
-    socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, data.provider);
+    socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, 'facebook');
     socialAccount.then(function(account){
       if (account) {
         
