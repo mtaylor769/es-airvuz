@@ -64,6 +64,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function(user) {
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
+			
+			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
 
 			// TODO: need to refactor for algorithm
 			return videoCrud.get5Videos();
