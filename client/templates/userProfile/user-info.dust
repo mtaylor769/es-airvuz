@@ -28,10 +28,19 @@
         <a class="hire-btn btn btn-primary">Hire</a>
         
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
-            <a class="facebook fa fa-facebook-square" target="_blank" style="margin-right: 10px"></a>
-            <a class="instagram fa fa-instagram" target="_blank" style="margin-right: 10px"></a>
-            <a class="twitter fa fa-twitter-square" target="_blank" style="margin-right: 10px"></a>
-            <a class="google fa fa-google-plus-square" target="_blank"></a>
+            <span class="social-media-background">
+                <a class="facebook fa fa-facebook-square" target="_blank"></a>
+            </span>
+            <span class="social-media-background">
+                <a class="instagram fa fa-instagram" target="_blank"></a>
+            </span>
+            <span class="social-media-background">
+                <a class="twitter fa fa-twitter-square" target="_blank"></a>
+            </span>
+            <span class="social-media-background">
+                <a class="google fa fa-google-plus-square" target="_blank"></a>
+            </span>
+
         </div>
       </div>
     </div>
