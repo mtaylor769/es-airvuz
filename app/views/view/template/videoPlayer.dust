@@ -29,6 +29,7 @@
         {!css page specific!}
         <link href="//vjs.zencdn.net/5.4.6/video-js.min.css" rel="stylesheet">
         <link href="/client/lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+        <link href="/client/lib/vjs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">
         {>  "app.views.view.partial.css" /}
     </head>
     <body>
@@ -52,7 +53,6 @@
                                    controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
                                    poster="{s3Bucket}{video.thumbnailPath}"
                                    data-setup="{}">
-                                <source src="{s3Bucket}{video.videoPath}" type="video/mp4" />
                             </video>
                         </div>
                         {!categories!}
@@ -220,11 +220,12 @@
         <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
         <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
         <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+        <script src="/client/lib/vjs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
         {> "app.views.view.partial.js" /}
         <script>
             var video = {?video}{video|js|s}{:else}[]{/video};
             $(function() {
-                videoPlayer.initialize();
+                videoPlayer.initialize('{s3Bucket}{video.videoPath}');
                 $('[data-toggle="tooltip"]').tooltip();
             });
         </script>

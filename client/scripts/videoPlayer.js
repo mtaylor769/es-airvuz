@@ -1,5 +1,6 @@
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
+var browser                            = require('./services/browser');
 var AmazonConfig                       = require('./config/amazon.config.client');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
@@ -621,8 +622,64 @@ function bindEvents() {
 }
 
 //page init function
-function initialize() {
+function initialize(videoPath) {
+  var defaultRes = '300',
+      browserWidth = browser.getSize().width;
 
+  if (browser.isMobile()) {
+    defaultRes = '100';
+  } else {
+    switch(true) {
+      case (browserWidth < 768):
+        defaultRes = '200';
+        break;
+      case (browserWidth < 992):
+        // default
+        defaultRes = '300';
+        break;
+      case (browserWidth < 1200):
+        defaultRes = '400';
+        break;
+    }
+  }
+
+  videojs('video-player', {
+    plugins: {
+      videoJsResolutionSwitcher: {
+        default: defaultRes
+      }
+    }
+  }, function () {
+    var player = this,
+        videoSrc = videoPath,
+        videoType = 'video/mp4';
+
+    player.updateSrc([
+      {
+        src: videoSrc.replace('.mp4', '-100.mp4'),
+        type: videoType,
+        label: 'low',
+        res: '100'
+      },
+      {
+        src: videoSrc.replace('.mp4', '-200.mp4'),
+        type: videoType,
+        label: 'med',
+        res: '200'
+      },
+      {
+        src: videoSrc,
+        type: videoType,
+        label: 'original',
+        res: '300'
+      }, {
+        src: videoSrc.replace('.mp4', '-400.mp4'),
+        type: videoType,
+        label: 'high',
+        res: '400'
+      }
+    ]);
+  });
   //set video page
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');

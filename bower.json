@@ -15,6 +15,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "font-awesome": "^4.6.1",
-    "bootstrap-switch": "https://github.com/nostalgiaz/bootstrap-switch.git"
+    "bootstrap-switch": "https://github.com/nostalgiaz/bootstrap-switch.git",
+    "vjs-resolution-switcher": "videojs-resolution-switcher#^0.4.2"
   }
 }
