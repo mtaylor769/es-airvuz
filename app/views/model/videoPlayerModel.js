@@ -10,6 +10,7 @@ try {
 	var Promise		    = require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
+	var getImage			= require('../../utils/fbImageDownload');
 	var videoCrud     = require('../../persistence/crud/videos');
 	var userCrud      = require('../../persistence/crud/users');
 	var commentCrud   = require('../../persistence/crud/comment');
@@ -88,6 +89,11 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(videoCount) {
 			dataObject.videoCount = videoCount;
+			getImage({
+				url: 'https://graph.facebook.com/10153837775148884/picture?width=300&height=300&redirect=false&access_token=EAAGRaU1kGVUBADBxRyxv30cmj54WtsJbcBFx69CLuyc2hVJSM0xGsjQYcX87lu5Bj7ZAnYn4m8d2xEIRrIQIUZB0MFE9nTZC6KfWiemJntIFENT17YiAoOPAiiTD9MBGmZBHXXeo3n2CRzN2Rng0yfXUdFhiSq4ZD'
+			}, function(err) {
+				logger.info('saved Picture');
+			});
 			return videoCrud.getTopTwoVideos(checkObject.user);
 			})
 		.then(function(topThreeVideos) {
@@ -103,6 +109,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(followCount) {
 			dataObject.followCount = followCount;
+
 			return videoLikeCrud.videoLikeCheck(checkObject);
 		})
 		.then(function(likeBoolean) {
