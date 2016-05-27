@@ -44,7 +44,7 @@ Comment.prototype.getPreCondition = function(params){
   var preCondition = new ObjectValidationUtil();
 
   preCondition.setValidation(function(params){
-    console.log(params);
+    logger.debug(params);
     var errorMessage              = new ErrorMessage();
     this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
@@ -80,7 +80,7 @@ Comment.prototype.getPreCondition = function(params){
     }
 
     if(this.data.replyDepth && typeof this.data.replyDepth !== 'number'){
-      console.log(this.data.replyDepth);
+      logger.debug(this.data.replyDepth);
       this.errors = errorMessage.getErrorMessage({
         errorId					: "PARAM1020",
         templateParams	: {
@@ -91,7 +91,7 @@ Comment.prototype.getPreCondition = function(params){
     }
 
     if(this.data.replyCount && typeof this.data.replyCount !== 'number'){
-      console.log('replyCount');
+      logger.debug('replyCount');
       this.errors = errorMessage.getErrorMessage({
         errorId					: "PARAM1020",
         templateParams	: {
@@ -146,10 +146,10 @@ Comment.prototype.create = function(params) {
     }
 
     var videoCommentModel = new CommentModel(validation.data);
-      console.log(videoCommentModel);
+      logger.debug(videoCommentModel);
     videoCommentModel.save(function(error, videoComment) {
       if(error) {
-        console.log(error);
+        logger.debug(error);
         var errorMessage = new ErrorMessage();
         errorMessage.getErrorMessage({
           errorId					: "PERS1000",
@@ -211,7 +211,7 @@ Comment.prototype.getByParentCommentId = function(parentId) {
 };
 
 Comment.prototype.getParentCommentByVideoId = function(params) {
-  console.log('params.videoId : ' + params.videoId);
+  logger.debug('params.videoId : ' + params.videoId);
   return CommentModel.find( { videoId: params.videoId , replyDepth: 0} ).sort({commentCreatedDate: -1}).limit(10).populate('userId').lean().exec();
 };
 

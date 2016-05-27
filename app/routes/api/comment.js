@@ -10,18 +10,18 @@ function Comment() {
 
 Comment.prototype.post = function(req, res) {
   var json = JSON.parse(req.body.data);
-  console.log(json);
+  logger.debug(json);
   var comment = json.comment;
   var notification = json.notification;
   commentCrud
     .create(comment)
     .then(function (comment) {
-      console.log(comment);
+      logger.debug(comment);
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
       NotificationCrud.create(notification)
       .then(function(notification) {
-        console.log(notification);
+        logger.debug(notification);
       });
       commentCrud.replyIncrement(parentCommentId, videoId);
       res.send(comment);
@@ -39,7 +39,7 @@ Comment.prototype.get = function(req, res) {
 };
 
 Comment.prototype.getByParentCommentId = function(req, res) {
-  console.log(req.query.parentId);
+  logger.debug(req.query.parentId);
   commentCrud
   .getByParentCommentId(req.query.parentId)
   .then(function(comments) {

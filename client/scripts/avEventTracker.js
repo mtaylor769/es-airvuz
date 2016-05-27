@@ -28,7 +28,7 @@ var AVEventTracker = function(params) {
 			dataType: 'json'
 		})
 		.done(function(data) {
-			console.log("avEventTracker: callback");
+			//console.log("avEventTracker: callback");
 		})	
 	}
 	

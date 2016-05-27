@@ -159,7 +159,7 @@ Video.prototype.like = function(req, res) {
 
 Video.prototype.loaded = function(req, res) {
   var params = req.body;
-  console.log(params);
+  logger.debug(params);
   VideoCrud
     .getById(params.videoId)
     .then(function(video) {
@@ -170,8 +170,8 @@ Video.prototype.loaded = function(req, res) {
       return VideoViewCrud.create(params);
     })
     .then(function(videoView) {
-      console.log('videoView');
-      console.log(videoView);
+      logger.debug('videoView');
+      logger.debug(videoView);
       res.sendStatus(200);
     })
     .catch(function(error) {
@@ -231,7 +231,7 @@ Video.prototype.videoInfoCheck = function(req, res) {
   followObject.userId = userId;
   followObject.followingUserId = videoUserId;
 
-  console.log('1');
+  logger.debug('1');
 
   VideoLikeCrud
     .videoLikeCheck(likeObject)
@@ -240,7 +240,7 @@ Video.prototype.videoInfoCheck = function(req, res) {
       return FollowCrud.followCheck(followObject);
     })
     .then(function(follow) {
-      console.log(follow);
+      logger.debug(follow);
       returnObject.follow = !!follow;
       res.json(returnObject);
     })

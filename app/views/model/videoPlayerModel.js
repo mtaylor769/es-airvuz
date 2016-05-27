@@ -53,7 +53,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return videoCrud.getById(videoId)
 		.then(function(video) {
-			console.log(video);
+			logger.debug(video);
 			if(video.title.length > 45) {
 				video.title = video.title.substring(0, 45) + '...';
 			}
@@ -112,14 +112,14 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function (comments) {
 			comments.forEach(function(comment) {
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				console.log(comment.commentCreatedDate);
+				logger.debug(comment.commentCreatedDate);
 				comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
 			});
 			dataObject.comments = comments;
 				return categoryCrud.get();
 		})
 		.then(function(categories) {
-			console.log('completed all checks');
+			logger.debug('completed all checks');
 			dataObject.categories = categories;
 			params.data													= dataObject;
 			params.data.facebookAppId 					= config.facebook.clientID;

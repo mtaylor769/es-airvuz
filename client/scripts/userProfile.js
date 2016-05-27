@@ -48,7 +48,7 @@ var removeHtml            = '<div class="removed showcase-edit-button"><span cla
 
 
 function showcaseAdd(videoId) {
-  console.log(videoId);
+  //console.log(videoId);
   var data = {};
   data.video = videoId;
   data.user = user._id;
@@ -59,10 +59,10 @@ function showcaseAdd(videoId) {
     data: data
   })
     .success(function(response) {
-      console.log('response : ' + response);
+      //console.log('response : ' + response);
     })
     .error(function(error) {
-      console.log('error : ' + error);
+      //console.log('error : ' + error);
     });
 }
 
@@ -185,7 +185,7 @@ function bindEvents() {
     });
 
   function showcaseButton() {
-    console.log('running function');
+    //console.log('running function');
     var buttonDiv = $(this).parent();
     var videoId = buttonDiv.attr('data-videoid');
     var status = buttonDiv.attr('data-showcase');
@@ -246,9 +246,9 @@ function editShowcase() {
   });
   var showcase = ($('.showcase')).children();
   $(showcase).on('click', function() {
-    console.log('running function');
+    //console.log('running function');
     var buttonDiv = $(this).parent();
-    console.log(buttonDiv.attr('data-videoid'));
+    //console.log(buttonDiv.attr('data-videoid'));
     var videoId = buttonDiv.attr('data-videoid');
     var status = buttonDiv.attr('data-showcase');
     $(this).remove();
@@ -337,6 +337,11 @@ function renderUserInfo() {
     $('.hire-btn').show();
   } else {
     $('.hire-btn').hide();
+  }
+
+  if (profileUser.aboutMe) {
+    $('#userInfoData').find('.profile-aboutme')
+      .find('span').html(profileUser.aboutMe);
   }
 }
 
@@ -517,11 +522,11 @@ function requestVideoSort(sortBy, id) {
         renderUseAllVideosHtml(data.data);
       }
     } else {
-      console.log('server side error' + data.data);
+      //console.log('server side error' + data.data);
     }
   })
   .error(function(error) {
-    console.log('error : ' + error);
+    //console.log('error : ' + error);
   });
 }
 
@@ -541,11 +546,11 @@ function sortShowcase(sortBy, id) {
       //   $('#allvideos').html(html);
       // });
     } else {
-      console.log('server side error' + data.data);
+      //console.log('server side error' + data.data);
     }
   })
   .error(function(error) {
-    console.log('error : ' + error);
+    //console.log('error : ' + error);
   });
 }
 
@@ -711,7 +716,7 @@ function onUploadError(message) {
   // isUploading = false;
   /********************************************************/
   console.group('%cError :', 'color:red;font:strait');
-  console.log(message);
+  //console.log(message);
   console.groupEnd();
   /********************************************************/
 }
@@ -879,7 +884,7 @@ function renderSocialMediaLinks() {
           $aboutMe.find('.twitter').hide();
         }
         break;
-      default : console.log('nothing happens');
+      default : null; //Nothing happens
     };
   });
 }
@@ -978,11 +983,11 @@ function checkFollowStatus(){
       } else if (response.status === 'unfollowed') {
         swapFollowBtn(false);
       }
-      console.log(response);
+      //console.log(response);
     })
     .error(function(error){
     //TODO server side error, pop modal
-      console.log(error);
+      //console.log(error);
     });
 
 }
@@ -1012,7 +1017,7 @@ function sendHireMeEmail() {
   })
     .done(function(response){
       if (response.statusCode === 200) {
-        console.log('open dialog that says message has been sent');
+        //console.log('open dialog that says message has been sent');
       } else {
         $('#error-message-modal')
           .modal('show')
@@ -1029,7 +1034,7 @@ function sendHireMeEmail() {
 
 /********************************************************/
 console.group('%chireData :', 'color:red;font:strait');
-console.log(hireData);
+//console.log(hireData);
 console.groupEnd();
 /********************************************************/
 
@@ -1102,7 +1107,7 @@ function initialize() {
   $("[name='showcase-default']").bootstrapSwitch({
     size: 'mini'
   });
-  console.log('initalize');
+  //console.log('initalize');
   bindEvents();
   getData();
 }

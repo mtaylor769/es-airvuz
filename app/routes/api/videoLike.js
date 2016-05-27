@@ -7,7 +7,7 @@ function VideoLike() {
 
 VideoLike.prototype.post = function(req, res) {
   var json = JSON.parse(req.body.data);
-  console.log(json);
+  logger.debug(json);
   var like = json.like;
   var notification = json.notification;
   VideoLikeCrud
@@ -19,7 +19,7 @@ VideoLike.prototype.post = function(req, res) {
       })
     })
     .catch(function(err) {
-      console.log(err);
+      logger.debug(err);
       if(err.likeId) {
         VideoLikeCrud
           .delete(err.likeId)

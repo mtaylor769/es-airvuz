@@ -9,7 +9,7 @@ BaseException.prototype.getErrors = function() {
 }
 
 BaseException.prototype.getResponse = function() {
-	console.log("getResponse");
+	logger.debug("getResponse");
 	var response									= {};
 	response.error								= {};
 	response.error.exceptionType	= this.exceptionType;
