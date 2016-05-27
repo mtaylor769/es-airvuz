@@ -251,6 +251,9 @@ body.modal-open {
   top: -10px;
   background-color: #a94442;
 }
+#header.is-login .airvuz-logo {
+  display: none;
+}
 
 #header-categories {
   display: inline-block;
@@ -1222,6 +1225,9 @@ End user profile CSS
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  #header.is-login .airvuz-logo {
+    display: inline-block;
+  }
   #menu {
     position: relative;
     display: inline-block;

@@ -10,6 +10,7 @@ var headerLoginTpl = require('../templates/core/header-login.dust');
 
 var $loginModal,
     $headerProfile,
+    $header,
     $footerSub1;
 
 
@@ -80,7 +81,7 @@ function getNewNotification() {
 }
 
 function bindEvents() {
-  var $header = $('#header');
+  $header = $('#header');
 
   $headerProfile = $('#profile-header');
   $loginModal = $('#login-modal');
@@ -215,6 +216,7 @@ function initialize() {
     getNewNotification()
       .then(renderProfileHeader);
     $footerSub1.addClass('is-login');
+    $header.addClass('is-login');
   } else {
     renderLoginHeader();
   }
