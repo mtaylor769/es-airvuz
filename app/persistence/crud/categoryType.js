@@ -1,7 +1,7 @@
 try {
   var Promise = require('bluebird');
   var log4js = require('log4js');
-  var logger = log4js.getLogger('persistance.crud.CategoryType');
+  var logger = log4js.getLogger('app.persistence.crud.categoryType');
   var ErrorMessage = require('../../utils/errorMessage');
   var ObjectValidationUtil = require('../../utils/objectValidationUtil');
   var PersistenceException = require('../../utils/exceptions/PersistenceException');

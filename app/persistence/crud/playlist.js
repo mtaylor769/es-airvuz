@@ -2,7 +2,7 @@
 try {
   var Promise											= require('bluebird');
   var log4js											= require('log4js');
-  var logger											= log4js.getLogger('persistance.crud.PlayList');
+  var logger											= log4js.getLogger('app.persistence.crud.playList');
   var ErrorMessage								= require('../../utils/errorMessage');
   var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
   var database                    = require('../database/database');

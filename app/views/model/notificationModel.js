@@ -1,5 +1,5 @@
 // IMPORT: BEGIN
-var namespace				= 'app.views.model.videoPlayerModel';
+var namespace				= 'app.views.model.notificationModel';
 var log4js					= require('log4js');
 var logger					= log4js.getLogger(namespace);
 var _               = require('lodash');

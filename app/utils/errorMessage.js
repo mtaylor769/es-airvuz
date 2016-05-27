@@ -1,5 +1,5 @@
 var log4js					= require('log4js');
-var logger					= log4js.getLogger("util.errorMessage");
+var logger					= log4js.getLogger("app.utils.errorMessage");
 var formatString		= require("string-template");
 
 var ERRORS = {

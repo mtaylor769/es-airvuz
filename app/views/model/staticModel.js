@@ -1,5 +1,5 @@
 var log4js					= require('log4js');
-var logger					= log4js.getLogger('app.views.model.static');
+var logger					= log4js.getLogger('app.views.model.staticModel');
 
 try {
 	var BaseModel	    = require('./baseModel');

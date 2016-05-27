@@ -4,7 +4,7 @@ var InstagramStrategy    = require('passport-instagram').Strategy;
 var UsersCrud            = require('../../persistence/crud/users');
 var SocialCrud           = require('../../persistence/crud/socialMediaAccount');
 var log4js               = require('log4js');
-var logger               = log4js.getLogger('app.config.passport.google');
+var logger               = log4js.getLogger('app.config.passport.instagram');
 
 module.exports = function(passport, config) {
 

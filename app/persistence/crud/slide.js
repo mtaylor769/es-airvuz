@@ -1,7 +1,7 @@
 "use strict";
 try {
   var log4js                      = require('log4js');
-  var logger                      = log4js.getLogger('app.persistance.crud.slide');
+  var logger                      = log4js.getLogger('app.persistence.crud.slide');
 
   var Promise                     = require('bluebird');
 

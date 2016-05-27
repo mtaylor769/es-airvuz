@@ -1,7 +1,7 @@
 try {
 	var log4js								= require('log4js');
   var nodemailer            = require('nodemailer');
-	var logger								= log4js.getLogger('persistance.crud.Videos');
+	var logger								= log4js.getLogger('app.routes.api.videos');
 
 	var VideoCrud							= require('../../persistence/crud/videos');
 	var VideoCollection				= require('../../persistence/crud/videoCollection');

@@ -1,5 +1,5 @@
 var log4js											= require('log4js');
-var logger											= log4js.getLogger('utils.ObjectValidationUtil');
+var logger											= log4js.getLogger('app.utils.objectValidationUtil');
 
 
 /*
