@@ -18,9 +18,22 @@
             </div>
             <div class="col-md-10 border-left">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-sm-6">
                   <h3>{category.name}</h3>
                 </div>
+                {#showSort}
+                <div class="col-sm-6">
+                  <div class="form-inline" id="category-sort">
+                    <label for="category-sort-select">Sort By</label>
+                    <select class="form-control" id="category-sort-select">
+                      <option value="uploadDate">Date</option>
+                      <option value="viewCount">Vūz</option>
+                      <option value="commentCount">Comment</option>
+                    </select>
+                  </div>
+                </div>
+                {/showSort}
+
               </div>
               <div class="row" id="videos">
                 <div class="col-md-12">

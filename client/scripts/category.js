@@ -17,6 +17,11 @@ function bindEvents() {
   $('#left-category').on('click', 'h5', function () {
     $(this).parent().toggleClass('is-open');
   });
+  $categoryPage.find('#category-sort-select').on('change', function () {
+    current_page = 1;
+    $categoryPage.find('#videos > div').empty();
+    _getVideos($(this).val());
+  });
 }
 
 function onLoadMoreBtnClick() {
@@ -30,10 +35,15 @@ function onLoadMoreBtnClick() {
  * @returns {Promise}
  * @private
  */
-function _getVideos() {
-  var TOTAL_PER_PAGE = 20;
+function _getVideos(sort) {
+  var TOTAL_PER_PAGE = 20,
+      apiUrl = '/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page;
 
-  return $.ajax('/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page)
+  if (sort) {
+    apiUrl += '?sort=' + sort;
+  }
+
+  return $.ajax(apiUrl)
     .then(function (videos) {
       if (videos.length > 0) {
         categoryVideoTpl({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {

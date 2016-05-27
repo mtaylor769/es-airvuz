@@ -26,29 +26,39 @@ function Video() {}
 
 function getVideosByCategory(req, res) {
   var TOTAL_PER_PAGE  = 20,
-      PAGE            = req.params.page,
       CATEGORY_TYPE   = req.params.category,
       videoPromise;
+
+  var videosParam = {
+    total: TOTAL_PER_PAGE,
+    page: req.params.page,
+    sort: req.query.sort || 'uploadDate'
+  };
 
   videoPromise = CategoryType.getByUrl(CATEGORY_TYPE)
     .then(function (category) {
       switch(CATEGORY_TYPE) {
         case 'Featured Videos':
-          return VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, PAGE);
+          return VideoCollection.getFeaturedVideos();
         case 'Staff Pick Videos':
-          return VideoCollection.getStaffPickVideos(TOTAL_PER_PAGE, PAGE);
+          return VideoCollection.getStaffPickVideos();
         case 'Recent Videos':
-          return VideoCrud.getRecentVideos(TOTAL_PER_PAGE, PAGE);
+          return VideoCrud.getRecentVideos(videosParam);
         case 'Trending Videos':
-          return VideoCrud.getTrendingVideos(TOTAL_PER_PAGE, PAGE);
+          return VideoCrud.getTrendingVideos(videosParam);
         case 'Follower Videos':
           // follow should only be call if user is login
           return FollowCrud.getFollow(req.user._id)
             .then(function (users) {
-              return VideoCrud.getVideosByFollow(TOTAL_PER_PAGE, PAGE, users.map(function (user) {return user.followingUserId}));
+              videosParam.users = users.map(function (user) {
+                return user.followingUserId
+              });
+
+              return VideoCrud.getVideosByFollow(videosParam);
             });
         default:
-          return VideoCrud.getVideoByCategory(TOTAL_PER_PAGE, PAGE, category._id);
+          videosParam.categoryId = category._id;
+          return VideoCrud.getVideoByCategory(videosParam);
       }
     });
 
