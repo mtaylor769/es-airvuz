@@ -28,13 +28,21 @@ var Videos = function() {};
 
 /**
  * get the recent uploaded videos
- * @param count
- * @param page
+ * @param params {Object}
+ * @param params.count {Number}
+ * @param params.page {Number}
  * @returns {Promise}
  */
-function getRecentVideos(count, page) {
-	var limit = count ? count : 10;
-	var skip = (page ? (page - 1) : 0) * limit;
+function getRecentVideos(params) {
+	if (!params) {
+		params = {
+			count: 10,
+			page: 1
+		}
+	}
+
+	var limit = params.count;
+	var skip = (params.page - 1) * limit;
 
 	return VideoModel
 		.find()
@@ -61,9 +69,23 @@ function updateDateWithMoment(videos) {
 	});
 }
 
-function getTrendingVideos(count, page) {
-	var limit = count ? count : 10;
-	var skip = (page ? (page - 1) : 0) * limit;
+/**
+ * get trending video -
+ * @param params {Object}
+ * @param params.count {Number}
+ * @param params.page {Number}
+ * @returns {*}
+ */
+function getTrendingVideos(params) {
+	if (!params) {
+		params = {
+			count: 10,
+			page: 1
+		}
+	}
+
+	var limit = params.count;
+	var skip = (params.page - 1) * limit;
 	var thirtyDayAgo = moment().subtract(30, 'days').toDate();
 
 	return VideoModel
@@ -79,13 +101,13 @@ function getTrendingVideos(count, page) {
 		.then(updateDateWithMoment);
 }
 
-function getVideoByCategory(count, page, categoryId) {
-	var limit = count ? count : 10;
-	var skip = (page ? (page - 1) : 0) * limit;
+function getVideoByCategory(params) {
+	var limit = params.count ? params.count : 10;
+	var skip = (params.page ? (params.page - 1) : 0) * limit;
 
 	return VideoModel
-		.find({categories: categoryId})
-		.sort('-uploadDate')
+		.find({categories: params.categoryId})
+		.sort('-' + (params.sort ? params.sort : 'uploadDate'))
 		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
 		.populate('userId', 'userName')
@@ -96,13 +118,13 @@ function getVideoByCategory(count, page, categoryId) {
 		.then(updateDateWithMoment);
 }
 
-function getVideosByFollow(count, page, users) {
-	var limit = count ? count : 10;
-	var skip = (page ? (page - 1) : 0) * limit;
+function getVideosByFollow(params) {
+	var limit = params.count ? params.count : 10;
+	var skip = (params.page ? (params.page - 1) : 0) * limit;
 
 	return VideoModel
-		.find({userId: {$in: users}})
-		.sort('-uploadDate')
+		.find({userId: {$in: params.users}})
+		.sort('-' + (params.sort ? params.sort : 'uploadDate'))
 		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
 		.populate('userId', 'userName')

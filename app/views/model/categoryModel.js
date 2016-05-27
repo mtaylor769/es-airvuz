@@ -26,6 +26,17 @@ var CategoryModel = function(params) {
 
 util.inherits(CategoryModel, BaseModel);
 
+/**
+ * return category that can't sort
+ * @param category
+ * @returns {boolean}
+ */
+function canSort(category) {
+	var categories = ['Featured Videos', 'Staff Pick Videos', 'Trending Videos', 'Recent Videos'];
+
+	return !(categories.indexOf(category) > -1);
+}
+
 CategoryModel.prototype.getData = function(params) {
 
 	var sourceManifest	= params.sourceManifest;
@@ -41,10 +52,19 @@ CategoryModel.prototype.getData = function(params) {
 
 	params.data.s3Bucket 		= amazonConfig.OUTPUT_URL;
 
+	// Only category can sort
+	params.data.showSort 		= canSort(params.request.params.category);
+
 	var videoPromise,
 			TOTAL_PER_PAGE = 20;
 
 	params.data.category = {};
+	
+	var videosParam = {
+		total: TOTAL_PER_PAGE,
+		page: 1,
+		sort: params.request.query.sort || 'uploadDate'
+	};
 
 	videoPromise = CategoryType.getByUrl(params.request.params.category)
 		.then(function (category) {
@@ -52,20 +72,21 @@ CategoryModel.prototype.getData = function(params) {
 			params.data.category.name = params.request.params.category;
 			switch(params.request.params.category) {
 				case 'Featured Videos':
-					return VideoCollection.getFeaturedVideos(TOTAL_PER_PAGE, 1);
+					return VideoCollection.getFeaturedVideos();
 				case 'Staff Pick Videos':
-					return VideoCollection.getStaffPickVideos(TOTAL_PER_PAGE, 1);
+					return VideoCollection.getStaffPickVideos();
 				case 'Recent Videos':
-					return Videos.getRecentVideos(TOTAL_PER_PAGE, 1);
+					return Videos.getRecentVideos(videosParam);
 				case 'Trending Videos':
-					return Videos.getTrendingVideos(TOTAL_PER_PAGE, 1);
+					return Videos.getTrendingVideos(videosParam);
 				case 'Follower Videos':
 					// Let the client side handle this because this server side render for the follower require
 					// current login user
 					return Promise.resolve([]);
 				default:
 					params.data.category.name = category.name;
-					return Videos.getVideoByCategory(TOTAL_PER_PAGE, 1, category._id);
+					videosParam.categoryId = category._id;
+					return Videos.getVideoByCategory(videosParam);
 			}
 		});
 

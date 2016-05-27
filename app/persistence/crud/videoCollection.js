@@ -34,17 +34,11 @@ function updateVideos(type, videos) {
   return VideoCollectionModel.findOneAndUpdate({name: type, user: null}, {videos: videos}).exec();
 }
 
-function getStaffPickVideos(count, page) {
-  //var limit = count ? count : 10;
-  //var skip = (page ? page : 1) * limit;
-
+function getStaffPickVideos() {
   return getVideoAndPopulate('Staff Pick Videos');
 }
 
-function getFeaturedVideos(count, page) {
-  //var limit = count ? count : 10;
-  //var skip = (page ? page : 1) * limit;
-
+function getFeaturedVideos() {
   return getVideoAndPopulate('Featured Videos');
 }
 
