@@ -637,9 +637,10 @@ function initialize(videoPath) {
         // default
         defaultRes = '300';
         break;
-      case (browserWidth < 1200):
-        defaultRes = '400';
-        break;
+      // res 400 is an option and should not be force
+      // case (browserWidth < 1200):
+      //   defaultRes = '400';
+      //   break;
     }
   }
 
