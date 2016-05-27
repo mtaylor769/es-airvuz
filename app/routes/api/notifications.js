@@ -16,7 +16,7 @@ function seen(req, res) {
 }
 
 Notification.prototype.post = function(req, res) {
-  console.log(req.body);
+  logger.debug(req.body);
   NotificationCrud
     .create(req.body)
     .then(function(notification) {

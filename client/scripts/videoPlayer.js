@@ -55,10 +55,10 @@ function incrementVideoCount() {
       dataType: 'json'
     })
     .done(function(response) {
-      console.log(response);
+      //console.log(response);
     })
     .error(function(error) {
-      console.log(error);
+      //console.log(error);
     });
 }
 
@@ -102,7 +102,7 @@ function onAutoPlayChange(event, state) {
     identity.save();
     //code for update
     //
-    //console.log(response);
+    ////console.log(response);
     //if(response.status === 'OK'){
     //  user.autoPlay = response.data.autoPlay;
     //  identity.save();
@@ -251,7 +251,7 @@ function bindEvents() {
       notificationObject.notificationMessage = 'started following you';
       followData.follow = followObject;
       followData.notification = notificationObject;
-      console.log(followData);
+      //console.log(followData);
       $.ajax({
           type: 'POST',
           url: '/api/follow',
@@ -538,7 +538,7 @@ function bindEvents() {
         })
         .done(function(reply) {
           //insert comment on DOM
-          console.log(reply);
+          //console.log(reply);
           var html = '<div class="flex">'+
             '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-10">'+
@@ -588,11 +588,11 @@ function bindEvents() {
         $(self).parents('.comment-wrap').find('.parentComment').append(html);
         if(data.length === 10) {
           html = '<div class="row m-t-10" style="text-align: center"><span><a class="moreReplies" value="'+parentId+'">load More</a></span></div>';
-          console.log($(self));
+          //console.log($(self));
           $(self).parent().siblings().append(html);
           $(self).hide();
         } else {
-          console.log($(self));
+          //console.log($(self));
           $(self).hide();
         }
       })

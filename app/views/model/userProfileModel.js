@@ -62,7 +62,7 @@ UserProfileModel.prototype.getData = function(params) {
 				if (video.description.length === 90) {
 					video.description = video.description + '...';
 				}
-				console.log(video);
+				logger.debug(video);
 			});
 		dataObject.showcase = videos;
 		return categoryCrud.get();

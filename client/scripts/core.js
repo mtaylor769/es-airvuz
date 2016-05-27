@@ -32,7 +32,7 @@ var $loginModal,
 function appendErrorMessage(errorArray) {
   errorArray.forEach(function(error) {
     var inputId = $(error.sourceError);
-    console.log(inputId);
+    //console.log(inputId);
     var errorMessage = error.displayMsg;
     var html = '<div class="error text-danger m-t-5">' + errorMessage + '</div>';
     inputId.parent().append(html);
@@ -152,7 +152,7 @@ function bindEvents() {
       data: newUserObject
     })
       .done(function(response) {
-        console.log(response);
+        //console.log(response);
         if(response.token) {
           auth.signupLogin(response.token)
             .then(function () {
@@ -162,7 +162,7 @@ function bindEvents() {
           // appendErrorMessage(response);
       })
       .error(function(error) {
-        console.log(error);
+        //console.log(error);
       })
   });
 

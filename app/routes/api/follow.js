@@ -20,7 +20,7 @@ Follow.prototype.getCheckFollowing = function(req, res) {
       if(error.followId) {
         FollowCrud.delete(error.followId)
           .then(function(follow) {
-            console.log(follow);
+            logger.debug(follow);
             res.json({ status: 'unfollowed'});
           })
       } else {
@@ -30,9 +30,9 @@ Follow.prototype.getCheckFollowing = function(req, res) {
 }
 
 Follow.prototype.post = function(req, res) {
-  console.log(req.body);
+  logger.debug(req.body);
   var json = JSON.parse(req.body.data);
-  console.log(json);
+  logger.debug(json);
   var follow = json.follow;
   var notification = json.notification;
   FollowCrud
@@ -44,11 +44,11 @@ Follow.prototype.post = function(req, res) {
       })
     })
     .catch(function(err) {
-      console.log(err);
+      logger.debug(err);
       if(err.followId) {
         FollowCrud.delete(err.followId)
         .then(function(follow) {
-          console.log(follow);
+          logger.debug(follow);
           res.json({ status: 'unfollowed' });
         })
       } else {

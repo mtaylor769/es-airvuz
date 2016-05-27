@@ -22,7 +22,7 @@ function loginSuccess(req, res, next) {
 }
 
 function facebook(req, res, next){
-  //console.log('hit route');
+  //logger.debug('hit route');
 	logger.debug(".facebook IN: *************************************************************");
   passport.authenticate('facebook')(req, res, next);
 }
@@ -55,7 +55,7 @@ function googleCallback(req, res, next) {
 }
 
 function instagram(req, res, next) {
-  console.log('hitting instagram api');
+  logger.debug('hitting instagram api');
   passport.authenticate('instagram')(req, res, next);
 }
 
@@ -67,15 +67,15 @@ function instagramCallback(req, res, next) {
 }
 
 function twitter(req, res, next) {
-  console.log('hitting twitter api');
+  logger.debug('hitting twitter api');
   passport.authenticate('twitter', { scope : ['profile', 'email'] })(req, res, next);
 }
 
 function twitterCallback(req, res, next) {
-  console.log('successful twitter auth callback');
+  logger.debug('successful twitter auth callback');
   passport.authenticate('twitter', { failureRedirect: '/play' })(req, res, next),
   function(req, res) {
-    console.log(req.body);
+    logger.debug(req.body);
     res.redirect('/');
   };
 }

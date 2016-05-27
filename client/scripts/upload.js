@@ -82,7 +82,7 @@ function pollVideoStatus() {
     }).done(onTranscodeComplete)
       .fail(function () {
         transcodeError = true;
-        console.log('******************** Error: transcode ********************');
+        //console.log('******************** Error: transcode ********************');
         // TODO: show dialog message - Unable to upload video. Try again or contact support
       })
       .always(function () {
@@ -124,7 +124,7 @@ function onUploadError(message) {
   isUploading = false;
   /********************************************************/
   console.group('%cError :', 'color:red;font:strait');
-  console.log(message);
+  //console.log(message);
   console.groupEnd();
   /********************************************************/
 }

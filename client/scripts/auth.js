@@ -20,7 +20,7 @@ var auth = {
         password        : password
       },
       success : function(data) {
-        console.log('User created');
+        //console.log('User created');
       }
     });
   },
@@ -36,7 +36,7 @@ var auth = {
         password        : password
       },
       success : function(data) {
-        console.log('login success');
+        //console.log('login success');
       }
     });
   },
@@ -51,7 +51,7 @@ var auth = {
         token           : token
       },
       success : function(data) {
-        console.log('User created');
+        //console.log('User created');
       }
     });
     //TODO: close dialog

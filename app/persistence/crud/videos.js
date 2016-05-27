@@ -266,7 +266,7 @@ Videos.prototype.getPreCondition = function(params) {
  * @param params.thumbnailPath {string}
  */
 Videos.prototype.create = function(params) {
-	//console.log(params);
+	//logger.debug(params);
 	
 	
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Videos.create"});
@@ -284,7 +284,7 @@ Videos.prototype.create = function(params) {
 			var videoModel = new VideoModel(validation.data);
 			videoModel.save(function(error, video) {
 				if(error) {
-					//console.log(error);
+					//logger.debug(error);
 					logger.error(error);
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({

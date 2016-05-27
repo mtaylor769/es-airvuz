@@ -39,7 +39,7 @@ VideoPlayerEmbedModel.prototype.getData = function(params) {
       return videoCrud.upCount(video)
     })
     .then(function(video) {
-        console.log(video);
+        logger.debug(video);
         params.data = video;
         params.data.facebookAppId = config.facebook.clientID;
         params.data.videoPlayerEmbed = {};

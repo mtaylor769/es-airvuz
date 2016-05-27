@@ -603,9 +603,6 @@ users.prototype.update = function (id, params) {
 					delete params.confirmPassword;
 					params.password 	= pw;
 				}
-				console.log('******************** params ********************');
-				console.log(params);
-				console.log('************************************************');
 				UserModel.findByIdAndUpdate(id, params, {new: true}).populate('SocialMediaLinks').exec()
 				.then(function(user) {
 					if (user._doc.password) {

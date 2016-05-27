@@ -47,7 +47,7 @@ Follow.prototype.create = function(params) {
                 return;
               })
             } else {
-              console.log(follow);
+              logger.debug(follow);
               reject({followId: follow[0]._id});
               return;
             }
