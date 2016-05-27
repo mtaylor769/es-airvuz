@@ -851,8 +851,18 @@ Begin userProfile CSS
   color: black;
 }
 
+#user-profile .social-media-background {
+  background-color: #25b9e4;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  padding: 10px 13px;
+  margin-right: 5px;
+}
+
 #user-profile .user-social-media a {
   text-decoration: none;
+  color: white;
 }
 
 #user-profile .inline{
