@@ -22,7 +22,7 @@ var socialMediaAccountSchema = mongoose.Schema({
 	provider : {
 		required	: true,
 		type			: String,
-		enum			: ['facebook', "GOOGLE+", "INSTAGRAM", "TWITTER", "VIMEO"]
+		enum			: ['facebook', "google", "INSTAGRAM", "TWITTER", "VIMEO"]
 	},
 	
 	userId: { 

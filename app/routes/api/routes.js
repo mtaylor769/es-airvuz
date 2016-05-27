@@ -14,6 +14,7 @@ var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
 var videoCollection     = require('./videoCollection');
+var passport            = require('passport');
 var protect             = require('../../middlewares/protect');
 var token               = require('../../middlewares/token');
 
@@ -38,10 +39,15 @@ apiRouter.route('/api/auth/facebook/callback')
   .get(auth.facebookCallback);
 
 apiRouter.route('/api/auth/google')
-  .get(auth.google);
+  .get(passport.authenticate('google', { scope: [ 'email', 'profile'],
+		failureRedirect: '/',
+		successRedirect: 'back'
+	}));
 
 apiRouter.route('/api/auth/google/callback')
-  .get(auth.googleCallback);
+  .get(passport.authenticate('google', {
+		failureRedirect: '/'
+	}), auth.googleCallback);
 
 apiRouter.route('/api/auth/twitter')
   .get(auth.twitter);

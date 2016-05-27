@@ -18,6 +18,11 @@ module.exports = {
       clientSecret: "test",
       callbackURL: "http://localhost/auth/linkedin/callback"
     },
+    // google:{
+    //   clientID          : "257509599064-3omlk38mtq8e3upm55eemp8q7hk1pqg6.apps.googleusercontent.com",
+    //   clientSecret      : "DPdvaCrEoP2p6Jc7tzn5QOzP",
+    //   callbackURL       : "http://localhost/api/auth/google/callback"
+    // },
     google: {
       clientID          : "783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com",
       clientSecret      : "vJM7NvyWkpjom_bpubWuWLJP",
