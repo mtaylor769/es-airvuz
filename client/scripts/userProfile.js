@@ -819,50 +819,64 @@ function renderUserProfileEdit(profileData) {
 
 function renderSocialMediaLinks() {
   var $socialMedia = $('.user-social-media');
+  var $aboutMe     = $('#about-me-section').find('.aboutme-socialmedia');
   var $editProfile = $('.edit-profile');
   if (profileUser.socialMediaLinks.length===0) {
-    $('.user-social-media').find('a').hide();
+    $($socialMedia).find('span').hide();
+    $($aboutMe).find('span').hide();
+
   }
   profileUser.socialMediaLinks.forEach(function(account){
     switch (account.socialType) {
       case "FACEBOOK" :
         if (account.url && account.url !== '') {
           $socialMedia.find('.facebook')
-            .show()
+            .parent().show();
+          $socialMedia.find('.facebook')
+            .attr('href', '//'+account.url);
+          $aboutMe.find('.facebook-link')
             .attr('href', '//'+account.url);
           $editProfile.find('#facebook').val(account.url)
         } else {
-          $socialMedia.find('.facebook').hide();
+          $socialMedia.find('.facebook').parent().hide();
+          $aboutMe.find('.facebook').hide();
         }
         break;
       case 'GOOGLE+' :
         if (account.url && account.url !== '') {
-          $socialMedia.find('.google').show()
-            .show()
+          $socialMedia.find('.google').parent().show();
+          $socialMedia.find('.google')
+            .attr('href', '//'+account.url);
+          $aboutMe.find('.google-link')
             .attr('href', '//'+account.url);
           $editProfile.find('#googleplus').val(account.url);
         } else {
-          $socialMedia.find('.google').hide();
+          $socialMedia.find('.google').parent().hide();
+          $aboutMe.find('.google').hide();
         }
         break;
       case 'INSTAGRAM' :
         if (account.url && account.url !== '') {
-          $socialMedia.find('.instagram').show()
-            .show()
+          $socialMedia.find('.instagram').parent().show();
+          $aboutMe.find('.instagram-link')
             .attr('href', '//'+account.url);
           $editProfile.find('#instagram').val(account.url);
         } else {
-          $socialMedia.find('.instagram').hide();
+          $socialMedia.find('.instagram').parent().hide();
+          $aboutMe.find('.instagram').hide();
         }
         break;
       case 'TWITTER' :
         if (account.url && account.url !== '') {
-          $socialMedia.find('.twitter').show()
-            .show()
+          $socialMedia.find('.twitter').parent().show();
+          $socialMedia.find('.twitter')
+            .attr('href', '//'+account.url);
+          $aboutMe.find('.twitter-link')
             .attr('href', '//'+account.url);
           $editProfile.find('#twitter').val(account.url);
         } else {
-          $socialMedia.find('.twitter').hide();
+          $socialMedia.find('.twitter').parent().hide();
+          $aboutMe.find('.twitter').hide();
         }
         break;
       default : console.log('nothing happens');

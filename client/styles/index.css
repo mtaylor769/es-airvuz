@@ -865,6 +865,13 @@ Begin userProfile CSS
   color: white;
 }
 
+#user-profile #about-me-section .aboutme-socialmedia a {
+  text-decoration: none;
+  color: gray;
+}
+
+
+
 #user-profile .inline{
   display: inline-block;
 }
