@@ -1,5 +1,5 @@
 var log4js					= require('log4js');
-var logger					= log4js.getLogger('app.views.model.category');
+var logger					= log4js.getLogger('app.views.model.categoryModel');
 
 
 try {

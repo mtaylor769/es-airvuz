@@ -1,8 +1,3 @@
-/*
-Zeke Thao
-2/28/2012
-*/
-
 "use strict";
 
 //Status Codes 1XX

@@ -1,5 +1,5 @@
 var log4js      = require('log4js');
-var logger      = log4js.getLogger('persistance.crud.upload');
+var logger      = log4js.getLogger('app.persistence.crud.upload');
 var UploadModel = null;
 
 try {

@@ -1,6 +1,6 @@
 // IMPORT: BEGIN
 var log4js		= require('log4js');
-var logger		= log4js.getLogger('app.views.data.videoPlayerView');
+var logger		= log4js.getLogger('app.views.view.videoPlayerEmbedView');
 
 try {
   var BaseView					      = require('./baseView');
