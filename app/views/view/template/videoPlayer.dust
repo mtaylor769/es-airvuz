@@ -144,7 +144,11 @@
                             <li class="comment-wrap">
                                 <div class="flex">
                                     {#userId.profilePicture}
-                                      <img src="{s3AssetUrl}users/profile-pictures{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                        {#userId.isExternalLink}
+                                            <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
+                                        {:else}
+                                            <img src="{s3AssetUrl}users/profile-pictures{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
+                                        {/userId.isExternalLink}
                                     {:else}
                                       <img src="/client/images/default.png" height="50" width="50" class="border-radius-circle m-10-20">
                                     {/userId.profilePicture}
