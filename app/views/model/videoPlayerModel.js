@@ -113,7 +113,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			comments.forEach(function(comment) {
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
 				console.log(comment.commentCreatedDate);
-				comment.userId.isExternalLink = user.profilePicture.indexOf('http') > -1;
+				comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
 			});
 			dataObject.comments = comments;
 				return categoryCrud.get();
