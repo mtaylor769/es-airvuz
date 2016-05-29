@@ -635,25 +635,26 @@ body.modal-open {
  * End Video Player
 /**********************************/
 
-#left-category {
+.category-nav {
   background-color: #f4f4f4;
   padding-top: 5px;
 }
-#left-category.is-open ul{
+.category-nav.is-open ul{
   height: auto;
   overflow: auto;
 }
-#left-category.is-open .glyphicon {
+.category-nav.is-open .glyphicon {
   -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-#left-category ul {
+.category-nav ul {
   height: 0;
   overflow: hidden;
+  margin-bottom: 0;
 }
-#left-category a {
+.category-nav a {
   display: inline-block;
   width: 100%;
   padding: 5px 0;
@@ -662,7 +663,7 @@ body.modal-open {
   font-size: 14px;
 }
 
-#left-category a:hover, #left-category a.active {
+.category-nav a:hover, .category-nav a.active {
   color: #f48a4a;
   text-decoration: none;
   border-bottom: 1px solid #f48a4a;
@@ -1463,7 +1464,7 @@ End user profile CSS
     width: 300px;
     left: -320px;
   }
-  #left-category ul {
+  .category-nav ul {
     height: auto;
     overflow: auto;
   }

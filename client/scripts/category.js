@@ -14,7 +14,7 @@ var categoryVideoTpl = require('../templates/category/category-video.dust');
 function bindEvents() {
   $loadMoreBtn.on('click', onLoadMoreBtnClick);
 
-  $('#left-category').on('click', 'h5', function () {
+  $('.category-nav').on('click', 'h5', function () {
     $(this).parent().toggleClass('is-open');
   });
   $categoryPage.find('#category-sort-select').on('change', function () {

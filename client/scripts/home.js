@@ -127,7 +127,7 @@ function initialize() {
 }
 
 function bindEvents() {
-  $('#left-category').on('click', 'h5', function () {
+  $('.category-nav').on('click', 'h5', function () {
     $(this).parent().toggleClass('is-open');
   });
 }

@@ -29,6 +29,11 @@
 
     <!-- BEG:Main Container -->
     <div id="home-page" class="container main container-shadow">
+      <div class="row visible-xs-block visible-sm-block">
+        <div class="col-md-12 category-nav">
+            {> "app.views.view.partial.left-nav"/}
+        </div>
+      </div>
       {?index.slider}
       <div class="row">
         <div id="slider-slick">
@@ -63,7 +68,7 @@
       </div>
       {/index.slider}
       <div class="row" id="main-row">
-        <div class="col-md-2" id="left-category">
+        <div class="col-md-2 hidden-xs hidden-sm category-nav">
             {> "app.views.view.partial.left-nav"/}
         </div>
         <div class="col-md-10 border-left">
