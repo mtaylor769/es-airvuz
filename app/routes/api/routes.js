@@ -66,16 +66,19 @@ apiRouter.route('/api/auth/instagram/callback')
 apiRouter.route('/api/users/search')
   .get(protect, users.search);
 
-apiRouter.route('/api/users/:id')
-  .get(users.get)
-	.put(protect, users.put);
+apiRouter.route('/api/users/password-reset')
+	.post(users.passwordResetRequest)
+	.put(users.passwordResetChange);
 
 apiRouter.route('/api/users/create')
-  .post(users.createUser);
+	.post(users.createUser);
 
 apiRouter.route('/api/users/hireme')
 	.post(users.hireMe);
 
+apiRouter.route('/api/users/:id')
+  .get(users.get)
+	.put(protect, users.put);
 /**
  * /api/follow/
  */

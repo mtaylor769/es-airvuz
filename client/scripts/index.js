@@ -12,3 +12,4 @@ window.videoPlayer = require('./videoPlayer');
 window.userProfile = require('./userProfile');
 window.Search = require('./search');
 window.Category = require('./category');
+window.PasswordReset = require('./pages/password-reset');

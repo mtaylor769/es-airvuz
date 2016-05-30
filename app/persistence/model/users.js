@@ -100,6 +100,8 @@ var usersSchema 		= mongoose.Schema({
 		type		: String
 	},
 
+	resetPasswordCode: String,
+
 	profilePicture : {
 		type: String
 	},
