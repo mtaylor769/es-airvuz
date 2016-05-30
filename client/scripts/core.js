@@ -86,6 +86,30 @@ function bindEvents() {
   $headerProfile = $('#profile-header');
   $loginModal = $('#login-modal');
 
+  function onPasswordReset() {
+    var url = '/api/users/password-reset',
+        $emailInput = $loginModal.find('.email-input:visible'),
+        emailAddress = $emailInput.val();
+
+    function _showHideInput(which) {
+      $emailInput.val('');
+      $loginModal.find('#forgot-password-tab .text-message.' + which).removeClass('hidden');
+      setTimeout(function () {
+        $loginModal.find('#forgot-password-tab .text-message.' + which).addClass('hidden');
+      }, 5000);
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: {email: emailAddress}
+    }).then(function () {
+      _showHideInput('text-success');
+    }).fail(function () {
+      _showHideInput('text-danger');
+    });
+  }
+
   $loginModal.on('hidden.bs.modal', function () {
     // reset tab to login
     $loginModal.find('#login-anchor-tab').click();
@@ -207,6 +231,8 @@ function bindEvents() {
   $loginModal.on('click', '#btn-google', function() {
     window.location.href = '/api/auth/google';
   });
+
+  $loginModal.on('click', '#btn-password-reset', onPasswordReset);
 }
 
 function initialize() {

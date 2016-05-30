@@ -148,10 +148,67 @@ function hireMe(req, res) {
   })
 }
 
-User.prototype.hireMe         = hireMe;
-User.prototype.search       = search;
-User.prototype.get          = get;
-User.prototype.createUser   = createUser;
-User.prototype.put          = put;
+function _sendPasswordResetMail(user, host) {
+  var transport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user:'support@airvuz.com',
+      pass:'b5&YGG6n'
+    }
+  });
+
+  var mailOptions = {
+    from:'AirVuz<noreply@airvuz.com>',
+    to: user.emailAddress,
+    subject: 'Password Reset',
+    html: '<div><a href="' + host + '/password-reset/' + user.resetPasswordCode + '">Click here to reset password</a></div>'
+  };
+
+  return new Promise(function (resolve, reject) {
+    transport.sendMail(mailOptions, function(error, message) {
+      if(error) {
+        return reject(message);
+      }
+      return resolve(message);
+    });
+  });
+}
+
+function passwordResetRequest(req, res) {
+  var email = req.body.email;
+  usersCrud
+    .resetPasswordRequest(email)
+    .then(function (user) {
+      return _sendPasswordResetMail(user, req.get('host'));
+    })
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
+}
+
+function passwordResetChange(req, res) {
+  var code      = req.body.code,
+      password  = req.body.password;
+  
+  usersCrud
+    .resetPasswordChange(code, password)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
+}
+
+User.prototype.hireMe               = hireMe;
+User.prototype.search               = search;
+User.prototype.get                  = get;
+User.prototype.createUser           = createUser;
+User.prototype.put                  = put;
+User.prototype.passwordResetRequest = passwordResetRequest;
+User.prototype.passwordResetChange  = passwordResetChange;
 
 module.exports = new User();

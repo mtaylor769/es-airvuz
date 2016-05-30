@@ -123,6 +123,7 @@ var categoryView						= require('./app/views/view/categoryView');
 var staticView							= require('./app/views/view/staticView');
 var videoPlayerEmbedView 		= require('./app/views/view/videoPlayerEmbedView');
 var notificationView				= require('./app/views/view/notificationView');
+var passwordResetView				= require('./app/views/view/passwordResetView');
 
 
 viewManager.addView({	view : indexView });
@@ -134,6 +135,7 @@ viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
 viewManager.addView({ view : categoryView });
 viewManager.addView({ view : notificationView});
+viewManager.addView({ view : passwordResetView});
 viewManager.addView({ view : staticView('terms') });
 viewManager.addView({ view : staticView('privacy') });
 viewManager.addView({ view : staticView('copyright') });
@@ -191,6 +193,10 @@ app.get("/category/:category", function(req, res) {
 
 app.get("/notifications/:id", function(req, res) {
 	loadView(req, res, notificationView.getViewName());
+});
+
+app.get('/password-reset/:code', function (req, res) {
+	loadView(req, res, passwordResetView.getViewName());
 });
 
 /**

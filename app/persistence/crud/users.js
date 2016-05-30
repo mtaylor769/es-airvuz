@@ -12,6 +12,7 @@ try {
 	var currentUser									= null;
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
 	var validation 									= {};
+	var crypto 											= require('crypto');
 
 } 
 catch(exception) {
@@ -666,6 +667,36 @@ function updateRoles(params) {
 	// TODO: implement
 }
 
-users.prototype.updateRoles = updateRoles;
+function resetPasswordRequest(email) {
+	return UserModel.findOne({emailAddress: email}).exec()
+		.then(function (user) {
+			if (!user) {
+				throw 'Email does not exists';
+			}
+			// random string in hex to prevent adding "/" "+"
+			var resetCode = crypto.randomBytes(10).toString('hex');
+			// send email to reset
+			user.resetPasswordCode = resetCode;
+
+			return user.save();
+		});
+}
+
+function resetPasswordChange(code, newPassword) {
+	return UserModel.findOne({resetPasswordCode: code}).exec()
+		.then(function (user) {
+			if (!user) {
+				throw 'No code reset exists';
+			}
+			user.password = user.generateHash(newPassword);
+
+			user.resetPasswordCode = undefined;
+			return user.save();
+		});
+}
+
+users.prototype.updateRoles 					= updateRoles;
+users.prototype.resetPasswordRequest 	= resetPasswordRequest;
+users.prototype.resetPasswordChange 	= resetPasswordChange;
 
 module.exports = new users();
