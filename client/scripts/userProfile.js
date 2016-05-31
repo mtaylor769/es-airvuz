@@ -757,19 +757,7 @@ function onThumbnailSelect() {
 
 function renderAllVideos(html) {
   $('#allvideos').html(html);
-  $('.sort-owner-all-list')
-    .on('click', '.sort-owner-all-vuz', function(){
-      requestVideoSort('vuz', profileUser._id);
-    })
-    .on('click', '.sort-owner-all-dasc', function(){
-      requestVideoSort('dasc', profileUser._id);
-    })
-    .on('click', '.sort-owner-all-ddesc', function(){
-      requestVideoSort('ddesc', profileUser._id);
-    })
-    .on('click', '.sort-owner-all-likes', function(){
-      requestVideoSort('likes', profileUser._id);
-    });
+  bindSortAllVideos();
 }
 
 function renderOwnerAllVideosHtml(videos) {
@@ -1032,12 +1020,22 @@ function sendHireMeEmail() {
         .html('Unable to send email. '+error);
     });
 
-/********************************************************/
-console.group('%chireData :', 'color:red;font:strait');
-//console.log(hireData);
-console.groupEnd();
-/********************************************************/
+}
 
+function bindSortAllVideos() {
+  $('.sort-owner-all-list')
+    .on('click', '.sort-owner-all-vuz', function(){
+      requestVideoSort('vuz', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-dasc', function(){
+      requestVideoSort('dasc', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-ddesc', function(){
+      requestVideoSort('ddesc', profileUser._id);
+    })
+    .on('click', '.sort-owner-all-likes', function(){
+      requestVideoSort('likes', profileUser._id);
+    });
 }
 
 function initialize() {
@@ -1091,10 +1089,11 @@ function initialize() {
       }
       $('.edit-tab').hide();
       checkFollowStatus();
+      bindSortAllVideos();
 
     }
   } else {
-    //TODO user does not exist, or no one logged in
+    bindSortAllVideos();
     $('.donate-btn').hide();
     $('.hire-btn').hide();
     $('.follow-btn').hide();
