@@ -10,8 +10,10 @@ try {
 	var Promise		    = require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
+	var getImage			= require('../../utils/fbImageDownload');
 	var videoCrud     = require('../../persistence/crud/videos');
 	var userCrud      = require('../../persistence/crud/users');
+	var socialCrud		= require('../../persistence/crud/socialMediaAccount');
 	var commentCrud   = require('../../persistence/crud/comment');
 	var videoLikeCrud = require('../../persistence/crud/videoLike');
 	var categoryCrud  = require('../../persistence/crud/categoryType');
@@ -62,6 +64,19 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return userCrud.getUserById(video.userId);
 		})
 		.then(function(user) {
+			return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
+				.then(function(socialAccount) {
+					if(socialAccount){
+						user.facebook = true;
+						user.fbAccount = socialAccount.accountId;
+					}
+					return user;
+				});
+		})
+		.then(function(user){
+			if(user.facebook && user.profilePicture === ''){
+				user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large'
+			}
 			dataObject.user 	= user;
 			checkObject.user  = user._id;
 			
@@ -103,6 +118,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(followCount) {
 			dataObject.followCount = followCount;
+
 			return videoLikeCrud.videoLikeCheck(checkObject);
 		})
 		.then(function(likeBoolean) {
@@ -111,9 +127,15 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function (comments) {
 			comments.forEach(function(comment) {
+				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				logger.debug(comment.commentCreatedDate);
-				comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
+				socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+					.then(function(social) {
+						if(social && comment.userId.profilePicture === ''){
+							comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large'
+						}
+						comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
+					})
 			});
 			dataObject.comments = comments;
 				return categoryCrud.get();

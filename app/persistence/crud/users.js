@@ -7,7 +7,7 @@ try {
 	
 	var ErrorMessage								= require('../../utils/errorMessage');
 	var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-
+	var socialCrud 									= require('../../persistence/crud/socialMediaAccount');
 	var database										= require('../database/database');
 	var currentUser									= null;
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
@@ -124,17 +124,34 @@ users.prototype.validateCreateUser = function(params) {
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
 				if (email) {
-					throw userInfo.errors = errorMessage.getErrorMessage({
-						statusCode: "400",
-						errorId: "VALIDA1000",
-						templateParams: {
-							name: "emailAddress"
-						},
-						sourceError: "#email",
-						displayMsg: "Email already exists",
-						errorMessage: "Email already exists",
-						sourceLocation: sourceLocation
-					});
+					socialCrud.findByUserId(email._id)
+						.then(function(social) {
+							if(social) {
+								throw userInfo.errors = errorMessage.getErrorMessage({
+									statusCode: "400",
+									errorId: "VALIDA1000",
+									templateParams: {
+										name: "emailAddress"
+									},
+									sourceError: "#email",
+									displayMsg: "Email already exists. Please reset password.",
+									errorMessage: "Email already exists",
+									sourceLocation: sourceLocation
+								});
+							} else {
+								throw userInfo.errors = errorMessage.getErrorMessage({
+									statusCode: "400",
+									errorId: "VALIDA1000",
+									templateParams: {
+										name: "emailAddress"
+									},
+									sourceError: "#email",
+									displayMsg: "Email already exists",
+									errorMessage: "Email already exists",
+									sourceLocation: sourceLocation
+								});
+							}
+						});
 				}
 				return UserModel.findOne({userName: userInfo.data.userName}).exec()
 			})
@@ -393,12 +410,10 @@ users.prototype.getAllUsers = function() {
 */
 users.prototype.getUserById = function (userId) {
 	logger.debug('searching for user by userId: ' + userId);
-
 	if (userId) {
 		validation.userId 			= userId;
 	} else {
 		validation.userId 			= null;
-
 		var errorMessage		= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
@@ -414,9 +429,31 @@ users.prototype.getUserById = function (userId) {
 		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({_id : validation.userId}, 'aclRoles emailAddress userName lastName firstName profilePicture autoPlay',
-				function(error, user){
-				if (error) {
+			UserModel.findOne({_id : validation.userId})
+				.select('aclRoles emailAddress userName lastName firstName profilePicture autoPlay')
+				.lean()
+				.then(function (user) {
+					if(user.profilePicture.indexOf('http') > -1){
+						user.externalLink = true;
+					} else if(user.profilePicture === '') {
+						return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
+							.then(function (social) {
+								if(social) {
+									user.externalLink = true;
+									user.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+									return user;
+								} else {
+									return user;
+								}
+							})
+					} else {
+						return user;
+					}
+				})
+				.then(function(user) {
+					resolve(user)
+				})
+				.catch(function () {
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
@@ -426,11 +463,7 @@ users.prototype.getUserById = function (userId) {
 						sourceLocation	: "persistence.crud.Users.getAllAusers"
 					});
 					reject(errorMessage.getErrors());
-				} else {
-					logger.debug('user resolved');
-					resolve(user);
-				}
-			});
+				})
 		}
 	}));
 };
@@ -565,20 +598,24 @@ users.prototype.getUserByUserName = function (userName) {
 		if (validation.userName === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({userName : validation.userName}, '-password', function(error, user) {
-				if (error) {
-					var errorMessage		= new ErrorMessage();
-				errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorMessage		: "Failed while getting user by user name",
-					sourceError			: error,
-					sourceLocation	: "persistence.crud.Users.getUserByUserName"
-				});
-				reject(errorMessage.getErrors());
-				} else {
+			logger.debug('line 566 : ' + validation.userName);
+			UserModel.findOne({userName : validation.userName})
+				.select('-password')
+				.lean()
+				.exec()
+				.then(function(user) {
 					resolve(user);
-				}
-			});
+				})
+				.catch(function() {
+						var errorMessage		= new ErrorMessage();
+						errorMessage.getErrorMessage({
+							statusCode			: "500",
+							errorMessage		: "Failed while getting user by user name",
+							sourceError			: error,
+							sourceLocation	: "persistence.crud.Users.getUserByUserName"
+						});
+						reject(errorMessage.getErrors());
+				})
 		}
 	}));
 };
@@ -661,6 +698,30 @@ users.prototype.delete = function(userId) {
 			});
 		}
 	}));
+};
+
+users.prototype.emailConfirm = function(userId) {
+	return(new Promise(function(resolve, reject) {
+		UserModel.findOne({_id: userId})
+			.then(function(user) {
+				if(user.status === 'email-confirm') {
+					user.status = 'active';
+					user.save(function(user) {
+						resolve('true');
+					})
+				} else {
+					resolve('false');
+				}
+			})
+			.catch(function(error) {
+				if(!userId){
+					resolve()	
+				} else if(userId) {
+					resolve('false');
+				}
+			})
+	})
+	)
 };
 
 function updateRoles(params) {

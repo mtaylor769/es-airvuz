@@ -2,7 +2,11 @@
   <div class="">
     <div class="profile-picture col-xs-12 col-md-3">
       {#user.profilePicture}
+        {#user.facebook}
+        <img src="{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
+        {:else}
         <img src="{s3AssetUrl}users/profile-pictures{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
+        {/user.facebook}
       {:else}
         <img src="/client/images/default.png" alt="user profile picture" class="border-radius-circle">
       {/user.profilePicture}

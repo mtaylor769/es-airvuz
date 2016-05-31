@@ -93,7 +93,7 @@
 
     <script>
         $(function () {
-          Home.initialize();
+        Home.initialize({emailConfirm|j|s});
         });
     </script>
   </body>

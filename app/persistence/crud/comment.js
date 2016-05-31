@@ -6,13 +6,16 @@ try {
   var ObjectValidationUtil = require('../../utils/objectValidationUtil');
   var PersistenceException = require('../../utils/exceptions/PersistenceException');
   var ValidationException = require('../../utils/exceptions/ValidationException');
+  var SocialModel = null;
   var CommentModel = null;
   var VideoModel = null;
   var database = require('../database/database');
+  var SocialCrud = require('./socialMediaAccount')
   var VideoCrud = require('./videos');
 
   CommentModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
   VideoModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
+  SocialModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.socialMediaAccount"});
   logger.debug('loaded comment crud models');
 
   if(global.NODE_ENV === "production") {
@@ -161,12 +164,33 @@ Comment.prototype.create = function(params) {
         reject(persistenceException);
         return;
       } else {
-        resolve(videoComment);
-        return;
+        return CommentModel.findOne({_id: videoComment._id})
+          .populate('userId')
+          .lean()
+          .exec()
+          .then(function(comment) {
+            if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture !== '') {
+              comment.userId.profilePicture = 'http://www.airvuz.com/' + comment.userId.profilePicture;
+              return comment;
+            } else if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture === '') {
+              return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+                .then(function(social) {
+                  if(social) {
+                    comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+                  } else {
+                    comment.userId.profilePicture = 'http://www.airvuz.com/client/images/default.png'
+                  }
+                  return comment;
+                })
+            } else {
+              return comment;
+            }
+          })
+          .then(function (comment) {
+            resolve(comment);
+          });
       }
     })
-
-
   })
   );
 };

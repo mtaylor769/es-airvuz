@@ -106,7 +106,11 @@ socialMediaAccount.prototype.create = function(params) {
       }
     });
   }));
-}
+};
+
+socialMediaAccount.prototype.findByUserId = function(userId) {
+  return SocialModel.findOne({userId: userId}).exec();
+};
 
 socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, provider) {
   logger.debug('find account by id and provider: ' + accountId + ' ' + provider);
@@ -170,6 +174,10 @@ socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, pr
 
 socialMediaAccount.prototype.update = function(id, userId) {
   return SocialModel.findByIdAndUpdate(id, {userId: userId}).exec();
+};
+
+socialMediaAccount.prototype.findByUserIdAndProvider = function(id, provider) {
+ return SocialModel.findOne({userId: id, provider: provider}).exec();
 };
 
 module.exports = new socialMediaAccount();

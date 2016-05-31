@@ -61,7 +61,11 @@
   <li>
     <div class="profile-img-wrap">
       {#currentUser.profilePicture}
+        {#currentUser.externalLink}
+        <img src="{currentUser.profilePicture}" alt="user profile picture" class="img-circle"/>
+        {:else}
         <img src="{awsAssetUrl}{currentUser.profilePicture}" alt="user profile picture" class="img-circle"/>
+        {/currentUser.externalLink}
       {:else}
         <img src="/client/images/default.png" alt="user profile picture" class="img-circle"/>
       {/currentUser.profilePicture}

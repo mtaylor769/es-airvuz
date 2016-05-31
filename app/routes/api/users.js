@@ -7,9 +7,9 @@ try {
   var aclRoles               = require('../../utils/acl');
   var usersCrud              = require('../../persistence/crud/users');
   var userParams             = null;
-  var nodemailer            = require('nodemailer');
+  var nodemailer             = require('nodemailer');
   var tokenData              = null;
-var authCrud                 = require('./auth');
+  var authCrud               = require('./auth');
   var HireMe                 = require('../../utils/emails/hireMe');
 }
 
@@ -73,18 +73,55 @@ function createUser(req, res) {
       confirmPassword         : req.body.confirmPassword
     };
   }
+
+  //create a local login if a social login already exists
   
   return usersCrud
     .create(userParams)
     .then(function(user) {
+      logger.debug(user);
       aclRoles.addUserRoles(user._id, ['user-general']).then(function() {
       });
       return user;
     })
     .then(function(user) {
       logger.debug(user);
-      var token =  jwt.sign({_id: user._id, aclRoles: user.aclRoles}, tokenConfig.secret, { expiresIn: tokenConfig.expires });
-      res.json({token: token});
+      var sendData = {};
+      var params = req.body;
+      logger.debug(params);
+      var transport = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user:'support@airvuz.com',
+          pass:'b5&YGG6n'
+        }
+      });
+
+      var mailOptions = {
+        from:'Account Confirmation <noreply@airvuz.com>',
+        to: user.emailAddress,
+        subject: 'Account Confirmation',
+        html: '<p>Follow the link below to confirm your account</p><p><a href="localhost/email-confirmation/' + user._id + '">Confirm Account</a></p>'
+      };
+      logger.debug(mailOptions.html);
+      transport.sendMail(mailOptions, function(error, message) {
+        if(error) {
+          sendData = {
+            statusCode    : 400,
+            data          : JSON.stringify(error),
+            msg           : JSON.stringify(error)
+
+          }
+        } else {
+          sendData = {
+            statusCode    : 200,
+            data          : message,
+            msg           : 'Message Sent'
+          }
+        }
+        res.send({email: 'sent'});
+      })
+
     })
     .catch(function(error) {
       res.send(error)

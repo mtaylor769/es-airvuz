@@ -68,7 +68,8 @@ function getFollowerVideos() {
       });
 }
 
-function initialize() {
+function initialize(emailConfirm) {
+  console.log(emailConfirm);
   $homePage = $('#home-page');
 
   var SLIDER_DESCRIPTION_DELAY = 5000,
@@ -124,6 +125,16 @@ function initialize() {
   }
 
   bindEvents();
+  emailConfirmCheck(emailConfirm);
+}
+
+function emailConfirmCheck(emailConfirm) {
+  console.log(emailConfirm);
+  if(emailConfirm === true) {
+    $('#email-confirmed-modal').modal('show')
+  } else if(emailConfirm === false) {
+    $('#email-already-confirmed-modal').modal('show')
+  }
 }
 
 function bindEvents() {

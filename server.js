@@ -163,6 +163,10 @@ app.get("/", function(req, res) {
 	loadView(req, res, indexView.getViewName());
 });
 
+app.get("/email-confirmation/:id", function(req, res) {
+	loadView(req, res, indexView.getViewName());
+});
+
 app.get("/login", function(req, res){
 	loadView(req, res, loginView.getViewName());
 });
