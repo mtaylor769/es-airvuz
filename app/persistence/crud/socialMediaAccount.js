@@ -172,5 +172,9 @@ socialMediaAccount.prototype.update = function(id, userId) {
   return SocialModel.findByIdAndUpdate(id, {userId: userId}).exec();
 };
 
+socialMediaAccount.prototype.findByUserIdAndProvider = function(id, provider) {
+ return SocialModel.findOne({userId: id, provider: provider}).exec();
+};
+
 module.exports = new socialMediaAccount();
 

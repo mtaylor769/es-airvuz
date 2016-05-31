@@ -23,36 +23,35 @@ var getImage = function(imageObject, cb) {
   http.get(options, function(response) {
     var redirectUrl = urls.parse(response.headers.location);
     console.log(response.headers);
-    logger.debug(redirectUrl)
-    // var redirectOptions = {
-    //   host: redirectUrl.hostname,
-    //   port: port,
-    //   path: redirectUrl.path
-    // };
-    //
-    // //request to get redirected URL
-    // http.get(redirectOptions, function(response) {
-    //  
-    //   logger.debug(redirectUrl);
-    //   //set encoding
-    //   response.setEncoding('binary');
-    //  
-    //   //set image to empty
-    //   var image = '';
-    //  
-    //   //when response received set data to image
-    //   response.on('data', function(chunck) {
-    //     image += chunck;
-    //   });
-    //  
-    //   //when done recieving image store in specified directory
-    //   response.on('end', function() {
-    //     logger.debug(image);
-    //     fs.writeFile(storeFolder, image, 'binary', cb);
-    //   });
-    // }).on('error', function(error) {
-    //   logger.debug(error)
-    // })
+    logger.debug(redirectUrl);
+    var redirectOptions = {
+      host: redirectUrl.hostname,
+      port: port,
+      path: redirectUrl.path
+    };
+
+    //request to get redirected URL
+    http.get(redirectOptions, function(response) {
+
+      logger.debug(redirectUrl);
+      //set encoding
+      response.setEncoding('binary');
+
+      //set image to empty
+      var image = '';
+
+      //when response received set data to image
+      response.on('data', function(chunck) {
+        image += chunck;
+      });
+
+      //when done recieving image store in specified directory
+      response.on('end', function() {
+        fs.writeFile(storeFolder, image, 'binary', cb);
+      });
+    }).on('error', function(error) {
+      logger.debug(error)
+    })
   })
 };
 

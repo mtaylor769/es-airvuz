@@ -414,9 +414,14 @@ users.prototype.getUserById = function (userId) {
 		if (validation.userId === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({_id : validation.userId}, 'aclRoles emailAddress userName lastName firstName profilePicture autoPlay',
-				function(error, user){
-				if (error) {
+			UserModel.findOne({_id : validation.userId})
+				.select('aclRoles emailAddress userName lastName firstName profilePicture autoPlay')
+				.lean()
+				.then(function (user) {
+					logger.debug('user resolved');
+					resolve(user);
+				})
+				.catch(function () {
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
@@ -426,11 +431,7 @@ users.prototype.getUserById = function (userId) {
 						sourceLocation	: "persistence.crud.Users.getAllAusers"
 					});
 					reject(errorMessage.getErrors());
-				} else {
-					logger.debug('user resolved');
-					resolve(user);
-				}
-			});
+				})
 		}
 	}));
 };
