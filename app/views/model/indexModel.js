@@ -5,6 +5,7 @@ var logger		= log4js.getLogger('app.views.model.indexModel');
 try {
 	var BaseModel				= require('./baseModel');
 	var CategoryType		= require('../../../app/persistence/crud/categoryType');
+	var User						= require('../../../app/persistence/crud/users');
 	var Videos					= require('../../../app/persistence/crud/videos');
 	var Slider					= require('../../../app/persistence/crud/slider');
 	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
@@ -36,6 +37,7 @@ IndexModel.prototype.getData = function(params) {
 	logger.info("getData ");	
 	var sourceManifest	= params.sourceManifest;
 	var THIS						= this;
+	var userId					= params.request.params.id;
 	return new Promise(function(resolve, reject) {
 		logger.info("getData 1.0");
 		logger.info("getData sourceManifest['airvuz.css']:" + sourceManifest["airvuz.css"]);
@@ -63,7 +65,7 @@ IndexModel.prototype.getData = function(params) {
 		params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
 		params.data.s3AssetUrl 				= amazonConfig.ASSET_URL;
 
-		Promise.all([CategoryType.get(), VideoCollection.getFeaturedVideos(), Videos.getRecentVideos(), Videos.getTrendingVideos(), VideoCollection.getStaffPickVideos(), Slider.getHomeSlider(params.request.query.banner)])
+		Promise.all([CategoryType.get(), VideoCollection.getFeaturedVideos(), Videos.getRecentVideos(), Videos.getTrendingVideos(), VideoCollection.getStaffPickVideos(), Slider.getHomeSlider(params.request.query.banner), User.emailConfirm(userId)])
 			.then(function(data) {
 				params.data.categories = data[0];
 				params.data.index.featuredVideos = data[1];
@@ -71,6 +73,11 @@ IndexModel.prototype.getData = function(params) {
 				params.data.index.trendingVideos = data[3];
 				params.data.index.staffPickVideos = data[4];
 				params.data.index.slider = data[5];
+				if(userId) {
+					console.log('userId : ' + userId);
+					params.data.emailConfirm = data[6];
+					console.log(params.data.emailConfirm)
+				}
 				resolve(params);
 			})
 			.catch(function(error) {

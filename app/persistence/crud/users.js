@@ -7,7 +7,7 @@ try {
 	
 	var ErrorMessage								= require('../../utils/errorMessage');
 	var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-
+	var socialCrud 									= require('../../persistence/crud/socialMediaAccount');
 	var database										= require('../database/database');
 	var currentUser									= null;
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
@@ -124,17 +124,34 @@ users.prototype.validateCreateUser = function(params) {
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
 				if (email) {
-					throw userInfo.errors = errorMessage.getErrorMessage({
-						statusCode: "400",
-						errorId: "VALIDA1000",
-						templateParams: {
-							name: "emailAddress"
-						},
-						sourceError: "#email",
-						displayMsg: "Email already exists",
-						errorMessage: "Email already exists",
-						sourceLocation: sourceLocation
-					});
+					socialCrud.findByUserId(email._id)
+						.then(function(social) {
+							if(social) {
+								throw userInfo.errors = errorMessage.getErrorMessage({
+									statusCode: "400",
+									errorId: "VALIDA1000",
+									templateParams: {
+										name: "emailAddress"
+									},
+									sourceError: "#email",
+									displayMsg: "Email already exists. Please reset password.",
+									errorMessage: "Email already exists",
+									sourceLocation: sourceLocation
+								});
+							} else {
+								throw userInfo.errors = errorMessage.getErrorMessage({
+									statusCode: "400",
+									errorId: "VALIDA1000",
+									templateParams: {
+										name: "emailAddress"
+									},
+									sourceError: "#email",
+									displayMsg: "Email already exists",
+									errorMessage: "Email already exists",
+									sourceLocation: sourceLocation
+								});
+							}
+						});
 				}
 				return UserModel.findOne({userName: userInfo.data.userName}).exec()
 			})
@@ -416,8 +433,25 @@ users.prototype.getUserById = function (userId) {
 				.select('aclRoles emailAddress userName lastName firstName profilePicture autoPlay')
 				.lean()
 				.then(function (user) {
-					logger.debug('user resolved');
-					resolve(user);
+					if(user.profilePicture.indexOf('http') > -1){
+						user.externalLink = true;
+					} else if(user.profilePicture === '') {
+						return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
+							.then(function (social) {
+								if(social) {
+									user.externalLink = true;
+									user.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+									return user;
+								} else {
+									return user;
+								}
+							})
+					} else {
+						return user;
+					}
+				})
+				.then(function(user) {
+					resolve(user)
 				})
 				.catch(function () {
 					var errorMessage		= new ErrorMessage();
@@ -568,8 +602,8 @@ users.prototype.getUserByUserName = function (userName) {
 			UserModel.findOne({userName : validation.userName})
 				.select('-password')
 				.lean()
-				.then(function(error, user) {
-					logger.debug(user);
+				.exec()
+				.then(function(user) {
 					resolve(user);
 				})
 				.catch(function() {
@@ -664,6 +698,30 @@ users.prototype.delete = function(userId) {
 			});
 		}
 	}));
+};
+
+users.prototype.emailConfirm = function(userId) {
+	return(new Promise(function(resolve, reject) {
+		UserModel.findOne({_id: userId})
+			.then(function(user) {
+				if(user.status === 'email-confirm') {
+					user.status = 'active';
+					user.save(function(user) {
+						resolve('true');
+					})
+				} else {
+					resolve('false');
+				}
+			})
+			.catch(function(error) {
+				if(!userId){
+					resolve()	
+				} else if(userId) {
+					resolve('false');
+				}
+			})
+	})
+	)
 };
 
 function updateRoles(params) {

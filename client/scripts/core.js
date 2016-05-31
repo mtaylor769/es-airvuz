@@ -11,7 +11,8 @@ var headerLoginTpl = require('../templates/core/header-login.dust');
 var $loginModal,
     $headerProfile,
     $header,
-    $footerSub1;
+    $footerSub1,
+    $emailConfirmModal;
 
 
 //////////////////////////////////////////////////////
@@ -85,6 +86,7 @@ function bindEvents() {
 
   $headerProfile = $('#profile-header');
   $loginModal = $('#login-modal');
+  $emailConfirmModal = $('#email-sent-modal');
 
   function onPasswordReset() {
     var url = '/api/users/password-reset',
@@ -149,7 +151,14 @@ function bindEvents() {
         $loginModal.modal('hide');
       })
       .fail(function (err) {
-        $loginModal.find('.error-message').text('Wrong email or password').delay(5000).slideUp(300);
+        console.log(err);
+        if(err === 'not confirmed'){
+          $loginModal.find('.error-message').text('Please confirm your email').delay(5000).slideUp(300);
+        } else if(err === 'no local account') {
+          $loginModal.find('.error-message').text('Please create a local account').delay(5000).slideUp(300);
+        } else {
+          $loginModal.find('.error-message').text('Wrong email or password').delay(5000).slideUp(300); 
+        }
       })
   });
 
@@ -177,14 +186,16 @@ function bindEvents() {
       data: newUserObject
     })
       .done(function(response) {
-        //console.log(response);
-        if(response.token) {
-          auth.signupLogin(response.token)
-            .then(function () {
-               window.location.reload();
-            })
+        if(response.email) {
+          $loginModal.find('#email:visible').val('');
+          $loginModal.find('#username:visible').val('');
+          $loginModal.find('#password:visible').val('');
+          $loginModal.find('#confirm-password:visible').val('');
+          $loginModal.modal('hide');
+          
+        } else {
+          appendErrorMessage(response);
         }
-          // appendErrorMessage(response);
       })
       .error(function(error) {
         //console.log(error);

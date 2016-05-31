@@ -145,7 +145,7 @@
                                 <div class="flex">
                                     {#userId.profilePicture}
                                         {#userId.isExternalLink}
-                                            <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
+                                            <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
                                         {:else}
                                             <img src="{s3AssetUrl}users/profile-pictures{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
                                         {/userId.isExternalLink}

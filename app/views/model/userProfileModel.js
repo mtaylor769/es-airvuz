@@ -39,25 +39,29 @@ UserProfileModel.prototype.getData = function(params) {
 	var dataObject 									= {};
 	var profileUser 								= null;
 	var sourceManifest 							= params.sourceManifest;
-
 	// TODO: run parallel
 	return usersCrud.getUserByUserName(userName)
 	.then(function(user) {
-		console.log(user);
 		profileUser = user;
-		return socialCrud.findAccountByIdandProvider(user._id, 'facebook')
+		return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
 			.then(function (social) {
 				if (social) {
+					console.log('is social');
 					user.facebook = true;
 					user.fbAccount = social.accountId;
+					return user;
+				} else {
+					return user;
 				}
-				return user;
+				
 			});
 	})
 	.then(function(user) {
+		logger.debug(user);
 		if(user.facebook && user.profilePicture === ''){
 			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large'
 		}
+		logger.debug(user);
 		dataObject.user = user;
 		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
 	})

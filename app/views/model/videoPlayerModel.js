@@ -127,6 +127,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function (comments) {
 			comments.forEach(function(comment) {
+				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
 				socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
 					.then(function(social) {

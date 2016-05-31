@@ -106,7 +106,11 @@ socialMediaAccount.prototype.create = function(params) {
       }
     });
   }));
-}
+};
+
+socialMediaAccount.prototype.findByUserId = function(userId) {
+  return SocialModel.findOne({userId: userId}).exec();
+};
 
 socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, provider) {
   logger.debug('find account by id and provider: ' + accountId + ' ' + provider);

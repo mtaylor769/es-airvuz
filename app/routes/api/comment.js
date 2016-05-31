@@ -1,5 +1,7 @@
 var commentCrud = require('../../persistence/crud/comment');
 var NotificationCrud = require('../../persistence/crud/notifications');
+var log4js                 = require('log4js');
+var logger                 = log4js.getLogger('app.routes.api.users');
 var Promise     = require('bluebird');
 var mongoose    = require('mongoose');
 
@@ -10,18 +12,17 @@ function Comment() {
 
 Comment.prototype.post = function(req, res) {
   var json = JSON.parse(req.body.data);
-  logger.debug(json);
   var comment = json.comment;
   var notification = json.notification;
   commentCrud
     .create(comment)
     .then(function (comment) {
+      logger.debug('**********************')
       logger.debug(comment);
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
       NotificationCrud.create(notification)
       .then(function(notification) {
-        logger.debug(notification);
       });
       commentCrud.replyIncrement(parentCommentId, videoId);
       res.send(comment);
