@@ -2,16 +2,26 @@ var jwtDecode = require('jwt-decode');
 
 var user    = {},
   token     = localStorage.getItem('id_token'),
-  userInfo  = localStorage.getItem('user_info');
+  userInfo;
 
 // determine if there is current user login when load
 if (token) {
-  user = jwtDecode(token);
+  var tmpUser = jwtDecode(token);
 
-  if (userInfo) {
-    user.currentUser = JSON.parse(userInfo);
+  // check if token is expired
+  if (Math.floor(Date.now() / 1000) >= tmpUser.exp) {
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('user_info');
+    token = null;
   } else {
-    getUserInfo();
+    user = tmpUser;
+    userInfo = localStorage.getItem('user_info');
+
+    if (userInfo) {
+      user.currentUser = JSON.parse(userInfo);
+    } else {
+      getUserInfo();
+    }
   }
 }
 
