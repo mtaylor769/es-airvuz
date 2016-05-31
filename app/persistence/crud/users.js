@@ -393,12 +393,10 @@ users.prototype.getAllUsers = function() {
 */
 users.prototype.getUserById = function (userId) {
 	logger.debug('searching for user by userId: ' + userId);
-
 	if (userId) {
 		validation.userId 			= userId;
 	} else {
 		validation.userId 			= null;
-
 		var errorMessage		= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
@@ -566,20 +564,24 @@ users.prototype.getUserByUserName = function (userName) {
 		if (validation.userName === null) {
 			reject(validation.errors);
 		} else {
-			UserModel.findOne({userName : validation.userName}, '-password', function(error, user) {
-				if (error) {
-					var errorMessage		= new ErrorMessage();
-				errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorMessage		: "Failed while getting user by user name",
-					sourceError			: error,
-					sourceLocation	: "persistence.crud.Users.getUserByUserName"
-				});
-				reject(errorMessage.getErrors());
-				} else {
+			logger.debug('line 566 : ' + validation.userName);
+			UserModel.findOne({userName : validation.userName})
+				.select('-password')
+				.lean()
+				.then(function(error, user) {
+					logger.debug(user);
 					resolve(user);
-				}
-			});
+				})
+				.catch(function() {
+						var errorMessage		= new ErrorMessage();
+						errorMessage.getErrorMessage({
+							statusCode			: "500",
+							errorMessage		: "Failed while getting user by user name",
+							sourceError			: error,
+							sourceLocation	: "persistence.crud.Users.getUserByUserName"
+						});
+						reject(errorMessage.getErrors());
+				})
 		}
 	}));
 };

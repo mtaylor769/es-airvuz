@@ -9,6 +9,7 @@ try {
 	var unlock						= require('../../utils/unlockObject');
 	var usersCrud					= require('../../persistence/crud/users');
 	var videoCrud					= require('../../persistence/crud/videos');
+	var socialCrud				= require('../../persistence/crud/socialMediaAccount');
 	var categoryCrud 			= require('../../persistence/crud/categoryType');
 	var videoCollection   = require('../../persistence/crud/videoCollection');
 	var followCrud				= require('../../persistence/crud/follow');
@@ -42,7 +43,21 @@ UserProfileModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return usersCrud.getUserByUserName(userName)
 	.then(function(user) {
+		console.log(user);
 		profileUser = user;
+		return socialCrud.findAccountByIdandProvider(user._id, 'facebook')
+			.then(function (social) {
+				if (social) {
+					user.facebook = true;
+					user.fbAccount = social.accountId;
+				}
+				return user;
+			});
+	})
+	.then(function(user) {
+		if(user.facebook && user.profilePicture === ''){
+			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large'
+		}
 		dataObject.user = user;
 		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
 	})
@@ -103,7 +118,6 @@ UserProfileModel.prototype.getData = function(params) {
 				} else {
 					video.isShowcase = false
 				}
-				logger.debug(video.isShowcase);
 				video.uploadDate = moment(video.uploadDate).fromNow();
 				video.title = video.title.substring(0, 48);
 				video.description = video.description.substring(0, 90);
@@ -117,7 +131,6 @@ UserProfileModel.prototype.getData = function(params) {
 		} else {
 			videos = null;
 		}
-		logger.debug(videos);
 		dataObject.videos 									= videos;
 		
 		params.data 												= dataObject;
