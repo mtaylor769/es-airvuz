@@ -94,5 +94,6 @@ user.hasRole = hasRole;
 user.setToken = setToken;
 user.clear = clear;
 user.save = save;
+user.getUserInfo = getUserInfo;
 
 module.exports = user;

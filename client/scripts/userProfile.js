@@ -346,7 +346,7 @@ function renderUserInfo() {
 }
 
 function editProfile() {
-  var userName            = $("#username").val();
+  var userNameDisplay            = $("#username").val();
   var emailAddress        = $("#email").val();
   var myAbout             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
@@ -370,13 +370,8 @@ function editProfile() {
     allowHire             : allowHire
   }
 
-  if (userName && userName !== profileUser.userName) {
-    // if (regSpaceTest.test(userName)) {
-    //   errorMsg = "Your username cannot have any spaces."
-    //   sendData = false;
-    // } else {
-      userData.userName = userName;
-    //}
+  if (userNameDisplay && userNameDisplay !== profileUser.userNameDisplay) {
+      userData.userNameDisplay = userNameDisplay;
   }
   if (emailAddress && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
@@ -453,6 +448,15 @@ function editProfile() {
             .find('.error-modal-body')
             .html('Error. ' + strBuilder);
         } else {
+
+          if (userData.userNameDisplay) {
+            // if user change the user name then redirect them to the new url
+            identity.getUserInfo()
+              .then(function () {
+                window.location.href = '/userProfile/' + response.data.userNameUrl;
+              });
+          }
+
           profileUser = response.data;
           renderUserInfo();
           renderSocialMediaLinks();

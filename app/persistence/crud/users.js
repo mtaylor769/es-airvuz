@@ -649,6 +649,10 @@ users.prototype.update = function (id, params) {
 				reject(validation.errors);
 				return;
 			} else {
+				if (params.userNameDisplay) {
+					// update the userNameUrl also
+					params.userNameUrl = params.userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+				}
 				if (params.oldPassword) {
 					var hashUser 			= new UserModel();
 					var pw 						= hashUser.generateHash(params.newPassword);
