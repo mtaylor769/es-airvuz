@@ -12,7 +12,11 @@
                 <h4>
                     <a href="/videoPlayer/{_id}">{title}</a>
                 </h4>
-                <p>By <a href="/userProfile/{userId.userName}">{userId.userName}</a></p>
+                {#userId.userNameDisplay}
+                <p>By <a href="/userProfile/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
+                {:else}
+                <p>By <a href="/userProfile/{userId._id}">{userId._id}</a></p>
+                {/userId.userNameDisplay}
             </div>
         </div>
     </div>
