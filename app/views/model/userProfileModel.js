@@ -69,14 +69,6 @@ UserProfileModel.prototype.getData = function(params) {
 			videos = unlock(videos);
 			videos.forEach(function (video) {
 				video.uploadDate = moment(video.uploadDate).fromNow();
-				video.title = video.title.substring(0, 48);
-				video.description = video.description.substring(0, 90);
-				if (video.title.length === 48) {
-					video.title = video.title + '...';
-				}
-				if (video.description.length === 90) {
-					video.description = video.description + '...';
-				}
 				logger.debug(video);
 			});
 		dataObject.showcase = videos;
