@@ -314,7 +314,7 @@ function confirmPasswordChange() {
     $('#error-message-modal')
       .modal('show')
       .find('.error-modal-body')
-      .html('Error: ' + error);
+      .html('Error. ' + error);
   });
   $('#change-password').modal('hide');
 
@@ -360,6 +360,7 @@ function editProfile() {
   var donateUrl           = $("#donateUrl").val();
   var sendData            = true;
   var errorMsg            = '';
+  var regSpaceTest        = new RegExp("\\s");
 
   userData = {
     firstName             : firstName,
@@ -370,7 +371,12 @@ function editProfile() {
   }
 
   if (userName && userName !== profileUser.userName) {
-    userData.userName = userName;
+    if (regSpaceTest.test(userName)) {
+      errorMsg = "Your username cannot have any spaces."
+      sendData = false;
+    } else {
+      userData.userName = userName;
+    }
   }
   if (emailAddress && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
@@ -434,16 +440,18 @@ function editProfile() {
       .done(function(response) {
         if (response.statusCode === 500) {
           var strBuilder = '';
-          response.data.forEach(function(item){
-            if (item.displayMsg) {
-              strBuilder += item.displayMsg;
-            }
-          });
+          if (!!response.data.length) {
+            response.data.forEach(function(item){
+              if (item.displayMsg) {
+                strBuilder += item.displayMsg;
+              }
+            });
+          }
           $('#save-changes').modal('hide');
           $('#error-message-modal')
             .modal('show')
             .find('.error-modal-body')
-            .html('Error: ' + strBuilder);
+            .html('Error. ' + strBuilder);
         } else {
           profileUser = response.data;
           renderUserInfo();

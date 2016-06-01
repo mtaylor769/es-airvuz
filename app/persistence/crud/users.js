@@ -13,6 +13,7 @@ try {
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
 	var validation 									= {};
 	var crypto 											= require('crypto');
+	var regSpaceTest								= new RegExp("\\s");
 
 } 
 catch(exception) {
@@ -121,6 +122,20 @@ users.prototype.validateCreateUser = function(params) {
 			sourceLocation	: sourceLocation
 		});
 	}
+	if (regSpaceTest.test(userInfo.data.userName)) {
+		userInfo.errors = errorMessage.getErrorMessage({
+			statusCode			: "400",
+			errorId					: "VALIDA1000",
+			templateParams	: {
+				name : "userName"
+			},
+			sourceError			: "#username",
+			displayMsg			: "Username cannot have spaces",
+			errorMessage		: "Username cannot have spaces",
+			sourceLocation	: sourceLocation
+		});
+	}
+
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
 				if (email) {
@@ -181,36 +196,50 @@ var ValidateUserName = function(id, params) {
 
 	return(new Promise(function(resolve, reject) {
 			if (params.userName) {
-				UserModel.findOne({userName : params.userName})
-				.then(function(user){
-					if (user._doc._id !== id) {
-						var errors = errorMessage.getErrorMessage({
-							statusCode			: "400",
-							errorId					: "VALIDA1000",
-							templateParams	: {
-								name : "userName"
-							},
-							sourceError			: '#username',
-							displayMsg			: "Username already exists",
-							errorMessage		: "Username already exists",
-							sourceLocation	: sourceLocation
+				if (regSpaceTest.test(params.userName)) {
+					var errors = errorMessage.getErrorMessage({
+						statusCode			: "400",
+						errorId					: "VALIDA1000",
+						templateParams	: {
+							name : "userName"
+						},
+						sourceError			: '#username',
+						displayMsg			: "Username cannot have spaces",
+						errorMessage		: "Username cannot have spaces",
+						sourceLocation	: sourceLocation
+					});
+					reject(errors);
+					return;
+				} else {
+					UserModel.findOne({userName : params.userName})
+						.then(function(user){
+							if (user._doc._id !== id) {
+								var errors = errorMessage.getErrorMessage({
+									statusCode			: "400",
+									errorId					: "VALIDA1000",
+									templateParams	: {
+										name : "userName"
+									},
+									sourceError			: '#username',
+									displayMsg			: "Username already exists",
+									errorMessage		: "Username already exists",
+									sourceLocation	: sourceLocation
+								});
+								reject(errors);
+								return;
+							}
+							resolve();
+							return;
+						})
+						.catch(function(error) {
+							reject(error);
+							return;
 						});
-						reject(errors);
-						return;
-					}
-					resolve();
-					return;
-				})
-				.catch(function(error) {
-					reject(error);
-					return;
-				});
+				}
 			} else {
 				resolve();
 				return;
 			}
-			
-		
 		})
 	);
 };
