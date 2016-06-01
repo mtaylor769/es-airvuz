@@ -127,7 +127,7 @@ users.prototype.validateCreateUser = function(params) {
 					socialCrud.findByUserId(email._id)
 						.then(function(social) {
 							if(social) {
-								throw userInfo.errors = errorMessage.getErrorMessage({
+								userInfo.errors = errorMessage.getErrorMessage({
 									statusCode: "400",
 									errorId: "VALIDA1000",
 									templateParams: {
@@ -139,7 +139,7 @@ users.prototype.validateCreateUser = function(params) {
 									sourceLocation: sourceLocation
 								});
 							} else {
-								throw userInfo.errors = errorMessage.getErrorMessage({
+								userInfo.errors = errorMessage.getErrorMessage({
 									statusCode: "400",
 									errorId: "VALIDA1000",
 									templateParams: {
@@ -157,7 +157,7 @@ users.prototype.validateCreateUser = function(params) {
 			})
 			.then(function (username) {
 						if (username) {
-							throw userInfo.errors = errorMessage.getErrorMessage({
+							userInfo.errors = errorMessage.getErrorMessage({
 								statusCode: "400",
 								errorId: "VALIDA1000",
 								templateParams: {
@@ -352,28 +352,32 @@ users.prototype.create = function(params) {
 	logger.debug('made it into user create');
 	validation 				= this.validateCreateUser(params);
 	return validation.then(function (userInfo) {
-		// Persist
-		var saveUser 						= new UserModel(userInfo.data);
-		if(params.social) {
-			saveUser.userName = saveUser._id;
-		}
-		if (saveUser.password) {
-			logger.debug('hash password');
-			saveUser.password 		= saveUser.generateHash(saveUser.password);
-		}
-		return saveUser.save(function(error) {
-			if (error) {
-				logger.debug('error while saving ' + error);
-				var errorMessage		= new ErrorMessage();
-				throw errorMessage.getErrorMessage({
-					statusCode			: "500",
-					errorId 				: "PERS1000",
-					errorMessage 		: "Failed while creating new user",
-					sourceError			: error,
-					sourceLocation	: "persistence.crud.Users.create"
-				});
+		if(userInfo.errors) {
+			throw userInfo.errors;
+		} else {
+			// Persist
+			var saveUser = new UserModel(userInfo.data);
+			if (params.social) {
+				saveUser.userName = saveUser._id;
 			}
-		});
+			if (saveUser.password) {
+				logger.debug('hash password');
+				saveUser.password = saveUser.generateHash(saveUser.password);
+			}
+			return saveUser.save(function (error) {
+				if (error) {
+					logger.debug('error while saving ' + error);
+					var errorMessage = new ErrorMessage();
+					throw errorMessage.getErrorMessage({
+						statusCode: "500",
+						errorId: "PERS1000",
+						errorMessage: "Failed while creating new user",
+						sourceError: error,
+						sourceLocation: "persistence.crud.Users.create"
+					});
+				}
+			});
+		}
 	});
 };
 
