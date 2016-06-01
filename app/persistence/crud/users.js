@@ -457,13 +457,13 @@ users.prototype.getUserById = function (userId) {
 				.then(function(user) {
 					resolve(user)
 				})
-				.catch(function () {
+				.catch(function (error) {
 					var errorMessage		= new ErrorMessage();
 					errorMessage.getErrorMessage({
 						statusCode			: "500",
 						errorId 				: "PERS1000",
 						errorMessage 		: "Failed while getting user by Id",
-						sourceError			: error,
+					  sourceError			:  error,
 						sourceLocation	: "persistence.crud.Users.getAllAusers"
 					});
 					reject(errorMessage.getErrors());

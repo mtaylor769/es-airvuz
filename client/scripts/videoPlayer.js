@@ -611,13 +611,23 @@ function bindEvents() {
     $('.show-more-description').show();
   }
 
+  function checkIdentitiy() {
+    if (!userIdentity._id) {
+      $('#comment-modal').modal('show');
+      $('.go-to-login').on('click', function () {
+        $('#login-modal').modal('show');
+      })
+    }
+  }
+
   ///////////////////////////////////////
 
   $videoPage
     .on('click', '.show-more-description', moreDescription)
     .on('click', '.show-less-description', lessDescription)
     .on('click', '.commentReplies', commentReplies)
-    .on('click', '.reply', commentReply);
+    .on('click', '.reply', commentReply)
+    .on('click', '#comment', checkIdentitiy)
 
 }
 
