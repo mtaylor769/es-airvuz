@@ -17,8 +17,6 @@ Comment.prototype.post = function(req, res) {
   commentCrud
     .create(comment)
     .then(function (comment) {
-      logger.debug('**********************')
-      logger.debug(comment);
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
       NotificationCrud.create(notification)

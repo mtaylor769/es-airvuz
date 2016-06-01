@@ -6,6 +6,7 @@ try {
   var ObjectValidationUtil = require('../../utils/objectValidationUtil');
   var PersistenceException = require('../../utils/exceptions/PersistenceException');
   var ValidationException = require('../../utils/exceptions/ValidationException');
+  var amazonBucket = require('../../config/amazon.config');
   var SocialModel = null;
   var CommentModel = null;
   var VideoModel = null;
@@ -170,7 +171,7 @@ Comment.prototype.create = function(params) {
           .exec()
           .then(function(comment) {
             if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture !== '') {
-              comment.userId.profilePicture = 'http://www.airvuz.com/' + comment.userId.profilePicture;
+              comment.userId.profilePicture = amazonBucket.ASSET_URL + comment.userId.profilePicture;
               return comment;
             } else if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture === '') {
               return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
