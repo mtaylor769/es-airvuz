@@ -642,6 +642,9 @@ function renderEditVideoHtml(video) {
     selectedCategory.push(getCategoryById(video));
   });
 
+  // convert br to new line
+  video.description = video.description.replace(/<br\s*\/?>/mg, '\n');
+
   var viewData = {
     video: video,
     categoryType: VIEW_MODEL.categories,
