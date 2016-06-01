@@ -129,7 +129,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			comments.forEach(function(comment) {
 				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				if(comments.userId !== null){
+				if(comment.userId !== null){
 					socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
 						.then(function(social) {
 							if(social && comment.userId.profilePicture === ''){
