@@ -124,14 +124,14 @@
                                 <span> {video.commentCount} </span><span class="bold commentCount">Comments</span>
                             </div>
                             <div class="video-action-icons pull-right flex">
-                                <span class="glyphicon glyphicon-heart like" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
-                                <span class="glyphicon glyphicon-flag report" data-toggle="tooltip" data-placement="top" title="Report this video"></span>
-                                <span class="glyphicon glyphicon-share share" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
+                                <span class="glyphicon glyphicon-heart like pointer" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
+                                <span class="glyphicon glyphicon-flag report pointer" data-toggle="tooltip" data-placement="top" title="Report this video"></span>
+                                <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
-                                    <span class="fa fa-code social embed" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
+                                    <span class="fa fa-code social embed pointer" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
                                     <a href="https://plus.google.com/share?url=http://beta2.airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
                                     <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
-                                    <span class="fa fa-facebook-official social" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
+                                    <span class="fa fa-facebook-official social pointer" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +143,7 @@
                         {#comments}
                             <li class="comment-wrap">
                                 <div class="flex">
+                                    <a href="/userProfile/{userId.userName}">
                                     {#userId.profilePicture}
                                         {#userId.isExternalLink}
                                             <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
@@ -152,21 +153,21 @@
                                     {:else}
                                       <img src="/client/images/default.png" height="50" width="50" class="border-radius-circle m-10-20">
                                     {/userId.profilePicture}
-
+                                    </a>
                                     <div class="m-t-20">
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
-                                        <p class="m-b-0 airvuz-blue">{userId.userName}</p>
+                                        <p class="m-b-0"><a href="/userProfile/{userId.userName}" class="airvuz-blue">{userId.userName}</a></p>
                                         <p class="m-b-0">{comment}</p>
                                     </div>
                                 </div>
                                 <ul class="parentComment"></ul>
                                 <div  id="{_id}">
                                     <div class="row">
-                                        <div class="reply col-xs-3 col-sm-2" value="{_id}" style="padding: 0 0 0 10px">
+                                        <div class="reply col-xs-3 col-sm-2 pointer" value="{_id}" style="padding: 0 0 0 10px">
                                             <span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>
                                             <span style="font-size: 10px; margin-left: 2px">reply</span>
                                         </div>
-                                        <div class="col-xs-3 col-md-2 commentReplies" value="{_id}">
+                                        <div class="col-xs-3 col-md-2 commentReplies pointer" value="{_id}">
                                             <span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;"><a>replies {replyCount}</a></span>
                                         </div>
                                     </div>

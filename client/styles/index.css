@@ -45,6 +45,10 @@ body.modal-open {
   background-color: #f48a4a;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 /*
  * End Override bootstrap
 /**********************************/
