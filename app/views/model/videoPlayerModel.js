@@ -74,6 +74,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 				});
 		})
 		.then(function(user){
+			console.log(user);
 			if(user.facebook && user.profilePicture === ''){
 				user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large'
 			}

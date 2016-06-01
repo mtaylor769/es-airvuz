@@ -147,7 +147,7 @@ function bindEvents() {
           '<img src="' + comment.userId.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
           '<div class="m-t-20">'+
           '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
-          '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+          '<p class="m-b-0 airvuz-blue">' + comment.userId.userNameDisplay + '</p>'+
           '<p class="m-b-0">' + comment.comment + '</p>'+
           '</div>'+
           '</div>'+
@@ -543,7 +543,7 @@ function bindEvents() {
             '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-10">'+
             '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + reply.userId.userName + '</p>'+
+            '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
             '<p class="m-b-0">' + reply.comment + '</p>'+
             '</div>'+
             '</div>';
@@ -575,10 +575,10 @@ function bindEvents() {
           console.log(reply);
           html += '<li>'+
             '<div class="flex">'+
-            '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
+            '<img src="' + "http://www.airvuz.com/" + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-10">'+
             '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + user.userName + '</p>'+
+            '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
             '<p class="m-b-0">' + reply.comment + '</p>'+
             '</div>'+
             '</div>' +
