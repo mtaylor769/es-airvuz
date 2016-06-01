@@ -865,6 +865,8 @@ function renderSocialMediaLinks() {
         case 'INSTAGRAM' :
           if (account.url && account.url !== '') {
             $socialMedia.find('.instagram').parent().show();
+            $socialMedia.find('.instagram')
+              .attr('href', '//'+account.url);
             $aboutMe.find('.instagram-link')
               .attr('href', '//'+account.url);
             $editProfile.find('#instagram').val(account.url);
