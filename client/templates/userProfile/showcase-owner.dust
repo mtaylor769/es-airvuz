@@ -1,5 +1,5 @@
 <div class="row m-t-15 m-b-15">
-    <div class="dropdown col-xs-9">
+    <div class="dropdown col-xs-6 col-md-9">
         <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             Sort By
             <span class="caret"></span>
