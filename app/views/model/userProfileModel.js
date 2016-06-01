@@ -53,7 +53,6 @@ UserProfileModel.prototype.getData = function(params) {
 				} else {
 					return user;
 				}
-				
 			});
 	})
 	.then(function(user) {

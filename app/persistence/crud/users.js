@@ -196,61 +196,40 @@ var ValidateUserName = function(id, params) {
 
 	return(new Promise(function(resolve, reject) {
 			if (params.userName) {
-				logger.debug('there is params.userName');
-				logger.debug(params.userName);
-				if (regSpaceTest.test(params.userName)) {
-					logger.debug('error line 200')
-					var errors = errorMessage.getErrorMessage({
-						statusCode			: "400",
-						errorId					: "VALIDA1000",
-						templateParams	: {
-							name : "userName"
-						},
-						sourceError			: '#username',
-						displayMsg			: "Username cannot have spaces",
-						errorMessage		: "Username cannot have spaces",
-						sourceLocation	: sourceLocation
-					});
-					reject(errors);
-					return;
-				} else {
-					logger.debug('made it to find')
-					UserModel.findOne({userName : params.userName})
-						.lean()
-						.exec()
+				UserModel.findOne({userName : params.userName})
+					.lean()
+					.exec()
 						.then(function(user){
-							logger.debug(user);
-							if(user){
-								if (user._id !== id) {
-									var errors = errorMessage.getErrorMessage({
-										statusCode			: "400",
-										errorId					: "VALIDA1000",
-										templateParams	: {
-											name : "userName"
-										},
-										sourceError			: '#username',
-										displayMsg			: "Username already exists",
-										errorMessage		: "Username already exists",
-										sourceLocation	: sourceLocation
-									});
-									reject(errors);
-									return;
-								} else {
-									resolve();
-									return;
-								}
+						if(user){
+							if (user._id !== id) {
+								var errors = errorMessage.getErrorMessage({
+									statusCode			: "400",
+									errorId					: "VALIDA1000",
+									templateParams	: {
+										name : "userName"
+									},
+									sourceError			: '#username',
+									displayMsg			: "Username already exists",
+									errorMessage		: "Username already exists",
+									sourceLocation	: sourceLocation
+								});
+								reject(errors);
+								return;
 							} else {
 								resolve();
 								return;
 							}
-						})
-						.catch(function(error) {
-							logger.error('line 241');
-							logger.debug(error);
-							reject(error);
+						} else {
+							resolve();
 							return;
-						});
-				}
+						}
+					})
+					.catch(function(error) {
+						logger.error('line 241');
+						logger.debug(error);
+						reject(error);
+						return;
+					});
 			} else {
 				resolve();
 				return;

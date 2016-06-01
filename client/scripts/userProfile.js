@@ -371,12 +371,12 @@ function editProfile() {
   }
 
   if (userName && userName !== profileUser.userName) {
-    if (regSpaceTest.test(userName)) {
-      errorMsg = "Your username cannot have any spaces."
-      sendData = false;
-    } else {
+    // if (regSpaceTest.test(userName)) {
+    //   errorMsg = "Your username cannot have any spaces."
+    //   sendData = false;
+    // } else {
       userData.userName = userName;
-    }
+    //}
   }
   if (emailAddress && emailAddress !== profileUser.emailAddress) {
     userData.emailAddress = emailAddress;
@@ -1064,8 +1064,8 @@ function initialize() {
 
   if (user) {
     //Logic for when viewing self
-    userNameCheck = user.userName;
-    if(userNameCheck === profileUser.userName) {
+    userNameCheck = user._id;
+    if(userNameCheck === profileUser._id) {
       renderOwnerShowcase(showcaseOwnerVideos);
       ownerShowcase({videos: showcaseOwnerVideos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
         $('#showcase').html(html);
