@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html view="app.views.view.template.notFound">
+	<head>
+	  <meta http-equiv="Cache-control" content="public">
+	  <title>Not Found</title>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
+		{>  "app.views.view.partial.css" /}
+	</head>
+	<body>
+	{> "app.views.view.partial.header" /}
+	<div id="not-found-page">
+	  <div class="container main">
+		<div class="row">
+		  <div class="col-md-6 col-md-offset-3">
+			<h3 class="text-center">Page Not Found</h3>
+			<div class="text-center m-b-20">
+				<img src="/client/images/404-crash-drone.jpg" alt="crash drone" class="img-responsive">
+				<h3><a href="/">Watch videos!</a></h3>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	{> "app.views.view.partial.footer" /}
+	{> "app.views.view.partial.cdn-js" /}
+	{> "app.views.view.partial.js" /}
+	</body>
+</html>

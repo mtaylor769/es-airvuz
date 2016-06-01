@@ -124,6 +124,7 @@ var staticView							= require('./app/views/view/staticView');
 var videoPlayerEmbedView 		= require('./app/views/view/videoPlayerEmbedView');
 var notificationView				= require('./app/views/view/notificationView');
 var passwordResetView				= require('./app/views/view/passwordResetView');
+var notFoundView						= require('./app/views/view/notFoundView');
 
 
 viewManager.addView({	view : indexView });
@@ -136,6 +137,7 @@ viewManager.addView({ view : searchView });
 viewManager.addView({ view : categoryView });
 viewManager.addView({ view : notificationView});
 viewManager.addView({ view : passwordResetView});
+viewManager.addView({ view : notFoundView});
 viewManager.addView({ view : staticView('terms') });
 viewManager.addView({ view : staticView('privacy') });
 viewManager.addView({ view : staticView('copyright') });
@@ -241,6 +243,18 @@ app.get("/media", function(req, res) {
 
 app.get("/social-login", function(req, res) {
 	res.sendFile(path.join(__dirname, './client/social-login.html'));
+});
+
+app.use(function (req, res) {
+	if (req.accepts('html')) {
+		return loadView(req, res, notFoundView.getViewName());
+	}
+
+	if (req.accepts('json')) {
+		return res.json({error: 'Not found'});
+	}
+
+	res.send('Not found');
 });
 
 app.listen(process.env.PORT || 80);
