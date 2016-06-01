@@ -129,13 +129,15 @@ VideoPlayerModel.prototype.getData = function(params) {
 			comments.forEach(function(comment) {
 				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
-					.then(function(social) {
-						if(social && comment.userId.profilePicture === ''){
-							comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large'
-						}
-						comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
-					})
+				if(comments.userId !== null){
+					socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+						.then(function(social) {
+							if(social && comment.userId.profilePicture === ''){
+								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large'
+							}
+							comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
+						})
+				}
 			});
 			dataObject.comments = comments;
 				return categoryCrud.get();
