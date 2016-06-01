@@ -31,7 +31,7 @@
                             <h4>{title}</h4>
                         </a>
                         <p>By 
-                            <a href="/userProfile/{userId.userName}" tabindex="0">{userId.userName}</a>
+                            <a href="/userProfile/{userId.userNameUrl}" tabindex="0">{userId.userNameDisplay}</a>
                         </p>
                     </div>
                     <div class="m-t-10 hidden-xs">

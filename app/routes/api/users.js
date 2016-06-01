@@ -34,7 +34,7 @@ function search(req, res) {
         res.sendStatus(400);
       }
       return usersCrud
-        .getUserByUserName(req.query.username)
+        .getUserByUserNameUrl(req.query.username)
         .then(function (user) {
           res.json(user);
         });
@@ -62,13 +62,13 @@ function createUser(req, res) {
       userParams = {
         emailAddress            : data.email,
         socialMediaAccounts     : data.socialMediaAccounts,
-        userName                : req.body.username
+        userNameDisplay                : req.body.username
       };
     });
   } else {
     userParams = {
       emailAddress            : req.body.email,
-      userName                : req.body.username,
+      userNameDisplay                : req.body.username,
       password                : req.body.password,
       confirmPassword         : req.body.confirmPassword
     };

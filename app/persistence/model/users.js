@@ -116,11 +116,13 @@ var usersSchema 		= mongoose.Schema({
 	/* 
 	 *
 	 */
-	userName : {
+	userNameDisplay : {
 		required	: true,
 		unique		: true,
 		type			: String
 	},
+
+	userNameUrl: String,
 	
 	aboutMe : {
 		type 			: String

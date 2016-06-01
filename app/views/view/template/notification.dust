@@ -24,10 +24,10 @@
                       <img src="/client/images/default.png" height="50" width="50" class="img-circle">
                     {/actionUserId.profilePicture}
 
-                    {@eq key=actionUserId.userName value="Someone" }
-                        <p style="margin: 10px">{actionUserId.userName} {notificationMessage|s}</p>
+                    {@eq key=actionUserId.userNameDisplay value="Someone" }
+                        <p style="margin: 10px">{actionUserId.userNameDisplay} {notificationMessage|s}</p>
                     {:else}
-                        <p style="margin: 10px"><a href="/userProfile/{actionUserId.userName}">{actionUserId.userName}</a> {notificationMessage|s}</p>
+                        <p style="margin: 10px"><a href="/userProfile/{actionUserId.userNameDisplay}">{actionUserId.userNameDisplay}</a> {notificationMessage|s}</p>
                     {/eq}
                 </div>
             {:else}

@@ -40,7 +40,7 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data 											= {};
 	userInfo.data.coverPicture					= params.coverPicture || "";
 	userInfo.data.emailAddress					= params.emailAddress || null;
-	userInfo.data.userName							= params.userName || null;
+	userInfo.data.userNameDisplay							= params.userNameDisplay || null;
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 	userInfo.data.profilePicture				= params.profilePicture || "";
 	
@@ -109,29 +109,16 @@ users.prototype.validateCreateUser = function(params) {
 		});
 	}
 
-	if(userInfo.data.userName === null) {
+	if(userInfo.data.userNameDisplay === null) {
 		userInfo.errors = errorMessage.getErrorMessage({
 			statusCode			: "400",
 			errorId					: "VALIDA1000",
 			templateParams	: {
-				name : "userName"
+				name : "userNameDisplay"
 			},
-			sourceError			: "#username",
+			sourceError			: "#userNameDisplay",
 			displayMsg			: "This field is required",
-			errorMessage		: "Username is null",
-			sourceLocation	: sourceLocation
-		});
-	}
-	if (regSpaceTest.test(userInfo.data.userName)) {
-		userInfo.errors = errorMessage.getErrorMessage({
-			statusCode			: "400",
-			errorId					: "VALIDA1000",
-			templateParams	: {
-				name : "userName"
-			},
-			sourceError			: "#username",
-			displayMsg			: "Username cannot have spaces",
-			errorMessage		: "Username cannot have spaces",
+			errorMessage		: "userNameDisplay is null",
 			sourceLocation	: sourceLocation
 		});
 	}
@@ -168,22 +155,24 @@ users.prototype.validateCreateUser = function(params) {
 							}
 						});
 				}
-				return UserModel.findOne({userName: userInfo.data.userName}).exec()
+				return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec()
 			})
-			.then(function (username) {
-						if (username) {
-							userInfo.errors = errorMessage.getErrorMessage({
-								statusCode: "400",
-								errorId: "VALIDA1000",
-								templateParams: {
-									name: "userName"
-								},
-								sourceError: '#username',
-								displayMsg: "Username already exists",
-								errorMessage: "Username already exists",
-								sourceLocation: sourceLocation
-							});
-						}
+			.then(function (userNameDisplay) {
+				if (userNameDisplay) {
+					userInfo.errors = errorMessage.getErrorMessage({
+						statusCode: "400",
+						errorId: "VALIDA1000",
+						templateParams: {
+							name: "userNameDisplay"
+						},
+						sourceError: '#userNameDisplay',
+						displayMsg: "Username already exists",
+						errorMessage: "Username already exists",
+						sourceLocation: sourceLocation
+					});
+				}
+				// replace illegal characters
+				userInfo.data.userNameUrl = userInfo.data.userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
 				return userInfo;
 			});
 	
@@ -195,8 +184,8 @@ var ValidateUserName = function(id, params) {
 	var errorMessage					= new ErrorMessage();
 
 	return(new Promise(function(resolve, reject) {
-			if (params.userName) {
-				UserModel.findOne({userName : params.userName})
+			if (params.userNameDisplay) {
+				UserModel.findOne({userNameDisplay : params.userNameDisplay})
 					.lean()
 					.exec()
 						.then(function(user){
@@ -206,7 +195,7 @@ var ValidateUserName = function(id, params) {
 									statusCode			: "400",
 									errorId					: "VALIDA1000",
 									templateParams	: {
-										name : "userName"
+										name : "userNameDisplay"
 									},
 									sourceError			: '#username',
 									displayMsg			: "Username already exists",
@@ -381,7 +370,7 @@ users.prototype.create = function(params) {
 			// Persist
 			var saveUser = new UserModel(userInfo.data);
 			if (params.social) {
-				saveUser.userName = saveUser._id;
+				saveUser.userNameDisplay = saveUser._id;
 			}
 			if (saveUser.password) {
 				logger.debug('hash password');
@@ -457,7 +446,7 @@ users.prototype.getUserById = function (userId) {
 			reject(validation.errors);
 		} else {
 			UserModel.findOne({_id : validation.userId})
-				.select('aclRoles emailAddress userName lastName firstName profilePicture autoPlay')
+				.select('aclRoles emailAddress userNameDisplay lastName firstName profilePicture autoPlay')
 				.lean()
 				.then(function (user) {
 					if(user.profilePicture.indexOf('http') > -1){
@@ -602,31 +591,31 @@ users.prototype.getUserByEmail = function (email) {
 /*
 * Get a user by user name
 */
-users.prototype.getUserByUserName = function (userName) {
-	logger.debug('hitting getUserByUserName');
-	logger.debug(userName);
-	if (userName) {
-		validation.userName 	= userName;
+users.prototype.getUserByUserNameUrl = function (userNameUrl) {
+	logger.debug('hitting getUserByUserNameDisplay');
+	logger.debug(userNameUrl);
+	if (userNameUrl) {
+		validation.userNameUrl 	= userNameUrl;
 	} else {
-		validation.userName		= null;
+		validation.userNameUrl		= null;
 		var errorMessage						= new ErrorMessage();
 		errorMessage.getErrorMessage({
 			statusCode								: "500",
 			errorId 									: "PERS1000",
-			errorMessage 							: "Failed while getting user by UserName",
-			sourceError								: "Invalid UserName",
-			sourceLocation						: "persistence.crud.Users.getUserByUserName"
+			errorMessage 							: "Failed while getting user by userNameUrl",
+			sourceError								: "Invalid userNameUrl",
+			sourceLocation						: "persistence.crud.Users.getUserByuserNameUrl"
 		});
 
 		validation.errors 					= errorMessage;
 	}
 
 	return(new Promise(function(resolve, reject){
-		if (validation.userName === null) {
+		if (validation.userNameUrl === null) {
 			reject(validation.errors);
 		} else {
-			logger.debug('line 566 : ' + validation.userName);
-			UserModel.findOne({userName : validation.userName})
+			logger.debug('line 566 : ' + validation.userNameUrl);
+			UserModel.findOne({userNameUrl : validation.userNameUrl})
 				.select('-password')
 				.lean()
 				.exec()
@@ -639,7 +628,7 @@ users.prototype.getUserByUserName = function (userName) {
 							statusCode			: "500",
 							errorMessage		: "Failed while getting user by user name",
 							sourceError			: error,
-							sourceLocation	: "persistence.crud.Users.getUserByUserName"
+							sourceLocation	: "persistence.crud.Users.getUserByuserNameDisplay"
 						});
 						reject(errorMessage.getErrors());
 				})

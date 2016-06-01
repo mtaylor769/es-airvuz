@@ -57,10 +57,10 @@ NotificationModel.prototype.getData = function(params) {
         //if statement checking for actionUserId
         if(typeof notification.actionUserId === "undefined") {
           notificationObject.actionUserId = {};
-          notificationObject.actionUserId.userName = "Someone";
+          notificationObject.actionUserId.userNameDisplay = "Someone";
         } else {
           notificationObject.actionUserId = notification.actionUserId;
-          notificationObject.actionUserId.userName = notification.actionUserId.userName;
+          notificationObject.actionUserId.userNameDisplay = notification.actionUserId.userNameDisplay;
         }
 
         //setting the rest of the notificationObject

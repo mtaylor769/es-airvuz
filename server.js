@@ -173,7 +173,7 @@ app.get("/login", function(req, res){
 	loadView(req, res, loginView.getViewName());
 });
 
-app.get("/userProfile/:userName", function(req, res) {
+app.get("/userProfile/:userNameUrl", function(req, res) {
 	loadView(req, res, userProfileView.getViewName());
 });
 

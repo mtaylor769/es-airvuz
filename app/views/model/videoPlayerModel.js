@@ -77,9 +77,9 @@ VideoPlayerModel.prototype.getData = function(params) {
 			if(user.facebook && user.profilePicture === ''){
 				user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large'
 			}
-			user.userName = user.userName.substring(0, 14);
-			if(user.userName === 14) {
-				user.userName = user.userName + '...';
+			user.userNameDisplay = user.userNameDisplay.substring(0, 14);
+			if(user.userNameDisplay === 14) {
+				user.userNameDisplay = user.userNameDisplay + '...';
 			}
 			dataObject.user 	= user;
 			checkObject.user  = user._id;

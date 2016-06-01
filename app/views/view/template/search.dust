@@ -59,7 +59,7 @@
                                         <h4>
                                             <a href="/videoPlayer/{_id}">{title}</a>
                                         </h4>
-                                        <p>By <a href="/userProfile/{userId.userName}">{userId.userName}</a></p>
+                                        <p>By <a href="/ususerProfile/{user.userNameUrl}">{userId.userNameDisplay}</a></p>
                                     </div>
                                     <a href="/category/{categories[0].categoryTypeUrl}">{categories[0].name}</a>
                                 </div>

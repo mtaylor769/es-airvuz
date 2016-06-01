@@ -49,7 +49,7 @@ function getRecentVideos(params) {
 		.sort('-uploadDate')
 		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
-		.populate('userId', 'userName')
+		.populate('userId', 'userNameDisplay userNameUrl')
 		.populate('categories', 'name categoryTypeUrl')
 		.limit(limit)
 		.lean()
@@ -93,7 +93,7 @@ function getTrendingVideos(params) {
 		.sort('-viewCount')
 		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
-		.populate('userId', 'userName')
+		.populate('userId', 'userNameDisplay userNameUrl')
 		.populate('categories', 'name categoryTypeUrl')
 		.limit(limit)
 		.lean()
@@ -110,7 +110,7 @@ function getVideoByCategory(params) {
 		.sort('-' + (params.sort ? params.sort : 'uploadDate'))
 		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
-		.populate('userId', 'userName')
+		.populate('userId', 'userNameDisplay userNameUrl')
 		.populate('categories', 'name categoryTypeUrl')
 		.limit(limit)
 		.lean()
@@ -127,7 +127,7 @@ function getVideosByFollow(params) {
 		.sort('-' + (params.sort ? params.sort : 'uploadDate'))
 		.select('thumbnailPath title viewCount duration categories userId uploadDate')
 		.skip(skip)
-		.populate('userId', 'userName')
+		.populate('userId', 'userNameDisplay userNameUrl')
 		.populate('categories', 'name categoryTypeUrl')
 		.limit(limit)
 		.lean()
@@ -155,10 +155,10 @@ function search(query, page) {
 	return UserModel.findOne({
 		$or: [
 			{
-				'userName': {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+				'userNameDisplay': {$regex: new RegExp(keywords.toLowerCase(), 'i')}
 			}
 		]
-	}).select('userName').exec()
+	}).select('userNameDisplay').exec()
 		.then(function (user) {
 			var userId = null,
 					criteria,
@@ -196,7 +196,7 @@ function search(query, page) {
 				.sort({uploadDate: -1, viewCount: -1})
 				.skip(skip)
 				.limit(limit)
-				.populate('userId', 'userName')
+				.populate('userId', 'userNameDisplay')
 				.populate('categories', 'name categoryTypeUrl')
 				.lean()
 				.exec()

@@ -35,12 +35,12 @@ var UserProfileModel = function(params) {
 util.inherits(UserProfileModel, BaseModel);
 
 UserProfileModel.prototype.getData = function(params) {
-	var userName 										= params.request.params.userName;
+	var userNameUrl 						= params.request.params.userNameUrl;
 	var dataObject 									= {};
 	var profileUser 								= null;
 	var sourceManifest 							= params.sourceManifest;
 	// TODO: run parallel
-	return usersCrud.getUserByUserName(userName)
+	return usersCrud.getUserByUserNameUrl(userNameUrl)
 	.then(function(user) {
 		profileUser = user;
 		return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
@@ -63,9 +63,6 @@ UserProfileModel.prototype.getData = function(params) {
 		logger.debug(user);
 		dataObject.user = user;
 		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
-	})
-	.then(function(collection) {
-		return videoCollection.getCollectionVideos(dataObject.user._id, 'showcase');
 	})
 	.then(function(videoCollection){
 			var videos = videoCollection.videos;

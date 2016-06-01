@@ -2,7 +2,7 @@
 <html view="app.views.view.template.userProfile">
   <head>
     <meta http-equiv="Cache-control" content="public">
-    <title>AirVūz - {user.userName}</title>
+    <title>AirVūz - {user.userNameDisplay}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
