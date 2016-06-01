@@ -99,7 +99,6 @@ module.exports = function(passport, config) {
                 var user = {
                   emailAddress: data.email,
                   userName: newAccount._id,
-                  profilePicture: newAccount.accountData._json.picture.data.url,
                   coverPicture: newAccount.accountData._json.cover.source,
                   social: true
                 };
