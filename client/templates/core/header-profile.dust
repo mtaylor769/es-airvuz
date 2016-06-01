@@ -7,7 +7,7 @@
   </button>
   <ul class="dropdown-menu">
     <li>
-      <a href="/userProfile/{currentUser.userName}" class="btn btn-link">Profile</a>
+      <a href="/userProfile/{currentUser.userNameUrl}" class="btn btn-link">Profile</a>
     </li>
     <li>
       <a href="/videoUpload" class="btn btn-link">Upload Video</a>

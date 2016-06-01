@@ -446,7 +446,7 @@ users.prototype.getUserById = function (userId) {
 			reject(validation.errors);
 		} else {
 			UserModel.findOne({_id : validation.userId})
-				.select('aclRoles emailAddress userNameDisplay lastName firstName profilePicture autoPlay')
+				.select('aclRoles emailAddress userNameDisplay userNameUrl lastName firstName profilePicture autoPlay')
 				.lean()
 				.then(function (user) {
 					if(user.profilePicture.indexOf('http') > -1){
