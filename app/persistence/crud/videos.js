@@ -29,19 +29,19 @@ var Videos = function() {};
 /**
  * get the recent uploaded videos
  * @param params {Object}
- * @param params.count {Number}
  * @param params.page {Number}
+ * @param params.total {Number}
  * @returns {Promise}
  */
 function getRecentVideos(params) {
 	if (!params) {
 		params = {
-			count: 10,
+			total: 10,
 			page: 1
 		}
 	}
 
-	var limit = params.count;
+	var limit = params.total;
 	var skip = (params.page - 1) * limit;
 
 	return VideoModel
@@ -72,19 +72,19 @@ function updateDateWithMoment(videos) {
 /**
  * get trending video -
  * @param params {Object}
- * @param params.count {Number}
+ * @param params.total {Number}
  * @param params.page {Number}
  * @returns {*}
  */
 function getTrendingVideos(params) {
 	if (!params) {
 		params = {
-			count: 10,
+			total: 10,
 			page: 1
 		}
 	}
 
-	var limit = params.count;
+	var limit = params.total;
 	var skip = (params.page - 1) * limit;
 	var thirtyDayAgo = moment().subtract(30, 'days').toDate();
 
@@ -102,7 +102,7 @@ function getTrendingVideos(params) {
 }
 
 function getVideoByCategory(params) {
-	var limit = params.count ? params.count : 10;
+	var limit = params.total ? params.total : 10;
 	var skip = (params.page ? (params.page - 1) : 0) * limit;
 
 	return VideoModel
@@ -119,7 +119,7 @@ function getVideoByCategory(params) {
 }
 
 function getVideosByFollow(params) {
-	var limit = params.count ? params.count : 10;
+	var limit = params.total ? params.total : 10;
 	var skip = (params.page ? (params.page - 1) : 0) * limit;
 
 	return VideoModel
