@@ -196,7 +196,7 @@ function search(query, page) {
 				.sort({uploadDate: -1, viewCount: -1})
 				.skip(skip)
 				.limit(limit)
-				.populate('userId', 'userNameDisplay')
+				.populate('userId', 'userNameDisplay userNameUrl')
 				.populate('categories', 'name categoryTypeUrl')
 				.lean()
 				.exec()
