@@ -151,14 +151,7 @@ function bindEvents() {
         $loginModal.modal('hide');
       })
       .fail(function (err) {
-        console.log(err);
-        if(err === 'not confirmed'){
-          $loginModal.find('.error-message').text('Please confirm your email').delay(5000).slideUp(300);
-        } else if(err === 'no local account') {
-          $loginModal.find('.error-message').text('Please create a local account').delay(5000).slideUp(300);
-        } else {
-          $loginModal.find('.error-message').text('Wrong email or password').delay(5000).slideUp(300); 
-        }
+          $loginModal.find('.error-message').text('Wrong email or password').delay(5000).slideUp(300);
       })
   });
 
@@ -244,6 +237,10 @@ function bindEvents() {
   });
 
   $loginModal.on('click', '#btn-password-reset', onPasswordReset);
+
+  $('.go-to-login').on('click', function () {
+    $('#login-modal').modal('show');
+  })
 }
 
 function initialize() {

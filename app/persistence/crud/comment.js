@@ -178,7 +178,7 @@ Comment.prototype.create = function(params) {
                   if(social) {
                     comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
                   } else {
-                    comment.userId.profilePicture = 'http://www.airvuz.com/client/images/default.png'
+                    comment.userId.profilePicture = '/client/images/default.png'
                   }
                   return comment;
                 })

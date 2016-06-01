@@ -183,7 +183,7 @@
                 <p>An email has been sent to the provided email to confirm your account.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default go-to-login" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
