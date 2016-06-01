@@ -5,8 +5,14 @@ var UsersCrud         = require('../../persistence/crud/users');
 var SocialCrud        = require('../../persistence/crud/socialMediaAccount');
 var log4js            = require('log4js');
 var logger            = log4js.getLogger('app.config.passport.google');
+var aclRoles            = require('../../utils/acl');
+var socialAccount       = null;
+var findUser            = null;
+var account             = null;
 
 module.exports = function(passport, config) {
+  
+  logger.debug('making it to google.js');
   passport.serializeUser(function(user, done) {
     done(null, user);
   });
@@ -22,68 +28,88 @@ module.exports = function(passport, config) {
     passReqToCallback: true
   }, function (req, token, refreshToken, profile, cb) {
     var data = {
-      provider    : profile.provider,
+      provider    : 'google',
       accountData : profile,
       accountId   : profile.id,
       email       : profile.emails[0].value
     };
-    
 
-    logger.debug('Hitting google passport strategy');
-    var socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, data.provider);
+    socialAccount = SocialCrud.findAccountByIdandProvider(data.accountId, 'google');
     socialAccount.then(function(account){
       if (account) {
-        logger.debug('found social media account in social media model');
-        logger.info(account);
-        var findUser = UsersCrud.getUserByEmail(data.email);
-        findUser.then(function(user){
+
+        //if there is a social media account try to find user
+        if(account.userId) {
+
+          // if account user._id exists get by ID
+          findUser = UsersCrud.getUserById(account.userId);
+        } else {
+
+          //otherwise get by email
+          findUser = UsersCrud.getUserByEmail(account.email);
+        }
+        findUser.then(function (user) {
+
+          //if theres a user check account userId
           if (user && user._id) {
-            logger.debug('found user - check to see social media ids match');
-            if (user.socialMediaAccounts.indexOf(account._id) < 0) {
-              //add social media id to user
-            }
-            return cb(null, user);
-          } else {
-            logger.debug('no user found with email, searching for existing social media id');
-            findUser = UsersCrud.getUserBySocialId(account._id);
-            findUser.then(function(user){
-              if (user && user._id) {
-                logger.debug('user found with social media id returning user');
+
+            account.userId = user._id;
+            account.save()
+              .then(function(account) {
                 return cb(null, user);
-              } else {
-                logger.debug('no user found, prompt to create new user');
-                //req needs information about user data and social media id
-                data.socialMediaAccounts = account._id;
-                req.newUserInfo = data;
-                return cb(null, null);
-              }
-            });
+              })
+          } else {
+            logger.debug('failed email logging social account');
+            logger.debug(account);
           }
         });
       } else {
-        logger.debug('social media account does not currently exist');
-        var account = SocialCrud.create(data);
-        account.then(function(newAccount){
+
+        // SocialMediaAccount does NOT exist
+        account = SocialCrud.create(data);
+        account.then(function (newAccount) {
           if (newAccount && newAccount._id) {
-            logger.debug('created new social media account in social media model');
-            logger.debug('search user model for existing user with email');
-            var findUser = UsersCrud.getUserByEmail(data.email);
-            findUser.then(function(user){
+
+            //find out if user exists
+            findUser = UsersCrud.getUserByEmail(data.email);
+            findUser.then(function (user) {
               if (user && user._id) {
-                logger.debug('user with email currently exists, adding social media id and returing user');
-                //add social media id to current user and return user
-                return cb(null, user);
+
+                //if user exists add userId to social
+                SocialCrud.update(newAccount._id, user._id)
+                  .then(function(account) {
+                    return cb(null, user);
+                  })
               } else {
-                logger.trace('Needs to be passed back to client to verify and create new account');
-                data.socialMediaAccounts = newAccount._id;
-                req.newUserInfo = data;
-                return cb(null, null);
+
+                //if user doesn't exist create new user
+                var user = {
+                  emailAddress: data.email,
+                  userName: newAccount._id,
+                  profilePicture: newAccount.accountData._json.picture.data.url,
+                  coverPicture: newAccount.accountData._json.cover.source,
+                  social: true
+                };
+                UsersCrud.create(user)
+                  .then(function(user) {
+                    return SocialCrud.update(newAccount._id, user._id).then(function() {
+                      return user;
+                    })
+                  })
+                  .then(function(user) {
+                    return aclRoles.addUserRoles(user._id, ['user-general']).then(function() {
+                      return user;
+                    })
+                  })
+                  .then(function(user) {
+                    return cb(null, user);
+                  })
               }
             });
-            
           }
         });
       }
     });
-  }));
+  })
+  );
 };
