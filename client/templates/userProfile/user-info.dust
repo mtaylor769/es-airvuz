@@ -1,4 +1,4 @@
-<section style="color: white; background: #fff url('{s3AssetUrl}users/cover-pictures{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
+<section style="color: white; background: #fff {#user.coverPicture} url('{s3AssetUrl}users/cover-pictures{user.coverPicture}') no-repeat center{/user.coverPicture}; background-size: cover; min-height: 300px">
   <div class="">
     <div class="profile-picture col-xs-12 col-md-3">
       {#user.profilePicture}
