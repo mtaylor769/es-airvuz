@@ -572,6 +572,7 @@ function bindEvents() {
         //create child comment DOM elements
         var html = '';
         data.forEach(function(reply) {
+          console.log(reply);
           html += '<li>'+
             '<div class="flex">'+
             '<img src="' + "http://www.airvuz.com/" + user.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
