@@ -1,11 +1,9 @@
 var FollowCrud = require('../../persistence/crud/follow');
 var NotificationCrud = require('../../persistence/crud/notifications');
 
-function Follow() {
+function Follow() {}
 
-}
-
-Follow.prototype.getCheckFollowing = function(req, res) {
+function getCheckFollowing(req, res) {
   var data = req.body;
   FollowCrud
     .followCheck(data)
@@ -20,7 +18,6 @@ Follow.prototype.getCheckFollowing = function(req, res) {
       if(error.followId) {
         FollowCrud.delete(error.followId)
           .then(function(follow) {
-            logger.debug(follow);
             res.json({ status: 'unfollowed'});
           })
       } else {
@@ -29,33 +26,31 @@ Follow.prototype.getCheckFollowing = function(req, res) {
     });
 }
 
-Follow.prototype.post = function(req, res) {
-  logger.debug(req.body);
+function post(req, res) {
   var json = JSON.parse(req.body.data);
-  logger.debug(json);
   var follow = json.follow;
   var notification = json.notification;
   FollowCrud
     .create(follow)
     .then(function(follow) {
       NotificationCrud.create(notification)
-      .then(function(notification) {
-        res.json({ status: 'followed' });
-      })
+        .then(function(notification) {
+          res.json({ status: 'followed' });
+        })
     })
     .catch(function(err) {
-      logger.debug(err);
       if(err.followId) {
         FollowCrud.delete(err.followId)
-        .then(function(follow) {
-          logger.debug(follow);
-          res.json({ status: 'unfollowed' });
-        })
+          .then(function(follow) {
+            res.json({ status: 'unfollowed' });
+          })
       } else {
         res.send(500);
       }
-    })
-};
+    });
+}
 
+Follow.prototype.getCheckFollowing = getCheckFollowing;
+Follow.prototype.post = post;
 
 module.exports = new Follow();
