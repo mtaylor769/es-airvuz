@@ -175,6 +175,11 @@ app.get("/userProfile/:userName", function(req, res) {
 	loadView(req, res, userProfileView.getViewName());
 });
 
+// support older url /play?id=...
+app.get('/play', function (req, res) {
+	res.redirect('/videoPlayer/' + req.query.id);
+});
+
 app.get("/videoPlayer/:id", function(req, res) {
 	loadView(req, res, videoPlayerView.getViewName());
 });
