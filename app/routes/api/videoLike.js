@@ -1,5 +1,7 @@
 var VideoLikeCrud = require('../../persistence/crud/videoLike');
-var NotificationCrud = require('../../persistence/crud/notifications')
+var NotificationCrud = require('../../persistence/crud/notifications');
+var log4js					= require('log4js');
+var logger					= log4js.getLogger('app.routes.api.videoLike');
 
 function VideoLike() {
 
