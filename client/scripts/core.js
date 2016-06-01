@@ -151,7 +151,12 @@ function bindEvents() {
         $loginModal.modal('hide');
       })
       .fail(function (err) {
-          $loginModal.find('.error-message').text('Wrong email or password').delay(5000).slideUp(300);
+          console.log(err);
+          var message = 'Wrong email or password';
+          if(err.responseText.indexOf('email-confirm') > -1){
+            message = 'Please check your email to confirm account';
+          }
+          $loginModal.find('.error-message').text(message).delay(5000).slideUp(300);
       })
   });
 

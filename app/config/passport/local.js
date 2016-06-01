@@ -18,6 +18,7 @@ module.exports = function(passport, config) {
       done(null, user);
     })
     .error(function(error){
+      logger.debug(error);
       done(error, null);
     });
   });
@@ -35,13 +36,17 @@ module.exports = function(passport, config) {
       if (!user.validPassword(password)) {
         return done(null, false)
       }
+      if(user.status !== 'active') {
+        return done(user.status, false);
+      }
       return done(null, {
         _id: user._id,
         aclRoles: user.aclRoles
       });
     })
     .error(function(error){
-      return done(null, false);
+      logger.error(error);
+      return done(error, false);
     });
   }));
 };
