@@ -101,7 +101,7 @@ function createUser(req, res) {
         from:'Account Confirmation <noreply@airvuz.com>',
         to: user.emailAddress,
         subject: 'Account Confirmation',
-        html: '<p>Follow the link below to confirm your account</p><p><a href="localhost/email-confirmation/' + user._id + '">Confirm Account</a></p>'
+        html: '<p>Follow the link below to confirm your account</p><p><a href="' + req.get('host') + '/email-confirmation/' + user._id + '">Confirm Account</a></p>'
       };
       logger.debug(mailOptions.html);
       transport.sendMail(mailOptions, function(error, message) {

@@ -32,14 +32,8 @@ module.exports = function(passport, config) {
       if (!user) {
         return done(null, false);
       }
-      if(!password) {
-        return done(null, 'no local account')
-      }
       if (!user.validPassword(password)) {
         return done(null, false)
-      }
-      if(user.status !== 'active'){
-        return done(null, 'not confirmed')
       }
       return done(null, {
         _id: user._id,
