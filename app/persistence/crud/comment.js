@@ -171,7 +171,7 @@ Comment.prototype.create = function(params) {
           .exec()
           .then(function(comment) {
             if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture !== '') {
-              comment.userId.profilePicture = amazonBucket.ASSET_URL + 'users/profile-picture' + comment.userId.profilePicture;
+              comment.userId.profilePicture = amazonBucket.ASSET_URL + 'users/profile-pictures' + comment.userId.profilePicture;
               return comment;
             } else if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture === '') {
               return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
