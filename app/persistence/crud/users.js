@@ -457,14 +457,11 @@ users.prototype.getUserById = function (userId) {
 								if(social) {
 									user.externalLink = true;
 									user.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
-									return user;
-								} else {
-									return user;
 								}
-							})
-					} else {
-						return user;
+								return user;
+							});
 					}
+					return user;
 				})
 				.then(function(user) {
 					resolve(user)
