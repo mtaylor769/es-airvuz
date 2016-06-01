@@ -12,7 +12,7 @@
       {/user.profilePicture}
     </div>
     <div class="profile-information col-xs-12 col-md-9">
-      <h4 class="profile-username row">{user.userName}</h4>
+      <h4 class="profile-username row">{user.userNameDisplay}</h4>
       <h5 class="row">
         {?followers}
         <span class="av-primary word-space airvuz-blue">{followers}</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
