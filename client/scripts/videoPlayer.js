@@ -662,10 +662,11 @@ function initialize(videoPath) {
       }
     }
   }, function () {
-    var videoSrc = videoPath,
+    var player = this,
+        videoSrc = videoPath,
         videoType = 'video/mp4';
 
-    this.updateSrc([
+    player.updateSrc([
       {
         src: videoSrc.replace('.mp4', '-100.mp4'),
         type: videoType,
