@@ -30,7 +30,8 @@
         <a class="follow-btn btn btn-primary">Follow</a>
         <a class="donate-btn btn btn-primary" href="{user.donationUrl}" target="_blank">Donate</a>
         <a class="hire-btn btn btn-primary">Hire</a>
-        
+
+        {! comment out since they are not going anywhere
         <div class="user-social-media pull-right row hidden-xs hidden-sm">
             <span class="social-media-background">
                 <a class="facebook fa fa-facebook-square" target="_blank"></a>
@@ -45,6 +46,7 @@
                 <a class="google fa fa-google-plus-square" target="_blank"></a>
             </span>
         </div>
+        !}
       </div>
     </div>
   </div>
