@@ -142,7 +142,7 @@
                         {#comments}
                             <li class="comment-wrap">
                                 <div class="flex">
-                                    <a href="/userProfile/{user.userNameUrl}">
+                                    <a href="/userProfile/{userId.userNameUrl}">
                                     {#userId.profilePicture}
                                         {#userId.isExternalLink}
                                             <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
