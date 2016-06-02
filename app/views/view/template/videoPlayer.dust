@@ -140,7 +140,7 @@
                         </div>
                         <ul class="parent-comments">
                         {#comments}
-                            <li class="comment-wrap">
+                            <li class="comment-wrap" data-userId="{userId._id}">
                                 <div class="flex">
                                     <a href="/userProfile/{userId.userNameUrl}">
                                     {#userId.profilePicture}
@@ -162,7 +162,7 @@
                                 <ul class="parentComment"></ul>
                                 <div  id="{_id}">
                                     <div class="row">
-                                        <div class="reply col-xs-3 col-sm-2 pointer" value="{_id}" style="padding: 0 0 0 10px">
+                                        <div class="reply col-xs-3 col-sm-2 pointer" value="{_id}" data-userId="{userId._id}" style="padding: 0 0 0 10px">
                                             <span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>
                                             <span style="font-size: 10px; margin-left: 2px">reply</span>
                                         </div>

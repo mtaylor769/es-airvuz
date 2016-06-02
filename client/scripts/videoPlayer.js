@@ -523,7 +523,8 @@ function bindEvents() {
       replyObject.comment = $('#comment').val();
       replyObject.parentCommentId = parentCommentId;
       replyObject.userId = userIdentity._id;
-      replyObject.videoId = '56fec7bb07354aaa096db3b8';
+      replyObject.videoId = video._id;
+      notificationObject.notifiedUserId = $('#comment').parent().parent().attr('data-userid');
       notificationObject.notificationType = 'COMMENT REPLY';
       notificationObject.notificationMessage = $('#comment').val();
       notificationObject.videoId = video._id;

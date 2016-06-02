@@ -16,15 +16,16 @@ function seen(req, res) {
 }
 
 Notification.prototype.post = function(req, res) {
-  logger.debug(req.body);
-  NotificationCrud
-    .create(req.body)
-    .then(function(notification) {
-      res.json(notification)
-    })
-    .catch(function(err) {
-      res.sendStatus(500);
-    })
+
+    NotificationCrud
+      .create(req.body)
+      .then(function(notification) {
+        res.json(notification)
+      })
+      .catch(function(err) {
+        res.sendStatus(500);
+      })
+
 };
 
 Notification.prototype.getUnseen = function(req, res) {

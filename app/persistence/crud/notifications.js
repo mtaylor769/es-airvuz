@@ -47,14 +47,19 @@ function markAsSeen(userId) {
 
 Notifications.prototype.create = function(params) {
   return(new Promise(function(resolve, reject) {
-    var notificationModel = new NotificationModel(params);
-      notificationModel.save(function(error, notification) {
-        if(error) {
-          reject(error);
-        } else {
-          resolve(notification);
-        }
-      })
+      if(params.notifiedUserId === params.actionUserId){
+        resolve(200);
+      } else {
+        logger.error(params);
+        var notificationModel = new NotificationModel(params);
+        notificationModel.save(function(error, notification) {
+          if(error) {
+            reject(error);
+          } else {
+            resolve(notification);
+          }
+        }); 
+      }
     })
   )
 };
