@@ -64,7 +64,7 @@ function getVideoAndPopulate(type) {
 
 function createVideoCollection(params) {
   return(new Promise(function(resolve, reject) {
-    return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
+    return VideoCollectionModel.findOne({user: params.user, name: params.name}).populate('videos').exec()
       .then(function(videoCollection) {
         if(!videoCollection) {
           var videoCollectionModel = new VideoCollectionModel(params);
@@ -76,7 +76,14 @@ function createVideoCollection(params) {
             }
           });
         } else {
-          resolve(videoCollection);
+          return VideoCollectionModel.populate(videoCollection, {path: 'videos.userId', model: 'Users'}).then(function (col) {
+            col.videos.map(function (video) {
+              video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
+              return video;
+            });
+
+            resolve(videoCollection);
+          });
         }
       });
     })
