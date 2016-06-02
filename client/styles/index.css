@@ -1416,6 +1416,11 @@ End user profile CSS
     color: white;
   }
 
+  #user-profile .profile-picture img {
+    height: 200px;
+    width: 200px;
+  }
+
   /*.not-selected :hover {
     background: green;
   }
@@ -1515,11 +1520,6 @@ End user profile CSS
   #user-profile .profile-picture {
     text-align: right;
     margin-top: 3%;
-  }
-
-  #user-profile .profile-picture img {
-    height: 200px;
-    width: 200px;
   }
 
   #user-profile .profile-information {
