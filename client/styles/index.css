@@ -1193,6 +1193,11 @@ use class="glyphicon glyphicon-minus"
   display: block;
   color: #30c1ed;
 }
+
+#user-profile .profile-picture img {
+  height: 200px;
+  width: 200px;
+}
 /*
 End user profile CSS
 */
@@ -1414,11 +1419,6 @@ End user profile CSS
     margin-right: 1px;
     font-size: 24px;
     color: white;
-  }
-
-  #user-profile .profile-picture img {
-    height: 200px;
-    width: 200px;
   }
 
   /*.not-selected :hover {
