@@ -174,7 +174,7 @@ function bindEvents() {
 
   //video like
   $('.like').on('click', function() {
-    if(user._id && user._id !== video.userId) {
+    if(userIdentity._id && userIdentity._id !== video.userId) {
       notificationObject.notificationType = 'LIKE';
       notificationObject.notificationMessage = 'liked your video';
       notificationObject.videoId = video._id;
@@ -212,9 +212,9 @@ function bindEvents() {
             $('.like-count').text(likeLog - 1)
           }
         })
-        .fail(function (error) {
+        .error(function (error) {
         });
-    } else if(!user._id) {
+    } else if(!userIdentity._id) {
       $('#like-modal').modal('show');
       $('.go-to-login').on('click', function () {
         $('#login-modal').modal('show');
