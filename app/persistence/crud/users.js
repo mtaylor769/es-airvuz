@@ -122,7 +122,7 @@ users.prototype.validateCreateUser = function(params) {
 			sourceLocation	: sourceLocation
 		});
 	}
-
+logger.error('line 125');
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
 				if (email) {
@@ -153,7 +153,28 @@ users.prototype.validateCreateUser = function(params) {
 									sourceLocation: sourceLocation
 								});
 							}
+						})	
+				} else {
+					email = userInfo.data.emailAddress;
+					logger.error('line 158');
+					logger.error(userInfo.data.emailAddress);
+					var regex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/g;
+					var checkEmail = email.match(regex);
+					logger.error(checkEmail);
+					if(!checkEmail) {
+						logger.error('error');
+						userInfo.errors = errorMessage.getErrorMessage({
+							statusCode: "400",
+							errorId: "VALIDA1000",
+							templateParams: {
+								name: "emailAddress"
+							},
+							sourceError: "#email",
+							displayMsg: "Please enter a vaild email address",
+							errorMessage: "Invalid Email",
+							sourceLocation: sourceLocation
 						});
+					}
 				}
 				return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec()
 			})
@@ -163,9 +184,9 @@ users.prototype.validateCreateUser = function(params) {
 						statusCode: "400",
 						errorId: "VALIDA1000",
 						templateParams: {
-							name: "userNameDisplay"
+							name: "userName"
 						},
-						sourceError: '#userNameDisplay',
+						sourceError: '#username',
 						displayMsg: "Username already exists",
 						errorMessage: "Username already exists",
 						sourceLocation: sourceLocation
