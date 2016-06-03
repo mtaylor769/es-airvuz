@@ -71,7 +71,7 @@
               <label>Password <span class="text-danger">*</span></label>
               <input type="password" class="form-control password-input" placeholder="Password">
             </div>
-            <div class="error-message text-danger"></div>
+            <p class="error-message text-danger"></p>
             <div class="text-right">
               <button type="button" class="btn btn-primary" id="login-btn">Login</button>
             </div>

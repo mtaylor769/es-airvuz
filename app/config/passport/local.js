@@ -23,25 +23,31 @@ module.exports = function(passport, config) {
     });
   });
   
-  passport.use('local-login', new LocalStrategy({
+  passport.use(new LocalStrategy({
     usernameField: 'emailAddress',
     passwordField: 'password'
   },
   function(emailAddress, password, done){
     Users.getUserByEmail(emailAddress)
     .then(function(user) {
-      if (!user || !user.validate(password) || user.status !== 'active') {
-        done(null, false);
-      } else {
-        done(null, {
-          _id: user._id,
-          aclRoles: user.aclRoles
-        });
+
+      if (!user) {
+        return done(null, false);
       }
+      if (!user.validPassword(password)) {
+        return done(null, false)
+      }
+      if(user.status !== 'active') {
+        return done(null, user.status);
+      }
+      return done(null, {
+        _id: user._id,
+        aclRoles: user.aclRoles
+      });
     })
     .catch(function(error){
       logger.error(error);
-      return done(error, false);
+      return done(error);
     });
   }));
 };

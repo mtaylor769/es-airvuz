@@ -18,6 +18,9 @@ function Auth() {
 
 function loginSuccess(req, res, next) {
   logger.debug(req.user);
+  if (req.user === 'email-confirm') {
+    return res.status(400).send(req.user);
+  }
   token =  jwt.sign(req.user, tokenConfig.secret, { expiresIn: tokenConfig.expires });
   res.json({token: token});
 }
@@ -95,7 +98,7 @@ function twitterCallback(req, res, next) {
 }
 
 
-Auth.prototype.login               = passport.authenticate('local-login');
+Auth.prototype.login               = passport.authenticate('local');
 Auth.prototype.loginSuccess        = loginSuccess;
 Auth.prototype.facebook            = facebook;
 Auth.prototype.facebookAuthFailure = facebookAuthFailure;
