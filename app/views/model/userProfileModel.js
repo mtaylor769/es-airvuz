@@ -58,8 +58,22 @@ UserProfileModel.prototype.getData = function(params) {
 	.then(function(user) {
 		logger.debug(user);
 		if(user.facebook && user.profilePicture === ''){
-			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large'
+			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+		} else if(!user.facebook && user.profilePicture === '') {
+			user.profilePicture = '/client/images/default.png';
+		} else if(user.facebook && user.profilePicture.indexOf('facebook') > -1) {
+			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+		} else if(user.profilePicture.indexOf('http') === -1) {
+			user.profilePicture = amazonConfig.ASSET_URL + 'users/profile-pictures' + user.profilePicture;
+		} else {
+			user.profilePicture = user.profilePicture;
 		}
+		if(user.coverPicture.indexOf('http') === -1) {
+			user.coverPicture = amazonConfig.ASSET_URL + 'users/cover-pictures' + user.coverPicture;
+		} else {
+			user.coverPicture = user.coverPicture;
+		}
+		
 		logger.debug(user);
 		dataObject.user = user;
 		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
