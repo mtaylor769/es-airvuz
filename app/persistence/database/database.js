@@ -89,8 +89,7 @@ Database.prototype._init = function() {
 			},
 			{
 				connectionName	: "main",
-				//hostName				: ENV.DATABASE_HOST || "localhost",
-				hostName				: '52.38.87.31' || "localhost",
+				hostName				: ENV.DATABASE_HOST || "localhost",
 				databaseName		: "AirVuz2"
 			}			
 		],
@@ -135,17 +134,9 @@ Database.prototype._initConnections = function(params) {
 	//var path								= null;
 	var paths								= null;
 	var THIS								= this;
-	// var databaseOption			= {
-	// 	user	: ENV.DATABASE_USER || '',
-	// 	pass	: ENV.DATABASE_PASSWORD || '',
-	// 	auth	: {
-	// 		authdb: 'admin'
-	// 	}
-	// };
-
 	var databaseOption			= {
-		user	: 'www' || '',
-		pass	: 'vw6caE79kxPcyTJ3' || '',
+		user	: ENV.DATABASE_USER || '',
+		pass	: ENV.DATABASE_PASSWORD || '',
 		auth	: {
 			authdb: 'admin'
 		}
