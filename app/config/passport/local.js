@@ -30,21 +30,16 @@ module.exports = function(passport, config) {
   function(emailAddress, password, done){
     Users.getUserByEmail(emailAddress)
     .then(function(user) {
-      if (!user) {
-        return done(null, false);
+      if (!user || !user.validate(password) || user.status !== 'active') {
+        done(null, false);
+      } else {
+        done(null, {
+          _id: user._id,
+          aclRoles: user.aclRoles
+        });
       }
-      if (!user.validPassword(password)) {
-        return done(null, false)
-      }
-      if(user.status !== 'active') {
-        return done(user.status, false);
-      }
-      return done(null, {
-        _id: user._id,
-        aclRoles: user.aclRoles
-      });
     })
-    .error(function(error){
+    .catch(function(error){
       logger.error(error);
       return done(error, false);
     });
