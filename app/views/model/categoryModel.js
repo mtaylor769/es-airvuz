@@ -79,8 +79,8 @@ CategoryModel.prototype.getData = function(params) {
 					return Videos.getRecentVideos(videosParam);
 				case 'Trending Videos':
 					return Videos.getTrendingVideos(videosParam);
-				case 'Follower Videos':
-					// Let the client side handle this because this server side render for the follower require
+				case 'Following Videos':
+					// Let the client side handle this because this server side render for the following require
 					// current login user
 					return Promise.resolve([]);
 				default:

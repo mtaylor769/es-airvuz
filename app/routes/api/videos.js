@@ -46,7 +46,7 @@ function getVideosByCategory(req, res) {
           return VideoCrud.getRecentVideos(videosParam);
         case 'Trending Videos':
           return VideoCrud.getTrendingVideos(videosParam);
-        case 'Follower Videos':
+        case 'Following Videos':
           // follow should only be call if user is login
           return FollowCrud.getFollow(req.user._id)
             .then(function (users) {

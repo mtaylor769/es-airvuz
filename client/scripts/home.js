@@ -47,16 +47,16 @@ var SLICK_CONFIG = {
 };
 
 function getFollowerVideos() {
-  $.ajax('/api/videos/category/Follower%20Videos/page/1')
+  $.ajax('/api/videos/category/Following%20Videos/page/1')
       .then(function (videos) {
         if (videos.length > 0) {
           var viewData = {
-            title: 'Follower Videos',
-            viewAll: 'Follower%20Videos',
+            title: 'Following Videos',
+            viewAll: 'Following%20Videos',
             index: {
-              follower: videos
+              following: videos
             },
-            videos: 'follower',
+            videos: 'following',
             s3Bucket: AmazonConfig.OUTPUT_URL
           };
 
