@@ -524,12 +524,13 @@ function bindEvents() {
       replyObject.parentCommentId = parentCommentId;
       replyObject.userId = userIdentity._id;
       replyObject.videoId = video._id;
-      notificationObject.notifiedUserId = $('#comment').parent().parent().attr('data-userid');
+      notificationObject.notifiedUserId = $('#saveComment').parent().parent().attr('data-userid');
       notificationObject.notificationType = 'COMMENT REPLY';
       notificationObject.notificationMessage = $('#comment').val();
       notificationObject.videoId = video._id;
       replyData.comment = replyObject;
       replyData.notification = notificationObject;
+      console.log(replyData.notification);
 
       $.ajax({
           type: 'POST',
