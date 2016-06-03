@@ -268,7 +268,11 @@ function editShowcase() {
 
 function changePassword() {
   $('#change-password')
-    .modal('show')
+    .modal('show');
+}
+
+function bindChangePassword() {
+  $('#change-password')
     .on('click', '#new-password-btn', confirmPasswordChange);
 }
 
@@ -823,6 +827,7 @@ function renderUserProfileEdit(profileData) {
     }
   });
   renderSocialMediaLinks();
+  bindChangePassword();
 }
 
 function renderSocialMediaLinks() {
