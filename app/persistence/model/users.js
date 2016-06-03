@@ -97,7 +97,13 @@ var usersSchema 		= mongoose.Schema({
 	},
 	
 	password : {
-		type		: String
+		type		: String,
+		select	: false
+	},
+
+	validCodeV1: {
+		type: String,
+		select: false
 	},
 
 	resetPasswordCode: String,
