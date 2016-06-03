@@ -1,4 +1,4 @@
-<section style="color: white; background: #fff url('{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
+<section style="color: white; background: url('{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
   <div class="">
     <div class="profile-picture col-xs-12 col-md-3">
         <img src="{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
