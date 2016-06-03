@@ -62,10 +62,12 @@ NotificationModel.prototype.getData = function(params) {
           notificationObject.actionUserId = notification.actionUserId;
           notificationObject.actionUserId.userNameDisplay = notification.actionUserId.userNameDisplay;
         }
-
-        if (notificationObject.actionUserId.profilePicture.indexOf('http') > -1) {
-          notificationObject.actionUserId.isExternalProfilePicture = true;
+        if(notificationObject.actionUserId.profilePicture){
+          if (notificationObject.actionUserId.profilePicture.indexOf('http') > -1) {
+            notificationObject.actionUserId.isExternalProfilePicture = true;
+          }
         }
+        
 
         //setting the rest of the notificationObject
         notificationObject.createdDate = notification.createdDate;
