@@ -8,7 +8,8 @@ var Evaporate     = require('evaporate'),
     AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
     camera        = require('./services/camera'),
-    drone         = require('./services/drone');
+    drone         = require('./services/drone'),
+    IO;
 
 /**
  * Templates
@@ -43,7 +44,6 @@ function onDurationReturn(duration) {
 }
 
 function onUploadComplete() {
-  isUploading = false;
   $uploadPage.find('#processing-message').removeClass('hidden');
 
   $.ajax({
@@ -53,6 +53,14 @@ function onUploadComplete() {
     data: JSON.stringify({key: currentUploadFile.hashName})
   }).done(pollVideoStatus);
 
+  getVideoDuration();
+}
+
+/**
+ * get video duration
+ * - Note: * this is required to be call for local upload / youtube / and vimeo
+ */
+function getVideoDuration() {
   $.ajax({
     url: '/api/amazon/video-duration',
     contentType : 'application/json',
@@ -101,6 +109,7 @@ function onTranscodeComplete(response) {
     return;
   }
 
+  isUploading = false;
   transcodeComplete = true;
 
   $uploadPage.find('#processing-message').addClass('hidden');
@@ -122,11 +131,10 @@ function renderThumbnail(thumbnails) {
 
 function onUploadError(message) {
   isUploading = false;
-  /********************************************************/
-  console.group('%cError :', 'color:red;font:strait');
-  //console.log(message);
-  console.groupEnd();
-  /********************************************************/
+  console.log('******************** message ********************');
+  console.log(message);
+  console.log('************************************************');
+  alert("There's an error uploading. Please contact support");
 }
 
 function renderStep(step, video) {
@@ -340,7 +348,7 @@ function bindEvents() {
   function onBeforeUnload() {
     if (isUploading) {
       // browser doesn't actually use this message.
-      return 'You are current uploading video. Do you want to cancel?';
+      return 'You are current uploading video or transcoding. Do you want to cancel?';
     }
   }
 
@@ -364,6 +372,30 @@ function bindEvents() {
     isCustomThumbnail = isCustom;
   }
 
+  function onUploadExternalUrlClick(event) {
+    event.preventDefault();
+    isUploading = true;
+
+    var url = $uploadPage.find('#external-url-input').val();
+
+    renderStep(2);
+
+    IO.emit('upload:external', url);
+  }
+
+  function onExternalTranscoding() {
+    $uploadPage.find('#processing-message').removeClass('hidden');
+    $uploadPage.find('.progress-bar')
+      .text('100%')
+      .width('100%');
+  }
+
+  function onStartPolling(video) {
+    currentUploadFile.hashName = video.replace('.mp4', '');
+    getVideoDuration();
+    pollVideoStatus();
+  }
+
   //////////////////////////////////////////
 
   $uploadPage
@@ -375,7 +407,13 @@ function bindEvents() {
     .on('click', '#selected-category-list li', onCategoryRemove)
     .on('click', '#upload-again', onUploadAgain)
     .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
-    .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick);
+    .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick)
+    .on('click', '#btn-external-upload', onUploadExternalUrlClick);
+
+  // socket events
+  IO.on('upload:transcoding', onExternalTranscoding);
+  IO.on('upload:start-polling', onStartPolling);
+  IO.on('upload:error', onUploadError);
 
   $(window).on('beforeunload', onBeforeUnload);
 
@@ -386,6 +424,8 @@ function initialize() {
   if (!identity.isAuthenticated()) {
     window.location.href = '/';
   }
+  
+  IO = require('./services/socket').init();
 
   $uploadPage = $('#upload-page');
 

@@ -4,6 +4,15 @@
     <input type="file" id="file" accept="video/mp4,video/x-m4v,video/*"/>
   </div>
   <p>Select file to upload</p>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <form class="form-horizontal">
+        <input type="text" class="form-control" placeholder="Or paste url from YouTube or Vimeo" id="external-url-input">
+        <button class="btn btn-primary m-t-10" id="btn-external-upload">upload</button>
+      </form>
+    </div>
+  </div>
+
 </div>
 <strong>HELP AND SUGGESTIONS</strong>
 <p>By submitting videos to AirVuz you acknowledge that you agree to AirVuz's Terms of Service and Community Guidelines. Please be sure not to violate others copyright or privacy rights.</p>
