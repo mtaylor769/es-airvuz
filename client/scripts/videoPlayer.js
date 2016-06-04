@@ -128,13 +128,13 @@ function bindEvents() {
     notificationObject.notificationMessage = $('#comment-text').val();
     notificationObject.videoId = video._id;
     if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = user._id;
+      notificationObject.actionUserId = userIdentity._id;
     }
     var commentData = {};
     var comment = {};
     comment.videoId = $(this).attr('value');
     comment.comment = $('#comment-text').val();
-    comment.userId = user._id;
+    comment.userId = userIdentity._id;
     commentData.comment = comment;
     commentData.notification = notificationObject;
     $.ajax({
@@ -182,12 +182,12 @@ function bindEvents() {
       notificationObject.notificationMessage = 'liked your video';
       notificationObject.videoId = video._id;
       if(userIdentity.isAuthenticated()) {
-        notificationObject.actionUserId = user._id;
+        notificationObject.actionUserId = userIdentity._id;
       }
       var likeData = {};
       var likeObject = {};
       likeObject.videoId = $(this).attr('data-videoId');
-      likeObject.userId = user._id;
+      likeObject.userId = userIdentity._id;
       likeObject.videoOwnerId = video.userId;
       likeData.like = likeObject;
       likeData.notification = notificationObject;
@@ -256,7 +256,7 @@ function bindEvents() {
       notificationObject.notificationType = 'FOLLOW';
       notificationObject.notificationMessage = 'started following you';
       if(userIdentity.isAuthenticated()) {
-        notificationObject.actionUserId = user._id;
+        notificationObject.actionUserId = userIdentity._id;
       }
       followData.follow = followObject;
       followData.notification = notificationObject;
@@ -312,7 +312,7 @@ function bindEvents() {
         notificationObject.notificationMessage = 'shared your video on Facebook';
         notificationObject.videoId = video._id;
         if(userIdentity.isAuthenticated()) {
-          notificationObject.actionUserId = user._id;
+          notificationObject.actionUserId = userIdentity._id;
         }
         if(response.post_id) {
           $.ajax({
@@ -334,7 +334,7 @@ function bindEvents() {
     notificationObject.notificationMessage = 'shared your video on Twitter';
     notificationObject.videoId = video._id;
     if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = user._id;
+      notificationObject.actionUserId = userIdentity._id;
     }
     $.ajax({
       type: 'POST',
@@ -352,7 +352,7 @@ function bindEvents() {
     notificationObject.notificationMessage = 'shared your video on Google Plus';
     notificationObject.videoId = video._id;
     if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = user._id;
+      notificationObject.actionUserId = userIdentity._id;
     }
     $.ajax({
         type: 'POST',
@@ -392,7 +392,7 @@ function bindEvents() {
     notificationObject.notificationMessage = 'embeded your video';
     notificationObject.videoId = video._id;
     if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = user._id;
+      notificationObject.actionUserId = userIdentity._id;
     }
     $.ajax({
         type: 'POST',
@@ -550,7 +550,7 @@ function bindEvents() {
       notificationObject.notificationMessage = $('#comment').val();
       notificationObject.videoId = video._id;
       if(userIdentity.isAuthenticated()) {
-        notificationObject.actionUserId = user._id;
+        notificationObject.actionUserId = userIdentity._id;
       }
       replyData.comment = replyObject;
       replyData.notification = notificationObject;
@@ -722,9 +722,6 @@ function initialize(videoPath) {
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
   notificationObject.notifiedUserId  = video.userId;
-  if(userIdentity.isAuthenticated()) {
-    notificationObject.actionUserId = user._id;
-  }
 
   //run init functions
   incrementVideoCount();
@@ -737,7 +734,6 @@ function initialize(videoPath) {
       state: user.autoPlay,
       onSwitchChange: onAutoPlayChange
     });
-      notificationObject.actionUserId    = user._id;
   } else {
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'
