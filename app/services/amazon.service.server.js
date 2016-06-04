@@ -3,6 +3,7 @@ var Promise       = require('bluebird'),
     AWS           = require('aws-sdk'),
     crypto        = require('crypto'),
     probe         = require('node-ffprobe'),
+    fs            = require('fs'),
     awsOptions    = {};
 
 AWS.config.region       = 'us-west-2';
@@ -270,6 +271,33 @@ function moveFile(params) {
   });
 }
 
+/**
+ * copy video from server to s3
+ * - used by external uploader (vimeo & youtube) because we download the video from the external link
+ *   and then copy to s3
+ * @param {Object} file
+ * @param {String} file.path - path in the server
+ * @param {String} file.fileName - hash name with .mp4
+ */
+function copyVideoToS3(file) {
+  return new Promise(function (resolve, reject) {
+    var rd = fs.createReadStream(file.path);
+    rd.on('error', function(err) {
+      reject(err);
+    });
+    var storage = new AWS.S3(awsOptions);
+    var params = { Bucket: amazonConfig.INPUT_BUCKET, Key: file.fileName, Body: rd, ACL: 'public-read' };
+
+    storage.upload(params, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(file.fileName);
+      }
+    });
+  });
+}
+
 module.exports = {
   createPreset        : createPreset,
   getVideoDuration    : getVideoDuration,
@@ -278,6 +306,7 @@ module.exports = {
   deletePreset        : deletePreset,
   listVideoObjects    : listVideoObjects,
   moveFile            : moveFile,
+  copyVideoToS3       : copyVideoToS3,
 
   // Middleware
   confirmSubscription : confirmSubscription,

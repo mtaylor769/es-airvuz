@@ -68,13 +68,15 @@
     "postcss-simple-vars": "^1.2.0",
     "rucksack-css": "^0.8.5",
     "sinon": "^1.17.3",
+    "socket.io": "^1.4.6",
     "string-template": "^1.0.0",
     "style-loader": "^0.13.0",
     "url": "^0.11.0",
     "uuid": "^2.0.1",
     "webpack": "^1.12.13",
     "webpack-manifest-plugin": "^1.0.0",
-    "webpack-md5-hash": "0.0.5"
+    "webpack-md5-hash": "0.0.5",
+    "youtube-dl": "^1.11.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
