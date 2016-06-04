@@ -268,7 +268,11 @@ function editShowcase() {
 
 function changePassword() {
   $('#change-password')
-    .modal('show')
+    .modal('show');
+}
+
+function bindChangePassword() {
+  $('#change-password')
     .on('click', '#new-password-btn', confirmPasswordChange);
 }
 
@@ -823,74 +827,79 @@ function renderUserProfileEdit(profileData) {
     }
   });
   renderSocialMediaLinks();
+  bindChangePassword();
 }
 
 function renderSocialMediaLinks() {
   var $socialMedia = $('.user-social-media');
   var $aboutMe     = $('#about-me-section').find('.aboutme-socialmedia');
   var $editProfile = $('.edit-profile');
-  if (!profileUser.socialMediaLinks) {
-    $($socialMedia).find('span').hide();
-    $($aboutMe).find('span').hide();
-  } else if (profileUser.socialMediaLinks.length > 0) {
-    profileUser.socialMediaLinks.forEach(function(account){
-      switch (account.socialType) {
-        case "FACEBOOK" :
-          if (account.url && account.url !== '') {
-            $socialMedia.find('.facebook')
-              .parent().show();
-            $socialMedia.find('.facebook')
-              .attr('href', '//'+account.url);
-            $aboutMe.find('.facebook-link')
-              .attr('href', '//'+account.url);
-            $editProfile.find('#facebook').val(account.url)
-          } else {
-            $socialMedia.find('.facebook').parent().hide();
-            $aboutMe.find('.facebook').hide();
-          }
-          break;
-        case 'GOOGLE+' :
-          if (account.url && account.url !== '') {
-            $socialMedia.find('.google').parent().show();
-            $socialMedia.find('.google')
-              .attr('href', '//'+account.url);
-            $aboutMe.find('.google-link')
-              .attr('href', '//'+account.url);
-            $editProfile.find('#googleplus').val(account.url);
-          } else {
-            $socialMedia.find('.google').parent().hide();
-            $aboutMe.find('.google').hide();
-          }
-          break;
-        case 'INSTAGRAM' :
-          if (account.url && account.url !== '') {
-            $socialMedia.find('.instagram').parent().show();
-            $socialMedia.find('.instagram')
-              .attr('href', '//'+account.url);
-            $aboutMe.find('.instagram-link')
-              .attr('href', '//'+account.url);
-            $editProfile.find('#instagram').val(account.url);
-          } else {
-            $socialMedia.find('.instagram').parent().hide();
-            $aboutMe.find('.instagram').hide();
-          }
-          break;
-        case 'TWITTER' :
-          if (account.url && account.url !== '') {
-            $socialMedia.find('.twitter').parent().show();
-            $socialMedia.find('.twitter')
-              .attr('href', '//'+account.url);
-            $aboutMe.find('.twitter-link')
-              .attr('href', '//'+account.url);
-            $editProfile.find('#twitter').val(account.url);
-          } else {
-            $socialMedia.find('.twitter').parent().hide();
-            $aboutMe.find('.twitter').hide();
-          }
-          break;
-        default : null; //Nothing happens
-      };
-    });
+  //Automatically hides social media links
+  $($socialMedia).find('span').hide();
+  $($aboutMe).find('span').hide();
+  if (profileUser.socialMediaLinks) {
+    //test for existence of socialMediaLinks attribute
+    if (profileUser.socialMediaLinks.length > 0) {
+      //socialMediaLinks could still exist but have nothing in array
+      profileUser.socialMediaLinks.forEach(function(account){
+        switch (account.socialType) {
+          case "FACEBOOK" :
+            if (account.url && account.url !== '') {
+              $socialMedia.find('.facebook')
+                .parent().show();
+              $socialMedia.find('.facebook')
+                .attr('href', '//'+account.url);
+              $aboutMe.find('.facebook-link')
+                .attr('href', '//'+account.url);
+              $editProfile.find('#facebook').val(account.url)
+            } else {
+              $socialMedia.find('.facebook').parent().hide();
+              $aboutMe.find('.facebook').hide();
+            }
+            break;
+          case 'GOOGLE+' :
+            if (account.url && account.url !== '') {
+              $socialMedia.find('.google').parent().show();
+              $socialMedia.find('.google')
+                .attr('href', '//'+account.url);
+              $aboutMe.find('.google-link')
+                .attr('href', '//'+account.url);
+              $editProfile.find('#googleplus').val(account.url);
+            } else {
+              $socialMedia.find('.google').parent().hide();
+              $aboutMe.find('.google').hide();
+            }
+            break;
+          case 'INSTAGRAM' :
+            if (account.url && account.url !== '') {
+              $socialMedia.find('.instagram').parent().show();
+              $socialMedia.find('.instagram')
+                .attr('href', '//'+account.url);
+              $aboutMe.find('.instagram-link')
+                .attr('href', '//'+account.url);
+              $editProfile.find('#instagram').val(account.url);
+            } else {
+              $socialMedia.find('.instagram').parent().hide();
+              $aboutMe.find('.instagram').hide();
+            }
+            break;
+          case 'TWITTER' :
+            if (account.url && account.url !== '') {
+              $socialMedia.find('.twitter').parent().show();
+              $socialMedia.find('.twitter')
+                .attr('href', '//'+account.url);
+              $aboutMe.find('.twitter-link')
+                .attr('href', '//'+account.url);
+              $editProfile.find('#twitter').val(account.url);
+            } else {
+              $socialMedia.find('.twitter').parent().hide();
+              $aboutMe.find('.twitter').hide();
+            }
+            break;
+          default : null; //Nothing happens
+        };
+      });
+    }
   }
 }
 
@@ -999,8 +1008,7 @@ function checkFollowStatus(){
 
 function displayHireMeModal() {
   $('#hire-me-modal')
-    .modal('show')
-    .on('click', '#send-hire-me', sendHireMeEmail);
+    .modal('show');
 }
 
 function sendHireMeEmail() {
@@ -1055,6 +1063,11 @@ function bindSortAllVideos() {
     });
 }
 
+function bindHireMeFunction() {
+  $('#hire-me-modal')
+    .on('click', '#send-hire-me', sendHireMeEmail);
+}
+
 function initialize() {
   if (!profileVideos) {
     profileVideos = [];
@@ -1101,6 +1114,7 @@ function initialize() {
 
       if (profileUser.allowHire) {
         $('.hire-btn').show();
+        bindHireMeFunction();
       } else {
         $('.hire-btn').hide();
       }
