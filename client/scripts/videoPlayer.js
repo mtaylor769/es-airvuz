@@ -127,6 +127,9 @@ function bindEvents() {
     notificationObject.notificationType = 'COMMENT';
     notificationObject.notificationMessage = $('#comment-text').val();
     notificationObject.videoId = video._id;
+    if(userIdentity.isAuthenticated()) {
+      notificationObject.actionUserId = user._id;
+    }
     var commentData = {};
     var comment = {};
     comment.videoId = $(this).attr('value');
@@ -178,6 +181,9 @@ function bindEvents() {
       notificationObject.notificationType = 'LIKE';
       notificationObject.notificationMessage = 'liked your video';
       notificationObject.videoId = video._id;
+      if(userIdentity.isAuthenticated()) {
+        notificationObject.actionUserId = user._id;
+      }
       var likeData = {};
       var likeObject = {};
       likeObject.videoId = $(this).attr('data-videoId');
@@ -249,6 +255,9 @@ function bindEvents() {
       followObject.followingUserId = video.userId;
       notificationObject.notificationType = 'FOLLOW';
       notificationObject.notificationMessage = 'started following you';
+      if(userIdentity.isAuthenticated()) {
+        notificationObject.actionUserId = user._id;
+      }
       followData.follow = followObject;
       followData.notification = notificationObject;
       //console.log(followData);
@@ -302,6 +311,9 @@ function bindEvents() {
         notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-FACEBOOK';
         notificationObject.notificationMessage = 'shared your video on Facebook';
         notificationObject.videoId = video._id;
+        if(userIdentity.isAuthenticated()) {
+          notificationObject.actionUserId = user._id;
+        }
         if(response.post_id) {
           $.ajax({
             type: 'POST',
@@ -321,6 +333,9 @@ function bindEvents() {
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-TWITTER';
     notificationObject.notificationMessage = 'shared your video on Twitter';
     notificationObject.videoId = video._id;
+    if(userIdentity.isAuthenticated()) {
+      notificationObject.actionUserId = user._id;
+    }
     $.ajax({
       type: 'POST',
       url: '/api/notifications',
@@ -336,6 +351,9 @@ function bindEvents() {
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-GOOGLEPLUS';
     notificationObject.notificationMessage = 'shared your video on Google Plus';
     notificationObject.videoId = video._id;
+    if(userIdentity.isAuthenticated()) {
+      notificationObject.actionUserId = user._id;
+    }
     $.ajax({
         type: 'POST',
         url: '/api/notifications',
@@ -373,6 +391,9 @@ function bindEvents() {
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-EMBEDED';
     notificationObject.notificationMessage = 'embeded your video';
     notificationObject.videoId = video._id;
+    if(userIdentity.isAuthenticated()) {
+      notificationObject.actionUserId = user._id;
+    }
     $.ajax({
         type: 'POST',
         url: '/api/notifications',
@@ -528,6 +549,9 @@ function bindEvents() {
       notificationObject.notificationType = 'COMMENT REPLY';
       notificationObject.notificationMessage = $('#comment').val();
       notificationObject.videoId = video._id;
+      if(userIdentity.isAuthenticated()) {
+        notificationObject.actionUserId = user._id;
+      }
       replyData.comment = replyObject;
       replyData.notification = notificationObject;
       console.log(replyData.notification);
@@ -698,6 +722,9 @@ function initialize(videoPath) {
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
   notificationObject.notifiedUserId  = video.userId;
+  if(userIdentity.isAuthenticated()) {
+    notificationObject.actionUserId = user._id;
+  }
 
   //run init functions
   incrementVideoCount();
