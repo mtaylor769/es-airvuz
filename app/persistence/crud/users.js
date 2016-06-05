@@ -559,7 +559,7 @@ users.prototype.getUserByEmail = function (email) {
 	logger.debug('getUserByEmail: '+ email);
 	if (email) {
 		logger.debug(email);
-		validation.emailAddress 	= email;
+		validation.emailAddress 	= email.toLowerCase();
 	} else {
 		validation.emailAddress		= null;
 		var errorMessage						= new ErrorMessage();
