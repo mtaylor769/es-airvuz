@@ -9,7 +9,7 @@
 
   function BaseController($scope, identity, $mdDialog, $mdSidenav, auth) {
 
-    if (!identity.isAuthenticated()) {
+    if (!identity.isAuthenticated() || !identity.canAccessAdmin()) {
       showLoginDialog();
     }
 
