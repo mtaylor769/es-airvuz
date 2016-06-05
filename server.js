@@ -116,7 +116,6 @@ var viewManager							= require('./app/views/manager/viewManager');
 var indexView								= require('./app/views/view/indexView');
 var videoPlayerView					= require('./app/views/view/videoPlayerView');
 var userProfileView					= require('./app/views/view/userProfileView');
-var loginView 							= require('./app/views/view/loginView');
 var videoUploadView					= require('./app/views/view/videoUploadView');
 var searchView							= require('./app/views/view/searchView');
 var categoryView						= require('./app/views/view/categoryView');
@@ -131,7 +130,6 @@ viewManager.addView({	view : indexView });
 viewManager.addView({	view : userProfileView });
 viewManager.addView({	view : videoPlayerView });
 viewManager.addView({ view : videoPlayerEmbedView });
-viewManager.addView({ view : loginView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
 viewManager.addView({ view : categoryView });
@@ -167,10 +165,6 @@ app.get("/", function(req, res) {
 
 app.get("/email-confirmation/:id", function(req, res) {
 	loadView(req, res, indexView.getViewName());
-});
-
-app.get("/login", function(req, res){
-	loadView(req, res, loginView.getViewName());
 });
 
 app.get("/userProfile/:userNameUrl", function(req, res) {

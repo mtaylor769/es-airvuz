@@ -43,7 +43,8 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data.userNameDisplay							= params.userNameDisplay || null;
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 	userInfo.data.profilePicture				= params.profilePicture || "";
-	
+	userInfo.data.isSubscribeAirVuzNews	= params.isSubscribeAirVuzNews || false;
+
 	if (params.social) {
 		userInfo.data.status 								= 'active';
 	} else {
@@ -122,7 +123,7 @@ users.prototype.validateCreateUser = function(params) {
 			sourceLocation	: sourceLocation
 		});
 	}
-logger.error('line 125');
+
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
 				if (email) {
@@ -156,13 +157,11 @@ logger.error('line 125');
 						})	
 				} else {
 					email = userInfo.data.emailAddress;
-					logger.error('line 158');
-					logger.error(userInfo.data.emailAddress);
+
 					var regex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/g;
 					var checkEmail = email.match(regex);
-					logger.error(checkEmail);
+
 					if(!checkEmail) {
-						logger.error('error');
 						userInfo.errors = errorMessage.getErrorMessage({
 							statusCode: "400",
 							errorId: "VALIDA1000",
@@ -176,7 +175,7 @@ logger.error('line 125');
 						});
 					}
 				}
-				return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec()
+				return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec();
 			})
 			.then(function (userNameDisplay) {
 				if (userNameDisplay) {
