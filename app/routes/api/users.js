@@ -216,7 +216,7 @@ function _sendPasswordResetMail(user, host) {
 }
 
 function passwordResetRequest(req, res) {
-  var email = req.body.email;
+  var email = req.body.email.toLowerCase();
   usersCrud
     .resetPasswordRequest(email)
     .then(function (user) {
