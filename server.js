@@ -257,11 +257,7 @@ app.use(function (req, res) {
 	res.send('Not found');
 });
 
-var listener = app.listen(process.env.PORT || 80);
-
-// attach socket to listener
-var io = require("./io");
-io.attach(listener);
+app.listen(process.env.PORT || 80);
 
 
 setTimeout(function() {
