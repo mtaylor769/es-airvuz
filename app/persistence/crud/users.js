@@ -6,23 +6,17 @@ try {
 	var Promise											= require('bluebird');
 	
 	var ErrorMessage								= require('../../utils/errorMessage');
-	var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
 	var socialCrud 									= require('../../persistence/crud/socialMediaAccount');
 	var database										= require('../database/database');
-	var currentUser									= null;
 	var UserModel										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
-	var validation 									= {};
 	var crypto 											= require('crypto');
-	var regSpaceTest								= new RegExp("\\s");
 
-} 
+}
 catch(exception) {
 	logger.error(" import error:" + exception);
 }
 
-var users = function() {
-	
-};
+var users = function() {};
 
 /*
  * @param params {Object}
@@ -223,26 +217,19 @@ var ValidateUserName = function(id, params) {
 									errorMessage		: "Username already exists",
 									sourceLocation	: sourceLocation
 								});
-								reject(errors);
-								return;
+								return reject(errors);
 							} else {
-								resolve();
-								return;
+								return resolve();
 							}
 						} else {
-							resolve();
-							return;
+							return resolve();
 						}
 					})
 					.catch(function(error) {
-						logger.error('line 241');
-						logger.debug(error);
-						reject(error);
-						return;
+						return reject(error);
 					});
 			} else {
-				resolve();
-				return;
+				return resolve();
 			}
 		})
 	);
@@ -271,8 +258,7 @@ var ValidateEmailAddress = function(id, params) {
 					reject(errors);
 					return;
 				}
-				resolve();
-				return;
+				return resolve();
 			})
 			.catch(function(error) {
 				reject(error);
@@ -341,8 +327,6 @@ var ValidatePassword = function(id, params) {
  * @param params.sourceLocation {string} - location where the error initiates.
  */
 users.prototype.validateUpdateUser = function(id, params) {
-	var sourceLocation				= "persistence.crud.Users.update";
-	var errorMessage					= new ErrorMessage();
 	var userInfo 							= {};
 
 	return(new Promise(function(resolve, reject) {
@@ -383,7 +367,7 @@ users.prototype.validateUpdateUser = function(id, params) {
  */
 users.prototype.create = function(params) {
 	logger.debug('made it into user create');
-	validation 				= this.validateCreateUser(params);
+	var validation 				= this.validateCreateUser(params);
 	return validation.then(function (userInfo) {
 		if(userInfo.errors) {
 			throw userInfo.errors;
@@ -447,6 +431,7 @@ users.prototype.getAllUsers = function() {
 */
 users.prototype.getUserById = function (userId) {
 	logger.debug('searching for user by userId: ' + userId);
+	var validation = {};
 	if (userId) {
 		validation.userId 			= userId;
 	} else {
@@ -507,6 +492,7 @@ users.prototype.getUserById = function (userId) {
 */
 users.prototype.getUserBySocialId = function (socialId) {
 	logger.debug('searching for user by socialId: ' + socialId);
+	var validation = {};
 
 	if (socialId) {
 		validation.socialId 			= socialId;
@@ -557,6 +543,7 @@ users.prototype.getUserBySocialId = function (socialId) {
 */
 users.prototype.getUserByEmail = function (email) {
 	logger.debug('getUserByEmail: '+ email);
+	var validation = {};
 	if (email) {
 		logger.debug(email);
 		validation.emailAddress 	= email.toLowerCase();
@@ -605,55 +592,6 @@ users.prototype.getUserByEmail = function (email) {
 	
 };
 
-
-/*
-* Get a user by user name
-*/
-users.prototype.getUserByUserNameUrl = function (userNameUrl) {
-	logger.debug('hitting getUserByUserNameDisplay');
-	logger.debug(userNameUrl);
-	if (userNameUrl) {
-		validation.userNameUrl 	= userNameUrl;
-	} else {
-		validation.userNameUrl		= null;
-		var errorMessage						= new ErrorMessage();
-		errorMessage.getErrorMessage({
-			statusCode								: "500",
-			errorId 									: "PERS1000",
-			errorMessage 							: "Failed while getting user by userNameUrl",
-			sourceError								: "Invalid userNameUrl",
-			sourceLocation						: "persistence.crud.Users.getUserByuserNameUrl"
-		});
-
-		validation.errors 					= errorMessage;
-	}
-
-	return(new Promise(function(resolve, reject){
-		if (validation.userNameUrl === null) {
-			reject(validation.errors);
-		} else {
-			logger.debug('line 566 : ' + validation.userNameUrl);
-			UserModel.findOne({userNameUrl : validation.userNameUrl})
-				.select('-password')
-				.lean()
-				.exec()
-				.then(function(user) {
-					resolve(user);
-				})
-				.catch(function() {
-						var errorMessage		= new ErrorMessage();
-						errorMessage.getErrorMessage({
-							statusCode			: "500",
-							errorMessage		: "Failed while getting user by user name",
-							sourceError			: error,
-							sourceLocation	: "persistence.crud.Users.getUserByuserNameDisplay"
-						});
-						reject(errorMessage.getErrors());
-				})
-		}
-	}));
-};
-
 /*
 * Update user information
 */
@@ -700,6 +638,7 @@ users.prototype.update = function (id, params) {
 * Delete
 */
 users.prototype.delete = function(userId) {
+	var validation = {};
 	if (userId) {
 		validation.userId 					= userId;
 	} else {
@@ -772,10 +711,9 @@ function resetPasswordRequest(email) {
 			if (!user) {
 				throw 'Email does not exists';
 			}
+
 			// random string in hex to prevent adding "/" "+"
-			var resetCode = crypto.randomBytes(10).toString('hex');
-			// send email to reset
-			user.resetPasswordCode = resetCode;
+			user.resetPasswordCode = crypto.randomBytes(10).toString('hex');
 
 			return user.save();
 		});
@@ -785,7 +723,7 @@ function resetPasswordChange(code, newPassword) {
 	return UserModel.findOne({resetPasswordCode: code}).exec()
 		.then(function (user) {
 			if (!user) {
-				throw 'No code reset exists';
+				throw 'No reset code exists';
 			}
 			user.password = user.generateHash(newPassword);
 
@@ -794,8 +732,39 @@ function resetPasswordChange(code, newPassword) {
 		});
 }
 
-users.prototype.updateRoles 					= updateRoles;
-users.prototype.resetPasswordRequest 	= resetPasswordRequest;
-users.prototype.resetPasswordChange 	= resetPasswordChange;
+/**
+ * get user by user name url / user name display
+ * @param userNameUrl
+ * @returns {Promise}
+ */
+function getUserByUserNameUrl(userNameUrl) {
+	var validation = {};
+
+	if (userNameUrl) {
+		validation.userNameUrl 	= userNameUrl.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+	} else {
+		validation.userNameUrl		= null;
+		var errorMessage						= new ErrorMessage();
+		errorMessage.getErrorMessage({
+			statusCode								: "500",
+			errorId 									: "PERS1000",
+			errorMessage 							: "Failed while getting user by userNameUrl",
+			sourceError								: "Invalid userNameUrl",
+			sourceLocation						: "persistence.crud.Users.getUserByUserNameUrl"
+		});
+		validation.errors 					= errorMessage;
+		return Promise.reject(validation.errors);
+	}
+
+	return UserModel.findOne(validation)
+		.select('-password')
+		.lean()
+		.exec();
+}
+
+users.prototype.updateRoles 							= updateRoles;
+users.prototype.resetPasswordRequest 			= resetPasswordRequest;
+users.prototype.resetPasswordChange 			= resetPasswordChange;
+users.prototype.getUserByUserNameUrl 			= getUserByUserNameUrl;
 
 module.exports = new users();
