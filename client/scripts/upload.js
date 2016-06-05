@@ -8,8 +8,7 @@ var Evaporate     = require('evaporate'),
     AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
     camera        = require('./services/camera'),
-    drone         = require('./services/drone'),
-    IO;
+    drone         = require('./services/drone');
 
 /**
  * Templates
@@ -380,14 +379,26 @@ function bindEvents() {
 
     renderStep(2);
 
-    IO.emit('upload:external', url);
+    $.ajax({
+      url: '/api/upload-external',
+      contentType : 'application/json',
+      type: 'POST',
+      data: JSON.stringify({url: url})
+    }).done(onExternalTranscoding);
   }
 
-  function onExternalTranscoding() {
+  function onExternalTranscoding(response) {
     $uploadPage.find('#processing-message').removeClass('hidden');
     $uploadPage.find('.progress-bar')
       .text('100%')
       .width('100%');
+
+    $.ajax({
+      url: '/api/upload-external/transcode',
+      contentType : 'application/json',
+      type: 'POST',
+      data: JSON.stringify(response)
+    }).done(onStartPolling);
   }
 
   function onStartPolling(video) {
@@ -410,11 +421,6 @@ function bindEvents() {
     .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick)
     .on('click', '#btn-external-upload', onUploadExternalUrlClick);
 
-  // socket events
-  IO.on('upload:transcoding', onExternalTranscoding);
-  IO.on('upload:start-polling', onStartPolling);
-  IO.on('upload:error', onUploadError);
-
   $(window).on('beforeunload', onBeforeUnload);
 
 }
@@ -424,8 +430,6 @@ function initialize() {
   if (!identity.isAuthenticated()) {
     window.location.href = '/';
   }
-  
-  IO = require('./services/socket').init();
 
   $uploadPage = $('#upload-page');
 
