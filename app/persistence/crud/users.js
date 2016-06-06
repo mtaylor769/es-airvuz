@@ -546,10 +546,7 @@ users.prototype.getUserByEmail = function (email) {
 	if (!email) {
 		return Promise.reject('Required email input - getUserByEmail');
 	}
-	console.log('******************** email.toLowerCase() ********************');
-	console.log(email.toLowerCase());
-	console.log('************************************************');
-	return UserModel.findOne({emailAddress : email.toLowerCase()}).lean().exec();
+	return UserModel.findOne({emailAddress : email.toLowerCase()}).exec();
 };
 
 /*
