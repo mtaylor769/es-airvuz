@@ -118,9 +118,9 @@
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
-                                <span class="p-l-10 hidden-xs"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
-                                <span class="bold">  Likes </span><span class="like-count">{video.likeCount} |</span>
-                                <span class="bold commentCount"> Comments</span><span> {video.commentCount} </span>
+                                <span class="p-l-10"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
+                                <span class="bold">  Likes </span><span class="like-count">{video.likeCount} </span>
+                                <span class="bold commentCount hidden-xs">| Comments</span><span class="hidden-xs"> {video.commentCount} </span>
                             </div>
                             <div class="video-action-icons pull-right flex">
                                 <span class="glyphicon glyphicon-heart like pointer" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
