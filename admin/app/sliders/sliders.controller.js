@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('SlidersController', SlidersController);
 
-  SlidersController.$inject = ['Sliders', '$q', '$http'];
+  SlidersController.$inject = ['Sliders', '$q', '$http', 'Amazon'];
 
-  function SlidersController(Sliders, $q, $http) {
+  function SlidersController(Sliders, $q, $http, Amazon) {
     var Slide = Sliders.createResource('slide');
     var Slider = Sliders.createResource('slider');
 
@@ -47,7 +47,7 @@
     function saveSlide() {
       var params = {
         key: vm.newSlide.hashName,
-        dir: 'airvuz-asset-beta/slide'
+        dir: Amazon.assetBucket + '/slide'
       };
 
       $http.post('/api/amazon/move-file', params)
