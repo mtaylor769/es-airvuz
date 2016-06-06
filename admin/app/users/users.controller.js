@@ -14,6 +14,10 @@
 				username: username
 			}}).then(function(response){
 				vm.user = response.data;
+			}).catch(function (response) {
+				if (response.status === 403) {
+					alert('You do not have permission to search user. Please contact a master drone pilot');
+				}
 			});
 		}
 

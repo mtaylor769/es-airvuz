@@ -31,7 +31,7 @@ function search(req, res) {
   acl.isAllowed(req.user._id, 'user', 'search')
     .then(function (isAllow) {
       if (!isAllow) {
-        res.sendStatus(400);
+        return res.sendStatus(403);
       }
       return usersCrud
         .getUserByUserNameUrl(req.query.username)
