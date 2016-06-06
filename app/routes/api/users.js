@@ -2,30 +2,15 @@ try {
   var log4js                 = require('log4js');
   var logger                 = log4js.getLogger('app.routes.api.users');
   var acl                    = require('../../utils/acl');
-  var jwt                    = require('jsonwebtoken');
-  var tokenConfig            = require('../../../config/token');
   var aclRoles               = require('../../utils/acl');
   var usersCrud              = require('../../persistence/crud/users');
-  var userParams             = null;
   var nodemailer             = require('nodemailer');
-  var tokenData              = null;
-  var authCrud               = require('./auth');
-  var HireMe                 = require('../../utils/emails/hireMe');
-}
-
-catch(exception) {
+  var _                      = require('lodash');
+} catch(exception) {
   logger.error(" import error:" + exception);
 }
 
 function User() {}
-
-function post(req, res) {
-  usersCrud
-    .create(req.params)
-    .then(function (user) {
-      res.send(user);
-    });
-}
 
 function search(req, res) {
   acl.isAllowed(req.user._id, 'user', 'search')
@@ -51,81 +36,36 @@ function get(req, res) {
 }
 
 function createUser(req, res) {
-	logger.debug(".createUser: BEG");
-	
-  if (
-		(req.body.token)
-		&& (req.body.token.length > 0)
-	) {
-    //decrypt token for use
-    jwt.verify(req.body.token, tokenConfig.secret, function(error, data){
-      userParams = {
-        emailAddress            : data.email,
-        socialMediaAccounts     : data.socialMediaAccounts,
-        userNameDisplay                : req.body.username
-      };
-    });
-  } else {
-    userParams = {
-      emailAddress            : req.body.email,
-      userNameDisplay                : req.body.username,
-      password                : req.body.password,
-      confirmPassword         : req.body.confirmPassword
-    };
-  }
+  var userParams = {
+    emailAddress            : req.body.email.toLowerCase(),
+    userNameDisplay         : req.body.username,
+    password                : req.body.password,
+    confirmPassword         : req.body.confirmPassword,
+    isSubscribeAirVuzNews   : req.body.isSubscribeAirVuzNews
+  };
 
-  //create a local login if a social login already exists
-  
   return usersCrud
     .create(userParams)
     .then(function(user) {
-      logger.debug(user);
-      aclRoles.addUserRoles(user._id, ['user-general']).then(function() {
+      return aclRoles.addUserRoles(user._id, ['user-general']).then(function() {
+        return user;
       });
-      return user;
     })
     .then(function(user) {
-      logger.debug(user);
-      var sendData = {};
-      var params = req.body;
-      logger.debug(params);
-      var transport = nodemailer.createTransport({
-        service: "Gmail",
-        auth: {
-          user:'support@airvuz.com',
-          pass:'b5&YGG6n'
-        }
-      });
-
       var mailOptions = {
-        from:'Account Confirmation <noreply@airvuz.com>',
         to: user.emailAddress,
         subject: 'Account Confirmation',
         html: '<p>Follow the link below to confirm your account</p><p><a href="' + req.get('host') + '/email-confirmation/' + user._id + '">Confirm Account</a></p>'
       };
-      logger.debug(mailOptions.html);
-      transport.sendMail(mailOptions, function(error, message) {
-        if(error) {
-          sendData = {
-            statusCode    : 400,
-            data          : JSON.stringify(error),
-            msg           : JSON.stringify(error)
 
-          }
-        } else {
-          sendData = {
-            statusCode    : 200,
-            data          : message,
-            msg           : 'Message Sent'
-          }
-        }
-        res.send({email: 'sent'});
-      })
-
+      return _sendMail(mailOptions);
+    })
+    .then(function () {
+      res.sendStatus(200);
     })
     .catch(function(error) {
-      res.send(error)
-    })
+      res.status(500).json(error);
+    });
 }
 
 function put(req, res) {
@@ -147,16 +87,9 @@ function put(req, res) {
   });
 }
 
+// TODO: move html to a template
 function hireMe(req, res) {
-  var sendData = {};
   var params = req.body;
-  var transport = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user:'support@airvuz.com',
-      pass:'b5&YGG6n'
-    }
-  });
   var mailOptions = {
     from:'AirVuz Hire Request <noreply@airvuz.com>',
     to: params.profileUser.emailAddress,
@@ -168,28 +101,26 @@ function hireMe(req, res) {
     '<div>Email: ' +  params.email +'</div>' +
     '<div>message: '+params.message+'</div>' +
     '<span class="im" style="color: #500050;">This message may contain confidential and/or restricted information. If you are not the addressee or authorized to receive this for the addressee, you must not use, copy, disclose, or take any action based on this message or any information herein. This information should only be forwarded or distributed on a "need to know basis”. If you have received this message in error, please advise the sender immediately by reply e-mail and delete this message. Thank you for your cooperation.</span>'
-
   };
-  transport.sendMail(mailOptions, function(error, message) {
-    if(error) {
-      sendData = {
-        statusCode    : 400,
-        data          : JSON.stringify(error),
-        msg           : JSON.stringify(error)
 
-      }
-    } else {
-      sendData = {
-        statusCode    : 200,
-        data          : message,
-        msg           : 'Message Sent'
-      }
-    }
-    res.send(sendData);
-  })
+  _sendMail(mailOptions)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
 }
 
-function _sendPasswordResetMail(user, host) {
+// TODO: extract out as a service or util
+/**
+ * send email
+ * - NOTE: if password is change this will break all email using _sendMail
+ * @param {Object} options
+ * @returns {Promise}
+ * @private
+ */
+function _sendMail(options) {
   var transport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -198,21 +129,31 @@ function _sendPasswordResetMail(user, host) {
     }
   });
 
-  var mailOptions = {
-    from:'AirVuz<noreply@airvuz.com>',
-    to: user.emailAddress,
-    subject: 'Password Reset',
-    html: '<div><a href="' + host + '/password-reset/' + user.resetPasswordCode + '">Click here to reset password</a></div>'
+  var defaultOptions = {
+    from : 'AirVuz <noreply@airvuz.com>'
+    // to
+    // subject
+    // html
   };
 
   return new Promise(function (resolve, reject) {
-    transport.sendMail(mailOptions, function(error, message) {
+    transport.sendMail(_.extend({}, defaultOptions, options), function(error, message) {
       if(error) {
         return reject(message);
       }
       return resolve(message);
     });
   });
+}
+
+function _sendPasswordResetMail(user, host) {
+  var mailOptions = {
+    to: user.emailAddress,
+    subject: 'Password Reset',
+    html: '<div><a href="' + host + '/password-reset/' + user.resetPasswordCode + '">Click here to reset password</a></div>'
+  };
+
+  return _sendMail(mailOptions);
 }
 
 function passwordResetRequest(req, res) {

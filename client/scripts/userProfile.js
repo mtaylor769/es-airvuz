@@ -1012,14 +1012,15 @@ function displayHireMeModal() {
 }
 
 function sendHireMeEmail() {
-  var $hireMe = $('#hire-me-modal');
+  var $hireMeModal = $('#hire-me-modal');
   var hireData = {
-        profileUser       : profileUser,
-        name              : $($hireMe).find('#hire-name').val(),
-        email             : $($hireMe).find('#hire-email').val(),
-        message           : $($hireMe).find('#project-description').val()
-  }
-  $('#hire-me-modal')
+    profileUser       : profileUser,
+    name              : $($hireMeModal).find('#hire-name').val(),
+    email             : $($hireMeModal).find('#hire-email').val(),
+    message           : $($hireMeModal).find('#project-description').val()
+  };
+
+  $hireMeModal
     .modal('hide');
 
   $.ajax({
@@ -1029,22 +1030,14 @@ function sendHireMeEmail() {
     contentType : 'application/json'
   })
     .done(function(response){
-      if (response.statusCode === 200) {
-        //console.log('open dialog that says message has been sent');
-      } else {
-        $('#error-message-modal')
-          .modal('show')
-          .find('.error-modal-body')
-          .html('Unable to send email. ' +response.data);
-      }
+      // open dialog that says message has been sent or show message
     })
     .error(function(error){
       $('#error-message-modal')
         .modal('show')
         .find('.error-modal-body')
-        .html('Unable to send email. '+error);
+        .html('Unable to send email. Please contact support');
     });
-
 }
 
 function bindSortAllVideos() {

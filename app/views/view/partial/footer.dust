@@ -105,6 +105,9 @@
               <label for="isSubscribeAirVuzNews">Subscribe to AirVuz News</label><br/>
               <input type="checkbox" id="isSubscribeAirVuzNews" value="true" checked>
             </div>
+            <div class="text-message text-success hidden">
+                <p>You signed up successfully. Please check your inbox to confirm.</p>
+            </div>
             <div class="text-right">
               <button type="button" class="btn btn-primary" id="signup-btn">Sign up</button>
             </div>

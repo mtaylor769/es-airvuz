@@ -169,34 +169,36 @@ function bindEvents() {
     var username = $loginModal.find('#username:visible').val();
     var password = $loginModal.find('#password:visible').val();
     var confirmPassword = $loginModal.find('#confirm-password:visible').val();
-    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val();
+    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val() === 'true';
 
     //setting object equal to modal values
     newUserObject.email = emailAddress;
     newUserObject.username = username;
     newUserObject.password = password;
     newUserObject.confirmPassword = confirmPassword;
-    
+    newUserObject.isSubscribeAirVuzNews = isSubscribeAirVuzNews;
+
     $.ajax({
       type: 'POST',
       url: '/api/users/create',
-      data: newUserObject
+      data: JSON.stringify(newUserObject),
+      contentType : 'application/json'
     })
-      .done(function(response) {
-        if(response.email) {
-          $loginModal.find('#email:visible').val('');
-          $loginModal.find('#username:visible').val('');
-          $loginModal.find('#password:visible').val('');
-          $loginModal.find('#confirm-password:visible').val('');
-          $loginModal.modal('hide');
-          
-        } else {
-          appendErrorMessage(response);
-        }
+      .done(function() {
+        $loginModal.find('#email:visible').val('');
+        $loginModal.find('#username:visible').val('');
+        $loginModal.find('#password:visible').val('');
+        $loginModal.find('#confirm-password:visible').val('');
+        $loginModal.find('.text-message').removeClass('hidden');
+
+        setTimeout(function () {
+          $loginModal.find('.text-message').addClass('hidden');
+        }, 5000);
       })
-      .error(function(error) {
+      .error(function(response) {
+        appendErrorMessage(response.responseJSON);
         //console.log(error);
-      })
+      });
   });
 
   $header.on('click', '.av-search a', function (event) {
