@@ -128,8 +128,8 @@
                                 <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
                                     <span class="fa fa-code social embed pointer" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
-                                    <a href="https://plus.google.com/share?url=http://beta2.airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
-                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
+                                    <a href="https://plus.google.com/share?url=http://airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
+                                    <a href="https://twitter.com/intent/tweet?url=http://airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
                                     <span class="fa fa-facebook-official social pointer" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
                                 </div>
                             </div>
