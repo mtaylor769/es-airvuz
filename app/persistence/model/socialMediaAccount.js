@@ -1,10 +1,6 @@
 var mongoose	= require('mongoose');
-var Schema		= mongoose.Schema;
 
 var socialMediaAccountSchema = mongoose.Schema({
-
-
-	
 	accountData : {},
 
 	/*
@@ -25,7 +21,8 @@ var socialMediaAccountSchema = mongoose.Schema({
 		enum			: ['facebook', "google", "INSTAGRAM", "TWITTER", "VIMEO"]
 	},
 	
-	userId: { 
+	userId: {
+		required: true,
 		type: mongoose.Schema.Types.ObjectId, ref: 'Users' 
 	}
 
