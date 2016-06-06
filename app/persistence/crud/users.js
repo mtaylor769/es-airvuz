@@ -34,13 +34,13 @@ users.prototype.validateCreateUser = function(params) {
 	userInfo.data 											= {};
 	userInfo.data.coverPicture					= params.coverPicture || "";
 	userInfo.data.emailAddress					= params.emailAddress || null;
-	userInfo.data.userNameDisplay							= params.userNameDisplay || null;
+	userInfo.data.userNameDisplay				= params.userNameDisplay || null;
 	userInfo.data.aclRoles 							= params.aclRoles || ['user-general'];
 	userInfo.data.profilePicture				= params.profilePicture || "";
 	userInfo.data.isSubscribeAirVuzNews	= params.isSubscribeAirVuzNews || false;
 
 	if (params.social) {
-		userInfo.data.status 								= 'active';
+		userInfo.data.status 							= 'active';
 	} else {
 		userInfo.data.password        		= params.password || null;
 		userInfo.data.confirmPassword     = params.confirmPassword || null;
@@ -537,58 +537,19 @@ users.prototype.getUserBySocialId = function (socialId) {
 	}));
 };
 
-/*
-* Get a user by email
-*/
+/**
+ * get a user by email
+ * @param email
+ * @returns {Promise}
+ */
 users.prototype.getUserByEmail = function (email) {
-	logger.debug('getUserByEmail: '+ email);
-	var validation = {};
-	if (email) {
-		logger.debug(email);
-		validation.emailAddress 	= email.toLowerCase();
-	} else {
-		validation.emailAddress		= null;
-		var errorMessage						= new ErrorMessage();
-		errorMessage.getErrorMessage({
-			statusCode								: "500",
-			errorId 									: "PERS1000",
-			errorMessage 							: "Failed while getting user by Email",
-			sourceError								: "Invalid UserEmail",
-			sourceLocation						: "persistence.crud.Users.getUserByEmail"
-		});
-
-		validation.errors 					= errorMessage;
+	if (!email) {
+		return Promise.reject('Required email input - getUserByEmail');
 	}
-
-	return(new Promise(function(resolve, reject) {
-		if (validation.errors) {
-			logger.debug(validation.errors);
-			reject(validation.errors);
-		} else {
-			logger.debug('searching user model for address');
-			logger.debug(validation.emailAddress);
-			UserModel.findOne({emailAddress : validation.emailAddress}, function(error, user){
-				if (error) {
-					logger.debug('error when trying to find user by email');
-					var errorMessage		= new ErrorMessage();
-					errorMessage.getErrorMessage({
-						statusCode			: "500",
-						errorId 				: "PERS1000",
-						errorMessage 		: "Failed while getting user by Email",
-						sourceError			: error,
-						sourceLocation	: "persistence.crud.Users.getUserByEmail"
-					});
-					logger.debug(error);
-					reject(errorMessage.getErrors());
-				} else {
-					logger.debug('found user by email');
-					logger.debug(user);
-					resolve(user);
-				}
-			});
-		}
-	}));
-	
+	console.log('******************** email.toLowerCase() ********************');
+	console.log(email.toLowerCase());
+	console.log('************************************************');
+	return UserModel.findOne({emailAddress : email.toLowerCase()}).lean().exec();
 };
 
 /*

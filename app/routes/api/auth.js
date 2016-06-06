@@ -36,13 +36,7 @@ function facebookAuthFailure() {
 }
 
 function facebookCallback(req, res, next) {
-  if (req.newUser) {
-    req.user = req.newUser;
-    token =  jwt.sign({_id: req.user._id, aclRoles: req.user.aclRoles}, tokenConfig.secret, { expiresIn: tokenConfig.expires });
-  }
-  else {
-    token =  jwt.sign({_id: req.user._id, aclRoles: req.user.aclRoles}, tokenConfig.secret, { expiresIn: tokenConfig.expires });
-  }
+  var token =  jwt.sign({_id: req.user._id, aclRoles: req.user.aclRoles}, tokenConfig.secret, { expiresIn: tokenConfig.expires });
   res.redirect('/social-login?token='+token);
 }
 

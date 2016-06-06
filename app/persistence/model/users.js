@@ -63,12 +63,6 @@ var usersSchema 		= mongoose.Schema({
 		type		: String/*,
 		unique		: true*/
 	},
-		
-  //user for password generating
-  emailConfirmed: {
-    type: Boolean,
-    default: false
-  },
   
 	// The users first name
   firstName : {
