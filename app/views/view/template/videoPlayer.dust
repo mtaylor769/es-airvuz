@@ -4,13 +4,13 @@
         <meta http-equiv="Cache-control" content="public">
         <title>AirVūz - {video.title}</title>
 
-        <meta property="og:url" content="http://beta2.airvuz.com/videoPlayer/{video.videoPath}"/>
+        <meta property="og:url" content="//airvuz.com/videoPlayer/{video.videoPath}"/>
         <meta property="og:type" content="video.other">
         <meta property="og:title" content="{video.title}" >
         <meta property="og:updated_time" content="{video.uploadDate}">
         <meta property="og:description" content="{video.description}" >
         <meta property="og:image" content="https:{s3Bucket}{video.thumbnailPath}" >
-        <meta property="fb:app_id" content="868675893230044">
+        <meta property="fb:app_id" content="{facebookAppId}">
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@airvuz" />
@@ -118,9 +118,9 @@
                         {!comments!}
                         <div class="gainsboro-background p-15-0">
                             <div class="inline m-l-10">
-                                <span class="p-l-10 hidden-xs"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
-                                <span class="like-count">{video.likeCount}</span><span class="bold">  Likes |</span>
-                                <span> {video.commentCount} </span><span class="bold commentCount">Comments</span>
+                                <span class="p-l-10"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
+                                <span class="bold">  Likes </span><span class="like-count">{video.likeCount} </span>
+                                <span class="bold commentCount hidden-xs">| Comments</span><span class="hidden-xs"> {video.commentCount} </span>
                             </div>
                             <div class="video-action-icons pull-right flex">
                                 <span class="glyphicon glyphicon-heart like pointer" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
@@ -128,8 +128,8 @@
                                 <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
                                     <span class="fa fa-code social embed pointer" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
-                                    <a href="https://plus.google.com/share?url=http://beta2.airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
-                                    <a href="https://twitter.com/intent/tweet?url=http://beta2.airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
+                                    <a href="https://plus.google.com/share?url=http://airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
+                                    <a href="https://twitter.com/intent/tweet?url=http://airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
                                     <span class="fa fa-facebook-official social pointer" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
                                 </div>
                             </div>
