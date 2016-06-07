@@ -118,7 +118,7 @@ module.exports = {
      google: {
       "clientID": "783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com",
       "clientSecret": "vJM7NvyWkpjom_bpubWuWLJP",
-      "callbackURL": "http://beta2.airvuz.com/auth/google/callback"
+      "callbackURL": "http://beta2.airvuz.com/api/auth/google/callback"
     },
 
     facebook: {			
