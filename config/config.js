@@ -76,7 +76,7 @@ module.exports = {
     google: {
       "clientID": "783133684568-lgmtef1gfersdq4q8edtvh4gu4f9gslb.apps.googleusercontent.com",
       "clientSecret": "1xA-DeneT3IT2Ek-SGaHjnyB",
-      "callbackURL": "http://airvuz.com/auth/google/callback"
+      "callbackURL": "http://airvuz.com/api/auth/google/callback"
     },		
     instagram: {
       clientID          : "d5339fbd8592442cb8657e9a040757c4",
