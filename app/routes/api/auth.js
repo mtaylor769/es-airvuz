@@ -48,21 +48,8 @@ function google() {
 }
 
 function googleCallback(req, res, next) {
-    logger.debug('google callback function');
-    if (req.newUser) {
-      req.user = req.newUser;
-      token = jwt.sign({
-        _id: req.user._id,
-        aclRoles: req.user.aclRoles
-      }, tokenConfig.secret, {expiresIn: tokenConfig.expires});
-    }
-    else {
-      token = jwt.sign({
-        _id: req.user._id,
-        aclRoles: req.user.aclRoles
-      }, tokenConfig.secret, {expiresIn: tokenConfig.expires});
-    }
-    res.redirect('/social-login?token=' + token);
+  var token =  jwt.sign({_id: req.user._id, aclRoles: req.user.aclRoles}, tokenConfig.secret, { expiresIn: tokenConfig.expires });
+  res.redirect('/social-login?token='+token);
 }
 
 function instagram(req, res, next) {
