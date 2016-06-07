@@ -5,6 +5,7 @@ var md5                     = require('md5');
 var uuid                    = require('node-uuid');
 var amazonService           = require('./../../../app/services/amazon.service.server');
 var youtubedl               = require('youtube-dl');
+var findRemoveSync          = require('find-remove');
 
 /**
  * Upload Route
@@ -143,6 +144,15 @@ function externalTranscodeVideo(req, res) {
     })
     .catch(function () {
       res.sendStatus(500);
+    })
+    .finally(function () {
+      /**
+       * remove the current upload temp file and remove file that is 4 hour old in the temp directory
+       * - this is only if the server die and never remove the temp file
+       */
+      var results = findRemoveSync('/tmp', {files: videoPath, extensions: ['.mp4', '.mp4.part'], maxLevel: 1, age: {seconds: 14400}});
+      logger.info('tmp file removed: ' + fileName);
+      logger.info(results);
     });
 }
 

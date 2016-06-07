@@ -43,6 +43,7 @@
     "evaporate": "^1.1.1",
     "express": "^4.13.4",
     "extract-text-webpack-plugin": "^1.0.1",
+    "find-remove": "^0.2.12",
     "html": "0.0.10",
     "isomorphic-fetch": "2.2.1",
     "jsonwebtoken": "^5.7.0",
