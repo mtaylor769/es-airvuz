@@ -1208,8 +1208,16 @@ End user profile CSS
 .top-two-videos {
   display: none;
 }
+#header .airvuz-logo {
+  display: none;
+}
 @media (min-width: 320px) {
 
+}
+@media (min-width: 375px) {
+  #header .airvuz-logo {
+    display: inline-block;
+  }
 }
 /* mobile device M */
 @media (min-width: 376px) {
