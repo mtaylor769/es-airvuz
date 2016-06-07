@@ -46,7 +46,6 @@ UserProfileModel.prototype.getData = function(params) {
 		return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
 			.then(function (social) {
 				if (social) {
-					console.log('is social');
 					user.facebook = true;
 					user.fbAccount = social.accountId;
 					return user;

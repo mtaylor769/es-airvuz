@@ -141,22 +141,16 @@
                         <ul class="parent-comments">
                         {#comments}
                             <li class="comment-wrap" data-userId="{userId._id}">
-                                <div class="flex">
-                                    <a href="/userProfile/{userId.userNameUrl}">
-                                    {#userId.profilePicture}
-                                        {#userId.isExternalLink}
+                                <div class="row">
+                                    <div class="m-t-5">
+                                        <a href="/userProfile/{userId.userNameUrl}" class="col-xs-2 col-md-1">
                                             <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
-                                        {:else}
-                                            <img src="{s3AssetUrl}users/profile-pictures{userId.profilePicture}" height="50" width="50" class="border-radius-circle m-10-20">
-                                        {/userId.isExternalLink}
-                                    {:else}
-                                      <img src="/client/images/default.png" height="50" width="50" class="border-radius-circle m-10-20">
-                                    {/userId.profilePicture}
-                                    </a>
-                                    <div class="m-t-20">
+                                        </a>
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
-                                        <p class="m-b-0"><a href="/userProfile/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
-                                        <p class="m-b-0">{comment}</p>
+                                        <div class="col-xs-9 col-md-10 posted-comment-text">
+                                            <p class="m-b-0"><a href="/userProfile/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
+                                            <p class="m-b-0">{comment}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <ul class="parentComment"></ul>

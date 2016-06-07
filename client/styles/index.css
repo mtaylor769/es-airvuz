@@ -635,6 +635,10 @@ body.modal-open {
   display: none;
 }
 
+.video-page .comment-wrap .posted-comment-text {
+  padding-left: 35px;
+  margin-top: 10px;
+}
 /*
  * End Video Player
 /**********************************/
@@ -1547,6 +1551,11 @@ End user profile CSS
 
   .videoUserName {
     font-size: 14px;
+  }
+
+  .video-page .comment-wrap .posted-comment-text {
+    padding-left: 50px;
+    margin-top: 10px;
   }
 }
 

@@ -136,11 +136,21 @@ VideoPlayerModel.prototype.getData = function(params) {
 				if(comment.userId !== null){
 					socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
 						.then(function(social) {
+								logger.debug(social);
 							if(social && comment.userId.profilePicture === ''){
-								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large'
+								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+							} else if(!social && comment.userId.profilePicture === '') {
+								comment.userId.profilePicture = '/client/images/default.png';
+							} else if(social && comment.userId.profilePicture.indexOf('facebook') > -1) {
+								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+							} else if(comment.userId.profilePicture.indexOf('http') === -1) {
+								comment.userId.profilePicture = amazonConfig.ASSET_URL + 'users/profile-pictures' + comment.userId.profilePicture;
+							} else {
+								comment.userId.profilePicture = comment.userId.profilePicture;
 							}
-							comment.userId.isExternalLink = comment.userId.profilePicture.indexOf('http') > -1;
 						})
+				} else {
+					comment.userId.profilePicture = '/client/images/default.png';
 				}
 			});
 			dataObject.comments = comments;
