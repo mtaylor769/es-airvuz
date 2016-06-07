@@ -169,9 +169,9 @@ function bindEvents() {
           '</li>';
         $('.parent-comments').prepend(html);
         $('#comment-text').val('');
-        var currentCount = $('.commentCount').text();
+        var currentCount = $('.comment-count').text();
         var toNumber = Number(currentCount);
-        $('.commentCount').text('  ' + (toNumber + 1) + '  ');
+        $('.comment-count').text('  ' + (toNumber + 1) + '  ');
       })
   });
 

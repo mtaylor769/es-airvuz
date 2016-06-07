@@ -120,7 +120,7 @@
                             <div class="inline m-l-10">
                                 <span class="p-l-10"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
                                 <span class="bold">  Likes </span><span class="like-count">{video.likeCount} </span>
-                                <span class="bold commentCount hidden-xs">| Comments</span><span class="hidden-xs"> {video.commentCount} </span>
+                                <span class="bold hidden-xs">| Comments</span><span class="hidden-xs comment-count"> {video.commentCount} </span>
                             </div>
                             <div class="video-action-icons pull-right flex">
                                 <span class="glyphicon glyphicon-heart like pointer" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
