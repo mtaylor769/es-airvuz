@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('airvuz.core')
+    .module('AirvuzAdmin')
     .factory('Amazon', Amazon);
 
   Amazon.$inject = [];
