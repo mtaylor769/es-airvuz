@@ -32,7 +32,7 @@ function get(req, res) {
 
 function put(req, res) {
   return sliderCrud
-    .updateSlider(req.params.id)
+    .updateSlider(req.body)
     .then(function (user) {
       res.json(user);
     });

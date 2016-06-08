@@ -12,6 +12,7 @@
       'ngMaterial',
       'ngSanitize',
       'evaporate',
-      'ngMaterialDatePicker'
+      'ngMaterialDatePicker',
+      'angularMoment'
     ]);
 })();

@@ -50,7 +50,7 @@
         <md-list-item class="md-2-line" ng-repeat="slider in vm.sliders">
           <div class="md-list-item-text" layout="column">
             <div>
-              <h3><span ng-if="slider.isActive">* </span>{{slider.name}} <small>{{slider.startDate}} - {{slider.endDate}}</small></h3>
+              <h3><span ng-if="slider.isActive">* </span>{{slider.name}} (<small>{{slider.startDate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}} - {{slider.endDate | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}</small>)</h3>
               <md-button class="md-raised md-primary md-block" ng-click="vm.editSlider(slider)">Edit</md-button>
               <md-button class="md-raised md-primary md-block" ng-click="vm.removeSlider(slider)">Delete</md-button>
             </div>
@@ -116,7 +116,7 @@
               </md-fab-actions>
             </md-fab-speed-dial>
             <h3>{{slide.name}} ({{slide.video}})</h3>
-            <img ng-src="//s3-us-west-2.amazonaws.com/airvuz-asset-beta/slide/{{slide.imagePath}}" alt="{{slide.imageAlt}}" class="img-responsive"/>
+            <img ng-src="//s3-us-west-2.amazonaws.com/{{vm.assetBucket}}/slide/{{slide.imagePath}}" alt="{{slide.imageAlt}}" class="img-responsive"/>
             <p>{{slide.description}}</p>
           </div>
         </md-card>
