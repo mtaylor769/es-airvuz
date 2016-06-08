@@ -146,13 +146,20 @@ var usersSchema 		= mongoose.Schema({
 	}
 });
 
-usersSchema.methods.generateHash = function(password) {
-	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
 usersSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.password);
 };
+
+function generateHash(password) {
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+}
+
+function purgeUserNameDisplay(userNameDisplay) {
+	return userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+}
+
+usersSchema.statics.purgeUserNameDisplay 	= purgeUserNameDisplay;
+usersSchema.statics.generateHash 					= generateHash;
 
 //userSchema.createIndex( { emailAddress: 1 }, { background: true } );
 //userSchema.createIndex( { "socialMediaAccount.accountId": 1 }, { background: true } );

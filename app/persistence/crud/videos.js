@@ -150,15 +150,19 @@ function search(query, page) {
 		}
 	});
 
+	var userNameSearch = UserModel.purgeUserNameDisplay(keywords);
+
 	keywords += '|' + keyWordNonCommon;
+	// have to purge user name to time like this because of the "|"
+	userNameSearch += '|' + UserModel.purgeUserNameDisplay((keyWordNonCommon));
 
 	return UserModel.findOne({
 		$or: [
 			{
-				'userNameDisplay': {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+				'userNameUrl': {$regex: new RegExp(userNameSearch, 'i')}
 			}
 		]
-	}).select('userNameDisplay').exec()
+	}).select('userNameUrl').exec()
 		.then(function (user) {
 			var userId = null,
 					criteria,
@@ -176,16 +180,16 @@ function search(query, page) {
 						userId: userId
 					},
 					{
-						description: {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+						description: {$regex: new RegExp(keywords, 'i')}
 					},
 					{
-						title: {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+						title: {$regex: new RegExp(keywords, 'i')}
 					},
 					{
-						videoLocation: {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+						videoLocation: {$regex: new RegExp(keywords, 'i')}
 					},
 					{
-						'tags.text': {$regex: new RegExp(keywords.toLowerCase(), 'i')}
+						'tags.text': {$regex: new RegExp(keywords, 'i')}
 					}
 				]
 			};
