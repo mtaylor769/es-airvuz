@@ -338,26 +338,27 @@ Videos.prototype.create = function(params) {
 //	})
 //};
 
-Videos.prototype.get5Videos = function(category) {
-	// var isProd = process.env.NODE_ENV === 'production';
-	// var random = isProd ? Math.floor(Math.random() * 500) : 0;
-	// var limit = count ? count : 5;
-	// return VideoModel.find({}).skip(random).populate('userId').limit(limit).exec();
+/**
+ * get next videos by category
+ * @param category
+ * @returns {Promise}
+ */
+Videos.prototype.getNextVideos = function(category) {
 	return VideoModel.find({categories: category})
 		.count()
 		.exec()
 		.then(function(videoCount) {
-			logger.error(videoCount)
 			var skip = Math.floor(Math.random() * videoCount);
+
 			return VideoModel.find({categories: category})
 				.skip(skip)
 				.populate('userId')
 				.limit(5)
-				.exec()
+				.exec();
 		})
 		.then(function(videos) {
 			return videos;
-		})
+		});
 };
 
 Videos.prototype.getById = function(id) {
