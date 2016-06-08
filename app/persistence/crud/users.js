@@ -186,7 +186,7 @@ users.prototype.validateCreateUser = function(params) {
 					});
 				}
 				// replace illegal characters
-				userInfo.data.userNameUrl = userInfo.data.userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+				userInfo.data.userNameUrl = UserModel.purgeUserNameDisplay(userInfo.data.userNameDisplay);
 				return userInfo;
 			});
 	
@@ -378,7 +378,7 @@ users.prototype.create = function(params) {
 			}
 			if (saveUser.password) {
 				logger.debug('hash password');
-				saveUser.password = saveUser.generateHash(saveUser.password);
+				saveUser.password = UserModel.generateHash(saveUser.password);
 			}
 			return saveUser.save(function (error) {
 				if (error) {
@@ -564,11 +564,11 @@ users.prototype.update = function (id, params) {
 			} else {
 				if (params.userNameDisplay) {
 					// update the userNameUrl also
-					params.userNameUrl = params.userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+					params.userNameUrl = UserModel.purgeUserNameDisplay(params.userNameDisplay);
 				}
 				if (params.oldPassword) {
 					var hashUser 			= new UserModel();
-					var pw 						= hashUser.generateHash(params.newPassword);
+					var pw 						= UserModel.generateHash(params.newPassword);
 					delete params.oldPassword;
 					delete params.newPassword;
 					delete params.confirmPassword;
@@ -682,7 +682,7 @@ function resetPasswordChange(code, newPassword) {
 			if (!user) {
 				throw 'No reset code exists';
 			}
-			user.password = user.generateHash(newPassword);
+			user.password = UserModel.generateHash(newPassword);
 
 			user.resetPasswordCode = undefined;
 			return user.save();
@@ -698,7 +698,7 @@ function getUserByUserNameUrl(userNameUrl) {
 	var validation = {};
 
 	if (userNameUrl) {
-		validation.userNameUrl 	= userNameUrl.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+		validation.userNameUrl 	= UserModel.purgeUserNameDisplay(userNameUrl);
 	} else {
 		validation.userNameUrl		= null;
 		var errorMessage						= new ErrorMessage();
