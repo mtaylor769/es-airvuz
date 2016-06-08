@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html view="app.views.view.template.videoPlayer">
+<html view="app.views.view.template.notification">
 <head>
     <meta http-equiv="Cache-control" content="public">
     <title>Notifications</title>
@@ -31,7 +31,7 @@
                     {@eq key=actionUserId.userNameDisplay value="Someone" }
                         <p style="margin: 10px">{actionUserId.userNameDisplay} {notificationMessage|s}</p>
                     {:else}
-                        <p style="margin: 10px"><a href="/userProfile/{actionUserId.userNameUrl}">{actionUserId.userNameDisplay}</a> {notificationMessage|s}</p>
+                        <p style="margin: 10px"><a href="/user/{actionUserId.userNameUrl}">{actionUserId.userNameDisplay}</a> {notificationMessage|s}</p>
                     {/eq}
                 </div>
             {:else}

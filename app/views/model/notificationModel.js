@@ -79,11 +79,11 @@ NotificationModel.prototype.getData = function(params) {
 
         //creating display html for dust
         if(notification.notificationType === 'COMMENT'){
-          notificationObject.notificationMessage = 'commented on your <a href="/videoPlayer/' + notification.videoId +'">video</a> : ' + '"' + notification.notificationMessage + '"';
+          notificationObject.notificationMessage = 'commented on your <a href="/video/' + notification.videoId +'">video</a> : ' + '"' + notification.notificationMessage + '"';
         } else if(notification.notificationType === 'COMMENT REPLY') {
-          notificationObject.notificationMessage = 'replied to your <a href="/videoPlayer/' + notification.videoId + '">comment</a> : ' + '"' +notification.notificationMessage + '"'
+          notificationObject.notificationMessage = 'replied to your <a href="/video/' + notification.videoId + '">comment</a> : ' + '"' +notification.notificationMessage + '"'
         } else if(notification.notificationType === 'LIKE') {
-          notificationObject.notificationMessage = 'Liked your <a href="/videoPlayer/' + notification.videoId + '">video</a>';
+          notificationObject.notificationMessage = 'Liked your <a href="/video/' + notification.videoId + '">video</a>';
         }
 
         notificationClone.push(notificationObject);

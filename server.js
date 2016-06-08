@@ -167,16 +167,16 @@ app.get("/email-confirmation/:id", function(req, res) {
 	loadView(req, res, indexView.getViewName());
 });
 
-app.get("/userProfile/:userNameUrl", function(req, res) {
+app.get("/user/:userNameUrl", function(req, res) {
 	loadView(req, res, userProfileView.getViewName());
 });
 
 // support older url /play?id=...
 app.get('/play', function (req, res) {
-	res.redirect('/videoPlayer/' + req.query.id);
+	res.redirect('/video/' + req.query.id);
 });
 
-app.get("/videoPlayer/:id", function(req, res) {
+app.get("/video/:id", function(req, res) {
 	loadView(req, res, videoPlayerView.getViewName());
 });
 

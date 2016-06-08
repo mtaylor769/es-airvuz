@@ -39,10 +39,10 @@
         <div id="slider-slick">
           {#index.slider.slides}
             <div class="slide hidden">
-              <a href="/videoPlayer/{video._id}">
+              <a href="/video/{video._id}">
                 <img data-lazy="{s3AssetUrl}slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
               </a>
-              <a href="/videoPlayer/{video._id}" class="btn btn-default">Watch now</a>
+              <a href="/video/{video._id}" class="btn btn-default">Watch now</a>
             </div>
           {/index.slider.slides}
         </div>
@@ -52,7 +52,7 @@
             {#index.slider.slides}
               <div class="col-md-12">
                 <h3>{name}</h3>
-                By <a href="/userProfile/{video.userId.userNameDisplay}">{video.userId.userNameDisplay}</a>
+                By <a href="/user/{video.userId.userNameDisplay}">{video.userId.userNameDisplay}</a>
                 <div class="slide-description">
                     {description}
                 </div>
