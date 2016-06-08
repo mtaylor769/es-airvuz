@@ -11,7 +11,7 @@
       {#index[videos]}
         <div class="video">
           <div class="text-center">
-            <a href="/videoPlayer/{_id}">
+            <a href="/video/{_id}">
               <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{title}" class="img-responsive"/>
             </a>
           </div>
@@ -19,7 +19,7 @@
             <p><span class="airvuz-blue">VŪZ</span> {viewCount} | {uploadDate} <span class="pull-right">{duration}</span></p>
             <div class="title">
               <h4>
-                <a href="/videoPlayer/{_id}">{title}</a>
+                <a href="/video/{_id}">{title}</a>
               </h4>
               {#userId.userNameDisplay}
                 <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>

@@ -39,10 +39,10 @@
         <div id="slider-slick">
           {#index.slider.slides}
             <div class="slide hidden">
-              <a href="/videoPlayer/{video._id}">
+              <a href="/video/{video._id}">
                 <img data-lazy="{s3AssetUrl}slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
               </a>
-              <a href="/videoPlayer/{video._id}" class="btn btn-default">Watch now</a>
+              <a href="/video/{video._id}" class="btn btn-default">Watch now</a>
             </div>
           {/index.slider.slides}
         </div>

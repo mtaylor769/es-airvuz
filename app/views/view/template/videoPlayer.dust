@@ -4,7 +4,7 @@
         <meta http-equiv="Cache-control" content="public">
         <title>AirVūz - {video.title}</title>
 
-        <meta property="og:url" content="//airvuz.com/videoPlayer/{video.videoPath}"/>
+        <meta property="og:url" content="//airvuz.com/video/{video.videoPath}"/>
         <meta property="og:type" content="video.other">
         <meta property="og:title" content="{video.title}" >
         <meta property="og:updated_time" content="{video.uploadDate}">
@@ -15,7 +15,7 @@
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@airvuz" />
         <meta name="twitter:creator" content="@airvuz" />
-        <meta name="twitter:url" content="http://beta2.airvuz.com/videoPlayer/{video.videoPath}" />
+        <meta name="twitter:url" content="http://beta2.airvuz.com/video/{video.videoPath}" />
         <meta name="twitter:title" content="{video.title}" />
         <meta name="twitter:description" content="{video.description}" />
         <meta name="twitter:image" content="https:{s3Bucket}{video.thumbnailPath}" />
@@ -107,7 +107,7 @@
                             </div>
                             <div class="top-two-videos">
                                 {#topTwoVideos}
-                                <a href="/videoPlayer/{_id}"><img src="{s3Bucket}{thumbnailPath}" height="75" width="150" class="margin-auto"></a>
+                                <a href="/video/{_id}"><img src="{s3Bucket}{thumbnailPath}" height="75" width="150" class="margin-auto"></a>
                                 {/topTwoVideos}
                             </div>
                             <div class="video-user-more border-radius-0 text-center margin-auto mobile-display-none">
@@ -128,8 +128,8 @@
                                 <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
                                 <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
                                     <span class="fa fa-code social embed pointer" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
-                                    <a href="https://plus.google.com/share?url=http://airvuz.com/videoPlayer/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
-                                    <a href="https://twitter.com/intent/tweet?url=http://airvuz.com/videoPlayer/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
+                                    <a href="https://plus.google.com/share?url=http://airvuz.com/video/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
+                                    <a href="https://twitter.com/intent/tweet?url=http://airvuz.com/video/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
                                     <span class="fa fa-facebook-official social pointer" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
                                 </div>
                             </div>

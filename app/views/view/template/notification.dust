@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html view="app.views.view.template.videoPlayer">
+<html view="app.views.view.template.notification">
 <head>
     <meta http-equiv="Cache-control" content="public">
     <title>Notifications</title>
