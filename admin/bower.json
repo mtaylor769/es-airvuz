@@ -19,6 +19,10 @@
     "angular-ui-router": "^0.2.18",
     "blueimp-md5": "^2.3.0",
     "angular-evaporate": "https://github.com/douathao/angular-evaporate.git#44081c1a8d46",
-    "angular-material-datetimepicker": "^1.4.0"
+    "angular-material-datetimepicker": "^1.4.0",
+    "angular-moment": "^0.10.3"
+  },
+  "resolutions": {
+    "angular": "^1.5.5"
   }
 }
