@@ -186,7 +186,9 @@ users.prototype.validateCreateUser = function(params) {
 					});
 				}
 				// replace illegal characters
-				userInfo.data.userNameUrl = UserModel.purgeUserNameDisplay(userInfo.data.userNameDisplay);
+				if (userInfo.data.userNameDisplay) {
+					userInfo.data.userNameUrl = UserModel.purgeUserNameDisplay(userInfo.data.userNameDisplay);
+				}
 				return userInfo;
 			});
 	
@@ -375,6 +377,7 @@ users.prototype.create = function(params) {
 			var saveUser = new UserModel(userInfo.data);
 			if (params.social) {
 				saveUser.userNameDisplay = saveUser._id;
+				saveUser.userNameUrl = saveUser._id;
 			}
 			if (saveUser.password) {
 				logger.debug('hash password');
