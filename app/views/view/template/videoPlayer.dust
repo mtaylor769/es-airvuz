@@ -96,7 +96,7 @@
                             {/user.profilePicture}
 
                             <div class="video-user-about t-a-inherit">
-                                <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/userProfile/{user.userNameUrl}">{user.userNameDisplay}</a></p>
+                                <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
                             </div>
@@ -111,7 +111,7 @@
                                 {/topTwoVideos}
                             </div>
                             <div class="video-user-more border-radius-0 text-center margin-auto mobile-display-none">
-                                <a href="/userProfile/{user.userNameUrl}">More Videos</a>
+                                <a href="/user/{user.userNameUrl}">More Videos</a>
                             </div>
                             {/topTwoVideos}
                         </div>
@@ -143,12 +143,12 @@
                             <li class="comment-wrap" data-userId="{userId._id}">
                                 <div class="row">
                                     <div class="m-t-5">
-                                        <a href="/userProfile/{userId.userNameUrl}" class="col-xs-2 col-md-1">
+                                        <a href="/user/{userId.userNameUrl}" class="col-xs-2 col-md-1">
                                             <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
                                         </a>
                                         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
                                         <div class="col-xs-9 col-md-10 posted-comment-text">
-                                            <p class="m-b-0"><a href="/userProfile/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
+                                            <p class="m-b-0"><a href="/user/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
                                             <p class="m-b-0">{comment}</p>
                                         </div>
                                     </div>

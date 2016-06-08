@@ -167,7 +167,7 @@ app.get("/email-confirmation/:id", function(req, res) {
 	loadView(req, res, indexView.getViewName());
 });
 
-app.get("/userProfile/:userNameUrl", function(req, res) {
+app.get("/user/:userNameUrl", function(req, res) {
 	loadView(req, res, userProfileView.getViewName());
 });
 

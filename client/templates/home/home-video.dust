@@ -22,9 +22,9 @@
                 <a href="/videoPlayer/{_id}">{title}</a>
               </h4>
               {#userId.userNameDisplay}
-                <p>By <a href="/userProfile/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
+                <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
               {:else}
-                <p>By <a href="/userProfile/{userId._id}">{userId._id}</a></p>
+                <p>By <a href="/user/{userId._id}">{userId._id}</a></p>
               {/userId.userNameDisplay}
 
             </div>

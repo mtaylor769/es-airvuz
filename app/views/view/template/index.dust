@@ -52,7 +52,7 @@
             {#index.slider.slides}
               <div class="col-md-12">
                 <h3>{name}</h3>
-                By <a href="/userProfile/{video.userId.userNameDisplay}">{video.userId.userNameDisplay}</a>
+                By <a href="/user/{video.userId.userNameDisplay}">{video.userId.userNameDisplay}</a>
                 <div class="slide-description">
                     {description}
                 </div>

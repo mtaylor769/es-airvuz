@@ -7,7 +7,7 @@
   </button>
   <ul class="dropdown-menu">
     <li>
-      <a href="/userProfile/{currentUser.userNameUrl}" class="btn btn-link">Profile</a>
+      <a href="/user/{currentUser.userNameUrl}" class="btn btn-link">Profile</a>
     </li>
     <li>
       <a href="/videoUpload" class="btn btn-link">Upload Video</a>
@@ -40,7 +40,7 @@
             {#notification.notifications}
               <li class="list-group-item">
                 {#actionUserId}
-                  <a href="/userProfile/{actionUserId.userNameUrl}">{actionUserId.userNameDisplay}</a> {notificationMessage|s}
+                  <a href="/user/{actionUserId.userNameUrl}">{actionUserId.userNameDisplay}</a> {notificationMessage|s}
                 {:else}
                   Someone {notificationMessage|s}
                 {/actionUserId}

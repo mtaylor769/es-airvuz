@@ -457,7 +457,7 @@ function editProfile() {
             // if user change the user name then redirect them to the new url
             identity.getUserInfo()
               .then(function () {
-                window.location.href = '/userProfile/' + response.data.userNameUrl;
+                window.location.href = '/user/' + response.data.userNameUrl;
               });
           }
 

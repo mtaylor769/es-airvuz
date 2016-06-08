@@ -42,7 +42,7 @@
                             <h4>{title}</h4>
                         </a>
                         <p>By 
-                            <a href="/userProfile/{userId.userNameUrl}" tabindex="0">{userId.userNameDisplay}</a>
+                            <a href="/user/{userId.userNameUrl}" tabindex="0">{userId.userNameDisplay}</a>
                         </p>
                     </div>
 
