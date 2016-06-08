@@ -116,7 +116,7 @@
               </md-fab-actions>
             </md-fab-speed-dial>
             <h3>{{slide.name}} ({{slide.video}})</h3>
-            <img ng-src="//s3-us-west-2.amazonaws.com/airvuz-asset-beta/slide/{{slide.imagePath}}" alt="{{slide.imageAlt}}" class="img-responsive"/>
+            <img ng-src="//s3-us-west-2.amazonaws.com/{{vm.assetBucket}}/slide/{{slide.imagePath}}" alt="{{slide.imageAlt}}" class="img-responsive"/>
             <p>{{slide.description}}</p>
           </div>
         </md-card>

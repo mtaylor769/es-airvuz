@@ -38,10 +38,17 @@
       angular.forEach(vm.newSlider.slides, function (slide, index) {
         vm.newSlider.slides[index] = slide._id;
       });
-      var newSlider = new Slider(vm.newSlider);
-      newSlider.$save(function () {
-        vm.sliders.push(newSlider);
-      });
+      // existing slider
+      if (vm.newSlider._id) {
+        vm.newSlider.$update();
+      } else {
+        var newSlider = new Slider(vm.newSlider);
+        newSlider.$save(function () {
+          vm.sliders.push(newSlider);
+        });
+      }
+
+      hideForm('slider');
     }
     
     function saveSlide() {
@@ -142,6 +149,7 @@
     vm.editSlider = editSlider;
     vm.removeSlide = removeSlide;
     vm.editSlide = editSlide;
+    vm.assetBucket = Amazon.assetBucket;
     vm.isOpen = {
       slider: false,
       slide: false

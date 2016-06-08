@@ -2,33 +2,22 @@
 try {
   var log4js											= require('log4js');
   var logger											= log4js.getLogger('app.persistence.crud.slider');
-
-  var Promise											= require('bluebird');
-
-  var ErrorMessage								= require('../../utils/errorMessage');
-  var ObjectValidationUtil				= require('../../utils/objectValidationUtil');
-
   var database										= require('../database/database');
   var mongoose                    = require('mongoose');
   var SliderModel									= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.slider" });
-
 }
 catch(exception) {
   logger.error(" import error:" + exception);
 }
 
-
-
-function Slider() {
-
-}
+function Slider() {}
 
 function getAllSlider(params) {
   return SliderModel.find().populate('slides').lean().exec();
 }
 
 function updateSlider(params) {
-  return SliderModel.findById(params._id, params).exec();
+  return SliderModel.findOneAndUpdate({_id: params._id}, params).exec();
 }
 
 function getSlider() {
