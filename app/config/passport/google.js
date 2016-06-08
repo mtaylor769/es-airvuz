@@ -49,7 +49,6 @@ module.exports = function(passport, config) {
             var randomPassword = crypto.randomBytes(7).toString('base64');
             var newUser = {
               emailAddress: socialData.email,
-              userNameDisplay: socialData.accountId,
               // check to see if user have a cover picture
               coverPicture: socialData.accountData._json.cover ? socialData.accountData._json.cover.source : '',
               password: randomPassword,
