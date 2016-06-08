@@ -56,7 +56,7 @@ module.exports = function(passport, config) {
               coverPicture: socialData.accountData._json.cover ? socialData.accountData._json.cover.source : '',
               password: randomPassword,
               confirmPassword: randomPassword,
-              status: 'active'
+              social: true
             };
 
             return UsersCrud.create(newUser)
