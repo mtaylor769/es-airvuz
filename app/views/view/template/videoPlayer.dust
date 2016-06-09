@@ -93,13 +93,13 @@
                                 <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
                             </div>
                             <div class="video-slick">
-                                {#topTwoVideos}
+                                {#topVideos}
                                     <div class="video">
                                         <a href="/videoPlayer/{_id}">
-                                            <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-videos-beta/66f5a520c6f3f903eebeb335106ad29d/tn_00003.jpg" alt="{imageAlt}" class="img-responsive" />
+                                            <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
                                         </a>
                                     </div>
-                                {/topTwoVideos}
+                                {/topVideos}
                             </div>
                         </div>
                         {!comments!}

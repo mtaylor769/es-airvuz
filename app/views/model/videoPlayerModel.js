@@ -110,17 +110,17 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(videoCount) {
 			dataObject.videoCount = videoCount;
-			return videoCrud.getTopTwoVideos(checkObject.user);
+			return videoCrud.getTopSixVideos(checkObject.user);
 			})
-		.then(function(topThreeVideos) {
+		.then(function(topSixVideos) {
 			var topVideos = [];
-			topThreeVideos.forEach(function(video) {
+			topSixVideos.forEach(function(video) {
 				if(video._id.toString() !== videoId && topVideos.length < 2) {
 					topVideos.push(video);
 				}
 			});
 			
-			dataObject.topTwoVideos = topVideos.concat(topVideos).concat(topVideos);
+			dataObject.topVideos = topVideos;
 			return followCrud.followCount(checkObject.user);
 		})
 		.then(function(followCount) {
