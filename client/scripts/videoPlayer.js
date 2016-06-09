@@ -1,3 +1,13 @@
+/**
+ * external lib
+ */
+var videojs = require('video.js');
+require('../../node_modules/video.js/dist/video-js.min.css');
+require('../../node_modules/videojs-resolution-switcher/lib/videojs-resolution-switcher.css');
+require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css');
+require('videojs-resolution-switcher');
+require('bootstrap-switch');
+
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');

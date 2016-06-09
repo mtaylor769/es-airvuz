@@ -95,6 +95,13 @@ config.module.loaders.push ({
   //}
 });
 
+config.module.loaders.push({
+  test: /\.(png|woff|eot|ttf|swf)/,
+  // dataUrl if file is smaller then 10kb
+  // if greater than the limit the file-loader is used
+  loader: 'url-loader?limit=10000'
+});
+
 // PostCSS Plugins
 config.postcss = function ( webpack ) {
 

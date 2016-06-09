@@ -25,13 +25,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
-
-        {!css page specific!}
-        <link href="//vjs.zencdn.net/5.4.6/video-js.min.css" rel="stylesheet">
-        <link href="/client/lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
-        <link href="/client/lib/vjs-resolution-switcher/lib/videojs-resolution-switcher.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.css"/>
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick-theme.css"/>
         {>  "app.views.view.partial.css" /}
     </head>
     <body>
@@ -212,11 +205,13 @@
             }());
         </script>
         {!cdn page specfic!}
-        <script src="//vjs.zencdn.net/5.4.6/video.min.js"></script>
         <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+<<<<<<< HEAD
         <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
         <script src="/client/lib/vjs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.min.js"></script>
+=======
+>>>>>>> move external to webpack bundle
         {> "app.views.view.partial.js" /}
         <script>
             var video = {?video}{video|js|s}{:else}[]{/video};
