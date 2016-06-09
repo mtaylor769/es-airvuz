@@ -92,11 +92,11 @@
                                 <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
                             </div>
-                            <div class="video-slick" style="width:60%; margin: 17px 23px">
+                            <div class="video-slick">
                                 {#topTwoVideos}
                                     <div class="video">
                                         <a href="/videoPlayer/{_id}">
-                                            <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-videos-beta/66f5a520c6f3f903eebeb335106ad29d/tn_00003.jpg" alt="{imageAlt}" class="img-responsive" width="135px"/>
+                                            <img data-lazy="//s3-us-west-2.amazonaws.com/airvuz-videos-beta/66f5a520c6f3f903eebeb335106ad29d/tn_00003.jpg" alt="{imageAlt}" class="img-responsive" />
                                         </a>
                                     </div>
                                 {/topTwoVideos}

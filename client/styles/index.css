@@ -377,6 +377,7 @@ body.modal-open {
  * Video Player
  */
 
+
 /*
  * End Video Player
 /**********************************/
@@ -1211,6 +1212,154 @@ End user profile CSS
 #header .airvuz-logo {
   display: none;
 }
+
+/*
+Video Player Slick theme
+*/
+
+.video-page .video-slick {
+  width: 35%;
+  margin: 17px 10px;
+}
+
+@media (min-width: 320px) {
+
+  .video-page .video-slick {
+    width: 35%;
+    margin: 27px 0;
+  }
+
+  .video-page .video-slick img{
+    width: 110px;
+  }
+
+
+  .video-user-about {
+    margin: 28px 9px 0 -10px;
+  }
+
+  .video-user-picture {
+    margin: 31px 15px 0 5px;
+  }
+}
+
+@media (min-width: 375px) {
+
+  .video-page .video-slick {
+    width: 39%;
+    margin: 17px 10px;
+  }
+
+  .video-page .video-slick img{
+    width: 150px;
+  }
+}
+
+@media (min-width: 414px) {
+  .video-page .video-slick {
+    width: 43%;
+    margin: 14px 10px;
+    padding-left: 20px;
+  }
+
+  .video-page .video-slick img{
+    width: 150px;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .video-page .video-slick {
+    width: 52%;
+    margin: 23px 10px;
+    padding-left: 20px;
+  }
+
+  .video-page .video-slick img{
+    width: 110px;
+  }
+
+  .video-user-picture {
+    margin: 31px 10px;
+  }
+
+  .video-user-about {
+    margin: 25px 5px;
+  }
+
+  .video-page .slick-next {
+    right: -22px;
+    color: #ccc;
+    font-size: 20px;
+  }
+
+  .video-page .slick-prev {
+    right: -11px;
+    left: -5px;
+    color: #ccc;
+    font-size: 20px;
+  }
+
+  .video-page .slick-prev:before, .slick-next:before {
+    content: '';
+  }
+}
+
+@media (min-width: 992px) {
+  .video-page .video-slick {
+    width: 63%;
+    margin: 21px 10px;
+    padding-left: 10px;
+  }
+
+  .video-page .video-slick img{
+    width: 120px;
+  }
+
+  .video-page .slick-next {
+    right: -16px;
+  }
+
+  .video-page .slick-prev {
+    right: -11px;
+    left: -12px
+  }
+
+  .video-user-about {
+    margin: 25px 8px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .video-page .video-slick {
+    width: 68%;
+    margin: 13px 10px;
+    padding-left: 10px;
+  }
+
+  .video-page .video-slick img{
+    width: 150px;
+  }
+
+  .video-page .slick-next {
+    right: -5px;
+  }
+
+  .video-page .slick-prev {
+    right: -11px;
+    left: -12px
+  }
+
+  .video-user-about {
+    margin: 25px 15px;
+  }
+}
+
+/*
+End Video Player Slick theme
+*/
+
+
 @media (min-width: 320px) {
 
 }
