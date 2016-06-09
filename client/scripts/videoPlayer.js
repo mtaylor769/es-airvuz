@@ -10,6 +10,31 @@ var $videoPlayer;
 var $videoPage;
 var screenWidth;
 
+
+
+var SLICK_CONFIG = {
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  draggable: false,
+  nextArrow: '<button type="button" class="slick-next" style="color: black"><span class="glyphicon glyphicon-menu-right"></span></button>',
+  prevArrow: '<button type="button" class="slick-prev" style="color: black"><span class="glyphicon glyphicon-menu-left"></span></button>',
+  responsive: [
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+    ]
+};
 //toggle functions for mobile events
 var toggles = {
       toggleLeft: function (nextPage, videoPage) {
@@ -722,7 +747,9 @@ function initialize(videoPath) {
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
   notificationObject.notifiedUserId  = video.userId;
+  console.log($('.video-slick'));
 
+  $('.video-slick').slick(SLICK_CONFIG);
   //run init functions
   incrementVideoCount();
 

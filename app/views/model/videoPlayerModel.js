@@ -120,7 +120,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 				}
 			});
 			
-			dataObject.topTwoVideos = topVideos;
+			dataObject.topTwoVideos = topVideos.concat(topVideos).concat(topVideos);
 			return followCrud.followCount(checkObject.user);
 		})
 		.then(function(followCount) {
@@ -158,6 +158,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 							}
 						})
 				} else {
+					comment.userId = {};
 					comment.userId.profilePicture = '/client/images/default.png';
 					return comment;
 				}
@@ -170,6 +171,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(categories) {
 			logger.debug('completed all checks');
+			logger.debug(dataObject.topTwoVideos);
+			
 			dataObject.categories = categories;
 			params.data													= dataObject;
 			params.data.facebookAppId 					= config.facebook.clientID;

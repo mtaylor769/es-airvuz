@@ -9,6 +9,7 @@ var Users                 = require('../../persistence/crud/users');
 module.exports = function(passport, config) {
 
   passport.serializeUser(function(user, done) {
+    console.log(user);
     done(null, user._id);
   });
   
