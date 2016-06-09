@@ -129,31 +129,40 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return commentCrud.getParentCommentByVideoId({videoId: videoId});
 		})
 		.then(function (comments) {
-			comments.forEach(function(comment) {
+			return Promise.map(comments, function (comment) {
 				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				if(comment.userId !== null){
-					socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
-						.then(function(social) {
-								logger.debug(social);
-							if(social && comment.userId.profilePicture === ''){
+				if (comment.userId !== null) {
+					return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+						.then(function (social) {
+							logger.debug(social);
+							if (social && comment.userId.profilePicture === '') {
 								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
-							} else if(!social && comment.userId.profilePicture === '') {
+								return comment;
+							} else if (!social && comment.userId.profilePicture === '') {
 								comment.userId.profilePicture = '/client/images/default.png';
-							} else if(social && comment.userId.profilePicture.indexOf('facebook') > -1) {
+								return comment;
+							} else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
 								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
-							} else if(comment.userId.profilePicture.indexOf('http') === -1) {
+								return comment;
+							} else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('users/profile-pictures') === -1) {
 								comment.userId.profilePicture = amazonConfig.ASSET_URL + 'users/profile-pictures' + comment.userId.profilePicture;
+								return comment;
 							} else {
 								comment.userId.profilePicture = comment.userId.profilePicture;
+								return comment;
 							}
 						})
 				} else {
 					comment.userId.profilePicture = '/client/images/default.png';
+					return comment;
 				}
-			});
+			})
+		})
+		.then(function (comments) {
+			logger.error(comments);
 			dataObject.comments = comments;
-				return categoryCrud.get();
+			return categoryCrud.get();
 		})
 		.then(function(categories) {
 			logger.debug('completed all checks');
