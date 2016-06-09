@@ -14,6 +14,7 @@ var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
 var videoCollection     = require('./videoCollection');
+var forms               = require('./forms');
 var passport            = require('passport');
 var protect             = require('../../middlewares/protect');
 var token               = require('../../middlewares/token');
@@ -257,5 +258,10 @@ apiRouter.post('/api/amazon/transcode/completion', /*bodyParser.text(),*/ amazon
 apiRouter.post('/api/amazon/transcode/progression', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeProgression);
 apiRouter.post('/api/amazon/transcode/failure', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeFailure);
 apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.confirmSubscription, upload.transcodeWarning);
+
+/**
+ * /api/forms/
+ */
+apiRouter.post('/api/forms', forms.post);
 
 module.exports = apiRouter;

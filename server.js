@@ -142,6 +142,7 @@ viewManager.addView({ view : staticView('copyright') });
 viewManager.addView({ view : staticView('about') });
 viewManager.addView({ view : staticView('community') });
 viewManager.addView({ view : staticView('media') });
+viewManager.addView({ view : staticView('forms') });
 
 function loadView(req, res, name) {
 	viewManager
@@ -233,6 +234,10 @@ app.get("/community", function(req, res) {
 
 app.get("/media", function(req, res) {
 	loadView(req, res, 'media');
+});
+
+app.get("/forms", function(req, res) {
+	loadView(req, res, 'forms');
 });
 
 app.get("/social-login", function(req, res) {
