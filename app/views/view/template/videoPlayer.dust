@@ -84,17 +84,7 @@
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
                             <button class="btn background-orange border-radius-0 font-white add-button" id="follow" data-toggle="tooltip" data-placement="right" title="Follow / Unfollow">+</button>
-                            {#user.profilePicture}
-                              {#user.isExternalLink}
                                 <img src="{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
-                              {:else}
-                                <img src="{s3AssetUrl}users/profile-pictures{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
-                              {/user.isExternalLink}
-
-                            {:else}
-                              <img src="/client/images/default.png" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
-                            {/user.profilePicture}
-
                             <div class="video-user-about t-a-inherit">
                                 <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
                                 <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
