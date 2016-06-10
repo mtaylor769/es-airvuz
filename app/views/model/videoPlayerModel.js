@@ -59,6 +59,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			if(video.title.length > 45) {
 				video.title = video.title.substring(0, 45) + '...';
 			}
+			video.displayDate = moment(video.uploadDate).fromNow();
 			dataObject.video 	= video;
 			checkObject.video = video._id;
 			return userCrud.getUserById(video.userId);

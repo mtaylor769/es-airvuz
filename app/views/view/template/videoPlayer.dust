@@ -71,7 +71,12 @@
                                 <div class="col-xs-12">
                                     <div class="description-container">
                                         <div id="video-description" style="margin: 10px 20px;">
-                                            {video.description|s}
+                                            <div>
+                                                {video.description|s}
+                                            </div>
+                                            <div class="upload-date">
+                                                Uploaded: {video.displayDate}
+                                            </div>
                                         </div>
                                         <div class="show-more-description">
                                             <span class="glyphicon glyphicon-chevron-down invisible"></span>
