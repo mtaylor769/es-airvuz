@@ -31,7 +31,7 @@ function getUnseen(userId) {
     .find({notifiedUserId: userId, notificationViewed: false})
     .sort('-createdDate')
     .limit(10)
-    .populate('actionUserId', 'userNameDisplay')
+    .populate('actionUserId', 'userNameDisplay userNameUrl')
     .lean()
     .exec();
 }
