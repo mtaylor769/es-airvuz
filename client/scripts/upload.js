@@ -40,6 +40,10 @@ function appendErrorMessage(errorArray) {
   })
 }
 
+function removeErrorMessage() {
+  $('.error').remove();
+}
+
 
 function onProgress(progress) {
   currentUploadFile.progress = Math.round(progress * 10000) / 100;
@@ -192,7 +196,8 @@ function bindEvents() {
 
   function onPublish(event) {
     event.preventDefault();
-
+    removeErrorMessage();
+    
     var params = {
       title             : $uploadPage.find('#title').val(),
       videoLocation     : $uploadPage.find('#location').val(),
