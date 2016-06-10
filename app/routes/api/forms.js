@@ -41,8 +41,13 @@ function post(req, res) {
     .then(function () {
       var mailOptions = {
         to: req.body.emailAddress,
-        subject: 'Valley Fair',
-        html: '<div>You are going to valleyfair!</div>'
+        subject: 'Link to your required form for being an extra at Valley Fair',
+        html: '<div>Please click <a href="https://drive.google.com/file/d/0B-3MjoINNAV1TmxHZk9CTXZvWXk1cWdPdDZjVEJqZjlIUzVB/view?usp=sharing">here</a> to access the required form for attending the Ryan\'s Ridiculous show at Valley Fair. <br/><br/>Please print it, have your parent/guardians sign it and be sure to bring it with you that day!</div>' +
+        '<br/>' +
+        '<br/>' +
+        'Thanks and See you there!' +
+        '<br/>' +
+        'Team AirVūz'
       };
 
       return _sendMail(mailOptions);

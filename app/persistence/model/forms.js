@@ -5,7 +5,7 @@ var schema        = mongoose.Schema({
   lastName            : String,
   emailAddress        : String,
   isUnder18           : Boolean,
-  isUnder18agreement  : Boolean,
+  iAgree              : Boolean,
   type                : String,
   submitDate          : {
                           type: Date,

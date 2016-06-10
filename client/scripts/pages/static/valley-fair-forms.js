@@ -8,7 +8,13 @@ function initialize() {
 function bindEvents() {
   var $modal = $('#submit-modal');
   function onChangeUnder18() {
-    $page.find('#under-18-agreement').toggleClass('hidden');
+    var isUnder18 = $(this).is(':checked');
+
+    if (isUnder18) {
+      $page.find('#agree-text').html('I understand that <strong>I must bring a signed copy of the AirVūz Authorization and Appearance Release Form</strong> to the event, and I understand that if the signed form is not provided to AirVūz, I may not able to participate in this event. <br><strong>The Authorization and Release Form will be linked in an email sent to me, upon clicking Submit below </strong>');
+    } else {
+      $page.find('#agree-text').text('By clicking on Submit My RSVP, I will be registered as an extra for this event. I will sign the necessary waivers and release upon my arrival at the event.');
+    }
   }
 
   function onSubmit(event) {
@@ -18,12 +24,12 @@ function bindEvents() {
       lastName: $page.find('#lastName').val(),
       emailAddress: $page.find('#emailAddress').val(),
       isUnder18: $page.find('#cb-under-18').is(':checked'),
-      isUnder18agreement: $page.find('#cb-under-18-agreement').is(':checked'),
+      iAgree: $page.find('#cb-agreement').is(':checked'),
       type: 'valley-fair'
     };
 
-    if (!params.firstName || !params.lastName || !params.emailAddress) {
-      return _showModal('Please enter in required fields');
+    if (!params.firstName || !params.lastName || !params.emailAddress || !params.iAgree) {
+      return _showModal('Please enter in required fields or check agreement');
     }
 
     $.ajax({
@@ -46,7 +52,7 @@ function bindEvents() {
     $page.find('form').get(0).reset();
     $page.find('#under-18-agreement').addClass('hidden');
 
-    _showModal('Thanks for joining us. See you there!');
+    _showModal('Confirmation email has been sent!');
   }
 
   function _showModal(message) {
