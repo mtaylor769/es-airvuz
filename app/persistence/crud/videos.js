@@ -260,20 +260,70 @@ Videos.prototype.getPreCondition = function(params) {
 		
 		if(this.data.description === null) {
 			this.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
 				errorId					: "VALIDA1000",
 				templateParams	: {
 					name : "description"
 				},
+				sourceError			: "#description",
+				displayMsg			: "This field is required",
+				errorMessage		: "field required",
 				sourceLocation	: sourceLocation
 			});
 		}
 		
 		if(this.data.title === null) {
 			this.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
 				errorId					: "VALIDA1000",
 				templateParams	: {
 					name : "title"
 				},
+				sourceError			: "#title",
+				displayMsg			: "This field is required",
+				errorMessage		: "field required",
+				sourceLocation	: sourceLocation
+			});
+		}
+		
+		if(this.data.categories.length === 0) {
+			this.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "category"
+				},
+				sourceError			: "#category",
+				displayMsg			: "This field is required",
+				errorMessage		: "field required",
+				sourceLocation	: sourceLocation
+			});
+		}
+
+		if(this.data.droneType === null) {
+			this.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "drone-type"
+				},
+				sourceError			: "#drone-type",
+				displayMsg			: "This field is required",
+				errorMessage		: "field required",
+				sourceLocation	: sourceLocation
+			});
+		}
+
+		if(this.data.cameraType === null) {
+			this.errors = errorMessage.getErrorMessage({
+				statusCode			: "400",
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "camera-type"
+				},
+				sourceError			: "#camera-type",
+				displayMsg			: "This field is required",
+				errorMessage		: "field required",
 				sourceLocation	: sourceLocation
 			});
 		}
@@ -293,8 +343,7 @@ Videos.prototype.getPreCondition = function(params) {
  */
 Videos.prototype.create = function(params) {
 	//logger.debug(params);
-	
-	
+
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Videos.create"});
 
 	return(new Promise(function(resolve, reject) {
@@ -302,33 +351,29 @@ Videos.prototype.create = function(params) {
 			// Validation
 			var validation = preCondition.validate(params);
 			if(validation.errors !== null) {
-				var validationException = new ValidationException({ errors : validation.errors });
-				return reject(validationException);
+				throw validation.errors
+			} else {
+				var videoModel = new VideoModel(validation.data);
+				videoModel.save(function(error, video) {
+					if(error) {
+						//logger.debug(error);
+						logger.error(error);
+						var errorMessage		= new ErrorMessage();
+						errorMessage.getErrorMessage({
+							errorId					: "PERS1000",
+							sourceError			: error,
+							sourceLocation	: "persistence.crud.Videos.create"
+						});
+
+						var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+						reject(persistenceException);
+					}
+					else {
+						resolve(video);
+					}
+				});
 			}
-
-			// Persist
-			var videoModel = new VideoModel(validation.data);
-			videoModel.save(function(error, video) {
-				if(error) {
-					//logger.debug(error);
-					logger.error(error);
-					var errorMessage		= new ErrorMessage();
-					errorMessage.getErrorMessage({
-						errorId					: "PERS1000",
-						sourceError			: error,
-						sourceLocation	: "persistence.crud.Videos.create"
-					});
-
-					var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
-					reject(persistenceException);
-				}
-				else {
-					resolve(video);
-				}
-			});
-			
 		})
-			
 	);
 };
 

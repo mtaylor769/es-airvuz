@@ -64,7 +64,10 @@ function createUser(req, res) {
       res.sendStatus(200);
     })
     .catch(function(error) {
-      res.status(500).json(error);
+      if(error.length){
+        return res.status(403).json(error);
+      }
+      return res.sendStatus(500);
     });
 }
 
