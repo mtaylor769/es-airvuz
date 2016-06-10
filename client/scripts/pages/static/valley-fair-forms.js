@@ -43,7 +43,7 @@ function bindEvents() {
 
   function onFailed(response) {
     if (response.status === 400) {
-      return _showModal('Max capacity exceed.');
+      return _showModal(response.responseText);
     }
     _showModal('Something wrong with submitting. Please contact us at rsvp@airvuz.com.');
   }

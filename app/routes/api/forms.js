@@ -1,6 +1,7 @@
 var formsCrud              = require('../../persistence/crud/forms');
 var nodemailer             = require('nodemailer');
 var _                      = require('lodash');
+var Promise                = require('bluebird');
 
 function Forms() {}
 
@@ -31,10 +32,16 @@ function _sendMail(options) {
 }
 
 function post(req, res) {
-  formsCrud.getCount()
-    .then(function (count) {
+  var isRegistered  = formsCrud.getCount({emailAddress: req.body.emailAddress, type: req.body.type});
+  var totalCount    = formsCrud.getCount({type: req.body.type});
+
+  Promise.all([totalCount, isRegistered])
+    .spread(function (count, isRegister) {
       if (count > 3300) {
-        throw 'Max capacity exceed';
+        throw 'Max capacity exceed.';
+      }
+      if (isRegister) {
+        throw 'You already registered. Please check email.';
       }
       return formsCrud.createForms(req.body);
     })
