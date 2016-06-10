@@ -25,7 +25,7 @@ var screenWidth;
 
 var SLICK_CONFIG = {
   slidesToShow: 3,
-  slidesToScroll: 3,
+  slidesToScroll: 1,
   draggable: false,
   nextArrow: '<button type="button" class="slick-next"><span class="glyphicon glyphicon-menu-right"></span></button>',
   prevArrow: '<button type="button" class="slick-prev"><span class="glyphicon glyphicon-menu-left"></span></button>',
