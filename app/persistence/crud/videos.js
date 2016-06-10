@@ -277,6 +277,17 @@ Videos.prototype.getPreCondition = function(params) {
 				sourceLocation	: sourceLocation
 			});
 		}
+
+		if(this.data.categories === null) {
+			console.log(this.data.categories);
+			this.errors = errorMessage.getErrorMessage({
+				errorId					: "VALIDA1000",
+				templateParams	: {
+					name : "categories"
+				},
+				sourceLocation	: sourceLocation
+			});
+		}
 				
 	});
 	return(preCondition);
