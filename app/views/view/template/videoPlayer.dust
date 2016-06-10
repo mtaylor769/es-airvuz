@@ -100,7 +100,7 @@
                             <div class="video-slick">
                                 {#topVideos}
                                     <div class="video">
-                                        <a href="/videoPlayer/{_id}">
+                                        <a href="/video/{_id}">
                                             <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
                                         </a>
                                     </div>
