@@ -38,7 +38,7 @@ function get(req, res) {
 function createUser(req, res) {
   var userParams = {
     emailAddress            : req.body.email.toLowerCase(),
-    userNameDisplay         : req.body.username,
+    userNameDisplay         : req.body.userNameDisplay,
     password                : req.body.password,
     confirmPassword         : req.body.confirmPassword,
     isSubscribeAirVuzNews   : req.body.isSubscribeAirVuzNews
