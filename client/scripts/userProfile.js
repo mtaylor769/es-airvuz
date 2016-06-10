@@ -61,10 +61,10 @@ function showcaseAdd(videoId) {
     url: '/api/video-collection/update-collection',
     data: data
   })
-    .success(function(response) {
+    .done(function(response) {
       //console.log('response : ' + response);
     })
-    .error(function(error) {
+    .fail(function(error) {
       //console.log('error : ' + error);
     });
 }
@@ -305,7 +305,7 @@ function confirmPasswordChange() {
     url: '/api/users/' + user._id,
     data: data
   })
-  .success(function(response) {
+  .done(function(response) {
     if(response.status==='OK') {
      //Do nothing, password has been changed
     } else {
@@ -317,7 +317,7 @@ function confirmPasswordChange() {
       });
     }
   })
-  .error(function(error) {
+  .fail(function(error) {
     $('#error-message-modal')
       .modal('show')
       .find('.error-modal-body')
@@ -469,7 +469,7 @@ function editProfile() {
           renderSocialMediaLinks();
         }
       })
-      .error(function(error) {
+      .fail(function(error) {
         $('#save-changes').modal('hide');
         $('#error-message-modal')
           .modal('show')
@@ -513,10 +513,10 @@ function onSaveVideoEdit() {
     contentType : 'application/json',
     type        : 'PUT',
     data        : JSON.stringify(params)
-  }).success(function (video) {
+  }).done(function (video) {
     location.reload();
   })
-    .error(function(error){
+    .fail(function(error){
       $('#error-message-modal')
         .modal('show')
         .find('.error-modal-body')
@@ -533,7 +533,7 @@ function requestVideoSort(sortBy, id) {
     url: '/api/videos/user/'+id,
     data: params
   })
-  .success(function(data) {
+  .done(function(data) {
     if (data.status==='OK') {
       if(userNameCheck === profileUser.userName) {
         renderOwnerAllVideosHtml(data.data);
@@ -544,7 +544,7 @@ function requestVideoSort(sortBy, id) {
       //console.log('server side error' + data.data);
     }
   })
-  .error(function(error) {
+  .fail(function(error) {
     //console.log('error : ' + error);
   });
 }
@@ -558,7 +558,7 @@ function sortShowcase(sortBy, id) {
     url: '/api/videos/user/'+id,
     data: params
   })
-  .success(function(data) {
+  .done(function(data) {
     if (data.status==='OK') {
       renderOwnerShowcase(data.data)
       // ownerShowcase({videos: data.data, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
@@ -568,7 +568,7 @@ function sortShowcase(sortBy, id) {
       //console.log('server side error' + data.data);
     }
   })
-  .error(function(error) {
+  .fail(function(error) {
     //console.log('error : ' + error);
   });
 }
@@ -583,10 +583,10 @@ function deleteVideo(videoId) {
           type: 'DELETE',
           url: '/api/videos/' + videoId
         })
-          .success(function(data){
+          .done(function(data){
             defer.resolve(data);
           })
-          .error(function(error){
+          .fail(function(error){
             defer.reject(error);
           })
       });
@@ -957,7 +957,7 @@ function updateFollow() {
           });
       //TODO Update current profile page with new amount of followers
     }})
-    .error(function(error){
+    .fail(function(error){
       $('#error-message-modal')
         .modal('show')
         .find('.error-modal-body')
@@ -1002,7 +1002,7 @@ function checkFollowStatus(){
       }
       //console.log(response);
     })
-    .error(function(error){
+    .fail(function(error){
     //TODO server side error, pop modal
       //console.log(error);
     });
@@ -1035,7 +1035,7 @@ function sendHireMeEmail() {
     .done(function(response){
       // open dialog that says message has been sent or show message
     })
-    .error(function(error){
+    .fail(function(error){
       $('#error-message-modal')
         .modal('show')
         .find('.error-modal-body')
