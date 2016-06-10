@@ -115,7 +115,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function(topSixVideos) {
 			var topVideos = [];
 			topSixVideos.forEach(function(video) {
-				if(video._id.toString() !== videoId && topVideos.length < 2) {
+				if(video._id.toString() !== videoId) {
 					topVideos.push(video);
 				}
 			});
