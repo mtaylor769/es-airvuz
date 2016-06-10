@@ -80,7 +80,7 @@ users.prototype.validateCreateUser = function(params) {
 					name : "emailAddress"
 				},
 				sourceError			: "#password",
-				displayMsg			: "Passwords dont match",
+				displayMsg			: "Passwords do not match",
 				errorMessage		: "Passwords dont match",
 				sourceLocation	: sourceLocation
 			});
