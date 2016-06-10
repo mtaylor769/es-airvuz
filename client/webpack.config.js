@@ -127,7 +127,7 @@ config.postcss = function ( webpack ) {
   if ( IS_PRODUCTION ) {
     plugins.push ( mqpacker );
 
-    plugins.push ( cssnano );
+    plugins.push ( cssnano({reduceIdents: false}) );
   }
 
   return plugins;
