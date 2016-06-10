@@ -142,7 +142,7 @@ function onAutoPlayChange(event, state) {
     url: '/api/users/' + user._id,
     data: autoPlayObject
   })
-  .success(function(response) {
+  .done(function(response) {
     user.autoPlay = response.autoPlay;
     identity.save();
     //code for update
@@ -153,8 +153,8 @@ function onAutoPlayChange(event, state) {
     //  identity.save();
     //}
   })
-  .error(function(error) {
-  })
+  .fail(function(error) {
+  });
 }
 
 //bind events
@@ -263,7 +263,7 @@ function bindEvents() {
             $('.like-count').text(likeLog - 1)
           }
         })
-        .error(function (error) {
+        .fail(function (error) {
         });
     } else if(!userIdentity._id) {
       $('#like-modal').modal('show');
@@ -287,8 +287,8 @@ function bindEvents() {
       })
       .done(function(response) {
       })
-      .error(function(error) {
-      })
+      .fail(function(error) {
+      });
   });
 
   //follow video user
@@ -311,7 +311,7 @@ function bindEvents() {
           url: '/api/follow',
           data: {data: JSON.stringify(followData)}
         })
-        .success(function (response) {
+        .done(function (response) {
           if(response.status === 'followed') {
             AVEventTracker({
               codeSource	: "videoPlayer",
@@ -328,7 +328,7 @@ function bindEvents() {
             $('#follow').text('+');
           }
         })
-        .error(function (error) {
+        .fail(function (error) {
         })
     } else if(!userIdentity._id) {
       $('#follow-modal').modal('show');
@@ -367,8 +367,8 @@ function bindEvents() {
           })
           .done(function(response) {
           })
-          .error(function(error) {
-          })
+          .fail(function(error) {
+          });
         }
       }
     );
@@ -388,7 +388,7 @@ function bindEvents() {
     })
     .done(function(response) {
     })
-    .error(function(error) {
+    .fail(function(error) {
     })
   });
 
@@ -406,9 +406,9 @@ function bindEvents() {
       })
       .done(function(response) {
       })
-      .error(function(error) {
-      })
-  })
+      .fail(function(error) {
+      });
+  });
 
   //functions to move mobile screen
   $('.up-next').on('click', function(e) {
@@ -446,8 +446,8 @@ function bindEvents() {
       })
       .done(function(response) {
       })
-      .error(function(error) {
-      })
+      .fail(function(error) {
+      });
   });
 
   //report modal
