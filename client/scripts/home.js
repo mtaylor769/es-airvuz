@@ -1,3 +1,6 @@
+require('slick-carousel');
+require('../../node_modules/slick-carousel/slick/slick.css');
+require('../../node_modules/slick-carousel/slick/slick-theme.css');
 require('../styles/home.css');
 
 var identity      = require('./services/identity'),
@@ -69,7 +72,6 @@ function getFollowerVideos() {
 }
 
 function initialize(emailConfirm) {
-  console.log(emailConfirm);
   $homePage = $('#home-page');
 
   var SLIDER_DESCRIPTION_DELAY = 5000,
@@ -129,7 +131,6 @@ function initialize(emailConfirm) {
 }
 
 function emailConfirmCheck(emailConfirm) {
-  console.log(emailConfirm);
   if(emailConfirm === true) {
     $('#email-confirmed-modal').modal('show')
   } else if(emailConfirm === false) {

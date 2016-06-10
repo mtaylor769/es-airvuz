@@ -96,10 +96,15 @@ config.module.loaders.push ({
 });
 
 config.module.loaders.push({
-  test: /\.(png|woff|eot|ttf|swf)/,
+  test: /\.(png|woff|eot|ttf|swf|gif|svg)/,
   // dataUrl if file is smaller then 10kb
   // if greater than the limit the file-loader is used
   loader: 'url-loader?limit=10000'
+});
+
+config.module.loaders.push({
+  test: require.resolve('jquery'),
+  loader: 'expose?$!expose?jQuery'
 });
 
 // PostCSS Plugins
@@ -130,6 +135,11 @@ config.postcss = function ( webpack ) {
 
 // Plugins
 config.plugins = [];
+
+config.plugins.push(new webpack.ProvidePlugin({
+  $: 'jquery',
+  jQuery: 'jquery'
+}));
 
 config.plugins.push ( new CleanWebpackPlugin( [ config.output.path ], {
   root: path.resolve(__dirname, '..')

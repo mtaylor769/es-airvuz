@@ -1,3 +1,7 @@
+require('jquery');
+require('bootstrap');
+require('../../node_modules/bootstrap/dist/css/bootstrap.css');
+require('../../node_modules/font-awesome/css/font-awesome.css');
 require('../styles/index.css');
 require('./config/jquery');
 require('dustjs-helpers');

@@ -2,7 +2,10 @@
  * External library
  */
 require('bootstrap-tagsinput');
+require('bootstrap-switch');
 require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
+require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css');
+
 
 var Evaporate                 = require('evaporate');
 var AmazonConfig              = require('./config/amazon.config.client');

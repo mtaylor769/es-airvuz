@@ -618,7 +618,7 @@ body.modal-open {
   border-radius: 50px;
 }
 
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+body .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
   background: #26bae5;
 }
 

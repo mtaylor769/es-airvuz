@@ -18,10 +18,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.css"/>
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick-theme.css"/>
-
-        {> "app.views.view.partial.css" /}
+        <link rel="stylesheet" href="/public/{airvuz.css}">
   </head>
   <body>
   
@@ -85,15 +82,11 @@
     <!-- END:Main Container -->
 
     {> "app.views.view.partial.footer" /}
-
-    {> "app.views.view.partial.cdn-js" /}
     {> "app.views.view.partial.js" /}
-
-    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.min.js"></script>
 
     <script>
         $(function () {
-        Home.initialize({emailConfirm|j|s});
+            Home.initialize({emailConfirm|j|s});
         });
     </script>
   </body>

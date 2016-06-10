@@ -20,12 +20,10 @@
         <meta name="twitter:description" content="{video.description}" />
         <meta name="twitter:image" content="https:{s3Bucket}{video.thumbnailPath}" />
 
-
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
-        {>  "app.views.view.partial.css" /}
+        <link rel="stylesheet" href="/public/{airvuz.css}">
     </head>
     <body>
         {> "app.views.view.partial.header" /}
@@ -189,35 +187,15 @@
         </div>
         {> "client.templates.videoPlayer.videoPlayerModal" /}
         {> "app.views.view.partial.footer" /}
-        {> "app.views.view.partial.cdn-js" /}
+
         <div id="fb-root"></div>
-        {!facebook script!}
-        <script>
-            window.fbAsyncInit = function() {
-            FB.init({appId: {facebookAppId}, status: true, cookie: true,
-            xfbml: true});
-            };
-            (function() {
-                var e = document.createElement('script'); e.async = true;
-                e.src = document.location.protocol +
-                        '//connect.facebook.net/en_US/all.js';
-                document.getElementById('fb-root').appendChild(e);
-            }());
-        </script>
-        {!cdn page specfic!}
+
         <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
-<<<<<<< HEAD
-        <script src="/client/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
-        <script src="/client/lib/vjs-resolution-switcher/lib/videojs-resolution-switcher.js"></script>
-        <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.min.js"></script>
-=======
->>>>>>> move external to webpack bundle
         {> "app.views.view.partial.js" /}
         <script>
             var video = {?video}{video|js|s}{:else}[]{/video};
             $(function() {
-                videoPlayer.initialize('{s3Bucket}{video.videoPath}');
-                $('[data-toggle="tooltip"]').tooltip();
+                videoPlayer.initialize('{s3Bucket}{video.videoPath}', '{facebookAppId}');
             });
         </script>
     </body>

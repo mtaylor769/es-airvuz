@@ -28,16 +28,8 @@ module.exports = new IndexView({
   viewPath			: './app/views/view/template/passwordReset.dust',
   partials			: [
     {
-      partialName: 'app.views.view.partial.css',
-      partialPath: './app/views/view/partial/css.dust'
-    },
-    {
       partialName: 'app.views.view.partial.js',
       partialPath: 'app/views/view/partial/js.dust'
-    },
-    {
-      partialName: 'app.views.view.partial.cdn-js',
-      partialPath: './app/views/view/partial/cdn-js.dust'
     },
     {
       partialName: 'app.views.view.partial.header',

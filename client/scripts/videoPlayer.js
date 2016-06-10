@@ -2,20 +2,21 @@
  * external lib
  */
 var videojs = require('video.js');
-require('../../node_modules/video.js/dist/video-js.min.css');
+require('slick-carousel');
+require('../../node_modules/slick-carousel/slick/slick.css');
+require('../../node_modules/slick-carousel/slick/slick-theme.css');
+require('../../node_modules/video.js/dist/video-js.css');
 require('../../node_modules/videojs-resolution-switcher/lib/videojs-resolution-switcher.css');
-require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css');
+require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css');
 require('videojs-resolution-switcher');
 require('bootstrap-switch');
 
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');
-var AmazonConfig                       = require('./config/amazon.config.client');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
-var videoUpNext                        = null;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -101,7 +102,7 @@ function incrementVideoCount() {
     .done(function(response) {
       //console.log(response);
     })
-    .error(function(error) {
+    .fail(function(error) {
       //console.log(error);
     });
 }
@@ -118,7 +119,7 @@ function videoInfoCheck() {
     url: '/api/videos/videoInfoCheck',
     data: checkObject
   })
-  .success(function(response) {
+  .done(function(response) {
     if(response.like === true) {
       $('.like').addClass('airvuz-blue')
     }
@@ -126,8 +127,8 @@ function videoInfoCheck() {
       $('#follow').text('-');
     }
   })
-  .error(function(error) {
-  })
+  .fail(function(error) {
+  });
 }
 
 //function to persist autoplay data
@@ -598,7 +599,6 @@ function bindEvents() {
       }
       replyData.comment = replyObject;
       replyData.notification = notificationObject;
-      console.log(replyData.notification);
 
       $.ajax({
           type: 'POST',
@@ -608,7 +608,6 @@ function bindEvents() {
         })
         .done(function(reply) {
           //insert comment on DOM
-          console.log(reply);
           var html = '<div class="flex">'+
             '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-10">'+
@@ -642,7 +641,6 @@ function bindEvents() {
         //create child comment DOM elements
         var html = '';
         data.forEach(function(reply) {
-          console.log(reply);
           html += '<li>'+
             '<div class="flex">'+
             '<img src="' + "http://www.airvuz.com/" + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
@@ -702,8 +700,22 @@ function bindEvents() {
 
 }
 
+
+function runFacebookScript(facebookAppId) {
+  window.fbAsyncInit = function() {
+    FB.init({appId: facebookAppId, status: true, cookie: true,
+      xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script'); e.async = true;
+    e.src = document.location.protocol +
+      '//connect.facebook.net/en_US/all.js';
+    document.getElementById('fb-root').appendChild(e);
+  }());
+}
+
 //page init function
-function initialize(videoPath) {
+function initialize(videoPath, facebookAppId) {
   var defaultRes = '300',
       browserWidth = browser.getSize().width;
 
@@ -766,7 +778,6 @@ function initialize(videoPath) {
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
   notificationObject.notifiedUserId  = video.userId;
-  console.log($('.video-slick'));
 
   $('.video-slick').slick(SLICK_CONFIG);
   //run init functions
@@ -788,6 +799,8 @@ function initialize(videoPath) {
 
   bindEvents();
 
+  runFacebookScript(facebookAppId);
+  $('[data-toggle="tooltip"]').tooltip();
 
   //video description functions
 
