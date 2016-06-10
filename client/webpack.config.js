@@ -125,7 +125,9 @@ config.postcss = function ( webpack ) {
   plugins.push ( autoprefixer );
 
   if ( IS_PRODUCTION ) {
-    plugins.push ( mqpacker );
+    // TODO: take a look at mqpacker again
+    // this is messing up with media query by combining them in wrong order
+    // plugins.push ( mqpacker );
 
     plugins.push ( cssnano({reduceIdents: false}) );
   }
