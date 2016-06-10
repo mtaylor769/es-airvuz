@@ -110,17 +110,17 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(videoCount) {
 			dataObject.videoCount = videoCount;
-			return videoCrud.getTopTwoVideos(checkObject.user);
+			return videoCrud.getTopSixVideos(checkObject.user);
 			})
-		.then(function(topThreeVideos) {
+		.then(function(topSixVideos) {
 			var topVideos = [];
-			topThreeVideos.forEach(function(video) {
-				if(video._id.toString() !== videoId && topVideos.length < 2) {
+			topSixVideos.forEach(function(video) {
+				if(video._id.toString() !== videoId) {
 					topVideos.push(video);
 				}
 			});
 			
-			dataObject.topTwoVideos = topVideos;
+			dataObject.topVideos = topVideos;
 			return followCrud.followCount(checkObject.user);
 		})
 		.then(function(followCount) {
@@ -158,6 +158,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 							}
 						})
 				} else {
+					comment.userId = {};
 					comment.userId.profilePicture = '/client/images/default.png';
 					return comment;
 				}
@@ -170,6 +171,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(categories) {
 			logger.debug('completed all checks');
+			logger.debug(dataObject.topTwoVideos);
+			
 			dataObject.categories = categories;
 			params.data													= dataObject;
 			params.data.facebookAppId 					= config.facebook.clientID;
