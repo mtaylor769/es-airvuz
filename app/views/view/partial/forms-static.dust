@@ -1,14 +1,24 @@
 <div class="row" id="about-page">
   <div class="col-md-12">
     <h3 class="text-center">
-      Valley Fair
+      Come be an extra on Ryan’s Ridiculous, an AirVūz Originals show, on June 17th!
     </h3>
-    <h4>Info:</h4>
+    <br>
+    <h4>Here are the details:</h4>
+  	<h4>Ryan's Ridiculous - All Wheels</h4>
     <p>
-      ...
+	  <strong>Date: </strong>6/17/2016<br>
+	  <strong>Call time: </strong>Enter at the main gate by 7:00 am (This is important! All must have provided signature and be seated by 7:15 am)<br>
+	  <strong>Duties: </strong>Have fun and be spectators in crowd of the All Wheels show, while Ryan Hoag takes his first shot at joining the show.<br>
+	  <strong>End time: </strong>10:30 am<br>
     </p>
+	<p style="font-style: italic;">All extras will be able to stay in the park for the day (Friday, 6/17). If you need to go out to your car, your hand will be stamped so you can re-enter the park that day.</p>
+    <hr>
   </div>
+  <hr>
   <div class="col-md-12" id="form-section">
+    <h4>Sound fun?</h4>
+    <p>Please provide the following information:</p>
     <form class="m-b-20">
 	  <div class="row">
 		<div class="col-md-3">
@@ -34,23 +44,26 @@
         <div class="col-md-3">
 		  <div class="checkbox">
             <label>
-              <input type="checkbox" id="cb-under-18"> Under 18
+              <input type="checkbox" id="cb-under-18"> Check here if you are under 18
 			</label>
 		  </div>
         </div>
 	  </div>
-      <div class="row hidden" id="under-18-agreement">
-        <div class="col-md-3">
+      <div class="row">
+        <div class="col-md-12">
           <div class="checkbox">
             <label>
-              <input type="checkbox" id="cb-under-18-agreement"> I understand (if under 18)
+              <input type="checkbox" id="cb-agreement">
+			  <span id="agree-text">
+				By clicking on Submit My RSVP, I understand that I will be registered as an extra for this event. I will sign the necessary waivers and release upon my arrival at the event.
+			  </span>
             </label>
           </div>
         </div>
       </div>
 	  <div class="form">
 		<div class="text-right">
-		  <button class="btn btn-primary" id="btn-submit">Submit</button>
+		  <button class="btn btn-primary" id="btn-submit">Submit My RSVP</button>
 		</div>
 	  </div>
 	</form>
