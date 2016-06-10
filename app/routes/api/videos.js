@@ -91,7 +91,11 @@ Video.prototype.post = function(req, res) {
         res.json(video);
       })
       .catch(function (error) {
-        res.sendStatus(500);
+        console.log(error);
+        if (error.length) {
+          return res.status(403).json({error: error});
+        }
+        return res.sendStatus(500);
       });
   }
 };

@@ -30,6 +30,17 @@ var $uploadPage,
     customThumbnailName,
     isCustomThumbnail = false;
 
+function appendErrorMessage(errorArray) {
+  errorArray.forEach(function(error) {
+    var inputId = $(error.sourceError);
+    //console.log(inputId);
+    var errorMessage = error.displayMsg;
+    var html = '<div class="error text-danger m-t-5">' + errorMessage + '</div>';
+    inputId.parent().append(html);
+  })
+}
+
+
 function onProgress(progress) {
   currentUploadFile.progress = Math.round(progress * 10000) / 100;
 
@@ -209,8 +220,15 @@ function bindEvents() {
       contentType : 'application/json',
       type        : 'POST',
       data        : JSON.stringify(params)
-    }).done(function (video) {
-      renderStep(3, video);
+    })
+      .done(function (video) {
+        renderStep(3, video);
+      
+    })
+      .fail(function(response) {
+        if (response.status === 403) {
+          appendErrorMessage(response.responseJSON.error);
+        }
     });
 
   }
@@ -323,7 +341,7 @@ function bindEvents() {
     var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
     var $categoryList = $uploadPage.find('#selected-category-list');
 
-    if ($categoryList.find('li').size() < 3) {
+    if ($categoryList.find('li').length < 3) {
       $categoryList.append(list);
     } else {
       $uploadPage.find('#category-message').text('Max catgories');

@@ -166,14 +166,14 @@ function bindEvents() {
 
     // modal values
     var emailAddress = $loginModal.find('#email:visible').val();
-    var username = $loginModal.find('#username:visible').val();
+    var userNameDisplay = $loginModal.find('#username:visible').val();
     var password = $loginModal.find('#password:visible').val();
     var confirmPassword = $loginModal.find('#confirm-password:visible').val();
     var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val() === 'true';
 
     //setting object equal to modal values
     newUserObject.email = emailAddress;
-    newUserObject.username = username;
+    newUserObject.userNameDisplay = userNameDisplay;
     newUserObject.password = password;
     newUserObject.confirmPassword = confirmPassword;
     newUserObject.isSubscribeAirVuzNews = isSubscribeAirVuzNews;
@@ -195,7 +195,7 @@ function bindEvents() {
           $loginModal.find('.text-message').addClass('hidden');
         }, 5000);
       })
-      .error(function(response) {
+      .fail(function(response) {
         appendErrorMessage(response.responseJSON);
         //console.log(error);
       });
