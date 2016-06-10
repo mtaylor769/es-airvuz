@@ -36,9 +36,11 @@ Notification.prototype.getUnseen = function(req, res) {
   .then(function(notifications) {
     notifications.forEach(function(notification) {
       if(notification.notificationType === 'COMMENT'){
-        notification.notificationMessage = 'commented on your video : ' + notification.notificationMessage;
+        notification.notificationMessage = 'commented on your <a href="/video/' + notification.videoId +'">video</a> : ' + '"' + notification.notificationMessage + '"';
       } else if(notification.notificationType === 'COMMENT REPLY') {
-        notification.notificationMessage = 'replied to your comment : ' + notification.notificationMessage
+        notification.notificationMessage = 'replied to your <a href="/video/' + notification.videoId + '">comment</a> : ' + '"' +notification.notificationMessage + '"'
+      } else if(notification.notificationType === 'LIKE') {
+        notification.notificationMessage = 'Liked your <a href="/video/' + notification.videoId + '">video</a>';
       }
     });
     res.json({notifications: notifications, total: notifications.length});
