@@ -1,11 +1,11 @@
 <div id="about-me-section">
-    <div>
-        <h5>About Me</h5>
-        <p>{user.aboutMe}</p>
-        <!-- <h5>Location</h5>
-        <p>Minneapolis, MN</p> -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h5>About Me</h5>
+            <p>{user.aboutMe}</p>
+        </div>
     </div>
-    <div class="row aboutme-socialmedia" style="font-size: 35px; margin-bottom: 50px; margin-top: 50px; text-align: center">
+    <div class="row hidden-lg hidden-md aboutme-socialmedia" style="font-size: 35px; margin-bottom: 50px; margin-top: 50px; text-align: center">
         <a class="facebook-link" href="//www.facebook.com" target="_blank"><span class="facebook fa fa-facebook-square col-xs-3"></span></a>
         <a class="instagram-link" href="//www.facebook.com" target="_blank"><span class="instagram fa fa-instagram col-xs-3"></span></a>
         <a class="twitter-link" href="//www.facebook.com" target="_blank"><span class="twitter fa fa-twitter-square col-xs-3"></span></a>

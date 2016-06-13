@@ -852,6 +852,7 @@ function renderSocialMediaLinks() {
                 .parent().show();
               $socialMedia.find('.facebook')
                 .attr('href', '//'+account.url);
+              $aboutMe.find('.facebook').show();
               $aboutMe.find('.facebook-link')
                 .attr('href', '//'+account.url);
               $editProfile.find('#facebook').val(account.url)
@@ -865,6 +866,7 @@ function renderSocialMediaLinks() {
               $socialMedia.find('.google').parent().show();
               $socialMedia.find('.google')
                 .attr('href', '//'+account.url);
+              $aboutMe.find('.google').show();
               $aboutMe.find('.google-link')
                 .attr('href', '//'+account.url);
               $editProfile.find('#googleplus').val(account.url);
@@ -878,6 +880,7 @@ function renderSocialMediaLinks() {
               $socialMedia.find('.instagram').parent().show();
               $socialMedia.find('.instagram')
                 .attr('href', '//'+account.url);
+              $aboutMe.find('.instagram').show();
               $aboutMe.find('.instagram-link')
                 .attr('href', '//'+account.url);
               $editProfile.find('#instagram').val(account.url);
@@ -891,6 +894,7 @@ function renderSocialMediaLinks() {
               $socialMedia.find('.twitter').parent().show();
               $socialMedia.find('.twitter')
                 .attr('href', '//'+account.url);
+              $aboutMe.find('.twitter').show();
               $aboutMe.find('.twitter-link')
                 .attr('href', '//'+account.url);
               $editProfile.find('#twitter').val(account.url);
@@ -966,24 +970,26 @@ function updateFollow() {
 }
 
 function swapFollowBtn(bool) {
+  console.log(bool);
   if (bool) {
     $('.profile-options')
       .find('.follow-btn')
       .html('UNFOLLOW')
-      .removeClass('btn-primary');
+      .removeClass('hidden');
     $('.profile-options')
       .find('.follow-btn').addClass('btn-default');
   } else {
     $('.profile-options')
       .find('.follow-btn')
       .html('FOLLOW')
-      .removeClass('btn-default');
+      .removeClass('hidden');
     $('.profile-options')
       .find('.follow-btn').addClass('btn-primary');
   }
 }
 
 function checkFollowStatus(){
+  console.log('check follow firing');
   var data = {
     followingUserId     : profileUser._id,
     userId              : user._id
@@ -995,6 +1001,7 @@ function checkFollowStatus(){
     contentType : 'application/json'
   })
     .done(function(response){
+      console.log('follow response firing');
       if (response.status === 'followed') {
         swapFollowBtn(true);
       } else if (response.status === 'unfollowed') {
@@ -1065,13 +1072,14 @@ function bindHireMeFunction() {
 }
 
 function initialize() {
+  console.log('intialized');
   if (!profileVideos) {
     profileVideos = [];
   } else {
     allOwnerVideos = profileVideos;
     showcaseOwnerVideos = profileVideos;
   }
-
+  
   $profilePage = $('#user-profile');
   $videoEditModal = $('#edit-video-modal');
 
@@ -1079,37 +1087,42 @@ function initialize() {
   $('.profile-options')
     .on('click', '.follow-btn', updateFollow)
     .on('click', '.hire-btn', displayHireMeModal);
-
+  console.log('line 1088 firing');
   if (user) {
     //Logic for when viewing self
     userNameCheck = user._id;
-    if(userNameCheck === profileUser._id) {
+    //check profile user
+    if (userNameCheck === profileUser._id) {
+      //render showcase in owner mode if user profile belongs to user
       renderOwnerShowcase(showcaseOwnerVideos);
       ownerShowcase({videos: showcaseOwnerVideos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
         $('#showcase').html(html);
       });
+      //render videos in owner mode if user profile belongs to user
       renderOwnerAllVideosHtml(allOwnerVideos);
-      aboutMe({user: profileUser}, function(err, html){
+      aboutMe({user: profileUser}, function (err, html) {
         $("#about-me-section").html(html);
       });
+      //allow profile edit if user profile belongs to user
       renderUserProfileEdit(profileUser);
       $('.edit-tab').show();
 
-      $('.profile-options')
-        .find('.follow-btn')
-        .hide();
-      $('.donate-btn').hide();
-      $('.hire-btn').hide();
-    } else {
+      // $('.profile-options')
+      //   .find('.follow-btn')
+      //   .hide();
+      // $('.donate-btn').hide();
+      // $('.hire-btn').hide();
+    }
+  } else {
+    console.log('line 1115 firing');
       //Logic for when viewing other profile
       if (profileUser.allowDonation) {
-        $('.donate-btn').show();
+        $('.donate-btn').removeClass('hidden');
       } else {
         $('.donate-btn').hide();
       }
-
       if (profileUser.allowHire) {
-        $('.hire-btn').show();
+        $('.hire-btn').removeClass('hidden');
         bindHireMeFunction();
       } else {
         $('.hire-btn').hide();
@@ -1119,14 +1132,6 @@ function initialize() {
       bindSortAllVideos();
 
     }
-  } else {
-    bindSortAllVideos();
-    $('.donate-btn').hide();
-    $('.hire-btn').hide();
-    $('.follow-btn').hide();
-    $('.edit-tab').hide();
-
-  }
 
 
   renderSocialMediaLinks();

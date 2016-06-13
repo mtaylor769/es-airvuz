@@ -18,14 +18,14 @@
           <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#allvideos" role="tab" data-toggle="tab">ALL VIDEOS</a></li>
               <li role="presentation"><a href="#showcase" id="showcase-tab" role="tab" data-toggle="tab">SHOWCASE</a></li>
-              <li role="presentation" class="hidden-md hidden-lg"><a href="#about" role="tab" data-toggle="tab">ABOUT</a></li>
+              <li role="presentation"><a href="#about" role="tab" data-toggle="tab">ABOUT</a></li>
               <li role="presentation"><a href="#edit-profile" role="tab" data-toggle="tab" class="edit-tab">EDIT</a></li>
           </ul>
       </div>
       <div class="tab-content">
           <div role="tabpanel" class="tab-pane" id="showcase">{> "client.templates.userProfile.showcase-user" /}</div>
           <div role="tabpanel" class="tab-pane active" id="allvideos">{> "client.templates.userProfile.allvideos-user" /}</div>
-          <div role="tabpanel" class="tab-pane hidden-md hidden-lg" id="about">{> "client.templates.userProfile.about" /}</div>
+          <div role="tabpanel" class="tab-pane" id="about">{> "client.templates.userProfile.about" /}</div>
           <div role="tabpanel" class="tab-pane" id="edit-profile">{> "client.templates.userProfile.edit-profile" /}</div>
       </div>
     </div>

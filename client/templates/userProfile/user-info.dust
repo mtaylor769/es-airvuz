@@ -15,28 +15,15 @@
             </span>
       </div>
       <h4 class="profile-username row" style="position:absolute; bottom: -5px; left: 25px; font-size: 24px; font-weight: 200">{user.userNameDisplay}</h4>
-    <div class="profile-picture col-xs-12 col-md-3">
-        <img src="{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
+    <div class="col-xs-12">
+        <div class="profile-picture">
+            <img src="{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
+        </div>
+        <div class="profile-button" style="text-align: right">
+            <button class="hidden follow-btn btn btn-primary" style="margin: 10px">Follow</button>
+            <button class="hidden donate-btn btn btn-primary" style="margin: 10px">Hire</button>
+            <button class="hidden hire-btn btn btn-primary" style="margin: 10px">Donate</button>
+        </div>
     </div>
-    {!<div class="profile-information col-xs-12 col-md-9">!}
-      {!<h5 class="row">!}
-        {!{?followers}!}
-        {!<span class="av-primary word-space airvuz-blue">{followers}</span><span class="profile-space">Followers</span>!}
-        {!{/followers}!}
-        {!{?following}!}
-        {!<span class="av-primary word-space airvuz-blue">{following}</span><span>Following</span>!}
-        {!{/following}!}
-      {!</h5>!}
-      {!<div class="profile-aboutme hidden-xs hidden-sm" style="margin: 2% 0">!}
-          {!<span>{user.aboutMe}</span>!}
-      {!</div>!}
-      {!<!-- This stuff displays only if not your profile -->!}
-      {!<div class="profile-options row" role="group">!}
-      {!<!-- Switch button depending if followed or unfollowed -->!}
-        {!<a class="follow-btn btn btn-primary">Follow</a>!}
-        {!<a class="donate-btn btn btn-primary" href="{user.donationUrl}" target="_blank">Donate</a>!}
-        {!<a class="hire-btn btn btn-primary">Hire</a>!}
-      {!</div>!}
-    {!</div>!}
   </div>
 </section>

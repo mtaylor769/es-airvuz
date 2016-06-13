@@ -15,6 +15,7 @@ function getCheckFollowing(req, res) {
       }
     })
     .error(function(error){
+      console.log(error);
       if(error.followId) {
         FollowCrud.delete(error.followId)
           .then(function(follow) {

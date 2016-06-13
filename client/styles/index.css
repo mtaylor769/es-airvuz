@@ -916,8 +916,13 @@ Begin userProfile CSS
 }
 
 #user-profile .profile-picture {
-  text-align: center;
+  text-align: left;
   margin-top: 5%;
+}
+
+#user-profile .profile-picture img {
+  height: 100px;
+  width: 100px;
 }
 
 #user-profile .video {
@@ -1202,10 +1207,6 @@ use class="glyphicon glyphicon-minus"
   color: #30c1ed;
 }
 
-#user-profile .profile-picture img {
-  height: 150px;
-  width: 150px;
-}
 /*
 End user profile CSS
 */
@@ -1685,6 +1686,11 @@ End Video Player Slick theme
   #user-profile .profile-picture {
     text-align: left;
     margin-top: 1%;
+  }
+
+  #user-profile .profile-picture img {
+    height: 150px;
+    width: 150px;
   }
 
   #user-profile .profile-information {
