@@ -1,28 +1,6 @@
 <section style="color: white; background: url('{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
-  <div class="" style="background: url('/client/images/profile-gradient.png')bottom left repeat-x; height: 300px;">
-    <div class="profile-picture col-xs-12 col-md-3">
-        <img src="{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
-    </div>
-    <div class="profile-information col-xs-12 col-md-9">
-      <h4 class="profile-username row">{user.userNameDisplay}</h4>
-      <h5 class="row">
-        {?followers}
-        <span class="av-primary word-space airvuz-blue">{followers}</span><span class="profile-space" style="text-shadow: 2px 2px 22px black">Followers</span>
-        {/followers}
-        {?following}
-        <span class="av-primary word-space airvuz-blue">{following}</span><span style="text-shadow: 2px 2px 22px black">Following</span>
-        {/following}
-      </h5>
-      <div class="profile-aboutme hidden-xs hidden-sm" style="text-shadow: 2px 2px 22px black; margin: 2% 0">
-          <span>{user.aboutMe}</span>
-      </div>
-      <!-- This stuff displays only if not your profile -->
-      <div class="profile-options row" role="group">
-      <!-- Switch button depending if followed or unfollowed -->
-        <a class="follow-btn btn btn-primary">Follow</a>
-        <a class="donate-btn btn btn-primary" href="{user.donationUrl}" target="_blank">Donate</a>
-        <a class="hire-btn btn btn-primary">Hire</a>
-        <div class="user-social-media pull-right row hidden-xs hidden-sm">
+  <div class="" style="background: url('/client/images/profile-gradient.png')bottom left repeat-x; height: 300px; position: relative">
+      <div class="user-social-media pull-right row hidden-xs hidden-sm" style="position: absolute; right: 0; bottom: 0px">
             <span class="social-media-background">
                 <a class="facebook fa fa-facebook-square" target="_blank"></a>
             </span>
@@ -35,8 +13,30 @@
             <span class="social-media-background">
                 <a class="google fa fa-google-plus-square" target="_blank"></a>
             </span>
-        </div>
       </div>
+      <h4 class="profile-username row" style="position:absolute; bottom: -5px; left: 25px; font-size: 24px; font-weight: 200">{user.userNameDisplay}</h4>
+    <div class="profile-picture col-xs-12 col-md-3">
+        <img src="{user.profilePicture}" alt="user profile picture" class="border-radius-circle">
     </div>
+    {!<div class="profile-information col-xs-12 col-md-9">!}
+      {!<h5 class="row">!}
+        {!{?followers}!}
+        {!<span class="av-primary word-space airvuz-blue">{followers}</span><span class="profile-space">Followers</span>!}
+        {!{/followers}!}
+        {!{?following}!}
+        {!<span class="av-primary word-space airvuz-blue">{following}</span><span>Following</span>!}
+        {!{/following}!}
+      {!</h5>!}
+      {!<div class="profile-aboutme hidden-xs hidden-sm" style="margin: 2% 0">!}
+          {!<span>{user.aboutMe}</span>!}
+      {!</div>!}
+      {!<!-- This stuff displays only if not your profile -->!}
+      {!<div class="profile-options row" role="group">!}
+      {!<!-- Switch button depending if followed or unfollowed -->!}
+        {!<a class="follow-btn btn btn-primary">Follow</a>!}
+        {!<a class="donate-btn btn btn-primary" href="{user.donationUrl}" target="_blank">Donate</a>!}
+        {!<a class="hire-btn btn btn-primary">Hire</a>!}
+      {!</div>!}
+    {!</div>!}
   </div>
 </section>
