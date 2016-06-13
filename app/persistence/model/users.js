@@ -1,5 +1,4 @@
 var mongoose 			= require('mongoose');
-var Schema  			= mongoose.Schema;
 var bcrypt        = require('bcrypt-nodejs');
 var uuid     			= require('uuid');
 
@@ -59,9 +58,10 @@ var usersSchema 		= mongoose.Schema({
 
 	// The users email address
 	emailAddress : {
-		required	: false,
-		type		: String/*,
-		unique		: true*/
+		type			: String,
+		lowercase	: true,
+		required	: true,
+		unique		: true
 	},
   
 	// The users first name
