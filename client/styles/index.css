@@ -1213,8 +1213,8 @@ use class="glyphicon glyphicon-minus"
 }
 
 #user-profile .profile-picture img {
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
 }
 /*
 End user profile CSS
@@ -1693,8 +1693,8 @@ End Video Player Slick theme
   }
 
   #user-profile .profile-picture {
-    text-align: right;
-    margin-top: 3%;
+    text-align: left;
+    margin-top: 1%;
   }
 
   #user-profile .profile-information {
