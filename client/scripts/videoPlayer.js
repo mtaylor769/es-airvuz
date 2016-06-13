@@ -17,6 +17,7 @@ var browser                            = require('./services/browser');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
+var bufferCount                        = 0;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -533,14 +534,21 @@ function bindEvents() {
     }
 
     function timeFunction() {
-      AVEventTracker({
-        codeSource	: "videoPlayer",
-        eventName		: "buffering",
-        eventType		: "playerEvent"
-      });
+      if(bufferCount > 0){
+        console.log('buffering');
+        AVEventTracker({
+          codeSource	: "videoPlayer",
+          eventName		: "buffering",
+          eventType		: "playerEvent"
+        });
+      } else {
+        bufferCount ++;
+      }
+
     }
 
     function playFunction() {
+      console.log('playing');
       AVEventTracker({
         codeSource	: "videoPlayer",
         eventName		: "playing",
@@ -559,9 +567,9 @@ function bindEvents() {
     videojs("video-player").ready(function() {
       var player = this;
       player
+      .on('playing', playFunction)
       .on('ended', endFunction)
       .on('waiting', timeFunction)
-      .on('playing', playFunction)
       .on('pause', pauseFunction);
     });
 
