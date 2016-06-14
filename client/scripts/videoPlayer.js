@@ -17,7 +17,7 @@ var browser                            = require('./services/browser');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
-var bufferCount                        = 0;
+var hasStartedPlaying                  = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -534,21 +534,18 @@ function bindEvents() {
     }
 
     function timeFunction() {
-      if(bufferCount > 0){
+      if(hasStartedPlaying) {
         console.log('buffering');
         AVEventTracker({
           codeSource	: "videoPlayer",
           eventName		: "buffering",
           eventType		: "playerEvent"
         });
-      } else {
-        bufferCount ++;
       }
-
     }
 
     function playFunction() {
-      console.log('playing');
+      hasStartedPlaying = true;
       AVEventTracker({
         codeSource	: "videoPlayer",
         eventName		: "playing",
