@@ -101,10 +101,8 @@ function incrementVideoCount() {
       dataType: 'json'
     })
     .done(function(response) {
-      //console.log(response);
     })
     .fail(function(error) {
-      //console.log(error);
     });
 }
 
@@ -146,13 +144,6 @@ function onAutoPlayChange(event, state) {
   .done(function(response) {
     user.autoPlay = response.autoPlay;
     identity.save();
-    //code for update
-    //
-    ////console.log(response);
-    //if(response.status === 'OK'){
-    //  user.autoPlay = response.data.autoPlay;
-    //  identity.save();
-    //}
   })
   .fail(function(error) {
   });
@@ -306,7 +297,6 @@ function bindEvents() {
       }
       followData.follow = followObject;
       followData.notification = notificationObject;
-      //console.log(followData);
       $.ajax({
           type: 'POST',
           url: '/api/follow',
@@ -535,7 +525,6 @@ function bindEvents() {
 
     function timeFunction() {
       if(hasStartedPlaying) {
-        console.log('buffering');
         AVEventTracker({
           codeSource	: "videoPlayer",
           eventName		: "buffering",
@@ -662,11 +651,9 @@ function bindEvents() {
         $(self).parents('.comment-wrap').find('.parentComment').append(html);
         if(data.length === 10) {
           html = '<div class="row m-t-10" style="text-align: center"><span><a class="moreReplies" value="'+parentId+'">load More</a></span></div>';
-          //console.log($(self));
           $(self).parent().siblings().append(html);
           $(self).hide();
         } else {
-          //console.log($(self));
           $(self).hide();
         }
       })
