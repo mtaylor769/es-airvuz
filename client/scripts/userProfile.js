@@ -51,7 +51,6 @@ var removeHtml            = '<div class="removed showcase-edit-button"><span cla
 
 
 function showcaseAdd(videoId) {
-  //console.log(videoId);
   var data = {};
   data.video = videoId;
   data.user = user._id;
@@ -62,10 +61,8 @@ function showcaseAdd(videoId) {
     data: data
   })
     .done(function(response) {
-      //console.log('response : ' + response);
     })
     .fail(function(error) {
-      //console.log('error : ' + error);
     });
 }
 
@@ -179,16 +176,7 @@ function bindEvents() {
     .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick)
     .on('click', '#btn-save-video-edit', onSaveVideoEdit);
 
-    $(window).on('resize', function() {
-      var windowWidth = $(window).width();
-      var isActive = $('#about').hasClass('active');
-      if(windowWidth >= 992 && isActive) {
-        $('#showcase-tab').click();
-      }
-    });
-
   function showcaseButton() {
-    //console.log('running function');
     var buttonDiv = $(this).parent();
     var videoId = buttonDiv.attr('data-videoid');
     var status = buttonDiv.attr('data-showcase');
@@ -249,9 +237,7 @@ function editShowcase() {
   });
   var showcase = ($('.showcase')).children();
   $(showcase).on('click', function() {
-    //console.log('running function');
     var buttonDiv = $(this).parent();
-    //console.log(buttonDiv.attr('data-videoid'));
     var videoId = buttonDiv.attr('data-videoid');
     var status = buttonDiv.attr('data-showcase');
     $(this).remove();
@@ -345,15 +331,10 @@ function renderUserInfo() {
   } else {
     $('.hire-btn').hide();
   }
-
-  if (profileUser.aboutMe) {
-    $('#userInfoData').find('.profile-aboutme')
-      .find('span').html(profileUser.aboutMe);
-  }
 }
 
 function editProfile() {
-  var userNameDisplay            = $("#username").val();
+var userNameDisplay       = $("#username").val();
   var emailAddress        = $("#email").val();
   var myAbout             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
@@ -541,11 +522,9 @@ function requestVideoSort(sortBy, id) {
         renderUseAllVideosHtml(data.data);
       }
     } else {
-      //console.log('server side error' + data.data);
     }
   })
   .fail(function(error) {
-    //console.log('error : ' + error);
   });
 }
 
@@ -565,11 +544,9 @@ function sortShowcase(sortBy, id) {
       //   $('#allvideos').html(html);
       // });
     } else {
-      //console.log('server side error' + data.data);
     }
   })
   .fail(function(error) {
-    //console.log('error : ' + error);
   });
 }
 
@@ -736,11 +713,6 @@ function onCustomFileChange() {
 }
 function onUploadError(message) {
   // isUploading = false;
-  /********************************************************/
-  console.group('%cError :', 'color:red;font:strait');
-  //console.log(message);
-  console.groupEnd();
-  /********************************************************/
 }
 function onCustomThumbnailUploadComplete(name) {
   $videoEditModal.find('#custom-thumbnail-section .fa').addClass('hidden');
@@ -837,9 +809,6 @@ function renderSocialMediaLinks() {
   var $socialMedia = $('.user-social-media');
   var $aboutMe     = $('#about-me-section').find('.aboutme-socialmedia');
   var $editProfile = $('.edit-profile');
-  //Automatically hides social media links
-  $($socialMedia).find('span').hide();
-  $($aboutMe).find('span').hide();
   if (profileUser.socialMediaLinks) {
     //test for existence of socialMediaLinks attribute
     if (profileUser.socialMediaLinks.length > 0) {
@@ -848,8 +817,7 @@ function renderSocialMediaLinks() {
         switch (account.socialType) {
           case "FACEBOOK" :
             if (account.url && account.url !== '') {
-              $socialMedia.find('.facebook')
-                .parent().show();
+              $socialMedia.find('.facebook').parent().removeClass('hidden');
               $socialMedia.find('.facebook')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.facebook').show();
@@ -863,7 +831,7 @@ function renderSocialMediaLinks() {
             break;
           case 'GOOGLE+' :
             if (account.url && account.url !== '') {
-              $socialMedia.find('.google').parent().show();
+              $socialMedia.find('.google').parent().removeClass('hidden');
               $socialMedia.find('.google')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.google').show();
@@ -877,7 +845,7 @@ function renderSocialMediaLinks() {
             break;
           case 'INSTAGRAM' :
             if (account.url && account.url !== '') {
-              $socialMedia.find('.instagram').parent().show();
+              $socialMedia.find('.instagram').parent().removeClass('hidden');
               $socialMedia.find('.instagram')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.instagram').show();
@@ -891,7 +859,7 @@ function renderSocialMediaLinks() {
             break;
           case 'TWITTER' :
             if (account.url && account.url !== '') {
-              $socialMedia.find('.twitter').parent().show();
+              $socialMedia.find('.twitter').parent().removeClass('hidden');
               $socialMedia.find('.twitter')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.twitter').show();
@@ -923,6 +891,9 @@ function getData() {
 
   VIEW_MODEL.categories = Page.categories;
 }
+
+
+////// follow block
 
 function updateFollow() {
   var followData = {
@@ -968,28 +939,7 @@ function updateFollow() {
         .html('Error ' + errorMsg);
     });
 }
-
-function swapFollowBtn(bool) {
-  console.log(bool);
-  if (bool) {
-    $('.profile-options')
-      .find('.follow-btn')
-      .html('UNFOLLOW')
-      .removeClass('hidden');
-    $('.profile-options')
-      .find('.follow-btn').addClass('btn-default');
-  } else {
-    $('.profile-options')
-      .find('.follow-btn')
-      .html('FOLLOW')
-      .removeClass('hidden');
-    $('.profile-options')
-      .find('.follow-btn').addClass('btn-primary');
-  }
-}
-
 function checkFollowStatus(){
-  console.log('check follow firing');
   var data = {
     followingUserId     : profileUser._id,
     userId              : user._id
@@ -1001,19 +951,46 @@ function checkFollowStatus(){
     contentType : 'application/json'
   })
     .done(function(response){
-      console.log('follow response firing');
       if (response.status === 'followed') {
         swapFollowBtn(true);
       } else if (response.status === 'unfollowed') {
         swapFollowBtn(false);
       }
-      //console.log(response);
     })
     .fail(function(error){
     //TODO server side error, pop modal
-      //console.log(error);
     });
 
+}
+
+function swapFollowBtn(bool) {
+  if (bool) {
+    $('.profile-button')
+      .find('.follow-btn')
+      .html('UNFOLLOW')
+      .removeClass('hidden');
+    $('.profile-button')
+      .siblings()
+      .css('margin-bottom', '0px')
+
+  } else {
+    $('.profile-button')
+      .find('.follow-btn')
+      .html('FOLLOW')
+      .removeClass('hidden');
+    $('.profile-button')
+      .siblings()
+      .css('margin-bottom', '0px')
+  }
+}
+
+//end follow block
+
+function goToDonation() {
+  if(profileUser.donationUrl){
+    var newTab = window.open(profileUser.donationUrl, '_blank');
+    newTab.focus();
+  }
 }
 
 function displayHireMeModal() {
@@ -1072,7 +1049,6 @@ function bindHireMeFunction() {
 }
 
 function initialize() {
-  console.log('intialized');
   if (!profileVideos) {
     profileVideos = [];
   } else {
@@ -1084,10 +1060,10 @@ function initialize() {
   $videoEditModal = $('#edit-video-modal');
 
 
-  $('.profile-options')
+  $('.profile-button')
     .on('click', '.follow-btn', updateFollow)
-    .on('click', '.hire-btn', displayHireMeModal);
-  console.log('line 1088 firing');
+    .on('click', '.hire-btn', displayHireMeModal)
+    .on('click', '.donate-btn', goToDonation);
   if (user) {
     //Logic for when viewing self
     userNameCheck = user._id;
@@ -1106,41 +1082,26 @@ function initialize() {
       //allow profile edit if user profile belongs to user
       renderUserProfileEdit(profileUser);
       $('.edit-tab').show();
-
-      // $('.profile-options')
-      //   .find('.follow-btn')
-      //   .hide();
-      // $('.donate-btn').hide();
-      // $('.hire-btn').hide();
-    }
-  } else {
-    console.log('line 1115 firing');
+    } else {
       //Logic for when viewing other profile
       if (profileUser.allowDonation) {
         $('.donate-btn').removeClass('hidden');
-      } else {
-        $('.donate-btn').hide();
       }
       if (profileUser.allowHire) {
         $('.hire-btn').removeClass('hidden');
         bindHireMeFunction();
-      } else {
-        $('.hire-btn').hide();
       }
       $('.edit-tab').hide();
       checkFollowStatus();
       bindSortAllVideos();
-
     }
-
-
-  renderSocialMediaLinks();
-  $("[name='showcase-default']").bootstrapSwitch({
-    size: 'mini'
-  });
-  //console.log('initalize');
-  bindEvents();
-  getData();
+  }
+    renderSocialMediaLinks();
+    $("[name='showcase-default']").bootstrapSwitch({
+      size: 'mini'
+    });
+    bindEvents();
+    getData();
 }
 
 module.exports = {

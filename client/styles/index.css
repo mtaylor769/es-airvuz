@@ -886,12 +886,14 @@ Begin userProfile CSS
   color: white;
 }
 
+#user-profile .user-social-media a:hover {
+  color: #30c1ed;
+}
+
 #user-profile #about-me-section .aboutme-socialmedia a {
   text-decoration: none;
   color: gray;
 }
-
-
 
 #user-profile .inline{
   display: inline-block;
@@ -919,6 +921,23 @@ Begin userProfile CSS
   text-align: left;
   margin-top: 5%;
 }
+
+#user-profile .profile-button button {
+  margin: 10px;
+}
+
+/*#user-profile .profile-button button {*/
+  /*margin: 10px;*/
+  /*background: transparent;*/
+  /*color: white;*/
+  /*border-radius: 10px;*/
+  /*border-color: white;*/
+/*}*/
+
+/*#user-profile .profile-button button:hover {*/
+  /*background: #30c1ed;*/
+  /*color: white;*/
+/*}*/
 
 #user-profile .profile-picture img {
   height: 100px;
