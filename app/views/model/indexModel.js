@@ -59,7 +59,7 @@ IndexModel.prototype.getData = function(params) {
 		
 		params.data.index.head				= {};
 		params.data.index.head.og			= config.view.index.og;
-		params.data.index.head.title	= "AirVūz – Drone Video Community";
+		params.data.index.head.title	= "AirVūz – World’s Best Drone Videos";
 		params.data.index.viewName		= "index";
 
 		params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;

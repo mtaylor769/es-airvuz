@@ -314,6 +314,14 @@ body.modal-open {
   height: 75px;
 }
 
+#header .tag-line {
+  position: absolute;
+  bottom: 4px;
+  left: 82px;
+  font-size: 9px;
+  color: #f48a4a;
+}
+
 .header-user {
   height: 100%;
 }
@@ -1217,6 +1225,7 @@ End user profile CSS
 #header .airvuz-logo {
   display: none;
 }
+
 
 /*
 Video Player Slick theme
