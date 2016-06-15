@@ -316,9 +316,9 @@ body.modal-open {
 
 #header .tag-line {
   position: absolute;
-  bottom: 7px;
-  left: 90px;
-  font-size: 8px;
+  bottom: 4px;
+  left: 82px;
+  font-size: 9px;
   color: #f48a4a;
 }
 
