@@ -28,7 +28,8 @@ var $uploadPage,
     isUploading = false,
     POLLING_INTERVAL_TIME = 20000, // 20 sec
     customThumbnailName,
-    isCustomThumbnail = false;
+    isCustomThumbnail = false,
+    isPublishing = false;
 
 function appendErrorMessage(errorArray) {
   errorArray.forEach(function(error) {
@@ -196,6 +197,9 @@ function bindEvents() {
 
   function onPublish(event) {
     event.preventDefault();
+    if (isPublishing) {
+      return false;
+    }
     removeErrorMessage();
     
     var params = {
@@ -219,23 +223,21 @@ function bindEvents() {
     if ($tags.val()) {
       params.tags = $tags.val().split(',');
     }
-
+    isPublishing = true;
     $.ajax({
       url         : '/api/videos',
       contentType : 'application/json',
       type        : 'POST',
       data        : JSON.stringify(params)
-    })
-      .done(function (video) {
-        renderStep(3, video);
-      
-    })
-      .fail(function(response) {
-        if (response.status === 403) {
-          appendErrorMessage(response.responseJSON.error);
-        }
+    }).done(function (video) {
+      renderStep(3, video);
+    }).fail(function(response) {
+      if (response.status === 403) {
+        appendErrorMessage(response.responseJSON.error);
+      }
+    }).always(function () {
+      isPublishing = false;
     });
-
   }
 
   function onFileChange() {
