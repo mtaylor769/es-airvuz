@@ -1081,7 +1081,7 @@ function initialize() {
       });
       //allow profile edit if user profile belongs to user
       renderUserProfileEdit(profileUser);
-      $('.edit-tab').show();
+      $('.edit-tab').removeClass('hidden');
     } else {
       //Logic for when viewing other profile
       if (profileUser.allowDonation) {
@@ -1091,7 +1091,6 @@ function initialize() {
         $('.hire-btn').removeClass('hidden');
         bindHireMeFunction();
       }
-      $('.edit-tab').hide();
       checkFollowStatus();
       bindSortAllVideos();
     }
