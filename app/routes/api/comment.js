@@ -1,9 +1,11 @@
 var commentCrud = require('../../persistence/crud/comment');
 var NotificationCrud = require('../../persistence/crud/notifications');
+var socialCrud  = require('../../persistence/crud/socialMediaAccount');
 var log4js                 = require('log4js');
 var logger                 = log4js.getLogger('app.routes.api.users');
 var Promise     = require('bluebird');
 var mongoose    = require('mongoose');
+var moment      = require('moment');
 
 
 function Comment() {
@@ -41,6 +43,38 @@ Comment.prototype.getByParentCommentId = function(req, res) {
   logger.debug(req.query.parentId);
   commentCrud
   .getByParentCommentId(req.query.parentId)
+  .then(function(comments) {
+    return Promise.map(comments, function (comment) {
+      console.log(comment);
+      comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+      if (comment.userId !== null) {
+        return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+          .then(function (social) {
+            logger.debug(social);
+            if (social && comment.userId.profilePicture === '') {
+              comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+              return comment;
+            } else if (!social && comment.userId.profilePicture === '') {
+              comment.userId.profilePicture = '/client/images/default.png';
+              return comment;
+            } else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
+              comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+              return comment;
+            } else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('users/profile-pictures') === -1) {
+              comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
+              return comment;
+            } else {
+              comment.userId.profilePicture = comment.userId.profilePicture;
+              return comment;
+            }
+          })
+      } else {
+        comment.userId = {};
+        comment.userId.profilePicture = '/client/images/default.png';
+        return comment;
+      }
+    })
+  })
   .then(function(comments) {
     res.send(comments);
   })

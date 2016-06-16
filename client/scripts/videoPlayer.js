@@ -637,7 +637,7 @@ function bindEvents() {
         data.forEach(function(reply) {
           html += '<li>'+
             '<div class="flex">'+
-            '<img src="' + "http://www.airvuz.com/" + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
+            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-10">'+
             '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
             '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
