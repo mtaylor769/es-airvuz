@@ -248,6 +248,9 @@ function bindEvents() {
     $('#login-modal').modal('show');
   })
 }
+  $(this.body).on("profilePictureUpdate", function() {
+    renderProfileHeader()
+  });
 
 function initialize() {
   $footerSub1 = $('.footer-sub1');

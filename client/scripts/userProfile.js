@@ -97,7 +97,6 @@ function bindEvents() {
 
   function updateUserPicture(hashName, type) {
     var data = {};
-
     data[type] = '/' + hashName;
 
     var ajaxOptions = {
@@ -114,11 +113,20 @@ function bindEvents() {
         if (type === 'profilePicture') {
           $userInfoData
             .find('.profile-picture img')
-            .attr('src', amazonConfig.ASSET_URL + '/users/profile-pictures' + hashName);
+            .attr('src', amazonConfig.ASSET_URL + 'users/profile-pictures/' + hashName);
+          identity.getUserInfo();
+          $(this.body).trigger("profilePictureUpdate");
+          $('body')
+            .find('.profile-img-wrap img')
+            .attr('src', amazonConfig.ASSET_URL + 'users/profile-pictures/' + hashName)
         } else {
           $userInfoData
             .find('> section')
-            .css('background', '#fff url(' + amazonConfig.ASSET_URL + 'users/cover-pictures' + hashName + ') no-repeat center');
+            .css({
+              background: '#fff url(' + amazonConfig.ASSET_URL + 'users/cover-pictures/' + hashName + ') no-repeat center',
+              backgroundSize: "cover",
+              minHeight: '300px'
+            })
         }
       });
   }
