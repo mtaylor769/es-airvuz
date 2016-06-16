@@ -63,7 +63,7 @@ UserProfileModel.prototype.getData = function(params) {
 		} else if(user.facebook && user.profilePicture.indexOf('facebook') > -1) {
 			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large';
 		} else if(user.profilePicture.indexOf('http') === -1) {
-			user.profilePicture = amazonConfig.ASSET_URL + 'users/profile-pictures' + user.profilePicture;
+			user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=200';
 		} else {
 			user.profilePicture = user.profilePicture;
 		}

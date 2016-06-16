@@ -3,7 +3,9 @@ var Promise       = require('bluebird'),
     AWS           = require('aws-sdk'),
     crypto        = require('crypto'),
     probe         = require('node-ffprobe'),
+    image         = require('./image.service.server'),
     fs            = require('fs'),
+    request       = require('request'),
     awsOptions    = {};
 
 AWS.config.region       = 'us-west-2';
@@ -212,6 +214,77 @@ function listVideoObjects(key) {
 }
 
 /**
+ * check to see if amazon have picture
+ * @param path
+ */
+function hasImageSize(path) {
+  var bucket = new AWS.S3(awsOptions),
+      key = 'users/profile-pictures/resize/' + path;
+
+  return new Promise(function (resolve, reject) {
+    bucket.headObject({
+      Bucket: amazonConfig.ASSET_BUCKET,
+      Key: key
+    }, function (err, response) {
+      if (err) {
+        if (err.code === 'NotFound') {
+          return resolve(false);
+        }
+        return reject(err);
+      }
+
+      resolve({
+        hasImage: true,
+        fileName: path,
+        path: amazonConfig.ASSET_URL + key
+      });
+    });
+  });
+}
+
+function reSizeImage(picture, size) {
+  console.log('******************** resizeImage ********************');
+  console.log(picture);
+  console.log('************************************************');
+  var resizePath = 'users/profile-pictures/resize/';
+  var originalPath = 'users/profile-pictures/';
+  var imagePath = amazonConfig.ASSET_URL + originalPath + picture;
+
+  console.log('******************** "https:" + imagePath ********************');
+  console.log("https:" + imagePath);
+  console.log('************************************************');
+  var readStream = request('https:' + imagePath);
+  var stream = image.resize(readStream, size);
+  
+  console.log('******************** stream ********************');
+  console.log(stream);
+  console.log('************************************************');
+
+  stream.on('error', function (err) {
+    console.log('******************** err stream ********************');
+    console.log(err);
+    console.log('************************************************');
+  });
+
+  stream.on('end', function () {
+    console.log('******************** stream end ********************');
+  });
+
+  var part = picture.split('.');
+  var pictureWithoutExt = part[0];
+  var sizeExt = '-' + size + 'x' + size + '.';
+  var key =  resizePath + pictureWithoutExt + sizeExt + part[1];
+
+  return _upload(amazonConfig.ASSET_BUCKET, key, stream).then(function () {
+    console.log('******************** upload done ********************');
+    return {
+      fileName: picture,
+      path: amazonConfig.ASSET_URL + key
+    };
+  });
+}
+
+/**
  * Middleware to confirm amazon subscription
  * @param token
  * @param topicArn
@@ -285,14 +358,30 @@ function copyVideoToS3(file) {
     rd.on('error', function(err) {
       reject(err);
     });
+
+    return _upload(amazonConfig.INPUT_BUCKET, file.fileName, rd)
+      .then(function () {
+        return file.fileName;
+      });
+  });
+}
+
+function _upload(bucket, key, body) {
+  return new Promise(function (resolve, reject) {
     var storage = new AWS.S3(awsOptions);
-    var params = { Bucket: amazonConfig.INPUT_BUCKET, Key: file.fileName, Body: rd, ACL: 'public-read' };
+    var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
 
     storage.upload(params, function (err) {
       if (err) {
+        console.log('******************** err upload ********************');
+        console.log(err);
+        console.log('************************************************');
         reject(err);
       } else {
-        resolve(file.fileName);
+        console.log('******************** resolve upload ********************');
+        // console.log(resolve);
+        console.log('************************************************');
+        resolve();
       }
     });
   });
@@ -307,7 +396,8 @@ module.exports = {
   listVideoObjects    : listVideoObjects,
   moveFile            : moveFile,
   copyVideoToS3       : copyVideoToS3,
-
+  hasImageSize        : hasImageSize,
+  reSizeImage         : reSizeImage,
   // Middleware
   confirmSubscription : confirmSubscription,
 
