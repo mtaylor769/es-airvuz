@@ -359,9 +359,9 @@ function copyVideoToS3(file) {
       reject(err);
     });
 
-    return _upload(amazonConfig.INPUT_BUCKET, file.fileName, rd)
+    _upload(amazonConfig.INPUT_BUCKET, file.fileName, rd)
       .then(function () {
-        return file.fileName;
+        resolve(file.fileName);
       });
   });
 }
