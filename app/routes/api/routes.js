@@ -14,7 +14,7 @@ var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
 var videoCollection     = require('./videoCollection');
-var forms               = require('./forms');
+// var forms               = require('./forms');
 var image               = require('./image');
 var passport            = require('passport');
 var protect             = require('../../middlewares/protect');
@@ -263,7 +263,7 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
 /**
  * /api/forms/
  */
-apiRouter.post('/api/forms', forms.post);
+// apiRouter.post('/api/forms', forms.post);
 
 /**
  * /api/images

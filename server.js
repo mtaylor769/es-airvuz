@@ -142,7 +142,7 @@ viewManager.addView({ view : staticView('copyright') });
 viewManager.addView({ view : staticView('about') });
 viewManager.addView({ view : staticView('community') });
 viewManager.addView({ view : staticView('media') });
-viewManager.addView({ view : staticView('forms') });
+// viewManager.addView({ view : staticView('forms') });
 
 function loadView(req, res, name) {
 	viewManager
@@ -236,9 +236,9 @@ app.get("/media", function(req, res) {
 	loadView(req, res, 'media');
 });
 
-app.get("/forms", function(req, res) {
-	loadView(req, res, 'forms');
-});
+// app.get("/forms", function(req, res) {
+// 	loadView(req, res, 'forms');
+// });
 
 app.get("/social-login", function(req, res) {
 	res.sendFile(path.join(__dirname, './client/social-login.html'));
