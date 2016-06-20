@@ -28,7 +28,6 @@
               {/userId.userNameDisplay}
 
             </div>
-            <a href="/category/{categories[0].categoryTypeUrl}">{categories[0].name}</a>
           </div>
         </div>
       {/index[videos]}
