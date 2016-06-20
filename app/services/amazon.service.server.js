@@ -349,21 +349,14 @@ function moveFile(params) {
  * - used by external uploader (vimeo & youtube) because we download the video from the external link
  *   and then copy to s3
  * @param {Object} file
- * @param {String} file.path - path in the server
+ * @param {String} file.stream - file stream
  * @param {String} file.fileName - hash name with .mp4
  */
-function copyVideoToS3(file) {
-  return new Promise(function (resolve, reject) {
-    var rd = fs.createReadStream(file.path);
-    rd.on('error', function(err) {
-      reject(err);
+function uploadVideoToS3(file) {
+  return _upload(amazonConfig.INPUT_BUCKET, file.fileName, file.stream)
+    .then(function () {
+      return file.fileName;
     });
-
-    _upload(amazonConfig.INPUT_BUCKET, file.fileName, rd)
-      .then(function () {
-        resolve(file.fileName);
-      });
-  });
 }
 
 function _upload(bucket, key, body) {
@@ -378,9 +371,6 @@ function _upload(bucket, key, body) {
         console.log('************************************************');
         reject(err);
       } else {
-        console.log('******************** resolve upload ********************');
-        // console.log(resolve);
-        console.log('************************************************');
         resolve();
       }
     });
@@ -395,7 +385,7 @@ module.exports = {
   deletePreset        : deletePreset,
   listVideoObjects    : listVideoObjects,
   moveFile            : moveFile,
-  copyVideoToS3       : copyVideoToS3,
+  uploadVideoToS3     : uploadVideoToS3,
   hasImageSize        : hasImageSize,
   reSizeImage         : reSizeImage,
   // Middleware

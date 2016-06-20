@@ -5,7 +5,6 @@ var md5                     = require('md5');
 var uuid                    = require('node-uuid');
 var amazonService           = require('./../../../app/services/amazon.service.server');
 var youtubedl               = require('youtube-dl');
-var findRemoveSync          = require('find-remove');
 
 /**
  * Upload Route
@@ -94,47 +93,16 @@ function transcodeWarning(req, res) {
     });
 }
 
-/**
- * use youtubedl native to download the best quality video
- * @param url
- * @param path
- * @returns {Promise}
- */
-function downloadVideo(url, path) {
-  return new Promise(function (resolve, reject) {
-    youtubedl.exec(url, ['-f', 'best', '-o', path], {}, function (err) {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
-    });
-  });
-}
-
-function downloadExternalVideo(req, res) {
+function uploadExternalVideo(req, res) {
   var url = req.body.url;
   var fileName = md5(url + Date.now() + uuid.v1()) + '.mp4';
-  var videoPath = '/tmp/' + fileName;
+  var video = youtubedl(url, ['-f', 'best'], {});
 
-  return downloadVideo(url, videoPath)
-    .then(function () {
-      // return response back to the user to let them know trasncoding it starting
-      // but it actually copying to s3 and transcoding
-      res.json({fileName: fileName});
-    })
-    .catch(function (err) {
-      res.sendStatus(500);
-    });
-}
-
-function externalTranscodeVideo(req, res) {
-  var fileName = req.body.fileName;
-  var videoPath = '/tmp/' + fileName;
-  amazonService.copyVideoToS3({path: videoPath, fileName: fileName})
+  amazonService.uploadVideoToS3({stream: video, fileName: fileName})
     .then(function (video) {
       // TODO: change to create new preset?
       // current using custom preset
-      return amazonService.startTranscode('1454691097318-4731nu', video)
+      return amazonService.startTranscode('1463271020793-svwgsd', video)
         .then(function () {
           return video;
         });
@@ -144,15 +112,6 @@ function externalTranscodeVideo(req, res) {
     })
     .catch(function () {
       res.sendStatus(500);
-    })
-    .finally(function () {
-      /**
-       * remove the current upload temp file and remove file that is 4 hour old in the temp directory
-       * - this is only if the server die and never remove the temp file
-       */
-      var results = findRemoveSync('/tmp', {files: videoPath, extensions: ['.mp4', '.mp4.part'], maxLevel: 1, age: {seconds: 14400}});
-      logger.info('tmp file removed: ' + fileName);
-      logger.info(results);
     });
 }
 
@@ -162,7 +121,6 @@ Upload.prototype.transcodeProgression     = transcodeProgression;
 Upload.prototype.transcodeCompletion      = transcodeCompletion;
 Upload.prototype.transcodeFailure         = transcodeFailure;
 Upload.prototype.transcodeWarning         = transcodeWarning;
-Upload.prototype.downloadExternalVideo    = downloadExternalVideo;
-Upload.prototype.externalTranscodeVideo   = externalTranscodeVideo;
+Upload.prototype.uploadExternalVideo      = uploadExternalVideo;
 
 module.exports = new Upload();

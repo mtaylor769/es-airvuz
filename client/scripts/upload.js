@@ -409,21 +409,22 @@ function bindEvents() {
       contentType : 'application/json',
       type: 'POST',
       data: JSON.stringify({url: url})
-    }).done(onExternalTranscoding);
-  }
-
-  function onExternalTranscoding(response) {
-    $uploadPage.find('#processing-message').removeClass('hidden');
-    $uploadPage.find('.progress-bar')
-      .text('100%')
-      .width('100%');
-
-    $.ajax({
-      url: '/api/upload-external/transcode',
-      contentType : 'application/json',
-      type: 'POST',
-      data: JSON.stringify(response)
     }).done(onStartPolling);
+
+    // fake uploading bar
+    var percentage = 0;
+    var handle = setInterval(function () {
+      percentage += 2;
+
+      $uploadPage.find('.progress-bar')
+        .text(percentage + '%')
+        .width(percentage + '%');
+
+      if (percentage === 100) {
+        clearInterval(handle);
+        $uploadPage.find('#processing-message').removeClass('hidden');
+      }
+    }, 200);
   }
 
   function onStartPolling(video) {
