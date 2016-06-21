@@ -2,18 +2,14 @@ var INPUT_BUCKET,
   OUTPUT_BUCKET,
   ASSET_BUCKET;
 
-switch(window.location.host) {
-  case '54.213.44.149': // prod2
-  case 'airvuz.com':
-  case 'www.airvuz.com':
-    INPUT_BUCKET = 'airvuz-drone-video-input';
-    OUTPUT_BUCKET = 'airvuz-drone-video';
-    ASSET_BUCKET = 'airvuz-asset';
-    break;
-  default:
-    INPUT_BUCKET = 'airvuz-videos-beta-input';
-    OUTPUT_BUCKET = 'airvuz-videos-beta';
-    ASSET_BUCKET = 'airvuz-asset-beta';
+if (IS_PRODUCTION) {
+  INPUT_BUCKET = 'airvuz-drone-video-input';
+  OUTPUT_BUCKET = 'airvuz-drone-video';
+  ASSET_BUCKET = 'airvuz-asset';
+} else {
+  INPUT_BUCKET = 'airvuz-videos-beta-input';
+  OUTPUT_BUCKET = 'airvuz-videos-beta';
+  ASSET_BUCKET = 'airvuz-asset-beta';
 }
 
 module.exports = {
