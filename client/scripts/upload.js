@@ -8,7 +8,8 @@ var Evaporate     = require('evaporate'),
     AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
     camera        = require('./services/camera'),
-    drone         = require('./services/drone');
+    drone         = require('./services/drone'),
+    categories    = require('./services/category');
 
 /**
  * Templates
@@ -180,6 +181,7 @@ function renderStep(step, video) {
 }
 
 function getData() {
+  var aclRoles = identity.getAclRoles();
   camera.getAll()
     .then(function (cameras) {
       VIEW_MODEL.cameras = cameras;
@@ -190,7 +192,7 @@ function getData() {
       VIEW_MODEL.drones = drones;
     });
 
-  VIEW_MODEL.categories = Page.categories;
+  VIEW_MODEL.categories = categories.getUploadCategories(aclRoles);
 }
 
 function bindEvents() {
@@ -462,9 +464,9 @@ function initialize() {
   bindEvents();
 
   // DEBUG
-  //setTimeout(function () {
+  // setTimeout(function () {
   //  renderStep(2);
-  //}, 500);
+  // }, 500);
   //
   //var mockThumbnail = [
   //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00001.jpg',

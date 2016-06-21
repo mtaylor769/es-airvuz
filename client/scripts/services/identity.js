@@ -87,6 +87,13 @@ function getUserInfo() {
   });
 }
 
+function getAclRoles() {
+  var token = localStorage.getItem('id_token');
+  var user = jwtDecode(token);
+  var aclRoles = user.aclRoles;
+  return aclRoles;
+}
+
 /////////////////////////////////////////////
 
 user.isAuthenticated = isAuthenticated;
@@ -95,5 +102,6 @@ user.setToken = setToken;
 user.clear = clear;
 user.save = save;
 user.getUserInfo = getUserInfo;
+user.getAclRoles = getAclRoles;
 
 module.exports = user;
