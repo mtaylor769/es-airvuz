@@ -244,8 +244,7 @@ apiRouter.route('/api/video-collection/update-collection')
 apiRouter.post('/api/upload', upload.post);
 apiRouter.get('/api/upload/:id', /*upload.getStatus,*/ amazon.getVideoInfo);
 
-apiRouter.post('/api/upload-external', upload.downloadExternalVideo);
-apiRouter.post('/api/upload-external/transcode', upload.externalTranscodeVideo);
+apiRouter.post('/api/upload-external', upload.uploadExternalVideo);
 
 /**
  * /api/amazon

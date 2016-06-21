@@ -23,9 +23,6 @@ function getProfilePicture(req, res) {
   amazonService.hasImageSize(picture)
     .then(function (response) {
       if (response && response.hasImage) {
-        console.log('******************** hasImage ********************');
-        console.log(response);
-        console.log('************************************************');
         return response;
       }
       return amazonService.reSizeImage(req.params.picture, size);
