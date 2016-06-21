@@ -820,12 +820,15 @@ function renderSocialMediaLinks() {
   if (profileUser.socialMediaLinks) {
     //test for existence of socialMediaLinks attribute
     if (profileUser.socialMediaLinks.length > 0) {
+      console.log(profileUser.socialMediaLinks);
+      $('.follow-info').removeClass('hidden');
       //socialMediaLinks could still exist but have nothing in array
       profileUser.socialMediaLinks.forEach(function(account){
         switch (account.socialType) {
           case "FACEBOOK" :
             if (account.url && account.url !== '') {
               $socialMedia.find('.facebook').parent().removeClass('hidden');
+              $('.follow-info').css({"marginBottom": "-7px"});
               $socialMedia.find('.facebook')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.facebook').show();
@@ -840,6 +843,7 @@ function renderSocialMediaLinks() {
           case 'GOOGLE+' :
             if (account.url && account.url !== '') {
               $socialMedia.find('.google').parent().removeClass('hidden');
+              $('.follow-info').css({"marginBottom": "-7px"});
               $socialMedia.find('.google')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.google').show();
@@ -854,6 +858,7 @@ function renderSocialMediaLinks() {
           case 'INSTAGRAM' :
             if (account.url && account.url !== '') {
               $socialMedia.find('.instagram').parent().removeClass('hidden');
+              $('.follow-info').css({"marginBottom": "-7px"});
               $socialMedia.find('.instagram')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.instagram').show();
@@ -868,6 +873,7 @@ function renderSocialMediaLinks() {
           case 'TWITTER' :
             if (account.url && account.url !== '') {
               $socialMedia.find('.twitter').parent().removeClass('hidden');
+              $('.follow-info').css({"marginBottom": "-7px"});
               $socialMedia.find('.twitter')
                 .attr('href', '//'+account.url);
               $aboutMe.find('.twitter').show();

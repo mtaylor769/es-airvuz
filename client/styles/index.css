@@ -878,7 +878,7 @@ Begin userProfile CSS
 
 #user-profile .social-media-background {
   padding: 10px 13px;
-  margin-right: 5px;
+
 }
 
 #user-profile .user-social-media a {
@@ -950,7 +950,6 @@ Begin userProfile CSS
 
 #user-profile .user-social-media {
   font-size: 35px;
-  padding-right: 45px;
 }
 
 #user-profile .video-row-1, .video-row-2, .video-row-3{

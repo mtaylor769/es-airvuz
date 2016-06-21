@@ -96,19 +96,11 @@ UserProfileModel.prototype.getData = function(params) {
 		return followCrud.followingCount(profileUser._id);
 	})
 		.then(function(following){
-			if (following <= 0) {
-				dataObject.following = null;
-			} else {
 				dataObject.following = following;
-			}
 			return followCrud.followCount(profileUser._id);
 		})
 		.then(function(followers){
-			if (followers <= 0) {
-				dataObject.followers = null;
-			} else {
 				dataObject.followers = followers;
-			}
 			return videoCrud.getByUser(profileUser._id);
 		})
 	.then(function(videos) {
