@@ -64,6 +64,10 @@
       <div class="modal-body">
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="login-tab">
+            <button class="btn btn-block btn-primary facebook" id="btn-facebook">Facebook</button>
+            <button class="btn btn-block btn-danger" id="btn-google">Google</button>
+              {!<button class="btn btn-block btn-success">Instagram</button>!}
+            <hr/>
             <div class="form-group">
               <label>Email <span class="text-danger">*</span></label>
               <input type="text" class="form-control email-input" placeholder="Email">
@@ -76,10 +80,6 @@
             <div class="text-right">
               <button type="button" class="btn btn-primary" id="login-btn">Login</button>
             </div>
-            <hr/>
-            <button class="btn btn-block btn-primary facebook" id="btn-facebook">Facebook</button>
-            <button class="btn btn-block btn-danger" id="btn-google">Google</button>
-            {!<button class="btn btn-block btn-success">Instagram</button>!}
             <hr/>
             <div class="text-center">
               <a href="#signup-tab" aria-controls="signup-tab" role="tab" data-toggle="tab" id="signup-anchor-tab">Sign up</a> | <a href="#forgot-password-tab" aria-controls="forgot-password-tab" role="tab" data-toggle="tab">Forgot password</a>
