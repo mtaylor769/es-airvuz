@@ -162,6 +162,7 @@ function bindEvents() {
       eventType		: "click"
     });
     notificationObject.notificationType = 'COMMENT';
+    notificationObject.notifiedUserId  = video.userId;
     notificationObject.notificationMessage = $('#comment-text').val();
     notificationObject.videoId = video._id;
     if(userIdentity.isAuthenticated()) {
@@ -216,6 +217,7 @@ function bindEvents() {
   $('.like').on('click', function() {
     if(userIdentity._id && userIdentity._id !== video.userId) {
       notificationObject.notificationType = 'LIKE';
+      notificationObject.notifiedUserId  = video.userId;
       notificationObject.notificationMessage = 'liked your video';
       notificationObject.videoId = video._id;
       if(userIdentity.isAuthenticated()) {
@@ -291,6 +293,7 @@ function bindEvents() {
       followObject.userId = userIdentity._id;
       followObject.followingUserId = video.userId;
       notificationObject.notificationType = 'FOLLOW';
+      notificationObject.notifiedUserId  = video.userId;
       notificationObject.notificationMessage = 'started following you';
       if(userIdentity.isAuthenticated()) {
         notificationObject.actionUserId = userIdentity._id;
@@ -346,6 +349,7 @@ function bindEvents() {
       function(response) {
         notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-FACEBOOK';
         notificationObject.notificationMessage = 'shared your video on Facebook';
+        notificationObject.notifiedUserId  = video.userId;
         notificationObject.videoId = video._id;
         if(userIdentity.isAuthenticated()) {
           notificationObject.actionUserId = userIdentity._id;
@@ -369,6 +373,7 @@ function bindEvents() {
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-TWITTER';
     notificationObject.notificationMessage = 'shared your video on Twitter';
     notificationObject.videoId = video._id;
+    notificationObject.notifiedUserId  = video.userId;
     if(userIdentity.isAuthenticated()) {
       notificationObject.actionUserId = userIdentity._id;
     }
@@ -387,6 +392,7 @@ function bindEvents() {
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-GOOGLEPLUS';
     notificationObject.notificationMessage = 'shared your video on Google Plus';
     notificationObject.videoId = video._id;
+    notificationObject.notifiedUserId  = video.userId;
     if(userIdentity.isAuthenticated()) {
       notificationObject.actionUserId = userIdentity._id;
     }
@@ -425,6 +431,7 @@ function bindEvents() {
   $('.embed').on('click', function() {
     $('#embed-modal').modal('show');
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-EMBEDED';
+    notificationObject.notifiedUserId  = video.userId;
     notificationObject.notificationMessage = 'embeded your video';
     notificationObject.videoId = video._id;
     if(userIdentity.isAuthenticated()) {
@@ -769,7 +776,6 @@ function initialize(videoPath, facebookAppId) {
   //set video page
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
-  notificationObject.notifiedUserId  = video.userId;
 
   $('.video-slick').slick(SLICK_CONFIG);
   //run init functions
