@@ -154,7 +154,8 @@ function _sendPasswordResetMail(user, host) {
   var mailOptions = {
     to: user.emailAddress,
     subject: 'Password Reset',
-    html: '<div><a href="' + host + '/password-reset/' + user.resetPasswordCode + '">Click here to reset password</a></div>'
+    html: '<div><a href="' + host + '/password-reset/' + user.resetPasswordCode + '">Click here to reset password</a></div>'+
+    '<p>If the link is not working please copy and paste to the url : ' + host + '/password-reset/' + user.resetPasswordCode + '<p>'
   };
 
   return _sendMail(mailOptions);
