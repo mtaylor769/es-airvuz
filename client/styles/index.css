@@ -505,6 +505,10 @@ body.modal-open {
   box-shadow: none;
 }
 
+.video-page .slick-list {
+  height: 83px;
+}
+
 .parent-comment-picture {
   height: 50px;
   width: 50px;
