@@ -20,6 +20,40 @@ CategoryType.prototype.get = function(req, res) {
   })
 };
 
+CategoryType.prototype.getUploadCategories = function(req, res) {
+  var roles = req.query.aclRoles;
+  CategoryTypeCrud
+  .get()
+  .then(function(categories) {
+    if (roles.indexOf('user-root') === -1) {
+      if (roles.indexOf('user-news') === -1) {
+        for (var i = 0; i < categories.length; i++) {
+          if (categories[i].name === 'AirVūz News') {
+            categories.splice(i, 1);
+          }
+        }
+
+      }
+      if (roles.indexOf('user-instagram') === -1) {
+        for (var i = 0; i < categories.length; i++) {
+          if (categories[i].name === 'AirVūz Instagram') {
+            categories.splice(i, 1);
+          }
+        }
+      }
+      if (roles.indexOf('user-originals') === -1) {
+        for (var i = 0; i < categories.length; i++) {
+          if (categories[i].name === 'AirVūz Originals') {
+            categories.splice(i, 1);
+          }
+        }
+      }
+    }
+    res.json(categories);
+  })
+    
+};
+
 CategoryType.prototype.getById = function(req, res) {
   CategoryTypeCrud
   .getById(req.params.id)
