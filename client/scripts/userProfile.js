@@ -381,11 +381,11 @@ var userNameDisplay       = $("#username").val();
     if ((typeof(paypal) !== 'undefined') && (paypal !== null) && (paypal.length !== 0)) {
       check = paypal.indexOf('paypal');
     }
-    if (check == -1 && (typeof(paypal) !== 'undefined') && paypal !== null) {
+    if (check === -1 && (typeof(paypal) !== 'undefined') && paypal !== null) {
       errorMsg = 'Invalid donation URL';
       sendData = false;
       //this means the url does not contain the word paypal
-    } else if ((allowPp === true) && (typeof(paypal) == 'undefined' || paypal === null)) {
+    } else if ((allowPp === true) && (typeof(paypal) === 'undefined' || paypal === null)) {
       errorMsg = 'Invalid donation URL';
       sendData = false;
       //this means the url is not valid
@@ -395,6 +395,8 @@ var userNameDisplay       = $("#username").val();
         var check3 = paypal.indexOf('https://');
         if (check2 && check3 < 0) {
           paypal = 'https://' + paypal;
+          userData.donationUrl = paypal;
+        } else {
           userData.donationUrl = paypal;
         }
       } else {
