@@ -244,12 +244,20 @@ Comment.prototype.getById = function(id) {
   return CommentModel.findById(id).exec();
 };
 
+Comment.prototype.getByVideoId = function(id) {
+  return CommentModel.find({videoId: id})
+};
+
 Comment.prototype.update = function(params) {
   return CommentModel.findByIdAndUpdate(params.id, params.update, { new: true }).exec();
 };
 
 Comment.prototype.remove = function(id) {
   return CommentModel.findByIdAndRemove({_id: id}).exec();
+};
+
+Comment.prototype.findByUserId = function(id) {
+  return CommentModel.find({userId: id}).exec();
 };
 
 

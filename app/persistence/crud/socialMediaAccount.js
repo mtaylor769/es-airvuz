@@ -19,6 +19,10 @@ socialMediaAccount.prototype.findByUserId = function(userId) {
   return SocialModel.findOne({userId: userId}).exec();
 };
 
+socialMediaAccount.prototype.findAllSocialById = function(userId) {
+  return SocialModel.find({userId: userId}).exec();
+};
+
 socialMediaAccount.prototype.findAccountByIdandProvider = function(accountId, provider) {
   return SocialModel.findOne({accountId : accountId, provider : provider}).populate('userId').exec();
 };
@@ -29,6 +33,10 @@ socialMediaAccount.prototype.update = function(id, userId) {
 
 socialMediaAccount.prototype.findByUserIdAndProvider = function(id, provider) {
  return SocialModel.findOne({userId: id, provider: provider}).exec();
+};
+
+socialMediaAccount.prototype.delete = function(id) {
+  return SocialModel.findByIdAndRemove(id).exec();
 };
 
 module.exports = new socialMediaAccount();

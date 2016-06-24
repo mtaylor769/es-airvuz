@@ -118,6 +118,14 @@ function removeFromCollectionVideos(userId, name, video) {
   return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: video}},{safe: true}).exec();
 }
 
+function findByUserId(id) {
+  return VideoCollectionModel.find({user: id}).exec();
+}
+
+function remove(id) {
+  return VideoCollectionModel.findByIdAndRemove(id).exec();
+}
+
 VideoCollection.prototype.getFeaturedVideos     = getFeaturedVideos;
 VideoCollection.prototype.getStaffPickVideos    = getStaffPickVideos;
 VideoCollection.prototype.getVideo              = getVideo;
@@ -125,5 +133,7 @@ VideoCollection.prototype.updateVideos          = updateVideos;
 VideoCollection.prototype.getCollectionVideos   = getCollectionVideos;
 VideoCollection.prototype.createVideoCollection = createVideoCollection;
 VideoCollection.prototype.updateCollection      = updateCollection;
+VideoCollection.prototype.findByUserId          = findByUserId;
+VideoCollection.prototype.delete                = remove;
 
 module.exports = new VideoCollection();

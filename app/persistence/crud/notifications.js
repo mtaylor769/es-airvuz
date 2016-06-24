@@ -80,6 +80,14 @@ Notifications.prototype.markAllAsRead = function(id) {
   return NotificationModel.update({notifiedUserId: id, notificationViewed: false}, {notificationViewed:true}).exec();
 };
 
+Notifications.prototype.masterDelete = function(id) {
+  return NotificationModel.find({ $or: [ {notifiedUserId: id}, {actionUserId: id} ] }).exec();
+};
+
+Notifications.prototype.delete = function(id) {
+  return NotificationModel.findByIdAndRemove(id).exec();
+}
+
 
 Notifications.prototype.getUnseen = getUnseen;
 Notifications.prototype.markAsSeen = markAsSeen;
