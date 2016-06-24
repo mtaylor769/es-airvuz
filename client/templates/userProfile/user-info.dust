@@ -1,6 +1,10 @@
 <section style="color: white; background: url('{user.coverPicture}') no-repeat center; background-size: cover; min-height: 300px">
   <div class="" style="background: url('/client/images/profile-gradient.png')bottom left repeat-x; height: 300px; position: relative">
-      <div class="user-social-media pull-right row hidden-xs hidden-sm" style="position: absolute; right: 0; bottom: 0px">
+      <div class="user-social-media pull-right row hidden-xs hidden-sm">
+          <div class="follow-info hidden">
+              <span>FOLLOWERS : {followers}</span>
+              <span>FOLLOWING : {following}</span>
+          </div>
             <span class="social-media-background hidden">
                 <a class="facebook fa fa-facebook-square" target="_blank"></a>
             </span>
@@ -15,7 +19,7 @@
             </span>
       </div>
       <div class="row" style="position:absolute; bottom: -5px; left: 25px;">
-          <h4 class="profile-username" style="font-size: 24px; font-weight: 200; margin-left: 10px;">{user.userNameDisplay}</h4>
+          <h4 class="profile-username">{user.userNameDisplay}</h4>
           <div class="profile-button">
               <button class="hidden follow-btn btn btn-primary"></button>
               <button class="hidden hire-btn btn btn-primary">Hire</button>

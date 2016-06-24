@@ -878,7 +878,7 @@ Begin userProfile CSS
 
 #user-profile .social-media-background {
   padding: 10px 13px;
-  margin-right: 5px;
+
 }
 
 #user-profile .user-social-media a {
@@ -893,6 +893,10 @@ Begin userProfile CSS
 #user-profile #about-me-section .aboutme-socialmedia a {
   text-decoration: none;
   color: gray;
+  font-size: 35px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  text-align: center;
 }
 
 #user-profile .inline{
@@ -950,7 +954,31 @@ Begin userProfile CSS
 
 #user-profile .user-social-media {
   font-size: 35px;
-  padding-right: 45px;
+  position: absolute;
+  right: 25px;
+  bottom: 0px;
+  text-align: right;
+}
+
+#user-profile .follow-info {
+  font-size: 16px;
+  margin-right: 13px;
+  margin-bottom: 5px;
+}
+
+#user-profile .follow-info span:first-child {
+  text-align: left;
+  margin-right: 20px;
+}
+
+#user-profile .follow-info span:last-child {
+  text-align: right;
+}
+
+#user-profile .profile-username {
+  font-size: 24px;
+  font-weight: 200;
+  margin-left: 10px;
 }
 
 #user-profile .video-row-1, .video-row-2, .video-row-3{
