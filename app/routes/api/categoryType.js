@@ -29,8 +29,7 @@ CategoryType.prototype.getUploadCategories = function(req, res) {
       if (roles.indexOf('user-news') === -1) {
         for (var i = 0; i < categories.length; i++) {
           if (categories[i].name === 'AirVūz News') {
-            console.log(i);
-            var news = categories.splice(i, 1);
+            categories.splice(i, 1);
           }
         }
 
@@ -38,21 +37,19 @@ CategoryType.prototype.getUploadCategories = function(req, res) {
       if (roles.indexOf('user-instagram') === -1) {
         for (var i = 0; i < categories.length; i++) {
           if (categories[i].name === 'AirVūz Instagram') {
-            console.log(i);
-            var instagram = categories.splice(i, 1);
+            categories.splice(i, 1);
           }
         }
       }
       if (roles.indexOf('user-originals') === -1) {
         for (var i = 0; i < categories.length; i++) {
           if (categories[i].name === 'AirVūz Originals') {
-            console.log(i);
-            var originals = categories.splice(i, 1);
+            categories.splice(i, 1);
           }
         }
       }
     }
-    res.send(categories);
+    res.json(categories);
   })
     
 };
