@@ -78,7 +78,10 @@ function facebook(req, res, next) {
     .then(function (token) {
       res.json(token);
     })
-    .catch(function (err) {
+    .catch(function (error) {
+      if (typeof error === 'string') {
+        return res.status(400).send(error);
+      }
       res.sendStatus(500);
     });
 }
@@ -96,7 +99,10 @@ function google(req, res) {
     .then(function (token) {
       res.json(token);
     })
-    .catch(function (err) {
+    .catch(function (error) {
+      if (typeof error === 'string') {
+        return res.status(400).send(error);
+      }
       res.sendStatus(500);
     });
 }
@@ -111,6 +117,9 @@ function _socialLogin(socialData) {
   return SocialCrud.findAccountByIdandProvider(socialData.accountId, socialData.provider)
     .then(function(account) {
       if (account) {
+        if (account.userId.status === 'suspended') {
+          throw 'You are suspended, please contact support';
+        }
         return _signToken({
           _id: account.userId._id,
           aclRoles: account.userId.aclRoles
@@ -124,6 +133,9 @@ function _socialLogin(socialData) {
             socialData.userId = user._id;
             return SocialCrud.create(socialData)
               .then(function () {
+                if (user.status === 'suspended') {
+                  throw 'You are suspended, please contact support';
+                }
                 return _signToken({
                   _id: user._id,
                   aclRoles: user.aclRoles

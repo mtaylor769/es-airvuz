@@ -96,8 +96,8 @@ function execSocialLogin(ajaxOption) {
       return identity.setToken(token);
     })
     .then(onLoginSuccess)
-    .fail(function () {
-      alert('Error login in with social media, please contact support');
+    .fail(function (response) {
+      $loginModal.find('#social-login-error').text(response.responseText).slideDown().delay(5000).slideUp(300);
     });
 }
 
@@ -298,8 +298,7 @@ function initialize() {
   }).done(function () {
     FB.init({
       appId: appConfig.facebook.clientId,
-      version: 'v2.6',
-      status: true
+      version: 'v2.6'
     });
   });
 
@@ -320,7 +319,7 @@ function initialize() {
       });
       
       function userChanged(user) {
-        if (!user.isSignedIn()) {
+        if (!user.isSignedIn() || !identity.isAuthenticated()) {
           return;
         }
         var profile = user.getBasicProfile();
