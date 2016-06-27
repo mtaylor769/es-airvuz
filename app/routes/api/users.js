@@ -247,49 +247,52 @@ function deleteUser(req, res) {
         return commentCrud.remove(comment._id);
       })
     })
+    // .then(function() {
+    //   return followCrud.masterDelete(userId);
+    // })
+    // .then(function(follows) {
+    //   return Promise.map(follows, function(follow) {
+    //     return followCrud.delete(follow._id);
+    //   })
+    // })
+    // .then(function() {
+    //   return notificationCrud.masterDelete(userId);
+    // })
+    // .then(function(notifications) {
+    //   return Promise.map(notifications, function(notification) {
+    //     return notificationCrud.delete(notification._id);
+    //   })
+    // })
+    // .then(function() {
+    //   return videoCollectionCrud.findByUserId(userId);
+    // })
+    // .then(function(videoCollections) {
+    //   return Promise.map(videoCollections, function(videoCollection) {
+    //     return videoCollectionCrud.delete(videoCollection._id);
+    //   })
+    // })
+    // .then(function() {
+    //   //find likes
+    //   return likeCrud.findByUserId(userId);
+    // })
+    // .then(function(likes) {
+    //   //remove likes
+    //   return Promise.map(likes, function(like) {
+    //     return likeCrud.delete(like._id);
+    //   })
+    // })
+    // .then(function() {
+    //   //find videoView
+    //   return videoViewCrud.findByUserId(userId);
+    // })
+    // .then(function(videoViews) {
+    //   //remove videoView
+    //   return Promise.map(videoViews, function(videoView) {
+    //     return videoViewCrud.delete(videoView._id)
+    //   })
+    // })
     .then(function() {
-      return followCrud.masterDelete(userId);
-    })
-    .then(function(follows) {
-      return Promise.map(follows, function(follow) {
-        return followCrud.delete(follow._id);
-      })
-    })
-    .then(function() {
-      return notificationCrud.masterDelete(userId);
-    })
-    .then(function(notifications) {
-      return Promise.map(notifications, function(notification) {
-        return notificationCrud.delete(notification._id);
-      })
-    })
-    .then(function() {
-      return videoCollectionCrud.findByUserId(userId);
-    })
-    .then(function(videoCollections) {
-      return Promise.map(videoCollections, function(videoCollection) {
-        return videoCollectionCrud.delete(videoCollection._id);
-      })
-    })
-    .then(function() {
-      //find likes
-      return likeCrud.findByUserId(userId);
-    })
-    .then(function(likes) {
-      //remove likes
-      return Promise.map(likes, function(like) {
-        return likeCrud.delete(like._id);
-      })
-    })
-    .then(function() {
-      //find videoView
-      return videoViewCrud.findByUserId(userId);
-    })
-    .then(function(videoViews) {
-      //remove videoView
-      return Promise.map(videoViews, function(videoView) {
-        return videoViewCrud.delete(videoView._id)
-      })
+      return usersCrud.delete(userId);
     })
     .then(function() {
       res.sendStatus(200);

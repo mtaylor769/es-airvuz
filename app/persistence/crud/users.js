@@ -665,6 +665,10 @@ users.prototype.findById = function(id) {
 	return UserModel.findById(id).exec();
 };
 
+users.prototype.delete = function(id) {
+	return UserModel.findByIdAndRemove(id).exec();
+};
+
 function updateRoles(params) {
 	// TODO: implement
 }
