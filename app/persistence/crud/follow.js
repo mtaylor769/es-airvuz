@@ -88,7 +88,7 @@ Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();
 };
 
-Follow.prototype.masterDelete = function(id) {
+Follow.prototype.findByFollowingUserIdAndUserId = function(id) {
   return FollowModel.find({ $or: [ {followingUserId: id}, {userId: id} ] }).exec()
 };
 

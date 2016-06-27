@@ -35,7 +35,7 @@ socialMediaAccount.prototype.findByUserIdAndProvider = function(id, provider) {
  return SocialModel.findOne({userId: id, provider: provider}).exec();
 };
 
-socialMediaAccount.prototype.delete = function(id) {
+socialMediaAccount.prototype.remove = function(id) {
   return SocialModel.findByIdAndRemove(id).exec();
 };
 

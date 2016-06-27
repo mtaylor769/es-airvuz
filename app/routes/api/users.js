@@ -212,7 +212,7 @@ function deleteUser(req, res) {
       logger.debug(socialAccounts);
       return Promise.map(socialAccounts, function (socialAccount) {
         //remove user social accounts
-        return socialCrud.delete(socialAccount._id);
+        return socialCrud.remove(socialAccount._id);
       });
     })
     .then(function() {
@@ -248,7 +248,7 @@ function deleteUser(req, res) {
       })
     })
     // .then(function() {
-    //   return followCrud.masterDelete(userId);
+    //   return followCrud.findByFollowingUserIdAndUserId(userId);
     // })
     // .then(function(follows) {
     //   return Promise.map(follows, function(follow) {
@@ -256,7 +256,7 @@ function deleteUser(req, res) {
     //   })
     // })
     // .then(function() {
-    //   return notificationCrud.masterDelete(userId);
+    //   return notificationCrud.findByNotifiedUserIdAndActionUserId(userId);
     // })
     // .then(function(notifications) {
     //   return Promise.map(notifications, function(notification) {
@@ -292,7 +292,7 @@ function deleteUser(req, res) {
     //   })
     // })
     .then(function() {
-      return usersCrud.delete(userId);
+      return usersCrud.remove(userId);
     })
     .then(function() {
       res.sendStatus(200);

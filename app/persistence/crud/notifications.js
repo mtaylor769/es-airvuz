@@ -80,7 +80,7 @@ Notifications.prototype.markAllAsRead = function(id) {
   return NotificationModel.update({notifiedUserId: id, notificationViewed: false}, {notificationViewed:true}).exec();
 };
 
-Notifications.prototype.masterDelete = function(id) {
+Notifications.prototype.findByNotifiedUserIdAndActionUserId = function(id) {
   return NotificationModel.find({ $or: [ {notifiedUserId: id}, {actionUserId: id} ] }).exec();
 };
 
