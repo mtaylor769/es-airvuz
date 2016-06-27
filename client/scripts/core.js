@@ -2,6 +2,7 @@ var auth          = require('./services/auth');
 var identity      = require('./services/identity');
 var amazonConfig  = require('./config/amazon.config.client');
 var appConfig     = require('./config/application.config.client');
+var PubSub        = require('pubsub-js');
 
 /**
  * Templates
@@ -271,12 +272,17 @@ function bindEvents() {
   $loginModal.on('click', '#btn-password-reset', onPasswordReset);
 
   $('.go-to-login').on('click', function () {
-    $('#login-modal').modal('show');
-  })
-}
-  $(this.body).on("profilePictureUpdate", function() {
+    $loginModal.modal('show');
+  });
+
+  $(document.body).on("profilePictureUpdate", function() {
     renderProfileHeader()
   });
+
+  PubSub.subscribe('show-login-dialog', function () {
+    $loginModal.modal('show');
+  });
+}
 
 function initialize() {
   $footerSub1 = $('.footer-sub1');

@@ -229,7 +229,7 @@ body.modal-open {
   position: relative;
   top: 7px;
 }
-#header #login-btn {
+#header .btn-login {
   padding: 26px 10px 27px;
 }
 

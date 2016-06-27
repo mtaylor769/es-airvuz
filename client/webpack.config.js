@@ -61,6 +61,9 @@ config.context      = path.resolve ( __dirname );
 config.entry        = {};
 config.entry.vendor = [
   //'lodash'
+  'jquery',
+  'bootstrap',
+  'pubsub-js'
 ];
 
 // Entry points for webpack to compile code.
