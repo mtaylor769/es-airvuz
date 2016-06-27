@@ -36,4 +36,12 @@ VideoView.prototype.create = function(params) {
   )
 };
 
+VideoView.prototype.findByUserId = function(id) {
+  return VideoViewModel.find({ $or: [{userId: id}, {videoOwnerId: id}] }).exec();
+};
+
+VideoView.prototype.delete = function(id) {
+  return VideoViewModel.findByIdAndRemove(id).exec();
+};
+
 module.exports = new VideoView();

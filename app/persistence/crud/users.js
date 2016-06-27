@@ -548,6 +548,10 @@ users.prototype.getUserByEmail = function (email) {
 	return UserModel.findOne({emailAddress : email.toLowerCase()}).exec();
 };
 
+
+users.prototype.remove = function(id) {
+	return UserModel.findByIdAndRemove(id).exec();
+};
 /*
 * Update user information
 */
@@ -655,6 +659,10 @@ users.prototype.emailConfirm = function(userId) {
 			})
 	})
 	)
+};
+
+users.prototype.findById = function(id) {
+	return UserModel.findById(id).exec();
 };
 
 function updateRoles(params) {

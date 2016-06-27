@@ -88,6 +88,10 @@ Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();
 };
 
+Follow.prototype.findByFollowingUserIdAndUserId = function(id) {
+  return FollowModel.find({ $or: [ {followingUserId: id}, {userId: id} ] }).exec()
+};
+
 Follow.prototype.getFollow = getFollow;
 
 

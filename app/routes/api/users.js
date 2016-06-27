@@ -1,9 +1,18 @@
 try {
   var log4js                 = require('log4js');
+  var Promise                = require('bluebird');
   var logger                 = log4js.getLogger('app.routes.api.users');
   var acl                    = require('../../utils/acl');
   var aclRoles               = require('../../utils/acl');
   var usersCrud              = require('../../persistence/crud/users');
+  var videoCrud              = require('../../persistence/crud/videos');
+  var socialCrud             = require('../../persistence/crud/socialMediaAccount');
+  var videoCollectionCrud    = require('../../persistence/crud/videoCollection');
+  var followCrud             = require('../../persistence/crud/follow');
+  var commentCrud            = require('../../persistence/crud/comment');
+  var notificationCrud       = require('../../persistence/crud/notifications');
+  var likeCrud               = require('../../persistence/crud/videoLike');
+  var videoViewCrud          = require('../../persistence/crud/videoViews');
   var nodemailer             = require('nodemailer');
   var _                      = require('lodash');
 } catch(exception) {
@@ -13,17 +22,17 @@ try {
 function User() {}
 
 function search(req, res) {
-  acl.isAllowed(req.user._id, 'user', 'search')
-    .then(function (isAllow) {
-      if (!isAllow) {
-        return res.sendStatus(403);
-      }
-      return usersCrud
-        .getUserByUserNameUrl(req.query.username)
-        .then(function (user) {
-          res.json(user);
-        });
-    })
+  // acl.isAllowed(req.user._id, 'user', 'search')
+  //   .then(function (isAllow) {
+  //     if (!isAllow) {
+  //       return res.sendStatus(403);
+  //     }
+    return usersCrud
+      .getUserByUserNameUrl(req.query.username)
+      .then(function (user) {
+        res.json(user);
+      })
+    // })
     .catch(logger.error);
 }
 
@@ -190,11 +199,116 @@ function passwordResetChange(req, res) {
     });
 }
 
+function deleteUser(req, res) {
+  var userId = req.params.id;
+  //find user
+  return usersCrud.findById(userId)
+    .then(function(user) {
+      //find user social accounts
+      return socialCrud.findAllSocialById(user._id)
+    })
+    .then(function(socialAccounts) {
+      //map user social accounts
+      logger.debug(socialAccounts);
+      return Promise.map(socialAccounts, function (socialAccount) {
+        //remove user social accounts
+        return socialCrud.remove(socialAccount._id);
+      });
+    })
+    .then(function() {
+      //find user videos
+      return videoCrud.findByUserId(userId);
+    })
+    .then(function(videos) {
+      //map videos
+      return Promise.map(videos, function(video) {
+        //find video comments
+        commentCrud
+          .getByVideoId(video._id)
+          .then(function(comments) {
+            //map video comments
+            return Promise.map(comments, function(comment) {
+              //delete video comments
+              return commentCrud.remove(comment._id);
+            })
+          });
+        //delete video
+        return videoCrud.remove(video._id);
+      })
+    })
+    .then(function() {
+      //find comments
+      return commentCrud.findByUserId(userId);
+    })
+    .then(function(comments) {
+      //map comments
+      return Promise.map(comments, function(comment) {
+        //delete comments
+        return commentCrud.remove(comment._id);
+      })
+    })
+    // .then(function() {
+    //   return followCrud.findByFollowingUserIdAndUserId(userId);
+    // })
+    // .then(function(follows) {
+    //   return Promise.map(follows, function(follow) {
+    //     return followCrud.delete(follow._id);
+    //   })
+    // })
+    // .then(function() {
+    //   return notificationCrud.findByNotifiedUserIdAndActionUserId(userId);
+    // })
+    // .then(function(notifications) {
+    //   return Promise.map(notifications, function(notification) {
+    //     return notificationCrud.delete(notification._id);
+    //   })
+    // })
+    // .then(function() {
+    //   return videoCollectionCrud.findByUserId(userId);
+    // })
+    // .then(function(videoCollections) {
+    //   return Promise.map(videoCollections, function(videoCollection) {
+    //     return videoCollectionCrud.delete(videoCollection._id);
+    //   })
+    // })
+    // .then(function() {
+    //   //find likes
+    //   return likeCrud.findByUserId(userId);
+    // })
+    // .then(function(likes) {
+    //   //remove likes
+    //   return Promise.map(likes, function(like) {
+    //     return likeCrud.delete(like._id);
+    //   })
+    // })
+    // .then(function() {
+    //   //find videoView
+    //   return videoViewCrud.findByUserId(userId);
+    // })
+    // .then(function(videoViews) {
+    //   //remove videoView
+    //   return Promise.map(videoViews, function(videoView) {
+    //     return videoViewCrud.delete(videoView._id)
+    //   })
+    // })
+    .then(function() {
+      return usersCrud.remove(userId);
+    })
+    .then(function() {
+      res.sendStatus(200);
+    })
+    .catch(function(error) {
+      logger.debug(error);
+      res.sendStatus(500);
+    })
+}
+
 User.prototype.hireMe               = hireMe;
 User.prototype.search               = search;
 User.prototype.get                  = get;
 User.prototype.createUser           = createUser;
 User.prototype.put                  = put;
+User.prototype.delete               = deleteUser;
 User.prototype.passwordResetRequest = passwordResetRequest;
 User.prototype.passwordResetChange  = passwordResetChange;
 

@@ -480,6 +480,10 @@ Videos.prototype.upCount = function(video) {
 	return video.save();
 };
 
+Videos.prototype.findByUserId = function(id) {
+	return VideoModel.find({userId: id}).exec()
+};
+
 Videos.prototype.getRecentVideos 		= getRecentVideos;
 Videos.prototype.getTrendingVideos 	= getTrendingVideos;
 Videos.prototype.getVideoByCategory = getVideoByCategory;

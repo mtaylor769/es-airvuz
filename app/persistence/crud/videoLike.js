@@ -84,6 +84,10 @@ VideoLike.prototype.videoLikeCheck = function(params) {
   return VideoLikeModel.findOne({videoId: params.videoId, userId: params.userId}).exec()
 };
 
+VideoLike.prototype.findByUserId = function(id) {
+  return VideoLikeModel.find({userId: id}).exec();
+}
+
 VideoLike.prototype.delete = function(id) {
   return VideoLikeModel.findByIdAndRemove(id).exec();
 };

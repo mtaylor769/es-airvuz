@@ -31,10 +31,11 @@
 		}
 
 		function removeUser(user){
+			console.log(user);
 			confirmDelete().then(function(){
 				//Do something if the user confirms
-				var index = vm.users.indexOf(user);
-				$http.post('/api/v2/users/removeUser', {id: user._id})
+				// var index = vm.users.indexOf(user);
+				$http.delete('/api/users/' + user._id)
 					.then(function(){
 						vm.users.splice(index, 1)
 					})
