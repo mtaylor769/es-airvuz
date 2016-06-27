@@ -181,7 +181,6 @@ function renderStep(step, video) {
 }
 
 function getData() {
-  var aclRoles = identity.getAclRoles();
   camera.getAll()
     .then(function (cameras) {
       VIEW_MODEL.cameras = cameras;
@@ -192,7 +191,10 @@ function getData() {
       VIEW_MODEL.drones = drones;
     });
 
-  VIEW_MODEL.categories = categories.getUploadCategories(aclRoles);
+  categories.getUploadCategories(identity.aclRoles)
+    .then(function (categories) {
+      VIEW_MODEL.categories = categories;
+    });
 }
 
 function bindEvents() {
