@@ -97,8 +97,15 @@ function uploadExternalVideo(req, res) {
   var url = req.body.url;
   var fileName = md5(url + Date.now() + uuid.v1()) + '.mp4';
   var video = youtubedl(url, ['-f', 'best'], {});
+  var promise;
 
-  amazonService.uploadVideoToS3({stream: video, fileName: fileName})
+  video.on('error', function () {
+    if (promise.isPending()) {
+      res.sendStatus(500);
+    }
+  });
+
+  promise = amazonService.uploadVideoToS3({stream: video, fileName: fileName})
     .then(function (video) {
       // TODO: change to create new preset?
       // current using custom preset
