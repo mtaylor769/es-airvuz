@@ -227,6 +227,7 @@ function bindEvents() {
   $header.on('click', '.logout-btn', function () {
     auth.logout()
       .then(function () {
+        auth2.signOut();
         // redirect to home page
         window.location.href = '/';
       });
@@ -325,7 +326,7 @@ function initialize() {
       });
       
       function userChanged(user) {
-        if (!user.isSignedIn() || !identity.isAuthenticated()) {
+        if (!user.isSignedIn()) {
           return;
         }
         var profile = user.getBasicProfile();
