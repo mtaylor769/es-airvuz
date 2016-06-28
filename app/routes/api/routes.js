@@ -87,7 +87,7 @@ apiRouter.route('/api/users/hireme')
 apiRouter.route('/api/users/:id')
   .get(users.get)
 	.put(protect, users.put)
-	.delete(users.delete);
+	.delete(protect, users.delete);
 /**
  * /api/follow/
  */
