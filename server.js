@@ -33,7 +33,6 @@ var path        = require('path');
 var express     = require('express');
 var fs          = require('fs');
 var app         = express();
-var jwt         = require('jsonwebtoken');
 
 //SSL certs
 var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
@@ -41,10 +40,6 @@ var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
 var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
 var https       = require('https').createServer(credentials, app).listen(443);
 var http        = require("http").createServer(app);
-var passport    = require('passport');
-
-
-var config      = require('./config/config')[global.NODE_ENV];
 
 // Makes a global variable for templates to get client code.
 // YOU MUST RUN WEBPACK FOR THE MANIFEST FILE TO EXIST.
@@ -76,38 +71,12 @@ app.use('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, './admin/index.html'));
 });
 
-
-
-require('./app/config/passport/local')(passport, config);
-var facebook	= require('./app/config/passport/facebook')(passport, config);
-var auth			= require('./app/routes/api/auth');
-require('./app/config/passport/google')(passport, config);
-//require('./app/config/passport/instagram')(passport, config);
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-
 //      _    ____ ___   ____             _
 //     / \  |  _ \_ _| |  _ \ ___  _   _| |_ ___ ___
 //    / _ \ | |_) | |  | |_) / _ \| | | | __/ _ \ __|
 //   / ___ \|  __/| |  |  _ < (_) | |_| | |_  __\__ \
 //  /_/   \_\_|  |___| |_| \_\___/ \__,_|\__\___|___/
 //
-
-app.get('/api/auth/facebook',
-	passport.authenticate('facebook', {
-		scope: ['email'],
-    failureRedirect: '/',
-    successRedirect: 'back'
-  })
-);
-
-app.get('/api/auth/facebook/callback',
-	passport.authenticate('facebook', {failureRedirect: '/facebook'}),
-	auth.facebookCallback
-);
 
 app.use(require('./app/routes/api/routes'));
 

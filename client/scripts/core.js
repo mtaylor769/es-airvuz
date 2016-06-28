@@ -1,6 +1,8 @@
 var auth          = require('./services/auth');
 var identity      = require('./services/identity');
 var amazonConfig  = require('./config/amazon.config.client');
+var appConfig     = require('./config/application.config.client');
+var PubSub        = require('pubsub-js');
 
 /**
  * Templates
@@ -12,7 +14,8 @@ var $loginModal,
     $headerProfile,
     $header,
     $footerSub1,
-    $emailConfirmModal;
+    $emailConfirmModal,
+    auth2;
 
 
 //////////////////////////////////////////////////////
@@ -81,6 +84,24 @@ function getNewNotification() {
   return $.Deferred().resolve({notifications: [], total: 0}).promise();
 }
 
+function onLoginSuccess() {
+  getNewNotification()
+    .then(renderProfileHeader);
+  $footerSub1.addClass('is-login');
+  $loginModal.modal('hide');
+}
+
+function execSocialLogin(ajaxOption) {
+  $.ajax(ajaxOption)
+    .then(function (token) {
+      return identity.setToken(token);
+    })
+    .then(onLoginSuccess)
+    .fail(function (response) {
+      $loginModal.find('#social-login-error').text(response.responseText).slideDown().delay(5000).slideUp(300);
+    });
+}
+
 function bindEvents() {
   $header = $('#header');
 
@@ -144,19 +165,10 @@ function bindEvents() {
     var password = $loginModal.find('.password-input:visible').val();
 
     auth.login({emailAddress: emailAddress, password: password})
-      .done(function () {
-        getNewNotification()
-          .then(renderProfileHeader);
-        $footerSub1.addClass('is-login');
-        $loginModal.modal('hide');
-      })
-      .fail(function (err) {
-          var message = 'Wrong email or password';
-          if(err.responseText.indexOf('email-confirm') > -1){
-            message = 'Please check your email to confirm account';
-          }
+      .done(onLoginSuccess)
+      .fail(function (message) {
           $loginModal.find('.error-message').text(message).slideDown().delay(5000).slideUp(300);
-      })
+      });
   });
 
   $loginModal.on('click', '#signup-btn', function () {
@@ -215,6 +227,7 @@ function bindEvents() {
   $header.on('click', '.logout-btn', function () {
     auth.logout()
       .then(function () {
+        auth2.signOut();
         // redirect to home page
         window.location.href = '/';
       });
@@ -235,22 +248,42 @@ function bindEvents() {
   });
 
   $loginModal.on('click', '#btn-facebook', function() {
-    window.location.href = '/api/auth/facebook';
+    FB.login(function (response) {
+      if (response.status === 'connected') {
+        FB.api('/me', {fields: 'cover, email'}, function (response) {
+          var ajaxOption = {
+            url: '/api/auth/facebook',
+            type: 'POST',
+            data: {
+              accountId: response.id,
+              email: response.email,
+              coverPicture: response.cover ? response.cover.source : ''
+            }
+          };
+          execSocialLogin(ajaxOption);
+        });
+      }
+    }, {scope: 'email'});
   });
   
   $loginModal.on('click', '#btn-google', function() {
-    window.location.href = '/api/auth/google';
+    auth2.signIn();
   });
 
   $loginModal.on('click', '#btn-password-reset', onPasswordReset);
 
   $('.go-to-login').on('click', function () {
-    $('#login-modal').modal('show');
-  })
-}
-  $(this.body).on("profilePictureUpdate", function() {
+    $loginModal.modal('show');
+  });
+
+  $(document.body).on("profilePictureUpdate", function() {
     renderProfileHeader()
   });
+
+  PubSub.subscribe('show-login-dialog', function () {
+    $loginModal.modal('show');
+  });
+}
 
 function initialize() {
   $footerSub1 = $('.footer-sub1');
@@ -263,6 +296,62 @@ function initialize() {
   } else {
     renderLoginHeader();
   }
+
+  // facebook login
+  $.ajax({
+    dataType: 'script',
+    cache: true,
+    url: '//connect.facebook.net/en_US/sdk.js'
+  }).done(function () {
+    FB.init({
+      appId: appConfig.facebook.clientId,
+      version: 'v2.6'
+    });
+  });
+
+  // google login
+  $.ajax({
+    dataType: 'script',
+    cache: true,
+    url: '//apis.google.com/js/client:platform.js'
+  }).done(function () {
+    gapi.load('auth2', function initSigninV2() {
+      gapi.client.load('plus', 'v1').then(function () {
+        auth2 = gapi.auth2.init({
+          client_id: appConfig.google.clientId,
+          scope: 'profile email'
+        });
+
+        auth2.currentUser.listen(userChanged);
+      });
+      
+      function userChanged(user) {
+        if (!user.isSignedIn()) {
+          return;
+        }
+        var profile = user.getBasicProfile();
+        var ajaxOption = {
+          url: '/api/auth/google',
+          type: 'POST',
+          data: {
+            accountId: profile.getId(),
+            token: user.getAuthResponse().id_token
+            // coverPicture - set later
+          }
+        };
+
+        gapi.client.plus.people.get({
+          'userId': 'me',
+          fields: 'cover/coverPhoto/url'
+        }).execute(function (response) {
+          if (response.cover && response.cover.coverPhoto && response.cover.coverPhoto.url) {
+            ajaxOption.data.coverPicture = response.cover.coverPhoto.url;
+          }
+          execSocialLogin(ajaxOption);
+        });
+      }
+    });
+  });
 }
 
 //////////////////////

@@ -20,13 +20,16 @@ function login(user) {
       emailAddress    : user.emailAddress,
       password        : user.password
     },
-    success : function(response) {
-      identity.setToken(response.token).then(function () {
+    success : function(token) {
+      identity.setToken(token).then(function () {
         dfd.resolve();
       });
     },
     error: function (err) {
-      dfd.reject(err);
+      if (err.status === 400) {
+        return dfd.reject(err.responseText);
+      }
+      dfd.reject('Error trying to login');
     }
   });
 

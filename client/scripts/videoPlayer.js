@@ -2,6 +2,7 @@
  * external lib
  */
 var videojs = require('video.js');
+var PubSub  = require('pubsub-js');
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -130,6 +131,10 @@ function videoInfoCheck() {
   });
 }
 
+function showLoginDialog() {
+  PubSub.publish('show-login-dialog');
+}
+
 //function to persist autoplay data
 function onAutoPlayChange(event, state) {
   var autoPlayObject = {};
@@ -156,6 +161,10 @@ function bindEvents() {
 
   //create comment and append
   $('#commentSave').on('click', function() {
+    if (!$(this).prev().val()) {
+      // if no comment text then prevent from doing anything
+      return;
+    }
     AVEventTracker({
       codeSource	: "videoPlayer",
       eventName		: "commentSave",
@@ -259,11 +268,8 @@ function bindEvents() {
         })
         .fail(function (error) {
         });
-    } else if(!userIdentity._id) {
-      $('#like-modal').modal('show');
-      $('.go-to-login').on('click', function () {
-        $('#login-modal').modal('show');
-      })
+    } else if(!userIdentity.isAuthenticated()) {
+      showLoginDialog();
     } else {
       $('#like-self-modal').modal('show');
     }
@@ -324,11 +330,8 @@ function bindEvents() {
         })
         .fail(function (error) {
         })
-    } else if(!userIdentity._id) {
-      $('#follow-modal').modal('show');
-      $('.go-to-login').on('click', function() {
-        $('#login-modal').modal('show');
-      })
+    } else if(!userIdentity.isAuthenticated()) {
+      showLoginDialog();
     } else {
       $('#follow-self-modal').modal('show');
     }
@@ -459,14 +462,7 @@ function bindEvents() {
   });
 
   //comment modal
-  $('#comment-text').on('click', function() {
-    if(!userIdentity._id) {
-      $('#comment-modal').modal('show');
-      $('.go-to-login').on('click', function() {
-        $('#login-modal').modal('show');
-      })
-    }
-  });
+  $('#comment-text').on('click', checkIdentitiy);
 
   //start player event delegation
     function endFunction() {
@@ -680,11 +676,8 @@ function bindEvents() {
   }
 
   function checkIdentitiy() {
-    if (!userIdentity._id) {
-      $('#comment-modal').modal('show');
-      $('.go-to-login').on('click', function () {
-        $('#login-modal').modal('show');
-      })
+    if(!userIdentity.isAuthenticated()) {
+      showLoginDialog();
     }
   }
 

@@ -32,36 +32,25 @@ apiRouter
 var auth = require('./auth');
 
 apiRouter.route('/api/auth')
-  .post(auth.login, auth.loginSuccess);
+  .post(auth.localLogin);
 
 apiRouter.route('/api/auth/facebook')
-  .get(auth.facebook);
-
-apiRouter.route('/api/auth/facebook/callback')
-  .get(auth.facebookCallback);
+  .post(auth.facebook);
 
 apiRouter.route('/api/auth/google')
-  .get(passport.authenticate('google', { scope: [ 'email', 'profile'],
-		failureRedirect: '/',
-		successRedirect: 'back'
-	}));
+  .post(auth.google);
 
-apiRouter.route('/api/auth/google/callback')
-  .get(passport.authenticate('google', {
-		failureRedirect: '/'
-	}), auth.googleCallback);
-
-apiRouter.route('/api/auth/twitter')
-  .get(auth.twitter);
-
-apiRouter.route('/api/auth/twitter/callback')
-  .get(auth.twitterCallback);
-
-apiRouter.route('/api/auth/instagram')
-  .get(auth.instagram);
-
-apiRouter.route('/api/auth/instagram/callback')
-  .get(auth.instagramCallback);
+// apiRouter.route('/api/auth/twitter')
+//   .get(auth.twitter);
+//
+// apiRouter.route('/api/auth/twitter/callback')
+//   .get(auth.twitterCallback);
+//
+// apiRouter.route('/api/auth/instagram')
+//   .get(auth.instagram);
+//
+// apiRouter.route('/api/auth/instagram/callback')
+//   .get(auth.instagramCallback);
 
 
 /**
