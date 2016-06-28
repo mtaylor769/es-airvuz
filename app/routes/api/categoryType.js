@@ -1,8 +1,7 @@
-var CategoryTypeCrud = require('../../persistence/crud/categoryType');
+var CategoryTypeCrud  = require('../../persistence/crud/categoryType');
+var _                 = require('lodash');
 
-function CategoryType() {
-
-}
+function CategoryType() {}
 
 CategoryType.prototype.post = function(req, res) {
   CategoryTypeCrud
@@ -20,38 +19,41 @@ CategoryType.prototype.get = function(req, res) {
   })
 };
 
-CategoryType.prototype.getUploadCategories = function(req, res) {
-  var roles = req.query.aclRoles;
-  CategoryTypeCrud
-  .get()
-  .then(function(categories) {
-    if (roles.indexOf('user-root') === -1) {
-      if (roles.indexOf('user-news') === -1) {
-        for (var i = 0; i < categories.length; i++) {
-          if (categories[i].name === 'AirVūz News') {
-            categories.splice(i, 1);
-          }
-        }
+/**
+ * return a new array of categories without the argument "name" category
+ * @param categories
+ * @param name
+ * @returns {Array}
+ * @private
+ */
+function _rejectCategory(categories, name) {
+  return _.reject(categories, function (category) {
+    return category.name === name;
+  });
+}
 
-      }
-      if (roles.indexOf('user-instagram') === -1) {
-        for (var i = 0; i < categories.length; i++) {
-          if (categories[i].name === 'AirVūz Instagram') {
-            categories.splice(i, 1);
-          }
+CategoryType.prototype.getByRoles = function(req, res) {
+  var roles = req.user.aclRoles;
+
+  CategoryTypeCrud
+    .get()
+    .then(function(categories) {
+      if (roles.indexOf('user-root') === -1 && roles.indexOf('root') === -1) {
+        if (roles.indexOf('user-news') === -1) {
+          categories = _rejectCategory(categories, 'AirVūz News');
+        }
+        if (roles.indexOf('user-instagram') === -1) {
+          categories = _rejectCategory(categories, 'AirVūz Instagram');
+        }
+        if (roles.indexOf('user-originals') === -1) {
+          categories = _rejectCategory(categories, 'AirVūz Originals');
         }
       }
-      if (roles.indexOf('user-originals') === -1) {
-        for (var i = 0; i < categories.length; i++) {
-          if (categories[i].name === 'AirVūz Originals') {
-            categories.splice(i, 1);
-          }
-        }
-      }
-    }
-    res.json(categories);
-  })
-    
+      res.json(categories);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
 };
 
 CategoryType.prototype.getById = function(req, res) {

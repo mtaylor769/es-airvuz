@@ -165,8 +165,8 @@ apiRouter.route('/api/category-type')
   .post(categoryType.post)
   .get(categoryType.get);
 
-apiRouter.route('/api/category-type/upload')
-	.get(categoryType.getUploadCategories);
+apiRouter.route('/api/category-type/by-roles')
+	.get(protect, categoryType.getByRoles);
 
 apiRouter.route('/api/category-type/:id')
   .get(categoryType.getById)

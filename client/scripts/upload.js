@@ -191,7 +191,7 @@ function getData() {
       VIEW_MODEL.drones = drones;
     });
 
-  categories.getUploadCategories(identity.aclRoles)
+  categories.getByRoles()
     .then(function (categories) {
       VIEW_MODEL.categories = categories;
     });
