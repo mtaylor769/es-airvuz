@@ -17,9 +17,7 @@ var categoryTypeSchema = mongoose.Schema({
 		required	: true,
 		type			: String
 	},
-	
-	requiredAclRoles: [String],
-	
+
 	/*
 	 * Identifies if the camera name is visible.
 	 */

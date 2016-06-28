@@ -120,7 +120,7 @@ CategoryType.prototype.create = function(params) {
 };
 
 CategoryType.prototype.get = function() {
-  return CategoryTypeModel.find({isVisible: true}).sort('name').exec();
+  return CategoryTypeModel.find({isVisible: true}).sort('name').lean().exec();
 };
 
 CategoryType.prototype.getById = function(id) {

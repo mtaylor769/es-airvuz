@@ -1,5 +1,9 @@
 var category = {};
 
+/**
+ * get all category
+ * @returns {Promise}
+ */
 function getAll() {
   return $.ajax({
     url         : '/api/category-type',
@@ -7,19 +11,21 @@ function getAll() {
   });
 }
 
-function getUploadCategories(aclRoles) {
-  var roles = {};
-  roles.aclRoles = JSON.stringify(aclRoles);
+/**
+ * get category base on user roles
+ * - require user to be login
+ * @returns {Promise}
+ */
+function getByRoles() {
   return $.ajax({
-    url         : '/api/category-type/upload',
-    type        : 'GET',
-    data        : roles
+    url         : '/api/category-type/by-roles',
+    type        : 'GET'
   });
 }
 
 /////////////////////////////////////////////
 
-category.getAll = getAll;
-category.getUploadCategories = getUploadCategories;
+category.getAll     = getAll;
+category.getByRoles = getByRoles;
 
 module.exports = category;
