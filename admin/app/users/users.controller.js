@@ -5,9 +5,9 @@
 		.module('AirvuzAdmin')
 		.controller('UsersController', UsersController);
 
-	UsersController.$inject = ['$http', 'confirmDelete'];
+	UsersController.$inject = ['$http', 'confirmDelete', 'unAuthorized'];
 
-	function UsersController($http, confirmDelete) {
+	function UsersController($http, confirmDelete, unAuthorized) {
 
 		function searchUsername(username) {
 			$http.get('/api/users/search', { params: {
@@ -38,6 +38,11 @@
 				$http.delete('/api/users/' + user._id)
 					.then(function(){
 						vm.users.splice(index, 1)
+					}, function(error) {
+						console.log(error);
+						if(error.status === 401) {
+							unAuthorized()
+						}
 					})
 			}, function(){
 				//Do something else if the user cancels
