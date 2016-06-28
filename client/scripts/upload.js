@@ -413,7 +413,8 @@ function bindEvents() {
       contentType : 'application/json',
       type: 'POST',
       data: JSON.stringify({url: url})
-    }).done(onStartPolling);
+    }).done(onStartPolling)
+      .fail(onUploadError);
 
     // fake uploading bar
     var percentage = 0;
@@ -428,7 +429,7 @@ function bindEvents() {
         clearInterval(handle);
         $uploadPage.find('#processing-message').removeClass('hidden');
       }
-    }, 200);
+    }, 100);
   }
 
   function onStartPolling(video) {
