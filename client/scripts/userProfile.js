@@ -1092,9 +1092,6 @@ function initialize() {
       });
       //render videos in owner mode if user profile belongs to user
       renderOwnerAllVideosHtml(allOwnerVideos);
-      aboutMe({user: profileUser}, function (err, html) {
-        $("#about-me-section").html(html);
-      });
       //allow profile edit if user profile belongs to user
       renderUserProfileEdit(profileUser);
       $('.edit-tab').removeClass('hidden');
