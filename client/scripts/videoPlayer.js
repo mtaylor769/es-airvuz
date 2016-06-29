@@ -699,7 +699,7 @@ function bindEvents() {
       if (response.length < 10) {
         $videoPage.find('#btn-view-more-comments').addClass('hidden');
       }
-      showMoreComments += 1;
+      showMoreComments.page += 1;
     })
   };
 
