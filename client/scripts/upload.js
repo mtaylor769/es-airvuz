@@ -402,9 +402,15 @@ function bindEvents() {
 
   function onUploadExternalUrlClick(event) {
     event.preventDefault();
-    isUploading = true;
-
     var url = $uploadPage.find('#external-url-input').val();
+
+    // TODO: validate url to make sure it is youtube or vimeo
+    // url input is empty
+    if (!url) {
+      return;
+    }
+
+    isUploading = true;
 
     renderStep(2);
 
