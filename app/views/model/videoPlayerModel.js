@@ -146,7 +146,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 							} else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
 								comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
 								return comment;
-							} else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('users/profile-pictures') === -1) {
+							} else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('image/profile-picture') === -1) {
 								comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
 								return comment;
 							} else {
