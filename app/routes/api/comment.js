@@ -39,54 +39,52 @@ Comment.prototype.get = function(req, res) {
   })
 };
 
+/**
+ * transform comments to change date with moment and update profilePicture
+ * @param comments
+ * @private
+ */
+function _transformComments(comments) {
+  return Promise.map(comments, function (comment) {
+    comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+    if (comment.userId !== null) {
+      return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+        .then(function (social) {
+          if (social && comment.userId.profilePicture === '') {
+            comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+          } else if (!social && comment.userId.profilePicture === '') {
+            comment.userId.profilePicture = '/client/images/default.png';
+          } else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
+            comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+          } else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('users/profile-pictures') === -1) {
+            comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
+          }
+          return comment;
+        });
+    } else {
+      comment.userId = {};
+      comment.userId.profilePicture = '/client/images/default.png';
+      return comment;
+    }
+  });
+}
+
 Comment.prototype.getByParentCommentId = function(req, res) {
-  logger.debug(req.query.parentId);
   commentCrud
-  .getByParentCommentId(req.query.parentId)
-  .then(function(comments) {
-    return Promise.map(comments, function (comment) {
-      console.log(comment);
-      comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-      if (comment.userId !== null) {
-        return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
-          .then(function (social) {
-            logger.debug(social);
-            if (social && comment.userId.profilePicture === '') {
-              comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
-              return comment;
-            } else if (!social && comment.userId.profilePicture === '') {
-              comment.userId.profilePicture = '/client/images/default.png';
-              return comment;
-            } else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
-              comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
-              return comment;
-            } else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('users/profile-pictures') === -1) {
-              comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
-              return comment;
-            } else {
-              comment.userId.profilePicture = comment.userId.profilePicture;
-              return comment;
-            }
-          })
-      } else {
-        comment.userId = {};
-        comment.userId.profilePicture = '/client/images/default.png';
-        return comment;
-      }
-    })
-  })
-  .then(function(comments) {
-    res.send(comments);
-  })
+    .getByParentCommentId(req.query.parentId)
+    .then(_transformComments)
+    .then(function(comments) {
+      res.send(comments);
+    });
 };
 
 Comment.prototype.getByVideoId = function(req, res) {
-  var videoId = mongoose.Types.ObjectId(req.query.videoId);
   commentCrud
-  .getParentCommentByVideoId({videoId: videoId, replyDepth: 0})
-  .then(function(comments) {
-    res.json(comments);
-  })
+    .getParentCommentByVideoId({videoId: req.query.videoId, replyDepth: 0, page: req.query.page})
+    .then(_transformComments)
+    .then(function(comments) {
+      res.json(comments);
+    });
 };
 
 Comment.prototype.getById = function(req, res) {

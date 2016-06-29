@@ -10,7 +10,6 @@ try {
 	var Promise		    = require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
-	var getImage			= require('../../utils/fbImageDownload');
 	var videoCrud     = require('../../persistence/crud/videos');
 	var userCrud      = require('../../persistence/crud/users');
 	var socialCrud		= require('../../persistence/crud/socialMediaAccount');
@@ -18,7 +17,6 @@ try {
 	var videoLikeCrud = require('../../persistence/crud/videoLike');
 	var categoryCrud  = require('../../persistence/crud/categoryType');
 	var followCrud		= require('../../persistence/crud/follow');
-	var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];
 	var amazonConfig  = require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
@@ -76,8 +74,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 							user.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
 						} else if (user.profilePicture.indexOf('http') === -1) {
 							user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=50';
-						} else {
-							user.profilePicture = user.profilePicture;
 						}
 					})
 			} else {
@@ -154,7 +150,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 								comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
 								return comment;
 							} else {
-								comment.userId.profilePicture = comment.userId.profilePicture;
 								return comment;
 							}
 						})
@@ -163,11 +158,12 @@ VideoPlayerModel.prototype.getData = function(params) {
 					comment.userId.profilePicture = '/client/images/default.png';
 					return comment;
 				}
-			})
+			});
 		})
 		.then(function (comments) {
 			logger.error(comments);
 			dataObject.comments = comments;
+			dataObject.hasMoreComments = dataObject.video.commentCount > comments.length;
 			return categoryCrud.get();
 		})
 		.then(function(categories) {
@@ -176,7 +172,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			
 			dataObject.categories = categories;
 			params.data													= dataObject;
-			params.data.facebookAppId 					= config.facebook.clientID;
 			params.data.videoPlayer							= {};
 			params.data.videoPlayer.title				= "Video Player";
 			params.data.videoPlayer.viewName		= "Video Player";

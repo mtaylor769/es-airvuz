@@ -125,35 +125,13 @@
                             <button class="btn background-orange border-radius-0 font-white" value="{video._id}" id="commentSave">Comment</button>
                         </div>
                         <ul class="parent-comments">
-                        {#comments}
-                            <li class="comment-wrap" data-userId="{userId._id}">
-                                <div class="row">
-                                    <div class="m-t-5">
-                                        <a href="/user/{userId.userNameUrl}" class="col-xs-2 col-md-1">
-                                            <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
-                                        </a>
-                                        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
-                                        <div class="col-xs-9 col-md-10 posted-comment-text">
-                                            <p class="m-b-0"><a href="/user/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
-                                            <p class="m-b-0">{comment}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <ul class="parentComment"></ul>
-                                <div  id="{_id}" data-userId="{userId._id}">
-                                    <div class="row">
-                                        <div class="reply col-xs-3 col-sm-2 pointer" value="{_id}" data-userId="{userId._id}" style="padding: 0 0 0 10px">
-                                            <span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>
-                                            <span style="font-size: 10px; margin-left: 2px">reply</span>
-                                        </div>
-                                        <div class="col-xs-3 col-md-2 commentReplies pointer" value="{_id}">
-                                            <span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;"><a>replies {replyCount}</a></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        {/comments}
+                            {> "client.templates.videoPlayer.comments"/}
                         </ul>
+                        {#hasMoreComments}
+                        <div class="text-center m-b-10">
+                          <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+                        </div>
+                        {/hasMoreComments}
                     </div>
                     {!up next video list!}
                     <div class="col-sm-4 nextVideos mobile-display-none" id="next">
@@ -196,9 +174,8 @@
         <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
         {> "app.views.view.partial.js" /}
         <script>
-            var video = {?video}{video|js|s}{:else}[]{/video};
             $(function() {
-                videoPlayer.initialize('{s3Bucket}{video.videoPath}', '{facebookAppId}');
+                videoPlayer.initialize('{s3Bucket}{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
             });
         </script>
     </body>
