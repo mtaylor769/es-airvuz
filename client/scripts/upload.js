@@ -227,6 +227,14 @@ function bindEvents() {
     if ($tags.val()) {
       params.tags = $tags.val().split(',');
     }
+    
+    if (params.isCustomThumbnail && !params.customThumbnail) {
+      return appendErrorMessage([{
+        sourceError: '#custom-image-file',
+        displayMsg: 'Require custom thumbnail'
+      }]);
+    }
+    
     isPublishing = true;
     $.ajax({
       url         : '/api/videos',
@@ -236,7 +244,7 @@ function bindEvents() {
     }).done(function (video) {
       renderStep(3, video);
     }).fail(function(response) {
-      if (response.status === 403) {
+      if (response.status === 400) {
         appendErrorMessage(response.responseJSON.error);
       }
     }).always(function () {

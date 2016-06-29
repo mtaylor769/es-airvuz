@@ -68,36 +68,31 @@ function getVideosByCategory(req, res) {
 }
 
 Video.prototype.post = function(req, res) {
-  if (req.body.isCustomThumbnail) {
-    // move custom thumbnail to the correct directory
-    // TODO: resize to 392x220
-    var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
-    req.body.thumbnailPath = req.body.hashName + '/' + newName;
 
-    amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
-      .then(function () {
-        return VideoCrud.create(req.body);
-      })
-      .then(function (video) {
-        res.json(video);
-      })
-      .catch(function () {
-        res.sendStatus(500);
-      })
-  } else {
-    VideoCrud
-      .create(req.body)
-      .then(function(video) {
-        res.json(video);
-      })
-      .catch(function (error) {
-        console.log(error);
-        if (error.length) {
-          return res.status(403).json({error: error});
-        }
-        return res.sendStatus(500);
-      });
-  }
+  Promise.resolve()
+    .then(function () {
+      if (req.body.isCustomThumbnail) {
+        // move custom thumbnail to the correct directory
+        // TODO: resize to 392x220
+        var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
+        req.body.thumbnailPath = req.body.hashName + '/' + newName;
+
+        return amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
+      }
+      return true;
+    })
+    .then(function () {
+      return VideoCrud.create(req.body);
+    })
+    .then(function (video) {
+      res.json(video);
+    })
+    .catch(function (error) {
+      if (error.length) {
+        return res.status(400).json({error: error});
+      }
+      res.sendStatus(500);
+    });
 };
 
 Video.prototype.get = function(req, res) {
