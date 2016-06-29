@@ -48,6 +48,10 @@ module.exports = new IndexView({
 			{
 				partialName: 'client.templates.videoPlayer.videoPlayerModal',
 				partialPath: './client/templates/videoPlayer/videoPlayerModal.dust'
+			},
+			{
+				partialName: 'client.templates.videoPlayer.comments',
+				partialPath: './client/templates/videoPlayer/comments.dust'
 			}
 		]
 	});

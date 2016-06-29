@@ -12,6 +12,11 @@ require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switc
 require('videojs-resolution-switcher');
 require('bootstrap-switch');
 
+/**
+ * Templates
+ */
+var commentsTpl = require('../templates/videoPlayer/comments.dust');
+
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');
@@ -22,6 +27,7 @@ var hasStartedPlaying                  = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
+var video;
 
 
 
@@ -681,6 +687,25 @@ function bindEvents() {
     }
   }
 
+  var showMoreComments = function () {
+    $.ajax({
+      type: 'GET',
+      url: '/api/comment/byVideo?page=' + showMoreComments.page + '&videoId=' + video._id,
+      dataType: 'json'
+    }).done(function (response) {
+      commentsTpl({comments: response}, function (err, html) {
+        $videoPage.find('.parent-comments').append(html);
+      });
+      if (response.length < 10) {
+        $videoPage.find('#btn-view-more-comments').addClass('hidden');
+      }
+      showMoreComments += 1;
+    })
+  };
+
+  showMoreComments.page = 2;
+
+
   ///////////////////////////////////////
 
   $videoPage
@@ -689,25 +714,13 @@ function bindEvents() {
     .on('click', '.commentReplies', commentReplies)
     .on('click', '.reply', commentReply)
     .on('click', '#comment', checkIdentitiy)
+    .on('click', '#btn-view-more-comments', showMoreComments);
 
-}
-
-
-function runFacebookScript(facebookAppId) {
-  window.fbAsyncInit = function() {
-    FB.init({appId: facebookAppId, status: true, cookie: true,
-      xfbml: true});
-  };
-  (function() {
-    var e = document.createElement('script'); e.async = true;
-    e.src = document.location.protocol +
-      '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb-root').appendChild(e);
-  }());
 }
 
 //page init function
-function initialize(videoPath, facebookAppId) {
+function initialize(videoPath, currentVideo) {
+  video = currentVideo;
   var defaultRes = '300',
       browserWidth = browser.getSize().width;
 
@@ -790,7 +803,6 @@ function initialize(videoPath, facebookAppId) {
 
   bindEvents();
 
-  runFacebookScript(facebookAppId);
   $('[data-toggle="tooltip"]').tooltip();
 
   //video description functions

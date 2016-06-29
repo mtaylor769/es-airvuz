@@ -236,8 +236,18 @@ Comment.prototype.getByParentCommentId = function(parentId) {
 };
 
 Comment.prototype.getParentCommentByVideoId = function(params) {
-  logger.debug('params.videoId : ' + params.videoId);
-  return CommentModel.find( { videoId: params.videoId , replyDepth: 0} ).sort({commentCreatedDate: -1}).limit(10).populate('userId').lean().exec();
+  var page = params.page || 1;
+  var limit = 10;
+  var skip = (page - 1) * limit;
+
+  return CommentModel
+    .find({videoId: params.videoId, replyDepth: params.replyDepth || 0})
+    .sort({commentCreatedDate: -1})
+    .skip(skip)
+    .limit(limit)
+    .populate('userId')
+    .lean()
+    .exec();
 };
 
 Comment.prototype.getById = function(id) {
