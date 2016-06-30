@@ -133,6 +133,58 @@ function bindEvents() {
     });
   }
 
+  function onSignupClick() {
+    if (onSignupClick.isSubmitted) {
+      return;
+    }
+
+    removeErrorMessage();
+    //ajax object
+    var newUserObject = {};
+
+    // modal values
+    var emailAddress = $loginModal.find('#email:visible').val();
+    var userNameDisplay = $loginModal.find('#username:visible').val();
+    var password = $loginModal.find('#password:visible').val();
+    var confirmPassword = $loginModal.find('#confirm-password:visible').val();
+    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val() === 'true';
+
+    //setting object equal to modal values
+    newUserObject.email = emailAddress;
+    newUserObject.userNameDisplay = userNameDisplay;
+    newUserObject.password = password;
+    newUserObject.confirmPassword = confirmPassword;
+    newUserObject.isSubscribeAirVuzNews = isSubscribeAirVuzNews;
+
+    onSignupClick.isSubmitted = true;
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/create',
+      data: JSON.stringify(newUserObject),
+      contentType : 'application/json'
+    })
+      .done(function() {
+        $loginModal.find('#email:visible').val('');
+        $loginModal.find('#username:visible').val('');
+        $loginModal.find('#password:visible').val('');
+        $loginModal.find('#confirm-password:visible').val('');
+        $loginModal.find('.text-message').removeClass('hidden');
+
+        setTimeout(function () {
+          $loginModal.find('.text-message').addClass('hidden');
+        }, 5000);
+      })
+      .fail(function(response) {
+        appendErrorMessage(response.responseJSON);
+        //console.log(error);
+      })
+      .always(function () {
+        onSignupClick.isSubmitted = false;
+      });
+  }
+
+  onSignupClick.isSubmitted = false;
+
   $loginModal.on('hidden.bs.modal', function () {
     // reset tab to login
     $loginModal.find('#login-anchor-tab').click();
@@ -171,47 +223,7 @@ function bindEvents() {
       });
   });
 
-  $loginModal.on('click', '#signup-btn', function () {
-    removeErrorMessage();
-    //ajax object
-    var newUserObject = {};
-
-    // modal values
-    var emailAddress = $loginModal.find('#email:visible').val();
-    var userNameDisplay = $loginModal.find('#username:visible').val();
-    var password = $loginModal.find('#password:visible').val();
-    var confirmPassword = $loginModal.find('#confirm-password:visible').val();
-    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val() === 'true';
-
-    //setting object equal to modal values
-    newUserObject.email = emailAddress;
-    newUserObject.userNameDisplay = userNameDisplay;
-    newUserObject.password = password;
-    newUserObject.confirmPassword = confirmPassword;
-    newUserObject.isSubscribeAirVuzNews = isSubscribeAirVuzNews;
-
-    $.ajax({
-      type: 'POST',
-      url: '/api/users/create',
-      data: JSON.stringify(newUserObject),
-      contentType : 'application/json'
-    })
-      .done(function() {
-        $loginModal.find('#email:visible').val('');
-        $loginModal.find('#username:visible').val('');
-        $loginModal.find('#password:visible').val('');
-        $loginModal.find('#confirm-password:visible').val('');
-        $loginModal.find('.text-message').removeClass('hidden');
-
-        setTimeout(function () {
-          $loginModal.find('.text-message').addClass('hidden');
-        }, 5000);
-      })
-      .fail(function(response) {
-        appendErrorMessage(response.responseJSON);
-        //console.log(error);
-      });
-  });
+  $loginModal.on('click', '#signup-btn', onSignupClick);
 
   $header.on('click', '.av-search a', function (event) {
     event.preventDefault();

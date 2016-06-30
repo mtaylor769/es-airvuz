@@ -543,7 +543,7 @@ users.prototype.getUserBySocialId = function (socialId) {
  */
 users.prototype.getUserByEmail = function (email) {
 	if (!email) {
-		return Promise.reject('Required email input - getUserByEmail');
+		return Promise.reject('Email required');
 	}
 	return UserModel.findOne({emailAddress : email.toLowerCase()}).exec();
 };
