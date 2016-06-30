@@ -3,7 +3,7 @@
         <a href="/">
             <img src="/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon"/>
             <img src="/client/images/airvuz.png" alt="AirVuz Logo" class="airvuz-logo"/>
-            <p class="hidden-xs tag-line">Worlds Best Drone Videos</p>
+            <p class="tag-line">Worlds Best Drone Videos</p>
         </a>
           <div id="category-collapse">
             <ul class="list-unstyled">
