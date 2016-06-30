@@ -317,7 +317,7 @@ body.modal-open {
 #header .tag-line {
   position: absolute;
   bottom: 4px;
-  left: 82px;
+  left: 97px;
   font-size: 9px;
   color: #f48a4a;
 }
@@ -1687,6 +1687,10 @@ End Video Player Slick theme
 
   #user-profile .form-group .donateUrl {
     width: 76%;
+  }
+
+  #header .tag-line {
+    left: 82px;
   }
 }
 
