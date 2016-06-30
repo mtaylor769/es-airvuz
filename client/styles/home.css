@@ -29,6 +29,7 @@
 
 #home-page .video-slick img {
     min-height: 126px;
+    max-height: 202px;
     margin: 0 auto;
 }
 
