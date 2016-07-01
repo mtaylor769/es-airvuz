@@ -30,7 +30,7 @@
                 <div class="profile-video" style="margin-bottom: 10px">
                     <div class="text-center">
                         <a href="/video/{_id}">
-                            <img src="{s3Bucket}{thumbnailPath}" class="img-responsive" style="max-height: 202px; margin: auto;">
+                            <img src="{s3Bucket}{thumbnailPath}" class="img-responsive">
                         </a>
                     </div>
                     <div class="profile-video-info">

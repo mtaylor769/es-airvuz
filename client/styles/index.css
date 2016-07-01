@@ -867,6 +867,9 @@ body .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
 /*
 Begin userProfile CSS
 */
+#user-profile .profile-video img {
+  min-height: 202px;
+}
 
 #user-profile .profile-videos .col-sm-6.col-md-3 {
   padding: 0 5px;
@@ -1696,6 +1699,12 @@ End Video Player Slick theme
   #header .tag-line {
     left: 82px;
   }
+
+  #user-profile .profile-video img {
+    height: 196px;
+    min-height: 0;
+    margin: auto;
+  }
 }
 
 /* Medium devices (desktops, 992px and up) */
@@ -1704,14 +1713,17 @@ End Video Player Slick theme
     width: 600px;
     column-count: 3;
   }
+
   #header .av-search input:focus {
     width: 300px;
     left: -320px;
   }
+
   .category-nav ul {
     height: auto;
     overflow: auto;
   }
+
   .write-comment {
     padding: 20px 40px;
   }
@@ -1736,7 +1748,7 @@ End Video Player Slick theme
     display: block;
   }
 
-  .top-two-videos a:last-child{
+  .top-two-videos a:last-child {
     display: none;
   }
 
@@ -1777,6 +1789,7 @@ End Video Player Slick theme
   .footer-sub1 .footer-signup button {
     margin: 0 0 0 15px;
   }
+
   .up-next-wrapper img {
     height: 165px;
   }
@@ -1792,6 +1805,10 @@ End Video Player Slick theme
 
   a.btn + a.btn {
     margin-left: 10px;
+  }
+
+  #user-profile .profile-video img {
+    height: 126px;
   }
 }
 
@@ -1850,6 +1867,10 @@ End Video Player Slick theme
 
   .videoUserName {
     font-size: 16px;
+  }
+
+  #user-profile .profile-video img {
+    height: 154px;
   }
 }
 

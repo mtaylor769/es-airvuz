@@ -1,11 +1,11 @@
-<div class="row m-b-20 m-t-15 profile-videos">
+<div class="row m-b-20 profile-videos">
     <div class="col-md-12">
-        {#videos}
+        {#showcase}
             <div class="col-sm-6 col-md-3">
                 <div class="profile-video" style="margin-bottom: 10px">
                     <div class="text-center">
                         <a href="/video/{_id}">
-                            <img src="{s3Bucket}{thumbnailPath}" class="img-responsive" style="max-height: 202px; margin: auto;">
+                            <img src="{s3Bucket}{thumbnailPath}" class="img-responsive">
                         </a>
                     </div>
                     <div class="profile-video-info">
@@ -24,6 +24,6 @@
                     </div>
                 </div>
             </div>
-        {/videos}
+        {/showcase}
     </div>
 </div>
