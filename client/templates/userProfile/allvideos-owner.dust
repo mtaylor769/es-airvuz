@@ -13,36 +13,35 @@
     </div>
 </div>
 <div class="row m-b-20 profile-videos">
-    {#videos}
-        <div class="col-xs-12 col-sm-6 col-md-3" style="">
-            <div class="profile-video" style="padding: 20px 0;">
-                <div class="col-xs-6 col-sm-12">
+    <div class="col-md-12">
+        {#videos}
+        <div class="col-sm-6 col-md-3">
+            <div class="profile-video" style="margin-bottom: 10px">
+                <div class="text-center">
                     <a href="/video/{_id}">
-                        <img src="{s3Bucket}{thumbnailPath}" width="100%" height="60%">
+                        <img src="{s3Bucket}{thumbnailPath}" class="img-responsive" style="max-height: 202px; margin: auto;">
                     </a>
                 </div>
-                <div class="col-xs-5 col-sm-12 profile-video-info">
-                    <div>
+                <div class="profile-video-info">
+                    <div style="margin-top: 5px">
                         <span><span class="airvuz-blue">VŪZ</span> {viewCount}  | {uploadDate}</span>
                         <span class="pull-right">{duration}</span>
                     </div>
                     <div class="profile-video-title">
                         <a href="/video/{_id}">
-                            <h4>{title}</h4>
+                            <h4 style="margin: 0">{title}</h4>
                         </a>
-                        <p>By 
-                            <a href="/user/{userId.userNameUrl}" tabindex="0">{userId.userNameDisplay}</a>
+                        <p>By
+                            <a href="/user/{userId.userNameUrl}" tabindex="0"> {userId.userNameDisplay}</a>
                         </p>
                     </div>
-                    <div class="m-t-10 hidden-xs">
+                    <div class="m-t-10">
                         <a data-video-id="{_id}" class="btn btn-primary btn-edit-video">Edit</a>
                         <a data-video-id="{_id}" class="btn btn-default btn-delete-video">Delete</a>
                     </div>
                 </div>
-                <div class="col-xs-1 visible-xs">
-                    <span class="glyphicon glyphicon-option-vertical"></span>
-                </div>
             </div>
         </div>
-    {/videos}
+        {/videos}
+    </div>
 </div>
