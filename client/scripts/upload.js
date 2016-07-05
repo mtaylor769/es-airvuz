@@ -9,7 +9,8 @@ var Evaporate     = require('evaporate'),
     identity      = require('./services/identity'),
     camera        = require('./services/camera'),
     drone         = require('./services/drone'),
-    categories    = require('./services/category');
+    categories    = require('./services/category'),
+    dialogs    = require('./services/dialogs');
 
 /**
  * Templates
@@ -150,7 +151,7 @@ function onUploadError(message) {
   console.log('******************** message ********************');
   console.log(message);
   console.log('************************************************');
-  alert("There's an error uploading. Please contact support");
+  dialogs.error("There's an error uploading. Please contact support");
 }
 
 function renderStep(step, video) {
@@ -229,6 +230,7 @@ function bindEvents() {
     }
     
     if (params.isCustomThumbnail && !params.customThumbnail) {
+      dialogs.required();
       return appendErrorMessage([{
         sourceError: '#custom-image-file',
         displayMsg: 'Require custom thumbnail'
@@ -245,6 +247,7 @@ function bindEvents() {
       renderStep(3, video);
     }).fail(function(response) {
       if (response.status === 400) {
+        dialogs.required();
         appendErrorMessage(response.responseJSON.error);
       }
     }).always(function () {
