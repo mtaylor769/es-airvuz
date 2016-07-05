@@ -1,10 +1,12 @@
 <div partial-beg="app.views.view.partial.header" class="navbar navbar-fixed-top">
     <div class="container container-shadow" id="header">
-        <a href="/">
-            <img src="/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon"/>
-            <img src="/client/images/airvuz.png" alt="AirVuz Logo" class="airvuz-logo"/>
-            <p class="tag-line">Worlds Best Drone Videos</p>
-        </a>
+        <div class="logos">
+            <a href="/">
+                <img src="/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon" />
+                <img src="/client/images/airvuz.png" alt="AirVuz Logo" class="airvuz-logo" />
+            </a>
+        </div>
+        <p class="tag-line">Worlds Best Drone Videos</p>
           <div id="category-collapse">
             <ul class="list-unstyled">
               <li class="dropdown" id="header-categories">
