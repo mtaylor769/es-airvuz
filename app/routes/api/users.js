@@ -2,8 +2,7 @@ try {
   var log4js                 = require('log4js');
   var Promise                = require('bluebird');
   var logger                 = log4js.getLogger('app.routes.api.users');
-  var acl                    = require('../../utils/acl');
-  var aclRoles               = require('../../utils/acl');
+  var aclUtil                = require('../../utils/acl');
   var usersCrud              = require('../../persistence/crud/users');
   var videoCrud              = require('../../persistence/crud/videos');
   var socialCrud             = require('../../persistence/crud/socialMediaAccount');
@@ -22,7 +21,7 @@ try {
 function User() {}
 
 function search(req, res) {
-  // acl.isAllowed(req.user._id, 'user', 'search')
+  // aclUtil.isAllowed(req.user._id, 'user', 'search')
   //   .then(function (isAllow) {
   //     if (!isAllow) {
   //       return res.sendStatus(403);
@@ -56,7 +55,7 @@ function createUser(req, res) {
   return usersCrud
     .create(userParams)
     .then(function(user) {
-      return aclRoles.addUserRoles(user._id, ['user-general']).then(function() {
+      return aclUtil.addUserRoles(user._id, ['user-general']).then(function() {
         return user;
       });
     })
@@ -324,6 +323,26 @@ function deleteUser(req, res) {
 
 }
 
+function statusChange(req, res) {
+  aclUtil.isAllowed(req.user._id, 'user', 'update-status')
+    .then(function (isAllow) {
+      if (!isAllow) {
+        throw 'you are not allow to update user status';
+      }
+      return usersCrud
+        .updateStatus(req.params.id, req.body.status);
+    })
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function (error) {
+      if (typeof error === 'string') {
+        res.status(401).send(error);
+      }
+      res.sendStatus(500);
+    });
+}
+
 User.prototype.hireMe               = hireMe;
 User.prototype.search               = search;
 User.prototype.get                  = get;
@@ -332,5 +351,6 @@ User.prototype.put                  = put;
 User.prototype.delete               = deleteUser;
 User.prototype.passwordResetRequest = passwordResetRequest;
 User.prototype.passwordResetChange  = passwordResetChange;
+User.prototype.statusChange              = statusChange;
 
 module.exports = new User();
