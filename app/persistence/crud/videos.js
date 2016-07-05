@@ -74,6 +74,7 @@ function updateDateWithMoment(videos) {
  * @param params {Object}
  * @param params.total {Number}
  * @param params.page {Number}
+ * @param params.days {Number}
  * @returns {*}
  */
 function getTrendingVideos(params) {
@@ -86,7 +87,7 @@ function getTrendingVideos(params) {
 
 	var limit = params.total;
 	var skip = (params.page - 1) * limit;
-	var thirtyDayAgo = moment().subtract(30, 'days').toDate();
+	var thirtyDayAgo = moment().subtract(params.days || 30, 'days').toDate();
 
 	return VideoModel
 		.find({uploadDate: {$gte: thirtyDayAgo}})
