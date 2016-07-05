@@ -23,35 +23,33 @@
         
     </div>
 </div>
-<div class="row m-b-30 profile-videos">
-    {#videos}
-        <div class="col-xs-12 col-sm-6 col-md-3" style="">
-            <div class="profile-video" style="padding: 20px 0;">
-                <div class="col-xs-6 col-sm-12">
-                    <a href="/video/{_id}">
-                        <img src="{s3Bucket}{thumbnailPath}" width="100%" height="60%">
-                    </a>
-                </div>
-                <div class="col-xs-5 col-sm-12 profile-video-info">
-                    <div>
-                        <span><span class="airvuz-blue">VŪZ</span> {viewCount}  | {uploadDate}</span>
-                        <span class="pull-right">{duration}</span>
-                    </div>
-                    <div class="profile-video-title">
+<div class="row m-b-20 profile-videos">
+    <div class="col-md-12">
+        {#videos}
+            <div class="col-sm-6 col-md-3">
+                <div class="profile-video" style="margin-bottom: 10px">
+                    <div class="text-center">
                         <a href="/video/{_id}">
-                            <h4>{title}</h4>
+                            <img src="{s3Bucket}{thumbnailPath}" class="img-responsive">
                         </a>
-                        <p>By 
-                            <a href="/user/{userId.userNameUrl}" tabindex="0">{userId.userNameDisplay}</a>
-                        </p>
                     </div>
-
-                    <div class="showcase" data-showcase="{isShowcase}" data-videoId="{_id}"></div>
-                </div>
-                <div class="col-xs-1 visible-xs">
-                    <span class="glyphicon glyphicon-option-vertical"></span>
+                    <div class="profile-video-info">
+                        <div style="margin-top: 5px">
+                            <span><span class="airvuz-blue">VŪZ</span> {viewCount}  | {uploadDate}</span>
+                            <span class="pull-right">{duration}</span>
+                        </div>
+                        <div class="profile-video-title">
+                            <a href="/video/{_id}">
+                                <h4 style="margin: 0">{title}</h4>
+                            </a>
+                            <p>By
+                                <a href="/user/{userId.userNameUrl}" tabindex="0"> {userId.userNameDisplay}</a>
+                            </p>
+                        </div>
+                        <div class="showcase" data-showcase="{isShowcase}" data-videoId="{_id}"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    {/videos}
+        {/videos}
+    </div>
 </div>
