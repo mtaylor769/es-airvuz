@@ -212,7 +212,7 @@ body.modal-open {
   width: 0;
   padding: 0;
   background-color: #333333;
-  border-color: #333333;
+  border: none;
 }
 #header .av-search input:focus {
   background-color: #fff;
@@ -254,9 +254,6 @@ body.modal-open {
   left: 10px;
   top: -10px;
   background-color: #a94442;
-}
-#header.is-login .airvuz-logo {
-  display: none;
 }
 
 #header-categories {
@@ -312,14 +309,6 @@ body.modal-open {
 
 .header-pad {
   height: 75px;
-}
-
-#header .tag-line {
-  position: absolute;
-  bottom: 4px;
-  left: 97px;
-  font-size: 9px;
-  color: #f48a4a;
 }
 
 .header-user {
@@ -1272,9 +1261,6 @@ End user profile CSS
 .top-two-videos {
   display: none;
 }
-#header .airvuz-logo {
-  display: none;
-}
 
 
 /*
@@ -1423,6 +1409,55 @@ Video Player Slick theme
 /*
 End Video Player Slick theme
 */
+
+/*
+header logo and tag line media queries
+*/
+
+#header .tag-line {
+  position: absolute;
+  bottom: 4px;
+  left: 78px;
+  font-size: 8px;
+  color: #f48a4a;
+}
+
+#header .logos {
+  position: absolute;
+  left: 4px;
+}
+
+#header .airvuz-icon {
+  width: 66px;
+}
+
+#header .airvuz-logo {
+  width: 95px;
+}
+
+@media (min-width: 375px) {
+  #header .airvuz-icon {
+    width: 74px;
+  }
+
+  #header .airvuz-logo {
+    width: 104px;
+  }
+  #header .tag-line {
+    left: 86px;
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 768px) {
+  #header .logos {
+    display: inline-block;
+    position: inherit;
+  }
+  #header .tag-line {
+    left: 91px;
+  }
+}
 
 
 @media (min-width: 320px) {
