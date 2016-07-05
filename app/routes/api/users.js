@@ -75,7 +75,7 @@ function createUser(req, res) {
     })
     .catch(function(error) {
       if(error.length){
-        return res.status(403).json(error);
+        return res.status(400).json(error);
       }
       return res.sendStatus(500);
     });
