@@ -607,7 +607,7 @@ function onCategorySelect() {
   var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
   var $categoryList = $videoEditModal.find('#selected-category-list');
 
-  if ($categoryList.find('li').size() < 3) {
+  if ($categoryList.find('li').length < 3) {
     $categoryList.append(list);
   } else {
     $videoEditModal.find('#category-message').text('Max catgories');
