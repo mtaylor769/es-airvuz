@@ -38,6 +38,9 @@
                         <md-button class="md-fab md-danger" ng-click="vm.removeUser(vm.user)">
                             <md-icon class="material-icon">delete</md-icon>
                         </md-button>
+                        <md-button class="md-fab md-danger" ng-click="vm.changeUserStatus(vm.user, 'suspended')">
+                            <md-icon class="material-icon">block</md-icon>
+                        </md-button>
                     </div>
                 </div>
             </md-whiteframe>

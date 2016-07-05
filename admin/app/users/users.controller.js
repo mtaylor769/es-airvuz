@@ -49,11 +49,25 @@
 			});
 		}
 
+		function changeUserStatus(user, status) {
+			confirmDelete()
+				.then(function() {
+					$http.put('/api/users/' + user._id + '/status', {status: status})
+						.then(function() {
+						}, function(error) {
+							if(error.status === 401) {
+								unAuthorized();
+							}
+						});
+				});
+		}
+
 		///////////////////////
 		var vm = this;
 		vm.searchUsername = searchUsername;
 		vm.removeUser = removeUser;
 		vm.searchUserUrl = searchUserUrl;
+		vm.changeUserStatus = changeUserStatus;
 	}
 })();
 

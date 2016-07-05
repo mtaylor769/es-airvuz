@@ -726,9 +726,14 @@ function getUserByUserNameUrl(userNameUrl) {
 		.exec();
 }
 
+function updateStatus(userId, status) {
+	return UserModel.findOneAndUpdate({_id: userId}, {status: status}).exec();
+}
+
 users.prototype.updateRoles 							= updateRoles;
 users.prototype.resetPasswordRequest 			= resetPasswordRequest;
 users.prototype.resetPasswordChange 			= resetPasswordChange;
 users.prototype.getUserByUserNameUrl 			= getUserByUserNameUrl;
+users.prototype.updateStatus 							= updateStatus;
 
 module.exports = new users();
