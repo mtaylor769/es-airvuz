@@ -250,25 +250,8 @@ function reSizeImage(picture, size) {
   var originalPath = 'users/profile-pictures/';
   var imagePath = amazonConfig.ASSET_URL + originalPath + picture;
 
-  console.log('******************** "https:" + imagePath ********************');
-  console.log("https:" + imagePath);
-  console.log('************************************************');
   var readStream = request('https:' + imagePath);
   var stream = image.resize(readStream, size);
-  
-  console.log('******************** stream ********************');
-  console.log(stream);
-  console.log('************************************************');
-
-  stream.on('error', function (err) {
-    console.log('******************** err stream ********************');
-    console.log(err);
-    console.log('************************************************');
-  });
-
-  stream.on('end', function () {
-    console.log('******************** stream end ********************');
-  });
 
   var part = picture.split('.');
   var pictureWithoutExt = part[0];
@@ -345,20 +328,12 @@ function moveFile(params) {
 }
 
 /**
- * copy video from server to s3
- * - used by external uploader (vimeo & youtube) because we download the video from the external link
- *   and then copy to s3
- * @param {Object} file
- * @param {String} file.stream - file stream
- * @param {String} file.fileName - hash name with .mp4
+ * upload file to s3
+ * @param bucket
+ * @param key
+ * @param body
+ * @return {Promise}
  */
-function uploadVideoToS3(file) {
-  return uploadToS3(amazonConfig.INPUT_BUCKET, file.fileName, file.stream)
-    .then(function () {
-      return file.fileName;
-    });
-}
-
 function uploadToS3(bucket, key, body) {
   return new Promise(function (resolve, reject) {
     var storage = new AWS.S3(awsOptions);
@@ -386,7 +361,6 @@ module.exports = {
   listVideoObjects    : listVideoObjects,
   moveFile            : moveFile,
   uploadToS3          : uploadToS3,
-  uploadVideoToS3     : uploadVideoToS3,
   hasImageSize        : hasImageSize,
   reSizeImage         : reSizeImage,
   // Middleware

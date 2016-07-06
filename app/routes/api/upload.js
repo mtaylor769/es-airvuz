@@ -105,7 +105,7 @@ function uploadExternalVideo(req, res) {
     }
   });
 
-  promise = amazonService.uploadVideoToS3({stream: video, fileName: fileName})
+  promise = amazonService.uploadToS3(amazonService.config.INPUT_BUCKET, fileName, video)
     .then(function (video) {
       // TODO: change to create new preset?
       // current using custom preset
