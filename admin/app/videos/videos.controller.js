@@ -13,6 +13,7 @@
 			Videos.get({id: videoId}).$promise.then(function(vid){
 				vm.videos.push(vid);
 				$scope.videoId = '';
+				console.log(vm.videos);
 			});
 
 		}
@@ -31,7 +32,7 @@
 		}
 
 		function editVideo(video) {
-			window.location.href = '/editVideo/' + video._id;
+			window.location.href = '/admin/editVideo/' + video._id;
 		}
 
 		function editComments(video) {
@@ -49,6 +50,7 @@
 		vm.removeVideo = removeVideo;
 		vm.editVideo = editVideo;
 		vm.videos = [];
+		vm.bucketUrl = '//s3-us-west-2.amazonaws.com/airvuz-drone-video/';
 		vm.editComments = editComments;
 	}
 })();
