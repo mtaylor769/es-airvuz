@@ -1,7 +1,8 @@
 var INPUT_BUCKET,
   OUTPUT_BUCKET,
   PIPELINE_ID,
-  ASSET_BUCKET;
+  ASSET_BUCKET,
+  TEMP_BUCKET = 'airvuz-tmp';
 
 switch(process.env.NODE_ENV || 'development') {
   case 'production':
@@ -24,10 +25,12 @@ module.exports = {
   OUTPUT_BUCKET: OUTPUT_BUCKET,
   PIPELINE_ID: PIPELINE_ID,
   ASSET_BUCKET: ASSET_BUCKET,
+  TEMP_BUCKET: TEMP_BUCKET,
 
   OUTPUT_URL: '//s3-us-west-2.amazonaws.com/' + OUTPUT_BUCKET + '/',
   INPUT_URL: '//s3-us-west-2.amazonaws.com/' + INPUT_BUCKET + '/',
   ASSET_URL: '//s3-us-west-2.amazonaws.com/' + ASSET_BUCKET + '/',
+  TEMP_URL: '//s3-us-west-2.amazonaws.com/' + TEMP_BUCKET + '/',
 
   // KEY are for beta
   ACCESS_KEY: process.env.AWS_ACCESS_KEY || 'AKIAIXDMGK4H4EX4BDOQ',
