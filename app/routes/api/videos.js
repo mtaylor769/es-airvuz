@@ -1,6 +1,8 @@
 try {
 	var log4js								= require('log4js');
   var nodemailer            = require('nodemailer');
+  var request               = require('request');
+  var image                 = require('../../services/image.service.server');
 	var logger								= log4js.getLogger('app.routes.api.videos');
 
 	var VideoCrud							= require('../../persistence/crud/videos');
@@ -67,20 +69,30 @@ function getVideosByCategory(req, res) {
   });
 }
 
+/**
+ * upload custom thumbnail if exists
+ * - this function change body.thumbnailPath (req)
+ * @param body
+ * @returns {*}
+ * @private
+ */
+function _uploadCustomThumbnail(body) {
+  if (body.isCustomThumbnail && body.customThumbnail) {
+    // resize and upload custom thumbnail to the correct directory
+    var newName = 'tn-custom.' + body.customThumbnail.split('.')[1];
+    body.thumbnailPath = body.hashName + '/' + newName;
+
+    var readStream = request('https:' + amazonService.config.TEMP_URL + body.customThumbnail);
+    var stream = image.resize(readStream, {width: 392, height: 220});
+
+    return amazonService.uploadToS3(amazonService.config.OUTPUT_BUCKET, body.thumbnailPath, stream);
+  }
+  return true;
+}
+
 Video.prototype.post = function(req, res) {
-
-  Promise.resolve()
-    .then(function () {
-      if (req.body.isCustomThumbnail) {
-        // move custom thumbnail to the correct directory
-        // TODO: resize to 392x220
-        var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
-        req.body.thumbnailPath = req.body.hashName + '/' + newName;
-
-        return amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
-      }
-      return true;
-    })
+  Promise.resolve(req.body)
+    .then(_uploadCustomThumbnail)
     .then(function () {
       return VideoCrud.create(req.body);
     })
@@ -113,32 +125,17 @@ Video.prototype.get = function(req, res) {
 };
 
 Video.prototype.put = function(req, res) {
-  if (req.body.isCustomThumbnail) {
-    // move custom thumbnail to the correct directory
-    // TODO: resize to 392x220
-    var newName = 'tn-custom.' + req.body.customThumbnail.split('.')[1];
-    req.body.thumbnailPath = req.body.hashName + '/' + newName;
-
-    amazonService.moveFile({key: req.body.customThumbnail, dir: amazonService.config.OUTPUT_BUCKET + '/' + req.body.hashName, newName: newName})
-      .then(function () {
-        return VideoCrud.update({id: req.body._id, update: req.body})
-      })
-      .then(function (video) {
-        res.json(video);
-      })
-      .catch(function () {
-        res.sendStatus(500);
-      })
-  } else {
-    VideoCrud
-      .update({id: req.body._id, update: req.body})
-      .then(function(video) {
-        res.send(video);
-      })
-      .catch(function (error) {
-        res.sendStatus(500);
-      });
-  }
+  Promise.resolve(req.body)
+    .then(_uploadCustomThumbnail)
+    .then(function () {
+      return VideoCrud.update({id: req.body._id, update: req.body});
+    })
+    .then(function (video) {
+      res.json(video);
+    })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
 };
 
 Video.prototype.delete = function(req, res) {

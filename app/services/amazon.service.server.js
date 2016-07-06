@@ -275,7 +275,7 @@ function reSizeImage(picture, size) {
   var sizeExt = '-' + size + 'x' + size + '.';
   var key =  resizePath + pictureWithoutExt + sizeExt + part[1];
 
-  return _upload(amazonConfig.ASSET_BUCKET, key, stream).then(function () {
+  return uploadToS3(amazonConfig.ASSET_BUCKET, key, stream).then(function () {
     console.log('******************** upload done ********************');
     return {
       fileName: picture,
@@ -353,13 +353,13 @@ function moveFile(params) {
  * @param {String} file.fileName - hash name with .mp4
  */
 function uploadVideoToS3(file) {
-  return _upload(amazonConfig.INPUT_BUCKET, file.fileName, file.stream)
+  return uploadToS3(amazonConfig.INPUT_BUCKET, file.fileName, file.stream)
     .then(function () {
       return file.fileName;
     });
 }
 
-function _upload(bucket, key, body) {
+function uploadToS3(bucket, key, body) {
   return new Promise(function (resolve, reject) {
     var storage = new AWS.S3(awsOptions);
     var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
@@ -385,6 +385,7 @@ module.exports = {
   deletePreset        : deletePreset,
   listVideoObjects    : listVideoObjects,
   moveFile            : moveFile,
+  uploadToS3          : uploadToS3,
   uploadVideoToS3     : uploadVideoToS3,
   hasImageSize        : hasImageSize,
   reSizeImage         : reSizeImage,
