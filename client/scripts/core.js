@@ -227,13 +227,17 @@ function bindEvents() {
 
   $header.on('click', '.av-search a', function (event) {
     event.preventDefault();
-    $header.find('#search-input').focus();
+    $header.find('#search-input').addClass('active').focus();
   });
 
   $header.on('keyup', '#search-input', function (event) {
     if (event.keyCode === 13) {
       window.location.href = '/search?q=' + $(this).val();
     }
+  });
+
+  $header.on('blur', '#search-input', function (event) {
+    $(this).removeClass('active');
   });
 
   $header.on('click', '.logout-btn', function () {
