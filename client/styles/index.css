@@ -214,7 +214,7 @@ body.modal-open {
   background-color: #333333;
   border: none;
 }
-#header .av-search input:focus {
+#header .av-search input.active {
   background-color: #fff;
   border-color: #ccc;
   padding: 6px 12px;
