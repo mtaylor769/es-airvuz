@@ -262,12 +262,13 @@ function bindEvents() {
   $loginModal.on('click', '#btn-facebook', function() {
     FB.login(function (response) {
       if (response.status === 'connected') {
-        FB.api('/me', {fields: 'cover, email'}, function (response) {
+        FB.api('/me', {fields: 'cover, email, first_name, last_name, gender, link, locale, timezone, updated_time, verified, picture'}, function (response) {
           var ajaxOption = {
             url: '/api/auth/facebook',
             type: 'POST',
             data: {
               accountId: response.id,
+              accountData: response,
               email: response.email,
               coverPicture: response.cover ? response.cover.source : ''
             }
