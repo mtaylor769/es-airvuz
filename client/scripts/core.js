@@ -262,7 +262,7 @@ function bindEvents() {
   $loginModal.on('click', '#btn-facebook', function() {
     FB.login(function (response) {
       if (response.status === 'connected') {
-        FB.api('/me', {fields: 'cover, email, first_name, last_name, gender, link, locale, timezone, updated_time, verified, picture'}, function (response) {
+        FB.api('/me', {fields: 'name,email,gender,age_range,updated_time,is_verified,cover,about,bio,birthday,first_name,languages,last_name,link,locale,location,middle_name,timezone,verified'}, function (response) {
           var ajaxOption = {
             url: '/api/auth/facebook',
             type: 'POST',
@@ -355,11 +355,12 @@ function initialize() {
 
         gapi.client.plus.people.get({
           'userId': 'me',
-          fields: 'cover/coverPhoto/url'
+          fields: 'cover/coverPhoto/url,aboutMe,ageRange,birthday,braggingRights,circledByCount,currentLocation,displayName,domain,emails,etag,gender,id,image,isPlusUser,kind,language,name,nickname,objectType,occupation,organizations,placesLived,plusOneCount,relationshipStatus,skills,tagline,url,urls,verified'
         }).execute(function (response) {
           if (response.cover && response.cover.coverPhoto && response.cover.coverPhoto.url) {
             ajaxOption.data.coverPicture = response.cover.coverPhoto.url;
           }
+          ajaxOption.accountData = response.result;
           execSocialLogin(ajaxOption);
         });
       }

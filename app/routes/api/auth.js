@@ -92,15 +92,7 @@ function google(req, res) {
       var socialData = {};
 
       socialData.profilePicture = response.picture;
-      socialData.accountData = {
-        email_verified: response.email_verified,
-        email: response.email,
-        name: response.name,
-        picture: response.picture,
-        given_name: response.given_name,
-        family_name: response.family_name,
-        locale: response.locale
-      };
+      socialData.accountData = req.body.accountData;
       socialData.coverPicture = req.body.coverPicture;
       socialData.accountId = req.body.accountId;
       socialData.provider = 'google';
