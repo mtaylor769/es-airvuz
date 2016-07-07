@@ -96,6 +96,7 @@ function google(req, res) {
       socialData.coverPicture = req.body.coverPicture;
       socialData.accountId = req.body.accountId;
       socialData.provider = 'google';
+      socialData.email = response.email;
 
       return _socialLogin(socialData);
     })
