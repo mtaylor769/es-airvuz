@@ -88,8 +88,19 @@ function facebook(req, res, next) {
 
 function google(req, res) {
   _verifyGoogleToken(req.body.token)
-    .then(function (socialData) {
-      socialData.profilePicture = socialData.picture;
+    .then(function (response) {
+      var socialData = {};
+
+      socialData.profilePicture = response.picture;
+      socialData.accountData = {
+        email_verified: response.email_verified,
+        email: response.email,
+        name: response.name,
+        picture: response.picture,
+        given_name: response.given_name,
+        family_name: response.family_name,
+        locale: response.locale
+      };
       socialData.coverPicture = req.body.coverPicture;
       socialData.accountId = req.body.accountId;
       socialData.provider = 'google';
