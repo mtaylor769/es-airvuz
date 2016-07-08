@@ -106,16 +106,13 @@ function uploadExternalVideo(req, res) {
   });
 
   promise = amazonService.uploadToS3(amazonService.config.INPUT_BUCKET, fileName, video)
-    .then(function (video) {
+    .then(function () {
       // TODO: change to create new preset?
       // current using custom preset
-      return amazonService.startTranscode('1463271020793-svwgsd', video)
-        .then(function () {
-          return video;
-        });
+      return amazonService.startTranscode('1463271020793-svwgsd', fileName)
     })
-    .then(function (video) {
-      res.json(video);
+    .then(function () {
+      res.json(fileName);
     })
     .catch(function () {
       res.sendStatus(500);
