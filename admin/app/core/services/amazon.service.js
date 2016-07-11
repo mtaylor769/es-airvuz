@@ -27,7 +27,8 @@
     return {
       inputBucket: inputBucket,
       outputBucket: outputBucket,
-      assetBucket: assetBucket
+      assetBucket: assetBucket,
+      ACCESS_KEY: 'AKIAIXDMGK4H4EX4BDOQ'
     };
   }
 })();
