@@ -85,9 +85,20 @@ function _uploadCustomThumbnail(body) {
     var readStream = request('https:' + amazonService.config.TEMP_URL + body.customThumbnail);
     var stream = image.resize(readStream, {width: 392, height: 220});
 
-    return amazonService.uploadToS3(amazonService.config.OUTPUT_BUCKET, body.thumbnailPath, stream);
+    return amazonService.uploadToS3(amazonService.config.OUTPUT_BUCKET, body.thumbnailPath, stream)
+      .then(function () {
+        return body;
+      });
   }
-  return true;
+  return body;
+}
+
+function _cleanUpReupload(body) {
+  if (body.reupload && body.reupload === true) {
+    // cleanup old path
+    return body;
+  }
+  return body;
 }
 
 Video.prototype.post = function(req, res) {
@@ -127,8 +138,9 @@ Video.prototype.get = function(req, res) {
 Video.prototype.put = function(req, res) {
   Promise.resolve(req.body)
     .then(_uploadCustomThumbnail)
+    .then(_cleanUpReupload)
     .then(function () {
-      return VideoCrud.update({id: req.body._id, update: req.body});
+      return VideoCrud.update({id: req.params.id, update: req.body});
     })
     .then(function (video) {
       res.json(video);
