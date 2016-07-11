@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('editVideoController', editVideoController);
   
-  editVideoController.$inject = ['Videos', 'CameraType', 'DroneType', 'CategoryType' ,'$state'];
+  editVideoController.$inject = ['Videos', 'CameraType', 'DroneType', 'CategoryType', 'dialog', '$state'];
   
-  function editVideoController(Videos, CameraType, DroneType, CategoryType, $state) {
+  function editVideoController(Videos, CameraType, DroneType, CategoryType, dialog, $state) {
     get_video();
     get_cameraTypes();
     get_droneTypes();
@@ -51,11 +51,30 @@
         })
     }
 
-    function addCategory(id) {
+    function addCategory(category) {
       if(vm.video.categories.length < 3) {
-        vm.video.categories.push(JSON.parse(id));
+        category = JSON.parse(category);
+        var categoryCheck = vm.video.categories.map(function(_category) {return _category._id}).indexOf(category._id);
+        if(categoryCheck === -1) {
+          console.log(category);
+          vm.video.categories.push(category);
+        } else {
+          dialog({
+            title: 'Category Already Selected',
+            content: 'You have already selected this category for this video',
+            ariaLabel: 'Cateogry Selected',
+            ok: 'OK',
+            cancel: 'CANCEL'
+          })
+        }
       } else {
-        alert('max categories reached');
+        dialog({
+          title: 'Maximum Categories',
+          content: 'The limit for categories is 3. Please remove a category to add another',
+          ariaLabel: 'Limit Reached',
+          ok: 'OK',
+          cancel: 'CANCEL'
+        })
       }
     }
 
