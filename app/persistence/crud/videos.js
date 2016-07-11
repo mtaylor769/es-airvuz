@@ -452,6 +452,22 @@ Videos.prototype.getShowcaseByUser = function(id, sortBy) {
 	
 };
 
+Videos.prototype.totalVideosByEndDate = function(endDate) {
+	return VideoModel.find({uploadDate: {$lte: new Date(endDate)}})
+		.count()
+		.exec()
+};
+
+Videos.prototype.newVideosBetweenDates = function(startDate, endDate) {
+	return VideoModel.find({uploadDate: {$gte: new Date(startDate), $lte: new Date(endDate)}})
+		.count()
+		.exec()
+};
+
+Videos.prototype.getByUserAndDate = function(userId, startDate, endDate) {
+	return VideoModel.find({userId: userId, uploadDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).exec()
+};
+
 Videos.prototype.getByUser = function(userId, sortBy) {
 	if (!sortBy) {
 		return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').lean().exec();

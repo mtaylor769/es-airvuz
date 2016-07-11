@@ -16,20 +16,15 @@
       $scope.videos = false;
       $scope.comments = false;
       $scope.loading = true;
-      $http.get('/api/v2/reports/site-info', { params: {startDate: startDate, endDate: endDate}})
+      $http.get('/api/reports/site-info', { params: {startDate: startDate, endDate: endDate}})
         .success(function(data){
+          console.log(data);
           var newUsersArray = [];
           data.newUsersList.forEach(function(user){
-            user.email = typeof user.email != 'undefined' ? user.email : '';
-            user.first_name = typeof user.first_name != 'undefined' ? user.first_name : '';
-            user.last_name = typeof  user.last_name != 'undefined' ? user.last_name : '';
-            user.user_name = typeof user.user_name != 'undefined' ? user.user_name : '';
-            user.urlName = typeof user.urlName != 'undefined' ? user.urlName : '';
-            user.joining_date = typeof user.joining_date != 'undefined' ? user.joining_date : '';
-            user.country = typeof user.country != 'undefined' ? user.country : '';
-            user.fbUsername = typeof user.fbUsername != 'undefined' ? user.fbUsername : '';
-            user.instagramUsername = typeof user.instagramUsername != 'undefined' ? user.instagramUsername : '';
-            user.TwitterUserName = typeof user.TwitterUserName != 'undefined' ? user.TwitterUserName : '';
+            user.email = typeof user.emailAddress != 'undefined' ? user.emailAddress : '';
+            user.user_name = typeof user.userNameDisplay != 'undefined' ? user.userNameDisplay : '';
+            user.urlName = typeof user.userNameUrl != 'undefined' ? user.userNameUrl : '';
+            user.joining_date = typeof user.accountCreatedDate != 'undefined' ? user.accountCreatedDate : '';
             user.allowDonation = typeof user.allowDonation != 'undefined' ? user.allowDonation : '';
             user.allowHire = typeof user.allowHire != 'undefined' ? user.allowHire : '';
             newUsersArray.push(user);
@@ -52,7 +47,7 @@
       $scope.videos = false;
       $scope.comments = false;
       $scope.loading = true;
-      $http.get('/api/v2/reports/comments', {params: {username: username, startDate: startDate, endDate: endDate}})
+      $http.get('/api/reports/comments', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
           $scope.username = username;
           $scope.commentCount = data.length;
@@ -69,7 +64,7 @@
       $scope.videos = false;
       $scope.comments = false;
       $scope.loading = true;
-      $http.get('/api/v2/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
+      $http.get('/api/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
           console.log(data);
           $scope.username = username;
@@ -84,8 +79,9 @@
 
 
     //////////////////
-    $scope.userVideos = userVideos;
-    $scope.getComments = getComments;
-    $scope.getVideos = getVideos;
+    var vm = this;
+    vm.userVideos = userVideos;
+    vm.getComments = getComments;
+    vm.getVideos = getVideos;
   }
 })();

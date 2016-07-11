@@ -14,6 +14,7 @@ var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
 var videoCollection     = require('./videoCollection');
+var reports 					  = require('./reports');
 // var forms               = require('./forms');
 var image               = require('./image');
 var passport            = require('passport');
@@ -264,5 +265,19 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
  * /api/images
  */
 apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
+
+/**
+ * /api/reports
+ */
+
+apiRouter.route('/api/reports/site-info')
+	.get(reports.siteInfo);
+
+apiRouter.route('/api/reports/videos')
+	.get(reports.getVideos);
+
+apiRouter.route('/api/reports/comments')
+	.get(reports.getComments);
+
 
 module.exports = apiRouter;
