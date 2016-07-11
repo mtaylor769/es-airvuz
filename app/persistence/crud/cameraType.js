@@ -128,7 +128,7 @@ CameraType.prototype.create = function(params){
 };
 
 CameraType.prototype.get = function() {
-  return CameraTypeModel.find({isVisible: true}).sort('name').exec();
+  return CameraTypeModel.find({isVisible: true}).sort('name').lean().exec();
 };
 
 CameraType.prototype.getById = function(id) {

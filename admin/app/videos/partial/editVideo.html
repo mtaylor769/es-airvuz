@@ -1,0 +1,85 @@
+<md-content>
+    <md-card flex layout-padding>
+        <div flex>
+            <h2>Video Edit</h2>
+            <div class="row">
+                    <md-input-container class="md-block">
+                        <label>Title</label>
+                        <input ng-model="vm.video.title">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Airvuz Title(curated)</label>
+                        <input ng-model="vm.video.airVuzTitle">
+                    </md-input-container>
+            </div>
+            <div class="row">
+                <md-input-container class="md-block">
+                    <label>Description</label>
+                    <textarea ng-model="vm.video.description"></textarea>
+                </md-input-container>
+            </div>
+            <div class="row">
+                <md-input-container class="md-block">
+                    <label>Airvuz Description(curated)</label>
+                    <textarea ng-model="vm.video.airVuzDescription"></textarea>
+                </md-input-container>
+            </div>
+            <div class="row">
+                <md-input-container class="md-block">
+                    <label>Open Graph Cache Date</label>
+                    <input mdc-datetime-picker ng-model="vm.video.openGraphCacheDate" format="YYYY-MM-DD hh:mm">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Record Date</label>
+                    <input mdc-datetime-picker ng-model="vm.video.recordDate" format="YYYY-MM-DD hh:mm">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Thumbnail Path</label>
+                    <input ng-model="vm.video.thumbnailPath">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Video Path</label>
+                    <input ng-model="vm.video.videoPath">
+                </md-input-container>
+            </div>
+            <div class="row">
+                <md-input-container class="md-block">
+                    <label>Drone Type</label>
+                    <md-select ng-model="vm.video.droneType">
+                        <md-option ng-repeat="drone in vm.droneType" value="{{drone._id}}">
+                            {{drone.manufacturer}} - {{drone.model}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="row">
+                <md-input-container class="md-block">
+                    <label>Camera Type</label>
+                    <md-select ng-model="vm.video.cameraType">
+                        <md-option ng-repeat="camera in vm.cameraType" value="{{camera._id}}">
+                            {{camera.manufacturer}} - {{camera.model}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div class="row">
+                <ul>
+                    <li ng-repeat="category in vm.video.categories" value="{{category._id}}">
+                        {{category.name}}
+                        <md-button ng-click="vm.deleteCategory(category)">delete</md-button>
+                    </li>
+                </ul>
+                <md-input-container class="md-block">
+                    <label>Categories</label>
+                    <md-select ng-model="vm.selectedItem" ng-change="vm.addCategory(this.vm.selectedItem)">
+                        <md-option ng-repeat="category in vm.categoryType" value="{{category}}">
+                            {{category.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-button ng-click="vm.saveVideo()">Save</md-button>
+        </div>
+    </md-card>
+</md-content>

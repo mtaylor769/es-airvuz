@@ -76,6 +76,12 @@
         templateUrl: '/admin/app/reports/template/reports.html',
         controller: 'reportsController'
       })
+      .state('editVideo', {
+        url: '/admin/editVideo/:id',
+        templateUrl: '/admin/app/videos/partial/editVideo.html',
+        controller: 'editVideoController',
+        controllerAs: 'vm'
+      })
       .state('editComments', {
         url: '/admin/editComments/:id',
         templateUrl: '/admin/app/comments/templates/comments.html',
