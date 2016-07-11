@@ -48,7 +48,7 @@
                     <label>Drone Type</label>
                     <md-select ng-model="vm.video.droneType">
                         <md-option ng-repeat="drone in vm.droneType" value="{{drone._id}}">
-                            {{drone.nameV1}}
+                            {{drone.manufacturer}} - {{drone.model}}
                         </md-option>
                     </md-select>
                 </md-input-container>
@@ -58,7 +58,7 @@
                     <label>Camera Type</label>
                     <md-select ng-model="vm.video.cameraType">
                         <md-option ng-repeat="camera in vm.cameraType" value="{{camera._id}}">
-                            {{camera.nameV1}}
+                            {{camera.manufacturer}} - {{camera.model}}
                         </md-option>
                     </md-select>
                 </md-input-container>

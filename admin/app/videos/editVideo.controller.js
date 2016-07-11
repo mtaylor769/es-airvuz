@@ -50,7 +50,7 @@
           vm.categoryType = data;
         })
     }
-
+    
     function addCategory(category) {
       if(vm.video.categories.length < 3) {
         category = JSON.parse(category);
