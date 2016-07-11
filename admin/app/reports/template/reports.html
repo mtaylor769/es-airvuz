@@ -3,12 +3,12 @@
         <input class="form-control" type="text" id="sDate" ng-model="startDate">
         <label for="eDate">End Date</label>
         <input class="form-control" type="text" id="eDate" ng-model="endDate">
-        <button class="btn btn-primary pull-right m-t-15" ng-click="userVideos(startDate, endDate)">Site Information</button>
+        <button class="btn btn-primary pull-right m-t-15" ng-click="vm.userVideos(startDate, endDate)">Site Information</button>
         <div class=" m-t-40">
             <label for="username">Username</label>
             <input class="form-control" type="text" id="username" ng-model="username">
-            <button class="btn btn-primary pull-right m-t-15" ng-click="getVideos(username, startDate, endDate)">Videos</button>
-            <button class="btn btn-primary pull-right m-t-15" ng-click="getComments(username, startDate, endDate)">Comments</button>
+            <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideos(username, startDate, endDate)">Videos</button>
+            <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getComments(username, startDate, endDate)">Comments</button>
         </div>
 </div>
 <div ng-show="loading" id="loadInfo" class="pre col-md-6">

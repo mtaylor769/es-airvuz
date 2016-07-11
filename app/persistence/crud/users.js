@@ -684,6 +684,10 @@ users.prototype.newUserList = function(startDate, endDate) {
 		.exec()
 };
 
+users.prototype.getByUserName = function(username) {
+	return UserModel.findOne({userNameDisplay: username}).exec()
+};
+
 function updateRoles(params) {
 	// TODO: implement
 }

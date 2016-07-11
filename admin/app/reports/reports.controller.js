@@ -47,7 +47,7 @@
       $scope.videos = false;
       $scope.comments = false;
       $scope.loading = true;
-      $http.get('/api/v2/reports/comments', {params: {username: username, startDate: startDate, endDate: endDate}})
+      $http.get('/api/reports/comments', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
           $scope.username = username;
           $scope.commentCount = data.length;
@@ -64,7 +64,7 @@
       $scope.videos = false;
       $scope.comments = false;
       $scope.loading = true;
-      $http.get('/api/v2/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
+      $http.get('/api/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
           console.log(data);
           $scope.username = username;
@@ -79,8 +79,9 @@
 
 
     //////////////////
-    $scope.userVideos = userVideos;
-    $scope.getComments = getComments;
-    $scope.getVideos = getVideos;
+    var vm = this;
+    vm.userVideos = userVideos;
+    vm.getComments = getComments;
+    vm.getVideos = getVideos;
   }
 })();

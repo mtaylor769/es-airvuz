@@ -2,6 +2,7 @@ var log4js					= require('log4js');
 var logger					= log4js.getLogger('app.routes.api.videoLike');
 var User            = require('../../persistence/crud/users');
 var Videos           = require('../../persistence/crud/videos');
+var Comment         = require('../../persistence/crud/comment');
 
 function Reports() {
   
@@ -12,14 +13,29 @@ Reports.prototype.getVideos = function(req, res) {
   var startDate = req.query.startDate;
   var endDate = req.query.endDate;
   
-  User.getByUsername(username).exec()
+  User.getByUserName(username)
     .then(function(user) {
+      logger.debug(user);
       return Videos.getByUserAndDate(user._id, startDate, endDate)
     })
     .then(function(videos) {
       res.send(videos)
     })
   
+};
+
+Reports.prototype.getComments = function(req, res) {
+  var username = req.query.username;
+  var startDate = req.query.startDate;
+  var endDate = req.query.endDate;
+
+  User.getByUserName(username)
+    .then(function(user) {
+      return Comment.getByUserAndDate(user._id, startDate, endDate)
+    })
+    .then(function(comments) {
+      res.send(comments);
+    })
 };
 
 Reports.prototype.siteInfo = function(req, res) {

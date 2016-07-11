@@ -273,5 +273,11 @@ apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
 apiRouter.route('/api/reports/site-info')
 	.get(reports.siteInfo);
 
+apiRouter.route('/api/reports/videos')
+	.get(reports.getVideos);
+
+apiRouter.route('/api/reports/comments')
+	.get(reports.getComments);
+
 
 module.exports = apiRouter;

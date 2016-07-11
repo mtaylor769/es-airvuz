@@ -74,7 +74,8 @@
       .state('reports', {
         url: '/admin/reports',
         templateUrl: '/admin/app/reports/template/reports.html',
-        controller: 'reportsController'
+        controller: 'reportsController',
+        controllerAs: 'vm'
       })
       .state('editComments', {
         url: '/admin/editComments/:id',
