@@ -665,6 +665,25 @@ users.prototype.findById = function(id) {
 	return UserModel.findById(id).exec();
 };
 
+users.prototype.totalUsersByEndDate = function(endDate) {
+	return UserModel.find({accountCreatedDate: {$lte: new Date(endDate)}})
+		.count()
+		.exec()
+};
+
+users.prototype.newUsersBetweenDates = function(startDate, endDate) {
+	return UserModel.find({accountCreatedDate: {$gte: new Date(startDate), $lte: new Date(endDate)}})
+		.count()
+		.exec()
+};
+
+users.prototype.newUserList = function(startDate, endDate) {
+	return UserModel.find({accountCreatedDate: {$gte: new Date(startDate), $lte: new Date(endDate)}})
+		.select('-_id emailAddress userNameDisplay userNameUrl accountCreatedDate allowDonation allowHire')
+		.lean()
+		.exec()
+};
+
 function updateRoles(params) {
 	// TODO: implement
 }
