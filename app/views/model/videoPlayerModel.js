@@ -58,6 +58,9 @@ VideoPlayerModel.prototype.getData = function(params) {
 				video.title = video.title.substring(0, 45) + '...';
 			}
 			video.displayDate = moment(video.uploadDate).fromNow();
+			video.openGraphCacheDate = moment(video.openGraphCacheDate).format('x');
+			logger.debug(video.openGraphCacheDate);
+			logger.debug(video.uploadDate);
 			dataObject.video 	= video;
 			checkObject.video = video._id;
 			return userCrud.getUserById(video.userId);
