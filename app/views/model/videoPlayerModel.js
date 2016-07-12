@@ -18,6 +18,7 @@ try {
 	var categoryCrud  = require('../../persistence/crud/categoryType');
 	var followCrud		= require('../../persistence/crud/follow');
 	var amazonConfig  = require('../../config/amazon.config');
+	var config				= require('../../../config/config')[global.NODE_ENV];
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -58,6 +59,9 @@ VideoPlayerModel.prototype.getData = function(params) {
 				video.title = video.title.substring(0, 45) + '...';
 			}
 			video.displayDate = moment(video.uploadDate).fromNow();
+			video.openGraphCacheDate = moment(video.openGraphCacheDate).format('x');
+			logger.debug(video.openGraphCacheDate);
+			logger.debug(video.uploadDate);
 			dataObject.video 	= video;
 			checkObject.video = video._id;
 			return userCrud.getUserById(video.userId);
@@ -175,6 +179,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer							= {};
 			params.data.videoPlayer.title				= "Video Player";
 			params.data.videoPlayer.viewName		= "Video Player";
+			params.data.url 										= config.baseUrl;
+			params.data.facebookAppId 					= config.facebook.clientID;
 
 			params.data.airvuz 									= {};
 			params.data.vendor 									= {};

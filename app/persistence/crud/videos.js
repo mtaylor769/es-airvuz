@@ -413,7 +413,10 @@ Videos.prototype.getNextVideos = function(category) {
 
 Videos.prototype.getById = function(id) {
 	logger.debug('.getByID : id : ' + id);
-	return VideoModel.findById(id).populate('categories').exec();
+	return VideoModel.findById(id)
+		.populate('categories')
+		.lean()
+		.exec();
 };
 
 Videos.prototype.remove = function(id) {

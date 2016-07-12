@@ -4,10 +4,10 @@
         <meta http-equiv="Cache-control" content="public">
         <title>AirVūz - {video.title}</title>
 
-        <meta property="og:url" content="http://airvuz.com/video/{video._id}"/>
+        <meta property="og:url" content="{url}video/{video._id}"/>
         <meta property="og:type" content="video.other">
         <meta property="og:title" content="{video.title}" >
-        <meta property="og:updated_time" content="{video.uploadDate}">
+        <meta property="og:updated_time" content="{video.openGraphCacheDate}">
         <meta property="og:description" content="{video.description}" >
         <meta property="og:image" content="https:{s3Bucket}{video.thumbnailPath}" >
         <meta property="og:video:url" content="https:{s3Bucket}{video.videoPath}">
