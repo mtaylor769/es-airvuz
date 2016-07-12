@@ -212,7 +212,8 @@ function bindEvents() {
     $loginModal.find('.modal-title').text(title);
   });
 
-  $loginModal.on('click', '#login-btn', function () {
+  $loginModal.on('click', '#login-btn', function (event) {
+    event.preventDefault();
     var emailAddress = $loginModal.find('.email-input:visible').val();
     var password = $loginModal.find('.password-input:visible').val();
 
