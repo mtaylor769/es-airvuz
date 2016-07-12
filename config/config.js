@@ -68,6 +68,7 @@ module.exports = {
     app: {
       name: 'airvuz'
     },
+    baseUrl: 'http://airvuz.com/',
     facebook: {
       clientID: "1762018427366535",
       clientSecret: "1db4beaf94a6b088b00d67125d77e135",
@@ -114,6 +115,7 @@ module.exports = {
     app: {
       name: 'airvuz'
     },
+    baseUrl:'http://beta2.airvuz.com/',
 
      google: {
       "clientID": "783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com",

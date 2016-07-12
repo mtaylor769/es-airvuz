@@ -18,6 +18,7 @@ try {
 	var categoryCrud  = require('../../persistence/crud/categoryType');
 	var followCrud		= require('../../persistence/crud/follow');
 	var amazonConfig  = require('../../config/amazon.config');
+	var config				= require('../../../config/config')[global.NODE_ENV];
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -178,6 +179,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer							= {};
 			params.data.videoPlayer.title				= "Video Player";
 			params.data.videoPlayer.viewName		= "Video Player";
+			params.data.url 										= config.baseUrl;
 
 			params.data.airvuz 									= {};
 			params.data.vendor 									= {};

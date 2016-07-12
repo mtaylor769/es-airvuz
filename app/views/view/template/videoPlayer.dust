@@ -4,7 +4,7 @@
         <meta http-equiv="Cache-control" content="public">
         <title>AirVūz - {video.title}</title>
 
-        <meta property="og:url" content="http://airvuz.com/video/{video._id}"/>
+        <meta property="og:url" content="{url}video/{video._id}"/>
         <meta property="og:type" content="video.other">
         <meta property="og:title" content="{video.title}" >
         <meta property="og:updated_time" content="{video.openGraphCacheDate}">
