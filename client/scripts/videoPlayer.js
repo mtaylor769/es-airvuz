@@ -1,3 +1,4 @@
+/* global fbq */
 /**
  * external lib
  */
@@ -127,7 +128,7 @@ function videoInfoCheck() {
   })
   .done(function(response) {
     if(response.like === true) {
-      $('.like').addClass('airvuz-blue')
+      $('.like').addClass('airvuz-blue');
     }
     if(response.follow === true) {
       $('#follow').text('-');
@@ -225,7 +226,9 @@ function bindEvents() {
         var currentCount = $('.comment-count').text();
         var toNumber = Number(currentCount);
         $('.comment-count').text('  ' + (toNumber + 1) + '  ');
-      })
+
+        fbq('track', 'comment');
+      });
   });
 
   //video like
@@ -271,6 +274,8 @@ function bindEvents() {
             $('.like').removeClass('airvuz-blue');
             $('.like-count').text(likeLog - 1)
           }
+
+          fbq('track', 'like');
         })
         .fail(function (error) {
         });
@@ -333,6 +338,8 @@ function bindEvents() {
             });
             $('#follow').text('+');
           }
+
+          fbq('track', 'follow');
         })
         .fail(function (error) {
         })
@@ -370,6 +377,7 @@ function bindEvents() {
             data: notificationObject
           })
           .done(function(response) {
+            fbq('track', 'social-share-facebook');
           })
           .fail(function(error) {
           });
@@ -392,6 +400,7 @@ function bindEvents() {
       data: notificationObject
     })
     .done(function(response) {
+      fbq('track', 'social-share-twitter');
     })
     .fail(function(error) {
     })
@@ -411,6 +420,7 @@ function bindEvents() {
         data: notificationObject
       })
       .done(function(response) {
+        fbq('track', 'social-share-google');
       })
       .fail(function(error) {
       });
@@ -452,6 +462,7 @@ function bindEvents() {
         data: notificationObject
       })
       .done(function(response) {
+        fbq('track', 'social-share-embed');
       })
       .fail(function(error) {
       });
@@ -626,6 +637,8 @@ function bindEvents() {
           var currentCount = $('.commentCount').text();
           var toNumber = Number(currentCount);
           $('.commentCount').text('  ' + (toNumber + 1) + '  ');
+
+          fbq('track', 'comment');
         })
     });
   }
@@ -812,7 +825,8 @@ function initialize(videoPath, currentVideo) {
     $('.show-more-description span').removeClass('invisible');
     $('#video-description').slideUp();
   }, 5000);
-
+  
+  fbq('track', 'view-video');
 }
 
 module.exports = {

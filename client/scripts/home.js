@@ -1,3 +1,4 @@
+/* global fbq */
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -128,6 +129,8 @@ function initialize(emailConfirm) {
 
   bindEvents();
   emailConfirmCheck(emailConfirm);
+
+  fbq('track', 'landing-page');
 }
 
 function emailConfirmCheck(emailConfirm) {
