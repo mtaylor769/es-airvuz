@@ -25,6 +25,7 @@ var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
 var hasStartedPlaying                  = false;
+var paused                             = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -502,7 +503,8 @@ function bindEvents() {
         //set layer html
         var html = '<p class="end-card-upnext">UP NEXT</p>'+
                    '<p class="end-card-title">' + nextTitle + '</p>'+
-                   '<p class="end-card-countdown">' + countdownNumber + '</p>';
+                   '<p class="end-card-countdown">' + countdownNumber + '</p>'+
+                   '<button class="btn btn-primary pause-countdown">Pause Countdown</button>';
 
         //run function to change poster
         $('.vjs-poster').attr('style', 'background-image: url("' + picture + '")');
@@ -528,11 +530,13 @@ function bindEvents() {
         //setting countdown interval variable function
         var countdown = function() {
           if(countdownNumber !== 0) {
-            if(activeEl !== 'comment-text')
+            if (activeEl !== 'comment-text' && paused !== true) {
               countdownNumber = countdownNumber - 1;
               $('.end-card-countdown').text(countdownNumber);
+            } else {
+              clearInterval(countdown);
+            }
           } else {
-            clearInterval(countdown);
             window.location.href = nextVideo.attr('value');
           }
         };
@@ -700,6 +704,20 @@ function bindEvents() {
     }
   }
 
+  function pauseCountdown() {
+      paused = true;
+      $(this).addClass('countdown-paused');
+      $(this).removeClass('pause-countdown');
+      $(this).text('Start Countdown')
+  }
+
+  function startCountdown() {
+      paused = false;
+      $(this).addClass('pause-countdown');
+      $(this).removeClass('countdown-paused');
+      $(this).text('Pause Countdown')
+  }
+
   var showMoreComments = function () {
     $.ajax({
       type: 'GET',
@@ -727,7 +745,9 @@ function bindEvents() {
     .on('click', '.commentReplies', commentReplies)
     .on('click', '.reply', commentReply)
     .on('click', '#comment', checkIdentitiy)
-    .on('click', '#btn-view-more-comments', showMoreComments);
+    .on('click', '#btn-view-more-comments', showMoreComments)
+    .on('click', '.countdown-paused', startCountdown)
+    .on('click', '.pause-countdown', pauseCountdown);
 
 }
 
