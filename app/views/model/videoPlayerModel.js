@@ -180,6 +180,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer.title				= "Video Player";
 			params.data.videoPlayer.viewName		= "Video Player";
 			params.data.url 										= config.baseUrl;
+			params.data.facebookAppId 					= config.facebook.clientId;
 
 			params.data.airvuz 									= {};
 			params.data.vendor 									= {};
