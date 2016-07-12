@@ -1,3 +1,4 @@
+/* global fbq */
 /**
  * External library
  */
@@ -946,8 +947,11 @@ function updateFollow() {
             eventName		: "unfollowedUser",
             eventType		: "click"
           });
-      //TODO Update current profile page with new amount of followers
-    }})
+        //TODO Update current profile page with new amount of followers
+      }
+
+      fbq('track', 'follow');
+    })
     .fail(function(error){
       $('#error-message-modal')
         .modal('show')
@@ -1108,14 +1112,18 @@ function initialize() {
       bindSortAllVideos();
     }
   }
-    renderSocialMediaLinks();
-    $("[name='showcase-default']").bootstrapSwitch({
-      size: 'mini'
-    });
-    bindEvents();
-    getData();
+
+  renderSocialMediaLinks();
+  $("[name='showcase-default']").bootstrapSwitch({
+    size: 'mini'
+  });
+  bindEvents();
+  getData();
+
+
+  fbq('track', 'view-profile');
 }
 
 module.exports = {
   initialize: initialize
-}
+};
