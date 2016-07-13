@@ -505,6 +505,7 @@ Videos.prototype.upCount = function(video) {
 	return VideoModel.findByIdAndUpdate(video._id, {$inc: {viewCount: 1}}).exec();
 };
 
+
 Videos.prototype.findByUserId = function(id) {
 	return VideoModel.find({userId: id}).exec()
 };
