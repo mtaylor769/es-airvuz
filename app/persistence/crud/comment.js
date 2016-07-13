@@ -214,8 +214,7 @@ Comment.prototype.replyIncrement = function(parentCommentId, videoId) {
     return VideoCrud.getById(videoId);
   })
   .then(function(video) {
-    video.commentCount = video.commentCount + 1;
-    return video.save()
+    return VideoModel.findByIdAndUpdate(video._id, {$inc: {commentCount: 1}}).exec();
   })
   .then(function() {
     return 'success'
