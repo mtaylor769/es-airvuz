@@ -11,6 +11,7 @@ try {
 	var FollowCrud			= require('../../../app/persistence/crud/follow');
 	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
 	var amazonConfig  	= require('../../config/amazon.config');
+	var _								= require('lodash');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -78,7 +79,24 @@ CategoryModel.prototype.getData = function(params) {
 				case 'Recent Videos':
 					return Videos.getRecentVideos(videosParam);
 				case 'Trending Videos':
-					return Videos.getTrendingVideos(videosParam);
+					var promises = [
+						VideoCollection.getFeaturedVideos(),
+						VideoCollection.getStaffPickVideos(),
+						Videos.getTrendingVideos(videosParam)
+					];
+
+					return Promise.all(promises)
+						.spread(function (featureVideos, staffPickVideos, trendingVideos) {
+							var videoToOmit = [];
+
+							featureVideos.concat(staffPickVideos).forEach(function toOmit(video) {
+								videoToOmit.push(video._id.toString());
+							});
+
+							return _.chain(trendingVideos).reject(function (video) {
+								return videoToOmit.indexOf(video._id.toString()) > -1;
+							}).value();
+						});
 				case 'Following Videos':
 					// Let the client side handle this because this server side render for the following require
 					// current login user
