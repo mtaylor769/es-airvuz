@@ -114,7 +114,7 @@ CategoryModel.prototype.getData = function(params) {
 				params.data.categories = data[0];
 				params.data.videos = data[1];
 				// show the load more if there is data or category is 'Follower Videos'
-				params.data.showLoadMore = data[1].length > 11 || params.request.params.category === 'Follower Videos';
+				params.data.showLoadMore = data[1].length > 11 || params.request.params.category === 'Follower Videos' || params.request.params.category === 'Trending Videos';
 				return params;
 			});
 
