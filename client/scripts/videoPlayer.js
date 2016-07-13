@@ -21,6 +21,7 @@ var commentsTpl = require('../templates/videoPlayer/comments.dust');
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');
+var amazonConfig                       = require('./config/amazon.config.client');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
@@ -358,7 +359,7 @@ function bindEvents() {
         method: 'feed',
         name: video.name,
         link: window.location.href,
-        picture: 's3-us-west-2.amazonaws.com/airvuz-drone-video/'+video.thumbnailPath,
+        picture: 'http://s3-us-west-2.amazonaws.com/' + amazonConfig.ASSET_BUCKET + '/'+video.thumbnailPath,
         description: video.description,
         message: ""
       },
