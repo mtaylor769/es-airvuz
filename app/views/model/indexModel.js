@@ -60,7 +60,7 @@ IndexModel.prototype.getData = function(params) {
 		CategoryType.get(),
 		VideoCollection.getFeaturedVideos(),
 		Videos.getRecentVideos(),
-		Videos.getTrendingVideos({total: 30, page: 1, days: 14}),
+		Videos.getTrendingVideos({total: 30, page: 1}),
 		VideoCollection.getStaffPickVideos(),
 		Slider.getHomeSlider(params.request.query.banner),
 		User.emailConfirm(userId)

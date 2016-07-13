@@ -87,7 +87,7 @@ function getTrendingVideos(params) {
 
 	var limit = params.total;
 	var skip = (params.page - 1) * limit;
-	var thirtyDayAgo = moment().subtract(params.days || 30, 'days').toDate();
+	var thirtyDayAgo = moment().subtract(14, 'days').toDate();
 
 	return VideoModel
 		.find({uploadDate: {$gte: thirtyDayAgo}})
