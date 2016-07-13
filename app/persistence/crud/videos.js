@@ -496,8 +496,13 @@ Videos.prototype.getTopSixVideos = function(userId) {
 	return VideoModel.find({userId: userId}).sort({viewCount: -1}).limit(6).exec();
 };
 
+/**
+ * update video view count
+ * @param video - mongoose model
+ * @returns {Promise}
+ */
 Videos.prototype.upCount = function(video) {
-	return video.save();
+	return VideoModel.findByIdAndUpdate(video._id, {$inc: {viewCount: 1}}).exec();
 };
 
 Videos.prototype.findByUserId = function(id) {

@@ -180,11 +180,8 @@ Video.prototype.loaded = function(req, res) {
   logger.debug(params);
   VideoCrud
     .getById(params.videoId)
-    .then(function(video) {
-      video.viewCount = video.viewCount + 1;
-      return VideoCrud.upCount(video);
-    })
-    .then(function(video) {
+    .then(VideoCrud.upCount)
+    .then(function() {
       return VideoViewCrud.create(params);
     })
     .then(function(videoView) {
