@@ -359,7 +359,7 @@ function bindEvents() {
         method: 'feed',
         name: video.name,
         link: window.location.href,
-        picture: 'http://s3-us-west-2.amazonaws.com/' + amazonConfig.ASSET_BUCKET + '/'+video.thumbnailPath,
+        picture: 'http://s3-us-west-2.amazonaws.com/' + amazonConfig.OUTPUT_BUCKET + '/'+video.thumbnailPath,
         description: video.description,
         message: ""
       },
