@@ -950,7 +950,7 @@ function updateFollow() {
         //TODO Update current profile page with new amount of followers
       }
 
-      fbq('track', 'follow');
+      fbq('trackCustom', 'follow');
     })
     .fail(function(error){
       $('#error-message-modal')
@@ -1121,7 +1121,7 @@ function initialize() {
   getData();
 
 
-  fbq('track', 'view-profile');
+  fbq('trackCustom', 'view-profile');
 }
 
 module.exports = {

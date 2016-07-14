@@ -130,7 +130,7 @@ function initialize(emailConfirm) {
   bindEvents();
   emailConfirmCheck(emailConfirm);
 
-  fbq('track', 'landing-page');
+  fbq('trackCustom', 'landing-page');
 }
 
 function emailConfirmCheck(emailConfirm) {

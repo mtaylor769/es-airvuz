@@ -91,7 +91,7 @@ function onLoginSuccess() {
     .then(renderProfileHeader);
   $footerSub1.addClass('is-login');
   $loginModal.modal('hide');
-  fbq('track', 'login');
+  fbq('trackCustom', 'login');
 }
 
 function execSocialLogin(ajaxOption) {
