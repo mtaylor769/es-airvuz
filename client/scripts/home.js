@@ -1,4 +1,4 @@
-/* global fbq */
+/* global fbq, ga */
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -131,6 +131,7 @@ function initialize(emailConfirm) {
   emailConfirmCheck(emailConfirm);
 
   fbq('trackCustom', 'landing-page');
+  ga('send', 'event', 'home page', 'landing', 'landing page');
 }
 
 function emailConfirmCheck(emailConfirm) {
