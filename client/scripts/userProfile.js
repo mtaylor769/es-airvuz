@@ -1,4 +1,4 @@
-/* global fbq */
+/* global fbq, ga */
 /**
  * External library
  */
@@ -951,6 +951,7 @@ function updateFollow() {
       }
 
       fbq('trackCustom', 'follow');
+      ga('send', 'event', 'user page', 'following', 'following user');
     })
     .fail(function(error){
       $('#error-message-modal')
@@ -1122,6 +1123,7 @@ function initialize() {
 
 
   fbq('trackCustom', 'view-profile');
+  ga('send', 'event', 'profile page', 'viewing', 'viewing profile');
 }
 
 module.exports = {

@@ -1,10 +1,11 @@
-/* global fbq */
+/* global fbq, ga */
 var auth          = require('./services/auth');
 var identity      = require('./services/identity');
 var amazonConfig  = require('./config/amazon.config.client');
 var appConfig     = require('./config/application.config.client');
 var PubSub        = require('pubsub-js');
 var FacebookPixel = require('./facebook-pixel');
+var GoogleAnalytic = require('./google-analytic');
 
 /**
  * Templates
@@ -92,6 +93,7 @@ function onLoginSuccess() {
   $footerSub1.addClass('is-login');
   $loginModal.modal('hide');
   fbq('trackCustom', 'login');
+  ga('send', 'event', 'login', 'login', 'login');
 }
 
 function execSocialLogin(ajaxOption) {
@@ -385,6 +387,7 @@ var APP = {
 $(function () {
   APP.initialize();
   FacebookPixel.initialize();
+  GoogleAnalytic.initialize();
 });
 
 module.exports = APP;

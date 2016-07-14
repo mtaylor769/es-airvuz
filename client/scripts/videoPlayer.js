@@ -1,4 +1,4 @@
-/* global fbq */
+/* global fbq, ga */
 /**
  * external lib
  */
@@ -229,6 +229,7 @@ function bindEvents() {
         $('.comment-count').text('  ' + (toNumber + 1) + '  ');
 
         fbq('trackCustom', 'comment');
+        ga('send', 'event', 'video page', 'comment', 'commenting video');
       });
   });
 
@@ -277,6 +278,8 @@ function bindEvents() {
           }
 
           fbq('trackCustom', 'like');
+          ga('send', 'social', 'facebook', 'like', window.location.href);
+          ga('send', 'event', 'video page', 'facebook like', 'like video');
         })
         .fail(function (error) {
         });
@@ -341,6 +344,7 @@ function bindEvents() {
           }
 
           fbq('trackCustom', 'follow');
+          ga('send', 'event', 'video page', 'following', 'following user');
         })
         .fail(function (error) {
         })
@@ -379,6 +383,8 @@ function bindEvents() {
           })
           .done(function(response) {
             fbq('trackCustom', 'social-share-facebook');
+            ga('send', 'social', 'facebook', 'share', window.location.href);
+            ga('send', 'event', 'video page', 'facebook share', 'sharing video');
           })
           .fail(function(error) {
           });
@@ -402,6 +408,8 @@ function bindEvents() {
     })
     .done(function(response) {
       fbq('trackCustom', 'social-share-twitter');
+      ga('send', 'social', 'twitter', 'share', window.location.href);
+      ga('send', 'event', 'video page', 'twitter share', 'sharing video');
     })
     .fail(function(error) {
     })
@@ -422,6 +430,8 @@ function bindEvents() {
       })
       .done(function(response) {
         fbq('trackCustom', 'social-share-google');
+        ga('send', 'social', 'google', 'share', window.location.href);
+        ga('send', 'event', 'video page', 'google share', 'sharing video');
       })
       .fail(function(error) {
       });
@@ -464,6 +474,7 @@ function bindEvents() {
       })
       .done(function(response) {
         fbq('trackCustom', 'social-share-embed');
+        ga('send', 'event', 'video page', 'embeding', 'embeding video');
       })
       .fail(function(error) {
       });
@@ -640,7 +651,8 @@ function bindEvents() {
           $('.commentCount').text('  ' + (toNumber + 1) + '  ');
 
           fbq('trackCustom', 'comment');
-        })
+          ga('send', 'event', 'video page', 'comment', 'commenting video');
+        });
     });
   }
 
@@ -826,8 +838,9 @@ function initialize(videoPath, currentVideo) {
     $('.show-more-description span').removeClass('invisible');
     $('#video-description').slideUp();
   }, 5000);
-  
+
   fbq('trackCustom', 'view-video');
+  ga('send', 'event', 'video page', 'viewing', 'viewing video');
 }
 
 module.exports = {
