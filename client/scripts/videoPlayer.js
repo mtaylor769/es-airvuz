@@ -228,7 +228,7 @@ function bindEvents() {
         var toNumber = Number(currentCount);
         $('.comment-count').text('  ' + (toNumber + 1) + '  ');
 
-        fbq('track', 'comment');
+        fbq('trackCustom', 'comment');
       });
   });
 
@@ -276,7 +276,7 @@ function bindEvents() {
             $('.like-count').text(likeLog - 1)
           }
 
-          fbq('track', 'like');
+          fbq('trackCustom', 'like');
         })
         .fail(function (error) {
         });
@@ -340,7 +340,7 @@ function bindEvents() {
             $('#follow').text('+');
           }
 
-          fbq('track', 'follow');
+          fbq('trackCustom', 'follow');
         })
         .fail(function (error) {
         })
@@ -378,7 +378,7 @@ function bindEvents() {
             data: notificationObject
           })
           .done(function(response) {
-            fbq('track', 'social-share-facebook');
+            fbq('trackCustom', 'social-share-facebook');
           })
           .fail(function(error) {
           });
@@ -401,7 +401,7 @@ function bindEvents() {
       data: notificationObject
     })
     .done(function(response) {
-      fbq('track', 'social-share-twitter');
+      fbq('trackCustom', 'social-share-twitter');
     })
     .fail(function(error) {
     })
@@ -421,7 +421,7 @@ function bindEvents() {
         data: notificationObject
       })
       .done(function(response) {
-        fbq('track', 'social-share-google');
+        fbq('trackCustom', 'social-share-google');
       })
       .fail(function(error) {
       });
@@ -463,7 +463,7 @@ function bindEvents() {
         data: notificationObject
       })
       .done(function(response) {
-        fbq('track', 'social-share-embed');
+        fbq('trackCustom', 'social-share-embed');
       })
       .fail(function(error) {
       });
@@ -639,7 +639,7 @@ function bindEvents() {
           var toNumber = Number(currentCount);
           $('.commentCount').text('  ' + (toNumber + 1) + '  ');
 
-          fbq('track', 'comment');
+          fbq('trackCustom', 'comment');
         })
     });
   }
@@ -827,7 +827,7 @@ function initialize(videoPath, currentVideo) {
     $('#video-description').slideUp();
   }, 5000);
   
-  fbq('track', 'view-video');
+  fbq('trackCustom', 'view-video');
 }
 
 module.exports = {
