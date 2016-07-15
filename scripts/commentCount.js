@@ -39,7 +39,7 @@ function resetVideoCommentCount(videos) {
       .then(function(commentCount) {
         console.log(video._id);
         console.log(commentCount);
-        Video.findByIdAndUpdate(video._id, {commentCount: commentCount}).exec()
+        return Video.findByIdAndUpdate(video._id, {commentCount: commentCount}).exec()
       });
   })
 }
