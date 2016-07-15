@@ -41,7 +41,7 @@ function canSort(category) {
 CategoryModel.prototype.getData = function(params) {
 
 	var sourceManifest	= params.sourceManifest;
-
+	var currentCategory = params.request.params.category;
 	params.data							= {};
 	params.data.title				= "AirVūz – Category";
 	params.data.airvuz			= {};
@@ -54,7 +54,7 @@ CategoryModel.prototype.getData = function(params) {
 	params.data.s3Bucket 		= amazonConfig.OUTPUT_URL;
 
 	// Only category can sort
-	params.data.showSort 		= canSort(params.request.params.category);
+	params.data.showSort 		= canSort(currentCategory);
 
 	var videoPromise,
 			TOTAL_PER_PAGE = 20;
@@ -67,11 +67,11 @@ CategoryModel.prototype.getData = function(params) {
 		sort: params.request.query.sort || 'uploadDate'
 	};
 
-	videoPromise = CategoryType.getByUrl(params.request.params.category)
+	videoPromise = CategoryType.getByUrl(currentCategory)
 		.then(function (category) {
-			params.data.category.uri = params.request.params.category;
-			params.data.category.name = params.request.params.category;
-			switch(params.request.params.category) {
+			params.data.category.uri = currentCategory;
+			params.data.category.name = currentCategory;
+			switch(currentCategory) {
 				case 'Featured Videos':
 					return VideoCollection.getFeaturedVideos();
 				case 'Staff Pick Videos':
@@ -109,16 +109,19 @@ CategoryModel.prototype.getData = function(params) {
 		});
 
 
-	var promise = Promise.all([CategoryType.get(), videoPromise])
-			.then(function(data) {
-				params.data.categories = data[0];
-				params.data.videos = data[1];
-				// show the load more if there is data or category is 'Follower Videos'
-				params.data.showLoadMore = data[1].length > 11 || params.request.params.category === 'Follower Videos' || params.request.params.category === 'Trending Videos';
-				return params;
-			});
+	return Promise.all([CategoryType.get(), videoPromise])
+		.spread(function (categories, videos) {
+			params.data.categories = categories;
+			params.data.videos = videos;
+			// show the load more if there is data or category is 'Follower Videos'
+			params.data.showLoadMore = videos.length > 11 || currentCategory === 'Follower Videos' || currentCategory === 'Trending Videos';
 
-	return Promise.resolve(promise);
+			// don't show load more button for featured and staff pick since there is no paging and video doesn't exceed over 40?
+			if (currentCategory === 'Featured Videos' || currentCategory === 'Staff Pick Videos') {
+				params.data.showLoadMore = false;
+			}
+			return params;
+		});
 };
 
 module.exports = CategoryModel;
