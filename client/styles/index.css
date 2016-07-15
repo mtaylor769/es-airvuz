@@ -235,7 +235,7 @@ body.modal-open {
 
 #header .airvuz-logo {
   position: relative;
-  left: -5px;
+  left: 0;
 }
 
 #header .airvuz-icon {
@@ -259,7 +259,7 @@ body.modal-open {
 #header-categories {
   display: inline-block;
   position: relative;
-  left: 15px;
+  left: 30px;
   top: 4px;
 }
 #header-categories > a {
@@ -1418,7 +1418,7 @@ header logo and tag line media queries
   position: absolute;
   bottom: 4px;
   left: 78px;
-  font-size: 8px;
+  font-size: 11px;
   color: #f48a4a;
 }
 
@@ -1445,7 +1445,7 @@ header logo and tag line media queries
   }
   #header .tag-line {
     left: 86px;
-    font-size: 9px;
+    font-size: 11px;
   }
 }
 
@@ -1455,7 +1455,7 @@ header logo and tag line media queries
     position: inherit;
   }
   #header .tag-line {
-    left: 91px;
+    left: 86px;
   }
 }
 
@@ -1732,7 +1732,7 @@ header logo and tag line media queries
   }
 
   #header .tag-line {
-    left: 82px;
+    left: 86px;
   }
 
   #user-profile .profile-video img {
