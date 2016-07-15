@@ -35,13 +35,12 @@ function getCommentCount(videoId) {
 
 function resetVideoCommentCount(videos) {
   return Promise.map(videos, function(video) {
-    console.log(video._id);
     return getCommentCount(video._id)
       .then(function(commentCount) {
+        console.log(video._id);
         console.log(commentCount);
-        video.commentCount = commentCount;
+        Video.findByIdAndUpdate(video._id, {commentCount: commentCount}).exec()
       });
-    return video.save();
   })
 }
 
