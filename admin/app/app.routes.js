@@ -93,6 +93,18 @@
         templateUrl: '/admin/app/videos/partial/adminEdit.html',
         controller: 'adminEditCtrl'
       })
+      .state('droneType', {
+        url: '',
+        templateUrl: '/admin/app/drone-type/partials/droneType.html',
+        controller: 'droneTypeController',
+        controllerAs: 'vm'
+      })
+      .state('droneTypeEdit', {
+        url: '/admin/droneType/:id',
+        templateUrl: '/admin/app/drone-type/partials/droneTypeEdit.html',
+        controller: 'droneTypeEditController',
+        controllerAs: 'vm'
+      })
       .state('sliders', {
         url: '/admin/sliders',
         templateUrl: '/admin/app/sliders/partial/sliders.html',
