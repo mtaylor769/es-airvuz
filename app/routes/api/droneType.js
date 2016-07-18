@@ -29,6 +29,7 @@ DroneType.prototype.getById = function(req, res) {
 };
 
 DroneType.prototype.put = function(req, res) {
+  logger.debug('entered drone update')
   DroneTypeCrud
     .update({id: req.body._id, update: req.body})
     .then(function(drone) {

@@ -105,6 +105,18 @@
         controller: 'droneTypeEditController',
         controllerAs: 'vm'
       })
+      .state('cameraType', {
+        url: '',
+        templateUrl: '/admin/app/camera-type/partials/cameraType.html',
+        controller: 'cameraTypeController',
+        controllerAs: 'vm'
+      })
+      .state('cameraTypeEdit', {
+        url: '/admin/cameraType/:id',
+        templateUrl: '/admin/app/camera-type/partials/cameraTypeEdit.html',
+        controller: 'cameraTypeEditController',
+        controllerAs: 'vm'
+      })
       .state('sliders', {
         url: '/admin/sliders',
         templateUrl: '/admin/app/sliders/partial/sliders.html',

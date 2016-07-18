@@ -8,7 +8,7 @@
   DroneType.$inject = ['$resource'];
 
   function DroneType($resource) {
-    return $resource('/api/drone-type', {
+    return $resource('/api/drone-type/:id', {
       update: {
         method: 'PUT'
       }

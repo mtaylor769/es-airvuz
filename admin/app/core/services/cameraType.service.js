@@ -8,7 +8,7 @@
   CameraType.$inject = ['$resource'];
 
   function CameraType($resource) {
-    return $resource('/api/camera-type', {
+    return $resource('/api/camera-type/:id', {
       update: {
         method: 'PUT'
       }

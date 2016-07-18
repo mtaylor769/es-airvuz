@@ -19,7 +19,7 @@
     }
 
     function editDroneType(droneTypeId) {
-      console.log(droneTypeId);
+      window.location.href = '/admin/droneType/' + droneTypeId;
     }
 
     //////////////////
