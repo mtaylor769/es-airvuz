@@ -8,12 +8,12 @@
   editVideoController.$inject = ['Videos', 'CameraType', 'DroneType', 'CategoryType', 'dialog', '$state'];
   
   function editVideoController(Videos, CameraType, DroneType, CategoryType, dialog, $state) {
-    get_video();
-    get_cameraTypes();
-    get_droneTypes();
-    get_categoryType();
+    getVideo();
+    getCameraTypes();
+    getDroneTypes();
+    getCategoryType();
 
-    function get_video() {
+    function getVideo() {
       Videos
         .get({id: $state.params.id})
         .$promise
@@ -24,7 +24,7 @@
         });
     }
 
-    function get_cameraTypes() {
+    function getCameraTypes() {
       CameraType
         .query()
         .$promise
@@ -33,7 +33,7 @@
         })
     }
 
-    function get_droneTypes() {
+    function getDroneTypes() {
       DroneType
         .query()
         .$promise
@@ -42,7 +42,7 @@
         })
     }
 
-    function get_categoryType() {
+    function getCategoryType() {
       CategoryType
         .query()
         .$promise
