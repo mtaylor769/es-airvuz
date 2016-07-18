@@ -62,6 +62,7 @@
     "morgan": "^1.6.1",
     "node-ffprobe": "^1.2.2",
     "node-inspector": "^0.12.7",
+    "node-schedule": "^1.1.1",
     "node-uuid": "^1.4.7",
     "nodemailer": "^2.3.2",
     "postcss-import": "^8.0.2",

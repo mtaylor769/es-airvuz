@@ -9,6 +9,7 @@ try {
 	var Videos					= require('../../../app/persistence/crud/videos');
 	var Slider					= require('../../../app/persistence/crud/slider');
 	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
+	var TrendingVideo		= require('../../../app/persistence/crud/trendingVideos');
 	var config					= require('../../../config/config')[global.NODE_ENV];
 	var Promise					= require('bluebird');
 	var util						= require('util');
@@ -60,7 +61,7 @@ IndexModel.prototype.getData = function(params) {
 		CategoryType.get(),
 		VideoCollection.getFeaturedVideos(),
 		Videos.getRecentVideos(),
-		Videos.getTrendingVideos({total: 30, page: 1}),
+		TrendingVideo.getVideos({total: 50, page: 1}),
 		VideoCollection.getStaffPickVideos(),
 		Slider.getHomeSlider(params.request.query.banner),
 		User.emailConfirm(userId)
