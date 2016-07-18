@@ -824,7 +824,6 @@ function renderSocialMediaLinks() {
     //test for existence of socialMediaLinks attribute
     if (profileUser.socialMediaLinks.length > 0) {
       console.log(profileUser.socialMediaLinks);
-      $('.follow-info').removeClass('hidden');
       //socialMediaLinks could still exist but have nothing in array
       profileUser.socialMediaLinks.forEach(function(account){
         switch (account.socialType) {
