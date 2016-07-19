@@ -939,6 +939,7 @@ function updateFollow() {
           eventType		: "click"
         });
         $('#follow').text('-');
+        fbq('trackCustom', 'follow');
       } else if(response.status === 'unfollowed'){
         swapFollowBtn(false);
           AVEventTracker({
@@ -947,9 +948,9 @@ function updateFollow() {
             eventType		: "click"
           });
         //TODO Update current profile page with new amount of followers
+        fbq('trackCustom', '-follow');
       }
 
-      fbq('trackCustom', 'follow');
       ga('send', 'event', 'user page', 'following', 'following user');
     })
     .fail(function(error){
@@ -1120,8 +1121,6 @@ function initialize() {
   bindEvents();
   getData();
 
-
-  fbq('trackCustom', 'view-profile');
   ga('send', 'event', 'profile page', 'viewing', 'viewing profile');
 }
 

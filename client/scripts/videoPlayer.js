@@ -266,7 +266,8 @@ function bindEvents() {
               eventType		: "click"
             });
             $('.like').addClass('airvuz-blue');
-            $('.like-count').text(likeLog + 1)
+            $('.like-count').text(likeLog + 1);
+            fbq('trackCustom', 'like');
           } else if (response.status === 'unliked') {
             AVEventTracker({
               codeSource	: "videoPlayer",
@@ -274,10 +275,10 @@ function bindEvents() {
               eventType		: "click"
             });
             $('.like').removeClass('airvuz-blue');
-            $('.like-count').text(likeLog - 1)
+            $('.like-count').text(likeLog - 1);
+            fbq('trackCustom', '-like');
           }
 
-          fbq('trackCustom', 'like');
           ga('send', 'social', 'facebook', 'like', window.location.href);
           ga('send', 'event', 'video page', 'facebook like', 'like video');
         })
@@ -334,6 +335,7 @@ function bindEvents() {
               eventType		: "click"
             });
             $('#follow').text('-');
+            fbq('trackCustom', 'follow');
           } else if(response.status === 'unfollowed'){
             AVEventTracker({
               codeSource	: "videoPlayer",
@@ -341,9 +343,9 @@ function bindEvents() {
               eventType		: "click"
             });
             $('#follow').text('+');
+            fbq('trackCustom', '-follow');
           }
 
-          fbq('trackCustom', 'follow');
           ga('send', 'event', 'video page', 'following', 'following user');
         })
         .fail(function (error) {
@@ -839,7 +841,6 @@ function initialize(videoPath, currentVideo) {
     $('#video-description').slideUp();
   }, 5000);
 
-  fbq('trackCustom', 'view-video');
   ga('send', 'event', 'video page', 'viewing', 'viewing video');
 }
 
