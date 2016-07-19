@@ -174,7 +174,11 @@ function bindEvents() {
     .on('change', '#cover-image-input', onCoverImageChange)
     .on('click', '.showcase-edit-button', showcaseButton)
     .on('click', '#save-edit-btn', changeProfile)
-    .on('click', '#change-password-btn', changePassword);
+    .on('click', '#change-password-btn', changePassword)
+    .on('click', '.follower', openFollowers)
+    .on('click', '.following', openFollowing)
+    .on('click', '.follower-btn', getMoreFollowers)
+    .on('click', '.following-btn', getMoreFollowing);
 
   $videoEditModal
     .on('change', '#category', onCategorySelect)
@@ -1067,6 +1071,31 @@ function bindSortAllVideos() {
 function bindHireMeFunction() {
   $('#hire-me-modal')
     .on('click', '#send-hire-me', sendHireMeEmail);
+}
+
+function getFollowers() {
+  $.ajax({
+    type: 'GET',
+    url: '/api/follow/' + user._id
+  })
+}
+
+function openFollowing() {
+  //run ajax function to get following then
+  $('#following-modal').modal('show')
+}
+
+function openFollowers() {
+  //run ajax function to get following then
+  $('#followers-modal').modal('show')
+}
+
+function getMoreFollowers() {
+  
+}
+
+function getMoreFollowing() {
+  
 }
 
 function initialize() {
