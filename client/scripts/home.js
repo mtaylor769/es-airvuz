@@ -130,7 +130,6 @@ function initialize(emailConfirm) {
   bindEvents();
   emailConfirmCheck(emailConfirm);
 
-  fbq('trackCustom', 'landing-page');
   ga('send', 'event', 'home page', 'landing', 'landing page');
 }
 
