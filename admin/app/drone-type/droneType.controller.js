@@ -11,7 +11,7 @@
     getDroneType();
 
     function getDroneType() {
-      DroneType.query()
+      DroneType.query({flag: 'all'})
         .$promise
         .then(function(droneType) {
           vm.droneType = droneType;

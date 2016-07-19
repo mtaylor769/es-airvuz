@@ -1,17 +1,17 @@
 (function() {
   'use strict';
-  
+
   angular
     .module('AirvuzAdmin')
-    .controller('createDroneController', createDroneController);
+    .controller('createCameraController', createCameraController);
 
-  createDroneController.$inject = ['$http', 'dialog'];
-  
-  function createDroneController($http, dialog) {
+  createCameraController.$inject = ['$http', 'dialog'];
 
-    function createDrone() {
-      var droneToCreate = vm.drone;
-      $http.post('/api/drone-type', droneToCreate).then(function(response) {
+  function createCameraController($http, dialog) {
+
+    function createCamera() {
+      var cameraToCreate = vm.camera;
+      $http.post('/api/camera-type', cameraToCreate).then(function(response) {
         if(response.data.errors) {
           var error = response.data.errors[0];
           dialog({
@@ -24,20 +24,21 @@
         } else {
           dialog({
             title: 'Saved',
-            content: 'Drone has been saved',
+            content: 'Camera has been saved',
             ariaLabel: 'saved',
             ok:'OK',
             cancel:'CANCEL'
           })
         }
       }, function(status) {
+
       })
     }
-    
-    
+
+
     ///////
     var vm = this;
-    vm.drone = {};
-    vm.createDrone = createDrone;
+    vm.camera = {};
+    vm.createCamera = createCamera;
   }
 })();

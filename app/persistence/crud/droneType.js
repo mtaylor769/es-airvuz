@@ -118,12 +118,12 @@ DroneType.prototype.getPreCondition = function(params){
 
 DroneType.prototype.create = function(params) {
     var preCondition = this.getPreCondition(params);
-    return preCondition.then(function(validation) {
-      if(validation.errors) {
-        var validationException = new ValidationException({ errors : validation.errors });
+    return preCondition.then(function(droneType) {
+      if(droneType.errors) {
+        var validationException = new ValidationException({ errors : droneType.errors });
         throw validationException;
       } else {
-        var droneTypeModel = new DroneTypeModel(validation.data);
+        var droneTypeModel = new DroneTypeModel(droneType.data);
         droneTypeModel.save(function(error, droneType) {
           if(error){
             var errorMessage = new ErrorMessage();
@@ -143,11 +143,15 @@ DroneType.prototype.create = function(params) {
 };
 
 DroneType.prototype.get = function() {
-  return DroneTypeModel.find({isVisible: true}).sort('name').exec()
+  return DroneTypeModel.find({isVisible: true}).sort('name').exec();
 };
 
 DroneType.prototype.getById = function(id) {
-  return DroneTypeModel.findById({_id: id}).exec()
+  return DroneTypeModel.findById({_id: id}).exec();
+};
+
+DroneType.prototype.getAll = function() {
+  return DroneTypeModel.find({}).sort('name').exec();
 };
 
 DroneType.prototype.update = function(params) {
@@ -155,7 +159,7 @@ DroneType.prototype.update = function(params) {
 };
 
 DroneType.prototype.remove = function(id) {
-  return DroneTypeModel.findByIdAndRemove({_id: id}).exec()
+  return DroneTypeModel.findByIdAndRemove({_id: id}).exec();
 };
 
 module.exports = new DroneType();

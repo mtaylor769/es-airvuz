@@ -36,21 +36,17 @@ CameraType.prototype.getPreCondition = function(params){
   /*
    * @type {string}
    */
-  var sourceLocation = params.sourceLocation;
-  /*
-   * @type {object}
-   */
-  var preCondition = new ObjectValidationUtil();
-
-  preCondition.setValidation(function(params){
-    var errorMessage       = new ErrorMessage();
-    this.data.manufacturer = params.manufacturer || null;
-    this.data.model        = params.model || null;
-    this.data.isVisible    = params.isVisible || null;
+    var sourceLocation = 'persistence.crud.CameraType.create';
+    var errorMessage             = new ErrorMessage();
+    var cameraType               = {};
+    cameraType.data              = {};
+    cameraType.data.manufacturer = params.manufacturer || null;
+    cameraType.data.model        = params.model || null;
+    cameraType.data.isVisible    = params.isVisible || null;
 
 
-    if(this.data.manufacturer === null){
-      this.errors = errorMessage.getErrorMessage({
+    if(cameraType.data.manufacturer === null){
+      cameraType.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "manufacturer"
@@ -59,8 +55,8 @@ CameraType.prototype.getPreCondition = function(params){
       })
     }
 
-    if(this.data.model === null){
-      this.errors = errorMessage.getErrorMessage({
+    if(cameraType.data.model === null){
+      cameraType.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "model"
@@ -69,8 +65,8 @@ CameraType.prototype.getPreCondition = function(params){
       })
     }
 
-    if(this.data.isVisible === null){
-      this.errors = errorMessage.getErrorMessage({
+    if(cameraType.data.isVisible === null){
+      cameraType.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "isVisible"
@@ -78,9 +74,26 @@ CameraType.prototype.getPreCondition = function(params){
         sourceLocation	: sourceLocation
       })
     }
-  });return(preCondition)
+  
+    return CameraTypeModel.find({manufacturer: cameraType.data.manufacturer, model: cameraType.data.model}).exec()
+      .then(function(camera) {
+        if(camera.length !== 0) {
+          cameraType.errors = errorMessage.getErrorMessage({
+            errorId					: "VALIDA1000",
+            templateParams	: {
+              name : "duplicate"
+            },
+            displayMsg			: "Duplicate",
+            errorMessage		: "This is a Duplicate Camera Type",
+            sourceLocation	: sourceLocation
+          })
+        }
+      })
+      .then(function() {
+        return(cameraType);
+      })
+  };
 
-};
 
 /*
  * Create a new CameraType document.
@@ -91,40 +104,30 @@ CameraType.prototype.getPreCondition = function(params){
  */
 
 CameraType.prototype.create = function(params){
-
-  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.CameraType.create"});
-
-  return(new Promise(function(resolve, reject) {
-
-    var validation = preCondition.validate(params);
-    if (validation.errors !== null) {
-      var validationException = new ValidationException({ errors : validation.errors });
-      reject(validationException);
-			return;
-    }
-
-    var cameraTypeModel = new CameraTypeModel(validation.data);
-    cameraTypeModel.save(function(error, cameraType){
-      if(error){
-        var errorMessage = new ErrorMessage();
-        errorMessage.getErrorMessage({
-          errorId					: "PERS1000",
-          sourceError			: error,
-          sourceLocation	: "persistence.crud.CameraType.create"
-        });
-
-        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
-        reject(persistenceException);
-				return;
+  var preCondition = this.getPreCondition(params);
+    return preCondition.then(function(cameraType) {
+      if (cameraType.errors) {
+        var validationException = new ValidationException({ errors : cameraType.errors });
+        throw validationException;
       } else {
-        resolve(cameraType);
-				return;
+        var cameraTypeModel = new CameraTypeModel(cameraType.data);
+        cameraTypeModel.save(function(error, cameraType){
+          if(error){
+            var errorMessage = new ErrorMessage();
+            errorMessage.getErrorMessage({
+              errorId					: "PERS1000",
+              sourceError			: error,
+              sourceLocation	: "persistence.crud.CameraType.create"
+            });
+
+            var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+            throw persistenceException;
+          } else {
+            return cameraType;
+          }
+        })
       }
     })
-		
-
-  })
-  );
 };
 
 CameraType.prototype.get = function() {
@@ -133,6 +136,10 @@ CameraType.prototype.get = function() {
 
 CameraType.prototype.getById = function(id) {
   return CameraTypeModel.findById({_id: id}).exec();
+};
+
+CameraType.prototype.getAll = function() {
+  return CameraTypeModel.find({}).sort('name').exec();
 };
 
 CameraType.prototype.update = function(params) {

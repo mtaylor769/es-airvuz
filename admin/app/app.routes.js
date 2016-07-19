@@ -117,6 +117,12 @@
         controller: 'cameraTypeController',
         controllerAs: 'vm'
       })
+      .state('cameraTypeCreate', {
+        url: '/admin/cameraType/create',
+        templateUrl: '/admin/app/camera-type/partials/cameraCreate.html',
+        controller: 'createCameraController',
+        controllerAs: 'vm'
+      })
       .state('cameraTypeEdit', {
         url: '/admin/cameraType/:id',
         templateUrl: '/admin/app/camera-type/partials/cameraTypeEdit.html',

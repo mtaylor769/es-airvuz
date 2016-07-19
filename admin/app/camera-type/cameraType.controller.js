@@ -11,11 +11,15 @@
     getCameraType();
 
     function getCameraType() {
-      CameraType.query()
+      CameraType.query({flag: 'all'})
         .$promise
         .then(function(cameraType) {
           vm.cameraType = cameraType;
         })
+    }
+    
+    function createCameraType() {
+      window.location.href = '/admin/cameraType/create';
     }
 
     function editCameraType(cameraTypeId) {
@@ -25,5 +29,6 @@
     //////////////////
     var vm = this;
     vm.editCameraType = editCameraType;
+    vm.createCameraType = createCameraType;
   }
 })();
