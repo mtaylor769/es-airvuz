@@ -10,6 +10,9 @@ DroneType.prototype.post = function(req, res) {
     .then(function(drone) {
       res.send(drone);
     })
+    .catch(function(error) {
+      res.send(error);
+    })
 };
 
 DroneType.prototype.get = function(req, res) {

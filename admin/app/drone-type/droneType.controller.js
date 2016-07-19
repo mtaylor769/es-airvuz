@@ -17,6 +17,10 @@
           vm.droneType = droneType;
         })
     }
+    
+    function createDrone() {
+      window.location.href = '/admin/droneType/create';
+    }
 
     function editDroneType(droneTypeId) {
       window.location.href = '/admin/droneType/' + droneTypeId;
@@ -25,5 +29,6 @@
     //////////////////
     var vm = this;
     vm.editDroneType = editDroneType;
+    vm.createDrone = createDrone;
   }
 })();

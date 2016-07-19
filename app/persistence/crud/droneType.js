@@ -33,53 +33,79 @@ var DroneType = function(){
  */
 DroneType.prototype.getPreCondition = function(params){
 
-  var sourceLocation = params.sourceLocation;
+  var sourceLocation = 'persistence.crud.DroneType.create';
   /*
    * @type {string}
-   */
-  var preCondition = new ObjectValidationUtil();
-  /*
-   * @type {object}
-   */
-
-  preCondition.setValidation(function(params){
+  //  */
+  // var preCondition = new ObjectValidationUtil();
+  // /*
+  //  * @type {object}
+  //  */
+  //
+  // preCondition.setValidation(function(params){
+    var droneType          = {};
     var errorMessage       = new ErrorMessage();
-    this.data.manufacturer = params.manufacturer || null;
-    this.data.model        = params.model || null;
-    this.data.isVisible    = params.isVisible || null;
+    droneType.data         = {};
+    droneType.data.manufacturer = params.manufacturer || null;
+    droneType.data.model        = params.model || null;
+    droneType.data.isVisible    = params.isVisible || null;
 
 
-    if(this.data.manufacturer === null){
-      this.errors = errorMessage.getErrorMessage({
+    if(droneType.data.manufacturer === null){
+      droneType.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "manufacturer"
         },
+        displayMsg			: "This field is required",
+        errorMessage		: "Manufacturer is null",
         sourceLocation	: sourceLocation
       })
     }
 
-    if(this.data.model === null){
-      this.errors = errorMessage.getErrorMessage({
+    if(droneType.data.model === null){
+      droneType.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "model"
         },
+        displayMsg			: "This field is required",
+        errorMessage		: "Model is null",
         sourceLocation	: sourceLocation
       })
     }
 
-    if(this.data.isVisible === null){
-      this.errors = errorMessage.getErrorMessage({
+    if(droneType.data.isVisible === null){
+      droneType.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
         templateParams	: {
           name : "isVisible"
         },
+        displayMsg			: "This field is required",
+        errorMessage		: "Visible is null",
         sourceLocation	: sourceLocation
       })
     }
-  });return(preCondition)
-
+    
+    return DroneTypeModel.find({manufacturer: droneType.data.manufacturer, model: droneType.data.model}).exec()
+      .then(function(drone) {
+        console.log(drone.length);
+        if(drone.length !== 0) {
+          logger.error('made it into error function');
+          droneType.errors = errorMessage.getErrorMessage({
+            errorId					: "VALIDA1000",
+            templateParams	: {
+              name : "duplicate"
+            },
+            displayMsg			: "Duplicate",
+            errorMessage		: "This is a Duplicate Drone Type",
+            sourceLocation	: sourceLocation
+          })
+        }
+      })
+      .then(function() {
+        return(droneType)
+      })
 };
 
 /*
@@ -91,38 +117,29 @@ DroneType.prototype.getPreCondition = function(params){
  */
 
 DroneType.prototype.create = function(params) {
-
-  var preCondition = this.getPreCondition({sourceLocation : "persistence.crud.DroneType.create"});
-
-  return(new Promise(function(resolve, reject) {
-
-    var validation = preCondition.validate(params);
-    if (validation.errors !== null) {
-      var validationException = new ValidationException({ errors : validation.errors });
-      reject(validationException);
-			return;
-    }
-
-    var droneTypeModel = new DroneTypeModel(validation.data);
-    droneTypeModel.save(function(error, droneType) {
-      if(error){
-        var errorMessage = new ErrorMessage();
-        errorMessage.getErrorMessage({
-          errorId					: "PERS1000",
-          sourceError			: error,
-          sourceLocation	: "persistence.crud.DroneType.create"
-        });
-        var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
-        reject(persistenceException);
-				return;
+    var preCondition = this.getPreCondition(params);
+    return preCondition.then(function(validation) {
+      if(validation.errors) {
+        var validationException = new ValidationException({ errors : validation.errors });
+        throw validationException;
       } else {
-        resolve(droneType);
-				return;
+        var droneTypeModel = new DroneTypeModel(validation.data);
+        droneTypeModel.save(function(error, droneType) {
+          if(error){
+            var errorMessage = new ErrorMessage();
+            errorMessage.getErrorMessage({
+              errorId					: "PERS1000",
+              sourceError			: error,
+              sourceLocation	: "persistence.crud.DroneType.create"
+            });
+            var persistenceException = new PersistenceException({ errors : errorMessage.getErrors() });
+            throw persistenceException;
+          } else {
+            return droneType;
+          }
+        }) 
       }
-    })
-
-  })
-  );
+    });
 };
 
 DroneType.prototype.get = function() {

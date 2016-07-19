@@ -99,6 +99,12 @@
         controller: 'droneTypeController',
         controllerAs: 'vm'
       })
+      .state('droneTypeCreate', {
+        url: '/admin/droneType/create',
+        templateUrl: '/admin/app/drone-type/partials/droneCreate.html',
+        controller: 'createDroneController',
+        controllerAs: 'vm'
+      })
       .state('droneTypeEdit', {
         url: '/admin/droneType/:id',
         templateUrl: '/admin/app/drone-type/partials/droneTypeEdit.html',

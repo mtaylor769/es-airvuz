@@ -1,7 +1,10 @@
 <md-content layout="row" layout-align="center center" layout-padding>
     <md-card layout-padding style="width: 80%">
         <md-card-content>
-            <h1>Drone Types</h1>
+            <div style="display: flex">
+                <h1 flex>Drone Types</h1>
+                <md-button ng-click="vm.createDrone()">Create New Drone</md-button>
+            </div>
             <div ng-repeat="drone in vm.droneType" style="display: flex">
                 <p flex>{{drone.manufacturer}} - {{drone.model}}</p>
                 <md-button ng-click="vm.editDroneType(drone._id)">Edit Drone</md-button>
