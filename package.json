@@ -58,7 +58,7 @@
     "log4js": "^0.6.32",
     "lost": "^6.7.2",
     "moment": "^2.13.0",
-    "mongoose": "^4.4.4",
+    "mongoose": "^4.5.5",
     "morgan": "^1.6.1",
     "node-ffprobe": "^1.2.2",
     "node-inspector": "^0.12.7",
