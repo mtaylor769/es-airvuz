@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('cameraTypeEditController', cameraTypeEditController);
 
-  cameraTypeEditController.$inject = ['CameraType','$state'];
+  cameraTypeEditController.$inject = ['CameraType','$state', 'dialog'];
 
-  function cameraTypeEditController(CameraType, $state) {
+  function cameraTypeEditController(CameraType, $state, dialog) {
     getCameraType();
 
     function getCameraType() {
@@ -24,6 +24,16 @@
       console.log(camera);
       CameraType
         .update(camera)
+        .$promise
+        .then(function() {
+          dialog({
+            title: 'Saved',
+            content: 'Camera Type has been updated',
+            airaLabel: 'Saved',
+            ok: 'OK',
+            cancel: 'Cancel'
+          })
+        })
     }
 
 

@@ -16,6 +16,7 @@ CameraType.prototype.post = function(req, res) {
 };
 
 CameraType.prototype.get = function(req, res) {
+  console.log(req.query);
   if(req.query.flag === 'all'){
     CameraTypeCrud
       .getAll()

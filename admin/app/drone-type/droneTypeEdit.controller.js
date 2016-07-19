@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('droneTypeEditController', droneTypeEditController);
 
-  droneTypeEditController.$inject = ['DroneType','$state'];
+  droneTypeEditController.$inject = ['DroneType','$state', 'dialog'];
 
-  function droneTypeEditController(DroneType, $state) {
+  function droneTypeEditController(DroneType, $state, dialog) {
     getDroneType();
 
     function getDroneType() {
@@ -24,6 +24,16 @@
       console.log(drone);
       DroneType
         .update(drone)
+        .$promise
+        .then(function() {
+          dialog({
+            title: 'Saved',
+            content: 'Drone Type has been updated',
+            airaLabel: 'Saved',
+            ok: 'OK',
+            cancel: 'Cancel'
+          })
+        })
     }
 
 
