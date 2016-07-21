@@ -82,10 +82,30 @@ Follow.prototype.followCount = function(userId) {
 
 Follow.prototype.followingCount = function(userId) {
   return FollowModel.find({userId: userId}).count().exec();
-}
+};
 
 Follow.prototype.delete = function(id) {
   return FollowModel.findByIdAndRemove(id).exec();
+};
+
+Follow.prototype.getFollowers = function(userId, skip) {
+  return FollowModel.find({followingUserId: userId})
+    .sort('-createdDate')
+    .skip(skip)
+    .limit(10)
+    .populate('userId', 'userNameDisplay userNameUrl profilePicture _id')
+    .lean()
+    .exec()
+};
+
+Follow.prototype.getFollowing = function(userId, skip) {
+  return FollowModel.find({userId: userId})
+    .sort({createdDate: -1})
+    .skip(skip)
+    .limit(10)
+    .populate('followingUserId', 'userNameDisplay userNameUrl profilePicture _id')
+    .lean()
+    .exec()
 };
 
 Follow.prototype.findByFollowingUserIdAndUserId = function(id) {
