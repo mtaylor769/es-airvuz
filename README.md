@@ -42,3 +42,9 @@ _**Note:** When setting an environmental variable for Windows make sure to not a
 - create view model in views/model/ directory
 - create exampleView.js in views/view directory
 - create dust template in views/view/template directory
+
+## Cron jobs
+To see trending you need to run the cron job
+```javascript
+sudo node ./cron.js
+```

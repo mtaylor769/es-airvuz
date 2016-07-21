@@ -8,7 +8,7 @@ try {
 	var util						= require('util');
 	var Videos					= require('../../persistence/crud/videos');
 	var CategoryType		= require('../../../app/persistence/crud/categoryType');
-	var FollowCrud			= require('../../../app/persistence/crud/follow');
+	var TrendingVideo		= require('../../../app/persistence/crud/trendingVideos');
 	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
 	var amazonConfig  	= require('../../config/amazon.config');
 	var _								= require('lodash');
@@ -82,7 +82,7 @@ CategoryModel.prototype.getData = function(params) {
 					var promises = [
 						VideoCollection.getFeaturedVideos(),
 						VideoCollection.getStaffPickVideos(),
-						Videos.getTrendingVideos(videosParam)
+						TrendingVideo.getVideos({total: 50, page: videosParam.page})
 					];
 
 					return Promise.all(promises)
@@ -95,7 +95,7 @@ CategoryModel.prototype.getData = function(params) {
 
 							return _.chain(trendingVideos).reject(function (video) {
 								return videoToOmit.indexOf(video._id.toString()) > -1;
-							}).value();
+							}).take(20).value();
 						});
 				case 'Following Videos':
 					// Let the client side handle this because this server side render for the following require

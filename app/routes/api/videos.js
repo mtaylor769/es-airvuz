@@ -2,6 +2,8 @@ try {
 	var log4js								= require('log4js');
   var nodemailer            = require('nodemailer');
   var request               = require('request');
+  var Promise               = require('bluebird');
+  var _                     = require('lodash');
   var image                 = require('../../services/image.service.server');
 	var logger								= log4js.getLogger('app.routes.api.videos');
 
@@ -12,6 +14,7 @@ try {
   var VideoViewCrud         = require('../../persistence/crud/videoViews');
   var FollowCrud            = require('../../persistence/crud/follow');
 	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
+	var TrendingVideoCrud			= require('../../persistence/crud/trendingVideos');
   var amazonService         = require('../../services/amazon.service.server.js');
 
 	if(global.NODE_ENV === "production") {
@@ -47,7 +50,24 @@ function getVideosByCategory(req, res) {
         case 'Recent Videos':
           return VideoCrud.getRecentVideos(videosParam);
         case 'Trending Videos':
-          return VideoCrud.getTrendingVideos(videosParam);
+          var promises = [
+            VideoCollection.getFeaturedVideos(),
+            VideoCollection.getStaffPickVideos(),
+            TrendingVideoCrud.getVideos({total: 50, page: videosParam.page})
+          ];
+
+          return Promise.all(promises)
+            .spread(function (featureVideos, staffPickVideos, trendingVideos) {
+              var videoToOmit = [];
+
+              featureVideos.concat(staffPickVideos).forEach(function toOmit(video) {
+                videoToOmit.push(video._id.toString());
+              });
+
+              return _.chain(trendingVideos).reject(function (video) {
+                return videoToOmit.indexOf(video._id.toString()) > -1;
+              }).take(20).value();
+            });
         case 'Following Videos':
           // follow should only be call if user is login
           return FollowCrud.getFollow(req.user._id)
@@ -66,6 +86,9 @@ function getVideosByCategory(req, res) {
 
   Promise.resolve(videoPromise).then(function (videos) {
     res.json(videos);
+  }).catch(function (error) {
+    logger.error(error);
+    res.sendStatus(500);
   });
 }
 
