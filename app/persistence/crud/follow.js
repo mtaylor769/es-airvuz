@@ -90,7 +90,7 @@ Follow.prototype.delete = function(id) {
 
 Follow.prototype.getFollowers = function(userId, skip) {
   return FollowModel.find({followingUserId: userId})
-    .sort('-createdDate')
+    .sort({createdDate: -1})
     .skip(skip)
     .limit(10)
     .populate('userId', 'userNameDisplay userNameUrl profilePicture _id')
