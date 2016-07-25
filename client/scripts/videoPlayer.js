@@ -118,6 +118,36 @@ function incrementVideoCount() {
     });
 }
 
+function checkCommentForDelete(userId) {
+  var _comments = $('.parent-comments').children();
+  $.each(_comments, function(index, comment) {
+    var commentUser = $(this).attr('data-userid');
+    if(userId === commentUser) {
+      var matchedComment = $(this).children().find('.posted-comment-text');
+      var html = '<button class="btn btn-primary delete-comment" style="float: right">delete</button>';
+      $(matchedComment).append(html);
+    }
+  })
+}
+
+function deleteComment() {
+  console.log('will delete comment');
+  var _deleteComment = $(this).parent().parent().parent().parent();
+  var _deleteCommentId = $(this).parent().attr('data-commentId');
+  console.log(_deleteComment);
+  $.ajax({
+    type: 'DELETE',
+    url:'/api/comment/' + _deleteCommentId
+  })
+  .done(function(response) {
+     console.log(response);
+    _deleteComment.remove();
+  })
+  .fail(function(error) {
+    console.log(error);
+  })
+}
+
 //check for user following and user video liked
 function videoInfoCheck() {
   var checkObject = {};
@@ -785,7 +815,8 @@ function bindEvents() {
     .on('click', '#comment', checkIdentitiy)
     .on('click', '#btn-view-more-comments', showMoreComments)
     .on('click', '.countdown-paused', startCountdown)
-    .on('click', '.pause-countdown', pauseCountdown);
+    .on('click', '.pause-countdown', pauseCountdown)
+    .on('click', '.delete-comment', deleteComment);
 
 }
 
@@ -866,6 +897,7 @@ function initialize(videoPath, currentVideo) {
       state: user.autoPlay,
       onSwitchChange: onAutoPlayChange
     });
+    checkCommentForDelete(user._id);
   } else {
     $('#follow').text('+');
     $("[name='auto-play-input']").bootstrapSwitch({

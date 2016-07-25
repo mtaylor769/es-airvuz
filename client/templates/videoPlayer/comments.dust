@@ -6,7 +6,7 @@
           <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
         </a>
         <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
-        <div class="col-xs-9 col-md-10 posted-comment-text">
+        <div class="col-xs-9 col-md-10 posted-comment-text" data-commentid="{_id}">
           <p class="m-b-0"><a href="/user/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
           <p class="m-b-0">{comment}</p>
         </div>
