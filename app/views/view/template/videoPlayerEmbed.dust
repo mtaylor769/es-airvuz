@@ -1,7 +1,38 @@
 <!DOCTYPE html>
 <html view="app.views.view.template.videoPlayerEmbed">
-    <head></head>
+    <head>
+      <meta property="og:url" content="{url}video/{video._id}"/>
+      <meta property="og:type" content="video.other" />
+      <meta property="og:title" content="{video.title}" />
+      <meta property="og:updated_time" content="{video.openGraphCacheDate}" />
+      <meta property="og:description" content="{video.description}" />
+      <meta property="og:image" content="https:{s3Bucket}{video.thumbnailPath}" />
+      <meta property="og:video:url" content="https:{s3Bucket}{video.videoPath}" />
+      <meta property="og:video:type" content="video/mp4" />
+      <meta property="og:video:width" content="700" />
+      <meta property="og:video:height" content="393" />
+      <meta property="fb:app_id" content="{facebookAppId}" />
+    </head>
     <body style="margin: 0;">
-        <video src="{s3Bucket}{videoPath}" autoplay controls width="100%" height="100%"></video>
+        <video src="{s3Bucket}{video.videoPath}" autoplay controls width="100%" height="100%"></video>
+        <script>
+          var GOOGLE_TRACKING_ID;
+          var VIDEO = {?video}{video|js|s}{:else}{}{/video};
+          switch(window.location.host) {
+            case 'airvuz.com':
+            case 'www.airvuz.com':
+              GOOGLE_TRACKING_ID = 'UA-67060276-2';
+              break;
+            default:
+              GOOGLE_TRACKING_ID = 'UA-80777160-1';
+          }
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', GOOGLE_TRACKING_ID, 'auto');
+          ga('send', 'pageview', '/embed', {title: VIDEO.title, id: VIDEO._id});
+        </script>
     </body>
 </html>

@@ -40,7 +40,9 @@ VideoPlayerEmbedModel.prototype.getData = function(params) {
     })
     .then(function(video) {
         logger.debug(video);
-        params.data = video;
+        params.data = {};
+        params.data.video = video;
+        params.data.url = config.baseUrl;
         params.data.facebookAppId = config.facebook.clientID;
         params.data.videoPlayerEmbed = {};
         params.data.videoPlayerEmbed.title = "Video Player";
