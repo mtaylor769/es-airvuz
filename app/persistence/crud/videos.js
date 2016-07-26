@@ -137,6 +137,9 @@ function getVideosByFollow(params) {
 }
 
 function search(query, page) {
+	if (!query) {
+		return Promise.resolve({videos: [], totalVideo: 0});
+	}
 	// TODO: allow searching category, drone, and camera
 	var keywords = query,
 			commonWords = ['the', 'of', 'and'],
