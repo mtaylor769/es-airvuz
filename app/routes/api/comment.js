@@ -1,12 +1,13 @@
-var commentCrud = require('../../persistence/crud/comment');
-var NotificationCrud = require('../../persistence/crud/notifications');
-var socialCrud  = require('../../persistence/crud/socialMediaAccount');
-var videoCrud = require('../../persistence/crud/videos');
-var log4js                 = require('log4js');
-var logger                 = log4js.getLogger('app.routes.api.users');
-var Promise     = require('bluebird');
-var mongoose    = require('mongoose');
-var moment      = require('moment');
+var commentCrud       = require('../../persistence/crud/comment');
+var NotificationCrud  = require('../../persistence/crud/notifications');
+var socialCrud        = require('../../persistence/crud/socialMediaAccount');
+var videoCrud         = require('../../persistence/crud/videos');
+var log4js            = require('log4js');
+var logger            = log4js.getLogger('app.routes.api.users');
+var Promise           = require('bluebird');
+var mongoose          = require('mongoose');
+var moment            = require('moment');
+var nodemailer        = require('nodemailer');
 
 
 function Comment() {
@@ -136,6 +137,36 @@ Comment.prototype.delete = function(req, res) {
     logger.error(error);
     res.sendStatus(500);
   })
+};
+
+Comment.prototype.reportComment = function(req, res) {
+  var commentId = req.body.commentId;
+  commentCrud
+    .getById(commentId)
+    .then(function(comment) {
+      var transport = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user:'support@airvuz.com',
+          pass:'b5&YGG6n'
+        }
+      });
+
+      var mailOptions = {
+        from:'noreply <noreply@airvuz.com>',
+        to: 'support@airvuz.com',
+        subject: 'Comment reported for video : ' + comment.videoId,
+        html:'<p>A report has been submitted for comment Id : ' + comment._id + '.<br> Issue : Comment flagged for review <br> Comment Text :' + comment.comment + ' <br><a href="www.airvuz.com/video/' + comment.videoId+'"> Click here to go to video</a></p>'
+      };
+
+      transport.sendMail(mailOptions, function(error, message) {
+        if(error) {
+          res.sendStatus(400);
+        } else {
+          res.sendStatus(200);
+        }
+      })
+    })
 };
 
 

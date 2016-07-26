@@ -205,11 +205,30 @@ function bindEvents() {
     })
       .done(function(response) {
         console.log(response);
+        console.log(this);
         _deleteComment.remove();
+        // $(this).toggle();
       })
       .fail(function(error) {
         console.log(error);
       })
+  }
+
+  function reportComment(commentId) {
+    var data = {};
+    data.commentId = commentId;
+    $(this).parent().parent().toggle();
+    $.ajax({
+      type: 'POST',
+      url: '/api/comment/report/',
+      data: data
+    })
+    .done(function(response) {
+      
+    })
+    .fail(function(error) {
+      
+    })
   }
 
   //create comment and append
@@ -884,7 +903,8 @@ function bindEvents() {
     .on('click', '.countdown-paused', startCountdown)
     .on('click', '.pause-countdown', pauseCountdown)
     .on('click', '.comment-options', showOptions)
-    .on('click', '.delete-comment', deleteComment);
+    .on('click', '.delete-comment', deleteComment)
+    .on('click', '.report-comment', reportComment);
 
 }
 
