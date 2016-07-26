@@ -717,17 +717,18 @@ function bindEvents() {
         .done(function(reply) {
           //insert comment on DOM
           reply.commentDisplayDate = moment(reply.commentCreatedDate).fromNow();
-          var html = '<div class="row">'+
+          var html = '<li class="reply-wrap">'+
+            '<div class="row">'+
             '<div class="m-t-5">'+
             '<div class="col-xs-1"></div>'+
-            '<a href="/user/' + reply.userId.userNameUrl + '" class="col-xs-1">'+
+            '<a href="/user/' + reply.userId.userNameUrl + '" class="col-xs-1" style="padding: 0 5px;">'+
             '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20" style="margin:0">'+
             '</a>'+
             '<div class="col-xs-10" data-commentId="' + reply._id + '">'+
             '<div class="comment-options-wrapper">'+
             '<span class="glyphicon glyphicon-option-vertical comment-options"></span>'+
             '<div class="comment-options-box">'+
-            '<ul class="comment-options-selection"><li class="delete-reply">delete</li></ul>'+
+            '<ul class="comment-options-selection"><li class="delete-comment">delete</li></ul>'+
             '</div>'+
             '</div>'+
             '<div style="display: flex; font-size: 9px">'+
@@ -736,25 +737,8 @@ function bindEvents() {
             '</div>'+
             '<p class="m-b-0">' + reply.comment + '</p>'+
             '</div>'+
-            '</div>';
-
-
-
-          var html1 = '<div class="flex">'+
-            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-10">'+
-            '<div class="comment-options-wrapper">'+
-            '<span class="glyphicon glyphicon-option-vertical comment-options"></span>'+
-            '<div class="comment-options-box">'+
-            '<ul class="comment-options-selection"><li class="delete-comment">delete</li></ul>'+
             '</div>'+
-            '</div>'+
-            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
-            '<p class="m-b-0">' + reply.comment + '</p>'+
-            '</div>'+
-            '</div>';
-
+            '</li>';
           $(self).parents('.comment-wrap').find('.parentComment').append(html);
           $('.commentBox').remove();
           $('.reply').show();
@@ -778,20 +762,50 @@ function bindEvents() {
         data: {parentId: parentId}
       })
       .done(function(data) {
-
+        data.sort(function(a,b) {
+          if(a.commentCreatedDate > b.commentCreatedDate) {
+            return 1;
+          }
+          if(a.commentCreatedDate < b.commentCreatedDate) {
+            return -1;
+          }
+          return 0;
+        });
         //create child comment DOM elements
         var html = '';
+        var optionHtml = null;
         data.forEach(function(reply) {
-          html += '<li>'+
-            '<div class="flex">'+
-            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-10">'+
-            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
+          if(userIdentity.isAuthenticated()) {
+            if(reply.userId._id === user._id) {
+              optionHtml = '<li class="delete-comment">delete</li>';
+            } else {
+              optionHtml = '<li class="report-comment">Report Comment</li>';
+            }
+          } else {
+            optionHtml = '<li class="report-comment">Report Comment</li>';
+          }
+          html += '<li class="reply-wrap">'+
+            '<div class="row">'+
+            '<div class="m-t-5">'+
+            '<div class="col-xs-1" style></div>'+
+            '<a href="/user/' + reply.userId.userNameUrl + '" class="col-xs-1" style="padding: 0 5px;">'+
+            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20" style="margin:0">'+
+            '</a>'+
+            '<div class="col-xs-10" data-commentId="' + reply._id + '">'+
+            '<div class="comment-options-wrapper">'+
+            '<span class="glyphicon glyphicon-option-vertical comment-options"></span>'+
+            '<div class="comment-options-box">'+
+            '<ul class="comment-options-selection">' + optionHtml + '</ul>'+
+            '</div>'+
+            '</div>'+
+            '<div style="display: flex; font-size: 9px">'+
+            '<p class="m-b-0" style="font-size: 12px"><a href="/user/' + reply.userId.userNameUrl + '" class="airvuz-blue">' + reply.userId.userNameDisplay + '</a></p>'+
+            '<p datetime="' + reply.commentCreatedDate + '" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">' + reply.commentDisplayDate + '</p>'+
+            '</div>'+
             '<p class="m-b-0">' + reply.comment + '</p>'+
             '</div>'+
-            '</div>' +
-            '</li>'
+            '</div>';
+            '</li>';
         });
 
         //append child elements to DOM
