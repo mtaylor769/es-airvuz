@@ -65,11 +65,13 @@ function generateTrendingCollection() {
 
 function start() {
   // initalize
-  generateTrendingCollection();
-
-  // schedule to re-run
-  trendingCron = schedule.scheduleJob({hour: 24}, function () {
-    console.log('******************** running ********************');
-    generateTrendingCollection();
-  });
+  generateTrendingCollection()
+    .then(function () {
+      console.log('******************** running cron ********************');
+      // schedule to re-run
+      trendingCron = schedule.scheduleJob({hour: 24}, function () {
+        console.log('******************** is generating trend ********************');
+        generateTrendingCollection();
+      });
+    });
 }
