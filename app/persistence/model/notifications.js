@@ -14,6 +14,7 @@ var NotificationsSchema = mongoose.Schema({
 		type: mongoose.Schema.ObjectId
 	},
 	/*
+<<<<<<< d903bac154306d088fc39d738cc43b38f4102e6f
 	 * The commentId of the comment referenced in the notification
 	 */
 	commentId : {

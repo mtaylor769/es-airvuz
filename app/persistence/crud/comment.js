@@ -50,6 +50,7 @@ Comment.prototype.getPreCondition = function(params){
   preCondition.setValidation(function(params){
     logger.debug(params);
     var errorMessage              = new ErrorMessage();
+    this.data,commentId           = params.commentId || null;
     this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
     this.data.isVisible           = params.isVisible || true;
@@ -62,6 +63,15 @@ Comment.prototype.getPreCondition = function(params){
       this.data.replyDepth = 1;
     }
 
+    if(this.data.commentId === null) {
+      this.errors = errorMessage.getErrorMessage({
+        errorId					: "VALIDA1000",
+        templateParams	: {
+          name : "commentId"
+        },
+        sourceLocation	: sourceLocation
+      })
+    }
 
     if(this.data.comment === null){
       this.errors = errorMessage.getErrorMessage({
@@ -114,15 +124,16 @@ Comment.prototype.getPreCondition = function(params){
         sourceLocation	: sourceLocation
       })
     }
-  if(this.data.userId === null){
-    this.errors = errorMessage.getErrorMessage({
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "userId"
-      },
-      sourceLocation	: sourceLocation
-    })
-  }
+    
+    if(this.data.userId === null){
+      this.errors = errorMessage.getErrorMessage({
+        errorId					: "VALIDA1000",
+        templateParams	: {
+          name : "userId"
+        },
+        sourceLocation	: sourceLocation
+      })
+    }
 });return(preCondition)
 
 };
@@ -227,6 +238,10 @@ Comment.prototype.replyIncrement = function(parentCommentId, videoId) {
 
 Comment.prototype.get = function() {
   return CommentModel.find({}).exec();
+};
+
+Comment.prototype.getAllByParentComment = function(parentId) {
+  return CommentModel.find({ $or: [{_id: parentId}, {parentCommentId: parentId}] }).exec();
 };
 
 

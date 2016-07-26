@@ -1,6 +1,7 @@
 var commentCrud = require('../../persistence/crud/comment');
 var NotificationCrud = require('../../persistence/crud/notifications');
 var socialCrud  = require('../../persistence/crud/socialMediaAccount');
+var videoCrud = require('../../persistence/crud/videos');
 var log4js                 = require('log4js');
 var logger                 = log4js.getLogger('app.routes.api.users');
 var Promise     = require('bluebird');
@@ -21,6 +22,7 @@ Comment.prototype.post = function(req, res) {
     .then(function (comment) {
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
+      notification.commentId = comment._id;
       NotificationCrud.create(notification)
       .then(function(notification) {
       });
@@ -105,9 +107,34 @@ Comment.prototype.put = function(req, res) {
 
 Comment.prototype.delete = function(req, res) {
   commentCrud
-  .remove(req.params.id)
+  .getAllByParentComment(req.params.id)
+  .then(function(comments) {
+    var removeObject = {};
+    removeObject.removeCount = comments.length;
+    removeObject.videoId = comments[0].videoId;
+    Promise.map(comments, function(comment) {
+        return commentCrud.remove(comment._id);
+    });
+    return removeObject;
+  })
+  .then(function(removeObject) {
+    videoCrud.getById(removeObject.videoId)
+      .then(function(video) {
+        var updateObject = {};
+        updateObject.id = video._id;
+        updateObject.update = {};
+        updateObject.update.commentCount = video.commentCount - removeObject.removeCount;
+        logger.error('this is the update object');
+        logger.debug(updateObject)
+        return videoCrud.update(updateObject);
+      })
+  })
   .then(function() {
     res.sendStatus(200);
+  })
+  .catch(function(error) {
+    logger.error(error);
+    res.sendStatus(500);
   })
 };
 

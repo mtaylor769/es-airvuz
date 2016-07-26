@@ -4,6 +4,7 @@
  */
 var videojs = require('video.js');
 var PubSub  = require('pubsub-js');
+var moment = require('moment');
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -121,31 +122,23 @@ function incrementVideoCount() {
 function checkCommentForDelete(userId) {
   var _comments = $('.parent-comments').children();
   $.each(_comments, function(index, comment) {
+    var optionList = $(this).children().find('.comment-options-selection');
     var commentUser = $(this).attr('data-userid');
     if(userId === commentUser) {
-      var matchedComment = $(this).children().find('.posted-comment-text');
-      var html = '<button class="btn btn-primary delete-comment" style="float: right">delete</button>';
-      $(matchedComment).append(html);
+      var html = '<li class="delete-comment">Delete</li>';
+      optionList.append(html);
+    } else {
+      console.log('failed');
+      var html = '<li>Report Comment</li>';
+      console.log(html);
+      console.log(optionList);
+      optionList.append(html);
     }
   })
 }
 
-function deleteComment() {
-  console.log('will delete comment');
-  var _deleteComment = $(this).parent().parent().parent().parent();
-  var _deleteCommentId = $(this).parent().attr('data-commentId');
-  console.log(_deleteComment);
-  $.ajax({
-    type: 'DELETE',
-    url:'/api/comment/' + _deleteCommentId
-  })
-  .done(function(response) {
-     console.log(response);
-    _deleteComment.remove();
-  })
-  .fail(function(error) {
-    console.log(error);
-  })
+function showOptions() {
+  $(this).siblings().toggle();
 }
 
 //check for user following and user video liked
@@ -201,6 +194,23 @@ function onAutoPlayChange(event, state) {
 function bindEvents() {
 
   //api calls
+  function deleteComment() {
+    console.log('will delete comment');
+    var _deleteComment = $(this).parent().parent().parent().parent().parent().parent().parent();
+    var _deleteCommentId = $(this).parent().parent().parent().parent().attr('data-commentId');
+    console.log(_deleteComment);
+    $.ajax({
+      type: 'DELETE',
+      url:'/api/comment/' + _deleteCommentId
+    })
+      .done(function(response) {
+        console.log(response);
+        _deleteComment.remove();
+      })
+      .fail(function(error) {
+        console.log(error);
+      })
+  }
 
   //create comment and append
   $('#commentSave').on('click', function() {
@@ -234,29 +244,42 @@ function bindEvents() {
       })
       .done(function(data) {
         var comment = data;
+        comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
         // TODO: use dust template rendering
-        var html = '<li class="comment-wrap">'+
-          '<div class="flex">'+
-          '<img src="' + comment.userId.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
-          '<div class="m-t-20">'+
-          '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
-          '<p class="m-b-0 airvuz-blue">' + comment.userId.userNameDisplay + '</p>'+
-          '<p class="m-b-0">' + comment.comment + '</p>'+
-          '</div>'+
-          '</div>'+
-          '<div  id="' + comment._id + '">'+
-          '<ul class="parentComment"></ul>'+
-          '<div class="row">'+
-          '<div class="reply col-xs-3 col-sm-2" value="' + comment._id + '" style="padding: 0 0 0 10px">'+
-          '<span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>'+
-          '<span style="font-size: 10px; margin-left: 2px">reply</span>'+
-          '</div>'+
-          '<div class="col-xs-3 col-md-2 commentReplies" value="' + comment._id + '">'+
-          '<span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;">replies <a>' + comment.replyCount + '</a></span>'+
-          '</div>'+
-          '</div>'+
-          '</div>'+
-          '</li>';
+        var html = '<li class="comment-wrap" data-userId="' + comment.userId._id + '">'+
+        '<div class="row">'+
+        '<div class="m-t-5">'+
+        '<a href="/user/' + comment.userId.userNameUrl + '" class="col-xs-2 col-md-1">'+
+        '<img src="' + comment.userId.profilePicture + '" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">'+
+        '</a>'+
+        '<div class="col-xs-10 col-md-11 posted-comment-text" data-commentid="' + comment._id + '">'+
+        '<div class="comment-options-wrapper">'+
+        '<span class="glyphicon glyphicon-option-vertical comment-options"></span>'+
+        '<div class="comment-options-box">'+
+        '<ul class="comment-options-selection"><li class="delete-comment">delete</li></ul>'+
+        '</div>'+
+        '</div>'+
+        '<div style="display: flex; font-size: 10px">'+
+        '<p class="m-b-0" style="font-size: 14px"><a href="/user/' + comment.userId.userNameUrl + '" class="airvuz-blue">' + comment.userId.userNameDisplay + '</a></p>'+
+        '<p datetime="' + comment.commentCreatedDate + '" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">' + comment.commentDisplayDate + '</p>'+
+        '</div>'+
+        '<p class="m-b-0">' + comment.comment + '</p>'+
+        '</div>'+
+        '</div>'+
+        '</div>'+
+        '<ul class="parentComment"></ul>'+
+        '<div  id="' + comment._id + '" data-userId="' + comment.userId._id + '">'+
+        '<div class="row">'+
+        '<div class="reply col-xs-3 col-sm-2 pointer" value="' + comment._id + '" data-userId="' + comment.userId._id + '" style="padding: 0 0 0 10px">'+
+        '<span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>'+
+        '<span style="font-size: 10px; margin-left: 2px">reply</span>'+
+        '</div>'+
+        '<div class="col-xs-3 col-md-2 commentReplies pointer" value="' +comment._id + '">'+
+        '<span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;"><a>replies 0</a></span>'+
+        '</div>'+
+        '</div>'+
+        '</div>'+
+        '</li>';
         $('.parent-comments').prepend(html);
         $('#comment-text').val('');
         var currentCount = $('.comment-count').text();
@@ -693,9 +716,39 @@ function bindEvents() {
         })
         .done(function(reply) {
           //insert comment on DOM
-          var html = '<div class="flex">'+
+          reply.commentDisplayDate = moment(reply.commentCreatedDate).fromNow();
+          var html = '<div class="row">'+
+            '<div class="m-t-5">'+
+            '<div class="col-xs-1"></div>'+
+            '<a href="/user/' + reply.userId.userNameUrl + '" class="col-xs-1">'+
+            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20" style="margin:0">'+
+            '</a>'+
+            '<div class="col-xs-10" data-commentId="' + reply._id + '">'+
+            '<div class="comment-options-wrapper">'+
+            '<span class="glyphicon glyphicon-option-vertical comment-options"></span>'+
+            '<div class="comment-options-box">'+
+            '<ul class="comment-options-selection"><li class="delete-reply">delete</li></ul>'+
+            '</div>'+
+            '</div>'+
+            '<div style="display: flex; font-size: 9px">'+
+            '<p class="m-b-0" style="font-size: 12px"><a href="/user/' + reply.userId.userNameUrl + '" class="airvuz-blue">' + reply.userId.userNameDisplay + '</a></p>'+
+            '<p datetime="' + reply.commentCreatedDate + '" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">' + reply.commentDisplayDate + '</p>'+
+            '</div>'+
+            '<p class="m-b-0">' + reply.comment + '</p>'+
+            '</div>'+
+            '</div>';
+
+
+
+          var html1 = '<div class="flex">'+
             '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
             '<div class="m-t-10">'+
+            '<div class="comment-options-wrapper">'+
+            '<span class="glyphicon glyphicon-option-vertical comment-options"></span>'+
+            '<div class="comment-options-box">'+
+            '<ul class="comment-options-selection"><li class="delete-comment">delete</li></ul>'+
+            '</div>'+
+            '</div>'+
             '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
             '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
             '<p class="m-b-0">' + reply.comment + '</p>'+
@@ -816,6 +869,7 @@ function bindEvents() {
     .on('click', '#btn-view-more-comments', showMoreComments)
     .on('click', '.countdown-paused', startCountdown)
     .on('click', '.pause-countdown', pauseCountdown)
+    .on('click', '.comment-options', showOptions)
     .on('click', '.delete-comment', deleteComment);
 
 }
@@ -900,6 +954,7 @@ function initialize(videoPath, currentVideo) {
     checkCommentForDelete(user._id);
   } else {
     $('#follow').text('+');
+    checkCommentForDelete();
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'
     });

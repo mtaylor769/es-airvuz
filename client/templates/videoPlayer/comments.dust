@@ -5,9 +5,17 @@
         <a href="/user/{userId.userNameUrl}" class="col-xs-2 col-md-1">
           <img src="{userId.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle m-10-20">
         </a>
-        <p class="pos-absolute-r-15" datetime="{commentCreatedDate}">{commentDisplayDate}</p>
-        <div class="col-xs-9 col-md-10 posted-comment-text" data-commentid="{_id}">
-          <p class="m-b-0"><a href="/user/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
+        <div class="col-xs-10 col-md-11 posted-comment-text" data-commentid="{_id}">
+          <div class="comment-options-wrapper">
+              <span class="glyphicon glyphicon-option-vertical comment-options"></span>
+              <div class="comment-options-box">
+                  <ul class="comment-options-selection"></ul>
+              </div>
+          </div>
+          <div style="display: flex; font-size: 10px">
+              <p class="m-b-0" style="font-size: 14px"><a href="/user/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
+              <p datetime="{commentCreatedDate}" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">{commentDisplayDate}</p>
+          </div>
           <p class="m-b-0">{comment}</p>
         </div>
       </div>
