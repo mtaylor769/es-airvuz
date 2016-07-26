@@ -32,7 +32,7 @@
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
           ga('create', GOOGLE_TRACKING_ID, 'auto');
-          ga('send', 'pageview', '/embed', {title: VIDEO.title, id: VIDEO._id});
+          ga('send', 'pageview', '/embed/' + VIDEO._id, {title: VIDEO.title, id: VIDEO._id});
         </script>
     </body>
 </html>
