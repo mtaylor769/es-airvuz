@@ -97,7 +97,7 @@
                             <div class="video-slick">
                                 {#topVideos}
                                     <div class="video">
-                                        <a href="/video/{_id}">
+                                        <a href="/video/{_id}" title="{title}">
                                             <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
                                         </a>
                                     </div>
@@ -153,9 +153,9 @@
                         {#upNext}
                             <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
                                 <div class="up-next-wrapper">
-                                    <a href="{_id}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
+                                    <a href="{_id}" title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
                                     <div class="up-next-layer">
-                                        <a href="{_id}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
+                                        <a href="{_id}" title="{fullTitle}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
                                         <div class="flex up-next-subs">
                                             <p class="font-white m-l-15"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
                                             <p class="font-white pos-absolute-r-15">{duration}</p>

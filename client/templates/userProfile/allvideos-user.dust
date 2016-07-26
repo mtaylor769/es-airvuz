@@ -18,7 +18,7 @@
             <div class="col-sm-6 col-md-3">
                 <div class="profile-video" style="margin-bottom: 10px">
                     <div class="text-center">
-                        <a href="/video/{_id}">
+                        <a href="/video/{_id}" title="{title}">
                             <img src="{s3Bucket}{thumbnailPath}" class="img-responsive">
                         </a>
                     </div>
@@ -28,7 +28,7 @@
                             <span class="pull-right">{duration}</span>
                         </div>
                         <div class="profile-video-title">
-                            <a href="/video/{_id}">
+                            <a href="/video/{_id}" title="{title}">
                                 <h4 style="margin: 0">{title}</h4>
                             </a>
                             <p>By
