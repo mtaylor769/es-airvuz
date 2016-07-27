@@ -18,7 +18,7 @@ var FollowersSchema = mongoose.Schema({
 	 */
 	followingUserId : {
 		required: true,
-		type: mongoose.Schema.ObjectId, ref: 'User'
+		type: mongoose.Schema.ObjectId, ref: 'Users'
 	},	
 	
 	/*
@@ -26,7 +26,7 @@ var FollowersSchema = mongoose.Schema({
 	 */
 	userId : {
 		required: true,
-		type: mongoose.Schema.ObjectId, ref: 'User'
+		type: mongoose.Schema.ObjectId, ref: 'Users'
 	}
 
 });

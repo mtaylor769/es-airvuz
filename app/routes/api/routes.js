@@ -90,6 +90,12 @@ apiRouter.route('/api/follow')
 apiRouter.route('/api/follow/check')
 	.post(follow.getCheckFollowing);
 
+apiRouter.route('/api/follow/get-followers')
+	.get(follow.getFollowers);
+
+apiRouter.route('/api/follow/get-following')
+	.get(follow.getFollowing);
+
 /**
  * /api/notifications/
  */

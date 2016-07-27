@@ -2,8 +2,8 @@
   <div class="" style="background: url('/client/images/profile-gradient.png')bottom left repeat-x; height: 300px; position: relative">
       <div class="user-social-media pull-right row hidden-xs hidden-sm">
           <div class="follow-info">
-              <span>FOLLOWERS : {followers}</span>
-              <span>FOLLOWING : {following}</span>
+              <span class="follower">FOLLOWERS : {followers}</span>
+              <span class="following">FOLLOWING : {following}</span>
           </div>
             <span class="social-media-background hidden">
                 <a class="facebook fa fa-facebook-square" target="_blank"></a>

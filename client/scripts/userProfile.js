@@ -23,6 +23,7 @@ var $editVideo                = null;
 var userData                  = {};
 var allOwnerVideos            = [];
 var showcaseOwnerVideos       = [];
+var skip                      = 0;
 
 /*
 Edit Video Variables
@@ -174,7 +175,14 @@ function bindEvents() {
     .on('change', '#cover-image-input', onCoverImageChange)
     .on('click', '.showcase-edit-button', showcaseButton)
     .on('click', '#save-edit-btn', changeProfile)
-    .on('click', '#change-password-btn', changePassword);
+    .on('click', '#change-password-btn', changePassword)
+    .on('click', '.follower', openFollowers)
+    .on('click', '.following', openFollowing);
+    
+  $('#followers-modal')
+    .on('click', '.follower-btn', getMoreFollowers);
+  $('#following-modal')
+    .on('click', '.following-btn', getMoreFollowing);
 
   $videoEditModal
     .on('change', '#category', onCategorySelect)
@@ -1067,6 +1075,84 @@ function bindSortAllVideos() {
 function bindHireMeFunction() {
   $('#hire-me-modal')
     .on('click', '#send-hire-me', sendHireMeEmail);
+}
+
+function openFollowing() {
+  $('.following-wrapper').remove();
+  skip = 0;
+  getMoreFollowing();
+  //run ajax function to get following then
+  $('#following-modal').modal('show')
+}
+
+function openFollowers() {
+  $('.follower-wrapper').remove();
+  skip = 0;
+  getMoreFollowers();
+  //run ajax function to get following then
+  $('#followers-modal').modal('show')
+}
+
+function getMoreFollowers() {
+  console.log('hit function');
+  var userId = profileUser._id;
+  $.ajax({
+    type:'GET',
+    url:'/api/follow/get-followers',
+    data:{userId: userId, skip: skip}
+  })
+  .done(function(followers) {
+    var html = '';
+    followers.forEach(function(follower) {
+      html += '<div class="follower-wrapper row">' +
+        '<div class="col-xs-2"><img src="' + follower.userId.profilePicture + '" width="50px" height="50px"></div>' +
+        '<a href="/user/' + follower.userId.userNameUrl + '" class="col-xs-4"><p class="username">' + follower.userId.userNameDisplay + '</p></a>' +
+        '<p class="date-followed col-xs-6">Started following you on : '+ follower.createdDate +'</p>' +
+        '</div>';
+    });
+    
+    $('#follower').append(html);
+    if(followers.length < 10) {
+      $('.follower-btn-wrapper').hide();
+    } else {
+      $('.follower-btn-wrapper').show();
+    }
+    skip ++;
+
+  })
+  .fail(function(error) {
+  })
+
+}
+
+function getMoreFollowing() {
+  console.log('hit function');
+  var userId = profileUser._id;
+  $.ajax({
+    type:'GET',
+    url:'/api/follow/get-following',
+    data:{userId: userId, skip: skip}
+  })
+    .done(function(followers) {
+      console.log(followers);
+      var html = '';
+      followers.forEach(function(follower) {
+        html += '<div class="following-wrapper row">' +
+          '<div class="col-xs-2"><img src="' + follower.followingUserId.profilePicture + '" width="50px" height="50px"></div>' +
+          '<a href="/user/' + follower.followingUserId.userNameUrl + '" class="col-xs-4"><p class="username">' + follower.followingUserId.userNameDisplay + '</p></a>' +
+          '<p class="date-followed col-xs-6">You started following on : '+ follower.createdDate +'</p>' +
+          '</div>';
+      });
+
+      $('#following').append(html);
+      skip ++;
+      if(followers.length < 10) {
+        $('.following-btn-wrapper').remove();
+      }
+    })
+    .fail(function(error) {
+    })
+
 }
 
 function initialize() {

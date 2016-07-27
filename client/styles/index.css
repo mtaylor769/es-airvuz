@@ -1077,6 +1077,65 @@ Begin userProfile CSS
   margin-left:25px;
 }
 
+#user-profile .following:hover {
+  text-decoration: underline;
+  color: #30c1ed;
+  cursor: pointer;
+}
+
+#user-profile .follower:hover {
+  text-decoration: underline;
+  color: #30c1ed;
+  cursor: pointer;
+}
+#follower .follower-wrapper{
+  display: flex;
+  border-bottom: inset 1px;
+  padding: 10px;
+}
+
+#follower .follower-wrapper img{
+  border-radius: 50%;
+}
+
+#follower .follower-wrapper:last-child{
+  border-bottom: none;
+}
+
+.follower-btn-wrapper {
+  text-align: center;
+  padding: 10px;
+}
+
+#follower p{
+  padding: 15px;
+  font-size: 15px;
+}
+
+#following .following-wrapper{
+  display: flex;
+  border-bottom: inset 1px;
+  padding: 10px;
+}
+
+#following .following-wrapper img{
+  border-radius: 50%;
+}
+
+#following .following-wrapper:last-child{
+  border-bottom: none;
+}
+
+.following-btn-wrapper {
+  text-align: center;
+  padding: 10px;
+}
+
+#following p{
+  padding: 15px;
+  font-size: 15px;
+}
+
 .profile-video .col-xs-6, .col-xs-5 {
   /*padding-right: 0;
   padding-left: 10px;*/

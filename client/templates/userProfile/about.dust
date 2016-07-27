@@ -6,8 +6,8 @@
         </div>
     </div>
     <div class="row hidden-md hidden-lg hidden-xl" style="display: inline">
-        <h5>FOLLOWERS : {followers}</h5>
-        <h5>FOLLOWING : {following}</h5>
+        <h5 class="follower">FOLLOWERS : {followers}</h5>
+        <h5 class="following">FOLLOWING : {following}</h5>
     </div>
     <div class="row hidden-lg hidden-md aboutme-socialmedia">
         <a class="facebook-link" href="//www.facebook.com" target="_blank"><span class="facebook fa fa-facebook-square col-xs-3"></span></a>
