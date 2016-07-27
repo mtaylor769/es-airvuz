@@ -17,7 +17,6 @@ var videoCollection     = require('./videoCollection');
 var reports 					  = require('./reports');
 // var forms               = require('./forms');
 var image               = require('./image');
-var passport            = require('passport');
 var protect             = require('../../middlewares/protect');
 var token               = require('../../middlewares/token');
 

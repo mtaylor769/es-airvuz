@@ -2,7 +2,7 @@ var log4js								= require('log4js');
 var logger								= log4js.getLogger('app.routes.api.auth');
 
 var jwt               = require('jsonwebtoken'),
-  passport            = require('passport'),
+  // passport            = require('passport'),
   tokenConfig         = require('../../../config/token'),
   appConfig           = require('../../../config/config')[process.env.NODE_ENV || 'development'],
   SocialCrud          = require('../../persistence/crud/socialMediaAccount'),
@@ -180,31 +180,31 @@ function _socialLogin(socialData) {
     });
 }
 
-function instagram(req, res, next) {
-  logger.debug('hitting instagram api');
-  passport.authenticate('instagram')(req, res, next);
-}
-
-function instagramCallback(req, res, next) {
-  passport.authenticate('instagram', { 
-    successRedirect: '/?login=success',
-    failureRedirect: '/?login=failed'
-  })(req, res, next);
-}
-
-function twitter(req, res, next) {
-  logger.debug('hitting twitter api');
-  passport.authenticate('twitter', { scope : ['profile', 'email'] })(req, res, next);
-}
-
-function twitterCallback(req, res, next) {
-  logger.debug('successful twitter auth callback');
-  passport.authenticate('twitter', { failureRedirect: '/play' })(req, res, next),
-  function(req, res) {
-    logger.debug(req.body);
-    res.redirect('/');
-  };
-}
+// function instagram(req, res, next) {
+//   logger.debug('hitting instagram api');
+//   passport.authenticate('instagram')(req, res, next);
+// }
+//
+// function instagramCallback(req, res, next) {
+//   passport.authenticate('instagram', {
+//     successRedirect: '/?login=success',
+//     failureRedirect: '/?login=failed'
+//   })(req, res, next);
+// }
+//
+// function twitter(req, res, next) {
+//   logger.debug('hitting twitter api');
+//   passport.authenticate('twitter', { scope : ['profile', 'email'] })(req, res, next);
+// }
+//
+// function twitterCallback(req, res, next) {
+//   logger.debug('successful twitter auth callback');
+//   passport.authenticate('twitter', { failureRedirect: '/play' })(req, res, next),
+//   function(req, res) {
+//     logger.debug(req.body);
+//     res.redirect('/');
+//   };
+// }
 
 
 Auth.prototype.localLogin          = localLogin;
