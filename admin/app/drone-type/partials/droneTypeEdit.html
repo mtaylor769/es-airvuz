@@ -1,0 +1,20 @@
+<md-content layout="row" layout-align="center center" layout-padding>
+    <md-card layout-padding style="width: 80%">
+        <md-input-container>
+            <label>Model</label>
+            <input type="text" ng-model="vm.droneType.model">
+        </md-input-container>
+        <md-input-container>
+            <label>Manufacturer</label>
+            <input type="text" ng-model="vm.droneType.manufacturer">
+        </md-input-container>
+        <md-input-container>
+            <label>Visible</label>
+            <md-select ng-model="vm.droneType.isVisible">
+                <md-option value="true">True</md-option>
+                <md-option value="false">False</md-option>
+            </md-select>
+        </md-input-container>
+        <md-button ng-click="vm.saveDroneType()">Save Changes</md-button>
+    </md-card>
+</md-content>

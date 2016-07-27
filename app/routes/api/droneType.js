@@ -10,14 +10,25 @@ DroneType.prototype.post = function(req, res) {
     .then(function(drone) {
       res.send(drone);
     })
+    .catch(function(error) {
+      res.send(error);
+    })
 };
 
 DroneType.prototype.get = function(req, res) {
-  DroneTypeCrud
-    .get()
-    .then(function(drones) {
-      res.send(drones);
-    })
+  if(req.query.flag === 'all'){
+    DroneTypeCrud
+      .getAll()
+      .then(function(drones) {
+        res.send(drones)
+      })
+  } else {
+    DroneTypeCrud
+      .get()
+      .then(function(drones) {
+        res.send(drones);
+      }) 
+  }
 };
 
 DroneType.prototype.getById = function(req, res) {

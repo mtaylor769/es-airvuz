@@ -171,7 +171,7 @@ apiRouter.route('/api/category-type/:id')
  */
 apiRouter.route('/api/drone-type')
   .post(droneType.post)
-  .get(droneType.get);
+  .get(droneType.get)
 
 apiRouter.route('/api/drone-type/:id')
   .get(droneType.getById)

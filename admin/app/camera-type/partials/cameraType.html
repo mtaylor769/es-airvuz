@@ -1,0 +1,14 @@
+<md-content layout="row" layout-align="center center" layout-padding>
+    <md-card layout-padding style="width: 80%">
+        <md-card-content>
+            <div style="display: flex">
+                <h1 flex>Camera Types</h1>
+                <md-button ng-click="vm.createCameraType()">Create New Camera</md-button>
+            </div>
+            <div ng-repeat="camera in vm.cameraType" style="display: flex">
+                <p flex>{{camera.manufacturer}} - {{camera.model}}</p>
+                <md-button ng-click="vm.editCameraType(camera._id)">Edit Camera</md-button>
+            </div>
+        </md-card-content>
+    </md-card>
+</md-content>

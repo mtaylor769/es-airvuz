@@ -10,14 +10,26 @@ CameraType.prototype.post = function(req, res) {
   .then(function(camera) {
     res.send(camera);
   })
+  .catch(function(error) {
+    res.send(error);
+  })
 };
 
 CameraType.prototype.get = function(req, res) {
-  CameraTypeCrud
-  .get()
-  .then(function(cameras) {
-    res.send(cameras);
-  })
+  console.log(req.query);
+  if(req.query.flag === 'all'){
+    CameraTypeCrud
+      .getAll()
+      .then(function(cameras) {
+        res.send(cameras);
+      })
+  } else {
+    CameraTypeCrud
+      .get()
+      .then(function(cameras) {
+        res.send(cameras);
+      }) 
+  }
 };
 
 CameraType.prototype.getById = function(req, res) {

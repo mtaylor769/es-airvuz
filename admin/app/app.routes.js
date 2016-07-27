@@ -93,6 +93,42 @@
         templateUrl: '/admin/app/videos/partial/adminEdit.html',
         controller: 'adminEditCtrl'
       })
+      .state('droneType', {
+        url: '',
+        templateUrl: '/admin/app/drone-type/partials/droneType.html',
+        controller: 'droneTypeController',
+        controllerAs: 'vm'
+      })
+      .state('droneTypeCreate', {
+        url: '/admin/droneType/create',
+        templateUrl: '/admin/app/drone-type/partials/droneCreate.html',
+        controller: 'createDroneController',
+        controllerAs: 'vm'
+      })
+      .state('droneTypeEdit', {
+        url: '/admin/droneType/:id',
+        templateUrl: '/admin/app/drone-type/partials/droneTypeEdit.html',
+        controller: 'droneTypeEditController',
+        controllerAs: 'vm'
+      })
+      .state('cameraType', {
+        url: '',
+        templateUrl: '/admin/app/camera-type/partials/cameraType.html',
+        controller: 'cameraTypeController',
+        controllerAs: 'vm'
+      })
+      .state('cameraTypeCreate', {
+        url: '/admin/cameraType/create',
+        templateUrl: '/admin/app/camera-type/partials/cameraCreate.html',
+        controller: 'createCameraController',
+        controllerAs: 'vm'
+      })
+      .state('cameraTypeEdit', {
+        url: '/admin/cameraType/:id',
+        templateUrl: '/admin/app/camera-type/partials/cameraTypeEdit.html',
+        controller: 'cameraTypeEditController',
+        controllerAs: 'vm'
+      })
       .state('sliders', {
         url: '/admin/sliders',
         templateUrl: '/admin/app/sliders/partial/sliders.html',
