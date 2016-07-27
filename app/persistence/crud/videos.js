@@ -472,20 +472,31 @@ Videos.prototype.getByUserAndDate = function(userId, startDate, endDate) {
 };
 
 Videos.prototype.getByUser = function(userId, sortBy) {
+	var sort = {};
 	if (!sortBy) {
-		return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').lean().exec();
+		sort = {uploadDate: -1};
 	} else {
 		switch(sortBy) {
 			case 'vuz' :
-				return VideoModel.find({userId: userId}).sort({viewCount: -1}).populate('userId').exec();
+				sort = {viewCount: -1};
+				break;
 			case 'dasc' :
-				return VideoModel.find({userId: userId}).sort({uploadDate: 1}).populate('userId').exec();
+				sort = {uploadDate: 1};
+				break;
 			case 'ddesc' :
-				return VideoModel.find({userId: userId}).sort({uploadDate: -1}).populate('userId').exec();
+				sort = {uploadDate: -1};
+				break;
 			default:
-				return VideoModel.find({userId: userId}).sort({likeCount: 1}).populate('userId').exec();
+				sort = {likeCount: 1};
+				break;
 		}
 	}
+
+	return VideoModel.find({userId: userId})
+		.sort(sort)
+		.select('title thumbnailPath viewCount uploadDate duration userId')
+		.populate('userId', 'userNameDisplay userNameUrl')
+		.exec();
 };
 
 Videos.prototype.getVideoCount = function(userId) {
