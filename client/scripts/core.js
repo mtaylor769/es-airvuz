@@ -238,7 +238,8 @@ function bindEvents() {
 
   $header.on('keyup', '#search-input', function (event) {
     if (event.keyCode === 13) {
-      window.location.href = '/search?q=' + $(this).val();
+      var keyword = encodeURIComponent($(this).val());
+      window.location.href = '/search?q=' + keyword;
     }
   });
 
