@@ -21,6 +21,7 @@ Comment.prototype.post = function(req, res) {
   commentCrud
     .create(comment)
     .then(function (comment) {
+      logger.debug(comment);
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
       notification.commentId = comment._id;
@@ -100,7 +101,7 @@ Comment.prototype.getById = function(req, res) {
 
 Comment.prototype.put = function(req, res) {
   commentCrud
-  .update({id: req.body._id, update: req.body})
+  .update({id: req.params.id, update: req.body})
   .then(function(comment) {
     res.send(comment);
   })

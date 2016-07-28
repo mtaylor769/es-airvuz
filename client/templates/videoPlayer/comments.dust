@@ -1,5 +1,5 @@
 {#comments}
-  <li class="comment-wrap" data-userId="{userId._id}">
+  <li class="comment-wrap" data-userId="{userId._id}" id="{_id}">
     <div class="row">
       <div class="m-t-5">
         <a href="/user/{userId.userNameUrl}" class="col-xs-2 col-md-1">
@@ -9,14 +9,19 @@
           <div class="comment-options-wrapper">
               <span class="glyphicon glyphicon-option-vertical comment-options"></span>
               <div class="comment-options-box">
-                  <ul class="comment-options-selection"></ul>
+                  <ul class="comment-options-selection" data-commentId="{_id}">
+                  {?canEdit}
+                    <li class="delete-comment">delete</li>
+                    <li class="edit-comment">edit</li>
+                  {/canEdit}
+                  </ul>
               </div>
           </div>
           <div style="display: flex; font-size: 10px">
               <p class="m-b-0" style="font-size: 14px"><a href="/user/{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
               <p datetime="{commentCreatedDate}" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">{commentDisplayDate}</p>
           </div>
-          <p class="m-b-0">{comment}</p>
+          <p class="comment-text m-b-0">{comment}</p>
         </div>
       </div>
     </div>

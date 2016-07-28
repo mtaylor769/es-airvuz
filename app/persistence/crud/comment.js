@@ -277,6 +277,7 @@ Comment.prototype.getByVideoId = function(id) {
 };
 
 Comment.prototype.update = function(params) {
+  logger.error(params);
   return CommentModel.findByIdAndUpdate(params.id, params.update, { new: true }).exec();
 };
 
