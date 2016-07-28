@@ -76,6 +76,14 @@ Notifications.prototype.getAllByUserId = function(id) {
   return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').populate('notifiedUserId').exec();
 };
 
+Notifications.prototype.getByComment = function(id) {
+  return NotificationModel.find({commentId: id}).lean().exec();
+};
+
+Notifications.prototype.updateComment = function(params) {
+  return NotificationModel.findByIdAndUpdate(params.id, params.update, {new: true}).exec();
+};
+
 Notifications.prototype.markAllAsRead = function(id) {
   return NotificationModel.update({notifiedUserId: id, notificationViewed: false}, {notificationViewed:true}).exec();
 };

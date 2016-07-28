@@ -238,7 +238,6 @@ function bindEvents() {
     var data = {};
     data.comment = comment;
 
-    console.log(data);
     $.ajax({
       type: 'PUT',
       url: '/api/comment/' + commentId,

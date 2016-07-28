@@ -100,11 +100,20 @@ Comment.prototype.getById = function(req, res) {
 };
 
 Comment.prototype.put = function(req, res) {
-  commentCrud
-  .update({id: req.params.id, update: req.body})
-  .then(function(comment) {
-    res.send(comment);
-  })
+  var notificationUpdate = {};
+  notificationUpdate.notificationMessage = req.body.comment;
+  NotificationCrud
+    .getByComment(req.params.id)
+    .then(function(notification) {
+      return NotificationCrud.updateComment({id: notification[0]._id, update: notificationUpdate})
+    })
+    .then(function(notification) {
+      logger.debug(notification);
+      return commentCrud.update({id: req.params.id, update: req.body})
+    })
+    .then(function(comment) {
+      res.send(comment);
+    });
 };
 
 Comment.prototype.delete = function(req, res) {
