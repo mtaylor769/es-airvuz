@@ -27,6 +27,7 @@ var user                               = identity.currentUser;
 var notificationObject                 = {};
 var hasStartedPlaying                  = false;
 var paused                             = false;
+var followData                         = {};
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -311,7 +312,6 @@ function bindEvents() {
   //follow video user
   $('#follow').on('click', function() {
     if(userIdentity._id && userIdentity._id !== video.userId) {
-      var followData = {};
       var followObject = {};
       followObject.userId = userIdentity._id;
       followObject.followingUserId = video.userId;
@@ -323,11 +323,36 @@ function bindEvents() {
       }
       followData.follow = followObject;
       followData.notification = notificationObject;
-      $.ajax({
-          type: 'POST',
-          url: '/api/follow',
-          data: {data: JSON.stringify(followData)}
-        })
+
+      if ($(this).text() === '-') {
+        $('#unfollow-modal').modal('show');
+      } else {
+        xhrFollowUser(followData);
+      }
+
+    } else if(!userIdentity.isAuthenticated()) {
+      showLoginDialog();
+    } else {
+      $('#follow-self-modal').modal('show');
+    }
+  });
+
+  // unfollow button event handler
+  $('#unfollow-modal-btn').on('click', function (event) {
+    $('#unfollow-modal').modal('hide');
+    xhrFollowUser(followData);
+  });
+
+  /*
+   * make the request to follow or unfollow the person
+   * @param {Object} data - follow data
+   */
+  function xhrFollowUser (data) {
+    $.ajax({
+      type: 'POST',
+      url: '/api/follow',
+      data: {data: JSON.stringify(data)}
+    })
         .done(function (response) {
           if(response.status === 'followed') {
             AVEventTracker({
@@ -351,12 +376,7 @@ function bindEvents() {
         })
         .fail(function (error) {
         })
-    } else if(!userIdentity.isAuthenticated()) {
-      showLoginDialog();
-    } else {
-      $('#follow-self-modal').modal('show');
-    }
-  });
+  }
 
   //facebook modal event
   $('#facebook').click(function(e){
