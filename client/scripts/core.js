@@ -7,6 +7,7 @@ var PubSub        = require('pubsub-js');
 var FacebookPixel = require('./facebook-pixel');
 var GoogleAnalytic = require('./google-analytic');
 var AVEventTracker = require('./avEventTracker');
+var browser       = require('./services/browser');
 
 /**
  * Templates
@@ -328,15 +329,22 @@ function bindEvents() {
     $header.find('#search-input').addClass('active').focus();
   });
 
+  function _doSearch(keyword) {
+    window.location.href = '/search?q=' + encodeURIComponent(keyword);
+  }
+
   $header.on('keyup', '#search-input', function (event) {
     if (event.keyCode === 13) {
-      var keyword = encodeURIComponent($(this).val());
-      window.location.href = '/search?q=' + keyword;
+      _doSearch($(this).val());
     }
   });
 
   $header.on('blur', '#search-input', function (event) {
     $(this).removeClass('active');
+
+    if (browser.isMobile()) {
+      _doSearch($(this).val());
+    }
   });
 
   $header.on('click', '.logout-btn', logout);

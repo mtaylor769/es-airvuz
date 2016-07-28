@@ -224,6 +224,8 @@ body.modal-open {
   width: 320px;
   top: 54px;
   left: -170px;
+  /* prevent iphone from zooming in */
+  font-size: 16px;
 }
 
 #header .right-nav .glyphicon {
