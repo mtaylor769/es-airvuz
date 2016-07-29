@@ -22,6 +22,7 @@ var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');
 var amazonConfig                       = require('./config/amazon.config.client');
+var dialog                             = require('./services/dialogs');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
@@ -325,7 +326,13 @@ function bindEvents() {
       followData.notification = notificationObject;
 
       if ($(this).text() === '-') {
-        $('#unfollow-modal').modal('show');
+        dialog.open({
+          title: 'Unfollow',
+          body: 'Are you sure you want to unfollow this person?',
+          showOkay: true
+        }).then(function () {
+          xhrFollowUser(followData);
+        });
       } else {
         xhrFollowUser(followData);
       }
@@ -335,12 +342,6 @@ function bindEvents() {
     } else {
       $('#follow-self-modal').modal('show');
     }
-  });
-
-  // unfollow button event handler
-  $('#unfollow-modal-btn').on('click', function (event) {
-    $('#unfollow-modal').modal('hide');
-    xhrFollowUser(followData);
   });
 
   /*
