@@ -117,23 +117,48 @@ Comment.prototype.put = function(req, res) {
 };
 
 Comment.prototype.delete = function(req, res) {
-  commentCrud
-  .getAllByParentComment(req.params.id)
+    var reply;
+  commentCrud.getById(req.params.id)
+  .then(function(comment) {
+      if(!comment.parentCommentId) {
+        return commentCrud.getAllByParentComment(req.params.id)
+      } else {
+        reply = true;
+        return comment;
+      }
+  })
   .then(function(comments) {
-    logger.debug(comments);
-    if(comments.length === 1 && comments[0].parentCommentId !== null) {
-      commentCrud.replyDecrease(comments[0].parentCommentId)
-    }
-    var removeObject = {};
-    removeObject.removeCount = comments.length;
-    removeObject.videoId = comments[0].videoId;
-    Promise.map(comments, function(comment) {
-      return NotificationCrud.deleteByCommentId(comment._id)
-        .then(function() {
-          return commentCrud.remove(comment._id);
+      logger.error('console.log for comments')
+      logger.debug(comments)
+      logger.error('console log for type of')
+      logger.debug(typeof comments)
+    if(typeof comments.length === 'undefined') {
+        var removeObject = {};
+        removeObject.removeCount = 1;
+        removeObject.videoId = comments.videoId;
+        return commentCrud.replyDecrease(comments.parentCommentId)
+            .then(function() {
+                return NotificationCrud.deleteByCommentId(comments._id)
+            })
+            .then(function() {
+                return commentCrud.remove(comments._id);
+            })
+            .then(function() {
+                return removeObject;
+            })
+    } else {
+        var removeObject = {};
+        removeObject.removeCount = comments.length;
+        removeObject.videoId = comments[0].videoId;
+        return Promise.map(comments, function(comment) {
+            return NotificationCrud.deleteByCommentId(comment._id)
+                .then(function() {
+                    return commentCrud.remove(comment._id);
+                })
+        }).then(function() {
+            return removeObject;
         })
-    });
-    return removeObject;
+    }
   })
   .then(function(removeObject) {
     videoCrud.getById(removeObject.videoId)
@@ -148,8 +173,12 @@ Comment.prototype.delete = function(req, res) {
       })
   })
   .then(function() {
-    var commentId = req.params.id;
-    return NotificationCrud.delete(commentId);
+      if(!reply) {
+          var commentId = req.params.id;
+          return NotificationCrud.delete(commentId);
+      } else {
+          return;
+      }
   })
   .then(function() {
     res.sendStatus(200);
