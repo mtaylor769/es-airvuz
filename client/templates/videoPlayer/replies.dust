@@ -10,7 +10,7 @@
                 <div class="comment-options-wrapper">
                     <span class="glyphicon glyphicon-option-vertical comment-options"></span>
                     <div class="comment-options-box">
-                        <ul class="comment-options-selection" data-commentId="{_id}>
+                        <ul class="comment-options-selection" data-commentId="{_id}">
                             {?optionHtml}
                                 <li class="delete-comment">Delete</li><li class="edit-comment">Edit</li>
                             {:else}

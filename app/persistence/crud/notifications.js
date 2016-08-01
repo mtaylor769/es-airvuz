@@ -96,6 +96,10 @@ Notifications.prototype.delete = function(id) {
   return NotificationModel.findByIdAndRemove(id).exec();
 }
 
+Notifications.prototype.deleteByCommentId = function(commentId) {
+  return NotificationModel.find({commentId: commentId}).remove().exec();
+};
+
 
 Notifications.prototype.getUnseen = getUnseen;
 Notifications.prototype.markAsSeen = markAsSeen;

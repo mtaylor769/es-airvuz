@@ -272,6 +272,10 @@ Comment.prototype.getById = function(id) {
   return CommentModel.findById(id).exec();
 };
 
+Comment.prototype.replyDecrease = function(id) {
+  CommentModel.findByIdAndUpdate(id, {$subtract : {replyCount: 1}}).exec();
+}
+
 Comment.prototype.getByVideoId = function(id) {
   return CommentModel.find({videoId: id})
 };

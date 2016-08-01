@@ -120,11 +120,18 @@ Comment.prototype.delete = function(req, res) {
   commentCrud
   .getAllByParentComment(req.params.id)
   .then(function(comments) {
+    logger.debug(comments);
+    if(comments.length === 1 && comments[0].parentCommentId !== null) {
+      commentCrud.replyDecrease(comments[0].parentCommentId)
+    }
     var removeObject = {};
     removeObject.removeCount = comments.length;
     removeObject.videoId = comments[0].videoId;
     Promise.map(comments, function(comment) {
-        return commentCrud.remove(comment._id);
+      return NotificationCrud.deleteByCommentId(comment._id)
+        .then(function() {
+          return commentCrud.remove(comment._id);
+        })
     });
     return removeObject;
   })
@@ -136,9 +143,13 @@ Comment.prototype.delete = function(req, res) {
         updateObject.update = {};
         updateObject.update.commentCount = video.commentCount - removeObject.removeCount;
         logger.error('this is the update object');
-        logger.debug(updateObject)
+        logger.debug(updateObject);
         return videoCrud.update(updateObject);
       })
+  })
+  .then(function() {
+    var commentId = req.params.id;
+    return NotificationCrud.delete(commentId);
   })
   .then(function() {
     res.sendStatus(200);
