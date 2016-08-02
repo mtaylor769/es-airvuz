@@ -373,7 +373,7 @@ function contactUs(req, res) {
         var mailOptions = {
           from:'noreply <noreply@airvuz.com>',
           to: 'support@airvuz.com',
-          subject: 'Someone has sent a request for information',
+          subject: 'Contact Us',
           html: '<div>'+
           '<h4>Someone has sent a request for information</h4>'+
           '<ul style="list-style: none">'+
