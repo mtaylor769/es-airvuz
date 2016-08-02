@@ -18,6 +18,10 @@ var $loginModal,
     $header,
     $footerSub1,
     $emailConfirmModal,
+    $contactUs,
+    $contactUsModal,
+    contactUsFlag,
+    sendContactUsEmail,
     auth2;
 
 
@@ -92,6 +96,10 @@ function onLoginSuccess() {
     .then(renderProfileHeader);
   $footerSub1.addClass('is-login');
   $loginModal.modal('hide');
+  if(contactUsFlag === true) {
+    $contactUsModal.modal('show');
+    contactUsFlag = false;
+  }
   fbq('trackCustom', 'login');
   ga('send', 'event', 'login', 'login', 'login');
 }
@@ -113,6 +121,39 @@ function bindEvents() {
   $headerProfile = $('#profile-header');
   $loginModal = $('#login-modal');
   $emailConfirmModal = $('#email-sent-modal');
+  $contactUsModal = $('#contact-us-modal');
+  $contactUs = $('.contact-us');
+  sendContactUsEmail = $('#send-contact-us');
+
+
+  function contactUs() {
+    if(identity.isAuthenticated()) {
+      $contactUsModal.modal('show');
+    } else {
+      $loginModal.modal('show');
+      contactUsFlag = true;
+    }
+  }
+
+  $contactUs.on('click', function() {
+    contactUs();
+  });
+
+  sendContactUsEmail.on('click', function() {
+    var contactData = {};
+    contactData.contactUsMessage = $('body').find('#contact-us-textarea').val();
+    contactData.contactingUser = identity.currentUser._id;
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/contact-us',
+      data: contactData
+    })
+    .done(function() {
+      $contactUsModal.modal('hide');
+    })
+    .fail(function(error) {
+    })
+  });
 
   function onPasswordReset() {
     var url = '/api/users/password-reset',
@@ -193,6 +234,7 @@ function bindEvents() {
   $loginModal.on('hidden.bs.modal', function () {
     // reset tab to login
     $loginModal.find('#login-anchor-tab').click();
+    contactUsFlag = false;
   });
   
   $loginModal.on('show.bs.modal', function (event) {

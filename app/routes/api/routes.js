@@ -73,6 +73,9 @@ apiRouter.route('/api/users/create')
 apiRouter.route('/api/users/hireme')
 	.post(users.hireMe);
 
+apiRouter.route('/api/users/contact-us')
+	.post(users.contactUs)
+
 apiRouter.route('/api/users/:id' + '/status')
 	.put(protect, users.statusChange);
 

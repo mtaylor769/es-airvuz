@@ -343,6 +343,60 @@ function statusChange(req, res) {
     });
 }
 
+function contactUs(req, res) {
+  var userId = req.body.contactingUser;
+  var message = req.body.contactUsMessage;
+  var userInfo;
+
+  return usersCrud.findById(userId)
+      .then(function(user) {
+        userInfo = user;
+        return socialCrud.findAllSocialById(user._id)
+      })
+      .then(function(socialAccounts) {
+        var socialHtml = '';
+        if(socialAccounts.length > 0) {
+          socialAccounts.forEach(function(socialAccount) {
+            socialHtml += '<li>' + socialAccount.provider + '</li>';
+          });
+        }
+
+        var transport = nodemailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user:'support@airvuz.com',
+            pass:'b5&YGG6n'
+          }
+        });
+
+        // TODO: make domain dynamic
+        var mailOptions = {
+          from:'noreply <noreply@airvuz.com>',
+          to: 'support@airvuz.com',
+          subject: 'Someone has sent a request for information',
+          html: '<div>'+
+          '<h4>Someone has sent a request for information</h4>'+
+          '<ul style="list-style: none">'+
+          '<li>email : ' + userInfo.emailAddress + '</li>'+
+          '<li>username : ' + userInfo.userNameDisplay + '</li>'+
+          '<li>Social Accounts : '+
+          '<ul>' + socialHtml + '</ul>'+
+          '</li>'+
+          '<li>Message from User : ' + message + '</li>'+
+          '</ul>'+
+          '</div>'
+      };
+
+        transport.sendMail(mailOptions, function(error, message) {
+          if(error) {
+            res.sendStatus(400);
+          } else {
+            res.sendStatus(200);
+          }
+        })
+      })
+}
+
 User.prototype.hireMe               = hireMe;
 User.prototype.search               = search;
 User.prototype.get                  = get;
@@ -351,6 +405,7 @@ User.prototype.put                  = put;
 User.prototype.delete               = deleteUser;
 User.prototype.passwordResetRequest = passwordResetRequest;
 User.prototype.passwordResetChange  = passwordResetChange;
-User.prototype.statusChange              = statusChange;
+User.prototype.statusChange         = statusChange;
+User.prototype.contactUs            = contactUs;
 
 module.exports = new User();
