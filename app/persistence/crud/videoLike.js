@@ -93,6 +93,6 @@ VideoLike.prototype.delete = function(id) {
 };
 
 VideoLike.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
-  return VideoLikeModel.find({userId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).exec()
+  return VideoLikeModel.find({userId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
 };
 module.exports = new VideoLike();

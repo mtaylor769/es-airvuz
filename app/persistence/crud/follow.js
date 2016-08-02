@@ -113,11 +113,11 @@ Follow.prototype.findByFollowingUserIdAndUserId = function(id) {
 };
 
 Follow.prototype.findFollowersByUserIdAndDate = function(userId, startDate, endDate) {
-  return FollowModel.find({followingUserId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).exec()
+  return FollowModel.find({followingUserId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
 };
 
 Follow.prototype.findFollowingByUserIdAndDate = function(userId, startDate, endDate) {
-  return FollowModel.find({userId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).exec()
+  return FollowModel.find({userId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
 };
 
 Follow.prototype.getFollow = getFollow;

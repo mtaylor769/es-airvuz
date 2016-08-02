@@ -76,12 +76,30 @@
         })
     }
 
+    function getEmployeeReport(startDate, endDate) {
+        $scope.siteInfo = false;
+        $scope.videos = false;
+        $scope.comments = false;
+        $scope.loading = true;
+        $scope.employeeReport = false;
+        var dateObject = {};
+        dateObject.startDate = startDate;
+        dateObject.endDate = endDate;
+        $http.post('/api/reports/employee-contributor', dateObject)
+            .success(function(data) {
+                console.log(data);
+                $scope.employees = data;
+                $scope.employeeReport = true;
+            })
+    }
 
 
-    //////////////////
+
+      //////////////////
     var vm = this;
     vm.userVideos = userVideos;
     vm.getComments = getComments;
     vm.getVideos = getVideos;
+    vm.getEmployeeReport = getEmployeeReport;
   }
 })();
