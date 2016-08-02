@@ -50,7 +50,6 @@ Comment.prototype.getPreCondition = function(params){
   preCondition.setValidation(function(params){
     logger.debug(params);
     var errorMessage              = new ErrorMessage();
-    this.data.commentId           = params.commentId || null;
     this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
     this.data.isVisible           = params.isVisible || true;
@@ -61,16 +60,6 @@ Comment.prototype.getPreCondition = function(params){
 
     if(this.data.parentCommentId !== null) {
       this.data.replyDepth = 1;
-    }
-
-    if(this.data.commentId === null) {
-      this.errors = errorMessage.getErrorMessage({
-        errorId					: "VALIDA1000",
-        templateParams	: {
-          name : "commentId"
-        },
-        sourceLocation	: sourceLocation
-      })
     }
 
     if(this.data.comment === null){

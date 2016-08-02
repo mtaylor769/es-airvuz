@@ -684,6 +684,16 @@ body .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
 }
 
 .delete-comment:hover {
+   background-color: gainsboro;
+   color: white;
+ }
+
+.edit-comment:hover {
+  background-color: gainsboro;
+color: white;
+}
+
+.report-comment:hover {
   background-color: gainsboro;
   color: white;
 }
