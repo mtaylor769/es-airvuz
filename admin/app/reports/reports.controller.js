@@ -18,7 +18,6 @@
       $scope.loading = true;
       $http.get('/api/reports/site-info', { params: {startDate: startDate, endDate: endDate}})
         .success(function(data){
-          console.log(data);
           var newUsersArray = [];
           data.newUsersList.forEach(function(user){
             user.email = typeof user.emailAddress != 'undefined' ? user.emailAddress : '';
@@ -66,7 +65,6 @@
       $scope.loading = true;
       $http.get('/api/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
-          console.log(data);
           $scope.username = username;
           $scope.videoCount = data.length;
           $scope.startDate = startDate;
@@ -87,9 +85,9 @@
         dateObject.endDate = endDate;
         $http.post('/api/reports/employee-contributor', dateObject)
             .success(function(data) {
-                console.log(data);
                 $scope.employees = data;
                 $scope.employeeReport = true;
+                $scope.loading = false;
             })
     }
 
