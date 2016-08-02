@@ -172,6 +172,9 @@ body.modal-open {
   border-radius: 0;
   padding: 26px 10px 33px;
 }
+#header .navbar-toggle.primary {
+  background-color: #30c1ed;
+}
 #header .navbar-toggle .icon-bar {
   background-color: #fff;
 }

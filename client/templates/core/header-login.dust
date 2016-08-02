@@ -1,11 +1,27 @@
-<ul class="right-nav">
+<span id="menu">
+  <button type="button" class="navbar-toggle primary" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <a class="btn btn-link" data-toggle="modal" data-target="#login-modal">Login</a>
+    </li>
+    <li>
+      <a href="#" class="btn btn-link" disabled>Profile</a>
+    </li>
+    <li>
+      <a href="#" class="btn btn-link" disabled>Upload Video</a>
+    </li>
+  </ul>
+</span>
+<ul class="right-nav is-login">
   <li class="av-search">
     <input type="text" class="form-control" placeholder="Search" id="search-input">
     <a href="#">
       <span class="glyphicon glyphicon-search"></span>
     </a>
-  </li>
-  <li>
-    <button class="btn btn-primary btn-login" data-toggle="modal" data-target="#login-modal">Login</button>
   </li>
 </ul>
