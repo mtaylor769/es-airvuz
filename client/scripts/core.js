@@ -6,6 +6,7 @@ var appConfig     = require('./config/application.config.client');
 var PubSub        = require('pubsub-js');
 var FacebookPixel = require('./facebook-pixel');
 var GoogleAnalytic = require('./google-analytic');
+var AVEventTracker = require('./avEventTracker');
 
 /**
  * Templates
@@ -22,7 +23,8 @@ var $loginModal,
     $contactUsModal,
     contactUsFlag,
     sendContactUsEmail,
-    auth2;
+    auth2,
+    isLoggedIn = false;
 
 
 //////////////////////////////////////////////////////
@@ -92,6 +94,7 @@ function getNewNotification() {
 }
 
 function onLoginSuccess() {
+  isLoggedIn = true;
   getNewNotification()
     .then(renderProfileHeader);
   $footerSub1.addClass('is-login');
@@ -101,7 +104,12 @@ function onLoginSuccess() {
     contactUsFlag = false;
   }
   fbq('trackCustom', 'login');
-  ga('send', 'event', 'login', 'login', 'login');
+  ga('send', 'event', 'login', 'login success', 'login');
+  AVEventTracker({
+    codeSource	: "core",
+    eventName		: "loginSuccess",
+    eventType		: "loginClick"
+  });
 }
 
 function execSocialLogin(ajaxOption) {
@@ -232,12 +240,27 @@ function bindEvents() {
   onSignupClick.isSubmitted = false;
 
   $loginModal.on('hidden.bs.modal', function () {
+    if (!isLoggedIn) {
+      ga('send', 'event', 'login', 'login dismissed', 'login');
+      AVEventTracker({
+        codeSource	: "core",
+        eventName		: "loginDismissed",
+        eventType		: "loginClick"
+      });
+    }
     // reset tab to login
     $loginModal.find('#login-anchor-tab').click();
     contactUsFlag = false;
   });
-  
+
   $loginModal.on('show.bs.modal', function (event) {
+    ga('send', 'event', 'login', 'header login click', 'login');
+    AVEventTracker({
+      codeSource	: "core",
+      eventName		: "headerLoginClick",
+      eventType		: "loginClick"
+    });
+
     if ($(event.relatedTarget).data('footer')) {
       $loginModal.find('#signup-anchor-tab').click();
     }
@@ -264,11 +287,25 @@ function bindEvents() {
     var emailAddress = $loginModal.find('.email-input:visible').val();
     var password = $loginModal.find('.password-input:visible').val();
 
+    ga('send', 'event', 'login', 'login attempt', 'login');
+    AVEventTracker({
+      codeSource	: "core",
+      eventName		: "loginAttempt",
+      eventType		: "loginClick"
+    });
+
     auth.login({emailAddress: emailAddress, password: password})
       .done(onLoginSuccess)
       .fail(function (message) {
           $loginModal.find('.error-message').text(message).slideDown().delay(5000).slideUp(300);
-      });
+
+          ga('send', 'event', 'login', 'login fail', 'login');
+          AVEventTracker({
+            codeSource	: "core",
+            eventName		: "loginFail",
+            eventType		: "loginClick"
+          });
+        });
   });
 
   $loginModal.on('click', '#signup-btn', onSignupClick);
@@ -290,6 +327,7 @@ function bindEvents() {
   });
 
   $header.on('click', '.logout-btn', function () {
+    ga('send', 'event', 'logout', 'log out ', 'login');
     auth.logout()
       .then(function () {
         auth2.signOut();
@@ -304,8 +342,8 @@ function bindEvents() {
           url: '/api/notifications/seen'
         },
         $badge = $(this).find('.badge');
-      
-    
+
+
     $.ajax(ajaxOptions)
       .then(function () {
         $badge.remove();
@@ -331,7 +369,7 @@ function bindEvents() {
       }
     }, {scope: 'email'});
   });
-  
+
   $loginModal.on('click', '#btn-google', function() {
     auth2.signIn();
   });
@@ -390,7 +428,7 @@ function initialize() {
 
         auth2.currentUser.listen(userChanged);
       });
-      
+
       function userChanged(user) {
         if (!user.isSignedIn()) {
           return;
