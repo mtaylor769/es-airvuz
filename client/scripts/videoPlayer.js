@@ -872,7 +872,9 @@ function initialize(videoPath, currentVideo) {
 
   bindEvents();
 
-  $('[data-toggle="tooltip"]').tooltip();
+  if (!browser.isMobile()) {
+    $('[data-toggle="tooltip"]').tooltip();
+  }
 
   //video description functions
 
