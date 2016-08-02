@@ -50,7 +50,7 @@ Comment.prototype.getPreCondition = function(params){
   preCondition.setValidation(function(params){
     logger.debug(params);
     var errorMessage              = new ErrorMessage();
-    this.data,commentId           = params.commentId || null;
+    this.data.commentId           = params.commentId || null;
     this.data.parentCommentId     = params.parentCommentId || null;
     this.data.comment             = params.comment || null;
     this.data.isVisible           = params.isVisible || true;
