@@ -665,6 +665,10 @@ users.prototype.findById = function(id) {
 	return UserModel.findById(id).exec();
 };
 
+users.prototype.getEmployeeContributor = function() {
+	return UserModel.find({ $or: [ {aclRoles: 'user-employee'}, {aclRoles: 'user-contributor'} ] })
+};
+
 users.prototype.totalUsersByEndDate = function(endDate) {
 	return UserModel.find({accountCreatedDate: {$lte: new Date(endDate)}})
 		.count()

@@ -524,6 +524,10 @@ Videos.prototype.findByUserId = function(id) {
 	return VideoModel.find({userId: id}).exec()
 };
 
+Videos.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
+	return VideoModel.find({userId: userId, uploadDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).exec()
+};
+
 Videos.prototype.getRecentVideos 		= getRecentVideos;
 Videos.prototype.getTrendingVideos 	= getTrendingVideos;
 Videos.prototype.getVideoByCategory = getVideoByCategory;

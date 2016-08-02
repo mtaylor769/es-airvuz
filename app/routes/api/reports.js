@@ -1,8 +1,11 @@
 var log4js					= require('log4js');
 var logger					= log4js.getLogger('app.routes.api.videoLike');
+var Promise                 = require('bluebird');
 var User            = require('../../persistence/crud/users');
 var Videos           = require('../../persistence/crud/videos');
 var Comment         = require('../../persistence/crud/comment');
+var Likes           = require('../../persistence/crud/videoLike');
+var Follow         = require('../../persistence/crud/follow');
 
 function Reports() {
   
@@ -36,6 +39,46 @@ Reports.prototype.getComments = function(req, res) {
     .then(function(comments) {
       res.send(comments);
     })
+};
+
+Reports.prototype.employeeContributor = function(req, res) {
+  var usersArray = [];
+  var startDate = req.body.startDate;
+  var endDate = req.body.endDate;
+  return User.getEmployeeContributor()
+      .then(function(users) {
+        return Promise.map(users, function (user) {
+          var userInfo = {};
+          userInfo.user = user;
+          return Likes.findByUserIdAndDate(user._id, startDate, endDate)
+              .then(function(likes) {
+                userInfo.likes = likes;
+                return Comment.getByUserAndDate(user._id, startDate, endDate)
+              })
+              .then(function(comments) {
+                userInfo.comments = comments;
+                return Follow.findFollowersByUserIdAndDate(user._id, startDate, endDate)
+              })
+              .then(function(followers) {
+                userInfo.followers = followers;
+                return Follow.findFollowingByUserIdAndDate(user._id, startDate, endDate)
+              })
+              .then(function(following) {
+                userInfo.following = following;
+                return Videos.findByUserIdAndDate(user._id, startDate, endDate)
+              })
+              .then(function(videos) {
+                userInfo.uploadedVideos = videos;
+                return userInfo;
+              })
+              .then(function(userInfo) {
+                usersArray.push(userInfo);
+              })
+        })
+        .then(function() {
+          res.send(usersArray);
+        })
+      })
 };
 
 Reports.prototype.siteInfo = function(req, res) {

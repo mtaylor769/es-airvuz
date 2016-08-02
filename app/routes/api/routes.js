@@ -278,6 +278,9 @@ apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
 apiRouter.route('/api/reports/site-info')
 	.get(reports.siteInfo);
 
+apiRouter.route('/api/reports/employee-contributor')
+	.post(reports.employeeContributor);
+
 apiRouter.route('/api/reports/videos')
 	.get(reports.getVideos);
 
