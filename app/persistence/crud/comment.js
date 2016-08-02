@@ -250,7 +250,7 @@ Comment.prototype.getParentCommentByVideoId = function(params) {
 };
 
 Comment.prototype.getByUserAndDate = function(userId, startDate, endDate) {
-  return CommentModel.find({userId: userId, commentCreatedDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).exec()
+  return CommentModel.find({userId: userId, commentCreatedDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec()
 };
 
 Comment.prototype.getById = function(id) {

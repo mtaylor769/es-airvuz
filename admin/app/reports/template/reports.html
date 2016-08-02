@@ -9,6 +9,7 @@
             <input class="form-control" type="text" id="username" ng-model="username">
             <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideos(username, startDate, endDate)">Videos</button>
             <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getComments(username, startDate, endDate)">Comments</button>
+            <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getEmployeeReport(startDate, endDate)">Employee Report</button>
         </div>
 </div>
 <div ng-show="loading" id="loadInfo" class="pre col-md-6">
@@ -20,6 +21,28 @@
             <div class="bounce3"></div>
         </div>
     </div>
+</div>
+<div ng-show="employeeReport">
+    <table>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Like Count</th>
+            <th>Comment Count</th>
+            <th>Follower Count</th>
+            <th>Following Count</th>
+            <th>Videos Uploaded</th>
+        </tr>
+        <tr ng-repeat="employee in employees">
+            <td>{{employee.user.userNameDisplay}}</td>
+            <td>{{employee.user.emailAddress}}</td>
+            <td>{{employee.likes}}</td>
+            <td>{{employee.comments}}</td>
+            <td>{{employee.followers}}</td>
+            <td>{{employee.following}}</td>
+            <td>{{employee.uploadedVideos}}</td>
+        </tr>
+    </table>
 </div>
 <div class="col-md-6" ng-show="siteInfo">
     <h1>{{title}}</h1>
