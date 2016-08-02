@@ -160,28 +160,30 @@ function search(query, page) {
 	// have to purge user name to time like this because of the "|"
 	userNameSearch += '|' + UserModel.purgeUserNameDisplay((keyWordNonCommon));
 
-	return UserModel.findOne({
+	return UserModel.find({
 		$or: [
 			{
 				'userNameUrl': {$regex: new RegExp(userNameSearch, 'i')}
 			}
 		]
 	}).select('userNameUrl').exec()
-		.then(function (user) {
-			var userId = null,
+		.then(function (users) {
+			var userId = [],
 					criteria,
 					foundVideo,
 					videoCount;
 
-			if (user) {
-				userId = user._id;
+			if (users) {
+				users.forEach(function (user) {
+					userId.push(user._id);
+				});
 			}
 
 			criteria = {
 				isActive: true,
 				$or: [
 					{
-						userId: userId
+						userId: {$in: userId}
 					},
 					{
 						description: {$regex: new RegExp(keywords, 'i')}
