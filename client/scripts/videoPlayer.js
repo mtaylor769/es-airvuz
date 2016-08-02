@@ -794,7 +794,7 @@ function initialize(videoPath, currentVideo) {
       browserWidth = browser.getSize().width;
 
   if (browser.isMobile()) {
-    defaultRes = '100';
+    defaultRes = '200';
   } else {
     switch(true) {
       case (browserWidth < 768):
