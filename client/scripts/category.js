@@ -3,8 +3,9 @@ var AmazonConfig              = require('./config/amazon.config.client');
 
 var $categoryPage,
     $loadMoreBtn,
-    current_page = 1,
-    CATEGORY_TYPE;
+    currentPage = 1,
+    currentSort = 'uploadDate',
+    currentCategoryType;
 
 /**
  * Templates
@@ -18,14 +19,15 @@ function bindEvents() {
     $(this).parent().toggleClass('is-open');
   });
   $categoryPage.find('#category-sort-select').on('change', function () {
-    current_page = 1;
+    currentPage = 1;
     $categoryPage.find('#videos > div').empty();
-    _getVideos($(this).val());
+    currentSort = $(this).val();
+    _getVideos();
   });
 }
 
 function onLoadMoreBtnClick() {
-  current_page++;
+  currentPage++;
 
   _getVideos();
 }
@@ -35,13 +37,9 @@ function onLoadMoreBtnClick() {
  * @returns {Promise}
  * @private
  */
-function _getVideos(sort) {
+function _getVideos() {
   var TOTAL_PER_PAGE = 20,
-      apiUrl = '/api/videos/category/' + CATEGORY_TYPE + '/page/' + current_page;
-
-  if (sort) {
-    apiUrl += '?sort=' + sort;
-  }
+      apiUrl = '/api/videos/category/' + currentCategoryType + '/page/' + currentPage + '?sort=' + currentSort;
 
   return $.ajax(apiUrl)
     .then(function (videos) {
@@ -65,10 +63,10 @@ function initialize(categoryType) {
   $categoryPage = $('#category-page');
   $loadMoreBtn = $('#load-more-btn');
 
-  CATEGORY_TYPE = categoryType;
+  currentCategoryType = categoryType;
 
   // only follower videos are render from client side because it require a user to get following video
-  if (CATEGORY_TYPE === 'Following Videos') {
+  if (currentCategoryType === 'Following Videos') {
     getFollowerVideos();
   }
 
