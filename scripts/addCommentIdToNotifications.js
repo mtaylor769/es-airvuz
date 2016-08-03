@@ -37,12 +37,9 @@ function getVideoComments(videos) {
                     return Notification.find({videoId: comment.videoId, notifiedUserId: video.userId}).lean().exec()
                         .then(function(notifications) {
                             return Promise.map(notifications, function(notification) {
-                                console.log('x')
                                 if(notification.notificationMessage === comment.comment) {
-                                    console.log('xxxxxxx');
                                     return Notification.findByIdAndUpdate(notification._id, {commentId: comment._id}).exec()
                                 } else {
-                                    console.log('y')
                                     return;
                                 }
                             })

@@ -12,8 +12,15 @@ var NotificationsSchema = mongoose.Schema({
 		ref: 'Users',
 		required: false,
 		type: mongoose.Schema.ObjectId
-	},	
-	
+	},
+	/*
+	 * The commentId of the comment referenced in the notification
+	 */
+	commentId : {
+		ref: 'Comment',
+		required: false,
+		type: mongoose.Schema.ObjectId
+	},
 	/*
 	 * When the document was created.
 	 */
