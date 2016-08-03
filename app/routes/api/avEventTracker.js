@@ -16,11 +16,12 @@ AVEventTracker.prototype.put = function(req, res) {
 	var params = {};
 	params.codeSource		= req.body.codeSource;
 	params.eventName		= req.body.eventName;
-	params.eventSource	= req.body.eventSource;
+	params.eventSource		= req.body.eventSource;
 	params.eventType		= req.body.eventType;
 	params.clientIp 		= req.body.clientIp;
-	params.eventMessage = req.body.eventMessage;
-			
+	params.eventMessage 	= req.body.eventMessage;
+	params.eventVideoPlaybackDetails = req.body.eventVideoPlaybackDetails;
+
 	EventTrackingCrud
 		.create(params)
 		.then(function() {

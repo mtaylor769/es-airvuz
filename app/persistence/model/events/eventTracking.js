@@ -45,7 +45,11 @@ var eventTrackingSchema = mongoose.Schema({
 		required	: true,
 		type			: String
 	},
-	
+
+	/*
+	 * Video playback details
+	 */
+	eventVideoPlaybackDetails: mongoose.Schema.Types.Mixed,
 
 
 	/*
