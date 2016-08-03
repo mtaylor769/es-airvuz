@@ -49,7 +49,6 @@ function getVideoComments(videos) {
                                     })
                             })
                     } else {
-                        console.log('else');
                         return Notification.find({videoId: comment.videoId, notifiedUserId: video.userId}).lean().exec()
                             .then(function(notifications) {
                                 return Promise.map(notifications, function(notification) {
