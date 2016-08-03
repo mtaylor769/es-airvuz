@@ -34,16 +34,33 @@ function getVideoComments(videos) {
         return Comment.find({videoId: video._id}).lean().exec()
             .then(function(comments) {
                 return Promise.map(comments, function(comment) {
-                    return Notification.find({videoId: comment.videoId, notifiedUserId: video.userId}).lean().exec()
-                        .then(function(notifications) {
-                            return Promise.map(notifications, function(notification) {
-                                if(notification.notificationMessage === comment.comment) {
-                                    return Notification.findByIdAndUpdate(notification._id, {commentId: comment._id}).exec()
-                                } else {
-                                    return;
-                                }
+                    if(comment.parentCommentId !== null) {
+                        return Comment.findById(comment.parentCommentId)
+                            .then(function(parentComment) {
+                                return Notification.find({videoId: parentComment.videoId, notifiedUserId: parentComment.userId}).lean().exec()
+                                    .then(function(notifications) {
+                                        return Promise.map(notifications, function(notification) {
+                                            if(notification.notificationMessage === comment.comment) {
+                                                return Notification.findByIdAndUpdate(notification._id, {commentId: comment._id}).exec()
+                                            } else {
+                                                return;
+                                            }
+                                        })
+                                    })
                             })
-                        })
+                    } else {
+                        console.log('else');
+                        return Notification.find({videoId: comment.videoId, notifiedUserId: video.userId}).lean().exec()
+                            .then(function(notifications) {
+                                return Promise.map(notifications, function(notification) {
+                                    if(notification.notificationMessage === comment.comment) {
+                                        return Notification.findByIdAndUpdate(notification._id, {commentId: comment._id}).exec()
+                                    } else {
+                                        return;
+                                    }
+                                })
+                            })
+                    }
                 })
             })
     })
