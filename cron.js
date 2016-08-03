@@ -24,7 +24,7 @@ VideoViewModel = mongoose.model('VideoView', require('./app/persistence/model/vi
 mongoose.connection.once('connected', start);
 
 function generateTrendingCollection() {
-  var twoWeekAgo = moment().subtract(14, 'days').toDate();
+  var twoWeekAgo = moment().subtract(7, 'days').toDate();
 
   return VideoViewModel.aggregate([
       {
