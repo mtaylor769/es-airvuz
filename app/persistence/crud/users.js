@@ -379,19 +379,7 @@ users.prototype.create = function(params) {
 				logger.debug('hash password');
 				saveUser.password = UserModel.generateHash(saveUser.password);
 			}
-			return saveUser.save(function (error) {
-				if (error) {
-					logger.debug('error while saving ' + error);
-					var errorMessage = new ErrorMessage();
-					throw errorMessage.getErrorMessage({
-						statusCode: "500",
-						errorId: "PERS1000",
-						errorMessage: "Failed while creating new user",
-						sourceError: error,
-						sourceLocation: "persistence.crud.Users.create"
-					});
-				}
-			});
+			return saveUser.save();
 		}
 	});
 };
