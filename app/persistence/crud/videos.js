@@ -383,15 +383,9 @@ Videos.prototype.create = function(params) {
 	);
 };
 
-//Videos.prototype.get = function() {
-//	VideoModel.find({}).exec()
-//	.then(function(videos) {
-//		return res.send(videos);
-//	})
-//	.catch(function(err) {
-//		return err;
-//	})
-//};
+Videos.prototype.getAllVideos = function() {
+	return VideoModel.find({}).lean().exec();
+};
 
 /**
  * get next videos by category

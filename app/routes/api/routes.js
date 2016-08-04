@@ -287,6 +287,8 @@ apiRouter.route('/api/reports/videos')
   .get(reports.getVideos);
 
 apiRouter.route('/api/reports/comments')
-  .get(reports.getComments);
+	.get(reports.getComments);
+apiRouter.route('/api/reports/hashtag')
+	.post(reports.hashTag);
 
 module.exports = apiRouter;
