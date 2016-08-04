@@ -81,6 +81,37 @@ Reports.prototype.employeeContributor = function(req, res) {
       })
 };
 
+Reports.prototype.hashTag = function(req, res) {
+    console.log(req.body);
+    var hashTag = new RegExp(req.body.hashTag, 'i');
+    var startDate = req.body.startDate;
+    var endDate = req.body.endDate;
+    var videosWithHashtags = [];
+    console.log(hashTag);
+     Videos
+        .getAllVideos()
+        .then(function(videos) {
+            console.log(videos.length);
+            return Promise.map(videos, function(video) {
+                return Comment
+                    .findByVideoAndHashAndDate(video._id, hashTag, startDate, endDate)
+                    .then(function (comments){
+                        if(comments) {
+                            console.log(comments);
+                            video.hashCount = comments;
+                            videosWithHashtags.push(video);
+                        }
+                    })
+            })
+            .then(function() {
+                logger.error('console.log for videosWithHash length');
+                logger.debug(videosWithHashtags.length);
+                res.send(videosWithHashtags);
+            })
+        })
+
+};
+
 Reports.prototype.siteInfo = function(req, res) {
   logger.debug('REPORTS: IN');
   var endDate = req.query.endDate;
