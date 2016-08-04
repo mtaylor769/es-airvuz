@@ -207,7 +207,10 @@ function bindEvents() {
       type: 'POST',
       url: '/api/users/create',
       data: JSON.stringify(newUserObject),
-      contentType : 'application/json'
+      contentType : 'application/json',
+      beforeSend: function () {
+        $loginModal.find('#signup-btn').prop('disabled', true);
+      }
     })
       .done(function() {
         $loginModal.find('#email:visible').val('');
@@ -226,6 +229,7 @@ function bindEvents() {
       })
       .always(function () {
         onSignupClick.isSubmitted = false;
+        $loginModal.find('#signup-btn').prop('disabled', false);
       });
   }
 
