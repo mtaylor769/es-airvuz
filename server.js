@@ -213,6 +213,10 @@ app.get("/social-login", function(req, res) {
 	res.sendFile(path.join(__dirname, './client/social-login.html'));
 });
 
+app.get("/google2ad042ef42b82b4f.html", function(req, res) {
+	res.sendFile(path.join(__dirname, './client/google2ad042ef42b82b4f.html'));
+});
+
 app.use(function (req, res) {
 	if (req.accepts('html')) {
 		return loadView(req, res, notFoundView.getViewName());
