@@ -69,7 +69,7 @@ function start() {
     .then(function () {
       console.log('******************** running cron ********************');
       // schedule to re-run
-      trendingCron = schedule.scheduleJob({hour: 24}, function () {
+      trendingCron = schedule.scheduleJob({hour: 4}, function () {
         console.log('******************** is generating trend ********************');
         generateTrendingCollection();
       });
