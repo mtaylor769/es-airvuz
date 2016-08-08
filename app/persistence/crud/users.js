@@ -745,10 +745,15 @@ function updateStatus(userId, status) {
 	return UserModel.findOneAndUpdate({_id: userId}, {status: status}).exec();
 }
 
+function verifyStatus(userId) {
+	return UserModel.findOne({_id: userId}).select('status aclRoles').lean().exec();
+}
+
 users.prototype.updateRoles 							= updateRoles;
 users.prototype.resetPasswordRequest 			= resetPasswordRequest;
 users.prototype.resetPasswordChange 			= resetPasswordChange;
 users.prototype.getUserByUserNameUrl 			= getUserByUserNameUrl;
 users.prototype.updateStatus 							= updateStatus;
+users.prototype.verifyStatus 							= verifyStatus;
 
 module.exports = new users();
