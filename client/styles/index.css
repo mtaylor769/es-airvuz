@@ -1111,7 +1111,6 @@ Begin userProfile CSS
 }
 
 #follower p{
-  padding: 15px;
   font-size: 15px;
 }
 
@@ -1137,6 +1136,12 @@ Begin userProfile CSS
 #following p{
   padding: 15px;
   font-size: 15px;
+}
+
+#following .follower-wrapper-title,
+#follower .follower-wrapper-title{
+  word-wrap: break-word;
+  padding-left:10px;
 }
 
 .profile-video .col-xs-6, .col-xs-5 {

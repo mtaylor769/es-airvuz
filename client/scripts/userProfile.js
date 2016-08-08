@@ -24,6 +24,10 @@ var userData                  = {};
 var allOwnerVideos            = [];
 var showcaseOwnerVideos       = [];
 var skip                      = 0;
+var fUserId                   = null;
+var modalFollowBtnClicked     = false;
+var modalFollowBtnSelected    = null;
+
 
 /*
 Edit Video Variables
@@ -46,6 +50,7 @@ var userProfileEdit       = require('../templates/userProfile/edit-profile.dust'
 var aboutMe               = require('../templates/userProfile/about.dust');
 var videoInfo             = require('../templates/userProfile/edit-video.dust');
 var thumbnailTpl          = require('../templates/upload/thumbnail.dust');
+var followTpl             = require('../templates/userProfile/follow.dust');
 
 var okHtml                = '<div class="ok showcase-edit-button"><span class="glyphicon glyphicon-ok"></span></div>';
 var notSelectedHtml       = '<div class="not-selected showcase-edit-button"><span class="glyphicon glyphicon-plus"></span></div>';
@@ -831,7 +836,6 @@ function renderSocialMediaLinks() {
   if (profileUser.socialMediaLinks) {
     //test for existence of socialMediaLinks attribute
     if (profileUser.socialMediaLinks.length > 0) {
-      console.log(profileUser.socialMediaLinks);
       //socialMediaLinks could still exist but have nothing in array
       profileUser.socialMediaLinks.forEach(function(account){
         switch (account.socialType) {
@@ -920,16 +924,18 @@ function getData() {
 ////// follow block
 
 function updateFollow() {
+  var userToFollowId = fUserId !== null ? fUserId : profileUser._id;
+
   var followData = {
     follow : {
       userId : user._id,
-      followingUserId : profileUser._id
+      followingUserId : userToFollowId
     },
     notification : {
       notificationType : 'FOLLOW',
       notificationMessage : 'started following you',
       actionUserId : user._id,
-      notifiedUserId : profileUser._id
+      notifiedUserId : userToFollowId
     }
   };
 
@@ -940,24 +946,35 @@ function updateFollow() {
   })
     .done(function(response){
       if(response.status === 'followed') {
-        swapFollowBtn(true);
+        if (modalFollowBtnClicked) {
+          updateModalFollowBtn(true);
+        } else {
+          swapFollowBtn(true);
+        }
         AVEventTracker({
-          codeSource	: "videoPlayer",
+          codeSource	: "userPage",
           eventName		: "followedUser",
           eventType		: "click"
         });
         $('#follow').text('-');
         fbq('trackCustom', 'follow');
       } else if(response.status === 'unfollowed'){
-        swapFollowBtn(false);
+        if (modalFollowBtnClicked) {
+          updateModalFollowBtn(false);
+        } else {
+          swapFollowBtn(false);
+        }
           AVEventTracker({
-            codeSource	: "videoPlayer",
+            codeSource	: "userPage",
             eventName		: "unfollowedUser",
             eventType		: "click"
           });
         //TODO Update current profile page with new amount of followers
         fbq('trackCustom', '-follow');
       }
+
+      modalFollowBtnClicked = false;
+      fUserId = null;
 
       ga('send', 'event', 'user page', 'following', 'following user');
     })
@@ -1010,6 +1027,14 @@ function swapFollowBtn(bool) {
     $('.profile-button')
       .siblings()
       .css('margin-bottom', '0px')
+  }
+}
+
+function updateModalFollowBtn(isFollowing) {
+  if (isFollowing) {
+    $(modalFollowBtnSelected).html('UNFOLLOW');
+  } else {
+    $(modalFollowBtnSelected).html('FOLLOW');
   }
 }
 
@@ -1078,23 +1103,22 @@ function bindHireMeFunction() {
 }
 
 function openFollowing() {
-  $('.following-wrapper').remove();
+  $('#following').children().remove();
   skip = 0;
   getMoreFollowing();
   //run ajax function to get following then
-  $('#following-modal').modal('show')
+  $('#following-modal').modal('show');
 }
 
 function openFollowers() {
-  $('.follower-wrapper').remove();
+  $('#follower').children().remove();
   skip = 0;
   getMoreFollowers();
   //run ajax function to get following then
-  $('#followers-modal').modal('show')
+  $('#followers-modal').modal('show');
 }
 
 function getMoreFollowers() {
-  console.log('hit function');
   var userId = profileUser._id;
   $.ajax({
     type:'GET',
@@ -1102,16 +1126,12 @@ function getMoreFollowers() {
     data:{userId: userId, skip: skip}
   })
   .done(function(followers) {
-    var html = '';
-    followers.forEach(function(follower) {
-      html += '<div class="follower-wrapper row">' +
-        '<div class="col-xs-2"><img src="' + follower.userId.profilePicture + '" width="50px" height="50px"></div>' +
-        '<a href="/user/' + follower.userId.userNameUrl + '" class="col-xs-4"><p class="username">' + follower.userId.userNameDisplay + '</p></a>' +
-        '<p class="date-followed col-xs-6">Started following you on : '+ follower.createdDate +'</p>' +
-        '</div>';
+    followers.map(function(follower) {
+      follower.userType = 'follower';
     });
-    
-    $('#follower').append(html);
+
+    renderFollowers($('#follower'), followers, false);
+
     if(followers.length < 10) {
       $('.follower-btn-wrapper').hide();
     } else {
@@ -1122,11 +1142,9 @@ function getMoreFollowers() {
   })
   .fail(function(error) {
   })
-
 }
 
 function getMoreFollowing() {
-  console.log('hit function');
   var userId = profileUser._id;
   $.ajax({
     type:'GET',
@@ -1134,17 +1152,12 @@ function getMoreFollowing() {
     data:{userId: userId, skip: skip}
   })
     .done(function(followers) {
-      console.log(followers);
-      var html = '';
-      followers.forEach(function(follower) {
-        html += '<div class="following-wrapper row">' +
-          '<div class="col-xs-2"><img src="' + follower.followingUserId.profilePicture + '" width="50px" height="50px"></div>' +
-          '<a href="/user/' + follower.followingUserId.userNameUrl + '" class="col-xs-4"><p class="username">' + follower.followingUserId.userNameDisplay + '</p></a>' +
-          '<p class="date-followed col-xs-6">You started following on : '+ follower.createdDate +'</p>' +
-          '</div>';
+      followers.map(function(follower) {
+        follower.userType = 'following';
       });
 
-      $('#following').append(html);
+      renderFollowers($('#following'), followers, true);
+
       skip ++;
       if(followers.length < 10) {
         $('.following-btn-wrapper').remove();
@@ -1152,7 +1165,37 @@ function getMoreFollowing() {
     })
     .fail(function(error) {
     })
+}
 
+/*
+ * render the followers in the modal
+ * @params{Element, Object, Boolean}
+ */
+function renderFollowers(el, data, showFollowBtn) {
+  followTpl({
+    follow: data
+  }, function (err, html) {
+    el.append(html);
+  });
+
+  if (user !== null) {
+    if (user._id !== profileUser._id) {
+      $('.follow-modal-button').remove();
+    } else {
+      if (!showFollowBtn) {
+        $('.follow-modal-button').remove();
+      }
+
+      $('.follow-modal-button').on('click', function() {
+        fUserId = this.getAttribute('data-id');
+        modalFollowBtnClicked = true;
+        modalFollowBtnSelected = this;
+        updateFollow();
+      });
+    }
+  } else {
+    $('.follow-modal-button').remove();
+  }
 }
 
 function initialize() {
