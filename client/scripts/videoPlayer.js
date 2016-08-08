@@ -160,7 +160,7 @@ function onAutoPlayChange(event, state) {
     data: autoPlayObject
   })
   .done(function(response) {
-    user.autoPlay = response.autoPlay;
+    user.autoPlay = response.data.autoPlay;
     identity.save();
   })
   .fail(function(error) {
