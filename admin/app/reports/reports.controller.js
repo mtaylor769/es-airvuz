@@ -131,6 +131,8 @@
         $http.post('/api/reports/hashtag', data)
             .success(function(data) {
                 console.log(data);
+                $scope.hashtagReport = true;
+                $scope.hashtagDisplay = data;
             })
     }
 

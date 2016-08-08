@@ -97,7 +97,7 @@ VideoLike.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
 };
 
 VideoLike.prototype.findByUserIdAndVideoId = function(userId, videoId) {
-  return VideoLikeModel.findOne({userId: userId, videoId: videoId}).exec();
+  return VideoLikeModel.findOne({userId: userId, videoId: videoId}).populate('userId').exec();
 };
 
 module.exports = new VideoLike();

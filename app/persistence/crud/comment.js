@@ -302,7 +302,7 @@ Comment.prototype.findByHashAndDate = function(hashtag, startDate, endDate) {
           $last: "$videoId"
         },
         users: {
-          $push: {
+          $addToSet: {
             userId: '$userId'
           }
         },
