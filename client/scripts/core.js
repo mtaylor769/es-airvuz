@@ -143,6 +143,15 @@ function bindEvents() {
     }
   }
 
+  function logout() {
+    auth.logout()
+      .then(function () {
+        auth2 && auth2.signOut();
+        // redirect to home page
+        window.location.href = '/';
+      });
+  }
+
   $contactUs.on('click', function() {
     contactUs();
   });
@@ -330,15 +339,7 @@ function bindEvents() {
     $(this).removeClass('active');
   });
 
-  $header.on('click', '.logout-btn', function () {
-    ga('send', 'event', 'logout', 'log out ', 'login');
-    auth.logout()
-      .then(function () {
-        auth2.signOut();
-        // redirect to home page
-        window.location.href = '/';
-      });
-  });
+  $header.on('click', '.logout-btn', logout);
 
   $header.on('click', '#notification', function () {
     var ajaxOptions = {
@@ -391,6 +392,8 @@ function bindEvents() {
   PubSub.subscribe('show-login-dialog', function () {
     $loginModal.modal('show');
   });
+
+  PubSub.subscribe('logout', logout);
 }
 
 function initialize() {
