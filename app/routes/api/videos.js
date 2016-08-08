@@ -125,6 +125,9 @@ function _cleanUpReupload(body) {
 }
 
 Video.prototype.post = function(req, res) {
+  if (req.user._id === '57a7ec31fa5b6f134dddaba3') {
+    return res.sendStatus(500);
+  }
   Promise.resolve(req.body)
     .then(_uploadCustomThumbnail)
     .then(function () {

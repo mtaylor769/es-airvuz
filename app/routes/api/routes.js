@@ -115,7 +115,7 @@ apiRouter.route('/api/notifications/get-all/:id')
  * /api/videos/
  */
 apiRouter.route('/api/videos')
-  .post(videos.post);
+  .post(protect, videos.post);
 
 apiRouter.route('/api/videos/category/:category/page/:page')
 	.get(token, videos.getVideosByCategory);
