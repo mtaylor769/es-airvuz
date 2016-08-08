@@ -20,11 +20,9 @@ var image               = require('./image');
 var protect             = require('../../middlewares/protect');
 var token               = require('../../middlewares/token');
 
-
 apiRouter
-	.route('/api/avEventTracker')
-	.put(avEventTracker.put);
-
+  .route('/api/avEventTracker')
+  .put(avEventTracker.put);
 
 /**
  * /api/auth
@@ -52,64 +50,63 @@ apiRouter.route('/api/auth/google')
 // apiRouter.route('/api/auth/instagram/callback')
 //   .get(auth.instagramCallback);
 
-
 /**
  * /api/users/
  */
 //apiRouter.route('/api/users')
-  //.get(users.getAll)
-  //.post(users.post);
+//.get(users.getAll)
+//.post(users.post);
 //
 apiRouter.route('/api/users/search')
   .get(protect, users.search);
 
 apiRouter.route('/api/users/password-reset')
-	.post(users.passwordResetRequest)
-	.put(users.passwordResetChange);
+  .post(users.passwordResetRequest)
+  .put(users.passwordResetChange);
 
 apiRouter.route('/api/users/create')
-	.post(users.createUser);
+  .post(users.createUser);
 
 apiRouter.route('/api/users/hireme')
-	.post(users.hireMe);
+  .post(users.hireMe);
 
 apiRouter.route('/api/users/contact-us')
-	.post(users.contactUs)
+  .post(users.contactUs);
 
 apiRouter.route('/api/users/:id' + '/status')
-	.put(protect, users.statusChange);
+  .put(protect, users.statusChange);
 
 apiRouter.route('/api/users/:id')
   .get(users.get)
-	.put(protect, users.put)
-	.delete(protect, users.delete);
+  .put(protect, users.put)
+  .delete(protect, users.delete);
 /**
  * /api/follow/
  */
 apiRouter.route('/api/follow')
-	.post(follow.post);
+  .post(follow.post);
 
 apiRouter.route('/api/follow/check')
-	.post(follow.getCheckFollowing);
+  .post(follow.getCheckFollowing);
 
 apiRouter.route('/api/follow/get-followers')
-	.get(follow.getFollowers);
+  .get(follow.getFollowers);
 
 apiRouter.route('/api/follow/get-following')
-	.get(follow.getFollowing);
+  .get(follow.getFollowing);
 
 /**
  * /api/notifications/
  */
 apiRouter.route('/api/notifications')
-	.post(notifications.post)
-	.get(protect, notifications.getUnseen);
+  .post(notifications.post)
+  .get(protect, notifications.getUnseen);
 
 apiRouter.route('/api/notifications/seen')
-	.post(protect, notifications.seen);
+  .post(protect, notifications.seen);
 
 apiRouter.route('/api/notifications/get-all/:id')
-	.get(notifications.getAll);
+  .get(notifications.getAll);
 
 /**
  * /api/videos/
@@ -118,24 +115,24 @@ apiRouter.route('/api/videos')
   .post(protect, videos.post);
 
 apiRouter.route('/api/videos/category/:category/page/:page')
-	.get(token, videos.getVideosByCategory);
+  .get(token, videos.getVideosByCategory);
 
 apiRouter.route('/api/videos/loaded')
-	.post(videos.loaded);
+  .post(videos.loaded);
 
 apiRouter.route('/api/videos/showcase-update')
-	.post(videos.showcaseUpdate);
+  .post(videos.showcaseUpdate);
 
 apiRouter.route('/api/videos/report-video')
-	.post(videos.reportVideo);
+  .post(videos.reportVideo);
 
 apiRouter.route('/api/videos/videoInfoCheck')
-	.get(videos.videoInfoCheck);
+  .get(videos.videoInfoCheck);
 
 apiRouter.route('/api/videos/:id')
   .get(videos.get)
-  .put(videos.put)
-  .delete(videos.delete);
+  .put(protect, videos.put)
+  .delete(protect, videos.delete);
 
 apiRouter.route('/api/video-like')
   .post(videoLike.post);
@@ -146,40 +143,39 @@ apiRouter.route('/api/videos/user/:id')
 apiRouter.route('/api/videos/showcase/:id')
   .get(videos.getShowcaseByUser);
 
-
 /**
  * /api/camera-type/
  */
 apiRouter.route('/api/camera-type')
-  .post(cameraType.post)
+  .post(protect, cameraType.post)
   .get(cameraType.get);
 
 apiRouter.route('/api/camera-type/:id')
   .get(cameraType.getById)
-  .put(cameraType.put)
-  .delete(cameraType.delete);
+  .put(protect, cameraType.put)
+  .delete(protect, cameraType.delete);
 
 /**
  * /api/category-type/
  */
 apiRouter.route('/api/category-type')
-  .post(categoryType.post)
+  .post(protect, categoryType.post)
   .get(categoryType.get);
 
 apiRouter.route('/api/category-type/by-roles')
-	.get(protect, categoryType.getByRoles);
+  .get(protect, categoryType.getByRoles);
 
 apiRouter.route('/api/category-type/:id')
   .get(categoryType.getById)
-  .put(categoryType.put)
-  .delete(categoryType.delete);
+  .put(protect, categoryType.put)
+  .delete(protect, categoryType.delete);
 
 /**
  * /api/drone-type/
  */
 apiRouter.route('/api/drone-type')
   .post(droneType.post)
-  .get(droneType.get)
+  .get(droneType.get);
 
 apiRouter.route('/api/drone-type/:id')
   .get(droneType.getById)
@@ -200,11 +196,11 @@ apiRouter.route('/api/comment/byVideo')
 
 apiRouter.route('/api/comment/:id')
   .get(comment.getById)
-  .put(comment.put)
-  .delete(comment.delete);
+  .put(protect, comment.put)
+  .delete(protect, comment.delete);
 
 apiRouter.route('/api/comment/report/')
-	.post(comment.reportComment);
+  .post(protect, comment.reportComment);
 
 /**
  * /api/slider/
@@ -212,12 +208,12 @@ apiRouter.route('/api/comment/report/')
 
 apiRouter.route('/api/slider')
   .get(slider.getAll)
-  .post(slider.post);
+  .post(protect, slider.post);
 
 apiRouter.route('/api/slider/:id')
   .get(slider.get)
-  .delete(slider.remove)
-  .put(slider.put);
+  .delete(protect, slider.remove)
+  .put(protect, slider.put);
 
 /**
  * /api/slide/
@@ -225,40 +221,40 @@ apiRouter.route('/api/slider/:id')
 
 apiRouter.route('/api/slide')
   .get(slide.getAll)
-  .post(slide.post);
+  .post(protect, slide.post);
 
 apiRouter.route('/api/slide/:id')
   .get(slide.get)
-  .delete(slide.remove)
-  .put(slide.put);
+  .delete(protect, slide.remove)
+  .put(protect, slide.put);
 
 /**
  * /api/featured-videos/
  */
 apiRouter.route('/api/featured-videos')
   .get(videoCollection.getVideos('Featured Videos'))
-  .put(videoCollection.updateVideo('Featured Videos'));
+  .put(protect, videoCollection.updateVideo('Featured Videos'));
 
 apiRouter.route('/api/staff-pick-videos')
   .get(videoCollection.getVideos('Staff Pick Videos'))
-  .put(videoCollection.updateVideo('Staff Pick Videos'));
+  .put(protect, videoCollection.updateVideo('Staff Pick Videos'));
 
 apiRouter.route('/api/video-collection/update-collection')
-	.post(videoCollection.updateCollectionVideos);
+  .post(protect, videoCollection.updateCollectionVideos);
 
 /**
  * /api/upload
  */
-apiRouter.post('/api/upload', upload.post);
+apiRouter.post('/api/upload', protect, upload.post);
 apiRouter.get('/api/upload/:id', /*upload.getStatus,*/ amazon.getVideoInfo);
 
-apiRouter.post('/api/upload-external', upload.uploadExternalVideo);
+apiRouter.post('/api/upload-external', protect, upload.uploadExternalVideo);
 
 /**
  * /api/amazon
  */
 
-apiRouter.get('/api/amazon/sign-auth', amazon.signAuth);
+apiRouter.get('/api/amazon/sign-auth', protect, amazon.signAuth);
 apiRouter.get('/api/amazon/video-duration', amazon.getVideoDuration);
 apiRouter.post('/api/amazon/move-file', amazon.moveFile);
 apiRouter.post('/api/amazon/transcode/start', amazon.startTranscode);
@@ -282,16 +278,15 @@ apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
  */
 
 apiRouter.route('/api/reports/site-info')
-	.get(reports.siteInfo);
+  .get(reports.siteInfo);
 
 apiRouter.route('/api/reports/employee-contributor')
-	.post(reports.employeeContributor);
+  .post(reports.employeeContributor);
 
 apiRouter.route('/api/reports/videos')
-	.get(reports.getVideos);
+  .get(reports.getVideos);
 
 apiRouter.route('/api/reports/comments')
-	.get(reports.getComments);
-
+  .get(reports.getComments);
 
 module.exports = apiRouter;
