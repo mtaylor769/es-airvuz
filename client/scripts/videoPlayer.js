@@ -224,7 +224,7 @@ function bindEvents() {
 
   function editComment() {
     var commentId = $(this).parent().attr('data-commentId');
-    var commentText = $(this).parents().find('.comment-options-wrapper').first().siblings('.comment-text').text();
+    var commentText = $(this).parent().parent().parent().siblings('.comment-text').text();
     $('#comment-edit-modal').children().find('#comment-edit-textarea').val(commentText);
     $(this).parent().parent().toggle();
     $('#comment-edit-modal').modal('show');
