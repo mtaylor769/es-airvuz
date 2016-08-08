@@ -101,8 +101,9 @@
         vm.comments = false;
         vm.employeeReportInput = false;
         vm.employeeReport = false;
+        vm.hashtagReportInput = false;
 
-        switch(input) {
+        switch (input) {
             case 'siteInfo':
                 vm.siteInfoInput = true;
                 break;
@@ -115,9 +116,22 @@
             case 'employeeReport':
                 vm.employeeReportInput = true;
                 break;
+            case 'hashtagReport'
+                vm.hashtagReportInput = true;
             default:
                 break;
         }
+    }
+
+    function getHashcodes(startDate, endDate, hashtag) {
+        var data = {};
+        data.startDate = startDate;
+        data.endDate = endDate;
+        data.hashTag = hashtag;
+        $http.post('/api/reports/hashtag', data)
+            .success(function(data) {
+                console.log(data);
+            })
     }
 
 
@@ -128,6 +142,7 @@
     vm.getComments = getComments;
     vm.getVideos = getVideos;
     vm.getEmployeeReport = getEmployeeReport;
-    vm.openInput = openInput
+    vm.openInput = openInput;
+    vm.getHashcodes = getHashcodes;
   }
 })();

@@ -120,6 +120,10 @@ Follow.prototype.findFollowingByUserIdAndDate = function(userId, startDate, endD
   return FollowModel.find({userId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
 };
 
+Follow.prototype.findFollowByUserIdAndVideoOwnerId = function(userId, videoOwnerId) {
+  return FollowModel.findOne({userId: userId, followingUserId: videoOwnerId}).exec();
+};
+
 Follow.prototype.getFollow = getFollow;
 
 

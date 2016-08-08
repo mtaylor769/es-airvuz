@@ -282,8 +282,39 @@ Comment.prototype.findByUserId = function(id) {
   return CommentModel.find({userId: id}).exec();
 };
 
-Comment.prototype.findByVideoAndHashAndDate = function(videoId, hashtag, startDate, endDate) {
-  return CommentModel.find({videoId: videoId, comment: {$regex: hashtag}, commentCreatedDate: {$gte: new Date(startDate), $lte: new Date(endDate)} }).count().exec()
+Comment.prototype.findByHashAndDate = function(hashtag, startDate, endDate) {
+  return CommentModel.aggregate([
+    {
+      $match: {
+        commentCreatedDate: {
+          $gte: startDate,
+          $lte: endDate
+        },
+        comment: {
+          $regex: hashtag
+        }
+      }
+    },
+    {
+      $group: {
+        _id: '$videoId',
+        video: {
+          $last: "$videoId"
+        },
+        users: {
+          $push: {
+            userId: '$userId'
+          }
+        },
+        count: {$sum: 1}
+      }
+    },
+    {
+      $sort: {
+        count: -1
+      }
+    }
+  ]).exec()
 };
 
 
