@@ -1,0 +1,38 @@
+{#follow}
+    <div class="follower-wrapper-title row">
+        <div class="col-xs-12">
+            <h5>
+                {@eq key=userType value="follower" }
+                    <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a>
+                {:else}
+                    <a href="/user/{followingUserId.userNameUrl}">{followingUserId.userNameDisplay}</a>
+                {/eq}
+            </h5>
+        </div>
+    </div>
+    {@eq key=userType value="follower" }
+        <div class="follower-wrapper row">
+    {:else}
+        <div class="following-wrapper row">
+    {/eq}
+        <div class="col-xs-2 col-sm-2">
+            {@eq key=userType value="follower" }
+                <img src="{userId.profilePicture}" width="50px" height="50px">
+            {:else}
+                <img src="{followingUserId.profilePicture}" width="50px" height="50px">
+            {/eq}
+        </div>
+        <div class="col-xs-10 col-sm-10 text-right">
+            {@eq key=userType value="follower" }
+                <p>Started following you on: <br/> {createdDate}</p>
+            {:else}
+                <p>You started following on: <br/> {createdDate}</p>
+            {/eq}
+            {@eq key=userType value="follower" }
+                <button type="button" class="btn btn-warning btn-xs follow-modal-button" data-id="{userId._id}">UNFOLLOW</button>
+            {:else}
+                <button type="button" class="btn btn-warning btn-xs follow-modal-button" data-id="{followingUserId._id}">UNFOLLOW</button>
+            {/eq}
+        </div>
+    </div>
+{/follow}
