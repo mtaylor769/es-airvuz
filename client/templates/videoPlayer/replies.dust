@@ -1,0 +1,31 @@
+{#replies}
+<li class="reply-wrap" id="{_id}">
+    <div class="row">
+        <div class="m-t-5">
+            <div class="col-xs-1"></div>
+            <a href="/user/{userId.userNameUrl}" class="col-xs-1" style="padding: 0 5px;">
+                <img src="{userId.profilePicture}" height="30" width="30" class="border-radius-circle m-10-20" style="margin:0">
+            </a>
+            <div class="col-xs-10">
+                <div class="comment-options-wrapper">
+                    <span class="glyphicon glyphicon-option-vertical comment-options"></span>
+                    <div class="comment-options-box">
+                        <ul class="comment-options-selection" data-commentId="{_id}">
+                            {?optionHtml}
+                                <li class="delete-comment">Delete</li><li class="edit-comment">Edit</li>
+                            {:else}
+                                <li class="report-comment">Report Comment</li>
+                            {/optionHtml}
+                        </ul>
+                    </div>
+                </div>
+                <div style="display: flex; font-size: 9px">
+                    <p class="m-b-0" style="font-size: 12px"><a href="/user/'{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
+                    <p datetime="{reply.commentCreatedDate}" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">{commentDisplayDate}</p>
+                </div>
+                <p class="m-b-0">{comment}</p>
+            </div>
+        </div>
+    </div>
+</li>
+{/replies}

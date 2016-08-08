@@ -1,11 +1,13 @@
-var commentCrud = require('../../persistence/crud/comment');
-var NotificationCrud = require('../../persistence/crud/notifications');
-var socialCrud  = require('../../persistence/crud/socialMediaAccount');
-var log4js                 = require('log4js');
-var logger                 = log4js.getLogger('app.routes.api.users');
-var Promise     = require('bluebird');
-var mongoose    = require('mongoose');
-var moment      = require('moment');
+var commentCrud       = require('../../persistence/crud/comment');
+var NotificationCrud  = require('../../persistence/crud/notifications');
+var socialCrud        = require('../../persistence/crud/socialMediaAccount');
+var videoCrud         = require('../../persistence/crud/videos');
+var log4js            = require('log4js');
+var logger            = log4js.getLogger('app.routes.api.users');
+var Promise           = require('bluebird');
+var mongoose          = require('mongoose');
+var moment            = require('moment');
+var nodemailer        = require('nodemailer');
 
 
 function Comment() {
@@ -19,8 +21,10 @@ Comment.prototype.post = function(req, res) {
   commentCrud
     .create(comment)
     .then(function (comment) {
+      logger.debug(comment);
       var parentCommentId = comment.parentCommentId;
       var videoId = comment.videoId;
+      notification.commentId = comment._id;
       NotificationCrud.create(notification)
       .then(function(notification) {
       });
@@ -96,19 +100,123 @@ Comment.prototype.getById = function(req, res) {
 };
 
 Comment.prototype.put = function(req, res) {
-  commentCrud
-  .update({id: req.body._id, update: req.body})
-  .then(function(comment) {
-    res.send(comment);
-  })
+  var notificationUpdate = {};
+  notificationUpdate.notificationMessage = req.body.comment;
+  NotificationCrud
+    .getByComment(req.params.id)
+    .then(function(notification) {
+      return NotificationCrud.updateComment({id: notification[0]._id, update: notificationUpdate})
+    })
+    .then(function(notification) {
+      logger.debug(notification);
+      return commentCrud.update({id: req.params.id, update: req.body})
+    })
+    .then(function(comment) {
+      res.send(comment);
+    });
 };
 
 Comment.prototype.delete = function(req, res) {
-  commentCrud
-  .remove(req.params.id)
+    var reply;
+  commentCrud.getById(req.params.id)
+  .then(function(comment) {
+      if(!comment.parentCommentId) {
+        return commentCrud.getAllByParentComment(req.params.id)
+      } else {
+        reply = true;
+        return comment;
+      }
+  })
+  .then(function(comments) {
+      logger.error('console.log for comments')
+      logger.debug(comments)
+      logger.error('console log for type of')
+      logger.debug(typeof comments)
+    if(typeof comments.length === 'undefined') {
+        var removeObject = {};
+        removeObject.removeCount = 1;
+        removeObject.videoId = comments.videoId;
+        return commentCrud.replyDecrease(comments.parentCommentId)
+            .then(function() {
+                return NotificationCrud.deleteByCommentId(comments._id)
+            })
+            .then(function() {
+                return commentCrud.remove(comments._id);
+            })
+            .then(function() {
+                return removeObject;
+            })
+    } else {
+        var removeObject = {};
+        removeObject.removeCount = comments.length;
+        removeObject.videoId = comments[0].videoId;
+        return Promise.map(comments, function(comment) {
+            return NotificationCrud.deleteByCommentId(comment._id)
+                .then(function() {
+                    return commentCrud.remove(comment._id);
+                })
+        }).then(function() {
+            return removeObject;
+        })
+    }
+  })
+  .then(function(removeObject) {
+    videoCrud.getById(removeObject.videoId)
+      .then(function(video) {
+        var updateObject = {};
+        updateObject.id = video._id;
+        updateObject.update = {};
+        updateObject.update.commentCount = video.commentCount - removeObject.removeCount;
+        logger.error('this is the update object');
+        logger.debug(updateObject);
+        return videoCrud.update(updateObject);
+      })
+  })
+  .then(function() {
+      if(!reply) {
+          var commentId = req.params.id;
+          return NotificationCrud.delete(commentId);
+      } else {
+          return;
+      }
+  })
   .then(function() {
     res.sendStatus(200);
   })
+  .catch(function(error) {
+    logger.error(error);
+    res.sendStatus(500);
+  })
+};
+
+Comment.prototype.reportComment = function(req, res) {
+  var commentId = req.body.commentId;
+  commentCrud
+    .getById(commentId)
+    .then(function(comment) {
+      var transport = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user:'support@airvuz.com',
+          pass:'b5&YGG6n'
+        }
+      });
+
+      var mailOptions = {
+        from:'noreply <noreply@airvuz.com>',
+        to: 'support@airvuz.com',
+        subject: 'Comment reported for video : ' + comment.videoId,
+        html:'<p>A report has been submitted for comment Id : ' + comment._id + '.<br> Issue : Comment flagged for review <br> Comment Text :' + comment.comment + ' <br><a href="www.airvuz.com/video/' + comment.videoId+'"> Click here to go to video</a></p>'
+      };
+
+      transport.sendMail(mailOptions, function(error, message) {
+        if(error) {
+          res.sendStatus(400);
+        } else {
+          res.sendStatus(200);
+        }
+      })
+    })
 };
 
 

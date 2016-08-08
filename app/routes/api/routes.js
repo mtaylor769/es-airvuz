@@ -203,6 +203,9 @@ apiRouter.route('/api/comment/:id')
   .put(comment.put)
   .delete(comment.delete);
 
+apiRouter.route('/api/comment/report/')
+	.post(comment.reportComment);
+
 /**
  * /api/slider/
  */

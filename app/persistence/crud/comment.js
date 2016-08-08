@@ -62,7 +62,6 @@ Comment.prototype.getPreCondition = function(params){
       this.data.replyDepth = 1;
     }
 
-
     if(this.data.comment === null){
       this.errors = errorMessage.getErrorMessage({
         errorId					: "VALIDA1000",
@@ -114,15 +113,16 @@ Comment.prototype.getPreCondition = function(params){
         sourceLocation	: sourceLocation
       })
     }
-  if(this.data.userId === null){
-    this.errors = errorMessage.getErrorMessage({
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "userId"
-      },
-      sourceLocation	: sourceLocation
-    })
-  }
+    
+    if(this.data.userId === null){
+      this.errors = errorMessage.getErrorMessage({
+        errorId					: "VALIDA1000",
+        templateParams	: {
+          name : "userId"
+        },
+        sourceLocation	: sourceLocation
+      })
+    }
 });return(preCondition)
 
 };
@@ -229,6 +229,10 @@ Comment.prototype.get = function() {
   return CommentModel.find({}).exec();
 };
 
+Comment.prototype.getAllByParentComment = function(parentId) {
+  return CommentModel.find({ $or: [{_id: parentId}, {parentCommentId: parentId}] }).exec();
+};
+
 
 Comment.prototype.getByParentCommentId = function(parentId) {
   return CommentModel.find({parentCommentId: parentId}).sort({commentCreatedDate: -1}).limit(10).populate('userId').lean().exec();
@@ -257,11 +261,16 @@ Comment.prototype.getById = function(id) {
   return CommentModel.findById(id).exec();
 };
 
+Comment.prototype.replyDecrease = function(id) {
+  return CommentModel.findByIdAndUpdate(id, {$inc : {replyCount : -1}}).exec();
+};
+
 Comment.prototype.getByVideoId = function(id) {
   return CommentModel.find({videoId: id})
 };
 
 Comment.prototype.update = function(params) {
+  logger.error(params);
   return CommentModel.findByIdAndUpdate(params.id, params.update, { new: true }).exec();
 };
 

@@ -14,8 +14,8 @@ var NotificationsSchema = mongoose.Schema({
 		type: mongoose.Schema.ObjectId
 	},
 	/*
-	 * The commentId of the comment referenced in the notification
-	 */
+	* The commentId of the comment referenced in the notification
+	*/
 	commentId : {
 		ref: 'Comment',
 		required: false,

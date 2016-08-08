@@ -4,6 +4,7 @@
  */
 var videojs = require('video.js');
 var PubSub  = require('pubsub-js');
+var moment = require('moment');
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -17,6 +18,7 @@ require('bootstrap-switch');
  * Templates
  */
 var commentsTpl = require('../templates/videoPlayer/comments.dust');
+var repliesTpl = require('../templates/videoPlayer/replies.dust');
 
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
@@ -118,6 +120,25 @@ function incrementVideoCount() {
     });
 }
 
+function checkCommentForDelete(userId) {
+  var _comments = $('.parent-comments').children();
+  $.each(_comments, function(index, comment) {
+    var optionList = $(this).children().find('.comment-options-selection');
+    var commentUser = $(this).attr('data-userid');
+    if(userId === commentUser) {
+      var html = '<li class="delete-comment">Delete</li><li class="edit-comment">Edit</li>';
+      optionList.append(html);
+    } else {
+      var html = '<li class="report-comment">Report Comment</li>';
+      optionList.append(html);
+    }
+  })
+}
+
+function showOptions() {
+  $(this).siblings().toggle();
+}
+
 //check for user following and user video liked
 function videoInfoCheck() {
   var checkObject = {};
@@ -171,6 +192,66 @@ function onAutoPlayChange(event, state) {
 function bindEvents() {
 
   //api calls
+  function deleteComment() {
+    var _deleteCommentId = $(this).parent().attr('data-commentId');
+    var commentParentId = '#' + _deleteCommentId;
+    var _deleteComment = $(this).parents().find(commentParentId);
+    $.ajax({
+      type: 'DELETE',
+      url:'/api/comment/' + _deleteCommentId
+    })
+      .done(function(response) {
+        _deleteComment.remove();
+      })
+      .fail(function(error) {
+      })
+  }
+
+  function reportComment() {
+    var data = {};
+    data.commentId = $(this).parent().attr('data-commentid');
+    $(this).parent().parent().toggle();
+    $.ajax({
+      type: 'POST',
+      url: '/api/comment/report/',
+      data: data
+    })
+    .done(function(response) {
+    })
+    .fail(function(error) {
+    })
+  }
+
+  function editComment() {
+    var commentId = $(this).parent().attr('data-commentId');
+    var commentText = $(this).parents().find('.comment-options-wrapper').first().siblings('.comment-text').text();
+    $('#comment-edit-modal').children().find('#comment-edit-textarea').val(commentText);
+    $(this).parent().parent().toggle();
+    $('#comment-edit-modal').modal('show');
+    $('#edit-save-comment').on('click', function() {
+      commentText = $(this).parent().siblings('.modal-body').children().val();
+      saveEditComment(commentId, commentText);
+    })
+  }
+
+  function saveEditComment(commentId, comment) {
+    var data = {};
+    data.comment = comment;
+
+    $.ajax({
+      type: 'PUT',
+      url: '/api/comment/' + commentId,
+      data: data
+    })
+    .done(function(response) {
+      var commentChangedId = '#' + response._id;
+      $(commentChangedId).children().find('.comment-options-wrapper').siblings('.comment-text').text(response.comment);
+      $('#comment-edit-modal').modal('hide');
+    })
+    .fail(function(error) {
+    
+    })
+  }
 
   //create comment and append
   $('#commentSave').on('click', function() {
@@ -204,30 +285,11 @@ function bindEvents() {
       })
       .done(function(data) {
         var comment = data;
-        // TODO: use dust template rendering
-        var html = '<li class="comment-wrap">'+
-          '<div class="flex">'+
-          '<img src="' + comment.userId.profilePicture + '" height="50" width="50" class="border-radius-circle m-10-20">'+
-          '<div class="m-t-20">'+
-          '<p class="pos-absolute-r-15" datetime="' + comment.commentCreatedDate + '"></p>'+
-          '<p class="m-b-0 airvuz-blue">' + comment.userId.userNameDisplay + '</p>'+
-          '<p class="m-b-0">' + comment.comment + '</p>'+
-          '</div>'+
-          '</div>'+
-          '<div  id="' + comment._id + '">'+
-          '<ul class="parentComment"></ul>'+
-          '<div class="row">'+
-          '<div class="reply col-xs-3 col-sm-2" value="' + comment._id + '" style="padding: 0 0 0 10px">'+
-          '<span class="glyphicon glyphicon-share-alt" style="margin: 0 0 0 30px; transform: scaleY(-1);"></span>'+
-          '<span style="font-size: 10px; margin-left: 2px">reply</span>'+
-          '</div>'+
-          '<div class="col-xs-3 col-md-2 commentReplies" value="' + comment._id + '">'+
-          '<span style="margin: 0; padding: 0 0 0 10px; font-size: 10px;">replies <a>' + comment.replyCount + '</a></span>'+
-          '</div>'+
-          '</div>'+
-          '</div>'+
-          '</li>';
-        $('.parent-comments').prepend(html);
+        comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+        commentsTpl({comments: [comment], canEdit: true}, function (err, html) {
+          $('.parent-comments').prepend(html);
+        });
+
         $('#comment-text').val('');
         var currentCount = $('.comment-count').text();
         var toNumber = Number(currentCount);
@@ -663,16 +725,12 @@ function bindEvents() {
         })
         .done(function(reply) {
           //insert comment on DOM
-          var html = '<div class="flex">'+
-            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-10">'+
-            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
-            '<p class="m-b-0">' + reply.comment + '</p>'+
-            '</div>'+
-            '</div>';
+          reply.commentDisplayDate = moment(reply.commentCreatedDate).fromNow();
 
-          $(self).parents('.comment-wrap').find('.parentComment').append(html);
+          repliesTpl({replies: [reply], optionHtml: true}, function(error, html) {
+            $(self).parents('.comment-wrap').find('.parentComment').append(html);
+          });
+
           $('.commentBox').remove();
           $('.reply').show();
           var currentCount = $('.commentCount').text();
@@ -694,27 +752,36 @@ function bindEvents() {
         url: '/api/comment/byParent',
         data: {parentId: parentId}
       })
-      .done(function(data) {
-
+      .done(function(replies) {
+        replies.sort(function(a,b) {
+          if(a.commentCreatedDate > b.commentCreatedDate) {
+            return 1;
+          }
+          if(a.commentCreatedDate < b.commentCreatedDate) {
+            return -1;
+          }
+          return 0;
+        });
         //create child comment DOM elements
-        var html = '';
-        data.forEach(function(reply) {
-          html += '<li>'+
-            '<div class="flex">'+
-            '<img src="' + reply.userId.profilePicture + '" height="30" width="30" class="border-radius-circle m-10-20">'+
-            '<div class="m-t-10">'+
-            '<p class="pos-absolute-r-15" datetime="' + reply.commentCreatedDate + '"></p>'+
-            '<p class="m-b-0 airvuz-blue">' + reply.userId.userNameDisplay + '</p>'+
-            '<p class="m-b-0">' + reply.comment + '</p>'+
-            '</div>'+
-            '</div>' +
-            '</li>'
+        var replyArray = [];
+        replies.forEach(function(reply) {
+          if(userIdentity.isAuthenticated() && reply.userId._id === user._id) {
+              reply.optionHtml = true;
+          } else {
+              reply.optionHtml = false;
+          }
+          replyArray.push(reply);
         });
 
+        $(self).parents('.comment-wrap').find('.parentComment').children().remove();
+
+        repliesTpl({replies: replyArray}, function(error, html) {
+          $(self).parents('.comment-wrap').find('.parentComment').append(html);
+        });
+        
         //append child elements to DOM
-        $(self).parents('.comment-wrap').find('.parentComment').append(html);
-        if(data.length === 10) {
-          html = '<div class="row m-t-10" style="text-align: center"><span><a class="moreReplies" value="'+parentId+'">load More</a></span></div>';
+        if(replies.length === 10) {
+          var html = '<div class="row m-t-10" style="text-align: center"><span><a class="moreReplies" value="'+parentId+'">load More</a></span></div>';
           $(self).parent().siblings().append(html);
           $(self).hide();
         } else {
@@ -785,7 +852,12 @@ function bindEvents() {
     .on('click', '#comment', checkIdentitiy)
     .on('click', '#btn-view-more-comments', showMoreComments)
     .on('click', '.countdown-paused', startCountdown)
-    .on('click', '.pause-countdown', pauseCountdown);
+    .on('click', '.pause-countdown', pauseCountdown)
+    .on('click', '.comment-options', showOptions)
+    .on('click', '.delete-comment', deleteComment)
+    .on('click', '.report-comment', reportComment)
+    .on('click', '.edit-comment', editComment)
+    .on('click', '#edit-save-comment', saveEditComment)
 
 }
 
@@ -866,8 +938,10 @@ function initialize(videoPath, currentVideo) {
       state: user.autoPlay,
       onSwitchChange: onAutoPlayChange
     });
+    checkCommentForDelete(user._id);
   } else {
     $('#follow').text('+');
+    checkCommentForDelete();
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'
     });

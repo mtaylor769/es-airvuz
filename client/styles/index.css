@@ -649,6 +649,54 @@ body .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
   padding-left: 35px;
   margin-top: 10px;
 }
+
+.comment-options-box {
+  width: 115px;
+  height: auto;
+  border: solid black 1px;
+  background: white;
+  position: absolute;
+  right:0;
+  top: 15px;
+  display: none;
+}
+
+.comment-options-selection {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-options {
+  position: absolute;
+  right:0;
+  cursor: pointer;
+}
+
+.comment-options-wrapper {
+  position: relative;
+  float: right
+}
+
+.comment-options-wrapper .comment-options-selection li {
+  padding: 5px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.delete-comment:hover {
+   background-color: gainsboro;
+   color: white;
+ }
+
+.edit-comment:hover {
+  background-color: gainsboro;
+color: white;
+}
+
+.report-comment:hover {
+  background-color: gainsboro;
+  color: white;
+}
 /*
  * End Video Player
 /**********************************/
