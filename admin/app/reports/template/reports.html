@@ -134,6 +134,30 @@
             </tr>
         </table>
     </div>
+    <md-card ng-show="vm.hashtagReportInput">
+        <md-input-container>
+            <label for="hashtagStartDate">Start Date</label>
+            <input class="form-control" type="text" id="hashtagStartDate" ng-model="vm.hashtagStartDate">
+            <label for="hashtagEndDate">End Date</label>
+            <input class="form-control" type="text" id="hashtagEndDate" ng-model="vm.hashtagEndDate">
+            <label for="hashtag">Hashtag</label>
+            <input class="form-control" type="text" id="hashtag" ng-model="vm.hashtag">
+        </md-input-container>
+        <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getHashcodes(vm.hashtagstartDate, vm.hashtagEndDate, vm.hashtag)">Hashtag Report</button>
+    </md-card>
+    <div ng-show="vm.hashtagReport">
+        <table>
+            <tr>
+                <th>Video Id</th>
+                <th>Title</th>
+                <th>Users</th>
+                <table>
+                    <tr>Username</tr>
+                    <tr>Email</tr>
+                </table>
+            </tr>
+        </table>
+    </div>
 </div>
 <div ng-show="vm.loading" id="loadInfo" class="pre col-md-6">
     <div class="load-con">
