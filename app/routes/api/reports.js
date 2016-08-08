@@ -89,6 +89,7 @@ Reports.prototype.hashTag = function(req, res) {
     var aggregateHasFollow = [];
     return Comment.findByHashAndDate(hashTag, startDate, endDate)
         .then(function(commentAggregate) {
+            console.log(commentAggregate);
             return Promise.map(commentAggregate, function(comment) {
                 if(comment.users.length > 1){
                     return Promise.map(comment.users, function(user) {

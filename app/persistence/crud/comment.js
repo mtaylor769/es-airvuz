@@ -310,6 +310,14 @@ Comment.prototype.findByHashAndDate = function(hashtag, startDate, endDate) {
       }
     },
     {
+      $lookup: {
+        from: 'videos',
+        localField: 'video',
+        foreignField: '_id',
+        as: 'videoObject'
+      }
+    },
+    {
       $sort: {
         count: -1
       }
