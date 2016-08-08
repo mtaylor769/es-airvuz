@@ -22,7 +22,7 @@ var videoLikeSchema = mongoose.Schema({
 	 * The userId of the person who liked the video.
 	 */
 	userId : {
-		type: mongoose.Schema.ObjectId, ref: 'User'
+		type: mongoose.Schema.ObjectId, ref: 'Users'
 	},
 
 	videoOwnerId : {
