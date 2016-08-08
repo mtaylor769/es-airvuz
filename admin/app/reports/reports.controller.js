@@ -130,9 +130,13 @@
         data.hashTag = hashtag;
         $http.post('/api/reports/hashtag', data)
             .success(function(data) {
-                console.log(data);
+                if(data.length > 20) {
+                    var topVideos = data.splice(0, 20)
+                } else {
+                    var topVideos = data;
+                }
                 $scope.hashtagReport = true;
-                $scope.hashtagDisplay = data;
+                $scope.hashtagDisplay = topVideos;
             })
     }
 
