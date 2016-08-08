@@ -136,6 +136,8 @@ function videoInfoCheck() {
     }
     if(response.follow === true) {
       $('#follow').text('-');
+    } else {
+      $('#follow').text('+');
     }
   })
   .fail(function(error) {
@@ -865,6 +867,7 @@ function initialize(videoPath, currentVideo) {
       onSwitchChange: onAutoPlayChange
     });
   } else {
+    $('#follow').text('+');
     $("[name='auto-play-input']").bootstrapSwitch({
       size: 'mini'
     });
