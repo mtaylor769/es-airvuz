@@ -1987,6 +1987,11 @@ header logo and tag line media queries
   margin-bottom: 0;
 }
 
+.video-page .video-end-card .countdown-paused,
+.video-page .video-end-card .pause-countdown {
+  font-size: 16px;
+}
+
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 
