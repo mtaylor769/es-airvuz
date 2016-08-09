@@ -9,6 +9,7 @@
 
 var NODE_ENV    = process.env.NODE_ENV || 'development';
 var IS_DEVELOPMENT = NODE_ENV === 'development';
+var IS_BETA        = NODE_ENV === 'beta';
 var IS_PRODUCTION  = NODE_ENV === 'production';
 
 //   _     _ _                    _
@@ -53,7 +54,12 @@ config.resolve = {
 };
 
 // Devtool
-config.devtool = 'source-map';
+if (IS_DEVELOPMENT || IS_BETA) {
+  // config.devtool = IS_DEVELOPMENT ? 'source-map' : 'eval';
+  // eval - Each module is executed with eval and //@ sourceURL.
+  // (build speed - +++, rebuild speed - +++, production supported - no, quality - generated code
+  config.devtool = 'source-map';
+}
 config.watch   = IS_DEVELOPMENT;
 
 // Load files
