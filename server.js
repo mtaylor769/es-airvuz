@@ -225,13 +225,4 @@ app.use(function (req, res) {
 
 app.listen(process.env.PORT || 80);
 
-
-setTimeout(function() {
-	logger.debug("TODO: remove me: loading crud ...");
-	
-	var loginCrud = require('./app/persistence/crud/events/login');
-	loginCrud.create();
-	
-}, 100);
-
 module.exports = app;
