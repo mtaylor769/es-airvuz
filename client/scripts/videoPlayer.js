@@ -363,6 +363,7 @@ function bindEvents() {
     var reportData = {};
     reportData.videoId = $(this).attr('data-videoid');
     reportData.message = $('.report-text').val();
+    reportData.userId = userIdentity._id;
     $.ajax({
         type: 'POST',
         url: '/api/videos/report-video',
@@ -570,7 +571,11 @@ function bindEvents() {
 
   //report modal
   $('.report').on('click', function() {
-    $('#report-modal').modal('show');
+    if (userIdentity.isAuthenticated()) {
+      $('#report-modal').modal('show');
+    } else {
+      showLoginDialog();
+    }
   });
 
   //go to previous page
