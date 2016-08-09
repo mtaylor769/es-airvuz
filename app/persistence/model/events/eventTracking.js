@@ -51,6 +51,11 @@ var eventTrackingSchema = mongoose.Schema({
 	 */
 	eventVideoPlaybackDetails: mongoose.Schema.Types.Mixed,
 
+	/*
+	 * Referrer
+	 */
+	referrer: String,
+
 
 	/*
 	// "CLIENT" | "SERVER"

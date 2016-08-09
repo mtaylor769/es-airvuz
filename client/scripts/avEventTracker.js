@@ -21,6 +21,7 @@ var AVEventTracker = function(params) {
 		data.clientIp 		= clientIp || "";
 		data.eventMessage 	= params.eventMessage || "";
 		data.eventVideoPlaybackDetails = params.eventVideoPlaybackDetails || "";
+		data.referrer		= params.referrer || "";
 
 		$.ajax({
 			type: 'PUT',

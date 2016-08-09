@@ -611,6 +611,7 @@ function bindEvents() {
 
   //start player event delegation
     function endFunction() {
+      ga('send', 'event', 'video page', 'ended', 'viewing video');
       AVEventTracker({
         codeSource: "videoPlayer",
         eventName: "ended",
@@ -666,15 +667,6 @@ function bindEvents() {
               clearInterval(countdown);
             }
           } else {
-            ga('send', 'event', 'video page', 'viewing up next video', 'viewing video');
-            AVEventTracker({
-              codeSource	: "videoPlayer",
-              eventName		: "viewingUpNextVideo",
-              eventType		: "playerEvent",
-              userId        : getUserId(),
-              eventSource     : browser.isMobile() ? 'mobile' : ''
-            });
-
             window.location.href = nextVideo.attr('value');
           }
         };
@@ -791,7 +783,7 @@ function bindEvents() {
       player
       .on('playing', playFunction)
       .on('ended', endFunction)
-      .on('waiting', timeFunction)
+      // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
       .on('pause', pauseFunction)
       .on('seeking', seekFunction);
     });
@@ -1075,20 +1067,42 @@ function initialize(videoPath, currentVideo) {
     $('#video-description').slideUp();
   }, 5000);
 
+  ga('send', 'event', 'video page', document.referrer, 'referrer')
   ga('send', 'event', 'video page', 'viewing', 'viewing video');
+  AVEventTracker({
+    codeSource: "videoPlayer",
+    eventName: "viewing",
+    eventType: "browser",
+    userId: getUserId(),
+    eventSource: browser.isMobile() ? 'mobile' : ''
+  });
+  AVEventTracker({
+    codeSource: "videoPlayer",
+    eventName: "referrer",
+    eventType: "browser",
+    userId: getUserId(),
+    referrer: document.referrer,
+    eventSource: browser.isMobile() ? 'mobile' : ''
+  });
 }
 
 // Capture the play duration upon exiting if video is still playing
 $(window).bind('unload', function () {
   if (isPlaying) {
+    var tDuration = $videoPlayer[0].player.duration(),
+        vDuration = $videoPlayer[0].player.currentTime(),
+        pCompletion = (vDuration/tDuration) * 100,
+        pCompletionNearestTen = (Math.round(pCompletion / 10) * 10);
+
     ga('send', 'event', 'video page', 'exited playing video', 'viewing video');
     AVEventTracker({
       codeSource	: "videoPlayer",
       eventName		: "exitedPlayingVideo",
       eventType		: "browser",
       eventVideoPlaybackDetails  : {
-        totalDuration: Math.floor($videoPlayer[0].player.duration()).toString(),
-        viewDuration: Math.floor($videoPlayer[0].player.currentTime()).toString()
+        totalDuration: tDuration,
+        viewDuration: vDuration,
+        percentCompletion: pCompletionNearestTen
       },
       userId        : getUserId(),
       eventSource     : browser.isMobile() ? 'mobile' : ''
