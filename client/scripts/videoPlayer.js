@@ -367,12 +367,23 @@ function bindEvents() {
     $.ajax({
         type: 'POST',
         url: '/api/videos/report-video',
-        data: reportData
+        data: reportData,
+        beforeSend: function () {
+          $('#send-report').prop('disabled', true);
+        }
       })
       .done(function(response) {
+        $('#report-modal').modal('hide');
+        $('.report-text').val('');
       })
       .fail(function(error) {
-      });
+      })
+  });
+
+  $('.report-text').keyup(function() {
+    var hasText = $(this).val().length ? false : true;
+
+    $('#send-report').prop('disabled', hasText);
   });
 
   //follow video user
