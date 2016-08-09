@@ -1,18 +1,141 @@
 <div class="col-md-6 m-t-40">
-        <label for="sDate">Start Date</label>
-        <input class="form-control" type="text" id="sDate" ng-model="startDate">
-        <label for="eDate">End Date</label>
-        <input class="form-control" type="text" id="eDate" ng-model="endDate">
-        <button class="btn btn-primary pull-right m-t-15" ng-click="vm.userVideos(startDate, endDate)">Site Information</button>
-        <div class=" m-t-40">
-            <label for="username">Username</label>
-            <input class="form-control" type="text" id="username" ng-model="username">
-            <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideos(username, startDate, endDate)">Videos</button>
-            <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getComments(username, startDate, endDate)">Comments</button>
-            <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getEmployeeReport(startDate, endDate)">Employee Report</button>
-        </div>
+    <md-button ng-click="vm.openInput('siteInfo')">Site Info</md-button>
+    <md-button ng-click="vm.openInput('videos')">Videos Uploaded</md-button>
+    <md-button ng-click="vm.openInput('comments')">Comments Made</md-button>
+    <md-button ng-click="vm.openInput('employeeReport')">Employee Report</md-button>
+    <md-card ng-show="vm.siteInfoInput">
+        <md-input-container>
+            <label for="siteInfoStartDate">Start Date</label>
+            <input class="form-control" type="text" id="siteInfoStartDate" ng-model="vm.siteInfoStartDate">
+        </md-input-container>
+        <md-input-container>
+            <label for="siteInfoEndDate">End Date</label>
+            <input class="form-control" type="text" id="siteInfoEndDate" ng-model="vm.siteInfoEndDate">
+        </md-input-container>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getSiteInfo(vm.siteInfoStartDate, vm.siteInfoEndDate)">Site Information</md-button>
+    </md-card>
+    <div class="col-md-6" ng-show="vm.siteInfo">
+        <h1>{{vm.title}}</h1>
+        <p>Total users, as of [{{vm.siteInfoEndDate}}] : {{vm.totalUsers}}</p>
+        <p>Total videos, as of [{{vm.siteInfoEndDate}}] : {{vm.totalVideos}}</p>
+        <p>New users within date range, [{{vm.siteInfoStartDate}}] - [{{vm.siteInfoEndDate}}] : {{vm.newUsersCount}}</p>
+        <p>New videos within date range, [{{vm.siteInfoStartDate}}] - [{{vm.siteInfoEndDate}}]: {{vm.newVideos}}</p>
+        <table>
+            <tr>
+                <th>Allow Donation</th>
+                <th>Allow Hire</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Url</th>
+                <th>Joined Date</th>
+            </tr>
+            <tr ng-repeat="newUser in vm.newUsers">
+                <td>{{newUser.allowDonation}}</td>
+                <td>{{newUser.allowHire}}</td>
+                <td>{{newUser.emailAddress}}</td>
+                <td>{{newUser.userNameDisplay}}</td>
+                <td>{{newUser.userNameUrl}}</td>
+                <td>{{newUser.joining_date | date}}</td>
+            </tr>
+        </table>
+    </div>
+    <md-card ng-show="vm.videosInput">
+        <md-input-container>
+            <label for="videosStartDate">Start Date</label>
+            <input class="form-control" type="text" id="videosStartDate" ng-model="vm.videosStartDate">
+        </md-input-container>
+        <md-input-container>
+            <label for="videosEndDate">End Date</label>
+            <input class="form-control" type="text" id="videosEndDate" ng-model="vm.videosEndDate">
+        </md-input-container>
+        <md-input-container>
+            <label for="videosUsername">Username</label>
+            <input class="form-control" type="text" id="videosUsername" ng-model="vm.videosUsername">
+        </md-input-container>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideos(vm.videosUsername, vm.videosStartDate, vm.videosEndDate)">Videos</md-button>
+    </md-card>
+    <div class="col-md-6" ng-show="vm.videos">
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Video Count</th>
+            </tr>
+            <tr>
+                <td>{{vm.username}}</td>
+                <td>{{vm.videosStartDate}}</td>
+                <td>{{vm.videosEndDate}}</td>
+                <td>{{vm.videoCount}}</td>
+            </tr>
+        </table>
+    </div>
+    <md-card ng-show="vm.commentsInput">
+        <md-input-container>
+            <label for="commentsStartDate">Start Date</label>
+            <input class="form-control" type="text" id="commentsStartDate" ng-model="vm.commentsStartDate">
+        </md-input-container>
+        <md-input-container>
+            <label for="commentsEndDate">End Date</label>
+            <input class="form-control" type="text" id="commentsEndDate" ng-model="vm.commentsEndDate">
+        </md-input-container>
+        <md-input-container>
+            <label for="commentsUsername">Username</label>
+            <input class="form-control" type="text" id="commentsUsername" ng-model="vm.commentsUsername">
+        </md-input-container>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getComments(vm.commentsUsername, vm.commentsStartDate, vm.commentsEndDate)">Comments</md-button>
+    </md-card>
+    <div ng-show="vm.comments">
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Comment Count</th>
+            </tr>
+            <tr>
+                <td>{{vm.commentsUsername}}</td>
+                <td>{{vm.commentsStartDate}}</td>
+                <td>{{vm.commentsEndDate}}</td>
+                <td>{{vm.commentsCommentCount}}</td>
+            </tr>
+        </table>
+    </div>
+    <md-card ng-show="vm.employeeReportInput">
+        <md-input-container>
+            <label for="employeeReportStartDate">Start Date</label>
+            <input class="form-control" type="text" id="employeeReportStartDate" ng-model="employeeReportStartDate">
+        </md-input-container>
+        <md-input-container>
+            <label for="employeeReportEndDate">End Date</label>
+            <input class="form-control" type="text" id="employeeReportEndDate" ng-model="employeeReportEndDate">
+        </md-input-container>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getEmployeeReport(employeeReportStartDate, employeeReportEndDate)">Employee Report</md-button>
+    </md-card>
+    <div ng-show="vm.employeeReport">
+        <table>
+            <tr>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>Like Count</th>
+                <th>Comment Count</th>
+                <th>Follower Count</th>
+                <th>Following Count</th>
+                <th>Videos Uploaded</th>
+            </tr>
+            <tr ng-repeat="employee in employees">
+                <td>{{employee.user.userNameDisplay}}</td>
+                <td>{{employee.user.emailAddress}}</td>
+                <td>{{employee.likes}}</td>
+                <td>{{employee.comments}}</td>
+                <td>{{employee.followers}}</td>
+                <td>{{employee.following}}</td>
+                <td>{{employee.uploadedVideos}}</td>
+            </tr>
+        </table>
+    </div>
 </div>
-<div ng-show="loading" id="loadInfo" class="pre col-md-6">
+<div ng-show="vm.loading" id="loadInfo" class="pre col-md-6">
     <div class="load-con">
         <h1>Loading</h1><i class="fa fa-spinner fa-pulse"></i>
         <div class="spinner">
@@ -21,42 +144,4 @@
             <div class="bounce3"></div>
         </div>
     </div>
-</div>
-<div ng-show="employeeReport">
-    <table>
-        <tr>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Like Count</th>
-            <th>Comment Count</th>
-            <th>Follower Count</th>
-            <th>Following Count</th>
-            <th>Videos Uploaded</th>
-        </tr>
-        <tr ng-repeat="employee in employees">
-            <td>{{employee.user.userNameDisplay}}</td>
-            <td>{{employee.user.emailAddress}}</td>
-            <td>{{employee.likes}}</td>
-            <td>{{employee.comments}}</td>
-            <td>{{employee.followers}}</td>
-            <td>{{employee.following}}</td>
-            <td>{{employee.uploadedVideos}}</td>
-        </tr>
-    </table>
-</div>
-<div class="col-md-6" ng-show="siteInfo">
-    <h1>{{title}}</h1>
-    <p>Total users, as of [{{endDate}}] : {{totalUsers}}</p>
-    <p>Total videos, as of [{{endDate}}] : {{totalVideos}}</p>
-    <p>New users within date range, [{{startDate}}] - [{{endDate}}] : {{newUsersCount}}</p>
-    <p>New videos within date range, [{{startDate}}] - [{{endDate}}]: {{newVideos}}</p>
-        { "data": {{newUsersList | json}} }
-</div>
-<div class="col-md-6" ng-show="comments">
-    <h1>Comments for {{username}}</h1>
-    <p>Total Comments Between [{{startDate}}] And [{{endDate}}] : {{commentCount}}</p>
-</div>
-<div class="col-md-6" ng-show="videos">
-    <h1>Videos for {{username}}</h1>
-    <p>Total Videos between [{{startDate}}] And [{{endDate}}] : {{videoCount}}</p>
 </div>

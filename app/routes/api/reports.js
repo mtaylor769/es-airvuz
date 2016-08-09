@@ -37,7 +37,7 @@ Reports.prototype.getComments = function(req, res) {
       return Comment.getByUserAndDate(user._id, startDate, endDate)
     })
     .then(function(comments) {
-      res.send(comments);
+      res.json({commentCount: comments});
     })
 };
 

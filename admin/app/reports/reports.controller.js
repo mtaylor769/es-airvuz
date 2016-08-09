@@ -5,19 +5,20 @@
     .module('AirvuzAdmin')
     .controller('reportsController', reportsController);
 
-  reportsController.$inject = ['$scope', '$http'];
+  reportsController.$inject = ['$http'];
 
 
-  function reportsController($scope, $http) {
+  function reportsController($http) {
 
 
-    function userVideos(startDate, endDate) {
-      $scope.siteInfo = false;
-      $scope.videos = false;
-      $scope.comments = false;
-      $scope.loading = true;
-      $http.get('/api/reports/site-info', { params: {startDate: startDate, endDate: endDate}})
+    function getSiteInfo(siteInfoStartDate, siteInfoEndDate) {
+      vm.siteInfo = false;
+      vm.videos = false;
+      vm.comments = false;
+      vm.loading = true;
+      $http.get('/api/reports/site-info', { params: {startDate: siteInfoStartDate, endDate: siteInfoEndDate}})
         .success(function(data){
+            console.log(data);
           var newUsersArray = [];
           data.newUsersList.forEach(function(user){
             user.email = typeof user.emailAddress != 'undefined' ? user.emailAddress : '';
@@ -28,76 +29,105 @@
             user.allowHire = typeof user.allowHire != 'undefined' ? user.allowHire : '';
             newUsersArray.push(user);
           });
-          $scope.title = data.title;
-          $scope.totalUsers = data.totalUsers;
-          $scope.totalVideos = data.totalVideos;
-          $scope.newUsersCount = data.newUsersCount;
-          $scope.newVideos = data.newVideos;
-          $scope.startDate = startDate;
-          $scope.endDate = endDate;
-          $scope.newUsersList = newUsersArray;
-          $scope.loading = false;
-          $scope.siteInfo = true;
+            vm.title = data.title;
+            vm.totalUsers = data.totalUsers;
+            vm.totalVideos = data.totalVideos;
+            vm.newUsersCount = data.newUsersCount;
+            vm.newVideos = data.newVideos;
+            vm.siteInfoStartDate = siteInfoStartDate;
+            vm.siteInfoEndDate = siteInfoEndDate;
+            vm.newUsers = newUsersArray;
+            vm.loading = false;
+            vm.siteInfo = true;
       })
     }
 
     function getComments(username,startDate, endDate){
-      $scope.siteInfo = false;
-      $scope.videos = false;
-      $scope.comments = false;
-      $scope.loading = true;
+        vm.siteInfo = false;
+        vm.videos = false;
+        vm.comments = false;
+        vm.loading = true;
       $http.get('/api/reports/comments', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
-          $scope.username = username;
-          $scope.commentCount = data.length;
-          $scope.startDate = startDate;
-          $scope.endDate = endDate;
-          $scope.loading = false;
-          $scope.comments = true;
+            vm.commentsUsername = username;
+            vm.commentsCommentCount = data.commentCount;
+            vm.commentsStartDate = startDate;
+            vm.commentsEndDate = endDate;
+            vm.loading = false;
+            vm.comments = true;
 
         })
     }
 
     function getVideos(username,startDate, endDate) {
-      $scope.siteInfo = false;
-      $scope.videos = false;
-      $scope.comments = false;
-      $scope.loading = true;
+        vm.siteInfo = false;
+        vm.videos = false;
+        vm.comments = false;
+        vm.loading = true;
       $http.get('/api/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
         .success(function(data){
-          $scope.username = username;
-          $scope.videoCount = data.length;
-          $scope.startDate = startDate;
-          $scope.endDate = endDate;
-          $scope.loading = false;
-          $scope.videos = true;
+            vm.videosUsername = username;
+            vm.videoCount = data.length;
+            vm.videosStartDate = startDate;
+            vm.videosEndDate = endDate;
+            vm.loading = false;
+            vm.videos = true;
         })
     }
 
     function getEmployeeReport(startDate, endDate) {
-        $scope.siteInfo = false;
-        $scope.videos = false;
-        $scope.comments = false;
-        $scope.loading = true;
-        $scope.employeeReport = false;
+        vm.siteInfo = false;
+        vm.videos = false;
+        vm.comments = false;
+        vm.loading = true;
+        vm.employeeReport = false;
         var dateObject = {};
         dateObject.startDate = startDate;
         dateObject.endDate = endDate;
         $http.post('/api/reports/employee-contributor', dateObject)
             .success(function(data) {
-                $scope.employees = data;
-                $scope.employeeReport = true;
-                $scope.loading = false;
+                vm.employees = data;
+                vm.employeeReport = true;
+                vm.loading = false;
             })
+    }
+
+    function openInput(input) {
+        vm.siteInfoInput = false;
+        vm.siteInfo = false;
+        vm.videosInput = false;
+        vm.videos = false;
+        vm.commentsInput = false;
+        vm.comments = false;
+        vm.employeeReportInput = false;
+        vm.employeeReport = false;
+
+        switch(input) {
+            case 'siteInfo':
+                vm.siteInfoInput = true;
+                break;
+            case 'videos':
+                vm.videosInput = true;
+                break;
+            case 'comments':
+                vm.commentsInput = true;
+                break;
+            case 'employeeReport':
+                vm.employeeReportInput = true;
+                break;
+            default:
+                break;
+        }
     }
 
 
 
       //////////////////
     var vm = this;
-    vm.userVideos = userVideos;
+    vm.getSiteInfo = getSiteInfo;
     vm.getComments = getComments;
     vm.getVideos = getVideos;
     vm.getEmployeeReport = getEmployeeReport;
+    vm.openInput = openInput
   }
 })();
