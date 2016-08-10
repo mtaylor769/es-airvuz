@@ -105,7 +105,11 @@ Comment.prototype.put = function(req, res) {
   NotificationCrud
     .getByComment(req.params.id)
     .then(function(notification) {
-      return NotificationCrud.updateComment({id: notification[0]._id, update: notificationUpdate})
+        if(notification.length) {
+            return NotificationCrud.updateComment({id: notification[0]._id, update: notificationUpdate})
+        } else {
+            return;
+        }
     })
     .then(function(notification) {
       logger.debug(notification);
