@@ -3,6 +3,7 @@
     <md-button ng-click="vm.openInput('videos')">Videos Uploaded</md-button>
     <md-button ng-click="vm.openInput('comments')">Comments Made</md-button>
     <md-button ng-click="vm.openInput('employeeReport')">Employee Report</md-button>
+    <md-button ng-click="vm.openInput('hashtagReport')">Hashtag Report</md-button>
     <md-card ng-show="vm.siteInfoInput">
         <md-input-container>
             <label for="siteInfoStartDate">Start Date</label>
@@ -138,23 +139,37 @@
         <md-input-container>
             <label for="hashtagStartDate">Start Date</label>
             <input class="form-control" type="text" id="hashtagStartDate" ng-model="vm.hashtagStartDate">
+        </md-input-container>
+        <md-input-container>
             <label for="hashtagEndDate">End Date</label>
             <input class="form-control" type="text" id="hashtagEndDate" ng-model="vm.hashtagEndDate">
+        </md-input-container>
+        <md-input-container>
             <label for="hashtag">Hashtag</label>
             <input class="form-control" type="text" id="hashtag" ng-model="vm.hashtag">
         </md-input-container>
-        <button class="btn btn-primary pull-right m-t-15" ng-click="vm.getHashcodes(vm.hashtagstartDate, vm.hashtagEndDate, vm.hashtag)">Hashtag Report</button>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getHashcodes(vm.hashtagstartDate, vm.hashtagEndDate, vm.hashtag)">Hashtag Report</md-button>
     </md-card>
     <div ng-show="vm.hashtagReport">
-        <table>
+        <table class="hashtag-table">
             <tr>
                 <th>Video Id</th>
                 <th>Title</th>
                 <th>Users</th>
-                <table>
-                    <tr>Username</tr>
-                    <tr>Email</tr>
-                </table>
+            </tr>
+            <tr ng-repeat="video in vm.hashtagDisplay">
+                <td>{{video._id}}</td>
+                <td>{{video.videoObject[0].title}}</td>
+                <td class="hashtag-users">
+                    <table>
+                        <tr>
+                            <th>Username</th>
+                        </tr>
+                        <tr ng-repeat="user in video.users">
+                            <td>{{user.like.userId.userNameDisplay}}</td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
     </div>

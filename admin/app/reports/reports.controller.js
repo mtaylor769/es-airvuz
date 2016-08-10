@@ -102,6 +102,7 @@
         vm.employeeReportInput = false;
         vm.employeeReport = false;
         vm.hashtagReportInput = false;
+        vm.hashtagReport = false;
 
         switch (input) {
             case 'siteInfo':
@@ -116,7 +117,7 @@
             case 'employeeReport':
                 vm.employeeReportInput = true;
                 break;
-            case 'hashtagReport'
+            case 'hashtagReport':
                 vm.hashtagReportInput = true;
             default:
                 break;
@@ -135,8 +136,8 @@
                 } else {
                     var topVideos = data;
                 }
-                $scope.hashtagReport = true;
-                $scope.hashtagDisplay = topVideos;
+                vm.hashtagReport = true;
+                vm.hashtagDisplay = topVideos;
             })
     }
 
