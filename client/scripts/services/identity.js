@@ -87,11 +87,16 @@ function getUserInfo() {
   });
 }
 
+function getToken() {
+  return token;
+}
+
 /////////////////////////////////////////////
 
 user.isAuthenticated = isAuthenticated;
 user.hasRole = hasRole;
 user.setToken = setToken;
+user.getToken = getToken;
 user.clear = clear;
 user.save = save;
 user.getUserInfo = getUserInfo;
