@@ -36,3 +36,19 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+.hashtag-table tr {
+    background-color: white;
+}
+
+.hashtag-users {
+    padding: 0;
+}
+
+.hashtag-users tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.hashtag-users th, td {
+    padding: 8px;
+}
