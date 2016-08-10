@@ -283,6 +283,9 @@ function bindEvents() {
         headersCommon: {
           'Cache-Control': 'max-age=3600'
         },
+        signHeaders: {
+          Authorization: 'Bearer ' + identity.getToken()
+        },
         // filename, relative to bucket
         name: currentUploadFile.hashName + '.mp4',
         // content
