@@ -658,6 +658,7 @@ body .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
   position: absolute;
   right:0;
   top: 15px;
+  z-index: 1;
   display: none;
 }
 

@@ -23,7 +23,7 @@
                     <p class="m-b-0" style="font-size: 12px"><a href="/user/'{userId.userNameUrl}" class="airvuz-blue">{userId.userNameDisplay}</a></p>
                     <p datetime="{reply.commentCreatedDate}" style="margin-left: 5px; margin-bottom: 0; margin-top: 3px">{commentDisplayDate}</p>
                 </div>
-                <p class="m-b-0">{comment}</p>
+                <p class="comment-text m-b-0">{comment}</p>
             </div>
         </div>
     </div>

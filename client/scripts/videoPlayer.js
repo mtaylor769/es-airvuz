@@ -228,7 +228,7 @@ function bindEvents() {
     $('#comment-edit-modal').children().find('#comment-edit-textarea').val(commentText);
     $(this).parent().parent().toggle();
     $('#comment-edit-modal').modal('show');
-    $('#edit-save-comment').on('click', function() {
+    $('#edit-save-comment').one('click', function() {
       commentText = $(this).parent().siblings('.modal-body').children().val();
       saveEditComment(commentId, commentText);
     })
@@ -245,7 +245,7 @@ function bindEvents() {
     })
     .done(function(response) {
       var commentChangedId = '#' + response._id;
-      $(commentChangedId).children().find('.comment-options-wrapper').siblings('.comment-text').text(response.comment);
+      $(commentChangedId).children().find('.comment-options-wrapper').first().siblings('.comment-text').text(response.comment);
       $('#comment-edit-modal').modal('hide');
     })
     .fail(function(error) {
