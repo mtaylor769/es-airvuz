@@ -629,7 +629,7 @@ function bindEvents() {
         //setting countdown interval variable function
         var countdown = function() {
           if(countdownNumber !== 0) {
-            if (activeEl !== 'comment-text' && paused !== true) {
+            if (activeEl !== 'comment-text' && paused !== true && $('#comment-text').val().length === 0) {
               countdownNumber = countdownNumber - 1;
               $('.end-card-countdown').text(countdownNumber);
             } else {
