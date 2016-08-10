@@ -363,15 +363,27 @@ function bindEvents() {
     var reportData = {};
     reportData.videoId = $(this).attr('data-videoid');
     reportData.message = $('.report-text').val();
+    reportData.userId = userIdentity._id;
     $.ajax({
         type: 'POST',
         url: '/api/videos/report-video',
-        data: reportData
+        data: reportData,
+        beforeSend: function () {
+          $('#send-report').prop('disabled', true);
+        }
       })
       .done(function(response) {
+        $('#report-modal').modal('hide');
+        $('.report-text').val('');
       })
       .fail(function(error) {
-      });
+      })
+  });
+
+  $('.report-text').keyup(function() {
+    var hasText = $(this).val().length ? false : true;
+
+    $('#send-report').prop('disabled', hasText);
   });
 
   //follow video user
@@ -570,7 +582,11 @@ function bindEvents() {
 
   //report modal
   $('.report').on('click', function() {
-    $('#report-modal').modal('show');
+    if (userIdentity.isAuthenticated()) {
+      $('#report-modal').modal('show');
+    } else {
+      showLoginDialog();
+    }
   });
 
   //go to previous page
