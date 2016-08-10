@@ -310,7 +310,7 @@ function bindEvents() {
     auth.login({emailAddress: emailAddress, password: password})
       .done(onLoginSuccess)
       .fail(function (message) {
-          $loginModal.find('.error-message').text(message).slideDown().delay(5000).slideUp(300);
+          $loginModal.find('.error-message').text(message).slideDown();
 
           ga('send', 'event', 'login', 'login fail', 'login');
           AVEventTracker({
