@@ -2045,6 +2045,14 @@ header logo and tag line media queries
   font-size: 16px;
 }
 
+.video-js button {
+  margin-top: 10px;
+}
+.video-js button.btn-primary {
+  background-color: #30c1ed;
+  border-color: #30c1ed;
+}
+
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 
