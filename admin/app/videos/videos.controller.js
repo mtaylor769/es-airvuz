@@ -5,9 +5,9 @@
 		.module('AirvuzAdmin')
 		.controller('VideosController', VideosController);
 
-	VideosController.$inject = ['Videos', '$scope', 'confirmDelete', 'Amazon'];
+	VideosController.$inject = ['Videos', '$scope', 'confirmDelete', 'Amazon', 'identity'];
 
-	function VideosController(Videos, $scope, confirmDelete, Amazon) {
+	function VideosController(Videos, $scope, confirmDelete, Amazon, identity) {
 
 		function videoSearch(videoId){
 			Videos.get({id: videoId}).$promise.then(function(video){
@@ -101,6 +101,9 @@
 					contentType: currentUploadFile.type || 'binary/octet-stream',
 					headersCommon: {
 						'Cache-Control': 'max-age=3600'
+					},
+					signHeaders: {
+						Authorization: 'Bearer ' + identity.getToken()
 					},
 					// filename, relative to bucket
 					name: currentUploadFile.hashName + '.mp4',

@@ -29,6 +29,9 @@
 				hasRole: function (role) {
 					return this.currentUser && this.currentUser.aclRoles.indexOf(role) > -1;
 				},
+				getToken: function () {
+					return token;
+				},
 				canAccessAdmin: function () {
 					var canAccess = false;
 
