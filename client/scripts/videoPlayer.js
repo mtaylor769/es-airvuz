@@ -1083,7 +1083,7 @@ function initialize(videoPath, currentVideo) {
     $('#video-description').slideUp();
   }, 5000);
 
-  ga('send', 'event', 'video page', document.referrer, 'referrer')
+  ga('send', 'event', 'video page', 'referrer', document.referrer);
   ga('send', 'event', 'video page', 'viewing', 'viewing video');
   AVEventTracker({
     codeSource: "videoPlayer",
@@ -1110,7 +1110,7 @@ $(window).bind('unload', function () {
         pCompletion = (vDuration/tDuration) * 100,
         pCompletionNearestTen = (Math.round(pCompletion / 10) * 10);
 
-    ga('send', 'event', 'video page', 'exited playing video', 'viewing video');
+    ga('send', 'event', 'video page', 'exited playing video', 'viewing video', pCompletionNearestTen);
     AVEventTracker({
       codeSource	: "videoPlayer",
       eventName		: "exitedPlayingVideo",
