@@ -89,6 +89,9 @@ function bindEvents() {
       headersCommon: {
         'Cache-Control': 'max-age=3600'
       },
+      signHeaders: {
+        Authorization: 'Bearer ' + identity.getToken()
+      },
       xAmzHeadersAtInitiate: {
         'x-amz-acl': 'public-read'
       },
@@ -723,6 +726,9 @@ function onCustomFileChange() {
     },
     xAmzHeadersAtInitiate: {
       'x-amz-acl': 'public-read'
+    },
+    signHeaders: {
+      Authorization: 'Bearer ' + identity.getToken()
     },
     // filename, relative to bucket
     name: customThumbnailName,
