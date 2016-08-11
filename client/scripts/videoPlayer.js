@@ -31,12 +31,15 @@ var notificationObject                 = {};
 var hasStartedPlaying                  = false;
 var paused                             = false;
 var followData                         = {};
+var isPlaying                          = false;
+var bufferCount                        = 2;
+var hasResChange                       = false;
+var bufferInterval                     = null;
+var isSeeking = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
 var video;
-
-
 
 var SLICK_CONFIG = {
   slidesToShow: 3,
@@ -97,7 +100,25 @@ var toggles = {
       }
     };
 
-//get up next video info
+// Capture event on next video playlist
+$('.nextVideos').on('click', 'li', function(evt) {
+  ga('send', 'event', 'video page', 'up next video clicked', 'viewing video');
+  AVEventTracker({
+    codeSource	: "videoPlayer",
+    eventName		: "upNextVideoClicked",
+    eventType		: "click",
+    userId          : getUserId(),
+    eventSource     : browser.isMobile() ? 'mobile' : ''
+  });
+});
+
+/*
+ * get the authenticated user id
+ * @return return the user id or empty string (anonymous)
+ */
+function getUserId() {
+  return userIdentity.isAuthenticated() ? userIdentity._id : '';
+}
 
 //video increment
 function incrementVideoCount() {
@@ -174,6 +195,13 @@ function onAutoPlayChange(event, state) {
   var autoPlayObject = {};
   autoPlayObject.userId = user._id;
   autoPlayObject.autoPlay = state;
+
+  AVEventTracker({
+    codeSource	: "videoPlayer",
+    eventName		: "autoPlay",
+    eventType		: "click",
+    eventSource     : browser.isMobile() ? 'mobile' : '',
+  });
 
   $.ajax({
     type:'PUT',
@@ -599,10 +627,13 @@ function bindEvents() {
 
   //start player event delegation
     function endFunction() {
+      ga('send', 'event', 'video page', 'ended', 'viewing video');
       AVEventTracker({
         codeSource: "videoPlayer",
         eventName: "ended",
-        eventType: "playerEvent"
+        eventType: "playerEvent",
+        userId: getUserId(),
+        eventSource: browser.isMobile() ? 'mobile' : ''
       });
       if(!user || user.autoPlay === true) {
 
@@ -664,29 +695,103 @@ function bindEvents() {
 
     function timeFunction() {
       if(hasStartedPlaying) {
+
+        // Buffering usually happens after seeking, we don't want to capture that buffer event
+        if (isSeeking) return;
+
         AVEventTracker({
           codeSource	: "videoPlayer",
           eventName		: "buffering",
-          eventType		: "playerEvent"
+          eventType		: "playerEvent",
+          eventSource     : browser.isMobile() ? 'mobile' : ''
         });
+
+        if (!hasResChange) {
+          bufferInterval = setInterval(bufferIntervalTimer(), 1000);
+        } else {
+          if (bufferInterval !== null) {
+            clearInterval(bufferInterval);
+          }
+        }
       }
     }
 
     function playFunction() {
       hasStartedPlaying = true;
+      isPlaying = true;
+      isSeeking = false;
+
+      ga('send', 'event', 'video page', (browser.isMobile() ? 'playing on mobile' : 'playing'), 'viewing video');
       AVEventTracker({
         codeSource	: "videoPlayer",
         eventName		: "playing",
-        eventType		: "playerEvent"
+        eventType		: "playerEvent",
+        userId          : getUserId(),
+        eventSource     : browser.isMobile() ? 'mobile' : ''
       });
     }
 
     function pauseFunction() {
+      var player = $videoPlayer[0].player;
+      isPlaying = false;
+      if (player.scrubbing()) return;
+
+      ga('send', 'event', 'video page', (browser.isMobile() ? 'paused on mobile' : 'paused'), 'viewing video');
       AVEventTracker({
         codeSource	: "videoPlayer",
         eventName		: "paused",
-        eventType		: "playerEvent"
+        eventType		: "playerEvent",
+        userId          : getUserId(),
+        eventSource     : browser.isMobile() ? 'mobile' : ''
       });
+    }
+
+    function bufferIntervalTimer () {
+      bufferCount--;
+      if (bufferCount <= 0) {
+        bufferCount = 2;
+        if (!hasResChange) {
+          videoResChangeOnBuffering();
+        }
+      }
+    }
+
+    // change the video resolution during buffering
+    function videoResChangeOnBuffering() {
+      var player = $videoPlayer[0].player,
+          playerResolution = player.currentResolution().label;
+
+      if (player.readyState() !== 0) {
+        if (browser.isMobile()) {
+          player.currentResolution('low');
+
+          hasResChange = true;
+
+          ga('send', 'event', 'video page', 'mobile video resolution changed on buffering', 'viewing video');
+          AVEventTracker({
+            codeSource	    : "videoPlayer",
+            eventName		: "videoResolutionChangedOnBuffering",
+            eventType		: "browser",
+            userId          : getUserId(),
+            eventSource     : 'mobile'
+          });
+        }
+      }
+    }
+
+    function seekFunction() {
+      if (!isSeeking) {
+        isSeeking = true;
+
+        ga('send', 'event', 'video page', 'seeking', 'viewing video');
+        AVEventTracker({
+          codeSource	: "videoPlayer",
+          eventName		: "seeking",
+          eventType		: "playerEvent",
+          userId        : getUserId(),
+          eventSource     : browser.isMobile() ? 'mobile' : ''
+        });
+      }
     }
 
     videojs("video-player").ready(function() {
@@ -694,8 +799,9 @@ function bindEvents() {
       player
       .on('playing', playFunction)
       .on('ended', endFunction)
-      .on('waiting', timeFunction)
-      .on('pause', pauseFunction);
+      // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
+      .on('pause', pauseFunction)
+      .on('seeking', seekFunction);
     });
 
   //event delegation start
@@ -977,8 +1083,50 @@ function initialize(videoPath, currentVideo) {
     $('#video-description').slideUp();
   }, 5000);
 
+  ga('send', 'event', 'video page', document.referrer, 'referrer')
   ga('send', 'event', 'video page', 'viewing', 'viewing video');
+  AVEventTracker({
+    codeSource: "videoPlayer",
+    eventName: "viewing",
+    eventType: "browser",
+    userId: getUserId(),
+    eventSource: browser.isMobile() ? 'mobile' : ''
+  });
+  AVEventTracker({
+    codeSource: "videoPlayer",
+    eventName: "referrer",
+    eventType: "browser",
+    userId: getUserId(),
+    referrer: document.referrer,
+    eventSource: browser.isMobile() ? 'mobile' : ''
+  });
 }
+
+// Capture the play duration upon exiting if video is still playing
+$(window).bind('unload', function () {
+  if (isPlaying) {
+    var tDuration = $videoPlayer[0].player.duration(),
+        vDuration = $videoPlayer[0].player.currentTime(),
+        pCompletion = (vDuration/tDuration) * 100,
+        pCompletionNearestTen = (Math.round(pCompletion / 10) * 10);
+
+    ga('send', 'event', 'video page', 'exited playing video', 'viewing video');
+    AVEventTracker({
+      codeSource	: "videoPlayer",
+      eventName		: "exitedPlayingVideo",
+      eventType		: "browser",
+      eventVideoPlaybackDetails  : {
+        totalDuration: tDuration,
+        viewDuration: vDuration,
+        percentCompletion: pCompletionNearestTen
+      },
+      userId        : getUserId(),
+      eventSource     : browser.isMobile() ? 'mobile' : ''
+    });
+  }
+  // prevent a dialog to popup
+  return undefined;
+});
 
 module.exports = {
   initialize: initialize

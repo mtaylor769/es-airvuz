@@ -11,20 +11,23 @@ var clientIp = null;
 var AVEventTracker = function(params) {
 	var params	= params || null;
 	var data		= {};
-	
+
 	if(params !== null) {
 		data.codeSource		= params.codeSource || "";
 		data.eventName		= params.eventName || "";
 		data.eventSource	= params.eventSource || "browser";
 		data.eventType		= params.eventType	|| "";
-		data.userId				= params.userId	|| "";
+		data.userId			= params.userId	|| "";
 		data.clientIp 		= clientIp || "";
-		data.eventMessage = params.eventMessage || "";
-	
+		data.eventMessage 	= params.eventMessage || "";
+		data.eventVideoPlaybackDetails = params.eventVideoPlaybackDetails || "";
+		data.referrer		= params.referrer || "";
+
 		$.ajax({
 			type: 'PUT',
 			url: '/api/avEventTracker',
-			data: data,
+			contentType : 'application/json',
+			data: JSON.stringify(data),
 			dataType: 'json'
 		})
 		.done(function(data) {
