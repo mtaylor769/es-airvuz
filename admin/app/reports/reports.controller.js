@@ -103,6 +103,7 @@
         vm.employeeReport = false;
         vm.hashtagReportInput = false;
         vm.hashtagReport = false;
+        vm.hashtagUserReportInput = false;
 
         switch (input) {
             case 'siteInfo':
@@ -117,14 +118,17 @@
             case 'employeeReport':
                 vm.employeeReportInput = true;
                 break;
-            case 'hashtagReport':
-                vm.hashtagReportInput = true;
+            case 'hashtagVideoReport':
+                vm.hashtagVideoReportInput = true;
+                break;
+            case 'hashtgaUserReport':
+                vm.hashtagUserReportInput = true;
             default:
                 break;
         }
     }
 
-    function getHashcodes(startDate, endDate, hashtag) {
+    function getVideoHashcodes(startDate, endDate, hashtag) {
         var data = {};
         data.startDate = startDate;
         data.endDate = endDate;
@@ -136,8 +140,8 @@
                 } else {
                     var topVideos = data;
                 }
-                vm.hashtagReport = true;
-                vm.hashtagDisplay = topVideos;
+                vm.hashtagVideoReport = true;
+                vm.hashtagVideoDisplay = topVideos;
             })
     }
 
@@ -150,6 +154,6 @@
     vm.getVideos = getVideos;
     vm.getEmployeeReport = getEmployeeReport;
     vm.openInput = openInput;
-    vm.getHashcodes = getHashcodes;
+    vm.getVideoHashcodes = getVideoHashcodes;
   }
 })();
