@@ -19,7 +19,6 @@ var user                      = identity.currentUser || null;
 var userNameCheck             = '';
 var amazonConfig              = require('./config/amazon.config.client');
 var md5                       = require('md5');
-var $editVideo                = null;
 var userData                  = {};
 var allOwnerVideos            = [];
 var showcaseOwnerVideos       = [];
@@ -598,21 +597,15 @@ function deleteVideo(videoId) {
 }
 
 function editVideo(videoId) {
-  var video;
-    $.ajax({
+  $.ajax({
     type: 'GET',
     url: '/api/videos/' + videoId
   })
-  .done(function(response) {
-    video = response;
-    return video;
-  })
   .then(function(video) {
-    console.log(video)
     renderEditVideoHtml(video);
   })
   .fail(function(error) {
-  })
+  });
 }
 
 function getCategoryById(id) {
