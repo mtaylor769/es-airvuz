@@ -499,8 +499,8 @@ Videos.prototype.getByUser = function(userId, sortBy) {
 
 	return VideoModel.find({userId: userId})
 		.sort(sort)
-		.select('title thumbnailPath viewCount uploadDate duration userId')
-		.populate('userId', 'userNameDisplay userNameUrl')
+		.select('title thumbnailPath viewCount uploadDate duration userId categories description')
+		.populate([{path:'userId', select: 'userNameDisplay userNameUrl'}, {path:'categories'}])
 		.exec();
 };
 

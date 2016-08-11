@@ -598,10 +598,21 @@ function deleteVideo(videoId) {
 }
 
 function editVideo(videoId) {
-  var video = $.grep(profileVideos, function (video) {
-    return video._id === videoId;
-  });
-  renderEditVideoHtml(video[0]);
+  var video;
+    $.ajax({
+    type: 'GET',
+    url: '/api/videos/' + videoId
+  })
+  .done(function(response) {
+    video = response;
+    return video;
+  })
+  .then(function(video) {
+    console.log(video)
+    renderEditVideoHtml(video);
+  })
+  .fail(function(error) {
+  })
 }
 
 function getCategoryById(id) {
@@ -653,8 +664,8 @@ function renderEditVideoHtml(video) {
   currentEditVideo = video;
   isCustomThumbnail = video.thumbnailPath.indexOf('custom') > 0;
 
-  video.categories.forEach(function (video) {
-    selectedCategory.push(getCategoryById(video));
+  video.categories.forEach(function (category) {
+    selectedCategory.push(category);
   });
 
   // convert br to new line
