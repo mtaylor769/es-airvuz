@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('SlidersController', SlidersController);
 
-  SlidersController.$inject = ['Sliders', '$q', '$http', 'Amazon'];
+  SlidersController.$inject = ['Sliders', '$q', '$http', 'Amazon', 'identity'];
 
-  function SlidersController(Sliders, $q, $http, Amazon) {
+  function SlidersController(Sliders, $q, $http, Amazon, identity) {
     var Slide = Sliders.createResource('slide');
     var Slider = Sliders.createResource('slider');
 
@@ -163,6 +163,9 @@
       },
       headersSigned: {
         'x-amz-acl': 'public-read'
+      },
+      signHeaders: {
+        Authorization: 'Bearer ' + identity.getToken()
       },
       onStart: onStart,
       onFileProgress: onImageUploadProgress,
