@@ -195,7 +195,7 @@ function search(query, page) {
 						videoLocation: {$regex: new RegExp(keywords, 'i')}
 					},
 					{
-						'tags.text': {$regex: new RegExp(keywords, 'i')}
+						tags: {$regex: new RegExp(keywords, 'i')}
 					}
 				]
 			};
