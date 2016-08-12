@@ -158,7 +158,7 @@
                 <th>Users</th>
             </tr>
             <tr ng-repeat="video in vm.hashtagDisplay">
-                <td>{{video._id}}</td>
+                <td>{{video._id}} By: <a href="/user/{{video.users[0].like.videoOwnerId.userNameUrl}}" target="_self">{{video.users[0].like.videoOwnerId.userNameDisplay}}</a></td>
                 <td>{{video.videoObject[0].title}}</td>
                 <td class="hashtag-users">
                     <table>
