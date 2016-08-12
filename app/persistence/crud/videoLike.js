@@ -95,4 +95,9 @@ VideoLike.prototype.delete = function(id) {
 VideoLike.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
   return VideoLikeModel.find({userId: userId, createdDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
 };
+
+VideoLike.prototype.findByUserIdAndVideoId = function(userId, videoId) {
+  return VideoLikeModel.findOne({userId: userId, videoId: videoId}).populate([{path: 'userId', select: 'userNameDisplay emailAddress'}, {path: 'videoOwnerId', select: 'userNameDisplay userNameUrl'}]).exec();
+};
+
 module.exports = new VideoLike();

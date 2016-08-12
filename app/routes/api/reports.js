@@ -37,7 +37,7 @@ Reports.prototype.getComments = function(req, res) {
       return Comment.getByUserAndDate(user._id, startDate, endDate)
     })
     .then(function(comments) {
-      res.send(comments);
+      res.json({commentCount: comments});
     })
 };
 
@@ -79,6 +79,77 @@ Reports.prototype.employeeContributor = function(req, res) {
           res.send(usersArray);
         })
       })
+};
+
+Reports.prototype.hashTag = function(req, res) {
+    var hashTag = new RegExp(req.body.hashTag, 'i');
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+    var aggregateHasVideoLike = [];
+    var aggregateHasFollow = [];
+    return Comment.findByHashAndDate(hashTag, startDate, endDate)
+        .then(function(commentAggregate) {
+            return Promise.map(commentAggregate, function(comment) {
+                if(comment.users.length > 1){
+                    return Promise.map(comment.users, function(user) {
+                        return Likes.findByUserIdAndVideoId(user.userId, comment.video)
+                            .then(function(like) {
+                                if(like) {
+                                    user.like = like;
+                                } else {
+
+                                }
+                            })
+                    })
+                    .then(function() {
+                        aggregateHasVideoLike.push(comment);
+                    })
+                } else {
+                    return Promise.map(comment.users, function(user) {
+                        return Likes.findByUserIdAndVideoId(user.userId, comment.video)
+                            .then(function(like) {
+                                if(like) {
+                                    user.like = like;
+                                    aggregateHasVideoLike.push(comment);
+                                }
+                            })
+                    })
+                }
+            });
+        })
+        .then(function() {
+            return Promise.map(aggregateHasVideoLike, function (comment) {
+                if (comment.users.length > 1) {
+                    return Promise.map(comment.users, function (user) {
+                        return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId)
+                            .then(function (follow) {
+                                if (follow) {
+                                    user.follow = follow;
+                                } else {
+                                    var index = comment.users.indexOf(user.userId);
+                                    var remove = comment.users.splice(index, 1);
+                                }
+                            })
+                    })
+                    .then(function() {
+                        aggregateHasFollow.push(comment);
+                    })
+                } else {
+                    return Promise.map(comment.users, function (user) {
+                        return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId)
+                            .then(function (follow) {
+                                if (follow) {
+                                    user.follow = follow;
+                                    aggregateHasFollow.push(comment);
+                                }
+                            })
+                    })
+                }
+            })
+        })
+        .then(function() {
+            res.send(aggregateHasFollow);
+        })
 };
 
 Reports.prototype.siteInfo = function(req, res) {
