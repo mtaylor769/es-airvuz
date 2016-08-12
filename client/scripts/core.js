@@ -250,6 +250,16 @@ function bindEvents() {
       });
   }
 
+  /*
+   * clear out the login text input fields
+   */
+  function resetLogin() {
+    $('.error-message').html('');
+    $('#login-modal').find('input[type=text], input[type=password]').each(function () {
+      $(this).val('');
+    });
+  }
+
   onSignupClick.isSubmitted = false;
 
   $loginModal.on('hidden.bs.modal', function () {
@@ -261,6 +271,9 @@ function bindEvents() {
         eventType		: "loginClick"
       });
     }
+
+    resetLogin();
+
     // reset tab to login
     $loginModal.find('#login-anchor-tab').click();
     contactUsFlag = false;
