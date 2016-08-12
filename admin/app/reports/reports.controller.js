@@ -121,7 +121,7 @@
             case 'hashtagVideoReport':
                 vm.hashtagVideoReportInput = true;
                 break;
-            case 'hashtgaUserReport':
+            case 'hashtagUserReport':
                 vm.hashtagUserReportInput = true;
             default:
                 break;
