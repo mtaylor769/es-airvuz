@@ -802,6 +802,17 @@ function bindEvents() {
       // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
       .on('pause', pauseFunction)
       .on('seeking', seekFunction);
+
+      // view counter - mobile
+      player.bigPlayButton.on('touchstart', function() {
+        incrementVideoCount();
+        viewTracking();
+      });
+      // view counter - desktop
+      if (!browser.isMobile() && player.autoplay()) {
+        incrementVideoCount();
+        viewTracking();
+      }
     });
 
   //event delegation start
@@ -1049,8 +1060,6 @@ function initialize(videoPath, currentVideo) {
   $videoPlayer = $('#video-player');
 
   $('.video-slick').slick(SLICK_CONFIG);
-  //run init functions
-  incrementVideoCount();
 
   //only run if user is logged in
   if(userIdentity.isAuthenticated()){
@@ -1084,20 +1093,24 @@ function initialize(videoPath, currentVideo) {
   }, 5000);
 
   ga('send', 'event', 'video page', 'referrer', document.referrer);
-  ga('send', 'event', 'video page', 'viewing', 'viewing video');
-  AVEventTracker({
-    codeSource: "videoPlayer",
-    eventName: "viewing",
-    eventType: "browser",
-    userId: getUserId(),
-    eventSource: browser.isMobile() ? 'mobile' : ''
-  });
+
   AVEventTracker({
     codeSource: "videoPlayer",
     eventName: "referrer",
     eventType: "browser",
     userId: getUserId(),
     referrer: document.referrer,
+    eventSource: browser.isMobile() ? 'mobile' : ''
+  });
+}
+
+function viewTracking() {
+  ga('send', 'event', 'video page', 'viewing', 'viewing video');
+  AVEventTracker({
+    codeSource: "videoPlayer",
+    eventName: "viewing",
+    eventType: "browser",
+    userId: getUserId(),
     eventSource: browser.isMobile() ? 'mobile' : ''
   });
 }
