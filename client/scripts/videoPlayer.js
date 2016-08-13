@@ -35,7 +35,8 @@ var isPlaying                          = false;
 var bufferCount                        = 2;
 var hasResChange                       = false;
 var bufferInterval                     = null;
-var isSeeking = false;
+var isSeeking                          = false;
+var startViewCount                     = true;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -721,6 +722,13 @@ function bindEvents() {
       isPlaying = true;
       isSeeking = false;
 
+      // increment view count on start once
+      if (startViewCount) {
+        startViewCount = false;
+        incrementVideoCount();
+        viewTracking();
+      }
+
       ga('send', 'event', 'video page', (browser.isMobile() ? 'playing on mobile' : 'playing'), 'viewing video');
       AVEventTracker({
         codeSource	: "videoPlayer",
@@ -802,17 +810,6 @@ function bindEvents() {
       // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
       .on('pause', pauseFunction)
       .on('seeking', seekFunction);
-
-      // view counter - mobile
-      player.bigPlayButton.on('touchstart', function() {
-        incrementVideoCount();
-        viewTracking();
-      });
-      // view counter - desktop
-      if (!browser.isMobile() && player.autoplay()) {
-        incrementVideoCount();
-        viewTracking();
-      }
     });
 
   //event delegation start
