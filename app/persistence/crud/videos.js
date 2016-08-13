@@ -69,39 +69,6 @@ function updateDateWithMoment(videos) {
 	});
 }
 
-/**
- * get trending video -
- * @param params {Object}
- * @param params.total {Number}
- * @param params.page {Number}
- * @param params.days {Number}
- * @returns {*}
- */
-function getTrendingVideos(params) {
-	if (!params) {
-		params = {
-			total: 10,
-			page: 1
-		}
-	}
-
-	var limit = params.total;
-	var skip = (params.page - 1) * limit;
-	var thirtyDayAgo = moment().subtract(14, 'days').toDate();
-
-	return VideoModel
-		.find({uploadDate: {$gte: thirtyDayAgo}})
-		.sort('-viewCount')
-		.select('thumbnailPath title viewCount duration categories userId uploadDate')
-		.skip(skip)
-		.populate('userId', 'userNameDisplay userNameUrl')
-		.populate('categories', 'name categoryTypeUrl')
-		.limit(limit)
-		.lean()
-		.exec()
-		.then(updateDateWithMoment);
-}
-
 function getVideoByCategory(params) {
 	var limit = params.total ? params.total : 10;
 	var skip = (params.page ? (params.page - 1) : 0) * limit;
@@ -531,7 +498,6 @@ Videos.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
 };
 
 Videos.prototype.getRecentVideos 		= getRecentVideos;
-Videos.prototype.getTrendingVideos 	= getTrendingVideos;
 Videos.prototype.getVideoByCategory = getVideoByCategory;
 Videos.prototype.search 						= search;
 Videos.prototype.getVideosByFollow 	= getVideosByFollow;
