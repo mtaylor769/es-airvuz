@@ -80,6 +80,10 @@ apiRouter.route('/api/users/:id')
   .get(users.get)
   .put(protect, users.put)
   .delete(protect, users.delete);
+
+apiRouter.route('/api/users/resend-confirmation')
+  .post(users.resendConfirmation);
+
 /**
  * /api/follow/
  */

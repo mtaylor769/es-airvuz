@@ -14,6 +14,11 @@ try {
   var videoViewCrud          = require('../../persistence/crud/videoViews');
   var nodemailer             = require('nodemailer');
   var _                      = require('lodash');
+  var viewManager			 = require('../../views/manager/viewManager');
+  var confirmationView		 = require('../../views/view/confirmationView');
+
+  // add dust template
+  viewManager.addView({	view : confirmationView });
 } catch(exception) {
   logger.error(" import error:" + exception);
 }
@@ -397,6 +402,33 @@ function contactUs(req, res) {
       })
 }
 
+function resendConfirmation(req, res) {
+  var confirmMailOptions = {
+    to: req.body.emailAddress,
+    subject: 'Account Confirmation'
+  };
+
+  viewManager
+      .getView({
+        viewName: confirmationView.getViewName(),
+        request: req,
+        response: res
+      })
+      .then(function (resp) {
+        confirmMailOptions.html = resp;
+        return _sendMail(confirmMailOptions);
+      })
+      .then(function () {
+        res.sendStatus(200);
+      })
+      .catch(function (error) {
+        if (error.length) {
+          return res.status(400).send(error);
+        }
+        return res.sendStatus(500);
+      });
+}
+
 User.prototype.hireMe               = hireMe;
 User.prototype.search               = search;
 User.prototype.get                  = get;
@@ -407,5 +439,6 @@ User.prototype.passwordResetRequest = passwordResetRequest;
 User.prototype.passwordResetChange  = passwordResetChange;
 User.prototype.statusChange         = statusChange;
 User.prototype.contactUs            = contactUs;
+User.prototype.resendConfirmation   = resendConfirmation;
 
 module.exports = new User();
