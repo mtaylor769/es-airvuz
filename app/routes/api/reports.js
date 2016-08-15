@@ -1,6 +1,7 @@
 var log4js					= require('log4js');
 var logger					= log4js.getLogger('app.routes.api.videoLike');
 var Promise                 = require('bluebird');
+var _  = require('underscore');
 var User            = require('../../persistence/crud/users');
 var Videos           = require('../../persistence/crud/videos');
 var Comment         = require('../../persistence/crud/comment');
@@ -151,6 +152,78 @@ Reports.prototype.hashTag = function(req, res) {
             res.send(aggregateHasFollow);
         })
 };
+
+Reports.prototype.userHashtag = function(req, res) {
+    var hashtag = new RegExp(req.body.hashtag, 'i');
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+    return Comment.findUserByHashAndDate(hashtag, startDate, endDate)
+        .then(function(users) {
+            return Promise.map(users, function(user) {
+                user.comment = _.uniq(user.comment, function(comment){return JSON.stringify(comment.videoId);});
+                return Promise.map(user.comment, function(comment) {
+                    return Likes.findByUserIdAndVideoId(user._id, comment.videoId)
+                        .then(function(like) {
+                            if(like) {
+                                comment.liked = true;
+                                return user;
+                            } else {
+                                comment.liked = false;
+                                return user
+                            }
+                        })
+                })
+            })
+        })
+        .then(function(users) {
+            users = _.chain(users).flatten().uniq().value();
+            return Promise.map(users, function(user) {
+                return Promise.map(user.comment, function(comment) {
+                    if(comment.liked) {
+                        return Videos.getById(comment.videoId)
+                            .then(function(video) {
+                                return Follow.findFollowByUserIdAndVideoOwnerId(user._id, video.userId)
+                                    .then(function(follow) {
+                                        if(follow) {
+                                            comment.follow = true;
+                                            return user;
+                                        } else {
+                                            comment.follow = false;
+                                            return user;
+                                        }
+                                })
+                            })
+                    } else {
+                        return user;
+                    }
+                })
+            })
+        })
+        .then(function(users) {
+            users = _.chain(users).flatten().uniq().value();
+            return Promise.map(users, function(user) {
+                user.validComments = [];
+                return Promise.map(user.comment, function(comment) {
+                    if(comment.follow === true && comment.liked === true) {
+                        user.validComments.push(comment);
+                    }
+                    return user;
+                })
+            })
+        })
+        .then(function(users) {
+            users = _.chain(users).flatten().uniq().value();
+            var validUsers = [];
+            Promise.map(users, function(user) {
+                if(user.validComments.length > 0) {
+                    validUsers.push(user);
+                }
+                user.count = user.validComments.length;
+            }).then(function() {
+                res.send(validUsers);
+            })
+        })
+}
 
 Reports.prototype.siteInfo = function(req, res) {
   logger.debug('REPORTS: IN');

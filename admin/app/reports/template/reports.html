@@ -177,18 +177,43 @@
     <md-card ng-show="vm.hashtagUserReportInput">
         <md-input-container>
             <label for="hashtagStartDate">Start Date</label>
-            <input class="form-control" type="text" id="hashtagStartDate" ng-model="vm.hashtagStartDate">
+            <input class="form-control" type="text" id="hashtagStartDate" ng-model="vm.hashtagUserStartDate">
         </md-input-container>
         <md-input-container>
             <label for="hashtagEndDate">End Date</label>
-            <input class="form-control" type="text" id="hashtagEndDate" ng-model="vm.hashtagEndDate">
+            <input class="form-control" type="text" id="hashtagEndDate" ng-model="vm.hashtagUserEndDate">
         </md-input-container>
         <md-input-container>
             <label for="hashtag">Hashtag</label>
-            <input class="form-control" type="text" id="hashtag" ng-model="vm.hashtag">
+            <input class="form-control" type="text" id="hashtag" ng-model="vm.hashtagUser">
         </md-input-container>
-        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getHashcodes(vm.hashtagstartDate, vm.hashtagEndDate, vm.hashtag)">Hashtag Report</md-button>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getUserHashCodes(vm.hashtagUserStartDate, vm.hashtagUserEndDate, vm.hashtagUser)">Hashtag Report</md-button>
     </md-card>
+    <div>
+        <table class="hashtag-table">
+            <tr>
+                <th>Username</th>
+                <th>Comment Count</th>
+                <th>Comment Info</th>
+            </tr>
+            <tr ng-repeat="user in vm.hashtagUserDisplay">
+                <td>{{user.userObject[0].userNameDisplay}}</td>
+                <td>{{user.count}}</td>
+                <td>
+                    <table>
+                        <tr>
+                            <th>Video Id</th>
+                            <th>Comment</th>
+                        </tr>
+                        <tr ng-repeat="comment in user.validComments">
+                            <td>{{comment.videoId}}</td>
+                            <td>{{comment.comment}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 <div ng-show="vm.loading" id="loadInfo" class="pre col-md-6">
     <div class="load-con">
