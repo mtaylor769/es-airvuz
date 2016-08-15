@@ -101,9 +101,10 @@
         vm.comments = false;
         vm.employeeReportInput = false;
         vm.employeeReport = false;
-        vm.hashtagReportInput = false;
-        vm.hashtagReport = false;
+        vm.hashtagVideoReportInput = false;
+        vm.hashtagVideoReport = false;
         vm.hashtagUserReportInput = false;
+        vm.hashtagUserReport = false;
 
         switch (input) {
             case 'siteInfo':
@@ -153,6 +154,7 @@
         $http.post('/api/reports/user-hashtag', data)
             .success(function(data) {
                 vm.hashtagUserDisplay = data;
+                vm.hashtagUserReport = true;
             })
     }
 

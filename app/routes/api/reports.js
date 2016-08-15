@@ -149,7 +149,11 @@ Reports.prototype.hashTag = function(req, res) {
             })
         })
         .then(function() {
-            res.send(aggregateHasFollow);
+            return Promise.map(aggregateHasFollow, function(video) {
+                video.count = video.users.length;
+            }).then(function() {
+                res.send(aggregateHasFollow);
+            })
         })
 };
 

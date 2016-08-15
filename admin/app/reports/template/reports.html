@@ -149,18 +149,20 @@
             <label for="hashtagVideo">Hashtag</label>
             <input class="form-control" type="text" id="hashtagVideo" ng-model="vm.hashtagVideo">
         </md-input-container>
-        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideoHashcodes(vm.hashtagVideoStartDate, vm.hashtagVideoEndDate, vm.hashtagVideo)">Hashtag Report</md-button>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideoHashcodes(vm.hashtagVideoStartDate, vm.hashtagVideoEndDate, vm.hashtagVideo)">Video Hashtag Report</md-button>
     </md-card>
     <div ng-show="vm.hashtagVideoReport">
         <table class="hashtag-table">
             <tr>
                 <th>Video Id</th>
                 <th>Title</th>
-                <th>Users</th>
+                <th>Count</th>
+                <th>Commenter</th>
             </tr>
-            <tr ng-repeat="video in vm.hashtagDisplay">
+            <tr ng-repeat="video in vm.hashtagVideoDisplay">
                 <td>{{video._id}} By: <a href="/user/{{video.users[0].like.videoOwnerId.userNameUrl}}" target="_self">{{video.users[0].like.videoOwnerId.userNameDisplay}}</a></td>
                 <td>{{video.videoObject[0].title}}</td>
+                <td>{{video.count}}</td>
                 <td class="hashtag-users">
                     <table>
                         <tr>
@@ -187,9 +189,9 @@
             <label for="hashtag">Hashtag</label>
             <input class="form-control" type="text" id="hashtag" ng-model="vm.hashtagUser">
         </md-input-container>
-        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getUserHashCodes(vm.hashtagUserStartDate, vm.hashtagUserEndDate, vm.hashtagUser)">Hashtag Report</md-button>
+        <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getUserHashCodes(vm.hashtagUserStartDate, vm.hashtagUserEndDate, vm.hashtagUser)">User Hashtag Report</md-button>
     </md-card>
-    <div>
+    <div ng-show="vm.hashtagUserReport">
         <table class="hashtag-table">
             <tr>
                 <th>Username</th>
@@ -197,13 +199,13 @@
                 <th>Comment Info</th>
             </tr>
             <tr ng-repeat="user in vm.hashtagUserDisplay">
-                <td>{{user.userObject[0].userNameDisplay}}</td>
+                <td><a href="/user/{{user.userObject[0].userNameUrl}}" target="_self">{{user.userObject[0].userNameDisplay}}</a></td>
                 <td>{{user.count}}</td>
-                <td>
+                <td class="hashtag-users">
                     <table>
                         <tr>
-                            <th>Video Id</th>
-                            <th>Comment</th>
+                            <th width="33%">Video Id</th>
+                            <th width="67%">Comment</th>
                         </tr>
                         <tr ng-repeat="comment in user.validComments">
                             <td>{{comment.videoId}}</td>
