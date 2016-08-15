@@ -101,8 +101,10 @@
         vm.comments = false;
         vm.employeeReportInput = false;
         vm.employeeReport = false;
-        vm.hashtagReportInput = false;
-        vm.hashtagReport = false;
+        vm.hashtagVideoReportInput = false;
+        vm.hashtagVideoReport = false;
+        vm.hashtagUserReportInput = false;
+        vm.hashtagUserReport = false;
 
         switch (input) {
             case 'siteInfo':
@@ -117,14 +119,17 @@
             case 'employeeReport':
                 vm.employeeReportInput = true;
                 break;
-            case 'hashtagReport':
-                vm.hashtagReportInput = true;
+            case 'hashtagVideoReport':
+                vm.hashtagVideoReportInput = true;
+                break;
+            case 'hashtagUserReport':
+                vm.hashtagUserReportInput = true;
             default:
                 break;
         }
     }
 
-    function getHashcodes(startDate, endDate, hashtag) {
+    function getVideoHashcodes(startDate, endDate, hashtag) {
         var data = {};
         data.startDate = startDate;
         data.endDate = endDate;
@@ -132,12 +137,24 @@
         $http.post('/api/reports/hashtag', data)
             .success(function(data) {
                 if(data.length > 20) {
-                    var topVideos = data.splice(0, 20)
+                    var topVideos = data.splice(0, 20);
                 } else {
                     var topVideos = data;
                 }
-                vm.hashtagReport = true;
-                vm.hashtagDisplay = topVideos;
+                vm.hashtagVideoReport = true;
+                vm.hashtagVideoDisplay = topVideos;
+            })
+    }
+
+    function getUserHashCodes(startDate, endDate, hashtag) {
+        var data = {};
+        data.startDate = startDate;
+        data.endDate = endDate;
+        data.hashtag = hashtag;
+        $http.post('/api/reports/user-hashtag', data)
+            .success(function(data) {
+                vm.hashtagUserDisplay = data;
+                vm.hashtagUserReport = true;
             })
     }
 
@@ -150,6 +167,7 @@
     vm.getVideos = getVideos;
     vm.getEmployeeReport = getEmployeeReport;
     vm.openInput = openInput;
-    vm.getHashcodes = getHashcodes;
+    vm.getVideoHashcodes = getVideoHashcodes;
+    vm.getUserHashCodes = getUserHashCodes;
   }
 })();

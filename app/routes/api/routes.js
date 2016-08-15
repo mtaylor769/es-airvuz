@@ -290,5 +290,7 @@ apiRouter.route('/api/reports/comments')
 	.get(reports.getComments);
 apiRouter.route('/api/reports/hashtag')
 	.post(reports.hashTag);
+apiRouter.route('/api/reports/user-hashtag')
+	.post(reports.userHashtag);
 
 module.exports = apiRouter;
