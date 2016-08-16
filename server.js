@@ -59,6 +59,16 @@ var bodyParser = require('body-parser');
 var pubPath = path.resolve(__dirname, '/public');
 logger.debug("pubPath:" + pubPath);
 
+if (global.IS_PRODUCTION) {
+	app.use(function forcePreferredDomain(req, res, next) {
+		var host = req.get('host');
+		if (host !== 'www.airvuz.com') {
+			return res.redirect(301, 'https://www.airvuz.com/' + req.originalUrl);
+		}
+		return next();
+	});
+}
+
 app.use(morgan('dev'));
 app.use(compression());
 //app.use(express.static(path.resolve(__dirname, '/public')));
