@@ -258,34 +258,6 @@ Videos.prototype.getPreCondition = function(params) {
 				sourceLocation	: sourceLocation
 			});
 		}
-		
-		if(this.data.categories.length === 0) {
-			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "category"
-				},
-				sourceError			: "#category",
-				displayMsg			: "This field is required",
-				errorMessage		: "field required",
-				sourceLocation	: sourceLocation
-			});
-		}
-
-		if(this.data.droneType === null) {
-			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "drone-type"
-				},
-				sourceError			: "#drone-type",
-				displayMsg			: "This field is required",
-				errorMessage		: "field required",
-				sourceLocation	: sourceLocation
-			});
-		}
 
 		if(this.data.cameraType === null) {
 			this.errors = errorMessage.getErrorMessage({

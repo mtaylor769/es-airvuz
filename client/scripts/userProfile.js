@@ -503,7 +503,7 @@ function onSaveVideoEdit() {
     categories            : $('#selected-category-list li').map(function (index, li) {
                               return $(li).data('id');
                             }).toArray(),
-    droneType             : $('#drone-type').val(),
+    droneType             : $('#drone-type').val().length === 0 ? null : $('#drone-type').val(),
     cameraType            : $('#camera-type').val(),
     thumbnailPath         : currentEditVideo.thumbnailPath,
     isCustomThumbnail     : isCustomThumbnail,
