@@ -810,7 +810,29 @@ function bindEvents() {
       // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
       .on('pause', pauseFunction)
       .on('seeking', seekFunction);
+
+      /*
+       * IOS fallback to native controls
+       * Remove the video controls attr to prevent native control
+       */
+      if (browser.isIOS()) {
+        removeVideoControlsAttr();
+        player.on('touchend', function() {
+          player.play();
+        });
+      }
     });
+
+  /*
+   * Remove videojs HTML5 video controls attribute
+   */
+  function removeVideoControlsAttr() {
+    var html5VideoId = document.getElementById('video-player_html5_api');
+
+    if (typeof html5VideoId !== 'undefined' && html5VideoId.hasAttribute('controls')) {
+      html5VideoId.removeAttribute('controls');
+    }
+  }
 
   //event delegation start
   function commentReply() {
