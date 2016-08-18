@@ -7,6 +7,10 @@ function isMobile() {
   return isInitiallyMobile ? true : mobile;
 }
 
+function isIOS() {
+  return ['iPad', 'iPhone'].indexOf(navigator.platform) >= 0 || false;
+}
+
 function getSize() {
   return {
     width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
@@ -18,5 +22,6 @@ function getSize() {
 
 browser.getSize = getSize;
 browser.isMobile = isMobile;
+browser.isIOS = isIOS;
 
 module.exports = browser;
