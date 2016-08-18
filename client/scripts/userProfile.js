@@ -927,7 +927,10 @@ function getData() {
       VIEW_MODEL.drones = drones;
     });
 
-  VIEW_MODEL.categories = Page.categories;
+  category.getByRoles()
+      .then(function (categories) {
+        VIEW_MODEL.categories = categories;
+      });
 }
 
 
