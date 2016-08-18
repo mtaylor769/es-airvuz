@@ -1,3 +1,22 @@
+#search-page #videos .video a.video-link {
+    display: block;
+    width: 100%;
+    position: relative;
+    height: 0;
+    padding: 56.25% 0 0 0;
+    overflow: hidden;
+}
+
+#search-page #videos .video img {
+    position: absolute;
+    display: block;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
 #search-page #videos .col-md-3.col-sm-6 {
     padding: 0 5px;
 }
