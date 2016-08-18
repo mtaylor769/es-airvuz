@@ -1,12 +1,12 @@
 var log4js					= require('log4js');
 var logger					= log4js.getLogger('app.routes.api.videoLike');
-var Promise                 = require('bluebird');
-var _  = require('underscore');
+var Promise         = require('bluebird');
+var _               = require('lodash');
 var User            = require('../../persistence/crud/users');
-var Videos           = require('../../persistence/crud/videos');
+var Videos          = require('../../persistence/crud/videos');
 var Comment         = require('../../persistence/crud/comment');
 var Likes           = require('../../persistence/crud/videoLike');
-var Follow         = require('../../persistence/crud/follow');
+var Follow          = require('../../persistence/crud/follow');
 
 function Reports() {
   
@@ -128,13 +128,13 @@ Reports.prototype.hashTag = function(req, res) {
                                     user.follow = follow;
                                 } else {
                                     var index = comment.users.indexOf(user.userId);
-                                    var remove = comment.users.splice(index, 1);
+                                    comment.users.splice(index, 1);
                                 }
                             })
                     })
                     .then(function() {
                         aggregateHasFollow.push(comment);
-                    })
+                    });
                 } else {
                     return Promise.map(comment.users, function (user) {
                         return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId)
@@ -161,23 +161,21 @@ Reports.prototype.userHashtag = function(req, res) {
     var hashtag = new RegExp(req.body.hashtag, 'i');
     var startDate = new Date(req.body.startDate);
     var endDate = new Date(req.body.endDate);
+
     return Comment.findUserByHashAndDate(hashtag, startDate, endDate)
         .then(function(users) {
             return Promise.map(users, function(user) {
-                user.comment = _.uniq(user.comment, function(comment){return JSON.stringify(comment.videoId);});
+                user.comment = _.uniqBy(user.comment, function(comment){
+                  return JSON.stringify(comment.videoId);
+                });
                 return Promise.map(user.comment, function(comment) {
                     return Likes.findByUserIdAndVideoId(user._id, comment.videoId)
                         .then(function(like) {
-                            if(like) {
-                                comment.liked = true;
-                                return user;
-                            } else {
-                                comment.liked = false;
-                                return user
-                            }
-                        })
-                })
-            })
+                            comment.liked = !!like;
+                            return user;
+                        });
+                });
+            });
         })
         .then(function(users) {
             users = _.chain(users).flatten().uniq().value();
@@ -188,20 +186,15 @@ Reports.prototype.userHashtag = function(req, res) {
                             .then(function(video) {
                                 return Follow.findFollowByUserIdAndVideoOwnerId(user._id, video.userId)
                                     .then(function(follow) {
-                                        if(follow) {
-                                            comment.follow = true;
-                                            return user;
-                                        } else {
-                                            comment.follow = false;
-                                            return user;
-                                        }
-                                })
-                            })
+                                        comment.follow = !!follow;
+                                        return user;
+                                    });
+                            });
                     } else {
                         return user;
                     }
-                })
-            })
+                });
+            });
         })
         .then(function(users) {
             users = _.chain(users).flatten().uniq().value();
@@ -212,8 +205,8 @@ Reports.prototype.userHashtag = function(req, res) {
                         user.validComments.push(comment);
                     }
                     return user;
-                })
-            })
+                });
+            });
         })
         .then(function(users) {
             users = _.chain(users).flatten().uniq().value();
@@ -225,9 +218,9 @@ Reports.prototype.userHashtag = function(req, res) {
                 user.count = user.validComments.length;
             }).then(function() {
                 res.send(validUsers);
-            })
-        })
-}
+            });
+        });
+};
 
 Reports.prototype.siteInfo = function(req, res) {
   logger.debug('REPORTS: IN');
