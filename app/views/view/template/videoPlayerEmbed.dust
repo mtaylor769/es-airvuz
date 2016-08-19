@@ -12,6 +12,7 @@
       <meta property="og:video:width" content="700" />
       <meta property="og:video:height" content="393" />
       <meta property="fb:app_id" content="{facebookAppId}" />
+      <script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
     </head>
     <body style="margin: 0;">
         <video src="{s3Bucket}{video.videoPath}" autoplay controls width="100%" height="100%"></video>
@@ -33,6 +34,27 @@
 
           ga('create', GOOGLE_TRACKING_ID, 'auto');
           ga('send', 'pageview', '/embed/' + VIDEO._id, {title: VIDEO.title, id: VIDEO._id});
+
+          $(function () {
+            var userAgent = window.navigator.userAgent.toLowerCase();
+            var isMobile = userAgent.indexOf('mobile') > -1 || userAgent.indexOf('android') > -1;
+            var data = {
+                codeSource: "videoPlayerEmbedded",
+                eventName: "video-embedded-referrer",
+                eventType: "browser",
+                referrer: document.referrer,
+                videoId: VIDEO._id,
+                eventSource: isMobile ? 'mobile' : 'browser'
+            };
+
+            $.ajax({
+                type: 'PUT',
+           		url: '/api/avEventTracker',
+         		contentType : 'application/json',
+            	data: JSON.stringify(data),
+            	dataType: 'json'
+            });
+          });
         </script>
     </body>
 </html>

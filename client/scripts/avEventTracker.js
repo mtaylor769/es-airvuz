@@ -22,6 +22,7 @@ var AVEventTracker = function(params) {
 		data.eventMessage 	= params.eventMessage || "";
 		data.eventVideoPlaybackDetails = params.eventVideoPlaybackDetails || "";
 		data.referrer		= params.referrer || "";
+		data.videoId		= params.videoId || "";
 
 		$.ajax({
 			type: 'PUT',

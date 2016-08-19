@@ -103,10 +103,10 @@ var toggles = {
 
 // Capture event on next video playlist
 $('.nextVideos').on('click', 'li', function(evt) {
-  ga('send', 'event', 'video page', 'up next video clicked', 'viewing video');
+  ga('send', 'event', 'video page', 'video-up-next-video-clicked', 'viewing video');
   AVEventTracker({
     codeSource	: "videoPlayer",
-    eventName		: "upNextVideoClicked",
+    eventName		: "video-up-next-video-clicked",
     eventType		: "click",
     userId          : getUserId(),
     eventSource     : browser.isMobile() ? 'mobile' : ''
@@ -199,7 +199,7 @@ function onAutoPlayChange(event, state) {
 
   AVEventTracker({
     codeSource	: "videoPlayer",
-    eventName		: "autoPlay",
+    eventName		: "video-auto-play",
     eventType		: "click",
     eventSource     : browser.isMobile() ? 'mobile' : '',
   });
@@ -290,9 +290,10 @@ function bindEvents() {
     }
     AVEventTracker({
       codeSource	: "videoPlayer",
-      eventName		: "commentSave",
+      eventName		: "comment-saved",
       eventType		: "click"
     });
+    ga('send', 'event', 'video page', 'comment-saved', 'commenting video');
     notificationObject.notificationType = 'COMMENT';
     notificationObject.notifiedUserId  = video.userId;
     notificationObject.notificationMessage = $('#comment-text').val();
@@ -358,7 +359,7 @@ function bindEvents() {
           if (response.status === 'liked') {
             AVEventTracker({
               codeSource	: "videoPlayer",
-              eventName		: "videoLiked",
+              eventName		: "video-liked",
               eventType		: "click"
             });
             $('.like').addClass('airvuz-blue');
@@ -367,7 +368,7 @@ function bindEvents() {
           } else if (response.status === 'unliked') {
             AVEventTracker({
               codeSource	: "videoPlayer",
-              eventName		: "videoUnliked",
+              eventName		: "video-unliked",
               eventType		: "click"
             });
             $('.like').removeClass('airvuz-blue');
@@ -376,7 +377,7 @@ function bindEvents() {
           }
 
           ga('send', 'social', 'facebook', 'like', window.location.href);
-          ga('send', 'event', 'video page', 'facebook like', 'like video');
+          ga('send', 'event', 'video page', 'facebook-like', 'like video');
         })
         .fail(function (error) {
         });
@@ -461,24 +462,24 @@ function bindEvents() {
     })
         .done(function (response) {
           if(response.status === 'followed') {
+            ga('send', 'event', 'video page', 'video-following-user', 'following user');
             AVEventTracker({
               codeSource	: "videoPlayer",
-              eventName		: "followedUser",
+              eventName		: "video-following-user",
               eventType		: "click"
             });
             $('#follow').text('-');
             fbq('trackCustom', 'follow');
           } else if(response.status === 'unfollowed'){
+            ga('send', 'event', 'video page', 'video-unfollowing-user', 'following user');
             AVEventTracker({
               codeSource	: "videoPlayer",
-              eventName		: "unfollowedUser",
+              eventName		: "video-unfollowing-user",
               eventType		: "click"
             });
             $('#follow').text('+');
             fbq('trackCustom', '-follow');
           }
-
-          ga('send', 'event', 'video page', 'following', 'following user');
         })
         .fail(function (error) {
         })
@@ -513,7 +514,14 @@ function bindEvents() {
           .done(function(response) {
             fbq('trackCustom', 'social-share-facebook');
             ga('send', 'social', 'facebook', 'share', window.location.href);
-            ga('send', 'event', 'video page', 'facebook share', 'sharing video');
+            ga('send', 'event', 'video page', 'facebook-share', 'sharing video');
+            AVEventTracker({
+              codeSource: "videoPlayer",
+              eventName: "facebook-share",
+              eventType: "browser",
+              userId: getUserId(),
+              eventSource: browser.isMobile() ? 'mobile' : ''
+            });
           })
           .fail(function(error) {
           });
@@ -538,7 +546,14 @@ function bindEvents() {
     .done(function(response) {
       fbq('trackCustom', 'social-share-twitter');
       ga('send', 'social', 'twitter', 'share', window.location.href);
-      ga('send', 'event', 'video page', 'twitter share', 'sharing video');
+      ga('send', 'event', 'video page', 'twitter-share', 'sharing video');
+      AVEventTracker({
+        codeSource: "videoPlayer",
+        eventName: "twitter-share",
+        eventType: "browser",
+        userId: getUserId(),
+        eventSource: browser.isMobile() ? 'mobile' : ''
+      });
     })
     .fail(function(error) {
     })
@@ -560,7 +575,14 @@ function bindEvents() {
       .done(function(response) {
         fbq('trackCustom', 'social-share-google');
         ga('send', 'social', 'google', 'share', window.location.href);
-        ga('send', 'event', 'video page', 'google share', 'sharing video');
+        ga('send', 'event', 'video page', 'google-share', 'sharing video');
+        AVEventTracker({
+          codeSource: "videoPlayer",
+          eventName: "google-share",
+          eventType: "browser",
+          userId: getUserId(),
+          eventSource: browser.isMobile() ? 'mobile' : ''
+        });
       })
       .fail(function(error) {
       });
@@ -603,7 +625,15 @@ function bindEvents() {
       })
       .done(function(response) {
         fbq('trackCustom', 'social-share-embed');
-        ga('send', 'event', 'video page', 'embeding', 'embeding video');
+        ga('send', 'event', 'video page', 'video-embedded', video._id);
+        AVEventTracker({
+          codeSource: "videoPlayer",
+          eventName: "video-embedded",
+          eventType: "browser",
+          userId: getUserId(),
+          videoId: video._id,
+          eventSource: browser.isMobile() ? 'mobile' : ''
+        });
       })
       .fail(function(error) {
       });
@@ -628,10 +658,10 @@ function bindEvents() {
 
   //start player event delegation
     function endFunction() {
-      ga('send', 'event', 'video page', 'ended', 'viewing video');
+      ga('send', 'event', 'video page', 'video-ended', 'viewing video');
       AVEventTracker({
         codeSource: "videoPlayer",
-        eventName: "ended",
+        eventName: "video-ended",
         eventType: "playerEvent",
         userId: getUserId(),
         eventSource: browser.isMobile() ? 'mobile' : ''
@@ -729,10 +759,10 @@ function bindEvents() {
         viewTracking();
       }
 
-      ga('send', 'event', 'video page', (browser.isMobile() ? 'playing on mobile' : 'playing'), 'viewing video');
+      ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-playing' : 'video-playing'), 'viewing video');
       AVEventTracker({
         codeSource	: "videoPlayer",
-        eventName		: "playing",
+        eventName		: "video-playing",
         eventType		: "playerEvent",
         userId          : getUserId(),
         eventSource     : browser.isMobile() ? 'mobile' : ''
@@ -744,10 +774,10 @@ function bindEvents() {
       isPlaying = false;
       if (player.scrubbing()) return;
 
-      ga('send', 'event', 'video page', (browser.isMobile() ? 'paused on mobile' : 'paused'), 'viewing video');
+      ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-paused' : 'video-paused'), 'viewing video');
       AVEventTracker({
         codeSource	: "videoPlayer",
-        eventName		: "paused",
+        eventName		: "video-paused",
         eventType		: "playerEvent",
         userId          : getUserId(),
         eventSource     : browser.isMobile() ? 'mobile' : ''
@@ -791,10 +821,10 @@ function bindEvents() {
       if (!isSeeking) {
         isSeeking = true;
 
-        ga('send', 'event', 'video page', 'seeking', 'viewing video');
+        ga('send', 'event', 'video page', 'video-seeking', 'viewing video');
         AVEventTracker({
           codeSource	: "videoPlayer",
-          eventName		: "seeking",
+          eventName		: "video-seeking",
           eventType		: "playerEvent",
           userId        : getUserId(),
           eventSource     : browser.isMobile() ? 'mobile' : ''
@@ -889,8 +919,15 @@ function bindEvents() {
           var toNumber = Number(currentCount);
           $('.commentCount').text('  ' + (toNumber + 1) + '  ');
 
-          fbq('trackCustom', 'comment');
-          ga('send', 'event', 'video page', 'comment', 'commenting video');
+          fbq('trackCustom', 'video-commented');
+          ga('send', 'event', 'video page', 'video-commented', 'commenting video');
+          AVEventTracker({
+            codeSource: "videoPlayer",
+            eventName: "video-commented",
+            eventType: "browser",
+            userId: getUserId(),
+            eventSource: browser.isMobile() ? 'mobile' : ''
+          });
         });
     });
   }
@@ -1111,23 +1148,24 @@ function initialize(videoPath, currentVideo) {
     $('#video-description').slideUp();
   }, 5000);
 
-  ga('send', 'event', 'video page', 'referrer', document.referrer);
+  ga('send', 'event', 'video page', 'video-page-referrer', document.referrer);
 
   AVEventTracker({
     codeSource: "videoPlayer",
-    eventName: "referrer",
+    eventName: "video-page-referrer",
     eventType: "browser",
     userId: getUserId(),
     referrer: document.referrer,
+    videoId: video._id,
     eventSource: browser.isMobile() ? 'mobile' : ''
   });
 }
 
 function viewTracking() {
-  ga('send', 'event', 'video page', 'viewing', 'viewing video');
+  ga('send', 'event', 'video page', 'video-viewing', 'viewing video');
   AVEventTracker({
     codeSource: "videoPlayer",
-    eventName: "viewing",
+    eventName: "video-viewing",
     eventType: "browser",
     userId: getUserId(),
     eventSource: browser.isMobile() ? 'mobile' : ''
@@ -1142,10 +1180,10 @@ $(window).bind('unload', function () {
         pCompletion = (vDuration/tDuration) * 100,
         pCompletionNearestTen = (Math.round(pCompletion / 10) * 10);
 
-    ga('send', 'event', 'video page', 'exited playing video', 'viewing video', pCompletionNearestTen);
+    ga('send', 'event', 'video page', 'video-exited-on-playing', 'viewing video', pCompletionNearestTen);
     AVEventTracker({
       codeSource	: "videoPlayer",
-      eventName		: "exitedPlayingVideo",
+      eventName		: "video-exited-on-playing",
       eventType		: "browser",
       eventVideoPlaybackDetails  : {
         totalDuration: tDuration,

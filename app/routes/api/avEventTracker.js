@@ -22,6 +22,7 @@ AVEventTracker.prototype.put = function(req, res) {
 	params.eventMessage 	= req.body.eventMessage;
 	params.eventVideoPlaybackDetails = req.body.eventVideoPlaybackDetails;
 	params.referrer			= req.body.referrer;
+	params.videoId			= req.body.videoId;
 
 	EventTrackingCrud
 		.create(params)
