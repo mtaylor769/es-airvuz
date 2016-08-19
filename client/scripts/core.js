@@ -104,10 +104,10 @@ function onLoginSuccess() {
     contactUsFlag = false;
   }
   fbq('trackCustom', 'login');
-  ga('send', 'event', 'login', 'login success', 'login');
+  ga('send', 'event', 'login', 'login-success', 'login');
   AVEventTracker({
     codeSource	: "core",
-    eventName		: "loginSuccess",
+    eventName		: "login-success",
     eventType		: "loginClick"
   });
 }
@@ -254,10 +254,10 @@ function bindEvents() {
 
   $loginModal.on('hidden.bs.modal', function () {
     if (!isLoggedIn) {
-      ga('send', 'event', 'login', 'login dismissed', 'login');
+      ga('send', 'event', 'login', 'login-dismissed', 'login');
       AVEventTracker({
         codeSource	: "core",
-        eventName		: "loginDismissed",
+        eventName		: "login-dismissed",
         eventType		: "loginClick"
       });
     }
@@ -267,10 +267,10 @@ function bindEvents() {
   });
 
   $loginModal.on('show.bs.modal', function (event) {
-    ga('send', 'event', 'login', 'header login click', 'login');
+    ga('send', 'event', 'login', 'login-button-click', 'login');
     AVEventTracker({
       codeSource	: "core",
-      eventName		: "headerLoginClick",
+      eventName		: "login-button-click",
       eventType		: "loginClick"
     });
 
@@ -300,10 +300,10 @@ function bindEvents() {
     var emailAddress = $loginModal.find('.email-input:visible').val();
     var password = $loginModal.find('.password-input:visible').val();
 
-    ga('send', 'event', 'login', 'login attempt', 'login');
+    ga('send', 'event', 'login', 'login-attempt', 'login');
     AVEventTracker({
       codeSource	: "core",
-      eventName		: "loginAttempt",
+      eventName		: "login-attempt",
       eventType		: "loginClick"
     });
 
@@ -312,10 +312,10 @@ function bindEvents() {
       .fail(function (message) {
           $loginModal.find('.error-message').text(message).slideDown();
 
-          ga('send', 'event', 'login', 'login fail', 'login');
+          ga('send', 'event', 'login', 'login-fail', 'login');
           AVEventTracker({
             codeSource	: "core",
-            eventName		: "loginFail",
+            eventName		: "login-fail",
             eventType		: "loginClick"
           });
         });
