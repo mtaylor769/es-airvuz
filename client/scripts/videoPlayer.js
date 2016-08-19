@@ -462,24 +462,24 @@ function bindEvents() {
     })
         .done(function (response) {
           if(response.status === 'followed') {
+            ga('send', 'event', 'video page', 'video-following-user', 'following user');
             AVEventTracker({
               codeSource	: "videoPlayer",
-              eventName		: "followed-user",
+              eventName		: "video-following-user",
               eventType		: "click"
             });
             $('#follow').text('-');
             fbq('trackCustom', 'follow');
           } else if(response.status === 'unfollowed'){
+            ga('send', 'event', 'video page', 'video-unfollowing-user', 'following user');
             AVEventTracker({
               codeSource	: "videoPlayer",
-              eventName		: "unfollowed-user",
+              eventName		: "video-unfollowing-user",
               eventType		: "click"
             });
             $('#follow').text('+');
             fbq('trackCustom', '-follow');
           }
-
-          ga('send', 'event', 'video page', 'video-following', 'following user');
         })
         .fail(function (error) {
         })
