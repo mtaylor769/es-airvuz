@@ -56,6 +56,11 @@ var eventTrackingSchema = mongoose.Schema({
 	 */
 	referrer: String,
 
+	/*
+	 * Video ID based off Referrer
+	 */
+	videoId: String,
+
 
 	/*
 	// "CLIENT" | "SERVER"

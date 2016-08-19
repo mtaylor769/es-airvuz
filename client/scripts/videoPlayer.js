@@ -603,7 +603,7 @@ function bindEvents() {
       })
       .done(function(response) {
         fbq('trackCustom', 'social-share-embed');
-        ga('send', 'event', 'video page', 'embeding', 'embeding video');
+        ga('send', 'event', 'video page', 'embeding', video._id);
       })
       .fail(function(error) {
       });
@@ -1097,6 +1097,7 @@ function initialize(videoPath, currentVideo) {
     eventType: "browser",
     userId: getUserId(),
     referrer: document.referrer,
+    videoId: video._id,
     eventSource: browser.isMobile() ? 'mobile' : ''
   });
 }
