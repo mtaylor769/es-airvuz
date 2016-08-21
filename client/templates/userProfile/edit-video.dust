@@ -19,7 +19,7 @@
                     <textarea name="description" id="description" rows="4" class="form-control" placeholder="Add video description" required>{description}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="category">Category (Select up to 3 categories)</label>
+                    <label for="category">Category (Select up to 3 categories) <span class="text-danger">*</span></label>
                     <ul id="selected-category-list" class="list-inline">
                       {#selectedCategory}
                         <li data-id="{_id}">{name}</li>
@@ -43,8 +43,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="camera-type">Camera Type <span class="text-danger">*</span></label>
-                    <select class="form-control" id="camera-type" required>
+                    <label for="camera-type">Camera Type</label>
+                    <select class="form-control" id="camera-type">
+                        <option value="">Select a camera type</option>
                         {#cameras}
                         <option value="{_id}" {@eq key=_id value=cameraType}selected{/eq}>{manufacturer} - {model}</option>
                         {/cameras}
