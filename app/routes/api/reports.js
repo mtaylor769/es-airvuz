@@ -93,59 +93,57 @@ Reports.prototype.hashTag = function(req, res) {
     return Comment.findByHashAndDate(hashTag, startDate, endDate)
         .then(function(commentAggregate) {
             return Promise.map(commentAggregate, function(comment) {
-                if(comment.users.length > 1){
+                var userHasLike = [];
                     return Promise.map(comment.users, function(user) {
                         return Likes.findByUserIdAndVideoId(user.userId, comment.video)
                             .then(function(like) {
                                 if(like) {
                                     user.like = like;
-                                } else {
-
+                                    userHasLike.push(user);
                                 }
                             })
                     })
                     .then(function() {
-                        aggregateHasVideoLike.push(comment);
+                        comment.users = userHasLike;
+                        if(comment.users.length > 0) {
+                            logger.error(comment.users.length);
+                            aggregateHasVideoLike.push(comment);
+                        }
                     })
-                } else {
-                    return Promise.map(comment.users, function(user) {
-                        return Likes.findByUserIdAndVideoId(user.userId, comment.video)
-                            .then(function(like) {
-                                if(like) {
-                                    user.like = like;
-                                    aggregateHasVideoLike.push(comment);
-                                }
-                            })
-                    })
-                }
             });
         })
         .then(function() {
             return Promise.map(aggregateHasVideoLike, function (comment) {
                 if (comment.users.length > 1) {
                     return Promise.map(comment.users, function (user) {
-                        return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId)
-                            .then(function (follow) {
-                                if (follow) {
-                                    user.follow = follow;
-                                } else {
-                                    var index = comment.users.indexOf(user.userId);
-                                    comment.users.splice(index, 1);
-                                }
-                            })
+                        if(user.like) {
+                            return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId._id)
+                                .then(function (follow) {
+                                    if (follow) {
+                                        user.follow = follow;
+                                    } else {
+                                        var index = comment.users.indexOf(user.userId);
+                                        comment.users.splice(index, 1);
+                                    }
+                                })
+                        } else {
+                            return;
+                        }
                     })
                     .then(function() {
                         aggregateHasFollow.push(comment);
                     });
                 } else {
                     return Promise.map(comment.users, function (user) {
-                        return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId)
-                            .then(function (follow) {
-                                if (follow) {
-                                    user.follow = follow;
-                                    aggregateHasFollow.push(comment);
-                                }
-                            })
+                        if(user.like.videoOwnerId) {
+                            return Follow.findFollowByUserIdAndVideoOwnerId(user.userId, user.like.videoOwnerId._id)
+                                .then(function (follow) {
+                                    if (follow) {
+                                        user.follow = follow;
+                                        aggregateHasFollow.push(comment);
+                                    }
+                                })
+                        }
                     })
                 }
             })
@@ -154,8 +152,21 @@ Reports.prototype.hashTag = function(req, res) {
             return Promise.map(aggregateHasFollow, function(video) {
                 video.count = video.users.length;
             }).then(function() {
+                aggregateHasFollow.sort(function(a,b) {
+                    if(a.count < b.count) {
+                        return 1;
+                    }
+                    if(a.count > b.count) {
+                        return -1;
+                    }
+                    return 0;
+                });
                 res.send(aggregateHasFollow);
             })
+        })
+        .catch(function(error) {
+            logger.error(error);
+            res.sendStatus(500);
         })
 };
 
@@ -186,11 +197,13 @@ Reports.prototype.userHashtag = function(req, res) {
                     if(comment.liked) {
                         return Videos.getById(comment.videoId)
                             .then(function(video) {
-                                return Follow.findFollowByUserIdAndVideoOwnerId(user._id, video.userId)
-                                    .then(function(follow) {
-                                        comment.follow = !!follow;
-                                        return user;
-                                    });
+                                if(video){
+                                    return Follow.findFollowByUserIdAndVideoOwnerId(user._id, video.userId)
+                                        .then(function(follow) {
+                                            comment.follow = !!follow;
+                                            return user;
+                                        });
+                                }
                             });
                     } else {
                         return user;
@@ -201,27 +214,44 @@ Reports.prototype.userHashtag = function(req, res) {
         .then(function(users) {
             users = _.chain(users).flatten().uniq().value();
             return Promise.map(users, function(user) {
-                user.validComments = [];
-                return Promise.map(user.comment, function(comment) {
-                    if(comment.follow === true && comment.liked === true) {
-                        user.validComments.push(comment);
-                    }
-                    return user;
-                });
+                if(user) {
+                    user.validComments = [];
+                    return Promise.map(user.comment, function (comment) {
+                        if (comment.follow === true && comment.liked === true) {
+                            user.validComments.push(comment);
+                        }
+                        return user;
+                    });
+                }
             });
         })
         .then(function(users) {
             users = _.chain(users).flatten().uniq().value();
             var validUsers = [];
             Promise.map(users, function(user) {
-                if(user.validComments.length > 0) {
-                    validUsers.push(user);
+                if(user) {
+                    if(user.validComments.length > 0) {
+                        validUsers.push(user);
+                    }
+                    user.count = user.validComments.length;
                 }
-                user.count = user.validComments.length;
             }).then(function() {
+                validUsers.sort(function(a,b) {
+                    if(a.count < b.count) {
+                        return 1;
+                    }
+                    if(a.count > b.count) {
+                        return -1;
+                    }
+                    return 0;
+                });
                 res.send(validUsers);
             });
-        });
+        })
+        .catch(function(error) {
+            logger.error(error);
+            res.sendStatus(500);
+        })
 };
 
 Reports.prototype.siteInfo = function(req, res) {
