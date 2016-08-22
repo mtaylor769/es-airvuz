@@ -201,6 +201,15 @@ Video.prototype.like = function(req, res) {
 Video.prototype.loaded = function(req, res) {
   var params = req.body;
   logger.debug(params);
+
+  EventTrackingCrud.create({
+    codeSource  : "app.persistence.crud.videos.loaded.post",
+    eventSource : "nodejs",
+    eventType   : "post",
+    eventName   : "server-side-referrer",
+    referrer    :  req.header('Referrer')
+  });
+
   VideoCrud
     .getById(params.videoId)
     .then(VideoCrud.upCount)
