@@ -24,8 +24,6 @@
                             return video;
                         }
                     })
-                    console.log(video.videoObject.title);
-                    console.log(video.internalFlag);
                 });
                 vm.videos = videos;
                 vm.top100 = true;

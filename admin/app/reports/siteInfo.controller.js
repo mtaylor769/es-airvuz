@@ -16,7 +16,6 @@
             vm.loading = true;
             $http.get('/api/reports/site-info', { params: {startDate: siteInfoStartDate, endDate: siteInfoEndDate}})
                 .success(function(data){
-                    console.log(data);
                     var newUsersArray = [];
                     data.newUsersList.forEach(function(user){
                         user.email = typeof user.emailAddress != 'undefined' ? user.emailAddress : '';

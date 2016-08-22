@@ -279,13 +279,11 @@ Reports.prototype.siteInfo = function(req, res) {
 };
 
 Reports.prototype.top100Views = function(req, res) {
-    console.log(req.body);
     var startDate = new Date(req.body.startDate);
     var endDate = new Date(req.body.endDate);
     var limit = parseInt(req.body.limit, 10);
     return videoViews.top100AllTime(startDate, endDate, limit)
         .then(function(videos) {
-            console.log(videos)
             return Promise.map(videos, function(video) {
                 return Promise.map(video.videoObject.categories, function(category) {
                     return categories.getById(category)
