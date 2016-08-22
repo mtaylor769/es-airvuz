@@ -6,7 +6,6 @@ var logger					= log4js.getLogger(namespace);
 
 try {
 	var BaseModel	    = require('./baseModel');
-	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
 	var Promise		    = require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
@@ -40,12 +39,6 @@ var VideoPlayerModel = function(params) {
 util.inherits(VideoPlayerModel, BaseModel);
 
 VideoPlayerModel.prototype.getData = function(params) {
-	EventTrackingCrud.create({
-		codeSource	: namespace,
-		eventSource : "nodejs",
-		eventType		: "getData"		
-	});	
-	
 	var videoId         = params.request.params.id;
 	var dataObject      = {};
 	var sourceManifest	= params.sourceManifest;
