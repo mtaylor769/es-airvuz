@@ -52,3 +52,7 @@ tr:nth-child(even) {
 .hashtag-users th, td {
     padding: 8px;
 }
+
+.is-internal {
+    background-color: yellow !important;
+}

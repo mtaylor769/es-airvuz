@@ -292,5 +292,7 @@ apiRouter.route('/api/reports/hashtag')
 	.post(reports.hashTag);
 apiRouter.route('/api/reports/user-hashtag')
 	.post(reports.userHashtag);
+apiRouter.route('/api/reports/top-views')
+	.post(reports.top100Views);
 
 module.exports = apiRouter;

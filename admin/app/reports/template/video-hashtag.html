@@ -1,0 +1,40 @@
+<md-card ng-show="vm.hashtagVideoReportInput">
+    <md-input-container>
+        <label for="hashtagVideoStartDate">Start Date</label>
+        <input class="form-control" type="text" id="hashtagVideoStartDate" ng-model="vm.hashtagVideoStartDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="hashtagVideoEndDate">End Date</label>
+        <input class="form-control" type="text" id="hashtagVideoEndDate" ng-model="vm.hashtagVideoEndDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="hashtagVideo">Hashtag</label>
+        <input class="form-control" type="text" id="hashtagVideo" ng-model="vm.hashtagVideo">
+    </md-input-container>
+    <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideoHashcodes(vm.hashtagVideoStartDate, vm.hashtagVideoEndDate, vm.hashtagVideo)">Video Hashtag Report</md-button>
+</md-card>
+<md-card ng-show="vm.hashtagVideoReport">
+    <table class="hashtag-table">
+        <tr>
+            <th>Video Id</th>
+            <th>Title</th>
+            <th>Count</th>
+            <th>Commenter</th>
+        </tr>
+        <tr ng-repeat="video in vm.hashtagVideoDisplay">
+            <td>{{video._id}} By: <a href="/user/{{video.users[0].like.videoOwnerId.userNameUrl}}" target="_self">{{video.users[0].like.videoOwnerId.userNameDisplay}}</a></td>
+            <td>{{video.videoObject[0].title}}</td>
+            <td>{{video.count}}</td>
+            <td class="hashtag-users">
+                <table>
+                    <tr>
+                        <th>Username</th>
+                    </tr>
+                    <tr ng-repeat="user in video.users">
+                        <td>{{user.like.userId.userNameDisplay}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</md-card>

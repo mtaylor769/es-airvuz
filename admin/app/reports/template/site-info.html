@@ -1,0 +1,36 @@
+<md-card ng-show="vm.siteInfoInput">
+    <md-input-container>
+        <label for="siteInfoStartDate">Start Date</label>
+        <input class="form-control" type="text" id="siteInfoStartDate" ng-model="vm.siteInfoStartDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="siteInfoEndDate">End Date</label>
+        <input class="form-control" type="text" id="siteInfoEndDate" ng-model="vm.siteInfoEndDate">
+    </md-input-container>
+    <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getSiteInfo(vm.siteInfoStartDate, vm.siteInfoEndDate)">Site Information</md-button>
+</md-card>
+<md-card ng-show="vm.siteInfo">
+    <h1>{{vm.title}}</h1>
+    <p>Total users, as of [{{vm.siteInfoEndDate}}] : {{vm.totalUsers}}</p>
+    <p>Total videos, as of [{{vm.siteInfoEndDate}}] : {{vm.totalVideos}}</p>
+    <p>New users within date range, [{{vm.siteInfoStartDate}}] - [{{vm.siteInfoEndDate}}] : {{vm.newUsersCount}}</p>
+    <p>New videos within date range, [{{vm.siteInfoStartDate}}] - [{{vm.siteInfoEndDate}}]: {{vm.newVideos}}</p>
+    <table>
+        <tr>
+            <th>Allow Donation</th>
+            <th>Allow Hire</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Url</th>
+            <th>Joined Date</th>
+        </tr>
+        <tr ng-repeat="newUser in vm.newUsers">
+            <td>{{newUser.allowDonation}}</td>
+            <td>{{newUser.allowHire}}</td>
+            <td>{{newUser.emailAddress}}</td>
+            <td>{{newUser.userNameDisplay}}</td>
+            <td>{{newUser.userNameUrl}}</td>
+            <td>{{newUser.joining_date | date}}</td>
+        </tr>
+    </table>
+</md-card>

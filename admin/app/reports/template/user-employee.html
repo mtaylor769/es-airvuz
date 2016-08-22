@@ -1,0 +1,33 @@
+<md-card ng-show="vm.employeeReportInput">
+    <md-input-container>
+        <label for="employeeReportStartDate">Start Date</label>
+        <input class="form-control" type="text" id="employeeReportStartDate" ng-model="employeeReportStartDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="employeeReportEndDate">End Date</label>
+        <input class="form-control" type="text" id="employeeReportEndDate" ng-model="employeeReportEndDate">
+    </md-input-container>
+    <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getEmployeeReport(employeeReportStartDate, employeeReportEndDate)">Employee Report</md-button>
+</md-card>
+<md-card ng-show="vm.employeeReport">
+    <table>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Like Count</th>
+            <th>Comment Count</th>
+            <th>Follower Count</th>
+            <th>Following Count</th>
+            <th>Videos Uploaded</th>
+        </tr>
+        <tr ng-repeat="employee in employees">
+            <td>{{employee.user.userNameDisplay}}</td>
+            <td>{{employee.user.emailAddress}}</td>
+            <td>{{employee.likes}}</td>
+            <td>{{employee.comments}}</td>
+            <td>{{employee.followers}}</td>
+            <td>{{employee.following}}</td>
+            <td>{{employee.uploadedVideos}}</td>
+        </tr>
+    </table>
+</md-card>

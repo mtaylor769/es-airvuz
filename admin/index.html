@@ -57,10 +57,35 @@
         <md-icon class="material-icons">dashboard</md-icon>
         <p>Sliders</p>
       </md-list-item>
-      <md-list-item ui-sref="reports">
+      <md-list-item ng-click="vm.reportMenu = !vm.reportMenu">
         <md-icon class="material-icons">show_chart</md-icon>
         <p>Reports</p>
       </md-list-item>
+      <menu>
+        <md-list ng-show="vm.reportMenu">
+          <md-list-item ui-sref="reports.siteInfo">
+            <p>Site Info</p>
+          </md-list-item>
+          <md-list-item ui-sref="reports.videosUploaded">
+            <p>Videos Uploaded</p>
+          </md-list-item>
+          <md-list-item ui-sref="reports.commentsMade">
+            <p>Comments Made</p>
+          </md-list-item>
+          <md-list-item ui-sref="reports.employeeReport">
+            <p>Employee Report</p>
+          </md-list-item>
+          <md-list-item ui-sref="reports.hashtagVideo">
+            <p>Hashtag Video Report</p>
+          </md-list-item>
+          <md-list-item ui-sref="reports.hashtagUser">
+            <p>Hashtag User Report</p>
+          </md-list-item>
+          <md-list-item ui-sref="reports.top100AllTime">
+            <p>Top 100 Views All Time</p>
+          </md-list-item>
+        </md-list>
+      </menu>
     </md-list>
   </md-sidenav>
 </div>
@@ -99,7 +124,13 @@
 <script src="/admin/app/home/home.controller.js"></script>
 <script src="/admin/app/featuredVideos/featuredVideos.controller.js"></script>
 <script src="/admin/app/staffPickVideos/staffPickVideos.controller.js"></script>
-<script src="/admin/app/reports/reports.controller.js"></script>
+<script src="/admin/app/reports/commentsMade.controller.js"></script>
+<script src="/admin/app/reports/siteInfo.controller.js"></script>
+<script src="/admin/app/reports/userEmployee.controller.js"></script>
+<script src="/admin/app/reports/videoHashtag.controller.js"></script>
+<script src="/admin/app/reports/userHashtag.controller.js"></script>
+<script src="/admin/app/reports/videoUploaded.controller.js"></script>
+<script src="/admin/app/reports/topViews.controller.js"></script>
 <script src="/admin/app/videos/editVideo.controller.js"></script>
 <script src="/admin/app/videos/videos.controller.js"></script>
 <script src="/admin/app/users/users.controller.js"></script>

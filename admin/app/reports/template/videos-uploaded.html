@@ -1,0 +1,31 @@
+<md-card ng-show="vm.videosInput">
+    <md-input-container>
+        <label for="videosStartDate">Start Date</label>
+        <input class="form-control" type="text" id="videosStartDate" ng-model="vm.videosStartDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="videosEndDate">End Date</label>
+        <input class="form-control" type="text" id="videosEndDate" ng-model="vm.videosEndDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="videosUsername">Username</label>
+        <input class="form-control" type="text" id="videosUsername" ng-model="vm.videosUsername">
+    </md-input-container>
+    <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getVideos(vm.videosUsername, vm.videosStartDate, vm.videosEndDate)">Videos</md-button>
+</md-card>
+<md-card ng-show="vm.videos">
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Video Count</th>
+            </tr>
+            <tr>
+                <td>{{vm.username}}</td>
+                <td>{{vm.videosStartDate}}</td>
+                <td>{{vm.videosEndDate}}</td>
+                <td>{{vm.videoCount}}</td>
+            </tr>
+        </table>
+</md-card>
