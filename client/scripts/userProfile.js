@@ -503,12 +503,13 @@ function onSaveVideoEdit() {
     categories            : $('#selected-category-list li').map(function (index, li) {
                               return $(li).data('id');
                             }).toArray(),
-    droneType             : $('#drone-type').val(),
-    cameraType            : $('#camera-type').val(),
+    droneType             : $('#drone-type').val().length === 0 ? null : $('#drone-type').val(),
+    cameraType            : $('#camera-type').val().length === 0 ? null : $('#camera-type').val(),
     thumbnailPath         : currentEditVideo.thumbnailPath,
     isCustomThumbnail     : isCustomThumbnail,
     hashName              : currentEditVideo.videoPath.split('/')[0],
-    customThumbnail       : customThumbnailName
+    customThumbnail       : customThumbnailName,
+    userId                : identity._id
   };
 
   if ($('#tags').val()) {
@@ -524,11 +525,26 @@ function onSaveVideoEdit() {
     location.reload();
   })
     .fail(function(error){
-      $('#error-message-modal')
-        .modal('show')
-        .find('.error-modal-body')
-        .html(error);
+      if (error.status === 400) {
+        appendErrorMessage(error.responseJSON.error);
+      } else {
+        $('#error-message-modal')
+            .modal('show')
+            .find('.error-modal-body')
+            .html(error);
+      }
     });
+}
+
+function appendErrorMessage(errorArray) {
+  $('.error').remove();
+
+  errorArray.forEach(function(error) {
+    var inputId = $(error.sourceError);
+    var errorMessage = error.displayMsg;
+    var html = '<div class="error text-danger m-t-5">' + errorMessage + '</div>';
+    inputId.parent().append(html);
+  })
 }
 
 function requestVideoSort(sortBy, id) {

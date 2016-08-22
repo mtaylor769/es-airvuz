@@ -169,6 +169,9 @@ Video.prototype.put = function(req, res) {
       res.json(video);
     })
     .catch(function (err) {
+      if (err.length) {
+        return res.status(400).json({error: err});
+      }
       res.sendStatus(500);
     });
 };

@@ -41,8 +41,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="drone-type">Drone Type <span class="text-danger">*</span></label>
-        <select class="form-control" id="drone-type" required>
+        <label for="drone-type">Drone Type</label>
+        <select class="form-control" id="drone-type">
           <option value="">Select a drone type</option>
           {#drones}
           <option value="{_id}">{manufacturer} - {model}</option>
@@ -50,8 +50,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="camera-type">Camera Type <span class="text-danger">*</span></label>
-        <select class="form-control" id="camera-type" required>
+        <label for="camera-type">Camera Type</label>
+        <select class="form-control" id="camera-type">
           <option value="">Select a camera type</option>
           {#cameras}
           <option value="{_id}">{manufacturer} - {model}</option>

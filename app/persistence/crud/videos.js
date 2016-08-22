@@ -208,21 +208,16 @@ Videos.prototype.getPreCondition = function(params) {
 	var preCondition		= new ObjectValidationUtil();
 	
 	preCondition.setValidation(function(params) {
-		
-		//logger.debug(".getPreCondition: params.description:" + params.description);
-		
 		var errorMessage				= new ErrorMessage();
-		this.data.userId				= params.userId || null;
-		this.data.title					= params.title || null;
-		this.data.description		= params.description || null;
-		this.data.duration			= params.duration || null;
-		this.data.videoPath			= params.videoPath || null;
-		this.data.thumbnailPath	= params.thumbnailPath || null;
-		this.data.tags					= params.tags || null;
-		this.data.categories		= params.categories || null;
-		this.data.droneType			= params.droneType || null;
-		this.data.cameraType		= params.cameraType || null;
-		this.data.videoLocation	= params.videoLocation || null;
+		this.data.userId				= 'userId' in params ? params.userId : 'userId' in params.update ? params.update.userId : null;
+		this.data.title					= 'title' in params ? params.title : 'title' in params.update ? params.update.title : null;
+		this.data.description			= 'description' in params ? params.description : 'description' in params.update ? params.update.description : null;
+		this.data.duration				= params.duration || null;
+		this.data.videoPath				= params.videoPath || null;
+		this.data.thumbnailPath			= 'thumbnailPath' in params ? params.thumbnailPath : 'thumbnail' in params.update ? params.update.thumbnailPath : null;
+		this.data.tags					= 'tags' in params ? params.tags : 'tags' in params.update ? params.update.tags : null;
+		this.data.categories			= 'categories' in params ? params.categories : 'categories' in params.update ? params.update.categories : null;
+		this.data.videoLocation			= 'videoLocation' in params ? params.videoLocation : 'videoLocation' in params.update ? params.update.videoLocation : null;
 
 		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
@@ -231,7 +226,7 @@ Videos.prototype.getPreCondition = function(params) {
 			});
 		}
 		
-		if(this.data.description === null) {
+		if(this.data.description === null || this.data.description.length === 0) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorId					: "VALIDA1000",
@@ -245,7 +240,7 @@ Videos.prototype.getPreCondition = function(params) {
 			});
 		}
 		
-		if(this.data.title === null) {
+		if(this.data.title === null || this.data.title.length === 0) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
 				errorId					: "VALIDA1000",
@@ -258,11 +253,11 @@ Videos.prototype.getPreCondition = function(params) {
 				sourceLocation	: sourceLocation
 			});
 		}
-		
+
 		if(this.data.categories.length === 0) {
 			this.errors = errorMessage.getErrorMessage({
 				statusCode			: "400",
-				errorId					: "VALIDA1000",
+				errorId				: "VALIDA1000",
 				templateParams	: {
 					name : "category"
 				},
@@ -272,35 +267,6 @@ Videos.prototype.getPreCondition = function(params) {
 				sourceLocation	: sourceLocation
 			});
 		}
-
-		if(this.data.droneType === null) {
-			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "drone-type"
-				},
-				sourceError			: "#drone-type",
-				displayMsg			: "This field is required",
-				errorMessage		: "field required",
-				sourceLocation	: sourceLocation
-			});
-		}
-
-		if(this.data.cameraType === null) {
-			this.errors = errorMessage.getErrorMessage({
-				statusCode			: "400",
-				errorId					: "VALIDA1000",
-				templateParams	: {
-					name : "camera-type"
-				},
-				sourceError			: "#camera-type",
-				displayMsg			: "This field is required",
-				errorMessage		: "field required",
-				sourceLocation	: sourceLocation
-			});
-		}
-				
 	});
 	return(preCondition);
 };
@@ -390,7 +356,14 @@ Videos.prototype.remove = function(id) {
 };
 
 Videos.prototype.update = function(params) {
-	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec();
+	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Videos.update"});
+	var validation = preCondition.validate(params);
+
+	if(validation.errors !== null) {
+		throw validation.errors;
+	} else {
+		return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec();
+	}
 };
 
 Videos.prototype.like = function(video, like) {
