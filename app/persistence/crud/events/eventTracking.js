@@ -1,57 +1,28 @@
 try {
-	// import
-	var log4js											= require('log4js');
-	var logger											= log4js.getLogger('app.persistence.crud.events.eventTracking');	
-	
-	var database										= require('../../database/database');
-	var LoginModel									= null;
-	var Promise											= require('bluebird');
+  // import
+  var log4js              = require('log4js');
+  var logger              = log4js.getLogger('app.persistence.crud.events.eventTracking');
+  var database            = require('../../database/database');
+  var EventTrackingModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.events.eventTracking'});
 
-
-	EventTrackingModel = database.getModelByDotPath({	modelDotPath	: 'app.persistence.model.events.eventTracking' });
-	
-	if(global.NODE_ENV === "production") {
-		logger.setLevel("INFO");	
-	}	
-	
-	logger.debug("import complete");
+  if (global.NODE_ENV === 'production') {
+    logger.setLevel('INFO');
+  }
 }
-catch(exception) {
-	logger.error(" import error:" + exception);
+catch (exception) {
+  logger.error(' import error:' + exception);
 }
 
-var EventTracking = function() {
-	logger.debug("constructor: in");
+function EventTracking() {
 }
 
-EventTracking.prototype.create = function(params) {
-	
-	return(new Promise(function(resolve, reject) {
-		
-			var eventTrackingModel = new EventTrackingModel(params);
-			eventTrackingModel
-				.save(function(error, video) {
-					if(error) {
-						logger.debug(".create save failed:" + error);
-						reject(error);
-					}
-					else {
-						resolve();
-					}
-				});		
-		
-		})
-	);
+function create(params) {
+  var eventTrackingModel = new EventTrackingModel(params);
 
+  return eventTrackingModel
+    .save();
 }
 
-	/*
-	 * 'click', 'mousedown', 'mouseup', etc
-	 * 'createVideo', 'createUser', 'login', etc
-	 */
-
-EventTracking.eventType = {};
-EventTracking.eventType.click = "click";
-
+EventTracking.prototype.create = create;
 
 module.exports = new EventTracking();
