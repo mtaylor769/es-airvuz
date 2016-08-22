@@ -9,6 +9,16 @@
 
 	function VideosController(Videos, $scope, confirmDelete, Amazon, identity) {
 
+		// quick fix - use $http
+		$.ajaxSetup({
+			beforeSend: function (xhr) {
+				var token = localStorage.getItem('id_token');
+				if (token) {
+					xhr.setRequestHeader('Authorization', 'Bearer ' + identity.getToken());
+				}
+			}
+		});
+
 		function videoSearch(videoId){
 			Videos.get({id: videoId}).$promise.then(function(video){
 				vm.video = video;
