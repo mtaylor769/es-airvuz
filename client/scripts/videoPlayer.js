@@ -625,10 +625,10 @@ function bindEvents() {
       })
       .done(function(response) {
         fbq('trackCustom', 'social-share-embed');
-        ga('send', 'event', 'video page', 'video-embedded', video._id);
+        ga('send', 'event', 'video page', 'video-embedded-share', video._id);
         AVEventTracker({
           codeSource: "videoPlayer",
-          eventName: "video-embedded",
+          eventName: "video-embedded-share",
           eventType: "browser",
           userId: getUserId(),
           videoId: video._id,
