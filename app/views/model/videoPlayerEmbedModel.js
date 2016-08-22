@@ -6,7 +6,6 @@ var logger					= log4js.getLogger(namespace);
 
 try {
   var BaseModel	    = require('./baseModel');
-  var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
   var util			    = require('util');
   var videoCrud     = require('../../persistence/crud/videos');
   var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];

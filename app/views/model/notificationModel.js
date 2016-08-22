@@ -7,7 +7,6 @@ var _               = require('lodash');
 
 try {
   var BaseModel	          = require('./baseModel');
-  var EventTrackingCrud		= require('../../persistence/crud/events/eventTracking');
   var notificationCrud    = require('../../persistence/crud/notifications');
   var moment				      = require('moment');
   var util			          = require('util');
@@ -34,12 +33,6 @@ var NotificationModel = function(params) {
 util.inherits(NotificationModel, BaseModel);
 
 NotificationModel.prototype.getData = function(params) {
-  EventTrackingCrud.create({
-    codeSource	: namespace,
-    eventSource : "nodejs",
-    eventType		: "getData"
-  });
-
   var userId          = params.request.params.id;
   var dataObject      = {};
   var sourceManifest	= params.sourceManifest;
