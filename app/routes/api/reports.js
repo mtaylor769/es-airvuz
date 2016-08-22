@@ -6,7 +6,9 @@ var User            = require('../../persistence/crud/users');
 var Videos          = require('../../persistence/crud/videos');
 var Comment         = require('../../persistence/crud/comment');
 var Likes           = require('../../persistence/crud/videoLike');
-var Follow          = require('../../persistence/crud/follow');
+var Follow         = require('../../persistence/crud/follow');
+var videoViews    = require('../../persistence/crud/videoViews');
+var categories = require('../../persistence/crud/categoryType');
 
 function Reports() {
   
@@ -274,6 +276,29 @@ Reports.prototype.siteInfo = function(req, res) {
         newVideos: newVideos,
         newUsersList: newUsersList});
     });
+};
+
+Reports.prototype.top100Views = function(req, res) {
+    console.log(req.body);
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+    var limit = parseInt(req.body.limit, 10);
+    return videoViews.top100AllTime(startDate, endDate, limit)
+        .then(function(videos) {
+            console.log(videos)
+            return Promise.map(videos, function(video) {
+                return Promise.map(video.videoObject.categories, function(category) {
+                    return categories.getById(category)
+                }).then(function(categories) {
+                    video.videoObject.categories = categories;
+                    return video;
+                })
+            })
+        })
+        .then(function(videos) {
+           res.send(videos)
+        })
+
 };
 
 

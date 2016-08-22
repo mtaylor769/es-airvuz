@@ -73,8 +73,49 @@
       })
       .state('reports', {
         url: '/admin/reports',
-        templateUrl: '/admin/app/reports/template/reports.html',
-        controller: 'reportsController',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('reports.siteInfo', {
+        url: '/site-info',
+        templateUrl: '/admin/app/reports/template/site-info.html',
+        controller: 'siteInfoController',
+        controllerAs: 'vm'
+      })
+      .state('reports.videosUploaded', {
+        url: '/video-upload',
+        templateUrl: '/admin/app/reports/template/videos-uploaded.html',
+        controller: 'videoUploadedController',
+        controllerAs: 'vm'
+      })
+      .state('reports.commentsMade', {
+        url: '/comments-made',
+        templateUrl: '/admin/app/reports/template/comments-made.html',
+        controller: 'commentsMadeController',
+        controllerAs: 'vm'
+      })
+      .state('reports.employeeReport', {
+        url: '/employee-report',
+        templateUrl: '/admin/app/reports/template/user-employee.html',
+        controller: 'userEmployeeController',
+        controllerAs: 'vm'
+      })
+      .state('reports.hashtagVideo', {
+        url: '/hashtag-video',
+        templateUrl: '/admin/app/reports/template/video-hashtag.html',
+        controller: 'videoHashtagController',
+        controllerAs: 'vm'
+      })
+      .state('reports.hashtagUser', {
+        url: '/hashtag-user',
+        templateUrl: '/admin/app/reports/template/user-hashtag.html',
+        controller: 'userHashtagController',
+        controllerAs: 'vm'
+      })
+      .state('reports.top100AllTime', {
+        url: '/top-100-alltime',
+        templateUrl: '/admin/app/reports/template/top-views.html',
+        controller: 'topViewsController',
         controllerAs: 'vm'
       })
       .state('editVideo', {

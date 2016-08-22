@@ -1,0 +1,31 @@
+<md-card ng-show="vm.top100Input">
+    <md-input-container>
+        <label for="startDate">Start Date</label>
+        <input class="form-control" type="text" id="startDate" ng-model="vm.startDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="endDate">End Date</label>
+        <input class="form-control" type="text" id="endDate" ng-model="vm.endDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="limit">Limit</label>
+        <input class="form-control" type="text" id="limit" ng-model="vm.limit">
+    </md-input-container>
+    <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getTopViews()">Get Top Videos</md-button>
+</md-card>
+<md-card ng-show="vm.top100">
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Uploaded By</th>
+            <th>View Count</th>
+            <th>Uploaded Date</th>
+        </tr>
+        <tr ng-repeat="video in vm.videos" ng-class="{'is-internal' : video.internalFlag}">
+            <td>{{video.videoObject.title}}</td>
+            <td>{{video.videoOwnerObject.userNameDisplay}}</td>
+            <td>{{video.count}}</td>
+            <td>{{video.videoObject.uploadDate | date}}</td>
+        </tr>
+    </table>
+</md-card>

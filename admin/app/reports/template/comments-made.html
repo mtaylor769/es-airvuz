@@ -1,0 +1,31 @@
+<md-card ng-show="vm.commentsInput">
+    <md-input-container>
+        <label for="commentsStartDate">Start Date</label>
+        <input class="form-control" type="text" id="commentsStartDate" ng-model="vm.commentsStartDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="commentsEndDate">End Date</label>
+        <input class="form-control" type="text" id="commentsEndDate" ng-model="vm.commentsEndDate">
+    </md-input-container>
+    <md-input-container>
+        <label for="commentsUsername">Username</label>
+        <input class="form-control" type="text" id="commentsUsername" ng-model="vm.commentsUsername">
+    </md-input-container>
+    <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getComments(vm.commentsUsername, vm.commentsStartDate, vm.commentsEndDate)">Comments</md-button>
+</md-card>
+<md-card ng-show="vm.comments">
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Comment Count</th>
+        </tr>
+        <tr>
+            <td>{{vm.commentsUsername}}</td>
+            <td>{{vm.commentsStartDate}}</td>
+            <td>{{vm.commentsEndDate}}</td>
+            <td>{{vm.commentsCommentCount}}</td>
+        </tr>
+    </table>
+</md-card>

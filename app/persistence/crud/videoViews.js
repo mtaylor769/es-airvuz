@@ -34,4 +34,70 @@ VideoView.prototype.delete = function(id) {
   return VideoViewModel.findByIdAndRemove(id).exec();
 };
 
+VideoView.prototype.top100AllTime = function(startDate, endDate, limit) {
+  return VideoViewModel.aggregate([
+    {
+      $match: {
+        createdDate: {
+          $gte: startDate,
+          $lte: endDate
+        }
+      }
+    },
+    {
+      $group: {
+        _id: '$videoId',
+        video: {
+          $last: '$videoId'
+        },
+        videoOwner: {
+          $last: '$videoOwnerId'
+        },
+        count: {$sum: 1}
+      }
+    },
+    {
+      $lookup: {
+        from: 'videos',
+        localField: 'video',
+        foreignField: '_id',
+        as: 'videoObject'
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'videoOwner',
+        foreignField: '_id',
+        as: 'videoOwnerObject'
+      }
+    },
+    {
+      $unwind: {
+        path: '$videoObject'
+      }
+    },
+    {
+      $unwind: {
+        path: '$videoOwnerObject'
+      }
+    },
+    {
+      $project: {
+        count: 1,
+        videoObject: {title: 1, uploadDate: 1, categories: 1},
+        videoOwnerObject: {userNameDisplay: 1}
+      }
+    },
+    {
+      $sort: {
+        count: -1
+      }
+    },
+    {
+      $limit: limit
+    }
+  ])
+};
+
 module.exports = new VideoView();
