@@ -6,6 +6,7 @@ var appConfig     = require('./config/application.config.client');
 var PubSub        = require('pubsub-js');
 var FacebookPixel = require('./facebook-pixel');
 var GoogleAnalytic = require('./google-analytic');
+var GoogleTagManager = require('./google-tag-manager');
 var AVEventTracker = require('./avEventTracker');
 var browser       = require('./services/browser');
 
@@ -497,6 +498,7 @@ $(function () {
   APP.initialize();
   FacebookPixel.initialize();
   GoogleAnalytic.initialize();
+  GoogleTagManager.initialize();
 });
 
 module.exports = APP;
