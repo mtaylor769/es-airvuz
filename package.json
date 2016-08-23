@@ -49,6 +49,7 @@
     "font-awesome": "^4.6.3",
     "gm": "^1.22.0",
     "google-auth-library": "^0.9.8",
+    "hsts": "^1.0.0",
     "html": "0.0.10",
     "isomorphic-fetch": "2.2.1",
     "jquery": "^3.0.0",

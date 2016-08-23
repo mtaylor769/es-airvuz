@@ -38,7 +38,8 @@ var http        = require("http").createServer(app);
 // Makes a global variable for templates to get client code.
 // YOU MUST RUN WEBPACK FOR THE MANIFEST FILE TO EXIST.
 app.locals.sourceManifest = require('./public/manifest.json');
-
+// prevent x-powerd-by header to show up
+app.disable('x-powered-by');
 //   __  __ _     _     _ _
 //  |  \/  (_) __| | __| | | _____      ____ _ _ __ ___
 //  | |\/| | |/ _` |/ _` | |/ _ \ \ /\ / / _` | '__/ _ \
@@ -49,12 +50,25 @@ app.locals.sourceManifest = require('./public/manifest.json');
 var compression = require('compression');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var hsts = require('hsts');
 
 var pubPath = path.resolve(__dirname, '/public');
 logger.debug("pubPath:" + pubPath);
 
 app.use(morgan('dev'));
 app.use(compression());
+
+/**
+ * HTTP Strict Transport Security
+ */
+// TODO: preload flag once ssl and hsts working
+var hstsMaxAge = 31536000;
+app.use(hsts({
+	maxAge: hstsMaxAge,
+	includeSubDomains: true,
+	force: true
+}));
+
 //app.use(express.static(path.resolve(__dirname, '/public')));
 app.use('/public', express.static('public'));
 app.use('/client', express.static('client'));
