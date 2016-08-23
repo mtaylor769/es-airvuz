@@ -118,7 +118,7 @@ $('.nextVideos').on('click', 'li', function(evt) {
  * @return return the user id or empty string (anonymous)
  */
 function getUserId() {
-  return userIdentity.isAuthenticated() ? userIdentity._id : '';
+  return userIdentity.isAuthenticated() ? userIdentity._id : null;
 }
 
 //video increment
