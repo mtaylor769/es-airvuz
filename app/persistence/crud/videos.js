@@ -209,15 +209,17 @@ Videos.prototype.getPreCondition = function(params) {
 	
 	preCondition.setValidation(function(params) {
 		var errorMessage				= new ErrorMessage();
-		this.data.userId				= 'userId' in params ? params.userId : 'userId' in params.update ? params.update.userId : null;
-		this.data.title					= 'title' in params ? params.title : 'title' in params.update ? params.update.title : null;
-		this.data.description			= 'description' in params ? params.description : 'description' in params.update ? params.update.description : null;
+		this.data.userId				= params.userId || null;
+		this.data.title					= params.title || null;
+		this.data.description			= params.description || null;
 		this.data.duration				= params.duration || null;
 		this.data.videoPath				= params.videoPath || null;
-		this.data.thumbnailPath			= 'thumbnailPath' in params ? params.thumbnailPath : 'thumbnail' in params.update ? params.update.thumbnailPath : null;
-		this.data.tags					= 'tags' in params ? params.tags : 'tags' in params.update ? params.update.tags : null;
-		this.data.categories			= 'categories' in params ? params.categories : 'categories' in params.update ? params.update.categories : null;
-		this.data.videoLocation			= 'videoLocation' in params ? params.videoLocation : 'videoLocation' in params.update ? params.update.videoLocation : null;
+		this.data.thumbnailPath			= params.thumbnailPath || null;
+		this.data.tags					= params.tags || null;
+		this.data.categories			= params.categories || null;
+		this.data.videoLocation			= params.videoLocation || null;
+		this.data.droneType				= params.droneType || null;
+		this.data.cameraType			= params.cameraType || null;
 
 		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
@@ -357,7 +359,7 @@ Videos.prototype.remove = function(id) {
 
 Videos.prototype.update = function(params) {
 	var preCondition = this.getPreCondition({ sourceLocation : "persistence.crud.Videos.update"});
-	var validation = preCondition.validate(params);
+	var validation = preCondition.validate(params.update);
 
 	if(validation.errors !== null) {
 		throw validation.errors;
