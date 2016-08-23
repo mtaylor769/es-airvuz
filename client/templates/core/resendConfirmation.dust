@@ -1,0 +1,10 @@
+<div class='bg-warning p-a-5'>
+	<h6>Confirm Your Account</h6>
+	<p>Please check your email to confirm account</p>
+	<p>
+		<a href="#" id="send-confirmation">Resend email confirmation</a>
+	</p>
+	<p>
+		<span class='glyphicon glyphicon-warning-sign' aria-hidden='true'></span> &nbsp; If you do not see the email, please check your spam or junk folder.
+	</p>
+</div>

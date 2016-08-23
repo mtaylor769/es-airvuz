@@ -15,6 +15,7 @@ var browser       = require('./services/browser');
  */
 var headerProfileTpl      = require('../templates/core/header-profile.dust');
 var headerLoginTpl = require('../templates/core/header-login.dust');
+var resendConfirmationTpl = require('../templates/core/resendConfirmation.dust');
 
 var $loginModal,
     $headerProfile,
@@ -251,7 +252,6 @@ function bindEvents() {
         $loginModal.find('#signup-btn').prop('disabled', false);
       });
   }
-
   /*
    * clear out the login text input fields
    */
@@ -260,6 +260,29 @@ function bindEvents() {
     $('#login-modal').find('input[type=text], input[type=password]').each(function () {
       $(this).val('');
     });
+  }
+
+  function sendUserConfirmation() {
+    var emailAddr = $('.email-input').val();
+
+    ga('send', 'event', 'login', 'login-resend-confirmation', 'login');
+    AVEventTracker({
+      codeSource	: "core",
+      eventName		: "login-resend-confirmation",
+      eventType		: "resendConfirmationClick"
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/users/resend-confirmation',
+      data: {emailAddress: emailAddr}
+    })
+        .done(function () {
+          $('.error-message').empty();
+          $('.error-message').removeClass('text-danger').addClass('text-success').text('A confirmation email has been sent to ' + emailAddr);
+        })
+        .fail(function (error) {
+        });
   }
 
   onSignupClick.isSubmitted = false;
@@ -314,6 +337,7 @@ function bindEvents() {
     event.preventDefault();
     var emailAddress = $loginModal.find('.email-input:visible').val();
     var password = $loginModal.find('.password-input:visible').val();
+    var errorMsgElem = $('.error-message');
 
     ga('send', 'event', 'login', 'login-attempt', 'login');
     AVEventTracker({
@@ -325,7 +349,33 @@ function bindEvents() {
     auth.login({emailAddress: emailAddress, password: password})
       .done(onLoginSuccess)
       .fail(function (message) {
-          $loginModal.find('.error-message').text(message).slideDown();
+
+          if (errorMsgElem.hasClass('text-success')) {
+            errorMsgElem.removeClass('text-success').addClass('text-danger');
+          }
+
+          if (errorMsgElem.text().length) {
+            errorMsgElem.empty().slideUp();
+          }
+
+          if (message === 'Please check your email to confirm account') {
+            resendConfirmationTpl({}, function(err, html) {
+              errorMsgElem.append(html);
+
+              $('#send-confirmation').on('click', sendUserConfirmation);
+              $('.email-input').on('keyup', function() {
+                var _this = $(this);
+                if (_this.val() !== emailAddress) {
+                  errorMsgElem.empty();
+                }
+              });
+            });
+          } else {
+            $('.email-input').unbind('keyup');
+            errorMsgElem.text(message);
+          }
+
+          errorMsgElem.slideDown();
 
           ga('send', 'event', 'login', 'login-fail', 'login');
           AVEventTracker({
