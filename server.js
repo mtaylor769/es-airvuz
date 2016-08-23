@@ -33,12 +33,6 @@ var path        = require('path');
 var express     = require('express');
 var fs          = require('fs');
 var app         = express();
-
-//SSL certs
-var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-var credentials = {key: privateKey, cert: certificate, passphrase: 'startup'};
-var https       = require('https').createServer(credentials, app).listen(443);
 var http        = require("http").createServer(app);
 
 // Makes a global variable for templates to get client code.
@@ -230,14 +224,5 @@ app.use(function (req, res) {
 });
 
 app.listen(process.env.PORT || 80);
-
-
-setTimeout(function() {
-	logger.debug("TODO: remove me: loading crud ...");
-	
-	var loginCrud = require('./app/persistence/crud/events/login');
-	loginCrud.create();
-	
-}, 100);
 
 module.exports = app;
