@@ -759,6 +759,7 @@ function bindEvents() {
         viewTracking();
       }
 
+      fbq('trackCustom', 'video-playing');
       ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-playing' : 'video-playing'), 'viewing video');
       AVEventTracker({
         codeSource	: "videoPlayer",
