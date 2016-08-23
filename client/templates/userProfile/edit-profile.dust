@@ -46,11 +46,11 @@
         <div class="col-xs-12 col-sm-6">
           <a class="btn btn-primary change-profile-btn">
             <span>Change Profile Picture</span>
-            <input type="file" id="profile-image-input" accept="image/x-png, image/gif, image/jpeg, image/*"/>
+            <input type="file" id="profile-image-input" accept="image/png, image/gif, image/jpeg"/>
           </a>
           <a class="btn btn-primary change-profile-btn">
             <span>Change Cover Picture</span>
-            <input type="file" id="cover-image-input" accept="image/x-png, image/gif, image/jpeg, image/*"/>
+            <input type="file" id="cover-image-input" accept="image/png, image/gif, image/jpeg"/>
           </a>
           <div class="form-group">
             <label for="aboutme">About Me</label>
