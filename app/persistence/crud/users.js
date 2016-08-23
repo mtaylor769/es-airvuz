@@ -113,58 +113,57 @@ users.prototype.validateCreateUser = function(params) {
 			sourceLocation	: sourceLocation
 		});
 	}
+
 	return UserModel.findOne({emailAddress: userInfo.data.emailAddress}).exec()
 			.then(function(email) {
 				if (email) {
-					socialCrud.findByUserId(email._id)
+					return socialCrud.findByUserId(email._id)
 						.then(function(social) {
-							if(social) {
-								userInfo.errors = errorMessage.getErrorMessage({
-									statusCode: "400",
-									errorId: "VALIDA1000",
-									templateParams: {
-										name: "emailAddress"
-									},
-									sourceError: "#email",
-									displayMsg: "Email already exists. Please reset password.",
-									errorMessage: "Email already exists",
-									sourceLocation: sourceLocation
-								});
-							} else {
-								userInfo.errors = errorMessage.getErrorMessage({
-									statusCode: "400",
-									errorId: "VALIDA1000",
-									templateParams: {
-										name: "emailAddress"
-									},
-									sourceError: "#email",
-									displayMsg: "Email already exists",
-									errorMessage: "Email already exists",
-									sourceLocation: sourceLocation
-								});
-							}
-						})	
-				} else {
-					if(email !== null) {
-						email = userInfo.data.emailAddress;
-						var regex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/g;
-						var checkEmail = email.match(regex);
-						if(!checkEmail) {
-							userInfo.errors = errorMessage.getErrorMessage({
+							var errors = {
 								statusCode: "400",
 								errorId: "VALIDA1000",
 								templateParams: {
 									name: "emailAddress"
 								},
 								sourceError: "#email",
-								displayMsg: "Please enter a vaild email address",
-								errorMessage: "Invalid Email",
+								errorMessage: "Email already exists",
 								sourceLocation: sourceLocation
-							});
-						}	
-					} 
+							};
+
+							if(social) {
+								errors.displayMsg = "Email already exists. Please reset password.";
+							} else {
+								errors.displayMsg = "Email already exists";
+							}
+							userInfo.errors = errorMessage.getErrorMessage(errors);
+							return userInfo;
+						})
+						.then(function () {
+							return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec();
+						});
 				}
-				return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec();
+
+				if(userInfo.data.emailAddress !== null) {
+					email = userInfo.data.emailAddress;
+					var regex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}/g;
+					var checkEmail = email.match(regex);
+					if(!checkEmail) {
+						userInfo.errors = errorMessage.getErrorMessage({
+							statusCode: "400",
+							errorId: "VALIDA1000",
+							templateParams: {
+								name: "emailAddress"
+							},
+							sourceError: "#email",
+							displayMsg: "Please enter a vaild email address",
+							errorMessage: "Invalid Email",
+							sourceLocation: sourceLocation
+						});
+					}
+
+					return UserModel.findOne({userNameDisplay: userInfo.data.userNameDisplay}).exec();
+				}
+
 			})
 			.then(function (userNameDisplay) {
 				if (userNameDisplay) {
