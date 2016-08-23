@@ -218,6 +218,8 @@ Videos.prototype.getPreCondition = function(params) {
 		this.data.tags					= 'tags' in params ? params.tags : 'tags' in params.update ? params.update.tags : null;
 		this.data.categories			= 'categories' in params ? params.categories : 'categories' in params.update ? params.update.categories : null;
 		this.data.videoLocation			= 'videoLocation' in params ? params.videoLocation : 'videoLocation' in params.update ? params.update.videoLocation : null;
+		this.data.droneType				= 'droneType' in params ? params.droneType : 'droneType' in params.update ? params.update.droneType : null;
+		this.data.cameraType			= 'cameraType' in params ? params.cameraType : 'cameraType' in params.update ? params.update.cameraType : null;
 
 		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
