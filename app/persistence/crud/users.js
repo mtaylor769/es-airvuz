@@ -447,7 +447,7 @@ users.prototype.getUserById = function (userId) {
 							.then(function (social) {
 								if(social) {
 									user.externalLink = true;
-									user.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+									user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=large';
 								}
 								return user;
 							});

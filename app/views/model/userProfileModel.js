@@ -57,11 +57,11 @@ UserProfileModel.prototype.getData = function(params) {
 	.then(function(user) {
 		logger.debug(user);
 		if(user.facebook && user.profilePicture === ''){
-			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+			user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
 		} else if(!user.facebook && user.profilePicture === '') {
 			user.profilePicture = '/client/images/default.png';
 		} else if(user.facebook && user.profilePicture.indexOf('facebook') > -1) {
-			user.profilePicture = 'http://graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+			user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
 		} else if(user.profilePicture.indexOf('http') === -1) {
 			user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=200';
 		} else {

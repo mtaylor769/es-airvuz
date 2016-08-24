@@ -68,11 +68,11 @@ function getFollowers(req, res) {
           return socialCrud.findByUserIdAndProvider(follower.userId._id, 'facebook')
             .then(function (social) {
               if (social && follower.userId.profilePicture === '') {
-                follower.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+                follower.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
               } else if (!social && follower.userId.profilePicture === '') {
                 follower.userId.profilePicture = '/client/images/default.png';
               } else if (social && follower.userId.profilePicture.indexOf('facebook') > -1) {
-                follower.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+                follower.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
               } else if (follower.userId.profilePicture.indexOf('http') === -1 && follower.userId.profilePicture.indexOf('image/profile-picture') === -1 && follower.userId.profilePicture.indexOf('images/default.png') === -1) {
                 follower.userId.profilePicture = '/api/image/profile-picture' + follower.userId.profilePicture + '?size=50';
               }
@@ -119,11 +119,11 @@ function getFollowing(req, res) {
           return socialCrud.findByUserIdAndProvider(follower.followingUserId._id, 'facebook')
             .then(function (social) {
               if (social && follower.followingUserId.profilePicture === '') {
-                follower.followingUserId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+                follower.followingUserId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
               } else if (!social && follower.followingUserId.profilePicture === '') {
                 follower.followingUserId.profilePicture = '/client/images/default.png';
               } else if (social && follower.followingUserId.profilePicture.indexOf('facebook') > -1) {
-                follower.followingUserId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+                follower.followingUserId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
               } else if (follower.followingUserId.profilePicture.indexOf('http') === -1 && follower.followingUserId.profilePicture.indexOf('image/profile-picture') === -1 && follower.followingUserId.profilePicture.indexOf('images/default.png') === -1) {
                 follower.followingUserId.profilePicture = '/api/image/profile-picture' + follower.followingUserId.profilePicture + '?size=50';
               }
