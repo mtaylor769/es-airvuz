@@ -55,16 +55,6 @@ var hsts = require('hsts');
 var pubPath = path.resolve(__dirname, '/public');
 logger.debug("pubPath:" + pubPath);
 
-if (global.IS_PRODUCTION) {
-	app.use(function forcePreferredDomain(req, res, next) {
-		var host = req.get('host');
-		if (host !== 'www.airvuz.com') {
-			return res.redirect(301, 'https://www.airvuz.com/' + req.originalUrl);
-		}
-		return next();
-	});
-}
-
 app.use(morgan('dev'));
 app.use(compression());
 
@@ -146,6 +136,14 @@ function loadView(req, res, name) {
 				logger.error(name + " loading view error:" + error);
 			});
 }
+
+app.use(function forcePreferredDomain(req, res, next) {
+	var host = req.get('host');
+	if (global.IS_PRODUCTION && host.indexOf('airvuz.com') > -1 && host !== 'www.airvuz.com') {
+		return res.redirect(301, 'https://www.airvuz.com' + req.originalUrl);
+	}
+	return next();
+});
 
 app.get("/", function(req, res) {
 	loadView(req, res, indexView.getViewName());
