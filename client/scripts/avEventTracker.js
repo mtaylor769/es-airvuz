@@ -1,13 +1,4 @@
 // Client Side
-var clientIp = null;
-
-	function getClientIp() {
-		$.getJSON('//jsonip.com/?callback=?', function(ipObject) {
-			clientIp = ipObject.ip;
-		})
-	}
-	getClientIp();
-
 var AVEventTracker = function(params) {
 	var params	= params || null;
 	var data		= {};
@@ -18,7 +9,6 @@ var AVEventTracker = function(params) {
 		data.eventSource	= params.eventSource || "browser";
 		data.eventType		= params.eventType	|| "";
 		data.userId			= params.userId	|| null;
-		data.clientIp 		= clientIp || "";
 		data.eventMessage 	= params.eventMessage || "";
 		data.eventVideoPlaybackDetails = params.eventVideoPlaybackDetails || "";
 		data.referrer		= params.referrer || "";
