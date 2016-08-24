@@ -258,7 +258,7 @@ apiRouter.post('/api/upload-external', protect, upload.uploadExternalVideo);
  * /api/amazon
  */
 
-apiRouter.get('/api/amazon/sign-auth', protect, amazon.signAuth);
+apiRouter.get('/api/amazon/sign-auth', amazon.signAuth);
 apiRouter.get('/api/amazon/video-duration', amazon.getVideoDuration);
 apiRouter.post('/api/amazon/move-file', amazon.moveFile);
 apiRouter.post('/api/amazon/transcode/start', amazon.startTranscode);
