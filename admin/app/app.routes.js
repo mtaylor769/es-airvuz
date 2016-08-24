@@ -125,9 +125,14 @@
         controllerAs: 'vm'
       })
       .state('editComments', {
-        url: '/admin/editComments/:id',
-        templateUrl: '/admin/app/comments/templates/comments.html',
-        controller: 'commentCtrl'
+        url: '/admin/editComments',
+        templateUrl: '/admin/app/comments/partial/edit-comments.html',
+        params: {
+          id: null,
+          video: null
+        },
+        controller: 'commentEditController',
+        controllerAs: 'vm'
       })
       .state('adminEditVideo', {
         url: '/admin/adminEdit/:id',
