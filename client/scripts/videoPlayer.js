@@ -37,6 +37,7 @@ var hasResChange                       = false;
 var bufferInterval                     = null;
 var isSeeking                          = false;
 var startViewCount                     = true;
+var initialPlayStart                   = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -109,7 +110,8 @@ $('.nextVideos').on('click', 'li', function(evt) {
     eventName		: "video-up-next-video-clicked",
     eventType		: "click",
     userId          : getUserId(),
-    eventSource     : browser.isMobile() ? 'mobile' : ''
+    eventSource     : browser.isMobile() ? 'mobile' : '',
+    videoId         : video._id
   });
 });
 
@@ -202,6 +204,8 @@ function onAutoPlayChange(event, state) {
     eventName		: "video-auto-play",
     eventType		: "click",
     eventSource     : browser.isMobile() ? 'mobile' : '',
+    videoId         : video._id,
+    userId        : getUserId()
   });
 
   $.ajax({
@@ -291,7 +295,9 @@ function bindEvents() {
     AVEventTracker({
       codeSource	: "videoPlayer",
       eventName		: "comment-saved",
-      eventType		: "click"
+      eventType		: "click",
+      videoId       : video._id,
+      userId        : getUserId()
     });
     ga('send', 'event', 'video page', 'comment-saved', 'commenting video');
     notificationObject.notificationType = 'COMMENT';
@@ -360,7 +366,9 @@ function bindEvents() {
             AVEventTracker({
               codeSource	: "videoPlayer",
               eventName		: "video-liked",
-              eventType		: "click"
+              eventType		: "click",
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('.like').addClass('airvuz-blue');
             $('.like-count').text(likeLog + 1);
@@ -369,7 +377,9 @@ function bindEvents() {
             AVEventTracker({
               codeSource	: "videoPlayer",
               eventName		: "video-unliked",
-              eventType		: "click"
+              eventType		: "click",
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('.like').removeClass('airvuz-blue');
             $('.like-count').text(likeLog - 1);
@@ -466,7 +476,9 @@ function bindEvents() {
             AVEventTracker({
               codeSource	: "videoPlayer",
               eventName		: "video-following-user",
-              eventType		: "click"
+              eventType		: "click",
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('#follow').text('-');
             fbq('trackCustom', 'follow');
@@ -475,7 +487,9 @@ function bindEvents() {
             AVEventTracker({
               codeSource	: "videoPlayer",
               eventName		: "video-unfollowing-user",
-              eventType		: "click"
+              eventType		: "click",
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('#follow').text('+');
             fbq('trackCustom', '-follow');
@@ -520,7 +534,8 @@ function bindEvents() {
               eventName: "facebook-share",
               eventType: "browser",
               userId: getUserId(),
-              eventSource: browser.isMobile() ? 'mobile' : ''
+              eventSource: browser.isMobile() ? 'mobile' : '',
+              videoId: video._id
             });
           })
           .fail(function(error) {
@@ -552,7 +567,8 @@ function bindEvents() {
         eventName: "twitter-share",
         eventType: "browser",
         userId: getUserId(),
-        eventSource: browser.isMobile() ? 'mobile' : ''
+        eventSource: browser.isMobile() ? 'mobile' : '',
+        videoId: video._id
       });
     })
     .fail(function(error) {
@@ -581,7 +597,8 @@ function bindEvents() {
           eventName: "google-share",
           eventType: "browser",
           userId: getUserId(),
-          eventSource: browser.isMobile() ? 'mobile' : ''
+          eventSource: browser.isMobile() ? 'mobile' : '',
+          videoId: video._id
         });
       })
       .fail(function(error) {
@@ -664,7 +681,8 @@ function bindEvents() {
         eventName: "video-ended",
         eventType: "playerEvent",
         userId: getUserId(),
-        eventSource: browser.isMobile() ? 'mobile' : ''
+        eventSource: browser.isMobile() ? 'mobile' : '',
+        videoId: video._id
       });
       if(!user || user.autoPlay === true) {
 
@@ -766,7 +784,8 @@ function bindEvents() {
         eventName		: "video-playing",
         eventType		: "playerEvent",
         userId          : getUserId(),
-        eventSource     : browser.isMobile() ? 'mobile' : ''
+        eventSource     : browser.isMobile() ? 'mobile' : '',
+        videoId         : video._id
       });
     }
 
@@ -781,7 +800,8 @@ function bindEvents() {
         eventName		: "video-paused",
         eventType		: "playerEvent",
         userId          : getUserId(),
-        eventSource     : browser.isMobile() ? 'mobile' : ''
+        eventSource     : browser.isMobile() ? 'mobile' : '',
+        videoId         : video._id
       });
     }
 
@@ -812,7 +832,8 @@ function bindEvents() {
             eventName		: "videoResolutionChangedOnBuffering",
             eventType		: "browser",
             userId          : getUserId(),
-            eventSource     : 'mobile'
+            eventSource     : 'mobile',
+            videoId         : video._id
           });
         }
       }
@@ -828,7 +849,25 @@ function bindEvents() {
           eventName		: "video-seeking",
           eventType		: "playerEvent",
           userId        : getUserId(),
-          eventSource     : browser.isMobile() ? 'mobile' : ''
+          eventSource   : browser.isMobile() ? 'mobile' : '',
+          videoId       : video._id
+        });
+      }
+    }
+
+    // track when the video intially starts to play
+    function initialPlayFunction () {
+      if (!initialPlayStart) {
+        initialPlayStart = true;
+
+        ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-play-start' : 'video-play-start'), 'viewing video');
+        AVEventTracker({
+          codeSource	: "videoPlayer",
+          eventName		: "video-play-start",
+          eventType		: "click",
+          eventSource     : browser.isMobile() ? 'mobile' : '',
+          videoId         : video._id,
+          userId        : getUserId()
         });
       }
     }
@@ -836,6 +875,7 @@ function bindEvents() {
     videojs("video-player").ready(function() {
       var player = this;
       player
+      .on('play', initialPlayFunction)
       .on('playing', playFunction)
       .on('ended', endFunction)
       // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
@@ -927,7 +967,8 @@ function bindEvents() {
             eventName: "video-commented",
             eventType: "browser",
             userId: getUserId(),
-            eventSource: browser.isMobile() ? 'mobile' : ''
+            eventSource: browser.isMobile() ? 'mobile' : '',
+            videoId: video._id
           });
         });
     });
@@ -1169,7 +1210,8 @@ function viewTracking() {
     eventName: "video-viewing",
     eventType: "browser",
     userId: getUserId(),
-    eventSource: browser.isMobile() ? 'mobile' : ''
+    eventSource: browser.isMobile() ? 'mobile' : '',
+    videoId: video._id
   });
 }
 
@@ -1192,7 +1234,8 @@ $(window).bind('unload', function () {
         percentCompletion: pCompletionNearestTen
       },
       userId        : getUserId(),
-      eventSource     : browser.isMobile() ? 'mobile' : ''
+      eventSource     : browser.isMobile() ? 'mobile' : '',
+      videoId: video._id
     });
   }
   // prevent a dialog to popup
