@@ -11,7 +11,7 @@
         getVideoComments();
 
         function getVideoComments() {
-            $http.get('/api/edit-comments', {params: {videoId: $state.params.id}}).then(function(response) {
+            $http.get('/api/edit-comments', {params: {videoId: $state.params.video._id}}).then(function(response) {
                 console.log(response.data);
                 vm.comments = response.data;
             })

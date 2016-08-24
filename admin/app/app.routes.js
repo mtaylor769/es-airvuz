@@ -128,7 +128,6 @@
         url: '/admin/editComments',
         templateUrl: '/admin/app/comments/partial/edit-comments.html',
         params: {
-          id: null,
           video: null
         },
         controller: 'commentEditController',
