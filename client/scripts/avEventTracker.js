@@ -2,7 +2,7 @@
 var clientIp = null;
 
 	function getClientIp() {
-		$.getJSON('http://jsonip.com/?callback=?', function(ipObject) {
+		$.getJSON('//jsonip.com/?callback=?', function(ipObject) {
 			clientIp = ipObject.ip;
 		})
 	}
