@@ -55,11 +55,11 @@ function _transformComments(comments) {
       return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
         .then(function (social) {
           if (social && comment.userId.profilePicture === '') {
-            comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+            comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
           } else if (!social && comment.userId.profilePicture === '') {
             comment.userId.profilePicture = '/client/images/default.png';
           } else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
-            comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=small';
+            comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
           } else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('image/profile-picture') === -1 && comment.userId.profilePicture.indexOf('images/default.png') === -1) {
             comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
           }

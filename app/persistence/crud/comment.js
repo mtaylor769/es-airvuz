@@ -177,7 +177,7 @@ Comment.prototype.create = function(params) {
               return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
                 .then(function(social) {
                   if(social) {
-                    comment.userId.profilePicture = 'http://graph.facebook.com/' + social.accountId + '/picture?type=large';
+                    comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=large';
                   } else {
                     comment.userId.profilePicture = '/client/images/default.png'
                   }
