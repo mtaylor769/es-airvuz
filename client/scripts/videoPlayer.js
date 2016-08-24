@@ -37,6 +37,7 @@ var hasResChange                       = false;
 var bufferInterval                     = null;
 var isSeeking                          = false;
 var startViewCount                     = true;
+var initialPlayStart                   = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -203,7 +204,8 @@ function onAutoPlayChange(event, state) {
     eventName		: "video-auto-play",
     eventType		: "click",
     eventSource     : browser.isMobile() ? 'mobile' : '',
-    videoId         : video._id
+    videoId         : video._id,
+    userId        : getUserId()
   });
 
   $.ajax({
@@ -294,7 +296,8 @@ function bindEvents() {
       codeSource	: "videoPlayer",
       eventName		: "comment-saved",
       eventType		: "click",
-      videoId       : video._id
+      videoId       : video._id,
+      userId        : getUserId()
     });
     ga('send', 'event', 'video page', 'comment-saved', 'commenting video');
     notificationObject.notificationType = 'COMMENT';
@@ -364,7 +367,8 @@ function bindEvents() {
               codeSource	: "videoPlayer",
               eventName		: "video-liked",
               eventType		: "click",
-              videoId       : video._id
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('.like').addClass('airvuz-blue');
             $('.like-count').text(likeLog + 1);
@@ -374,7 +378,8 @@ function bindEvents() {
               codeSource	: "videoPlayer",
               eventName		: "video-unliked",
               eventType		: "click",
-              videoId       : video._id
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('.like').removeClass('airvuz-blue');
             $('.like-count').text(likeLog - 1);
@@ -472,7 +477,8 @@ function bindEvents() {
               codeSource	: "videoPlayer",
               eventName		: "video-following-user",
               eventType		: "click",
-              videoId       : video._id
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('#follow').text('-');
             fbq('trackCustom', 'follow');
@@ -482,7 +488,8 @@ function bindEvents() {
               codeSource	: "videoPlayer",
               eventName		: "video-unfollowing-user",
               eventType		: "click",
-              videoId       : video._id
+              videoId       : video._id,
+              userId        : getUserId()
             });
             $('#follow').text('+');
             fbq('trackCustom', '-follow');
@@ -848,9 +855,27 @@ function bindEvents() {
       }
     }
 
+    // track when the video intially starts to play
+    function initialPlayFunction () {
+      if (!initialPlayStart) {
+        initialPlayStart = true;
+
+        ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-play-start' : 'video-play-start'), 'viewing video');
+        AVEventTracker({
+          codeSource	: "videoPlayer",
+          eventName		: "video-play-start",
+          eventType		: "click",
+          eventSource     : browser.isMobile() ? 'mobile' : '',
+          videoId         : video._id,
+          userId        : getUserId()
+        });
+      }
+    }
+
     videojs("video-player").ready(function() {
       var player = this;
       player
+      .on('play', initialPlayFunction)
       .on('playing', playFunction)
       .on('ended', endFunction)
       // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
