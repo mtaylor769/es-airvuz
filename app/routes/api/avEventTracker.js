@@ -10,6 +10,9 @@ function AVEventTracker() {
 }
 
 function createEventTracker(req, res) {
+  // add clientIP
+  req.body.clientIp = req.ip;
+
   EventTrackingCrud
     .create(req.body)
     .then(function () {
