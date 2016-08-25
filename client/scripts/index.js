@@ -11,8 +11,6 @@ require('../../node_modules/font-awesome/css/font-awesome.css');
 require('./config/jquery');
 require('dustjs-helpers');
 
-var AVEventTracker			= require('./avEventTracker');
-
 require('./core');
 
 window.Home = require('./home');
