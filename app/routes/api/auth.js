@@ -13,7 +13,7 @@ var jwt               = require('jsonwebtoken'),
   token               = null;
 
 function localLogin(req, res) {
-  var emailAddress  = req.body.emailAddress;
+  var emailAddress  = req.body.emailAddress.trim();
   var password      = req.body.password;
 
   UsersCrud.getUserByEmail(emailAddress)

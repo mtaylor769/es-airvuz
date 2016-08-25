@@ -50,8 +50,8 @@ function get(req, res) {
 
 function createUser(req, res) {
   var userParams = {
-    emailAddress            : req.body.email.toLowerCase(),
-    userNameDisplay         : req.body.userNameDisplay,
+    emailAddress            : req.body.email.toLowerCase().trim(),
+    userNameDisplay         : req.body.userNameDisplay.trim(),
     password                : req.body.password,
     confirmPassword         : req.body.confirmPassword,
     isSubscribeAirVuzNews   : req.body.isSubscribeAirVuzNews
@@ -175,7 +175,7 @@ function _sendPasswordResetMail(user, host) {
 }
 
 function passwordResetRequest(req, res) {
-  var email = req.body.email.toLowerCase();
+  var email = req.body.email.toLowerCase().trim();
   usersCrud
     .resetPasswordRequest(email)
     .then(function (user) {
