@@ -210,7 +210,10 @@ Video.prototype.loaded = function(req, res) {
     eventSource : "nodejs",
     eventType   : "post",
     eventName   : "server-side-referrer",
-    referrer    :  req.header('Referrer')
+    referrer    :  req.header('Referrer'),
+    userId      : req.body.userId || null,
+    videoId     : req.body.videoId,
+    clientIp    : req.ip
   });
 
   VideoCrud
