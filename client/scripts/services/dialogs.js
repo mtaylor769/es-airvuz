@@ -11,11 +11,13 @@ var ERROR_MESSAGE = 'Oops! Something went wrong! Help us improve your experience
  * @param params {Object}
  * @param params.title {String}
  * @param params.body {String}
+ * @param params.html {String}
  * @param params.showOkay {Boolean}
  */
 function open(params) {
   var title = params && params.title || '';
   var body = params && params.body || '';
+  var html = params && params.html || false;
 
   $dialogs.find('.modal-footer .btn').addClass('hidden');
   $dialogs.find('.modal-footer .btn-close').removeClass('hidden');
@@ -25,7 +27,12 @@ function open(params) {
   }
 
   $dialogs.find('.modal-title').text(title);
-  $dialogs.find('.modal-body').text(body);
+
+  if (!html) {
+    $dialogs.find('.modal-body').text(body);
+  } else {
+    $dialogs.find('.modal-body').html(body);
+  }
   $dialogs.modal('show');
 
 
@@ -77,6 +84,9 @@ $(function () {
  *  - default is sm
  */
 function setSize(size) {
+  if (size === 'md' && $dialogs.find('.modal-dialog').hasClass('modal-sm')) {
+    $dialogs.find('.modal-dialog').removeClass('modal-sm');
+  }
   $dialogs.find('.modal-dialog').addClass('modal-' + size);
 }
 

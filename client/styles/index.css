@@ -602,6 +602,29 @@ body.modal-open {
   color: darkgray;
 }
 
+.social-icons .icon-sm {
+  font-size: 18px;
+}
+
+.social-icons .icon-md {
+  font-size: 25px;
+}
+.social-icons-container .social-icons .embed:hover {
+  color: #000000;
+}
+/** official social icon colors **/
+.social-icons-container .social-icons #facebook:hover {
+   color: #3b5998;
+}
+
+.social-icons-container .social-icons #google:hover {
+  color: #dd4b39;
+}
+
+.social-icons-container .social-icons #twitter:hover {
+  color: #00aced;
+}
+
 .share, .report, .like {
   padding: 0;
   margin: 0;
