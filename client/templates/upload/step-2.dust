@@ -64,7 +64,7 @@
             <i class="fa fa-spinner fa-pulse fa-3x fa-fw hidden"></i>
         </div>
         <label for="custom-image-file">Select a custom thumbnail</label>
-        <input type="file" id="custom-image-file" accept="image/*" class="m-b-15"/>
+        <input type="file" id="custom-image-file" accept="image/png, image/gif, image/jpeg" class="m-b-15"/>
         <button class="btn btn-danger" id="btn-cancel-custom-thumbnail">Cancel</button>
         <span class="m-l-15">Cancel to select generated thumbnails</span>
       </div>
