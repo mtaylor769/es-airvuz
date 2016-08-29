@@ -178,7 +178,7 @@ function bindEvents() {
   function onPasswordReset() {
     var url = '/api/users/password-reset',
         $emailInput = $loginModal.find('.email-input:visible'),
-        emailAddress = $emailInput.val();
+        emailAddress = $emailInput.val().trim();
 
     function _showHideInput(which) {
       $emailInput.val('');
@@ -209,8 +209,8 @@ function bindEvents() {
     var newUserObject = {};
 
     // modal values
-    var emailAddress = $loginModal.find('#email:visible').val();
-    var userNameDisplay = $loginModal.find('#username:visible').val();
+    var emailAddress = $loginModal.find('#email:visible').val().trim();
+    var userNameDisplay = $loginModal.find('#username:visible').val().trim();
     var password = $loginModal.find('#password:visible').val();
     var confirmPassword = $loginModal.find('#confirm-password:visible').val();
     var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val() === 'true';
@@ -335,7 +335,7 @@ function bindEvents() {
 
   $loginModal.on('click', '#login-btn', function (event) {
     event.preventDefault();
-    var emailAddress = $loginModal.find('.email-input:visible').val();
+    var emailAddress = $loginModal.find('.email-input:visible').val().trim();
     var password = $loginModal.find('.password-input:visible').val();
     var errorMsgElem = $('.error-message');
 
