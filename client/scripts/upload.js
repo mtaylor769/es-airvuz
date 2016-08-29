@@ -11,6 +11,7 @@ var Evaporate     = require('evaporate'),
     drone         = require('./services/drone'),
     categories    = require('./services/category'),
     dialogs    = require('./services/dialogs');
+    videoSocialShare     = require('./services/videoSocialShare');
 
 /**
  * Templates
@@ -19,6 +20,7 @@ var thumbnailTpl = require('../templates/upload/thumbnail.dust');
 var step1Tpl = require('../templates/upload/step-1.dust');
 var step2Tpl = require('../templates/upload/step-2.dust');
 var step3Tpl = require('../templates/upload/step-3.dust');
+var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
 
 var $uploadPage,
     $tags,
@@ -176,6 +178,12 @@ function renderStep(step, video) {
     case 3:
       step3Tpl({video: video, domain: window.location.hostname}, function (err, html) {
         $uploadPage.html(html);
+      });
+
+      videoSocialShareTpl({video: video}, function (err, html) {
+        $uploadPage.find('.social-icons-container').html(html);
+        videoSocialShare.setIconFontSize('md');
+        videoSocialShare.initialize(video);
       });
       break;
   }
