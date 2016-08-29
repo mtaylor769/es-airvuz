@@ -132,10 +132,6 @@ Comment.prototype.delete = function(req, res) {
       }
   })
   .then(function(comments) {
-      logger.error('console.log for comments')
-      logger.debug(comments)
-      logger.error('console log for type of')
-      logger.debug(typeof comments)
     if(typeof comments.length === 'undefined') {
         var removeObject = {};
         removeObject.removeCount = 1;
@@ -173,7 +169,7 @@ Comment.prototype.delete = function(req, res) {
         updateObject.update.commentCount = video.commentCount - removeObject.removeCount;
         logger.error('this is the update object');
         logger.debug(updateObject);
-        return videoCrud.update(updateObject);
+        return videoCrud.updateVideoFieldCounts(updateObject);
       })
   })
   .then(function() {
@@ -191,6 +187,27 @@ Comment.prototype.delete = function(req, res) {
     logger.error(error);
     res.sendStatus(500);
   })
+};
+
+Comment.prototype.adminGetComments = function(req, res) {
+    var videoId = req.query.videoId;
+    return commentCrud.getByVideoIdShowUser(videoId)
+        .then(function(comments) {
+            return Promise.map(comments, function(comment) {
+                return commentCrud.getByParentIdShowUser(comment._id)
+                    .then(function(childComments) {
+                        comment.childComments = childComments;
+                        return comment;
+                    })
+            })
+        })
+        .then(function(comments) {
+            res.send(comments);
+        })
+        .catch(function(error) {
+            logger.error(error);
+            res.sendStatus(500);
+        })
 };
 
 Comment.prototype.reportComment = function(req, res) {

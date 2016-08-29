@@ -5,9 +5,9 @@
 		.module('AirvuzAdmin')
 		.controller('VideosController', VideosController);
 
-	VideosController.$inject = ['Videos', '$scope', 'confirmDelete', 'Amazon', 'identity'];
+	VideosController.$inject = ['Videos', '$scope', 'confirmDelete', 'Amazon', 'identity', '$state'];
 
-	function VideosController(Videos, $scope, confirmDelete, Amazon, identity) {
+	function VideosController(Videos, $scope, confirmDelete, Amazon, identity, $state) {
 
 		// quick fix - use $http
 		$.ajaxSetup({
@@ -45,7 +45,7 @@
 		}
 
 		function editComments(video) {
-			window.location.href = '/admin/editComments/' + video._id;
+			$state.go('editComments', {id: video._id, video: video});
 		}
 
 		function adminEdit(video) {

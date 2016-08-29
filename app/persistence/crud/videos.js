@@ -368,6 +368,10 @@ Videos.prototype.update = function(params) {
 	}
 };
 
+Videos.prototype.updateVideoFieldCounts = function(params) {
+	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec();
+}
+
 Videos.prototype.like = function(video, like) {
 	if(like === 'plus') {
 		video.likeCount = video.likeCount + 1;

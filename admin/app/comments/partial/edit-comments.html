@@ -1,0 +1,17 @@
+<div style="padding: 50px">
+    <h2>Edit Comments for : {{vm.video.title}}</h2>
+    <div ng-repeat="comment in vm.comments" style="padding: 0 50px;">
+        <p style="font-weight: bold">{{comment.userId.userNameDisplay}}</p>
+        <div style="padding: 0 50px">
+            <p flex="66">{{comment.comment}}</p>
+            <md-button ng-click="vm.deleteComment(comment._id, $index)" flex="33">delete</md-button>
+        </div>
+        <div ng-repeat="reply in comment.childComments" style="padding: 0 50px;">
+            <p style="font-weight: bold">{{reply.userId.userNameDisplay}}</p>
+            <div style="padding: 0 50px">
+                <p flex="66">{{reply.comment}}</p>
+                <md-button ng-click="vm.deleteComment(reply._id, $index, $parent.$index)" flex="33">delete</md-button>
+            </div>
+        </div>
+    </div>
+</div>

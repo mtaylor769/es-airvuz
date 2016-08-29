@@ -299,4 +299,7 @@ apiRouter.route('/api/reports/user-hashtag')
 apiRouter.route('/api/reports/top-views')
 	.post(reports.top100Views);
 
+apiRouter.route('/api/edit-comments')
+	.get(comment.adminGetComments)
+
 module.exports = apiRouter;

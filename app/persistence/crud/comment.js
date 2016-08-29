@@ -269,6 +269,14 @@ Comment.prototype.getByVideoId = function(id) {
   return CommentModel.find({videoId: id})
 };
 
+Comment.prototype.getByVideoIdShowUser = function(videoId) {
+  return CommentModel.find({videoId: videoId, replyDepth: 0}).sort({commentCreatedDate: -1}).populate('userId', 'userNameDisplay userNameUrl').lean().exec();
+};
+
+Comment.prototype.getByParentIdShowUser = function(parentId) {
+  return CommentModel.find({parentCommentId: parentId}).sort({commentCreatedDate: -1}).populate('userId', 'userNameDisplay userNameUrl').lean().exec();
+};
+
 Comment.prototype.update = function(params) {
   logger.error(params);
   return CommentModel.findByIdAndUpdate(params.id, params.update, { new: true }).exec();
