@@ -49,12 +49,11 @@ app.use(compression());
 /**
  * HTTP Strict Transport Security
  */
-// TODO: preload flag once ssl and hsts working
-var hstsMaxAge = 31536000;
+var hstsMaxAge = 10886400000; // 18 weeks
 app.use(hsts({
 	maxAge: hstsMaxAge,
 	includeSubDomains: true,
-	force: true
+	preload: true
 }));
 
 app.use('/public', express.static('public'));
@@ -125,10 +124,19 @@ function loadView(req, res, name) {
 }
 
 app.use(function forcePreferredDomain(req, res, next) {
-	var host = req.get('host');
+	var host = req.get('host'),
+			isSSL = req.protocol === 'https';
+
+	// check if connection is ssl, if not then redirect to ssl
+	if (global.IS_PRODUCTION && !isSSL) {
+		return res.redirect(301, 'https://airvuz.com' + req.originalUrl);
+	}
+
+	// force to preferred domain
 	if (global.IS_PRODUCTION && host.indexOf('airvuz.com') > -1 && host !== 'www.airvuz.com') {
 		return res.redirect(301, 'https://www.airvuz.com' + req.originalUrl);
 	}
+
 	return next();
 });
 
