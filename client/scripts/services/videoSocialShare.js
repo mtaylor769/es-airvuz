@@ -81,7 +81,7 @@ function fbClickHandler(e) {
         {
             method: 'feed',
             name: video.name,
-            link: window.location.href,
+            link: window.location.origin + '/video/' + video._id,
             picture: 'https://s3-us-west-2.amazonaws.com/' + amazonConfig.OUTPUT_BUCKET + '/'+video.thumbnailPath,
             description: video.description,
             message: ""
