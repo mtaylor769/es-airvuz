@@ -10,7 +10,7 @@ module.exports = {
     facebook: {
       clientID          : "1095635343791580",
       clientSecret      : "69d81985bac175bc84297fa3b8a1023e",
-      //callbackURL       : "http://beta2.airvuz.com/api/auth/facebook/callback"
+      //callbackURL       : "https://beta.airvuz.com/api/auth/facebook/callback"
 			callbackURL       : "http://localhost/api/auth/facebook/callback"
     },
     linkedIn: {
@@ -57,7 +57,7 @@ module.exports = {
 					title						: "AirVūz – Drone Video Community",
 					type						: "website",
 					updated_time		: "1458850844571",
-					url							: "http://www.airvuz.com"
+					url							: "https://www.airvuz.com"
 				}
 			}
 			
@@ -68,16 +68,16 @@ module.exports = {
     app: {
       name: 'airvuz'
     },
-    baseUrl: 'http://airvuz.com/',
+    baseUrl: 'https://airvuz.com/',
     facebook: {
       clientID: "1762018427366535",
       clientSecret: "1db4beaf94a6b088b00d67125d77e135",
-      callbackURL: "http://airvuz.com/api/auth/facebook/callback"
+      callbackURL: "https://airvuz.com/api/auth/facebook/callback"
     },
     google: {
       "clientID": "783133684568-lgmtef1gfersdq4q8edtvh4gu4f9gslb.apps.googleusercontent.com",
       "clientSecret": "1xA-DeneT3IT2Ek-SGaHjnyB",
-      "callbackURL": "http://airvuz.com/api/auth/google/callback"
+      "callbackURL": "https://airvuz.com/api/auth/google/callback"
     },		
     instagram: {
       clientID          : "d5339fbd8592442cb8657e9a040757c4",
@@ -92,7 +92,7 @@ module.exports = {
     twitter: {
       clientID: "NriwXWU7qTx47bsxlexZLg6aJ",
       clientSecret: "Y65uFqPE2oT2xE9wMxbbPGXXkGmJlhrYSGMGYcQy7JsiUBC7hQ",
-      callbackURL: "http://airvuz.com/auth/twitter/callback"
+      callbackURL: "https://airvuz.com/auth/twitter/callback"
     },
     view : {
       fb : {
@@ -105,7 +105,7 @@ module.exports = {
           title						: "AirVūz – World’s Best Drone Videos",
           type						: "website",
           updated_time		: "1458850844571",
-          url							: "http://www.airvuz.com"
+          url							: "https://www.airvuz.com"
         }
       }
     }
@@ -115,18 +115,18 @@ module.exports = {
     app: {
       name: 'airvuz'
     },
-    baseUrl:'http://beta2.airvuz.com/',
+    baseUrl:'https://beta.airvuz.com/',
 
      google: {
       "clientID": "783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com",
       "clientSecret": "vJM7NvyWkpjom_bpubWuWLJP",
-      "callbackURL": "http://beta2.airvuz.com/api/auth/google/callback"
+      "callbackURL": "https://beta.airvuz.com/api/auth/google/callback"
     },
 
     facebook: {			
       clientID          : "1095635343791580",
       clientSecret      : "69d81985bac175bc84297fa3b8a1023e",
-      callbackURL       : "http://beta2.airvuz.com/api/auth/facebook/callback"
+      callbackURL       : "https://beta.airvuz.com/api/auth/facebook/callback"
     },
     linkedIn: {
       clientID: "test",
@@ -150,7 +150,7 @@ module.exports = {
 					title						: "AirVūz – World’s Best Drone Videos",
 					type						: "website",
 					updated_time		: "1458850844571",
-					url							: "http://www.airvuz.com"
+					url							: "https://www.airvuz.com"
 				}
 			}
 			
