@@ -13,7 +13,7 @@
             vm.siteInfo = false;
             vm.videos = false;
             vm.comments = false;
-            vm.loading = true;
+            vm.working = true;
             $http.get('/api/reports/site-info', { params: {startDate: siteInfoStartDate, endDate: siteInfoEndDate}})
                 .success(function(data){
                     var newUsersArray = [];
@@ -34,7 +34,7 @@
                     vm.siteInfoStartDate = siteInfoStartDate;
                     vm.siteInfoEndDate = siteInfoEndDate;
                     vm.newUsers = newUsersArray;
-                    vm.loading = false;
+                    vm.working = false;
                     vm.siteInfo = true;
                 })
         }

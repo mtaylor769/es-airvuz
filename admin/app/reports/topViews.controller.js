@@ -10,6 +10,7 @@
     function topViewsController($http) {
 
         function getTopViews() {
+            vm.working = true;
             var data = {};
             data.startDate = vm.startDate;
             data.endDate = vm.endDate;
@@ -25,6 +26,7 @@
                         }
                     })
                 });
+                vm.working = false;
                 vm.videos = videos;
                 vm.top100 = true;
             })

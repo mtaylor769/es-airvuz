@@ -1,0 +1,50 @@
+<div id="video-curation-rating">
+    <!---- video curation title ---->
+    <h2>Video Curation: Rating</h2>
+    <!---- video Id input and search ---->
+    <div>
+        <md-input-container class="input">
+        <input type="text" placeholder="Video ID" ng-model="vm.userInputId" ng-focus="vm.userInputError = false">
+        <p class="error" ng-show="vm.userInputError">Please enter a valid video ID</p>
+        </md-input-container>
+        <md-button class="md-warn" ng-click="vm.userInputVideo(vm.userInputId)">Search</md-button>
+    </div>
+    <!---- video tags to add ---->
+    <p class="field-title">Existing Keywords</p>
+    <div class="video-curation-tags">
+        <tags-input ng-model="vm.keywords" disabled="true">
+        </tags-input>
+    </div>
+    <p class="field-title">Internal Keywords</p>
+    <div class="video-curation-tags">
+        <tags-input ng-model="vm.internalKeywords">
+            <auto-complete source="vm.getKeywords($query)"></auto-complete>
+        </tags-input>
+    </div>
+    <!---- video title and id ---->
+    <p class="field-title">{{vm.video.title}}</p>
+    <p>{{vm.video._id}}</p>
+    <!---- video player ---->
+    <div style="display: flex">
+        <video class="video-js vjs-default-skin" controls preload="auto"
+               width="900px" vjs-video vjs-media="vm.mediaObj">
+        </video>
+        <div style="margin: auto">
+            <!---- video rating selection ---->
+            <div class="video-rating-container">
+                <p class="rating-title">Rate This Video</p>
+                <div class="star-container">
+                    <span class="material-icons rating-star one">star_rate</span>
+                    <span class="material-icons rating-star two">star_rate</span>
+                    <span class="material-icons rating-star three">star_rate</span>
+                    <span class="material-icons rating-star four">star_rate</span>
+                    <span class="material-icons rating-star five">star_rate</span>
+                </div>
+                <p class="error" ng-show="vm.ratingRequired">Rating Required</p>
+            </div>
+            <!---- next video button ---->
+            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext()">Go to next video</md-button>
+        </div>
+    </div>
+</div>
+

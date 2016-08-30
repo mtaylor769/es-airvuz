@@ -21,6 +21,10 @@
     cursor: pointer;
 }
 
+.error {
+    color: red;
+}
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -55,4 +59,51 @@ tr:nth-child(even) {
 
 .is-internal {
     background-color: yellow !important;
+}
+
+#video-curation-rating {
+    padding: 0 50px 50px 50px
+}
+
+#video-curation-rating tags-input {
+    height: 100px;
+}
+
+#video-curation-rating md-input-container {
+    width: 75%;
+}
+
+#video-curation-rating .field-title {
+    font-weight: bold;
+}
+
+#video-curation-rating .video-rating-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#video-curation-rating .video-rating-container .rating-star {
+    width: 30px;
+    cursor: pointer;
+}
+
+#video-curation-rating .star-container {
+    margin: 0 10px 10px 10px;
+}
+
+#video-curation-rating .rating-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#video-curation-rating .star-container .selected {
+    color: yellow;
+}
+
+#video-curation-rating .star-container .selection {
+    color: yellow;
+}
+
+#video-curation-rating .next-video-button {
+    margin: 20px;
 }

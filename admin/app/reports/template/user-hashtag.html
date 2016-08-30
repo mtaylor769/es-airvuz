@@ -13,6 +13,9 @@
     </md-input-container>
     <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getUserHashCodes(vm.hashtagUserStartDate, vm.hashtagUserEndDate, vm.hashtagUser)">User Hashtag Report</md-button>
 </md-card>
+<div layout="row" layout-sm="column" layout-align="space-around" ng-show="vm.working">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
 <md-card ng-show="vm.hashtagUserReport">
     <table class="hashtag-table">
         <tr>

@@ -13,14 +13,14 @@
             vm.siteInfo = false;
             vm.videos = false;
             vm.comments = false;
-            vm.loading = true;
+            vm.working = true;
             $http.get('/api/reports/comments', {params: {username: username, startDate: startDate, endDate: endDate}})
                 .success(function(data){
                     vm.commentsUsername = username;
                     vm.commentsCommentCount = data.commentCount;
                     vm.commentsStartDate = startDate;
                     vm.commentsEndDate = endDate;
-                    vm.loading = false;
+                    vm.working = false;
                     vm.comments = true;
 
                 })
