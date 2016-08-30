@@ -21,7 +21,8 @@
     "angular-evaporate": "https://github.com/douathao/angular-evaporate.git#1bbed8408f2d",
     "angular-material-datetimepicker": "^1.4.0",
     "angular-moment": "^0.10.3",
-    "ng-tags-input": "^3.1.1"
+    "ng-tags-input": "^3.1.1",
+    "vjs-video": "^0.1.6"
   },
   "resolutions": {
     "angular": "^1.5.5"
