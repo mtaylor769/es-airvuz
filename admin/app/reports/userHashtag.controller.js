@@ -10,6 +10,7 @@
     function userHashtagController($http) {
 
         function getUserHashCodes(startDate, endDate, hashtag) {
+            vm.working = true;
             var data = {};
             data.startDate = startDate;
             data.endDate = endDate;
@@ -17,6 +18,7 @@
             $http.post('/api/reports/user-hashtag', data)
                 .success(function(data) {
                     vm.hashtagUserDisplay = data;
+                    vm.working = false;
                     vm.hashtagUserReport = true;
                 })
         }

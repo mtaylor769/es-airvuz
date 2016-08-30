@@ -14,7 +14,9 @@ var slider              = require('./slider');
 var upload              = require('./upload');
 var amazon              = require('./amazon');
 var videoCollection     = require('./videoCollection');
-var reports 					  = require('./reports');
+var reports 			= require('./reports');
+var keywords			= require('./keywords');
+var videoCuration 		= require('./videoCuration');
 // var forms               = require('./forms');
 var image               = require('./image');
 var protect             = require('../../middlewares/protect');
@@ -300,6 +302,17 @@ apiRouter.route('/api/reports/top-views')
 	.post(reports.top100Views);
 
 apiRouter.route('/api/edit-comments')
-	.get(comment.adminGetComments)
+	.get(comment.adminGetComments);
+/**
+ * /api/keywords
+ */
+
+apiRouter.route('/api/keyword')
+	.get(keywords.search)
+	.post(keywords.create);
+
+apiRouter.route('/api/video-curation')
+	.post(videoCuration.rating);
+
 
 module.exports = apiRouter;

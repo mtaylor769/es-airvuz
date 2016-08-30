@@ -13,7 +13,7 @@
             vm.siteInfo = false;
             vm.videos = false;
             vm.comments = false;
-            vm.loading = true;
+            vm.working = true;
             vm.employeeReport = false;
             var dateObject = {};
             dateObject.startDate = startDate;
@@ -22,7 +22,7 @@
                 .success(function(data) {
                     vm.employees = data;
                     vm.employeeReport = true;
-                    vm.loading = false;
+                    vm.working = false;
                 })
         }
 

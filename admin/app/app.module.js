@@ -17,6 +17,8 @@
       'ngSanitize',
       'evaporate',
       'ngMaterialDatePicker',
-      'angularMoment'
+      'angularMoment',
+      'ngTagsInput',
+      'vjs.video'
     ]);
 })();

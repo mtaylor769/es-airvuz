@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="/admin/lib/angular-material-datetimepicker/css/material-datetimepicker.min.css">
   <link rel="stylesheet" href="/admin/css/style.css"/>
+  <link rel="stylesheet" href="/admin/lib/ng-tags-input/ng-tags-input.min.css">
+  <link rel="stylesheet" href="/admin/lib/video.js/dist/video-js.min.css">
 </head>
 <body ng-cloak ng-controller="BaseController as baseCtrl">
 <div layout="column" layout-fill>
@@ -20,9 +22,7 @@
       </md-button>
     </div>
   </md-toolbar>
-  <md-content>
     <div ui-view></div>
-  </md-content>
   <md-sidenav md-component-id="left" class="md-sidenav-left">
     <md-list>
       <md-list-item ui-sref="home">
@@ -86,6 +86,10 @@
           </md-list-item>
         </md-list>
       </menu>
+      <md-list-item ui-sref="curationRatingInitial">
+        <md-icon class="material-icons"></md-icon>
+        <p>Video Curation</p>
+      </md-list-item>
     </md-list>
   </md-sidenav>
 </div>
@@ -144,6 +148,7 @@
 <script src="/admin/app/camera-type/cameraTypeEdit.controller.js"></script>
 <script src="/admin/app/camera-type/createCamera.controller.js"></script>
 <script src="/admin/app/comments/editComments.controller.js"></script>
+<script src="/admin/app/video-curation/rating.controller.js"></script>
 
 <!-- 3rd party -->
 <script src="/admin/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -155,6 +160,9 @@
 <script src="/admin/lib/angular-material-datetimepicker/js/angular-material-datetimepicker.min.js"></script>
 <script src="/admin/lib/moment/min/moment.min.js"></script>
 <script src="/admin/lib/angular-moment/angular-moment.min.js"></script>
+<script src="/admin/lib/ng-tags-input/ng-tags-input.min.js"></script>
+<script src="/admin/lib/video.js/dist/video.min.js"></script>
+<script src="/admin/lib/vjs-video/dist/vjs-video.min.js"></script>
 
 </body>
 </html>

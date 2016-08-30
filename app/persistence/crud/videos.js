@@ -370,7 +370,11 @@ Videos.prototype.update = function(params) {
 
 Videos.prototype.updateVideoFieldCounts = function(params) {
 	return VideoModel.findByIdAndUpdate(params.id, params.update, { new:true } ).exec();
-}
+};
+
+Videos.prototype.videoCurationUpdate = function(params) {
+	return VideoModel.findByIdAndUpdate(params.id, params.update).exec()
+};
 
 Videos.prototype.like = function(video, like) {
 	if(like === 'plus') {
@@ -468,6 +472,10 @@ Videos.prototype.findByUserId = function(id) {
 
 Videos.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
 	return VideoModel.find({userId: userId, uploadDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
+};
+
+Videos.prototype.getNextVideoToRate = function() {
+	return VideoModel.find({'curation.isRanked' : null}).sort({viewCount: -1}).limit(1).exec();
 };
 
 Videos.prototype.getRecentVideos 		= getRecentVideos;

@@ -13,14 +13,14 @@
             vm.siteInfo = false;
             vm.videos = false;
             vm.comments = false;
-            vm.loading = true;
+            vm.working = true;
             $http.get('/api/reports/videos', {params: {username: username, startDate: startDate, endDate: endDate}})
                 .success(function(data){
                     vm.videosUsername = username;
                     vm.videoCount = data.length;
                     vm.videosStartDate = startDate;
                     vm.videosEndDate = endDate;
-                    vm.loading = false;
+                    vm.working = false;
                     vm.videos = true;
                 })
         }

@@ -179,6 +179,18 @@
         templateUrl: '/admin/app/sliders/partial/sliders.html',
         controller: 'SlidersController',
         controllerAs: 'vm'
+      })
+      .state('curationRatingInitial', {
+        url: '',
+        templateUrl: '/admin/app/video-curation/partial/rating.html',
+        controller: 'ratingController',
+        controllerAs: 'vm'
+      })
+      .state('curationRating', {
+        url: '/admin/curation-rating/:id',
+        templateUrl: '/admin/app/video-curation/partial/rating.html',
+        controller: 'ratingController',
+        controllerAs: 'vm'
       });
     $urlRouterProvider.otherwise('/admin');
   }
