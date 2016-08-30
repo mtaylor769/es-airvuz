@@ -4,7 +4,6 @@
 var log4js											= require('log4js');
 var logger											= log4js.getLogger('server');
 
-
 logger.info("starting a server ...");
 
 global.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -17,17 +16,9 @@ if(global.NODE_ENV === "production") {
 }
 
 logger.info("NODE_ENV: " + global.NODE_ENV);
-logger.info("IS_PRODUCTION: " + global.IS_PRODUCTION);
-logger.info("IS_DEVELOPMENT: " + global.IS_DEVELOPMENT);
 
 // Initialize database connections
 require('./app/persistence/database/database');
-
-// Enable Mongoose
-// 
-// 
-//var mongoose = require('./mongoose');
-//mongoose.connect(process.env.MONGODB_CONNECTION || 'mongodb://localhostAirVuzV2');
 
 var path        = require('path');
 var express     = require('express');
@@ -52,9 +43,6 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var hsts = require('hsts');
 
-var pubPath = path.resolve(__dirname, '/public');
-logger.debug("pubPath:" + pubPath);
-
 app.use(morgan('dev'));
 app.use(compression());
 
@@ -69,7 +57,6 @@ app.use(hsts({
 	force: true
 }));
 
-//app.use(express.static(path.resolve(__dirname, '/public')));
 app.use('/public', express.static('public'));
 app.use('/client', express.static('client'));
 app.use(bodyParser.json());
@@ -224,10 +211,6 @@ app.get("/media", function(req, res) {
 // app.get("/forms", function(req, res) {
 // 	loadView(req, res, 'forms');
 // });
-
-app.get("/social-login", function(req, res) {
-	res.sendFile(path.join(__dirname, './client/social-login.html'));
-});
 
 app.get("/google2ad042ef42b82b4f.html", function(req, res) {
 	res.sendFile(path.join(__dirname, './client/google2ad042ef42b82b4f.html'));
