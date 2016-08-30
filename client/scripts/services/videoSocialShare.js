@@ -7,7 +7,7 @@ var notificationObject  = {};
 var video               = null;
 
 /**
- * @param params {String}
+ * @param className {String}
  * @description add a class name to the parent element for styling purposes
  */
 function addClass(className) {
@@ -15,7 +15,7 @@ function addClass(className) {
 }
 
 /**
- * @param params {Boolean}
+ * @param isRemoved {Boolean}
  * @description remove the icon color on hover
  */
 function removeColorOnHover(isRemoved) {
@@ -27,7 +27,7 @@ function removeColorOnHover(isRemoved) {
 }
 
 /**
- * @param params {String}
+ * @param size {String}
  * @description set the size of the icons (sm or md)
  *
  */
@@ -64,12 +64,10 @@ function embedClickHandler() {
             fbq('trackCustom', 'social-share-embed');
             ga('send', 'event', 'video page', 'video-embedded-share', video._id);
             AVEventTracker({
-                codeSource: "videoPlayer",
-                eventName: "video-embedded-share",
-                eventType: "browser",
-                userId: getUserId(),
-                videoId: video._id,
-                eventSource: browser.isMobile() ? 'mobile' : ''
+                codeSource: 'videoPlayer',
+                eventName: 'video-embedded-share',
+                eventType: 'click',
+                videoId: video._id
             });
         })
         .fail(function(error) {
@@ -84,7 +82,7 @@ function fbClickHandler(e) {
             method: 'feed',
             name: video.name,
             link: window.location.href,
-            picture: 'http://s3-us-west-2.amazonaws.com/' + amazonConfig.OUTPUT_BUCKET + '/'+video.thumbnailPath,
+            picture: 'https://s3-us-west-2.amazonaws.com/' + amazonConfig.OUTPUT_BUCKET + '/'+video.thumbnailPath,
             description: video.description,
             message: ""
         },
@@ -107,11 +105,9 @@ function fbClickHandler(e) {
                         ga('send', 'social', 'facebook', 'share', window.location.href);
                         ga('send', 'event', 'video page', 'facebook-share', 'sharing video');
                         AVEventTracker({
-                            codeSource: "videoPlayer",
-                            eventName: "facebook-share",
-                            eventType: "browser",
-                            userId: getUserId(),
-                            eventSource: browser.isMobile() ? 'mobile' : ''
+                            codeSource: 'videoPlayer',
+                            eventName: 'facebook-share',
+                            eventType: 'click'
                         });
                     })
                     .fail(function(error) {
@@ -140,11 +136,9 @@ function twitterClickHandler() {
             ga('send', 'social', 'twitter', 'share', window.location.href);
             ga('send', 'event', 'video page', 'twitter-share', 'sharing video');
             AVEventTracker({
-                codeSource: "videoPlayer",
-                eventName: "twitter-share",
-                eventType: "browser",
-                userId: getUserId(),
-                eventSource: browser.isMobile() ? 'mobile' : ''
+                codeSource: 'videoPlayer',
+                eventName: 'twitter-share',
+                eventType: 'click'
             });
         })
         .fail(function(error) {
@@ -170,41 +164,32 @@ function googleClickHandler() {
             ga('send', 'social', 'google', 'share', window.location.href);
             ga('send', 'event', 'video page', 'google-share', 'sharing video');
             AVEventTracker({
-                codeSource: "videoPlayer",
-                eventName: "google-share",
-                eventType: "browser",
-                userId: getUserId(),
-                eventSource: browser.isMobile() ? 'mobile' : ''
+                codeSource: 'videoPlayer',
+                eventName: 'google-share',
+                eventType: 'click'
             });
         })
         .fail(function(error) {
         });
 }
 
-/*
- * get the authenticated user id
- * @return return the user id or null (anonymous)
- */
-function getUserId() {
-    return identity.isAuthenticated() ? identity._id : null;
-}
-
 /**
  *
- * @param params {Object}
+ * @param videoObj {Object}
  * @description initialize the event handler
  */
 function initialize(videoObj) {
+    var $socialIcons = $('.social-icons');
     video = videoObj;
 
-    $('.social-icons')
+    $socialIcons
         .on('click', '.embed', embedClickHandler)
         .on('click', '#facebook', fbClickHandler)
         .on('click', '#twitter', twitterClickHandler)
         .on('click', '#google', googleClickHandler);
 
     // init tooltip
-    $('.social-icons').tooltip({
+    $socialIcons.tooltip({
         selector: "[data-toggle='tooltip']"
     });
 }

@@ -109,9 +109,9 @@ function onLoginSuccess() {
   fbq('trackCustom', 'login');
   ga('send', 'event', 'login', 'login-success', 'login');
   AVEventTracker({
-    codeSource	: "core",
-    eventName		: "login-success",
-    eventType		: "loginClick"
+    codeSource: 'core',
+    eventName: 'login-success',
+    eventType: 'loginClick'
   });
 }
 
@@ -267,9 +267,9 @@ function bindEvents() {
 
     ga('send', 'event', 'login', 'login-resend-confirmation', 'login');
     AVEventTracker({
-      codeSource	: "core",
-      eventName		: "login-resend-confirmation",
-      eventType		: "resendConfirmationClick"
+      codeSource: 'core',
+      eventName: 'login-resend-confirmation',
+      eventType: 'resendConfirmationClick'
     });
 
     $.ajax({
@@ -291,9 +291,9 @@ function bindEvents() {
     if (!isLoggedIn) {
       ga('send', 'event', 'login', 'login-dismissed', 'login');
       AVEventTracker({
-        codeSource	: "core",
-        eventName		: "login-dismissed",
-        eventType		: "loginClick"
+        codeSource: 'core',
+        eventName: 'login-dismissed',
+        eventType: 'loginClick'
       });
     }
 
@@ -307,9 +307,9 @@ function bindEvents() {
   $loginModal.on('show.bs.modal', function (event) {
     ga('send', 'event', 'login', 'login-button-click', 'login');
     AVEventTracker({
-      codeSource	: "core",
-      eventName		: "login-button-click",
-      eventType		: "loginClick"
+      codeSource: 'core',
+      eventName: 'login-button-click',
+      eventType: 'loginClick'
     });
 
     if ($(event.relatedTarget).data('footer')) {
@@ -341,9 +341,9 @@ function bindEvents() {
 
     ga('send', 'event', 'login', 'login-attempt', 'login');
     AVEventTracker({
-      codeSource	: "core",
-      eventName		: "login-attempt",
-      eventType		: "loginClick"
+      codeSource: 'core',
+      eventName: 'login-attempt',
+      eventType: 'loginClick'
     });
 
     auth.login({emailAddress: emailAddress, password: password})
@@ -379,9 +379,9 @@ function bindEvents() {
 
           ga('send', 'event', 'login', 'login-fail', 'login');
           AVEventTracker({
-            codeSource	: "core",
-            eventName		: "login-fail",
-            eventType		: "loginClick"
+            codeSource: 'core',
+            eventName: 'login-fail',
+            eventType: 'loginClick'
           });
         });
   });
