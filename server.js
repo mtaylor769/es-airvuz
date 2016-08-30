@@ -127,10 +127,10 @@ app.use(function forcePreferredDomain(req, res, next) {
 	var host = req.get('host'),
 			isSSL = req.protocol === 'https';
 
-	// check if connection is ssl, if not then redirect to ssl
-	if (global.IS_PRODUCTION && !isSSL) {
-		return res.redirect(301, 'https://airvuz.com' + req.originalUrl);
-	}
+	// // check if connection is ssl, if not then redirect to ssl
+	// if (global.IS_PRODUCTION && !isSSL) {
+	// 	return res.redirect(301, 'https://airvuz.com' + req.originalUrl);
+	// }
 
 	// force to preferred domain
 	if (global.IS_PRODUCTION && host.indexOf('airvuz.com') > -1 && host !== 'www.airvuz.com') {
