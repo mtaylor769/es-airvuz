@@ -19,12 +19,14 @@ require('bootstrap-switch');
  */
 var commentsTpl = require('../templates/videoPlayer/comments.dust');
 var repliesTpl = require('../templates/videoPlayer/replies.dust');
+var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
 
 var AVEventTracker			               = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');
 var amazonConfig                       = require('./config/amazon.config.client');
 var dialog                             = require('./services/dialogs');
+var videoSocialShare                   = require('./services/videoSocialShare');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
@@ -499,112 +501,6 @@ function bindEvents() {
         })
   }
 
-  //facebook modal event
-  $('#facebook').click(function(e){
-    e.preventDefault();
-    FB.ui(
-      {
-        method: 'feed',
-        name: video.name,
-        link: window.location.href,
-        picture: 'https://s3-us-west-2.amazonaws.com/' + amazonConfig.OUTPUT_BUCKET + '/'+video.thumbnailPath,
-        description: video.description,
-        message: ""
-      },
-      function(response) {
-        notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-FACEBOOK';
-        notificationObject.notificationMessage = 'shared your video on Facebook';
-        notificationObject.notifiedUserId  = video.userId;
-        notificationObject.videoId = video._id;
-        if(userIdentity.isAuthenticated()) {
-          notificationObject.actionUserId = userIdentity._id;
-        }
-        if(response.post_id) {
-          $.ajax({
-            type: 'POST',
-            url: '',
-            data: notificationObject
-          })
-          .done(function(response) {
-            fbq('trackCustom', 'social-share-facebook');
-            ga('send', 'social', 'facebook', 'share', window.location.href);
-            ga('send', 'event', 'video page', 'facebook-share', 'sharing video');
-            AVEventTracker({
-              codeSource: "videoPlayer",
-              eventName: "facebook-share",
-              eventType: "browser",
-              userId: getUserId(),
-              eventSource: browser.isMobile() ? 'mobile' : '',
-              videoId: video._id
-            });
-          })
-          .fail(function(error) {
-          });
-        }
-      }
-    );
-  });
-
-  $('#twitter').on('click', function() {
-    notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-TWITTER';
-    notificationObject.notificationMessage = 'shared your video on Twitter';
-    notificationObject.videoId = video._id;
-    notificationObject.notifiedUserId  = video.userId;
-    if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = userIdentity._id;
-    }
-    $.ajax({
-      type: 'POST',
-      url: '/api/notifications',
-      data: notificationObject
-    })
-    .done(function(response) {
-      fbq('trackCustom', 'social-share-twitter');
-      ga('send', 'social', 'twitter', 'share', window.location.href);
-      ga('send', 'event', 'video page', 'twitter-share', 'sharing video');
-      AVEventTracker({
-        codeSource: "videoPlayer",
-        eventName: "twitter-share",
-        eventType: "browser",
-        userId: getUserId(),
-        eventSource: browser.isMobile() ? 'mobile' : '',
-        videoId: video._id
-      });
-    })
-    .fail(function(error) {
-    })
-  });
-
-  $('#google').on('click', function() {
-    notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-GOOGLEPLUS';
-    notificationObject.notificationMessage = 'shared your video on Google Plus';
-    notificationObject.videoId = video._id;
-    notificationObject.notifiedUserId  = video.userId;
-    if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = userIdentity._id;
-    }
-    $.ajax({
-        type: 'POST',
-        url: '/api/notifications',
-        data: notificationObject
-      })
-      .done(function(response) {
-        fbq('trackCustom', 'social-share-google');
-        ga('send', 'social', 'google', 'share', window.location.href);
-        ga('send', 'event', 'video page', 'google-share', 'sharing video');
-        AVEventTracker({
-          codeSource: "videoPlayer",
-          eventName: "google-share",
-          eventType: "browser",
-          userId: getUserId(),
-          eventSource: browser.isMobile() ? 'mobile' : '',
-          videoId: video._id
-        });
-      })
-      .fail(function(error) {
-      });
-  });
-
   //functions to move mobile screen
   $('.up-next').on('click', function(e) {
     e.preventDefault();
@@ -623,37 +519,6 @@ function bindEvents() {
   //share toggle
   $('.share').on('click', function() {
     $('.social-icons').toggle();
-  });
-
-  //embeded iframe modal
-  $('.embed').on('click', function() {
-    $('#embed-modal').modal('show');
-    notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-EMBEDED';
-    notificationObject.notifiedUserId  = video.userId;
-    notificationObject.notificationMessage = 'embeded your video';
-    notificationObject.videoId = video._id;
-    if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = userIdentity._id;
-    }
-    $.ajax({
-        type: 'POST',
-        url: '/api/notifications',
-        data: notificationObject
-      })
-      .done(function(response) {
-        fbq('trackCustom', 'social-share-embed');
-        ga('send', 'event', 'video page', 'video-embedded-share', video._id);
-        AVEventTracker({
-          codeSource: "videoPlayer",
-          eventName: "video-embedded-share",
-          eventType: "browser",
-          userId: getUserId(),
-          videoId: video._id,
-          eventSource: browser.isMobile() ? 'mobile' : ''
-        });
-      })
-      .fail(function(error) {
-      });
   });
 
   //report modal
@@ -1182,13 +1047,20 @@ function initialize(videoPath, currentVideo) {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
-  //video description functions
-
   //slide up function for description
   setTimeout(function() {
     $('.show-more-description span').removeClass('invisible');
     $('#video-description').slideUp();
   }, 5000);
+
+  // render the social icons
+  videoSocialShareTpl({video: video}, function (err, html) {
+    $videoPage.find('.social-icons-container').html(html);
+    videoSocialShare.setIconFontSize('sm');
+    videoSocialShare.addClass('vertical-align');
+    videoSocialShare.removeColorOnHover(true);
+    videoSocialShare.initialize(video);
+  });
 
   ga('send', 'event', 'video page', 'video-page-referrer', document.referrer);
 

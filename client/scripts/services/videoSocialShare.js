@@ -11,7 +11,19 @@ var video               = null;
  * @description add a class name to the parent element for styling purposes
  */
 function addClass(className) {
-    $('.social-icons').addClass('yourClass');
+    $('.social-icons').addClass(className);
+}
+
+/**
+ * @param params {Boolean}
+ * @description remove the icon color on hover
+ */
+function removeColorOnHover(isRemoved) {
+    if (isRemoved) {
+        $('.social-icons').children().removeClass('original-color-hover');
+    } else {
+        $('.social-icons').children().addClass('original-color-hover');
+    }
 }
 
 /**
@@ -190,10 +202,16 @@ function initialize(videoObj) {
         .on('click', '#facebook', fbClickHandler)
         .on('click', '#twitter', twitterClickHandler)
         .on('click', '#google', googleClickHandler);
+
+    // init tooltip
+    $('.social-icons').tooltip({
+        selector: "[data-toggle='tooltip']"
+    });
 }
 
 module.exports = {
     initialize: initialize,
     addClass: addClass,
-    setIconFontSize: setIconFontSize
+    setIconFontSize: setIconFontSize,
+    removeColorOnHover: removeColorOnHover
 };

@@ -183,6 +183,7 @@ function renderStep(step, video) {
       videoSocialShareTpl({video: video}, function (err, html) {
         $uploadPage.find('.social-icons-container').html(html);
         videoSocialShare.setIconFontSize('md');
+        videoSocialShare.removeColorOnHover(false);
         videoSocialShare.initialize(video);
       });
       break;
