@@ -115,12 +115,7 @@
                                 <span class="glyphicon glyphicon-heart like pointer" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
                                 <span class="glyphicon glyphicon-flag report pointer" data-toggle="tooltip" data-placement="top" title="Report this video"></span>
                                 <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
-                                <div  class="social-icons" style="position: absolute; display: none; right: 0; width: 55px;height: auto; bottom: 33px; background: #2b2e38">
-                                    <span class="fa fa-code social embed pointer" data-toggle="tooltip" data-placement="right" title="Embedable code"></span>
-                                    <a href="https://plus.google.com/share?url=https://www.airvuz.com/video/{video._id}" class="fa fa-google-plus-square social" id="google" data-toggle="tooltip" data-placement="right" title="Share on Google+"></a>
-                                    <a href="https://twitter.com/intent/tweet?url=https://www.airvuz.com/video/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
-                                    <span class="fa fa-facebook-official social pointer" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
-                                </div>
+                                <div class="social-icons-container"></div>
                             </div>
                         </div>
                         <div class="flex write-comment" style="width: 100%; background: #fafafa;">

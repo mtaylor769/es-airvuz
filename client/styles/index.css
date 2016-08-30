@@ -609,19 +609,30 @@ body.modal-open {
 .social-icons .icon-md {
   font-size: 25px;
 }
-.social-icons-container .social-icons .embed:hover {
+
+.social-icons-container .vertical-align {
+  position: absolute;
+  display: none;
+  right: 0;
+  width: 55px;
+  height: auto;
+  bottom: 33px;
+  background: #2b2e38;
+}
+
+.embed.original-color-hover:hover {
   color: #000000;
 }
 /** official social icon colors **/
-.social-icons-container .social-icons #facebook:hover {
+#facebook.original-color-hover:hover {
    color: #3b5998;
 }
 
-.social-icons-container .social-icons #google:hover {
+#google.original-color-hover:hover {
   color: #dd4b39;
 }
 
-.social-icons-container .social-icons #twitter:hover {
+#twitter.original-color-hover:hover {
   color: #00aced;
 }
 
