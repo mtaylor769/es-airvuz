@@ -108,22 +108,12 @@ var toggles = {
 $('.nextVideos').on('click', 'li', function(evt) {
   ga('send', 'event', 'video page', 'video-up-next-video-clicked', 'viewing video');
   AVEventTracker({
-    codeSource	: "videoPlayer",
-    eventName		: "video-up-next-video-clicked",
-    eventType		: "click",
-    userId          : getUserId(),
-    eventSource     : browser.isMobile() ? 'mobile' : '',
-    videoId         : video._id
+    codeSource: 'videoPlayer',
+    eventName: 'video-up-next-video-clicked',
+    eventType: 'click',
+    videoId: video._id
   });
 });
-
-/*
- * get the authenticated user id
- * @return return the user id or empty string (anonymous)
- */
-function getUserId() {
-  return userIdentity.isAuthenticated() ? userIdentity._id : null;
-}
 
 //video increment
 function incrementVideoCount() {
@@ -139,10 +129,6 @@ function incrementVideoCount() {
       url: '/api/videos/loaded',
       data: videoViewObject,
       dataType: 'json'
-    })
-    .done(function(response) {
-    })
-    .fail(function(error) {
     });
 }
 
@@ -151,14 +137,14 @@ function checkCommentForDelete(userId) {
   $.each(_comments, function(index, comment) {
     var optionList = $(this).children().find('.comment-options-selection');
     var commentUser = $(this).attr('data-userid');
+    var html;
     if(userId === commentUser) {
-      var html = '<li class="delete-comment">Delete</li><li class="edit-comment">Edit</li>';
-      optionList.append(html);
+      html = '<li class="delete-comment">Delete</li><li class="edit-comment">Edit</li>';
     } else {
-      var html = '<li class="report-comment">Report Comment</li>';
-      optionList.append(html);
+      html = '<li class="report-comment">Report Comment</li>';
     }
-  })
+    optionList.append(html);
+  });
 }
 
 function showOptions() {
@@ -202,12 +188,10 @@ function onAutoPlayChange(event, state) {
   autoPlayObject.autoPlay = state;
 
   AVEventTracker({
-    codeSource	: "videoPlayer",
-    eventName		: "video-auto-play",
-    eventType		: "click",
-    eventSource     : browser.isMobile() ? 'mobile' : '',
-    videoId         : video._id,
-    userId        : getUserId()
+    codeSource: 'videoPlayer',
+    eventName: 'video-auto-play',
+    eventType: 'click',
+    videoId: video._id
   });
 
   $.ajax({
@@ -295,11 +279,10 @@ function bindEvents() {
       return;
     }
     AVEventTracker({
-      codeSource	: "videoPlayer",
-      eventName		: "comment-saved",
-      eventType		: "click",
-      videoId       : video._id,
-      userId        : getUserId()
+      codeSource: 'videoPlayer',
+      eventName: 'comment-saved',
+      eventType: 'click',
+      videoId: video._id
     });
     ga('send', 'event', 'video page', 'comment-saved', 'commenting video');
     notificationObject.notificationType = 'COMMENT';
@@ -366,22 +349,20 @@ function bindEvents() {
           var likeLog = Number($('.like-count').text());
           if (response.status === 'liked') {
             AVEventTracker({
-              codeSource	: "videoPlayer",
-              eventName		: "video-liked",
-              eventType		: "click",
-              videoId       : video._id,
-              userId        : getUserId()
+              codeSource: 'videoPlayer',
+              eventName: 'video-liked',
+              eventType: 'click',
+              videoId: video._id
             });
             $('.like').addClass('airvuz-blue');
             $('.like-count').text(likeLog + 1);
             fbq('trackCustom', 'like');
           } else if (response.status === 'unliked') {
             AVEventTracker({
-              codeSource	: "videoPlayer",
-              eventName		: "video-unliked",
-              eventType		: "click",
-              videoId       : video._id,
-              userId        : getUserId()
+              codeSource: 'videoPlayer',
+              eventName: 'video-unliked',
+              eventType: 'click',
+              videoId: video._id
             });
             $('.like').removeClass('airvuz-blue');
             $('.like-count').text(likeLog - 1);
@@ -476,22 +457,20 @@ function bindEvents() {
           if(response.status === 'followed') {
             ga('send', 'event', 'video page', 'video-following-user', 'following user');
             AVEventTracker({
-              codeSource	: "videoPlayer",
-              eventName		: "video-following-user",
-              eventType		: "click",
-              videoId       : video._id,
-              userId        : getUserId()
+              codeSource: 'videoPlayer',
+              eventName: 'video-following-user',
+              eventType: 'click',
+              videoId: video._id
             });
             $('#follow').text('-');
             fbq('trackCustom', 'follow');
           } else if(response.status === 'unfollowed'){
             ga('send', 'event', 'video page', 'video-unfollowing-user', 'following user');
             AVEventTracker({
-              codeSource	: "videoPlayer",
-              eventName		: "video-unfollowing-user",
-              eventType		: "click",
-              videoId       : video._id,
-              userId        : getUserId()
+              codeSource: 'videoPlayer',
+              eventName: 'video-unfollowing-user',
+              eventType: 'click',
+              videoId: video._id
             });
             $('#follow').text('+');
             fbq('trackCustom', '-follow');
@@ -542,11 +521,9 @@ function bindEvents() {
     function endFunction() {
       ga('send', 'event', 'video page', 'video-ended', 'viewing video');
       AVEventTracker({
-        codeSource: "videoPlayer",
-        eventName: "video-ended",
-        eventType: "playerEvent",
-        userId: getUserId(),
-        eventSource: browser.isMobile() ? 'mobile' : '',
+        codeSource: 'videoPlayer',
+        eventName: 'video-ended',
+        eventType: 'click',
         videoId: video._id
       });
       if(!user || user.autoPlay === true) {
@@ -614,10 +591,9 @@ function bindEvents() {
         if (isSeeking) return;
 
         AVEventTracker({
-          codeSource	: "videoPlayer",
-          eventName		: "buffering",
-          eventType		: "playerEvent",
-          eventSource     : browser.isMobile() ? 'mobile' : ''
+          codeSource: 'videoPlayer',
+          eventName: 'buffering',
+          eventType: 'playerEvent'
         });
 
         if (!hasResChange) {
@@ -645,12 +621,10 @@ function bindEvents() {
       fbq('trackCustom', 'video-playing');
       ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-playing' : 'video-playing'), 'viewing video');
       AVEventTracker({
-        codeSource	: "videoPlayer",
-        eventName		: "video-playing",
-        eventType		: "playerEvent",
-        userId          : getUserId(),
-        eventSource     : browser.isMobile() ? 'mobile' : '',
-        videoId         : video._id
+        codeSource: 'videoPlayer',
+        eventName: 'video-playing',
+        eventType: 'playerEvent',
+        videoId: video._id
       });
     }
 
@@ -661,12 +635,10 @@ function bindEvents() {
 
       ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-paused' : 'video-paused'), 'viewing video');
       AVEventTracker({
-        codeSource	: "videoPlayer",
-        eventName		: "video-paused",
-        eventType		: "playerEvent",
-        userId          : getUserId(),
-        eventSource     : browser.isMobile() ? 'mobile' : '',
-        videoId         : video._id
+        codeSource: 'videoPlayer',
+        eventName: 'video-paused',
+        eventType: 'playerEvent',
+        videoId: video._id
       });
     }
 
@@ -693,12 +665,10 @@ function bindEvents() {
 
           ga('send', 'event', 'video page', 'mobile video resolution changed on buffering', 'viewing video');
           AVEventTracker({
-            codeSource	    : "videoPlayer",
-            eventName		: "videoResolutionChangedOnBuffering",
-            eventType		: "browser",
-            userId          : getUserId(),
-            eventSource     : 'mobile',
-            videoId         : video._id
+            codeSource: 'videoPlayer',
+            eventName: 'videoResolutionChangedOnBuffering',
+            eventType: 'browser',
+            videoId: video._id
           });
         }
       }
@@ -710,12 +680,10 @@ function bindEvents() {
 
         ga('send', 'event', 'video page', 'video-seeking', 'viewing video');
         AVEventTracker({
-          codeSource	: "videoPlayer",
-          eventName		: "video-seeking",
-          eventType		: "playerEvent",
-          userId        : getUserId(),
-          eventSource   : browser.isMobile() ? 'mobile' : '',
-          videoId       : video._id
+          codeSource: 'videoPlayer',
+          eventName: 'video-seeking',
+          eventType: 'playerEvent',
+          videoId: video._id
         });
       }
     }
@@ -727,12 +695,10 @@ function bindEvents() {
 
         ga('send', 'event', 'video page', (browser.isMobile() ? 'm-video-play-start' : 'video-play-start'), 'viewing video');
         AVEventTracker({
-          codeSource	: "videoPlayer",
-          eventName		: "video-play-start",
-          eventType		: "click",
-          eventSource     : browser.isMobile() ? 'mobile' : '',
-          videoId         : video._id,
-          userId        : getUserId()
+          codeSource: 'videoPlayer',
+          eventName: 'video-play-start',
+          eventType: 'click',
+          videoId: video._id
         });
       }
     }
@@ -828,11 +794,9 @@ function bindEvents() {
           fbq('trackCustom', 'video-commented');
           ga('send', 'event', 'video page', 'video-commented', 'commenting video');
           AVEventTracker({
-            codeSource: "videoPlayer",
-            eventName: "video-commented",
-            eventType: "browser",
-            userId: getUserId(),
-            eventSource: browser.isMobile() ? 'mobile' : '',
+            codeSource: 'videoPlayer',
+            eventName: 'video-commented',
+            eventType: 'browser',
             videoId: video._id
           });
         });
@@ -861,11 +825,7 @@ function bindEvents() {
         //create child comment DOM elements
         var replyArray = [];
         replies.forEach(function(reply) {
-          if(userIdentity.isAuthenticated() && reply.userId._id === user._id) {
-              reply.optionHtml = true;
-          } else {
-              reply.optionHtml = false;
-          }
+          reply.optionHtml = userIdentity.isAuthenticated() && reply.userId._id === user._id;
           replyArray.push(reply);
         });
 
@@ -877,13 +837,12 @@ function bindEvents() {
         
         //append child elements to DOM
         if(replies.length === 10) {
+          // value attribute should be data-value | data-parent-id
           var html = '<div class="row m-t-10" style="text-align: center"><span><a class="moreReplies" value="'+parentId+'">load More</a></span></div>';
           $(self).parent().siblings().append(html);
-          $(self).hide();
-        } else {
-          $(self).hide();
         }
-      })
+        $(self).hide();
+      });
   }
 
   //description functions
@@ -1065,24 +1024,20 @@ function initialize(videoPath, currentVideo) {
   ga('send', 'event', 'video page', 'video-page-referrer', document.referrer);
 
   AVEventTracker({
-    codeSource: "videoPlayer",
-    eventName: "video-page-referrer",
-    eventType: "browser",
-    userId: getUserId(),
+    codeSource: 'videoPlayer',
+    eventName: 'video-page-referrer',
+    eventType: 'browser',
     referrer: document.referrer,
-    videoId: video._id,
-    eventSource: browser.isMobile() ? 'mobile' : ''
+    videoId: video._id
   });
 }
 
 function viewTracking() {
   ga('send', 'event', 'video page', 'video-viewing', 'viewing video');
   AVEventTracker({
-    codeSource: "videoPlayer",
-    eventName: "video-viewing",
-    eventType: "browser",
-    userId: getUserId(),
-    eventSource: browser.isMobile() ? 'mobile' : '',
+    codeSource: 'videoPlayer',
+    eventName: 'video-viewing',
+    eventType: 'browser',
     videoId: video._id
   });
 }
@@ -1097,17 +1052,15 @@ $(window).bind('unload', function () {
 
     ga('send', 'event', 'video page', 'video-exited-on-playing', 'viewing video', pCompletionNearestTen);
     AVEventTracker({
-      codeSource	: "videoPlayer",
-      eventName		: "video-exited-on-playing",
-      eventType		: "browser",
-      eventVideoPlaybackDetails  : {
+      codeSource: 'videoPlayer',
+      eventName: 'video-exited-on-playing',
+      eventType: 'browser',
+      videoId: video._id,
+      eventVideoPlaybackDetails: {
         totalDuration: tDuration,
         viewDuration: vDuration,
         percentCompletion: pCompletionNearestTen
-      },
-      userId        : getUserId(),
-      eventSource     : browser.isMobile() ? 'mobile' : '',
-      videoId: video._id
+      }
     });
   }
   // prevent a dialog to popup

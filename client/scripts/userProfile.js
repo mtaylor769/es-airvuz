@@ -981,9 +981,9 @@ function updateFollow() {
           swapFollowBtn(true);
         }
         AVEventTracker({
-          codeSource	: "userPage",
-          eventName		: "followedUser",
-          eventType		: "click"
+          codeSource: 'userProfile',
+          eventName: 'following-user',
+          eventType: 'click'
         });
         $('#follow').text('-');
         fbq('trackCustom', 'follow');
@@ -994,9 +994,9 @@ function updateFollow() {
           swapFollowBtn(false);
         }
           AVEventTracker({
-            codeSource	: "userPage",
-            eventName		: "unfollowedUser",
-            eventType		: "click"
+            codeSource: 'userProfile',
+            eventName: 'unfollowing-user',
+            eventType: 'click'
           });
         //TODO Update current profile page with new amount of followers
         fbq('trackCustom', '-follow');
