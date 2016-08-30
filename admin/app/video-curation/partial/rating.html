@@ -17,7 +17,7 @@
     </div>
     <p class="field-title">Internal Keywords</p>
     <div class="video-curation-tags">
-        <tags-input ng-model="vm.internalKeywords">
+        <tags-input ng-model="vm.internalKeywords" replace-spaces-with-dashes=false>
             <auto-complete source="vm.getKeywords($query)"></auto-complete>
         </tags-input>
     </div>
