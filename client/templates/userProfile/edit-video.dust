@@ -33,7 +33,7 @@
                         {/categoryType}
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group hidden">
                     <label for="drone-type">Drone Type</label>
                     <select class="form-control" id="drone-type">
                         <option value="">Select a drone type</option>
@@ -42,7 +42,7 @@
                         {/drones}
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group hidden">
                     <label for="camera-type">Camera Type</label>
                     <select class="form-control" id="camera-type">
                         <option value="">Select a camera type</option>
