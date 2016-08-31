@@ -44,6 +44,9 @@ var bodyParser = require('body-parser');
 var hsts = require('hsts');
 var cors = require('./app/middlewares/cors');
 
+var preferredDomain = require('./app/middlewares/preferred-domain');
+var enforceHttps = require('./app/middlewares/enforce-https');
+
 app.use(morgan('dev'));
 app.use(compression());
 
@@ -54,6 +57,7 @@ var hstsMaxAge = 10886400000; // 18 weeks
 app.use(hsts({
 	maxAge: hstsMaxAge,
 	includeSubDomains: true,
+	force: true,
 	preload: true
 }));
 
@@ -132,22 +136,8 @@ function loadView(req, res, name) {
 			});
 }
 
-app.use(function forcePreferredDomain(req, res, next) {
-	var host = req.get('host'),
-			isSSL = req.protocol === 'https';
-
-	// // check if connection is ssl, if not then redirect to ssl
-	// if (global.IS_PRODUCTION && !isSSL) {
-	// 	return res.redirect(301, 'https://airvuz.com' + req.originalUrl);
-	// }
-
-	// force to preferred domain
-	if (global.IS_PRODUCTION && host.indexOf('airvuz.com') > -1 && host !== 'www.airvuz.com') {
-		return res.redirect(301, 'https://www.airvuz.com' + req.originalUrl);
-	}
-
-	return next();
-});
+app.use(enforceHttps);
+app.use(preferredDomain);
 
 app.get("/", function(req, res) {
 	loadView(req, res, indexView.getViewName());
