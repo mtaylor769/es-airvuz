@@ -272,7 +272,10 @@ function bindEvents() {
       signerUrl : '/api/amazon/sign-auth',
       aws_key   : AmazonConfig.ACCESS_KEY,
       bucket    : AmazonConfig.INPUT_BUCKET,
-      aws_url   : 'https://s3-us-west-2.amazonaws.com'
+      aws_url   : 'https://s3-us-west-2.amazonaws.com',
+
+      partSize  : 200 * 1024 * 1024,
+      logging   : !IS_PRODUCTION
     });
 
     $.ajax({
@@ -317,7 +320,9 @@ function bindEvents() {
       signerUrl : '/api/amazon/sign-auth',
       aws_key   : AmazonConfig.ACCESS_KEY,
       bucket    : AmazonConfig.TEMP_BUCKET,
-      aws_url   : 'https://s3-us-west-2.amazonaws.com'
+      aws_url   : 'https://s3-us-west-2.amazonaws.com',
+      partSize  : 200 * 1024 * 1024,
+      logging   : !IS_PRODUCTION
     });
 
     // add Date.now() incase the user reupload again.
