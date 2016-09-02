@@ -124,11 +124,6 @@ UserProfileModel.prototype.getData = function(params) {
 		dataObject.videos 									= videos;
 		
 		params.data 												= dataObject;
-		params.data.airvuz 									= {};
-		params.data.vendor 									= {};
-		params.data.airvuz.js 							= sourceManifest["airvuz.js"];
-		params.data.airvuz.css 							= sourceManifest["airvuz.css"];
-		params.data.vendor.js 							= sourceManifest["vendor.js"];
 
 		params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
 		params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;

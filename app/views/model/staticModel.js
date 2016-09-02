@@ -22,16 +22,9 @@ var StaticModel = function(params) {
 util.inherits(StaticModel, BaseModel);
 
 StaticModel.prototype.getData = function(params) {
-
-	var sourceManifest	= params.sourceManifest;
 	var staticView = params.request.path.replace('/', '');
 	params.data							= {};
 	params.data.title				= "AirVūz - " + staticView;
-	params.data.airvuz			= {};
-	params.data.airvuz.css	= sourceManifest["airvuz.css"];
-	params.data.airvuz.js   = sourceManifest["airvuz.js"];
-	params.data.vendor      = {};
-	params.data.vendor.js   = sourceManifest["vendor.js"];
 	params.data.viewName		= staticView;
 	params.data.staticPage  = staticView;
 

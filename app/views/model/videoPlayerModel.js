@@ -41,7 +41,6 @@ util.inherits(VideoPlayerModel, BaseModel);
 VideoPlayerModel.prototype.getData = function(params) {
 	var videoId         = params.request.params.id;
 	var dataObject      = {};
-	var sourceManifest	= params.sourceManifest;
 	var checkObject 		= {};
 
 	// TODO: run parallel
@@ -142,8 +141,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return categoryCrud.get();
 		})
 		.then(function(categories) {
-			logger.debug('completed all checks');
-			logger.debug(dataObject.topTwoVideos);
 			
 			dataObject.categories = categories;
 			params.data													= dataObject;
@@ -152,12 +149,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.videoPlayer.viewName		= "Video Player";
 			params.data.url 										= config.baseUrl;
 			params.data.facebookAppId 					= config.facebook.clientID;
-
-			params.data.airvuz 									= {};
-			params.data.vendor 									= {};
-			params.data.airvuz.js 							= sourceManifest["airvuz.js"];
-			params.data.airvuz.css 							= sourceManifest["airvuz.css"];
-			params.data.vendor.js 							= sourceManifest["vendor.js"];
 
 			params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
 			params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;

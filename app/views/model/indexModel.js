@@ -34,20 +34,12 @@ var IndexModel = function(params) {
 util.inherits(IndexModel, BaseModel);
 
 IndexModel.prototype.getData = function(params) {
-	var sourceManifest	= params.sourceManifest;
 	var userId					= params.request.params.id;
 
 	params.data										= {};
-	params.data.airvuz			= {};
-	params.data.airvuz.css	= sourceManifest["airvuz.css"];
-	params.data.airvuz.js		= sourceManifest["airvuz.js"];
 	params.data.vendor			= {};
-	params.data.vendor.js		= sourceManifest["vendor.js"];
 
 	params.data.index							= {};
-	params.data.index.airvuz			= {};
-	params.data.index.airvuz.css	= sourceManifest["airvuz.css"];
-	params.data.index.airvuz.js		= sourceManifest["airvuz.js"];
 	params.data.index.fb					= config.view.fb;
 	params.data.index.head				= {};
 	params.data.index.head.og			= config.view.index.og;

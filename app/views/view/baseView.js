@@ -1,6 +1,7 @@
 // IMPORT: BEGIN
 var log4js		= require('log4js');
 var logger		= log4js.getLogger('app.views.view.baseView');
+var _					= require('lodash');
 
 try {
 	var Promise		= require('bluebird');
@@ -40,6 +41,8 @@ BaseView.prototype.getModel = function(params) {
 	return new Promise(function(resolve, reject) {
 		THIS.model.getData(params)
 			.then(function(data) {
+				// add the shared data
+				data.data = _.extend(data.data, THIS.model.data);
 				resolve(data);
 		});
 	})

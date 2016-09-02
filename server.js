@@ -8,7 +8,8 @@ logger.info("starting a server ...");
 
 global.NODE_ENV = process.env.NODE_ENV || 'development';
 global.IS_PRODUCTION = NODE_ENV === 'production';
-global.IS_DEVELOPMENT = NODE_ENV === 'development' || NODE_ENV === 'beta';
+global.IS_BETA = NODE_ENV === 'beta';
+global.IS_DEVELOPMENT = NODE_ENV === 'development';
 global.IS_NODE = true;
 
 if(global.NODE_ENV === "production") {
@@ -26,9 +27,6 @@ var fs          = require('fs');
 var app         = express();
 var http        = require("http").createServer(app);
 
-// Makes a global variable for templates to get client code.
-// YOU MUST RUN WEBPACK FOR THE MANIFEST FILE TO EXIST.
-app.locals.sourceManifest = require('./public/manifest.json');
 // prevent x-powerd-by header to show up
 app.disable('x-powered-by');
 //   __  __ _     _     _ _
@@ -112,8 +110,7 @@ function loadView(req, res, name) {
 			.getView({
 				viewName				: name,
 				request					: req,
-				response				: res,
-				sourceManifest	: app.locals.sourceManifest
+				response				: res
 			})
 			.then(function(view) {
 				res.send(view);

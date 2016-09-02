@@ -29,16 +29,8 @@ var VideoUploadModel = function(params) {
 util.inherits(VideoUploadModel, BaseModel);
 
 VideoUploadModel.prototype.getData = function(params) {
-
-	var sourceManifest	= params.sourceManifest;
-
 	params.data							= {};
 	params.data.title				= "AirVūz – Upload";
-	params.data.airvuz			= {};
-	params.data.airvuz.css	= sourceManifest["airvuz.css"];
-	params.data.airvuz.js   = sourceManifest["airvuz.js"];
-	params.data.vendor      = {};
-	params.data.vendor.js   = sourceManifest["vendor.js"];
 	params.data.viewName		= "Upload";
 
 	var promise = CategoryType.get()

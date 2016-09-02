@@ -35,7 +35,6 @@ util.inherits(NotificationModel, BaseModel);
 NotificationModel.prototype.getData = function(params) {
   var userId          = params.request.params.id;
   var dataObject      = {};
-  var sourceManifest	= params.sourceManifest;
 
   return notificationCrud.getAllByUserId(userId)
     .then(function(notifications) {
@@ -86,11 +85,6 @@ NotificationModel.prototype.getData = function(params) {
       dataObject.notifications = notificationClone;
 
       params.data													= dataObject;
-      params.data.airvuz 									= {};
-      params.data.vendor 									= {};
-      params.data.airvuz.js 							= sourceManifest["airvuz.js"];
-      params.data.airvuz.css 							= sourceManifest["airvuz.css"];
-      params.data.vendor.js 							= sourceManifest["vendor.js"];
 
       params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;
       return params;
