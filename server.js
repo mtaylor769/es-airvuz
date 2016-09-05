@@ -40,6 +40,7 @@ var compression = require('compression');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var hsts = require('hsts');
+var cors = require('./app/middlewares/cors');
 
 app.use(morgan('dev'));
 app.use(compression());
@@ -53,6 +54,11 @@ app.use(hsts({
 	includeSubDomains: true,
 	preload: true
 }));
+
+/**
+ * CORS
+ */
+app.use(cors);
 
 app.use('/public', express.static('public'));
 app.use('/client', express.static('client'));
