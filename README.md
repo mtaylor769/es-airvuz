@@ -48,3 +48,7 @@ To see trending you need to run the cron job
 ```javascript
 sudo node ./cron.js
 ```
+
+## Dependencies
+- ffprobe
+- imageMagick
