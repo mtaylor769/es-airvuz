@@ -10,8 +10,9 @@ var Evaporate     = require('evaporate'),
     camera        = require('./services/camera'),
     drone         = require('./services/drone'),
     categories    = require('./services/category'),
-    dialogs    = require('./services/dialogs');
-    videoSocialShare     = require('./services/videoSocialShare');
+    dialogs       = require('./services/dialogs'),
+    utils         = require('./services/utils'),
+    videoSocialShare = require('./services/videoSocialShare');
 
 /**
  * Templates
@@ -85,7 +86,7 @@ function getVideoDuration() {
     contentType : 'application/json',
     type: 'GET',
     data: {key: currentUploadFile.hashName}
-  }).done(onDurationReturn)
+  }).done(onDurationReturn);
 }
 
 function onCustomThumbnailUploadComplete(name) {
@@ -109,8 +110,7 @@ function pollVideoStatus() {
     }).done(onTranscodeComplete)
       .fail(function () {
         transcodeError = true;
-        //console.log('******************** Error: transcode ********************');
-        // TODO: show dialog message - Unable to upload video. Try again or contact support
+        dialogs.error("There's an error uploading. Please contact support");
       })
       .always(function () {
         if (transcodeError === true || transcodeComplete === true) {
@@ -313,6 +313,10 @@ function bindEvents() {
   function onCustomFileChange() {
     var customThumbnailFile = this.files[0];
 
+    if (!utils.isImage(customThumbnailFile)) {
+      return dialogs.error('Invalid file type. Please select a jpg or gif file.');
+    }
+
     $uploadPage.find('.custom-thumbnail-display').css('background-image', 'none');
     $uploadPage.find('#custom-thumbnail-section .fa').removeClass('hidden');
 
@@ -327,7 +331,7 @@ function bindEvents() {
 
     // add Date.now() incase the user reupload again.
     // without it the image won't change or reload because it is the same name
-    customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1];
+    customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1].toLowerCase();
 
     evaporate.add({
       // headers
@@ -503,24 +507,6 @@ function initialize() {
 
   getData();
   bindEvents();
-
-  // DEBUG
-  // setTimeout(function () {
-  //  renderStep(2);
-  // }, 500);
-  //
-  //var mockThumbnail = [
-  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00001.jpg',
-  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00002.jpg',
-  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00003.jpg',
-  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00004.jpg',
-  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00005.jpg',
-  //  '0032d3a9d5b9ad6e6a3d5384e0ca6f60/tn_00006.jpg'
-  //];
-  //
-  //setTimeout(function () {
-  //  renderThumbnail(mockThumbnail);
-  //}, 2000);
 }
 
 module.exports = {
