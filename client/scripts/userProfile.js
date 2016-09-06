@@ -869,11 +869,18 @@ function renderSocialMediaLinks() {
             if (account.url && account.url !== '') {
               $socialMedia.find('.facebook').parent().removeClass('hidden');
               $('.follow-info').css({"marginBottom": "-7px"});
-              $socialMedia.find('.facebook')
-                .attr('href', '//'+account.url);
               $aboutMe.find('.facebook').show();
-              $aboutMe.find('.facebook-link')
-                .attr('href', '//'+account.url);
+              if(account.url.indexOf('http') > -1) {
+                $socialMedia.find('.facebook')
+                    .attr('href', account.url);
+                $aboutMe.find('.facebook-link')
+                    .attr('href', account.url);
+              } else {
+                $socialMedia.find('.facebook')
+                    .attr('href', '//' + account.url);
+                $aboutMe.find('.facebook-link')
+                    .attr('href', '//' + account.url);
+              }
               $editProfile.find('#facebook').val(account.url)
             } else {
               $socialMedia.find('.facebook').parent().hide();
@@ -884,11 +891,18 @@ function renderSocialMediaLinks() {
             if (account.url && account.url !== '') {
               $socialMedia.find('.google').parent().removeClass('hidden');
               $('.follow-info').css({"marginBottom": "-7px"});
-              $socialMedia.find('.google')
-                .attr('href', '//'+account.url);
               $aboutMe.find('.google').show();
-              $aboutMe.find('.google-link')
-                .attr('href', '//'+account.url);
+              if(account.url.indexOf('http') > -1) {
+                $socialMedia.find('.google')
+                    .attr('href', account.url);
+                $aboutMe.find('.google-link')
+                    .attr('href', account.url);
+              } else {
+                $socialMedia.find('.google')
+                    .attr('href', '//' + account.url);
+                $aboutMe.find('.google-link')
+                    .attr('href', '//' + account.url);
+              }
               $editProfile.find('#googleplus').val(account.url);
             } else {
               $socialMedia.find('.google').parent().hide();
@@ -899,11 +913,18 @@ function renderSocialMediaLinks() {
             if (account.url && account.url !== '') {
               $socialMedia.find('.instagram').parent().removeClass('hidden');
               $('.follow-info').css({"marginBottom": "-7px"});
-              $socialMedia.find('.instagram')
-                .attr('href', '//'+account.url);
               $aboutMe.find('.instagram').show();
-              $aboutMe.find('.instagram-link')
-                .attr('href', '//'+account.url);
+              if(account.url.indexOf('http') > -1) {
+                $socialMedia.find('.instagram')
+                    .attr('href', account.url);
+                $aboutMe.find('.instagram-link')
+                    .attr('href', account.url);
+              } else {
+                $socialMedia.find('.instagram')
+                    .attr('href', '//' + account.url);
+                $aboutMe.find('.instagram-link')
+                    .attr('href', '//' + account.url);
+              }
               $editProfile.find('#instagram').val(account.url);
             } else {
               $socialMedia.find('.instagram').parent().hide();
@@ -914,11 +935,18 @@ function renderSocialMediaLinks() {
             if (account.url && account.url !== '') {
               $socialMedia.find('.twitter').parent().removeClass('hidden');
               $('.follow-info').css({"marginBottom": "-7px"});
-              $socialMedia.find('.twitter')
-                .attr('href', '//'+account.url);
               $aboutMe.find('.twitter').show();
-              $aboutMe.find('.twitter-link')
-                .attr('href', '//'+account.url);
+              if(account.url.indexOf('http') > -1) {
+                $socialMedia.find('.twitter')
+                    .attr('href', account.url);
+                $aboutMe.find('.twitter-link')
+                    .attr('href', account.url);
+              } else {
+                $socialMedia.find('.twitter')
+                    .attr('href', '//' + account.url);
+                $aboutMe.find('.twitter-link')
+                    .attr('href', '//' + account.url);
+              }
               $editProfile.find('#twitter').val(account.url);
             } else {
               $socialMedia.find('.twitter').parent().hide();
