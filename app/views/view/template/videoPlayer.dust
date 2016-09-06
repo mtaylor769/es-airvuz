@@ -87,12 +87,14 @@
                         </div>
                         {!video owner info!}
                         <div class="flex video-user-info-height" style="background: #fafafa;">
-                            <button class="btn background-orange border-radius-0 font-white add-button" id="follow" data-toggle="tooltip" data-placement="right" title="Follow / Unfollow"></button>
+                            <div class="video-user-container" style="display:flex;">
+                                <button class="btn background-orange border-radius-0 font-white add-button" id="follow" data-toggle="tooltip" data-placement="right" title="Follow / Unfollow"></button>
                                 <img src="{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
-                            <div class="video-user-about t-a-inherit">
-                                <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
-                                <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
-                                <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
+                                <div class="video-user-about t-a-inherit">
+                                    <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
+                                    <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
+                                    <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
+                                </div>
                             </div>
                             <div class="video-slick">
                                 {#topVideos}
@@ -105,14 +107,14 @@
                             </div>
                         </div>
                         {!comments!}
-                        <div class="gainsboro-background p-15-0">
+                        <div class="gainsboro-background p-15-0 video-info">
                             <div class="inline m-l-10">
                                 <span class="p-l-10"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
                                 <span class="bold">  Likes </span><span class="like-count">{video.likeCount} </span>
                                 <span class="bold hidden-xs">| Comments</span><span class="hidden-xs comment-count"> {video.commentCount} </span>
                             </div>
                             <div class="video-action-icons pull-right flex">
-                                <span class="glyphicon glyphicon-heart like pointer" data-videoId="{video._id}" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
+                                <span class="glyphicon glyphicon-heart like pointer" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
                                 <span class="glyphicon glyphicon-flag report pointer" data-toggle="tooltip" data-placement="top" title="Report this video"></span>
                                 <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
                                 <div class="social-icons-container"></div>
@@ -120,16 +122,18 @@
                         </div>
                         <div class="flex write-comment" style="width: 100%; background: #fafafa;">
                             <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
-                            <button class="btn background-orange border-radius-0 font-white" value="{video._id}" id="commentSave">Comment</button>
+                            <button class="btn background-orange border-radius-0 font-white" id="commentSave">Comment</button>
                         </div>
                         <ul class="parent-comments">
                             {> "client.templates.videoPlayer.comments"/}
                         </ul>
-                        {#hasMoreComments}
-                        <div class="text-center m-b-10">
-                          <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+                        <div class="more-comments-container">
+                            {#hasMoreComments}
+                                <div class="text-center m-b-10">
+                                    <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+                                </div>
+                            {/hasMoreComments}
                         </div>
-                        {/hasMoreComments}
                     </div>
                     {!up next video list!}
                     <div class="col-sm-4 nextVideos mobile-display-none" id="next">
@@ -144,7 +148,7 @@
                                 <input type="checkbox" name="auto-play-input" id="auto-play" checked>
                             </div>
                         </div>
-                        <ul style="list-style: none; padding-left: 0">
+                        <ul class="next-video-list" style="list-style: none; padding-left: 0">
                         {#upNext}
                             <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
                                 <div class="up-next-wrapper">

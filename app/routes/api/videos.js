@@ -1,25 +1,29 @@
 try {
-	var log4js								= require('log4js');
+  var log4js				= require('log4js');
   var nodemailer            = require('nodemailer');
   var request               = require('request');
   var Promise               = require('bluebird');
   var _                     = require('lodash');
   var image                 = require('../../services/image.service.server');
-	var logger								= log4js.getLogger('app.routes.api.videos');
+  var logger				= log4js.getLogger('app.routes.api.videos');
+  var moment				= require('moment');
 
-	var VideoCrud							= require('../../persistence/crud/videos');
-	var VideoCollection				= require('../../persistence/crud/videoCollection');
+  var VideoCrud				= require('../../persistence/crud/videos');
+  var VideoCollection		= require('../../persistence/crud/videoCollection');
   var CategoryType	        = require('../../persistence/crud/categoryType');
   var VideoLikeCrud         = require('../../persistence/crud/videoLike');
   var VideoViewCrud         = require('../../persistence/crud/videoViews');
   var FollowCrud            = require('../../persistence/crud/follow');
-	var EventTrackingCrud			= require('../../persistence/crud/events/eventTracking');
-	var TrendingVideoCrud			= require('../../persistence/crud/trendingVideos');
+  var EventTrackingCrud		= require('../../persistence/crud/events/eventTracking');
+  var TrendingVideoCrud		= require('../../persistence/crud/trendingVideos');
   var amazonService         = require('../../services/amazon.service.server.js');
+  var UsersCrud             = require('../../persistence/crud/users');
+  var SocialCrud            = require('../../persistence/crud/socialMediaAccount');
+  var CommentCrud           = require('../../persistence/crud/comment');
 
-	if(global.NODE_ENV === "production") {
-		logger.setLevel("INFO");
-	}
+  if(global.NODE_ENV === "production") {
+      logger.setLevel("INFO");
+  }
 
 	logger.debug("import complete");
 }
@@ -347,6 +351,132 @@ Video.prototype.getShowcaseByUser = function(req, res) {
     dataStatus.data       = error;
     res.send(dataStatus);
   });
+};
+
+Video.prototype.getTopSixVideos = function(req, res) {
+  var userId = req.params.id;
+
+  VideoCrud
+      .getTopSixVideos(userId)
+      .then(function(resp) {
+        res.json(resp);
+      });
+};
+
+Video.prototype.getVideoCount = function(req, res) {
+  var userId = req.params.id;
+
+  VideoCrud
+      .getVideoCount(userId)
+      .then(function(resp) {
+        res.json(resp);
+      });
+};
+
+Video.prototype.getFollowCount = function(req, res) {
+  var userId = req.params.id;
+
+  FollowCrud
+      .followCount(userId)
+      .then(function(resp) {
+        res.json(resp);
+      });
+};
+
+Video.prototype.getNextVideos = function(req, res) {
+  var category = req.body;
+
+  VideoCrud
+      .getNextVideos(category)
+      .then(function(videos) {
+          videos.forEach(function (video) {
+              video.fullTitle = video.title;
+              video.displayDate = moment(video.uploadDate).fromNow();
+              video.title = video.title.substring(0, 30);
+              video.description = video.description.substring(0, 90);
+              if (video.title.length === 30) {
+                  video.title = video.title + '...'
+              }
+              if (video.description.length === 90) {
+                  video.description = video.description + '...';
+              }
+          });
+
+          res.json(videos);
+      });
+};
+
+Video.prototype.getVideoOwnerProfile = function(req, res) {
+    var userId = req.params.id;
+
+    UsersCrud
+        .getUserById(userId)
+        .then(function(user) {
+            if (user !== null) {
+                return SocialCrud.findByUserIdAndProvider(user._id, 'facebook')
+                    .then(function (social) {
+                        if (social && user.profilePicture === '') {
+                            user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
+                        } else if (!social && user.profilePicture === '') {
+                            user.profilePicture = '/client/images/default.png';
+                        } else if (social && user.profilePicture.indexOf('facebook') > -1) {
+                            user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
+                        } else if (user.profilePicture.indexOf('http') === -1) {
+                            user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=50';
+                        }
+                        return user;
+                    });
+            }
+
+            user.profilePicture = '/client/images/default.png';
+
+            return user;
+        })
+        .then(function (user) {
+            if(user.userNameDisplay.length > 12) {
+                user.userNameDisplay = user.userNameDisplay.substring(0, 12) + '...';
+            }
+            user.isExternalLink = user.profilePicture.indexOf('http') > -1;
+            res.json(user);
+        });
+};
+
+Video.prototype.getCommentsByVideoId = function(req, res) {
+    var videoId = req.params.id;
+
+    CommentCrud
+        .getParentCommentByVideoId({videoId: videoId})
+        .then(function(comments) {
+            return Promise.map(comments, function (comment) {
+                comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+                if (comment.userId !== null) {
+                    return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+                        .then(function (social) {
+                            if (social && comment.userId.profilePicture === '') {
+                                comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
+                                return comment;
+                            } else if (!social && comment.userId.profilePicture === '') {
+                                comment.userId.profilePicture = '/client/images/default.png';
+                                return comment;
+                            } else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
+                                comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
+                                return comment;
+                            } else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('image/profile-picture') === -1) {
+                                comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
+                                return comment;
+                            } else {
+                                return comment;
+                            }
+                        });
+                }
+                comment.userId = {};
+                comment.userId.profilePicture = '/client/images/default.png';
+                return comment;
+            });
+        })
+        .then(function(comments) {
+            res.json(comments);
+        });
 };
 
 Video.prototype.getVideosByCategory = getVideosByCategory;

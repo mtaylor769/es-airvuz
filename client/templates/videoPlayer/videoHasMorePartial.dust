@@ -1,0 +1,5 @@
+{#hasMoreComments}
+    <div class="text-center m-b-10">
+        <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+    </div>
+{/hasMoreComments}

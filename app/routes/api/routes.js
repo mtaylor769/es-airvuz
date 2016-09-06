@@ -149,6 +149,19 @@ apiRouter.route('/api/videos/user/:id')
 apiRouter.route('/api/videos/showcase/:id')
   .get(videos.getShowcaseByUser);
 
+apiRouter.route('/api/videos/topSixVideos/:id')
+	.get(videos.getTopSixVideos);
+apiRouter.route('/api/videos/videoCount/:id')
+	.get(videos.getVideoCount);
+apiRouter.route('/api/videos/followCount/:id')
+	.get(videos.getFollowCount);
+apiRouter.route('/api/videos/nextVideos')
+	.post(videos.getNextVideos);
+apiRouter.route('/api/video/videoOwnerProfile/:id')
+	.get(videos.getVideoOwnerProfile);
+apiRouter.route('/api/videos/videoComments/:id')
+	.get(videos.getCommentsByVideoId);
+
 /**
  * /api/camera-type/
  */
