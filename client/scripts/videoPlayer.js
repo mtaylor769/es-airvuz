@@ -13,6 +13,7 @@ require('../../node_modules/videojs-resolution-switcher/lib/videojs-resolution-s
 require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css');
 require('videojs-resolution-switcher');
 require('bootstrap-switch');
+require('./plugins/video-switcher');
 
 /**
  * Templates
@@ -20,8 +21,14 @@ require('bootstrap-switch');
 var commentsTpl = require('../templates/videoPlayer/comments.dust');
 var repliesTpl = require('../templates/videoPlayer/replies.dust');
 var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
+var categoriesPartialTpl = require('../templates/videoPlayer/categoriesPartial.dust');
+var videoOwnerPartialTpl = require('../templates/videoPlayer/videoOwnerPartial.dust');
+var videoInfoPartialTpl = require('../templates/videoPlayer/videoInfoPartial.dust');
+var videoUserSlickPartialTpl = require('../templates/videoPlayer/videoUserSlickPartial.dust');
+var videoNextVideosPartialTpl = require('../templates/videoPlayer/videoNextVideosPartial.dust');
+var videoHasMorePartialTpl = require('../templates/videoPlayer/videoHasMorePartial.dust');
 
-var AVEventTracker			               = require('./avEventTracker');
+var AVEventTracker			           = require('./avEventTracker');
 var identity                           = require('./services/identity');
 var browser                            = require('./services/browser');
 var amazonConfig                       = require('./config/amazon.config.client');
@@ -40,6 +47,8 @@ var bufferInterval                     = null;
 var isSeeking                          = false;
 var startViewCount                     = true;
 var initialPlayStart                   = false;
+var canResetShowMoreCount              = false;
+var countDownInterval                  = null;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -105,14 +114,141 @@ var toggles = {
     };
 
 // Capture event on next video playlist
-$('.nextVideos').on('click', 'li', function(evt) {
-  ga('send', 'event', 'video page', 'video-up-next-video-clicked', 'viewing video');
-  AVEventTracker({
-    codeSource: 'videoPlayer',
-    eventName: 'video-up-next-video-clicked',
-    eventType: 'click',
-    videoId: video._id
-  });
+function nextVideoHandler(evt) {
+    evt.preventDefault();
+
+    ga('send', 'event', 'video page', 'video-up-next-video-clicked', 'viewing video');
+    AVEventTracker({
+        codeSource: 'videoPlayer',
+        eventName: 'video-up-next-video-clicked',
+        eventType: 'click',
+        videoId: video._id
+    });
+    // Config parameters
+    var CONFIG = {
+        selectedVideoId: $(this).attr('value')
+    };
+    // reset the initialPlayStart start flag to capture the play start event
+    initialPlayStart = false;
+    $(this).switchVideo(CONFIG);
+}
+
+PubSub.subscribe('video-switched', function (msg, data) {
+    // update the current video object
+    video = data;
+    // reset the flag
+    startViewCount = true;
+
+    // stop the count down timer
+    if (countDownInterval !== null) {
+        clearInterval(countDownInterval);
+        $('#video-player div:nth-child(2)').removeClass('video-end-card').empty();
+    }
+
+    // update video title
+    $('.video-player-title').empty();
+    $('.video-player-title').html(video.title);
+
+    var getUserProfile = $.ajax({type: 'GET', url: '/api/video/videoOwnerProfile/' + video.userId}),
+        getComments = $.ajax({type: 'GET', url: '/api/videos/videoComments/' + video._id}),
+        getTopSixVid = $.ajax({type: 'GET', url: '/api/videos/topSixVideos/' + video.userId}),
+        getFollowCount = $.ajax({type: 'GET', url: '/api/videos/followCount/' + video.userId}),
+        getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
+        getNextVideos = $.ajax({type: 'POST', url: '/api/videos/nextVideos', data: video.categories[0]});
+
+    // make parallel requests
+    $.when(
+        getUserProfile,
+        getComments,
+        getTopSixVid,
+        getFollowCount,
+        getVideoCount,
+        getNextVideos
+    ).done(function(userData, commentsData, topSixVidData, followCountData, videoCountData, nextVideosData) {
+        // update next video lists template
+        $(nextVideosData[0]).each(function(idx, vid) {
+           vid.s3Bucket = amazonConfig.OUTPUT_URL;
+        });
+        videoNextVideosPartialTpl({upNext: nextVideosData[0]}, function (err, html) {
+            $('.next-video-list').empty();
+            $('.next-video-list').prepend(html);
+        });
+
+        // update the comments template
+        commentsTpl({comments: commentsData[0], canEdit: true}, function (err, html) {
+            $('.parent-comments').empty();
+            $('.parent-comments').prepend(html);
+        });
+
+        // update the has more button template
+        videoHasMorePartialTpl({hasMoreComments: video.commentCount > commentsData[0].length}, function (err, html) {
+            $('.more-comments-container').empty();
+            $('.more-comments-container').prepend(html);
+
+            canResetShowMoreCount = true;
+        });
+
+        // update categories
+        categoriesPartialTpl({video: video}, function (err, html) {
+            $('.video-player-categories').empty();
+            $('.video-player-categories').prepend(html);
+        });
+
+        // update videoOwner template
+        userData[0].followCount = followCountData[0];
+        userData[0].videoCount = videoCountData[0];
+
+        // top six videos
+        var topSixVid = [];
+        $(topSixVidData[0]).each(function (idx, vid) {
+            vid.s3Bucket = amazonConfig.OUTPUT_URL;
+            if (vid._id.toString() !== data._id) {
+                topSixVid.push(vid);
+            }
+        });
+
+        // update user video slider
+        videoUserSlickPartialTpl({topVideos: topSixVid}, function (err, html) {
+            $('.slick-slide').remove();
+            $('.video-slick').slick('slickAdd', html);
+        });
+
+        // update video owner info
+        videoOwnerPartialTpl({user: userData[0]}, function (err, html) {
+            $('.video-user-container').empty();
+            $('.video-user-container').prepend(html);
+
+            initVideoCheck();
+        });
+    });
+    // update video info
+    videoInfoPartialTpl({video: data}, function (err, html) {
+        $('.video-info').empty();
+        $('.video-info').prepend(html);
+        $('.video-info').tooltip({
+            selector: "[data-toggle='tooltip']"
+        });
+    });
+
+    // render the social icons
+    videoSocialShareTpl({video: video}, function (err, html) {
+        $('.social-icons-container').empty(html);
+        $('.social-icons-container').prepend(html);
+        videoSocialShare.setIconFontSize('sm');
+        videoSocialShare.addClass('vertical-align');
+        videoSocialShare.removeColorOnHover(true);
+        videoSocialShare.initialize(video);
+    });
+
+    //slide up function for description
+    setTimeout(function() {
+        $('.show-more-description span').removeClass('invisible');
+        $('#video-description').slideUp();
+    }, 5000);
+
+    // set the virtual page view tracking
+    ga('set', 'page', document.location.pathname);
+    ga('send', 'pageview');
 });
 
 //video increment
@@ -268,118 +404,118 @@ function bindEvents() {
       $('#comment-edit-modal').modal('hide');
     })
     .fail(function(error) {
-    
+
     })
   }
 
   //create comment and append
-  $('#commentSave').on('click', function() {
-    if (!$(this).prev().val()) {
-      // if no comment text then prevent from doing anything
-      return;
-    }
-    AVEventTracker({
-      codeSource: 'videoPlayer',
-      eventName: 'comment-saved',
-      eventType: 'click',
-      videoId: video._id
-    });
-    ga('send', 'event', 'video page', 'comment-saved', 'commenting video');
-    notificationObject.notificationType = 'COMMENT';
-    notificationObject.notifiedUserId  = video.userId;
-    notificationObject.notificationMessage = $('#comment-text').val();
-    notificationObject.videoId = video._id;
-    if(userIdentity.isAuthenticated()) {
-      notificationObject.actionUserId = userIdentity._id;
-    }
-    var commentData = {};
-    var comment = {};
-    comment.videoId = $(this).attr('value');
-    comment.comment = $('#comment-text').val();
-    comment.userId = userIdentity._id;
-    commentData.comment = comment;
-    commentData.notification = notificationObject;
-    $.ajax({
-        type: 'POST',
-        url: '/api/comment',
-        data: {data: JSON.stringify(commentData)}
-      })
-      .done(function(data) {
-        var comment = data;
-        comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-        commentsTpl({comments: [comment], canEdit: true}, function (err, html) {
-          $('.parent-comments').prepend(html);
-        });
-
-        $('#comment-text').val('');
-        var currentCount = $('.comment-count').text();
-        var toNumber = Number(currentCount);
-        $('.comment-count').text('  ' + (toNumber + 1) + '  ');
-
-        fbq('trackCustom', 'comment');
-        ga('send', 'event', 'video page', 'comment', 'commenting video');
+  function commentSaveHandler() {
+      if (!$(this).prev().val()) {
+          // if no comment text then prevent from doing anything
+          return;
+      }
+      AVEventTracker({
+          codeSource: 'videoPlayer',
+          eventName: 'comment-saved',
+          eventType: 'click',
+          videoId: video._id
       });
-  });
-
-  //video like
-  $('.like').on('click', function() {
-    if(userIdentity._id && userIdentity._id !== video.userId) {
-      notificationObject.notificationType = 'LIKE';
+      ga('send', 'event', 'video page', 'comment-saved', 'commenting video');
+      notificationObject.notificationType = 'COMMENT';
       notificationObject.notifiedUserId  = video.userId;
-      notificationObject.notificationMessage = 'liked your video';
+      notificationObject.notificationMessage = $('#comment-text').val();
       notificationObject.videoId = video._id;
       if(userIdentity.isAuthenticated()) {
-        notificationObject.actionUserId = userIdentity._id;
+          notificationObject.actionUserId = userIdentity._id;
       }
-      var likeData = {};
-      var likeObject = {};
-      likeObject.videoId = $(this).attr('data-videoId');
-      likeObject.userId = userIdentity._id;
-      likeObject.videoOwnerId = video.userId;
-      likeData.like = likeObject;
-      likeData.notification = notificationObject;
-
+      var commentData = {};
+      var comment = {};
+      comment.videoId = video._id;
+      comment.comment = $('#comment-text').val();
+      comment.userId = userIdentity._id;
+      commentData.comment = comment;
+      commentData.notification = notificationObject;
       $.ajax({
           type: 'POST',
-          url: '/api/video-like',
-          data: {data: JSON.stringify(likeData)},
-          dataType: 'json'
-        })
-        .done(function (response) {
-          var likeLog = Number($('.like-count').text());
-          if (response.status === 'liked') {
-            AVEventTracker({
-              codeSource: 'videoPlayer',
-              eventName: 'video-liked',
-              eventType: 'click',
-              videoId: video._id
-            });
-            $('.like').addClass('airvuz-blue');
-            $('.like-count').text(likeLog + 1);
-            fbq('trackCustom', 'like');
-          } else if (response.status === 'unliked') {
-            AVEventTracker({
-              codeSource: 'videoPlayer',
-              eventName: 'video-unliked',
-              eventType: 'click',
-              videoId: video._id
-            });
-            $('.like').removeClass('airvuz-blue');
-            $('.like-count').text(likeLog - 1);
-            fbq('trackCustom', '-like');
-          }
+          url: '/api/comment',
+          data: {data: JSON.stringify(commentData)}
+      })
+          .done(function(data) {
+              var comment = data;
+              comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+              commentsTpl({comments: [comment], canEdit: true}, function (err, html) {
+                  $('.parent-comments').prepend(html);
+              });
 
-          ga('send', 'social', 'facebook', 'like', window.location.href);
-          ga('send', 'event', 'video page', 'facebook-like', 'like video');
-        })
-        .fail(function (error) {
-        });
-    } else if(!userIdentity.isAuthenticated()) {
-      showLoginDialog();
-    } else {
-      $('#like-self-modal').modal('show');
-    }
-  });
+              $('#comment-text').val('');
+              var currentCount = $('.comment-count').text();
+              var toNumber = Number(currentCount);
+              $('.comment-count').text('  ' + (toNumber + 1) + '  ');
+
+              fbq('trackCustom', 'comment');
+              ga('send', 'event', 'video page', 'comment', 'commenting video');
+          });
+  }
+
+  //video like
+  function likeHandler() {
+      if(userIdentity._id && userIdentity._id !== video.userId) {
+          notificationObject.notificationType = 'LIKE';
+          notificationObject.notifiedUserId  = video.userId;
+          notificationObject.notificationMessage = 'liked your video';
+          notificationObject.videoId = video._id;
+          if(userIdentity.isAuthenticated()) {
+              notificationObject.actionUserId = userIdentity._id;
+          }
+          var likeData = {};
+          var likeObject = {};
+          likeObject.videoId = video._id;
+          likeObject.userId = userIdentity._id;
+          likeObject.videoOwnerId = video.userId;
+          likeData.like = likeObject;
+          likeData.notification = notificationObject;
+
+          $.ajax({
+              type: 'POST',
+              url: '/api/video-like',
+              data: {data: JSON.stringify(likeData)},
+              dataType: 'json'
+          })
+              .done(function (response) {
+                  var likeLog = Number($('.like-count').text());
+                  if (response.status === 'liked') {
+                      AVEventTracker({
+                          codeSource: 'videoPlayer',
+                          eventName: 'video-liked',
+                          eventType: 'click',
+                          videoId: video._id
+                      });
+                      $('.like').addClass('airvuz-blue');
+                      $('.like-count').text(likeLog + 1);
+                      fbq('trackCustom', 'like');
+                  } else if (response.status === 'unliked') {
+                      AVEventTracker({
+                          codeSource: 'videoPlayer',
+                          eventName: 'video-unliked',
+                          eventType: 'click',
+                          videoId: video._id
+                      });
+                      $('.like').removeClass('airvuz-blue');
+                      $('.like-count').text(likeLog - 1);
+                      fbq('trackCustom', '-like');
+                  }
+
+                  ga('send', 'social', 'facebook', 'like', window.location.href);
+                  ga('send', 'event', 'video page', 'facebook-like', 'like video');
+              })
+              .fail(function (error) {
+              });
+      } else if(!userIdentity.isAuthenticated()) {
+          showLoginDialog();
+      } else {
+          $('#like-self-modal').modal('show');
+      }
+  }
 
   //send report video info
   $('#send-report').on('click', function() {
@@ -410,38 +546,39 @@ function bindEvents() {
   });
 
   //follow video user
-  $('#follow').on('click', function() {
-    if(userIdentity._id && userIdentity._id !== video.userId) {
-      var followObject = {};
-      followObject.userId = userIdentity._id;
-      followObject.followingUserId = video.userId;
-      notificationObject.notificationType = 'FOLLOW';
-      notificationObject.notifiedUserId  = video.userId;
-      notificationObject.notificationMessage = 'started following you';
-      if(userIdentity.isAuthenticated()) {
-        notificationObject.actionUserId = userIdentity._id;
-      }
-      followData.follow = followObject;
-      followData.notification = notificationObject;
+  function followUserHandler() {
+      if(userIdentity._id && userIdentity._id !== video.userId) {
+          var followObject = {};
+          followObject.userId = userIdentity._id;
+          followObject.followingUserId = video.userId;
+          followObject.followingUserId = video.userId;
+          notificationObject.notificationType = 'FOLLOW';
+          notificationObject.notifiedUserId  = video.userId;
+          notificationObject.notificationMessage = 'started following you';
+          if(userIdentity.isAuthenticated()) {
+              notificationObject.actionUserId = userIdentity._id;
+          }
+          followData.follow = followObject;
+          followData.notification = notificationObject;
 
-      if ($(this).text() === '-') {
-        dialog.open({
-          title: 'Unfollow',
-          body: 'Are you sure you want to unfollow this person?',
-          showOkay: true
-        }).then(function () {
-          xhrFollowUser(followData);
-        });
+          if ($(this).text() === '-') {
+              dialog.open({
+                  title: 'Unfollow',
+                  body: 'Are you sure you want to unfollow this person?',
+                  showOkay: true
+              }).then(function () {
+                  xhrFollowUser(followData);
+              });
+          } else {
+              xhrFollowUser(followData);
+          }
+
+      } else if(!userIdentity.isAuthenticated()) {
+          showLoginDialog();
       } else {
-        xhrFollowUser(followData);
+          $('#follow-self-modal').modal('show');
       }
-
-    } else if(!userIdentity.isAuthenticated()) {
-      showLoginDialog();
-    } else {
-      $('#follow-self-modal').modal('show');
-    }
-  });
+  }
 
   /*
    * make the request to follow or unfollow the person
@@ -496,18 +633,18 @@ function bindEvents() {
   });
 
   //share toggle
-  $('.share').on('click', function() {
-    $('.social-icons').toggle();
-  });
+  function shareHandler() {
+      $('.social-icons').toggle();
+  }
 
   //report modal
-  $('.report').on('click', function() {
-    if (userIdentity.isAuthenticated()) {
-      $('#report-modal').modal('show');
-    } else {
-      showLoginDialog();
-    }
-  });
+  function reportVideoHandler() {
+      if (userIdentity.isAuthenticated()) {
+          $('#report-modal').modal('show');
+      } else {
+          showLoginDialog();
+      }
+  }
 
   //go to previous page
   $('.page-back').on('click', function() {
@@ -578,7 +715,7 @@ function bindEvents() {
           }
         };
         //calling interval variable
-        setInterval(countdown, 1000);
+        countDownInterval = setInterval(countdown, 1000);
       } else {
         this.hasStarted(false);
       }
@@ -834,7 +971,7 @@ function bindEvents() {
         repliesTpl({replies: replyArray}, function(error, html) {
           $(self).parents('.comment-wrap').find('.parentComment').append(html);
         });
-        
+
         //append child elements to DOM
         if(replies.length === 10) {
           // value attribute should be data-value | data-parent-id
@@ -879,6 +1016,10 @@ function bindEvents() {
   }
 
   var showMoreComments = function () {
+    if (canResetShowMoreCount) {
+        canResetShowMoreCount = false;
+        showMoreComments.page = 2;
+    }
     $.ajax({
       type: 'GET',
       url: '/api/comment/byVideo?page=' + showMoreComments.page + '&videoId=' + video._id,
@@ -896,9 +1037,6 @@ function bindEvents() {
 
   showMoreComments.page = 2;
 
-
-  ///////////////////////////////////////
-
   $videoPage
     .on('click', '.show-more-description', moreDescription)
     .on('click', '.show-less-description', lessDescription)
@@ -913,8 +1051,34 @@ function bindEvents() {
     .on('click', '.report-comment', reportComment)
     .on('click', '.edit-comment', editComment)
     .on('click', '#edit-save-comment', saveEditComment)
+    .on('click', '#follow', followUserHandler)
+    .on('click', '.share', shareHandler)
+    .on('click', '.report', reportVideoHandler)
+    .on('click', '.like', likeHandler)
+    .on('click', '#commentSave', commentSaveHandler)
+    .on('click', '.nextVideos li', nextVideoHandler);
+
 
 }
+
+function initVideoCheck() {
+    if(userIdentity.isAuthenticated()){
+        videoInfoCheck();
+        $("[name='auto-play-input']").bootstrapSwitch({
+            size: 'mini',
+            state: user.autoPlay,
+            onSwitchChange: onAutoPlayChange
+        });
+        checkCommentForDelete(user._id);
+    } else {
+        $('#follow').text('+');
+        checkCommentForDelete();
+        $("[name='auto-play-input']").bootstrapSwitch({
+            size: 'mini'
+        });
+    }
+}
+
 
 //page init function
 function initialize(videoPath, currentVideo) {
@@ -984,21 +1148,7 @@ function initialize(videoPath, currentVideo) {
   $('.video-slick').slick(SLICK_CONFIG);
 
   //only run if user is logged in
-  if(userIdentity.isAuthenticated()){
-    videoInfoCheck();
-    $("[name='auto-play-input']").bootstrapSwitch({
-      size: 'mini',
-      state: user.autoPlay,
-      onSwitchChange: onAutoPlayChange
-    });
-    checkCommentForDelete(user._id);
-  } else {
-    $('#follow').text('+');
-    checkCommentForDelete();
-    $("[name='auto-play-input']").bootstrapSwitch({
-      size: 'mini'
-    });
-  }
+  initVideoCheck();
 
   bindEvents();
 

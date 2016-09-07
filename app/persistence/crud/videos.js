@@ -338,6 +338,7 @@ Videos.prototype.getNextVideos = function(category) {
 				.skip(skip)
 				.populate('userId')
 				.limit(5)
+				.lean()
 				.exec();
 		})
 		.then(function(videos) {
