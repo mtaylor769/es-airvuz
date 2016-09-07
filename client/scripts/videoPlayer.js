@@ -660,7 +660,7 @@ function bindEvents() {
       AVEventTracker({
         codeSource: 'videoPlayer',
         eventName: 'video-ended',
-        eventType: 'click',
+        eventType: 'playerEvent',
         videoId: video._id
       });
       if(!user || user.autoPlay === true) {
