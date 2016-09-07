@@ -30,7 +30,8 @@ var $uploadPage,
     transcodeError,
     transcodeComplete,
     VIEW_MODEL = {},
-    isUploading = false,
+    isUploadingVideo = false,
+    isUploadingCustomThumbnail = false,
     POLLING_INTERVAL_TIME = 20000, // 20 sec
     customThumbnailName,
     isCustomThumbnail = false,
@@ -128,7 +129,7 @@ function onTranscodeComplete(response) {
     return;
   }
 
-  isUploading = false;
+  isUploadingVideo = false;
   transcodeComplete = true;
 
   $uploadPage.find('#processing-message').addClass('hidden');
@@ -149,7 +150,7 @@ function renderThumbnail(thumbnails) {
 }
 
 function onUploadError(message) {
-  isUploading = false;
+  isUploadingVideo = false;
   console.log('******************** message ********************');
   console.log(message);
   console.log('************************************************');
@@ -211,7 +212,8 @@ function bindEvents() {
 
   function onPublish(event) {
     event.preventDefault();
-    if (isPublishing) {
+    // isUploadVideo will prevent validation
+    if (isPublishing || isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
       return false;
     }
     removeErrorMessage();
@@ -284,7 +286,7 @@ function bindEvents() {
       type        : 'POST',
       data        : JSON.stringify(data)
     }).done(function (hashName) {
-      isUploading = true;
+      isUploadingVideo = true;
       currentUploadFile.hashName = hashName;
 
       renderStep(2);
@@ -320,6 +322,8 @@ function bindEvents() {
     $uploadPage.find('.custom-thumbnail-display').css('background-image', 'none');
     $uploadPage.find('#custom-thumbnail-section .fa').removeClass('hidden');
 
+    isUploadingCustomThumbnail = true;
+
     var evaporate = new Evaporate({
       signerUrl : '/api/amazon/sign-auth',
       aws_key   : AmazonConfig.ACCESS_KEY,
@@ -352,8 +356,12 @@ function bindEvents() {
       // event callbacks
       complete: function () {
         onCustomThumbnailUploadComplete(customThumbnailName);
+        isUploadingCustomThumbnail = false;
       },
-      error: onUploadError
+      error: function () {
+        onUploadError();
+        isUploadingCustomThumbnail = false;
+      }
     });
   }
 
@@ -409,7 +417,7 @@ function bindEvents() {
   }
 
   function onBeforeUnload() {
-    if (isUploading) {
+    if (isUploadingVideo) {
       // browser doesn't actually use this message.
       return 'You are current uploading video or transcoding. Do you want to cancel?';
     }
@@ -445,7 +453,7 @@ function bindEvents() {
       return;
     }
 
-    isUploading = true;
+    isUploadingVideo = true;
 
     renderStep(2);
 
