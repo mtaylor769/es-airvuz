@@ -66,6 +66,7 @@
                     vm.video = video;
                     vm.keywords = video.tags;
                     vm.userInputId = '';
+                    clearSelection();
                     setVideoPlayerConfig();
                 })
                 .catch(function(error) {
@@ -89,6 +90,7 @@
                         vm.keywords = video.tags;
                         vm.internalKeywords = video.internalTags;
                         vm.ratingRequired = false;
+                        clearSelection();
                         setVideoPlayerConfig();
                     })
                 }
@@ -103,7 +105,6 @@
                     setVideoPlayerConfig();
                 })
             }
-
         }
 
         //set rating on click
@@ -207,6 +208,7 @@
         vm.userInputVideo = userInputVideo;
         vm.updateVideoAndGetNext = updateVideoAndGetNext;
         vm.ratingSelection = null;
+
 
         updateVideoAndGetNext();
     }
