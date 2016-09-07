@@ -14,12 +14,12 @@ var identity                  = require('./services/identity');
 var camera                    = require('./services/camera');
 var drone                     = require('./services/drone');
 var category                  = require('./services/category');
-var AVEventTracker			      = require('./avEventTracker');
+var AVEventTracker            = require('./avEventTracker');
+var utils                     = require('./services/utils');
 var user                      = identity.currentUser || null;
 var userNameCheck             = '';
 var amazonConfig              = require('./config/amazon.config.client');
 var md5                       = require('md5');
-var userData                  = {};
 var allOwnerVideos            = [];
 var showcaseOwnerVideos       = [];
 var skip                      = 0;
@@ -46,7 +46,6 @@ var ownerShowcase         = require('../templates/userProfile/showcase-owner.dus
 var userAllVideosHtml     = require('../templates/userProfile/allvideos-user.dust');
 var ownerAllVideosHtml    = require('../templates/userProfile/allvideos-owner.dust');
 var userProfileEdit       = require('../templates/userProfile/edit-profile.dust');
-var aboutMe               = require('../templates/userProfile/about.dust');
 var videoInfo             = require('../templates/userProfile/edit-video.dust');
 var thumbnailTpl          = require('../templates/upload/thumbnail.dust');
 var followTpl             = require('../templates/userProfile/follow.dust');
@@ -358,7 +357,7 @@ function renderUserInfo() {
 }
 
 function editProfile() {
-var userNameDisplay       = $("#username").val();
+  var userNameDisplay       = $("#username").val();
   var emailAddress        = $("#email").val();
   var myAbout             = $("#aboutme").val();
   var facebook            = $("#facebook").val();
@@ -372,15 +371,13 @@ var userNameDisplay       = $("#username").val();
   var donateUrl           = $("#donateUrl").val();
   var sendData            = true;
   var errorMsg            = '';
-  var regSpaceTest        = new RegExp("\\s");
-
-  userData = {
+  var userData = {
     firstName             : firstName,
     lastName              : lastName,
     aboutMe               : myAbout,
     allowDonation         : allowDonation,
     allowHire             : allowHire
-  }
+  };
 
   if (userNameDisplay && userNameDisplay !== profileUser.userNameDisplay) {
       userData.userNameDisplay = userNameDisplay;
@@ -437,7 +434,7 @@ var userNameDisplay       = $("#username").val();
       socialType      : 'TWITTER',
       url             : twitter
     }
-  ]
+  ];
 
   if (sendData) {
     $.ajax({
@@ -521,7 +518,7 @@ function onSaveVideoEdit() {
     contentType : 'application/json',
     type        : 'PUT',
     data        : JSON.stringify(params)
-  }).done(function (video) {
+  }).done(function () {
     location.reload();
   })
     .fail(function(error){
@@ -581,7 +578,7 @@ function sortShowcase(sortBy, id) {
   })
   .done(function(data) {
     if (data.status==='OK') {
-      renderOwnerShowcase(data.data)
+      renderOwnerShowcase(data.data);
       // ownerShowcase({videos: data.data, s3Bucket: AmazonConfig.OUTPUT_URL}, function(err, html) {
       //   $('#allvideos').html(html);
       // });
@@ -724,6 +721,10 @@ function renderEditVideoHtml(video) {
 function onCustomFileChange() {
   var customThumbnailFile = this.files[0];
 
+  if (!utils.isImage(customThumbnailFile)) {
+    return alert('Invalid file type. Please select a jpg or gif file.');
+  }
+
   $videoEditModal.find('.custom-thumbnail-display').css('background-image', 'none');
   $videoEditModal.find('#custom-thumbnail-section .fa').removeClass('hidden');
 
@@ -731,12 +732,13 @@ function onCustomFileChange() {
     signerUrl : '/api/amazon/sign-auth',
     aws_key   : AmazonConfig.ACCESS_KEY,
     bucket    : AmazonConfig.TEMP_BUCKET,
-    aws_url   : 'https://s3-us-west-2.amazonaws.com'
+    aws_url   : 'https://s3-us-west-2.amazonaws.com',
+    logging   : !IS_PRODUCTION
   });
 
   // add Date.now() incase the user reupload again.
   // without it the image won't change or reload because it is the same name
-  customThumbnailName = 'tn_custom-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1];
+  customThumbnailName = 'tn_custom-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1].toLowerCase();
 
   evaporate.add({
     // headers
@@ -925,8 +927,7 @@ function renderSocialMediaLinks() {
               $aboutMe.find('.twitter').hide();
             }
             break;
-          default : null; //Nothing happens
-        };
+        }
       });
     }
   }
@@ -1018,7 +1019,7 @@ function checkFollowStatus(){
   var data = {
     followingUserId     : profileUser._id,
     userId              : user._id
-  }
+  };
   $.ajax({
     type:'POST',
     url: '/api/follow/check',
