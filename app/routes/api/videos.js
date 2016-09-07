@@ -360,6 +360,9 @@ Video.prototype.getTopSixVideos = function(req, res) {
       .getTopSixVideos(userId)
       .then(function(resp) {
         res.json(resp);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
       });
 };
 
@@ -370,6 +373,9 @@ Video.prototype.getVideoCount = function(req, res) {
       .getVideoCount(userId)
       .then(function(resp) {
         res.json(resp);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
       });
 };
 
@@ -380,6 +386,9 @@ Video.prototype.getFollowCount = function(req, res) {
       .followCount(userId)
       .then(function(resp) {
         res.json(resp);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
       });
 };
 
@@ -403,6 +412,9 @@ Video.prototype.getNextVideos = function(req, res) {
           });
 
           res.json(videos);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
       });
 };
 
@@ -438,6 +450,9 @@ Video.prototype.getVideoOwnerProfile = function(req, res) {
             }
             user.isExternalLink = user.profilePicture.indexOf('http') > -1;
             res.json(user);
+        })
+        .catch(function (error) {
+            res.sendStatus(500);
         });
 };
 
@@ -476,6 +491,9 @@ Video.prototype.getCommentsByVideoId = function(req, res) {
         })
         .then(function(comments) {
             res.json(comments);
+        })
+        .catch(function (error) {
+            res.sendStatus(500);
         });
 };
 
