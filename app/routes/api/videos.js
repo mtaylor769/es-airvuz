@@ -427,15 +427,7 @@ Video.prototype.getVideoOwnerProfile = function(req, res) {
             if (user !== null) {
                 return SocialCrud.findByUserIdAndProvider(user._id, 'facebook')
                     .then(function (social) {
-                        if (social && user.profilePicture === '') {
-                            user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
-                        } else if (!social && user.profilePicture === '') {
-                            user.profilePicture = '/client/images/default.png';
-                        } else if (social && user.profilePicture.indexOf('facebook') > -1) {
-                            user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
-                        } else if (user.profilePicture.indexOf('http') === -1) {
-                            user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=50';
-                        }
+                        SocialCrud.setProfilePicture(social, user);
                         return user;
                     });
             }
@@ -467,21 +459,8 @@ Video.prototype.getCommentsByVideoId = function(req, res) {
                 if (comment.userId !== null) {
                     return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
                         .then(function (social) {
-                            if (social && comment.userId.profilePicture === '') {
-                                comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
-                                return comment;
-                            } else if (!social && comment.userId.profilePicture === '') {
-                                comment.userId.profilePicture = '/client/images/default.png';
-                                return comment;
-                            } else if (social && comment.userId.profilePicture.indexOf('facebook') > -1) {
-                                comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
-                                return comment;
-                            } else if (comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture.indexOf('image/profile-picture') === -1) {
-                                comment.userId.profilePicture = '/api/image/profile-picture' + comment.userId.profilePicture + '?size=50';
-                                return comment;
-                            } else {
-                                return comment;
-                            }
+                            SocialCrud.setProfilePicture(social, comment.userId);
+                            return comment;
                         });
                 }
                 comment.userId = {};

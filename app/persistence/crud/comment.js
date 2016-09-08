@@ -176,11 +176,7 @@ Comment.prototype.create = function(params) {
             } else if(comment.userId.profilePicture.indexOf('http') === -1 && comment.userId.profilePicture === '') {
               return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
                 .then(function(social) {
-                  if(social) {
-                    comment.userId.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=large';
-                  } else {
-                    comment.userId.profilePicture = '/client/images/default.png'
-                  }
+                  SocialCrud.setProfilePicture(social, comment.userId);
                   return comment;
                 })
             } else {
