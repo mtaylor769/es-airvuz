@@ -10,7 +10,6 @@
 </head>
 <body>
     {> "app.views.view.partial.header" /}
-    {> "client.templates.videoPlayer.videoPlayerModal" /}
     <div id="notifications">
         <div class="container main">
             {#notifications}
