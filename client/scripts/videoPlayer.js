@@ -284,7 +284,9 @@ function checkCommentForDelete(userId) {
 }
 
 function showOptions() {
-  $(this).siblings().toggle();
+    var commentWrapper = $(this).closest('.comment-wrap');
+    commentWrapper.siblings().find('.comment-options-box').hide();
+    commentWrapper.find('.comment-options-box').toggle();
 }
 
 //check for user following and user video liked
