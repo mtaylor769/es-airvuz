@@ -11,6 +11,25 @@ catch(exception) {
 
 var socialMediaAccount = function() {};
 
+/**
+ * set social profile picture
+ * - only set picture to be small not large
+ * - Mutability function
+ * @param social
+ * @param user
+ */
+function setProfilePicture(social, user) {
+  if (social && user.profilePicture === '') {
+    user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
+  } else if (!social && user.profilePicture === '') {
+    user.profilePicture = '/client/images/default.png';
+  } else if (social && user.profilePicture.indexOf('facebook') > -1) {
+    user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
+  } else if (user.profilePicture.indexOf('http') === -1 && user.profilePicture.indexOf('image/profile-picture') === -1 && user.profilePicture.indexOf('images/default.png') === -1) {
+    user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=50';
+  }
+}
+
 socialMediaAccount.prototype.create = function(params) {
   return new SocialModel(params).save();
 };
@@ -38,6 +57,8 @@ socialMediaAccount.prototype.findByUserIdAndProvider = function(id, provider) {
 socialMediaAccount.prototype.remove = function(id) {
   return SocialModel.findByIdAndRemove(id).exec();
 };
+
+socialMediaAccount.prototype.setProfilePicture = setProfilePicture;
 
 module.exports = new socialMediaAccount();
 
