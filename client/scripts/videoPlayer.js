@@ -186,6 +186,8 @@ PubSub.subscribe('video-switched', function (msg, data) {
             $('.more-comments-container').prepend(html);
 
             canResetShowMoreCount = true;
+
+            setCommentOptions();
         });
 
         // update categories
@@ -218,7 +220,8 @@ PubSub.subscribe('video-switched', function (msg, data) {
             $('.video-user-container').empty();
             $('.video-user-container').prepend(html);
 
-            initVideoCheck();
+            videoInfoCheck();
+            setCommentOptions();
         });
     });
     // update video info
@@ -279,6 +282,7 @@ function checkCommentForDelete(userId) {
     } else {
       html = '<li class="report-comment">Report Comment</li>';
     }
+    optionList.empty();
     optionList.append(html);
   });
 }
@@ -289,28 +293,30 @@ function showOptions() {
 
 //check for user following and user video liked
 function videoInfoCheck() {
-  var checkObject = {};
-  checkObject.userId = user._id;
-  checkObject.videoId = video._id;
-  checkObject.videoUserId = video.userId;
+    if(userIdentity.isAuthenticated()) {
+        var checkObject = {};
+        checkObject.userId = user._id;
+        checkObject.videoId = video._id;
+        checkObject.videoUserId = video.userId;
 
-  $.ajax({
-    type: 'GET',
-    url: '/api/videos/videoInfoCheck',
-    data: checkObject
-  })
-  .done(function(response) {
-    if(response.like === true) {
-      $('.like').addClass('airvuz-blue');
-    }
-    if(response.follow === true) {
-      $('#follow').text('-');
+        $.ajax({
+            type: 'GET',
+            url: '/api/videos/videoInfoCheck',
+            data: checkObject
+        })
+        .done(function(response) {
+            if(response.like === true) {
+                $('.like').addClass('airvuz-blue');
+            }
+            if(response.follow === true) {
+                $('#follow').text('-');
+            } else {
+                $('#follow').text('+');
+            }
+        });
     } else {
-      $('#follow').text('+');
+        $('#follow').text('+');
     }
-  })
-  .fail(function(error) {
-  });
 }
 
 function showLoginDialog() {
@@ -1027,6 +1033,7 @@ function bindEvents() {
     }).done(function (response) {
       commentsTpl({comments: response}, function (err, html) {
         $videoPage.find('.parent-comments').append(html);
+        setCommentOptions();
       });
       if (response.length < 10) {
         $videoPage.find('#btn-view-more-comments').addClass('hidden');
@@ -1061,24 +1068,29 @@ function bindEvents() {
 
 }
 
-function initVideoCheck() {
-    if(userIdentity.isAuthenticated()){
-        videoInfoCheck();
+// checks user autoplay setting
+function setAutoPlay() {
+    if(userIdentity.isAuthenticated()) {
         $("[name='auto-play-input']").bootstrapSwitch({
             size: 'mini',
             state: user.autoPlay,
             onSwitchChange: onAutoPlayChange
         });
-        checkCommentForDelete(user._id);
     } else {
-        $('#follow').text('+');
-        checkCommentForDelete();
         $("[name='auto-play-input']").bootstrapSwitch({
             size: 'mini'
         });
     }
 }
 
+// set the comment options
+function setCommentOptions(userId) {
+    if(userIdentity.isAuthenticated()) {
+        checkCommentForDelete(user._id);
+    } else {
+        checkCommentForDelete();
+    }
+}
 
 //page init function
 function initialize(videoPath, currentVideo) {
@@ -1147,8 +1159,11 @@ function initialize(videoPath, currentVideo) {
 
   $('.video-slick').slick(SLICK_CONFIG);
 
-  //only run if user is logged in
-  initVideoCheck();
+  setAutoPlay();
+
+  videoInfoCheck();
+
+  setCommentOptions();
 
   bindEvents();
 
