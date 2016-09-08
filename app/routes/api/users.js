@@ -429,6 +429,10 @@ function resendConfirmation(req, res) {
       });
 }
 
+function addAclRole(req, res) {
+
+}
+
 User.prototype.hireMe               = hireMe;
 User.prototype.search               = search;
 User.prototype.get                  = get;
@@ -440,5 +444,6 @@ User.prototype.passwordResetChange  = passwordResetChange;
 User.prototype.statusChange         = statusChange;
 User.prototype.contactUs            = contactUs;
 User.prototype.resendConfirmation   = resendConfirmation;
+User.prototype.addAclRole           = addAclRole;
 
 module.exports = new User();

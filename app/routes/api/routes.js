@@ -17,6 +17,7 @@ var videoCollection     = require('./videoCollection');
 var reports 			= require('./reports');
 var keywords			= require('./keywords');
 var videoCuration 		= require('./videoCuration');
+var aclRoles 			= require('./aclRoles');
 // var forms               = require('./forms');
 var image               = require('./image');
 var protect             = require('../../middlewares/protect');
@@ -85,6 +86,7 @@ apiRouter.route('/api/users/:id')
 
 apiRouter.route('/api/users/resend-confirmation')
   .post(users.resendConfirmation);
+
 
 /**
  * /api/follow/
@@ -314,5 +316,12 @@ apiRouter.route('/api/keyword')
 apiRouter.route('/api/video-curation')
 	.post(videoCuration.rating);
 
+/**
+ * /api/aclRoles
+ */
+apiRouter.route('/api/aclRoles/:id')
+	.get(aclRoles.getUserRoles)
+	.post(aclRoles.removeAclRoleFromUser)
+	.put(aclRoles.addAclRoleToUser);
 
 module.exports = apiRouter;

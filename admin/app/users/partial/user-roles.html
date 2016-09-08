@@ -1,0 +1,16 @@
+<md-card>
+    <div style="padding: 20px">
+        <h2>{{vm.user.userNameDisplay}}</h2>
+        <p>Add Roles</p>
+        <md-input-container layout="row">
+            <label>Available Roles</label>
+            <md-select ng-model="vm.roleToAdd" flex="33">
+                <md-option ng-repeat="role in vm.availableRoles" ng-click="vm.addRole(role)">{{role}}</md-option>
+            </md-select>
+        </md-input-container>
+        <p>Assigned Roles</p>
+        <ul>
+            <li ng-repeat="role in vm.user.aclRoles">{{role}} - <a href="#" ng-click="vm.removeRole(role)">remove</a></li>
+        </ul>
+    </div>
+</md-card>

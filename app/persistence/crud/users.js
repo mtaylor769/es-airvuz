@@ -676,7 +676,20 @@ users.prototype.newUserList = function(startDate, endDate) {
 };
 
 users.prototype.getByUserName = function(username) {
-	return UserModel.findOne({userNameDisplay: username}).exec()
+	return UserModel.findOne({userNameDisplay: username}).exec();
+};
+
+users.prototype.addAclRole = function(userId, role) {
+	return UserModel.findByIdAndUpdate(userId, {$addToSet: {aclRoles: role}}, {new: true}).exec();
+};
+
+users.prototype.removeAclRole = function(userId, role) {
+	console.log(userId);
+	console.log(role);
+	return UserModel.findByIdAndUpdate(userId, {$pull: {aclRoles: role}}, {new: true}).exec();
+		// .then(function(user) {
+		// 	return user.save();
+		// })
 };
 
 function updateRoles(params) {
