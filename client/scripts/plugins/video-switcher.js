@@ -66,14 +66,18 @@
 
             video.pause();
             video.src = amazonConfig.OUTPUT_URL + data.videoPath;
+            video.poster = amazonConfig.OUTPUT_URL + data.thumbnailPath;
 
-            if (browser.isMobile()) {
-                $('body').find('.videoback').click();
-            }
+            $('body').find('.videoback').click();
 
             _this._updateUrl(data);
 
-            video.play();
+            // ensure the video has enough data to start playing
+            try {
+                if (video.readyState === 4) {
+                    video.play();
+                }
+            } catch(err) {}
 
             _this.destroy();
         },

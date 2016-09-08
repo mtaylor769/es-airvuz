@@ -53,6 +53,8 @@ var $videoPlayer;
 var $videoPage;
 var screenWidth;
 var video;
+var VideoPlayer;
+var videoPathSrc;
 
 var SLICK_CONFIG = {
   slidesToShow: 3,
@@ -136,6 +138,11 @@ function nextVideoHandler(evt) {
 PubSub.subscribe('video-switched', function (msg, data) {
     // update the current video object
     video = data;
+
+    // update the videopath src
+    videoPathSrc = amazonConfig.OUTPUT_URL + data.videoPath;
+    updateVideoSrc();
+
     // reset the flag
     startViewCount = true;
 
@@ -1093,9 +1100,39 @@ function setCommentOptions(userId) {
     }
 }
 
+function updateVideoSrc() {
+    var videoType = 'video/mp4';
+    VideoPlayer.updateSrc([
+        {
+            src: videoPathSrc.replace('.mp4', '-100.mp4'),
+            type: videoType,
+            label: 'low',
+            res: '100'
+        },
+        {
+            src: videoPathSrc.replace('.mp4', '-200.mp4'),
+            type: videoType,
+            label: 'med',
+            res: '200'
+        },
+        {
+            src: videoPathSrc,
+            type: videoType,
+            label: 'original',
+            res: '300'
+        }, {
+            src: videoPathSrc.replace('.mp4', '-400.mp4'),
+            type: videoType,
+            label: 'high',
+            res: '400'
+        }
+    ]);
+}
+
 //page init function
 function initialize(videoPath, currentVideo) {
   video = currentVideo;
+  videoPathSrc = videoPath;
   var defaultRes = '300',
       browserWidth = browser.getSize().width;
 
@@ -1117,42 +1154,14 @@ function initialize(videoPath, currentVideo) {
     }
   }
 
-  videojs('video-player', {
+  VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
         default: defaultRes
       }
     }
   }, function () {
-    var player = this,
-        videoSrc = videoPath,
-        videoType = 'video/mp4';
-
-    player.updateSrc([
-      {
-        src: videoSrc.replace('.mp4', '-100.mp4'),
-        type: videoType,
-        label: 'low',
-        res: '100'
-      },
-      {
-        src: videoSrc.replace('.mp4', '-200.mp4'),
-        type: videoType,
-        label: 'med',
-        res: '200'
-      },
-      {
-        src: videoSrc,
-        type: videoType,
-        label: 'original',
-        res: '300'
-      }, {
-        src: videoSrc.replace('.mp4', '-400.mp4'),
-        type: videoType,
-        label: 'high',
-        res: '400'
-      }
-    ]);
+      updateVideoSrc();
   });
   //set video page
   $videoPage = $('.video-page');
