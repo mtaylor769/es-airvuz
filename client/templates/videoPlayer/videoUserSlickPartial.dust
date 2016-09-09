@@ -1,6 +1,6 @@
 {#topVideos}
     <div class="video">
-        <a href="/video/{_id}" title="{title}">
+        <a href="/video/{_id}" title="{title}" id="{_id}">
             <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
         </a>
     </div>
