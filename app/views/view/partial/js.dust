@@ -1,6 +1,6 @@
 <!-- BEG: app.views.view.partial.js -->
-  <script src="/public/{vendor.js}"></script>
+  <script src="{script.vendorJs}"></script>
 
-  <script src="/public/{airvuz.js}"></script>
+  <script src="{script.js}"></script>
 
 <!-- END: app.views.view.partial.js -->

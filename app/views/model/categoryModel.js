@@ -39,18 +39,9 @@ function canSort(category) {
 }
 
 CategoryModel.prototype.getData = function(params) {
-
-	var sourceManifest	= params.sourceManifest;
 	var currentCategory = params.request.params.category;
 	params.data							= {};
 	params.data.title				= "AirVūz – Category";
-	params.data.airvuz			= {};
-	params.data.airvuz.css	= sourceManifest["airvuz.css"];
-	params.data.airvuz.js   = sourceManifest["airvuz.js"];
-	params.data.vendor      = {};
-	params.data.vendor.js   = sourceManifest["vendor.js"];
-	params.data.viewName		= "Category";
-
 	params.data.s3Bucket 		= amazonConfig.OUTPUT_URL;
 
 	// Only category can sort

@@ -5,7 +5,6 @@ var logger		= log4js.getLogger('app.views.view.indexView');
 try {
 	var BaseView		= require('./baseView');
 	var IndexModel	= require('../model/indexModel');
-	var Promise			= require('bluebird');
 	var util				= require('util');
 
 	if(global.NODE_ENV === "production") {

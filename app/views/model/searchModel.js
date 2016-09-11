@@ -25,16 +25,8 @@ var SearchModel = function(params) {
 util.inherits(SearchModel, BaseModel);
 
 SearchModel.prototype.getData = function(params) {
-
-	var sourceManifest	= params.sourceManifest;
-
 	params.data							= {};
 	params.data.title				= "AirVūz – Search";
-	params.data.airvuz			= {};
-	params.data.airvuz.css	= sourceManifest["airvuz.css"];
-	params.data.airvuz.js   = sourceManifest["airvuz.js"];
-	params.data.vendor      = {};
-	params.data.vendor.js   = sourceManifest["vendor.js"];
 	params.data.viewName		= "Search";
 	params.data.searchKeyWord = params.request.query.q;
 	params.data.currentPage = parseInt(params.request.query.page, 10) || 1;
