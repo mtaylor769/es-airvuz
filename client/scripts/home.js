@@ -55,8 +55,8 @@ function getFollowerVideos() {
       .then(function (videos) {
         if (videos.length > 0) {
           var viewData = {
-            title: 'Following Videos',
-            viewAll: 'Following%20Videos',
+            title: 'Following Drone Videos',
+            viewAll: 'following-drone-videos',
             index: {
               following: videos
             },

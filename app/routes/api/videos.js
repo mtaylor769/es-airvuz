@@ -47,13 +47,13 @@ function getVideosByCategory(req, res) {
   videoPromise = CategoryType.getByUrl(CATEGORY_TYPE)
     .then(function (category) {
       switch(CATEGORY_TYPE) {
-        case 'Featured Videos':
+        case 'featured-drone-videos':
           return VideoCollection.getFeaturedVideos();
-        case 'Staff Pick Videos':
+        case 'staff-picks-drone-videos':
           return VideoCollection.getStaffPickVideos();
-        case 'Recent Videos':
+        case 'latest-drone-videos':
           return VideoCrud.getRecentVideos(videosParam);
-        case 'Trending Videos':
+        case 'trending-drone-videos':
           var promises = [
             VideoCollection.getFeaturedVideos(),
             VideoCollection.getStaffPickVideos(),
@@ -72,7 +72,7 @@ function getVideosByCategory(req, res) {
                 return videoToOmit.indexOf(video._id.toString()) > -1;
               }).take(20).value();
             });
-        case 'Following Videos':
+        case 'following-drone-videos':
           // follow should only be call if user is login
           return FollowCrud.getFollow(req.user._id)
             .then(function (users) {

@@ -33,13 +33,20 @@ util.inherits(CategoryModel, BaseModel);
  * @returns {boolean}
  */
 function canSort(category) {
-	var categories = ['Featured Videos', 'Staff Pick Videos', 'Trending Videos', 'Recent Videos'];
+	var categories = ['featured-drone-videos', 'staff-picks-drone-videos', 'trending-drone-videos', 'latest-drone-videos'];
 
 	return !(categories.indexOf(category) > -1);
 }
 
 CategoryModel.prototype.getData = function(params) {
 	var currentCategory = params.request.params.category;
+	var categoryNameMap = {
+		'featured-drone-videos': 'Featured Drone Videos',
+		'trending-drone-videos': 'Trending Drone Videos',
+		'latest-drone-videos': 'Latest Drone Videos',
+		'staff-picks-drone-videos': 'Staff Picks Drone Videos',
+		'following-drone-videos': 'Following Drone Videos'
+	};
 	params.data							= {};
 	params.data.title				= "AirVūz – Category";
 	params.data.s3Bucket 		= amazonConfig.OUTPUT_URL;
@@ -61,15 +68,15 @@ CategoryModel.prototype.getData = function(params) {
 	videoPromise = CategoryType.getByUrl(currentCategory)
 		.then(function (category) {
 			params.data.category.uri = currentCategory;
-			params.data.category.name = currentCategory;
+			params.data.category.name = categoryNameMap[currentCategory];
 			switch(currentCategory) {
-				case 'Featured Videos':
+				case 'featured-drone-videos':
 					return VideoCollection.getFeaturedVideos();
-				case 'Staff Pick Videos':
+				case 'staff-picks-drone-videos':
 					return VideoCollection.getStaffPickVideos();
-				case 'Recent Videos':
+				case 'latest-drone-videos':
 					return Videos.getRecentVideos(videosParam);
-				case 'Trending Videos':
+				case 'trending-drone-videos':
 					var promises = [
 						VideoCollection.getFeaturedVideos(),
 						VideoCollection.getStaffPickVideos(),
@@ -88,7 +95,7 @@ CategoryModel.prototype.getData = function(params) {
 								return videoToOmit.indexOf(video._id.toString()) > -1;
 							}).take(20).value();
 						});
-				case 'Following Videos':
+				case 'following-drone-videos':
 					// Let the client side handle this because this server side render for the following require
 					// current login user
 					return Promise.resolve([]);
@@ -105,10 +112,10 @@ CategoryModel.prototype.getData = function(params) {
 			params.data.categories = categories;
 			params.data.videos = videos;
 			// show the load more if there is data or category is 'Follower Videos'
-			params.data.showLoadMore = videos.length > 11 || currentCategory === 'Follower Videos' || currentCategory === 'Trending Videos';
+			params.data.showLoadMore = videos.length > 11 || currentCategory === 'follower-drone-videos' || currentCategory === 'trending-videos';
 
 			// don't show load more button for featured and staff pick since there is no paging and video doesn't exceed over 40?
-			if (currentCategory === 'Featured Videos' || currentCategory === 'Staff Pick Videos') {
+			if (currentCategory === 'featured-drone-videos' || currentCategory === 'staff-picks-drone-videos') {
 				params.data.showLoadMore = false;
 			}
 			return params;
