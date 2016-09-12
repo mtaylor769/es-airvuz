@@ -33,26 +33,16 @@ SearchModel.prototype.getData = function(params) {
 
 	params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
 
-	var promise = Promise.all([CategoryType.get(), Videos.search(params.request.query.q, params.data.currentPage)])
-			.then(function(data) {
-				params.data.categories = data[0];
-				params.data.videos = data[1].videos;
-				params.data.totalVideo = data[1].totalVideo;
-				params.data.totalPage = Math.ceil(data[1].totalVideo / 20);
+	return Promise.all([CategoryType.get(), Videos.search(params.request.query.q, params.data.currentPage)])
+		.spread(function(category, searchResult) {
+			params.data.categories = category;
+			params.data.videos = searchResult.videos;
+			params.data.totalVideo = searchResult.totalVideo;
+			params.data.showLoadMore = searchResult.totalVideo > 20;
+			params.data.showCategory = true;
 
-				params.data.pages = [];
-				for (var i = 1; i <= params.data.totalPage; i++) {
-					params.data.pages.push({
-						page: i,
-						isActive: params.data.currentPage === i
-					});
-				}
-
-				params.data.showPaging = data[1].totalVideo > 20;
-				return params;
-			});
-
-	return Promise.resolve(promise);
+			return params;
+		});
 };
 
 module.exports = SearchModel;

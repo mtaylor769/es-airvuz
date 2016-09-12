@@ -120,6 +120,9 @@ apiRouter.route('/api/notifications/get-all/:id')
 apiRouter.route('/api/videos')
   .post(protect, videos.post);
 
+apiRouter.route('/api/videos/search')
+	.get(videos.search);
+
 apiRouter.route('/api/videos/category/:category/page/:page')
   .get(token, videos.getVideosByCategory);
 

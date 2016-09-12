@@ -37,7 +37,7 @@
               </div>
               <div class="row" id="videos">
                 <div class="col-md-12">
-                    {> "client.templates.category.category-video"/}
+                    {> "client.templates.core.video-display"/}
                 </div>
               </div>
                 {#showLoadMore}

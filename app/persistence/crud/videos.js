@@ -107,7 +107,7 @@ function search(query, page) {
 	if (!query) {
 		return Promise.resolve({videos: [], totalVideo: 0});
 	}
-	// TODO: allow searching category, drone, and camera
+	// TODO: allow searching category
 	var keywords = query,
 			commonWords = ['the', 'of', 'and'],
 			limit = 20,
@@ -187,7 +187,7 @@ function search(query, page) {
 				foundVideo,
 				videoCount
 			]).spread(function (videos, count) {
-				return {videos: videos, totalVideo: count};
+				return {videos: videos, totalVideo: count, page: page};
 			});
 		});
 }
