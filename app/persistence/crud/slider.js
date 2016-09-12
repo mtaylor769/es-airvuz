@@ -44,9 +44,7 @@ function _getCurrentSlider() {
   }).populate('slides').lean().exec()
     .then(function (slider) {
       if (slider) {
-        return SliderModel.populate(slider, {path: 'slides.video', model: 'Video'}).then(function (slider) {
-          return SliderModel.populate(slider, {path: 'slides.video.userId', model: 'Users'});
-        });
+        return _populateSlide(slider);
       }
       return {};
     });
@@ -62,12 +60,21 @@ function getHomeSlider(id) {
     return SliderModel.findOne({_id: id}).populate('slides').lean().exec()
       .then(function (slider) {
         if (slider) {
-          return SliderModel.populate(slider, {path: 'slides.video', model: 'Video'});
+          return _populateSlide(slider);
         }
         return _getCurrentSlider();
       })
   }
   return _getCurrentSlider();
+}
+
+function _populateSlide(slider) {
+  var videoFields = 'userId title duration thumbnailPath viewCount uploadDate';
+  var userFields = 'userNameUrl userNameDisplay';
+
+  return SliderModel.populate(slider, {path: 'slides.video', model: 'Video', select: videoFields}).then(function (slider) {
+    return SliderModel.populate(slider, {path: 'slides.video.userId', model: 'Users', select: userFields});
+  });
 }
 
 Slider.prototype.getAllSlider = getAllSlider;

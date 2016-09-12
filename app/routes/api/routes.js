@@ -234,6 +234,9 @@ apiRouter.route('/api/slider/:id')
   .delete(protect, slider.remove)
   .put(protect, slider.put);
 
+apiRouter.route('/api/home-slider/:id?')
+	.get(slider.getHomeSlider);
+
 /**
  * /api/slide/
  */

@@ -49,10 +49,21 @@ function remove(req, res) {
     })
 }
 
+function getHomeSlider(req, res) {
+  return sliderCrud.getHomeSlider(req.params.id)
+    .then(function (slider) {
+      res.json(slider);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
+}
+
 Slider.prototype.post         = post;
 Slider.prototype.get          = get;
 Slider.prototype.getAll       = getAll;
 Slider.prototype.put          = put;
 Slider.prototype.remove       = remove;
+Slider.prototype.getHomeSlider= getHomeSlider;
 
 module.exports = new Slider();
