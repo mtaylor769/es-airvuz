@@ -22,12 +22,16 @@
             <th>Title</th>
             <th>Uploaded By</th>
             <th>View Count</th>
+            <th>Video Percent completed</th>
+            <th>Video Completed On Exit</th>
             <th>Uploaded Date</th>
         </tr>
         <tr ng-repeat="video in vm.videos" ng-class="{'is-internal' : video.internalFlag}">
             <td>{{video.videoObject.title}}</td>
             <td>{{video.videoOwnerObject.userNameDisplay}}</td>
             <td>{{video.count}}</td>
+            <td>{{video.percentageInfo.percentageFullWatch * 100 | number: 1}}%</td>
+            <td>{{video.percentageInfo.percentageWatchedOnExit * 100 | number: 1}}%</td>
             <td>{{video.videoObject.uploadDate | date}}</td>
         </tr>
     </table>

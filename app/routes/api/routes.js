@@ -284,14 +284,11 @@ apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
  */
 
 apiRouter.route('/api/reports/site-info')
-  .get(reports.siteInfo);
-
-apiRouter.route('/api/reports/employee-contributor')
-  .post(reports.employeeContributor);
-
+	.get(reports.siteInfo);
+apiRouter.route('/api/reports/video-percentage')
+	.get(reports.videoPercentage);
 apiRouter.route('/api/reports/videos')
-  .get(reports.getVideos);
-
+	.get(reports.getVideos);
 apiRouter.route('/api/reports/comments')
 	.get(reports.getComments);
 apiRouter.route('/api/reports/hashtag')
@@ -300,9 +297,15 @@ apiRouter.route('/api/reports/user-hashtag')
 	.post(reports.userHashtag);
 apiRouter.route('/api/reports/top-views')
 	.post(reports.top100Views);
+apiRouter.route('/api/reports/employee-contributor')
+	.post(reports.employeeContributor);
 
+/**
+*  /api/edit-comments
+*/
 apiRouter.route('/api/edit-comments')
 	.get(comment.adminGetComments);
+
 /**
  * /api/keywords
  */
@@ -311,6 +314,9 @@ apiRouter.route('/api/keyword')
 	.get(keywords.search)
 	.post(keywords.create);
 
+/**
+ * /api/video-curation
+ */
 apiRouter.route('/api/video-curation')
 	.post(videoCuration.rating);
 
