@@ -95,7 +95,9 @@
 				signerUrl : '/api/amazon/sign-auth',
 				aws_key   : Amazon.ACCESS_KEY,
 				bucket    : Amazon.inputBucket,
-				aws_url   : 'https://s3-us-west-2.amazonaws.com'
+				aws_url   : 'https://s3-us-west-2.amazonaws.com',
+				partSize  : 200 * 1024 * 1024,
+				logging   : false
 			});
 
 			$.ajax({
