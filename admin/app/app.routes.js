@@ -118,6 +118,12 @@
         controller: 'topViewsController',
         controllerAs: 'vm'
       })
+      .state('reports.videoPercentage', {
+        url: '/video-percentage',
+        templateUrl: '/admin/app/reports/template/video-percentage.html',
+        controller: 'videoPercentageController',
+        controllerAs: 'vm'
+      })
       .state('editVideo', {
         url: '/admin/editVideo/:id',
         templateUrl: '/admin/app/videos/partial/editVideo.html',

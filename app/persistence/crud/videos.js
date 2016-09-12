@@ -354,6 +354,13 @@ Videos.prototype.getById = function(id) {
 		.exec();
 };
 
+Videos.prototype.getByIdAndPopulateUser = function(id) {
+	return VideoModel.findById(id)
+		.populate('userId')
+		.lean()
+		.exec()
+}
+
 Videos.prototype.remove = function(id) {
 	return VideoModel.findByIdAndRemove({_id: id}).exec();
 };

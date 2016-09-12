@@ -1,14 +1,15 @@
 var log4js					= require('log4js');
-var logger					= log4js.getLogger('app.routes.api.videoLike');
-var Promise         = require('bluebird');
-var _               = require('lodash');
-var User            = require('../../persistence/crud/users');
-var Videos          = require('../../persistence/crud/videos');
-var Comment         = require('../../persistence/crud/comment');
-var Likes           = require('../../persistence/crud/videoLike');
-var Follow         = require('../../persistence/crud/follow');
-var videoViews    = require('../../persistence/crud/videoViews');
-var categories = require('../../persistence/crud/categoryType');
+var logger					= log4js.getLogger('app.routes.api.reports');
+var Promise                 = require('bluebird');
+var _                       = require('lodash');
+var User                    = require('../../persistence/crud/users');
+var Videos                  = require('../../persistence/crud/videos');
+var Comment                 = require('../../persistence/crud/comment');
+var Likes                   = require('../../persistence/crud/videoLike');
+var Follow                  = require('../../persistence/crud/follow');
+var videoViews              = require('../../persistence/crud/videoViews');
+var categories              = require('../../persistence/crud/categoryType');
+var eventTrackerCrud        = require('../../persistence/crud/events/eventTracking');
 
 function Reports() {
   
@@ -284,18 +285,48 @@ Reports.prototype.top100Views = function(req, res) {
     return videoViews.top100AllTime(startDate, endDate, limit)
         .then(function(videos) {
             return Promise.map(videos, function(video) {
-                return Promise.map(video.videoObject.categories, function(category) {
-                    return categories.getById(category)
-                }).then(function(categories) {
-                    video.videoObject.categories = categories;
-                    return video;
-                })
+                return eventTrackerCrud.getByVideoId(video._id, startDate, endDate)
+                    .then(function(eventObj) {
+                        video.percentageInfo = {};
+                        video.percentageInfo.videoStarted = eventObj.videoStart.length;
+                        video.percentageInfo.videoEnded = eventObj.videoEnded.length;
+                        video.percentageInfo.percentageFullWatch = (eventObj.videoEnded.length / eventObj.videoStart.length);
+                        video.percentageInfo.percentageWatchedOnExit = (eventObj.videoExit.timeWatched / eventObj.videoExit.totalTime);
+                        return video;
+                    })
             })
         })
         .then(function(videos) {
            res.send(videos)
         })
 
+};
+
+Reports.prototype.videoPercentage = function(req, res) {
+    var videoId = req.query.videoId;
+    var startDate = new Date(req.query.startDate);
+    var endDate = new Date(req.query.endDate);
+
+    return Videos.getByIdAndPopulateUser(videoId)
+        .then(function(video) {
+            return eventTrackerCrud.getByVideoId(videoId, startDate, endDate)
+                .then(function(eventObj) {
+                    logger.debug(eventObj);
+                    video.percentageInfo = {};
+                    video.percentageInfo.videoStarted = eventObj.videoStart.length;
+                    video.percentageInfo.videoEnded = eventObj.videoEnded.length;
+                    video.percentageInfo.percentageFullWatch = (eventObj.videoEnded.length/eventObj.videoStart.length);
+                    video.percentageInfo.percentageWatchedOnExit = (eventObj.videoExit.timeWatched / eventObj.videoExit.totalTime);
+                    logger.error(video);
+                    return video;
+                })
+                .then(function(video) {
+                    res.send(video);
+                })
+        })
+        .catch(function(error) {
+            res.send(error);
+        })
 };
 
 

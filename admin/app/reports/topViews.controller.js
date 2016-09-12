@@ -17,10 +17,11 @@
             data.limit = vm.limit;
             $http.post('/api/reports/top-views', data).then(function(response) {
                 var videos = response.data;
+                console.log(videos);
                 videos.forEach(function(video) {
                     var categories = video.videoObject.categories;
                     var internalFlag = categories.map(function(category) {
-                        if(category._id === '574f91b3b55602296def65b1' || category._id === '574f91b3b55602296def65b4' || category._id === '574f91b3b55602296def65bb'){
+                        if(category === '574f91b3b55602296def65b1' || category === '574f91b3b55602296def65b4' || category === '574f91b3b55602296def65bb'){
                             video.internalFlag = true;
                             return video;
                         }
