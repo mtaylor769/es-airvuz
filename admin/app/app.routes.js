@@ -30,6 +30,15 @@
         abstract: true,
         template: '<div ui-view></div>'
       })
+      .state('users.aclRoles', {
+        url:'/aclRoles',
+        templateUrl: '/admin/app/users/partial/user-roles.html',
+        params: {
+          userId: null
+        },
+        controller: 'userRolesController',
+        controllerAs: 'vm'
+      })
       .state('users.all', {
         url: '',
         templateUrl: '/admin/app/users/partial/users.html',

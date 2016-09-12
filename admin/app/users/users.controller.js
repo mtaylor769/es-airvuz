@@ -5,9 +5,9 @@
 		.module('AirvuzAdmin')
 		.controller('UsersController', UsersController);
 
-	UsersController.$inject = ['$http', 'confirmDelete', 'unAuthorized'];
+	UsersController.$inject = ['$http', 'confirmDelete', 'unAuthorized', '$state'];
 
-	function UsersController($http, confirmDelete, unAuthorized) {
+	function UsersController($http, confirmDelete, unAuthorized, $state) {
 
 		function searchUsername(username) {
 			$http.get('/api/users/search', { params: {
@@ -62,12 +62,17 @@
 				});
 		}
 
+		function changeAclRoles() {
+			$state.go('users.aclRoles', {userId: vm.user._id});
+		}
+
 		///////////////////////
 		var vm = this;
 		vm.searchUsername = searchUsername;
 		vm.removeUser = removeUser;
 		vm.searchUserUrl = searchUserUrl;
 		vm.changeUserStatus = changeUserStatus;
+		vm.changeAclRoles = changeAclRoles;
 	}
 })();
 
