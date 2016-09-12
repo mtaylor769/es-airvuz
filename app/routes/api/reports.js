@@ -255,49 +255,18 @@ Reports.prototype.userHashtag = function(req, res) {
 };
 
 Reports.prototype.siteInfo = function(req, res) {
-  logger.debug('REPORTS: IN');
   var endDate = req.query.endDate;
   var startDate = req.query.startDate;
-  var totalUsers;
-  var totalVideos;
-  var newVideos;
-  var newUsersCount;
-  var newUsersList;
-  var promises = [];
-
-
-  promises.push(User.totalUsersByEndDate(endDate)
-    .then(function(users) {
-      totalUsers = users;
-    })
-  );
-
-  promises.push(Videos.totalVideosByEndDate(endDate)
-    .then(function(videos) {
-      totalVideos = videos;
-    })
-  );
-
-  promises.push(User.newUsersBetweenDates(startDate, endDate)
-    .then(function(users) {
-      newUsersCount = users;
-    })
-  );
-
-  promises.push(Videos.newVideosBetweenDates(startDate, endDate)
-    .then(function(videos) {
-      newVideos = videos;
-    })
-  );
-
-  promises.push(User.newUserList(startDate, endDate)
-    .then(function(users) {
-      newUsersList = users;
-    })
-  );
+  var promises = [
+    User.totalUsersByEndDate(endDate),
+    Videos.totalVideosByEndDate(endDate),
+    User.newUsersBetweenDates(startDate, endDate),
+    Videos.newVideosBetweenDates(startDate, endDate),
+    User.newUserList(startDate, endDate)
+  ];
 
   Promise.all(promises)
-    .then(function () {
+    .spread(function (totalUsers, totalVideos, newUsersCount, newVideos, newUsersList) {
       res.json({
         title: 'Site Info',
         totalUsers: totalUsers,
