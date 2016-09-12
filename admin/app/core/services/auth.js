@@ -19,7 +19,7 @@
 				login: function (user) {
 					var dfd = $q.defer();
 					$http.post('/api/auth', user).then(function (response) {
-						var token = response.data.token;
+						var token = response.data;
 						identity.currentUser = jwtHelper.decodeToken(token);
 
 						if (!identity.canAccessAdmin()) {
