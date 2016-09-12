@@ -41,13 +41,16 @@ function embedClickHandler() {
 
     dialog.setSize('md');
 
-    dialog.open({
-        title: 'Video Iframe Code',
-        body: iframeUrl,
-        html: true,
-        showOkay: false
-    }).then(function () {
-    });
+    if (!$(this).hasClass('social-share-buttons')) {
+        dialog.open({
+            title: 'Video Iframe Code',
+            body: iframeUrl,
+            html: true,
+            showOkay: false
+        }).then(function () {
+        });
+    }
+
     notificationObject.notificationType = 'SOCIAL-MEDIA-SHARE-EMBEDED';
     notificationObject.notifiedUserId  = video.userId;
     notificationObject.notificationMessage = 'embeded your video';
@@ -107,7 +110,8 @@ function fbClickHandler(e) {
                         AVEventTracker({
                             codeSource: 'videoPlayer',
                             eventName: 'facebook-share',
-                            eventType: 'click'
+                            eventType: 'click',
+                            videoId: video._id
                         });
                     })
                     .fail(function(error) {
@@ -138,7 +142,8 @@ function twitterClickHandler() {
             AVEventTracker({
                 codeSource: 'videoPlayer',
                 eventName: 'twitter-share',
-                eventType: 'click'
+                eventType: 'click',
+                videoId: video._id
             });
         })
         .fail(function(error) {
@@ -166,7 +171,8 @@ function googleClickHandler() {
             AVEventTracker({
                 codeSource: 'videoPlayer',
                 eventName: 'google-share',
-                eventType: 'click'
+                eventType: 'click',
+                videoId: video._id
             });
         })
         .fail(function(error) {
@@ -179,7 +185,8 @@ function googleClickHandler() {
  * @description initialize the event handler
  */
 function initialize(videoObj) {
-    var $socialIcons = $('.social-icons');
+    var $socialIcons = $('.social-icons, #social-modal');
+
     video = videoObj;
 
     $socialIcons

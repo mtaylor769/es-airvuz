@@ -648,7 +648,11 @@ function bindEvents() {
 
   //share toggle
   function shareHandler() {
-      $('.social-icons').toggle();
+      if (browser.isMobile()) {
+          $('#social-modal').modal('show');
+      } else {
+          $('.social-icons').toggle();
+      }
   }
 
   //report modal
