@@ -66,7 +66,7 @@ function initialize(categoryType) {
   currentCategoryType = categoryType;
 
   // only follower videos are render from client side because it require a user to get following video
-  if (currentCategoryType === 'Following Videos') {
+  if (currentCategoryType === 'following-drone-videos') {
     getFollowerVideos();
   }
 
