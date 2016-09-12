@@ -126,7 +126,7 @@ function nextVideoHandler(evt) {
     });
     // Config parameters
     var CONFIG = {
-        selectedVideoId: $(this).attr('value')
+        selectedVideoId: $(this).attr('id')
     };
     // reset the initialPlayStart start flag to capture the play start event
     initialPlayStart = false;
@@ -1064,9 +1064,18 @@ function bindEvents() {
     .on('click', '.report', reportVideoHandler)
     .on('click', '.like', likeHandler)
     .on('click', '#commentSave', commentSaveHandler)
-    .on('click', '.nextVideos li', nextVideoHandler);
+    .on('click', '.nextVideos li a', nextVideoHandler)
+    .on('click', '.slick-slide a', onVideoOwnerVideoHandler);
+}
 
+function onVideoOwnerVideoHandler(evt) {
+    evt.preventDefault();
+    var videoId = $(this).attr('id');
 
+    startViewCount = true;
+    initialPlayStart = false;
+
+    $(this).switchVideo({selectedVideoId: videoId});
 }
 
 // checks user autoplay setting

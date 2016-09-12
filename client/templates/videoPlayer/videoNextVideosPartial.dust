@@ -1,7 +1,7 @@
 {#upNext}
     <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
         <div class="up-next-wrapper">
-            <a href="{_id}" title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
+            <a href="{_id}" id={_id} title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
             <div class="up-next-layer">
                 <a href="{_id}" title="{fullTitle}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
                 <div class="flex up-next-subs">
