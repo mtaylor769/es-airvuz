@@ -38,6 +38,10 @@ module.exports = new SearchView({
 		{
 			partialName: 'app.views.view.partial.footer',
 			partialPath: './app/views/view/partial/footer.dust'
+		},
+		{
+			partialName: 'client.templates.core.video-display',
+			partialPath: './client/templates/core/video-display.dust'
 		}
 	]
 });

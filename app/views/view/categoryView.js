@@ -44,8 +44,8 @@ module.exports = new SearchView({
 			partialPath: './app/views/view/partial/left-nav.dust'
 		},
 		{
-			partialName: 'client.templates.category.category-video',
-			partialPath: './client/templates/category/category-video.dust'
+			partialName: 'client.templates.core.video-display',
+			partialPath: './client/templates/core/video-display.dust'
 		}
 	]
 });

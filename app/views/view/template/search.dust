@@ -45,66 +45,26 @@
             </div>
             <div class="row" id="videos">
                 <div class="col-md-12">
-                    {#videos}
-                        <div class="col-md-3 col-sm-6">
-                            <div class="video">
-                                <div class="text-center">
-                                    <a href="/video/{_id}" title="{title}" class="video-link">
-                                        <img src="{s3Bucket}{thumbnailPath}" alt="{title}" class="img-responsive"/>
-                                    </a>
-                                </div>
-                                <div class="video-bottom">
-                                    <p><span class="airvuz-blue">VUZ</span> {viewCount} | {uploadDate} <span class="pull-right">{duration}</span></p>
-                                    <div class="title">
-                                        <h4>
-                                            <a href="/video/{_id}" title="{title}">{title}</a>
-                                        </h4>
-                                        {#userId.userNameDisplay}
-                                        <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
-                                        {:else}
-                                        <p>By <a href="/user/{userId._id}">{userId._id}</a></p>
-                                        {/userId.userNameDisplay}
-                                    </div>
-                                    <a href="/category/{categories[0].categoryTypeUrl}">{categories[0].name}</a>
-                                </div>
-                            </div>
-                        </div>
-                    {/videos}
+                    {> "client.templates.core.video-display"/}
                 </div>
             </div>
-            {#showPaging}
+            {#showLoadMore}
             <div class="row">
-                <div class="col-md-12">
-                    <nav class="text-center">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-
-                            {#pages}
-                                <li class="{#isActive}active{/isActive}">
-                                  <a href="/search?q={searchKeyWord}&page={page}">{page}</a>
-                                </li>
-                            {/pages}
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                <div class="col-md-12 m-b-20">
+                    <hr/>
+                    <div class="text-center">
+                        <button class="btn btn-primary" id="load-more-btn">Load more videos</button>
+                    </div>
                 </div>
             </div>
-            {/showPaging}
+            {/showLoadMore}
         </div>
 
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.js" /}
         <script>
           $(function () {
-              Search.initialize();
+              Search.initialize('{searchKeyWord}');
           });
         </script>
     </body>

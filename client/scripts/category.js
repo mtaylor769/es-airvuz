@@ -10,7 +10,7 @@ var $categoryPage,
 /**
  * Templates
  */
-var categoryVideoTpl = require('../templates/category/category-video.dust');
+var videoDisplayTpl = require('../templates/core/video-display.dust');
 
 function bindEvents() {
   $loadMoreBtn.on('click', onLoadMoreBtnClick);
@@ -44,7 +44,7 @@ function _getVideos() {
   return $.ajax(apiUrl)
     .then(function (videos) {
       if (videos.length > 0) {
-        categoryVideoTpl({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
+        videoDisplayTpl({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
           $categoryPage.find('#videos > div').append(html);
         });
       }

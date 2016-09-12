@@ -96,6 +96,16 @@ function getVideosByCategory(req, res) {
   });
 }
 
+function search(req, res) {
+  var currentPage = parseInt(req.query.page, 10) || 1;
+  VideoCrud.search(req.query.q, currentPage)
+    .then(function (result) {
+      res.json(result);
+    })
+    .catch(function (err) {
+      res.sendStatus(500);
+    });
+}
 /**
  * upload custom thumbnail if exists
  * - this function change body.thumbnailPath (req)
@@ -477,6 +487,7 @@ Video.prototype.getCommentsByVideoId = function(req, res) {
 };
 
 Video.prototype.getVideosByCategory = getVideosByCategory;
+Video.prototype.search = search;
 
 module.exports = new Video();
 
