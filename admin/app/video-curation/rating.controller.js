@@ -79,6 +79,7 @@
             if(vm.video) {
                 var data = {};
                 data.internalTags = vm.internalKeywords;
+                data.seoKeywords = vm.seoKeywords;
                 data.videoId = vm.video._id;
                 data.internalRanking = vm.ratingSelection;
                 if(!data.internalRanking) {
@@ -89,6 +90,7 @@
                         vm.video = video;
                         vm.keywords = video.tags;
                         vm.internalKeywords = video.internalTags;
+                        vm.seoKeywords = video.seoTags;
                         vm.ratingRequired = false;
                         clearSelection();
                         setVideoPlayerConfig();

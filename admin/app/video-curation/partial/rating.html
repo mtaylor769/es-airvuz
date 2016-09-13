@@ -21,6 +21,12 @@
             <auto-complete source="vm.getKeywords($query)"></auto-complete>
         </tags-input>
     </div>
+    <p class="field-title">SEO Keywords</p>
+    <div class="video-curation-tags">
+        <tags-input ng-model="vm.seoKeywords" replace-spaces-with-dashes=false>
+            <auto-complete source="vm.getKeywords($query)"></auto-complete>
+        </tags-input>
+    </div>
     <!---- video title and id ---->
     <p class="field-title">{{vm.video.title}}</p>
     <p>{{vm.video._id}}</p>
