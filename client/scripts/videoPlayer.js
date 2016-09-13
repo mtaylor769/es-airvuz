@@ -27,6 +27,7 @@ var videoInfoPartialTpl = require('../templates/videoPlayer/videoInfoPartial.dus
 var videoUserSlickPartialTpl = require('../templates/videoPlayer/videoUserSlickPartial.dust');
 var videoNextVideosPartialTpl = require('../templates/videoPlayer/videoNextVideosPartial.dust');
 var videoHasMorePartialTpl = require('../templates/videoPlayer/videoHasMorePartial.dust');
+var videoMobileTabPartialTpl = require('../templates/videoPlayer/videoMobileTabPartial.dust');
 
 var AVEventTracker			           = require('./avEventTracker');
 var identity                           = require('./services/identity');
@@ -88,32 +89,6 @@ var SLICK_CONFIG = {
     }
     ]
 };
-//toggle functions for mobile events
-var toggles = {
-      toggleLeft: function (nextPage, videoPage) {
-        screenWidth = videoPage.width();
-        nextPage.css("left", screenWidth);
-        nextPage.addClass('display');
-        nextPage.removeClass('mobile-display-none');
-        videoPage.addClass('mobile-display-none');
-        videoPage.removeClass('display');
-        nextPage.add(videoPage).animate( {
-          'left': '-=' + screenWidth + 'px'
-        }, 300).promise().done(function() {
-        })
-      },
-      toggleRight: function (videoPage, nextPage) {
-        videoPage.css("right", screenWidth);
-        videoPage.addClass('display');
-        videoPage.removeClass('mobile-display-none');
-        nextPage.addClass('mobile-display-none');
-        nextPage.removeClass('display');
-        videoPage.add(nextPage).animate({
-          'left': '+=' + screenWidth + 'px'
-        }, 300).promise().done(function(){
-        })
-      }
-    };
 
 // Capture event on next video playlist
 function nextVideoHandler(evt) {
@@ -133,6 +108,28 @@ function nextVideoHandler(evt) {
     // reset the initialPlayStart start flag to capture the play start event
     initialPlayStart = false;
     $(this).switchVideo(CONFIG);
+}
+
+function tabHandler(evt) {
+    var tabDataId = $(this).attr('data-id');
+
+    switch(tabDataId) {
+        case 'upNext':
+            $('#next').show();
+            $('.mobile-tab-body').hide();
+            $('.comments-wrapper').hide();
+            break;
+        case 'description':
+            $('.mobile-tab-body').show();
+            $('#next').hide();
+            $('.comments-wrapper').hide();
+            break;
+        case 'comments':
+            $('.comments-wrapper').show();
+            $('.mobile-tab-body').hide();
+            $('#next').hide();
+            break;
+    }
 }
 
 PubSub.subscribe('video-switched', function (msg, data) {
@@ -179,6 +176,12 @@ PubSub.subscribe('video-switched', function (msg, data) {
         videoNextVideosPartialTpl({upNext: nextVideosData[0]}, function (err, html) {
             $('.next-video-list').empty();
             $('.next-video-list').prepend(html);
+        });
+
+        // mobile tabs
+        videoMobileTabPartialTpl({video: video}, function (err, html) {
+            $('.mobile-tab-container').empty();
+            $('.mobile-tab-container').prepend(html);
         });
 
         // update the comments template
@@ -251,10 +254,12 @@ PubSub.subscribe('video-switched', function (msg, data) {
     });
 
     //slide up function for description
-    setTimeout(function() {
-        $('.show-more-description span').removeClass('invisible');
-        $('#video-description').slideUp();
-    }, 5000);
+    if ($( window ).width() >= 768) {
+        setTimeout(function() {
+            $('.show-more-description span').removeClass('invisible');
+            $('#video-description').slideUp();
+        }, 5000);
+    }
 
     // set the virtual page view tracking
     ga('set', 'page', document.location.pathname);
@@ -630,22 +635,6 @@ function bindEvents() {
         .fail(function (error) {
         })
   }
-
-  //functions to move mobile screen
-  $('.up-next').on('click', function(e) {
-    e.preventDefault();
-    var videoPage = $(this).parents().find('.videoplayback');
-    var nextPage = videoPage.siblings();
-    toggles.toggleLeft(nextPage, videoPage);
-  });
-
-  $('.videoback').on('click', function(e) {
-    e.preventDefault();
-    var nextPage = $(this).parents().find('.nextVideos');
-    var videoPage = nextPage.siblings();
-    toggles.toggleRight(videoPage, nextPage);
-  });
-
   //share toggle
   function shareHandler() {
       $('.social-icons').toggle();
@@ -996,17 +985,16 @@ function bindEvents() {
       });
   }
 
-  //description functions
-  function moreDescription() {
-    $('#video-description').slideDown();
-    $(this).hide();
-    $('.show-less-description').show();
-  }
-
-  function lessDescription() {
-    $('#video-description').slideUp();
-    $(this).hide();
-    $('.show-more-description').show();
+  function descriptionToggleHandler() {
+    if ($('#video-description').is(':visible')) {
+        $('#video-description').slideUp();
+        $('.show-less-description').hide();
+        $('.show-more-description').show();
+    } else {
+        $('#video-description').slideDown();
+        $('.show-less-description').show();
+        $('.show-more-description').hide();
+    }
   }
 
   function checkIdentitiy() {
@@ -1053,8 +1041,7 @@ function bindEvents() {
   showMoreComments.page = 2;
 
   $videoPage
-    .on('click', '.show-more-description', moreDescription)
-    .on('click', '.show-less-description', lessDescription)
+    .on('click', '.description-toggle', descriptionToggleHandler)
     .on('click', '.commentReplies', commentReplies)
     .on('click', '.reply', commentReply)
     .on('click', '#comment', checkIdentitiy)
@@ -1072,7 +1059,8 @@ function bindEvents() {
     .on('click', '.like', likeHandler)
     .on('click', '#commentSave', commentSaveHandler)
     .on('click', '.nextVideos li a', nextVideoHandler)
-    .on('click', '.slick-slide a', onVideoOwnerVideoHandler);
+    .on('click', '.slick-slide a', onVideoOwnerVideoHandler)
+    .on('click', '.mobile-video-tabs li', tabHandler);
 }
 
 function onVideoOwnerVideoHandler(evt) {
@@ -1191,10 +1179,12 @@ function initialize(videoPath, currentVideo) {
   }
 
   //slide up function for description
-  setTimeout(function() {
-    $('.show-more-description span').removeClass('invisible');
-    $('#video-description').slideUp();
-  }, 5000);
+  if ($( window ).width() >= 768) {
+      setTimeout(function() {
+          $('.show-more-description span').removeClass('invisible');
+          $('#video-description').slideUp();
+      }, 5000);
+  }
 
   // render the social icons
   videoSocialShareTpl({video: video}, function (err, html) {

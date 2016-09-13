@@ -1,11 +1,14 @@
 {#upNext}
     <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
         <div class="up-next-wrapper">
-            <a href="{_id}" id={_id} title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
+            <a href="{_id}" id={_id} title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%"></a>
             <div class="up-next-layer">
-                <a href="{_id}" title="{fullTitle}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
+                <a href="{_id}" title="{fullTitle}">
+                    <strong class="font-white m-l-5 up-next-title">{title}</strong>
+                    <p class="font-white m-l-5">{userId.userNameDisplay}</p>
+                </a>
                 <div class="flex up-next-subs">
-                    <p class="font-white m-l-15"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
+                    <p class="font-white m-l-5"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
                     <p class="font-white pos-absolute-r-15">{duration}</p>
                 </div>
             </div>
