@@ -103,7 +103,7 @@ function nextVideoHandler(evt) {
     });
     // Config parameters
     var CONFIG = {
-        selectedVideoId: $(this).attr('id')
+        selectedVideoId: $(this).attr('data-id')
     };
     // reset the initialPlayStart start flag to capture the play start event
     initialPlayStart = false;
@@ -1062,14 +1062,14 @@ function bindEvents() {
     .on('click', '.report', reportVideoHandler)
     .on('click', '.like', likeHandler)
     .on('click', '#commentSave', commentSaveHandler)
-    .on('click', '.nextVideos li a', nextVideoHandler)
+    .on('click', '.nextVideos li', nextVideoHandler)
     .on('click', '.slick-slide a', onVideoOwnerVideoHandler)
     .on('click', '.mobile-video-tabs li', tabHandler);
 }
 
 function onVideoOwnerVideoHandler(evt) {
     evt.preventDefault();
-    var videoId = $(this).attr('id');
+    var videoId = $(this).attr('data-id');
 
     startViewCount = true;
     initialPlayStart = false;

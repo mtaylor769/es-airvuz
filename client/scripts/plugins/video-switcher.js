@@ -25,8 +25,8 @@
         this._defaults = defaults;
         this._name = pluginName;
 
-        if (this.element.getAttribute('id') === '') {
-            throw 'Selected video id is required';
+        if (this.element.getAttribute('data-id') === '') {
+            throw 'Selected video data-id is required';
         }
 
         this.init();
@@ -83,7 +83,7 @@
         },
         // update page url
         _updateUrl: function (data) {
-            window.history.pushState({}, 'Airvuz - ' + data.title, '/video/' + this.$element.attr('id'));
+            window.history.pushState({}, 'Airvuz - ' + data.title, '/video/' + this.$element.attr('data-id'));
         },
         // remove the plugin instance
         destroy: function () {
