@@ -51,7 +51,7 @@ var SLICK_CONFIG = {
 };
 
 function getFollowerVideos() {
-  $.ajax('/api/videos/category/following-drone-videos/page/1')
+  $.ajax('/api/videos/category/following-drone-videos')
       .then(function (videos) {
         if (videos.length > 0) {
           var viewData = {

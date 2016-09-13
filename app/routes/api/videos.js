@@ -40,7 +40,7 @@ function getVideosByCategory(req, res) {
 
   var videosParam = {
     total: TOTAL_PER_PAGE,
-    page: req.params.page,
+    page: req.query.page || 1,
     sort: req.query.sort || 'uploadDate'
   };
 
