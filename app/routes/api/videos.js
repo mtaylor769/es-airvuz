@@ -466,6 +466,7 @@ Video.prototype.getCommentsByVideoId = function(req, res) {
         .then(function(comments) {
             return Promise.map(comments, function (comment) {
                 comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+                comment.showReplies = comment.replyCount > 0 ? true : false;
                 if (comment.userId !== null) {
                     return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
                         .then(function (social) {
