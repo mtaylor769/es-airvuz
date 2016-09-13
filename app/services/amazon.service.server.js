@@ -94,7 +94,7 @@ function getVideoDuration(key) {
   return new Promise(function (resolve, reject) {
     probe('https:' + amazonConfig.INPUT_URL + key, function(err, probeData) {
       if (err) {
-        reject(err);
+        return reject(err);
       }
       var duration = Math.floor(probeData.format.duration);
       var min = duration / 60;
