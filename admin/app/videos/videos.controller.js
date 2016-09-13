@@ -173,11 +173,14 @@
 				reupload: true
 			};
 
+			// update required all the required fields to be send back...
+			var data = $.extend({}, vm.video, params);
+
 			$.ajax({
 				url         : '/api/videos/' + vm.video._id,
 				contentType : 'application/json',
 				type        : 'PUT',
-				data        : JSON.stringify(params)
+				data        : JSON.stringify(data)
 			}).done(function (video) {
 				// TODO: remove old path
 				alert('done re-uploading video');
