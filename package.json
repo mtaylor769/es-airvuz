@@ -23,7 +23,7 @@
   "dependencies": {
     "acl": "^0.4.9",
     "autoprefixer": "^6.3.3",
-    "aws-sdk": "^2.3.3",
+    "aws-sdk": "^2.6.1",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.3.3",
     "body-parser": "^1.15.0",
