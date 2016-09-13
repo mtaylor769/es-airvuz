@@ -59,6 +59,9 @@ function getVideoDuration(req, res) {
   amazonService.getVideoDuration(req.query.key + '.mp4')
     .then(function (duration) {
       res.send(duration);
+    })
+    .catch(function () {
+      res.sendStatus(500);
     });
 }
 

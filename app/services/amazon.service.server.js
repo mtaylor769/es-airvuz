@@ -341,13 +341,9 @@ function uploadToS3(bucket, key, body) {
 
     storage.upload(params, function (err) {
       if (err) {
-        console.log('******************** err upload ********************');
-        console.log(err);
-        console.log('************************************************');
-        reject(err);
-      } else {
-        resolve();
+        return reject(err);
       }
+      return resolve();
     });
   });
 }
