@@ -156,7 +156,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4 nextVideos" id="next">
-                        <div class="flex mobile-display-none">
+                        <div class="flex">
                             <h5 class="up-tag">UP NEXT</h5>
                             <div class="auto-play">
                                 <h5>AutoPlay</h5>
