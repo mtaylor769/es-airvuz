@@ -121,6 +121,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			return Promise.map(comments, function (comment) {
 				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+				comment.showReplies = comment.replyCount > 0 ? true : false;
 				if (comment.userId !== null) {
 					return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
 						.then(function (social) {
