@@ -1,28 +1,28 @@
 <div class="row">
-    <div class="col-xs-12">
-        <ul class="list-inline categories">
-            {#video.categories}
-                <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
-            {/video.categories}
-        </ul>
+    <div class="description-toggle col-xs-12">
+        <h4 class="video-player-title pull-left">{video.title}</h4>
+        <div class="show-more-description pull-right m-10">
+            <span class="glyphicon glyphicon-chevron-down invisible"></span>
+        </div>
+        <div class="show-less-description pull-right m-10" style="display: none">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div class="description-container">
-            <div id="video-description" style="margin: 10px 20px;">
-                <div>
+            <div id="video-description" class="m-l-10">
+                <p>
                     {video.description|s}
-                </div>
-                <div class="upload-date">
-                    Uploaded: {video.displayDate}
-                </div>
-            </div>
-            <div class="show-more-description">
-                <span class="glyphicon glyphicon-chevron-down invisible"></span>
-            </div>
-            <div class="show-less-description" style="display: none">
-                <span class="glyphicon glyphicon-chevron-up"></span>
+                </p>
+                <h6 class="pull-left">Categories:</h6>
+                <ul class="list-inline categories pull-left">
+                    {#video.categories}
+                        <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
+                    {/video.categories}
+                </ul>
+                <h6 class="upload-date m-b-10">Uploaded: {video.displayDate}</h6>
             </div>
         </div>
     </div>

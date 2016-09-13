@@ -38,14 +38,7 @@
                 <div class="row">
                     <div class="col-sm-8 videoplayback">
                         {!video title and back button!}
-                        <div class="video-player-header flex">
-                            <span class="glyphicon glyphicon-menu-left page-back"></span>
-                            <span class="video-player-title airvuz-blue">{video.title}</span>
-                            <div class="up-next">
-                                <span class="up">UP NEXT</span>
-                                <span class="glyphicon glyphicon-arrow-right"></span>
-                            </div>
-                        </div>
+                        <div class="video-player-header flex"></div>
                         {!video player!}
                         <div>
                             <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
@@ -56,30 +49,30 @@
                         {!categories!}
                         <div class="video-player-categories">
                             <div class="row">
-                                <div class="col-xs-12">
-                                    <ul class="list-inline categories">
-                                        {#video.categories}
-                                            <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
-                                        {/video.categories}
-                                    </ul>
+                                <div class="description-toggle col-xs-12">
+                                    <h4 class="video-player-title pull-left">{video.title}</h4>
+                                    <div class="show-more-description pull-right m-10">
+                                        <span class="glyphicon glyphicon-chevron-down invisible"></span>
+                                    </div>
+                                    <div class="show-less-description pull-right m-10" style="display: none">
+                                        <span class="glyphicon glyphicon-chevron-up"></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="description-container">
-                                        <div id="video-description" style="margin: 10px 20px;">
-                                            <div>
+                                        <div id="video-description" class="m-l-10">
+                                            <p>
                                                 {video.description|s}
-                                            </div>
-                                            <div class="upload-date">
-                                                Uploaded: {video.displayDate}
-                                            </div>
-                                        </div>
-                                        <div class="show-more-description">
-                                            <span class="glyphicon glyphicon-chevron-down invisible"></span>
-                                        </div>
-                                        <div class="show-less-description" style="display: none">
-                                            <span class="glyphicon glyphicon-chevron-up"></span>
+                                            </p>
+                                            <h6 class="pull-left">Categories:</h6>
+                                            <ul class="list-inline categories pull-left">
+                                                {#video.categories}
+                                                    <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
+                                                {/video.categories}
+                                            </ul>
+                                            <h6 class="upload-date m-b-10">Uploaded: {video.displayDate}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -92,8 +85,8 @@
                                 <img src="{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
                                 <div class="video-user-about t-a-inherit">
                                     <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
-                                    <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
-                                    <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>followers</p>
+                                    <p class="m-b-0"><span class="airvuz-blue bold">{user.videoCount} </span>Videos</p>
+                                    <p class="m-b-0"><span class="airvuz-blue bold">{user.followCount} </span>followers</p>
                                 </div>
                             </div>
                             <div class="video-slick">
@@ -106,7 +99,6 @@
                                 {/topVideos}
                             </div>
                         </div>
-                        {!comments!}
                         <div class="gainsboro-background p-15-0 video-info">
                             <div class="inline m-l-10">
                                 <span class="p-l-10"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
@@ -120,28 +112,51 @@
                                 <div class="social-icons-container"></div>
                             </div>
                         </div>
-                        <div class="flex write-comment" style="width: 100%; background: #fafafa;">
-                            <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
-                            <button class="btn background-orange border-radius-0 font-white" id="commentSave">Comment</button>
-                        </div>
-                        <ul class="parent-comments">
-                            {> "client.templates.videoPlayer.comments"/}
-                        </ul>
-                        <div class="more-comments-container">
-                            {#hasMoreComments}
-                                <div class="text-center m-b-10">
-                                    <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+                        {!Mobile tabs!}
+                        <div class="mobile-tab-container">
+                            <div class="mobile-video-tab-wrapper visible-xs">
+                                <ul class="mobile-video-tabs list-inline">
+                                    <li class="video-tab col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
+                                    <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
+                                    <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
+                                </ul>
+                            </div>
+                            <div class="mobile-tab-body" style="margin-top:10px; display:none;">
+                                <div id="video-description" class="m-l-10">
+                                    <div>
+                                        {video.description|s}
+                                    </div>
+                                    <ul class="list-inline categories">
+                                        <span>Categories:</span>
+                                        {#video.categories}
+                                            <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
+                                        {/video.categories}
+                                    </ul>
+                                    <div class="upload-date m-b-10">
+                                        Uploaded: {video.displayDate}
+                                    </div>
                                 </div>
-                            {/hasMoreComments}
+                            </div>
+                        </div>
+                        <div class="comments-wrapper" style="margin-top:10px;">
+                            <div class="flex write-comment">
+                                <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
+                                <button class="btn background-orange border-radius-0 font-white" id="commentSave">Comment</button>
+                            </div>
+                            <ul class="parent-comments">
+                                {> "client.templates.videoPlayer.comments"/}
+                            </ul>
+                            <div class="more-comments-container">
+                                {#hasMoreComments}
+                                    <div class="text-center m-b-10">
+                                        <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+                                    </div>
+                                {/hasMoreComments}
+                            </div>
                         </div>
                     </div>
-                    {!up next video list!}
-                    <div class="col-sm-4 nextVideos mobile-display-none" id="next">
-                        <div class="flex">
-                            <div class="videoback">
-                                <span class="glyphicon glyphicon-arrow-left"></span>
-                                <span class="up">VIDEO PLAYER</span>
-                            </div>
+                    <div class="col-sm-4 nextVideos" id="next">
+                        <div class="flex mobile-display-none">
                             <h5 class="up-tag">UP NEXT</h5>
                             <div class="auto-play">
                                 <h5>AutoPlay</h5>
@@ -149,20 +164,23 @@
                             </div>
                         </div>
                         <ul class="next-video-list" style="list-style: none; padding-left: 0">
-                        {#upNext}
-                            <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
-                                <div class="up-next-wrapper">
-                                    <a href="{_id}" id={_id} title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%" class="m-t-10"></a>
-                                    <div class="up-next-layer">
-                                        <a href="{_id}" title="{fullTitle}"><p class="font-white m-l-15 up-next-title">{title}</p></a>
-                                        <div class="flex up-next-subs">
-                                            <p class="font-white m-l-15"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
-                                            <p class="font-white pos-absolute-r-15">{duration}</p>
+                            {#upNext}
+                                <li style="width: 100%; position: relative" class="go-to-video" value="{_id}" data-title="{fullTitle}">
+                                    <div class="up-next-wrapper">
+                                        <a href="{_id}" id={_id} title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%"></a>
+                                        <div class="up-next-layer">
+                                            <a href="{_id}" title="{fullTitle}">
+                                                <strong class="font-white m-l-5 up-next-title">{title}</strong>
+                                                <p class="font-white m-l-5">{userId.userNameDisplay}</p>
+                                            </a>
+                                            <div class="flex up-next-subs">
+                                                <p class="font-white m-l-5"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
+                                                <p class="font-white pos-absolute-r-15">{duration}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                        {/upNext}
+                                </li>
+                            {/upNext}
                         </ul>
                     </div>
                 </div>

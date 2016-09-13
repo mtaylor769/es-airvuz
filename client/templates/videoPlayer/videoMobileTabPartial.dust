@@ -1,0 +1,23 @@
+<div class="mobile-video-tab-wrapper visible-xs">
+    <ul class="mobile-video-tabs list-inline">
+        <li class="video-tab col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
+        <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
+        <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
+    </ul>
+</div>
+<div class="mobile-tab-body" style="margin-top:10px; display:none;">
+    <div id="video-description" class="m-l-10">
+        <div>
+            {video.description|s}
+        </div>
+        <ul class="list-inline categories">
+            <span>Categories:</span>
+            {#video.categories}
+                <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
+            {/video.categories}
+        </ul>
+        <div class="upload-date m-b-10">
+            Uploaded: {video.displayDate}
+        </div>
+    </div>
+</div>
