@@ -112,7 +112,7 @@ CategoryModel.prototype.getData = function(params) {
 			params.data.categories = categories;
 			params.data.videos = videos;
 			// show the load more if there is data or category is 'Follower Videos'
-			params.data.showLoadMore = videos.length > 11 || currentCategory === 'follower-drone-videos' || currentCategory === 'trending-videos';
+			params.data.showLoadMore = videos.length > 11 || currentCategory === 'following-drone-videos' || currentCategory === 'trending-videos';
 
 			// don't show load more button for featured and staff pick since there is no paging and video doesn't exceed over 40?
 			if (currentCategory === 'featured-drone-videos' || currentCategory === 'staff-picks-drone-videos') {

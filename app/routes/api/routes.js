@@ -125,7 +125,7 @@ apiRouter.route('/api/videos')
 apiRouter.route('/api/videos/search')
 	.get(videos.search);
 
-apiRouter.route('/api/videos/category/:category/page/:page')
+apiRouter.route('/api/videos/category/:category')
   .get(token, videos.getVideosByCategory);
 
 apiRouter.route('/api/videos/loaded')
