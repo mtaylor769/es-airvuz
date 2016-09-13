@@ -4,3 +4,27 @@
     <a href="https://twitter.com/intent/tweet?url=https://www.airvuz.com/video/{video._id}&text={video.title}&via=airvuz" class="fa fa-twitter-square social original-color-hover" id="twitter" data-toggle="tooltip" data-placement="right" title="Share on Twitter"></a>
     <span class="fa fa-facebook-official social pointer original-color-hover" id="facebook" data-toggle="tooltip" data-placement="right" title="Share on Facebook"></span>
 </div>
+<div class="modal fade" tabindex="-1" id="social-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Share this video</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group social-share-buttons embed">
+                    <div class="list-group-item">
+                        <h5>Embedded Code</h5>
+                        <code style="word-break: break-all;font-size:0.8em;">&lt;iframe src="https://www.airvuz.com/videoPlayerEmbed/{video._id}" height="245" width="432"&gt;&lt;/iframe&gt;</code>
+                    </div>
+                    <h5><a href="https://plus.google.com/share?url=https://www.airvuz.com/video/{video._id}" id="google" class="list-group-item">Google+</a></h5>
+                    <h5><a href="https://twitter.com/intent/tweet?url=https://www.airvuz.com/video/{video._id}&text={video.title}&via=airvuz" id="twitter" class="list-group-item">Twitter</a></h5>
+                    <h5><a href="#" id="facebook" class="list-group-item">Facebook</a></h5>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
