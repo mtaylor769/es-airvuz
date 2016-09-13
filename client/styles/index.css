@@ -393,8 +393,14 @@ body.modal-open {
   margin: 31px 15px;
 }
 
+.video-user-container img {
+  margin: 15px 5px 0 5px;
+}
+.video-page .video-slick {
+  margin: 0 0 0 25px;
+}
 .video-user-about {
-  margin: 25px 15px;
+  margin: 15px 5px 0;
 }
 
 .video-end-card {
@@ -469,7 +475,7 @@ body.modal-open {
 }
 
 .video-user-info-height {
-  height: 110px;
+  height: auto;
 }
 
 .video-user-more {
@@ -509,7 +515,7 @@ body.modal-open {
 }
 
 .video-page .slick-list {
-  height: 83px;
+  height: auto;
 }
 
 .parent-comment-picture {
@@ -1474,23 +1480,17 @@ Video Player Slick theme
 
 .video-page .video-slick {
   width: 35%;
-  margin: 17px 10px;
 }
 
 @media (min-width: 320px) {
 
   .video-page .video-slick {
     width: 35%;
-    margin: 27px 0;
   }
 
   .video-page .video-slick img{
+    height: 68px;
     width: 110px;
-  }
-
-
-  .video-user-about {
-    margin: 28px 9px 0 -10px;
   }
 
   .video-user-picture {
@@ -1527,13 +1527,16 @@ Video Player Slick theme
     color: #333;
     font-size: 1em;
   }
+
+  .video-user-container img {
+    margin: 15px 0px 0 5px;
+  }
 }
 
 @media (min-width: 375px) {
 
   .video-page .video-slick {
     width: 39%;
-    margin: 17px 10px;
   }
 
   .video-page .video-slick img{
@@ -1544,12 +1547,16 @@ Video Player Slick theme
 @media (min-width: 414px) {
   .video-page .video-slick {
     width: 43%;
-    margin: 14px 10px;
     padding-left: 20px;
   }
 
   .video-page .video-slick img{
+    height: 100%;
     width: 150px;
+  }
+
+  .video-user-container img {
+    margin: 15px 5px 0 5px;
   }
 
 }
@@ -1557,20 +1564,16 @@ Video Player Slick theme
 @media (min-width: 768px) {
   .video-page .video-slick {
     width: 52%;
-    margin: 23px 10px;
     padding-left: 20px;
   }
 
   .video-page .video-slick img{
+    height: 68px;
     width: 110px;
   }
 
   .video-user-picture {
     margin: 31px 10px;
-  }
-
-  .video-user-about {
-    margin: 25px 5px;
   }
 
   .video-page .slick-next {
@@ -1622,7 +1625,6 @@ Video Player Slick theme
 @media (min-width: 992px) {
   .video-page .video-slick {
     width: 63%;
-    margin: 21px 10px;
     padding-left: 10px;
   }
 
@@ -1638,20 +1640,17 @@ Video Player Slick theme
     right: -11px;
     left: -12px
   }
-
-  .video-user-about {
-    margin: 25px 8px;
-  }
 }
 
 @media (min-width: 1200px) {
   .video-page .video-slick {
     width: 68%;
-    margin: 13px 10px;
+    margin-left: 50px;
     padding-left: 10px;
   }
 
   .video-page .video-slick img{
+    height: 100%;
     width: 150px;
   }
 
@@ -1662,10 +1661,6 @@ Video Player Slick theme
   .video-page .slick-prev {
     right: -11px;
     left: -12px
-  }
-
-  .video-user-about {
-    margin: 25px 15px;
   }
 }
 
@@ -1722,10 +1717,6 @@ header logo and tag line media queries
   }
 }
 
-
-@media (min-width: 320px) {
-
-}
 @media (min-width: 375px) {
   #header .airvuz-logo {
     display: inline-block;
