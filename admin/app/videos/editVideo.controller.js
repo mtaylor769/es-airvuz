@@ -56,24 +56,19 @@
         category = JSON.parse(category);
         var categoryCheck = vm.video.categories.map(function(_category) {return _category._id}).indexOf(category._id);
         if(categoryCheck === -1) {
-          console.log(category);
           vm.video.categories.push(category);
         } else {
-          dialog({
+          dialog.alert({
             title: 'Category Already Selected',
             content: 'You have already selected this category for this video',
-            ariaLabel: 'Cateogry Selected',
-            ok: 'OK',
-            cancel: 'CANCEL'
+            ok: 'Ok'
           })
         }
       } else {
-        dialog({
+        dialog.alert({
           title: 'Maximum Categories',
           content: 'The limit for categories is 3. Please remove a category to add another',
-          ariaLabel: 'Limit Reached',
-          ok: 'OK',
-          cancel: 'CANCEL'
+          ok: 'Ok'
         })
       }
     }

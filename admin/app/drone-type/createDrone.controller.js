@@ -14,20 +14,16 @@
       $http.post('/api/drone-type', droneToCreate).then(function(response) {
         if(response.data.errors) {
           var error = response.data.errors[0];
-          dialog({
-            title: 'error',
+          dialog.alert({
+            title: 'Error',
             content: error.displayMsg,
-            ariaLabel: 'error',
-            ok:'OK',
-            cancel:'CANCEL'
+            ok:'Ok'
           })
         } else {
-          dialog({
+          dialog.alert({
             title: 'Saved',
             content: 'Drone has been saved',
-            ariaLabel: 'saved',
-            ok:'OK',
-            cancel:'CANCEL'
+            ok:'Ok'
           })
         }
       }, function(status) {
