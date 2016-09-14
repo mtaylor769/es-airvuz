@@ -160,6 +160,11 @@ PubSub.subscribe('video-switched', function (msg, data) {
         getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
         getNextVideos = $.ajax({type: 'POST', url: '/api/videos/nextVideos', data: video.categories[0]});
 
+    // re-init the video slick
+    $('.video-slick').slick('removeSlide', null, null, true);
+    $('.video-slick').slick('unslick');
+    $('.video-slick').slick(SLICK_CONFIG);
+
     // make parallel requests
     $.when(
         getUserProfile,
@@ -221,7 +226,6 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
         // update user video slider
         videoUserSlickPartialTpl({topVideos: topSixVid}, function (err, html) {
-            $('.slick-slide').remove();
             $('.video-slick').slick('slickAdd', html);
         });
 
@@ -539,7 +543,7 @@ function bindEvents() {
   //send report video info
   $('#send-report').on('click', function() {
     var reportData = {};
-    reportData.videoId = $(this).attr('data-videoid');
+    reportData.videoId = video._id;
     reportData.message = $('.report-text').val();
     reportData.userId = userIdentity._id;
     $.ajax({
