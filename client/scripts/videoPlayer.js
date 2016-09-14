@@ -110,8 +110,8 @@ function nextVideoHandler(evt) {
     $(this).switchVideo(CONFIG);
 }
 
-function tabHandler(evt) {
-    var tabDataId = $(this).attr('data-id');
+function mobileTabSwitchHandler(tabName) {
+    var tabDataId = $(this).attr('data-id') || tabName;
 
     switch(tabDataId) {
         case 'upNext':
@@ -1064,7 +1064,7 @@ function bindEvents() {
     .on('click', '#commentSave', commentSaveHandler)
     .on('click', '.nextVideos li', nextVideoHandler)
     .on('click', '.slick-slide a', onVideoOwnerVideoHandler)
-    .on('click', '.mobile-video-tabs li', tabHandler);
+    .on('click', '.mobile-video-tabs li', mobileTabSwitchHandler);
 }
 
 function onVideoOwnerVideoHandler(evt) {
@@ -1075,6 +1075,10 @@ function onVideoOwnerVideoHandler(evt) {
     initialPlayStart = false;
 
     $(this).switchVideo({selectedVideoId: videoId});
+
+    if ($('.mobile-video-tab-wrapper').css('display') === 'block') {
+        mobileTabSwitchHandler('upNext');
+    }
 }
 
 // checks user autoplay setting
