@@ -51,6 +51,7 @@ Comment.prototype.get = function(req, res) {
 function _transformComments(comments) {
   return Promise.map(comments, function (comment) {
     comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+    comment.showReplies = comment.replyCount > 0;
     if (comment.userId !== null) {
       return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
         .then(function (social) {
