@@ -26,12 +26,10 @@
         .update(drone)
         .$promise
         .then(function() {
-          dialog({
+          dialog.alert({
             title: 'Saved',
             content: 'Drone Type has been updated',
-            airaLabel: 'Saved',
-            ok: 'OK',
-            cancel: 'Cancel'
+            ok: 'OK'
           })
         })
     }

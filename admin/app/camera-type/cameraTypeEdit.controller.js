@@ -26,12 +26,10 @@
         .update(camera)
         .$promise
         .then(function() {
-          dialog({
+          dialog.alert({
             title: 'Saved',
             content: 'Camera Type has been updated',
-            airaLabel: 'Saved',
-            ok: 'OK',
-            cancel: 'Cancel'
+            ok: 'Confirm'
           })
         })
     }

@@ -14,20 +14,16 @@
       $http.post('/api/camera-type', cameraToCreate).then(function(response) {
         if(response.data.errors) {
           var error = response.data.errors[0];
-          dialog({
-            title: 'error',
+          dialog.alert({
+            title: 'Error',
             content: error.displayMsg,
-            ariaLabel: 'error',
-            ok:'OK',
-            cancel:'CANCEL'
+            ok:'OK'
           })
         } else {
-          dialog({
+          dialog.alert({
             title: 'Saved',
             content: 'Camera has been saved',
-            ariaLabel: 'saved',
-            ok:'OK',
-            cancel:'CANCEL'
+            ok:'OK'
           })
         }
       }, function(status) {
