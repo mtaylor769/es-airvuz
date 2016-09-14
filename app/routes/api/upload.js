@@ -5,6 +5,7 @@ var md5                     = require('md5');
 var uuid                    = require('node-uuid');
 var amazonService           = require('./../../../app/services/amazon.service.server');
 var youtubedl               = require('youtube-dl');
+var _                       = require('lodash');
 
 /**
  * Upload Route
@@ -93,30 +94,65 @@ function transcodeWarning(req, res) {
     });
 }
 
+function _getVideoInfo(url) {
+  return new Promise(function (resolve, reject) {
+    youtubedl.getInfo(url, function (err, info) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(info);
+    });
+  });
+}
+
+function _selectNonHlsBestQuality(video) {
+  // filter only http and not hls
+  // assuming that the quality is low to highest so we pop the last (best)
+  return _.filter(video.formats, function (format) {
+    return format.format_id.indexOf('hls') === -1;
+  }).pop().format_id;
+}
+
+function _isVimeo(url) {
+  return url.indexOf('vimeo.com') > -1;
+}
+
 function uploadExternalVideo(req, res) {
   var url = req.body.url;
   var fileName = md5(url + Date.now() + uuid.v1()) + '.mp4';
-  var video = youtubedl(url, ['-f', 'best'], {});
+  var waitFor;
+  var video;
   var promise;
 
-  video.on('error', function () {
-    if (promise.isPending()) {
-      res.sendStatus(500);
-    }
-  });
+  if (_isVimeo(url)) {
+    waitFor = _getVideoInfo(url)
+      .then(_selectNonHlsBestQuality);
+  } else {
+    waitFor = Promise.resolve('best');
+  }
 
-  promise = amazonService.uploadToS3(amazonService.config.INPUT_BUCKET, fileName, video)
-    .then(function () {
-      // TODO: change to create new preset?
-      // current using custom preset
-      return amazonService.startTranscode('1463271020793-svwgsd', fileName)
-    })
-    .then(function () {
-      res.json(fileName);
-    })
-    .catch(function () {
-      res.sendStatus(500);
+  promise = waitFor.then(function (quality) {
+    video = youtubedl(url, ['-f', quality], {});
+
+    video.on('error', function () {
+      if (promise.isPending()) {
+        res.sendStatus(500);
+      }
     });
+
+    return amazonService.uploadToS3(amazonService.config.INPUT_BUCKET, fileName, video);
+  })
+  .then(function () {
+    // TODO: change to create new preset?
+    // current using custom preset
+    return amazonService.startTranscode('1463271020793-svwgsd', fileName)
+  })
+  .then(function () {
+    res.json(fileName);
+  })
+  .catch(function () {
+    res.sendStatus(500);
+  });
 }
 
 Upload.prototype.post                     = post;
