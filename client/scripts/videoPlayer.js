@@ -718,7 +718,7 @@ function bindEvents() {
               clearInterval(countdown);
             }
           } else {
-            window.location.href = nextVideo.attr('value');
+            window.location.href = nextVideo.attr('data-id');
           }
         };
         //calling interval variable
