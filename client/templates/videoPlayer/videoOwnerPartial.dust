@@ -3,5 +3,5 @@
 <div class="video-user-about t-a-inherit">
     <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
     <p class="m-b-0"><span class="airvuz-blue bold">{user.videoCount} </span>Videos</p>
-    <p class="m-b-0"><span class="airvuz-blue bold">{user.followCount} </span>followers</p>
+    <p class="m-b-0"><span class="airvuz-blue bold">{user.followCount} </span>Followers</p>
 </div>
