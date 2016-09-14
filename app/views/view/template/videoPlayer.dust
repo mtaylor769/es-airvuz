@@ -85,8 +85,8 @@
                                 <img src="{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
                                 <div class="video-user-about t-a-inherit">
                                     <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
-                                    <p class="m-b-0"><span class="airvuz-blue bold">{user.videoCount} </span>Videos</p>
-                                    <p class="m-b-0"><span class="airvuz-blue bold">{user.followCount} </span>Followers</p>
+                                    <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
+                                    <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>Followers</p>
                                 </div>
                             </div>
                             <div class="video-slick">
