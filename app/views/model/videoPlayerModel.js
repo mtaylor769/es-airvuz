@@ -46,14 +46,11 @@ VideoPlayerModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return videoCrud.getById(videoId)
 		.then(function(video) {
-			logger.debug(video);
 			if(video.title.length > 45) {
 				video.title = video.title.substring(0, 45) + '...';
 			}
 			video.displayDate = moment(video.uploadDate).fromNow();
 			video.openGraphCacheDate = moment(video.openGraphCacheDate).format('x');
-			logger.debug(video.openGraphCacheDate);
-			logger.debug(video.uploadDate);
 			dataObject.video 	= video;
 			checkObject.video = video._id;
 			return userCrud.getUserById(video.userId);
@@ -119,7 +116,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function (comments) {
 			return Promise.map(comments, function (comment) {
-				console.log(comment);
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
 				comment.showReplies = comment.replyCount > 0 ? true : false;
 				if (comment.userId !== null) {
@@ -136,7 +132,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			});
 		})
 		.then(function (comments) {
-			logger.error(comments);
 			dataObject.comments = comments;
 			dataObject.hasMoreComments = dataObject.video.commentCount > comments.length;
 			return categoryCrud.get();
