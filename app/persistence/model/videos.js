@@ -164,12 +164,15 @@ var videoSchema = mongoose.Schema({
 
 	curation: {
 		isRanked: Boolean,
-		isTagged: Boolean
+		isTagged: Boolean,
+		isSeoTagged: Boolean
 	},
 
 	internalRanking: Number,
 
 	internalTags: [String],
+
+	seoTags: [String],
 
 	videoLocation: String
 
