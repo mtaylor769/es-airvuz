@@ -215,13 +215,6 @@ function bindEvents() {
   function onPublish(event) {
     event.preventDefault();
 
-    AVEventTracker({
-        codeSource: 'upload',
-        eventName: 'video-upload-started',
-        eventType: 'uploadClick'
-    });
-    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
-
     // isUploadVideo will prevent validation
     if (isPublishing || isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
       return false;
@@ -470,6 +463,14 @@ function bindEvents() {
 
   function onUploadExternalUrlClick(event) {
     event.preventDefault();
+
+    AVEventTracker({
+      codeSource: 'upload',
+      eventName: 'video-upload-started',
+      eventType: 'uploadClick'
+    });
+    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
+
     var url = $uploadPage.find('#external-url-input').val();
 
     // TODO: validate url to make sure it is youtube or vimeo
