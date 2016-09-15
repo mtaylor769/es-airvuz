@@ -25,19 +25,19 @@ function create(params) {
     .save();
 }
 
+function getVideoStart(videoId, startDate, endDate) {
+    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-play-start'}).count().exec();
+}
+
+function getVideoEnd(videoId, startDate, endDate) {
+    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-ended'}).count().exec();
+}
+
+function getVideoExit(videoId, startDate, endDate) {
+    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-exited-on-playing'}).lean().exec();
+}
+
 function getByVideoId(videoId, startDate, endDate) {
-
-  function getVideoStart(videoId, startDate, endDate) {
-    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-play-start'}).exec();
-  }
-
-  function getVideoEnd(videoId, startDate, endDate) {
-    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-ended'}).exec();
-  }
-
-  function getVideoExit(videoId, startDate, endDate) {
-    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-exited-on-playing'}).exec();
-  }
 
   var promises = [
     getVideoStart(videoId, startDate, endDate),
