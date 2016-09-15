@@ -109,6 +109,7 @@ viewManager.addView({ view : staticView('copyright') });
 viewManager.addView({ view : staticView('about') });
 viewManager.addView({ view : staticView('community') });
 viewManager.addView({ view : staticView('media') });
+viewManager.addView({ view : staticView('faq') });
 // viewManager.addView({ view : staticView('forms') });
 
 function loadView(req, res, name) {
@@ -213,6 +214,10 @@ app.get("/about", function(req, res) {
 
 app.get("/community", function(req, res) {
 	loadView(req, res, 'community');
+});
+
+app.get("/faq", function(req, res) {
+	loadView(req, res, 'faq');
 });
 
 app.get("/media", function(req, res) {
