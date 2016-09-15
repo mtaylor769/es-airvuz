@@ -1,4 +1,4 @@
-/* global Page */
+/* global ga */
 require('bootstrap-tagsinput');
 require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
@@ -220,6 +220,7 @@ function bindEvents() {
         eventName: 'video-upload-started',
         eventType: 'uploadClick'
     });
+    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
 
     // isUploadVideo will prevent validation
     if (isPublishing || isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
@@ -271,12 +272,15 @@ function bindEvents() {
           eventName: 'video-upload-published',
           eventType: 'uploadClick'
       });
+      ga('send', 'event', 'upload', 'video-upload-published', 'upload');
+
     }).fail(function(response) {
       AVEventTracker({
           codeSource: 'upload',
           eventName: 'video-upload-failed',
           eventType: 'uploadClick'
       });
+      ga('send', 'event', 'upload', 'video-upload-failed', 'upload');
 
       if (response.status === 400) {
         dialogs.required();
