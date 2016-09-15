@@ -1,21 +1,163 @@
-<div class="row" id="copyright-page">
-    <div class="col-md-12">
-        <h3 class="text-center">
-            Copyright Policy
-        </h3>
-        <p>When a person creates original  work that is fixed in a physical medium, he or she automatically owns copyright  to the work. The owner has the exclusive right to use the work in certain,  specific ways.</p>
+<div class="col-md-12 copyright" style="font-size:12px;margin-top:-25px;text-align: justify;height:100%" ng-controller="staticCtrl"> <br> <br>
 
-        <p>Work subject to copyright  include, without limitation:</p>
+    <h4><strong>Copyright Policy</strong></h4>
+    <p style="margin-bottom: 10px;">When a person creates original  work that is fixed in a physical medium, he or she automatically owns copyright  to the work. The owner has the exclusive right to use the work in certain,  specific ways.</p>
+    <p>Work subject to copyright  include, without limitation:</p>
 
-        <ul>
-            <li>TV Shows, movies  and online videos.</li>
-            <li>Sound recordings  and musical compositions.</li>
-            <li>Written work such  as lectures, articles and books.</li>
-            <li>Visual work such  as paintings, posters and advertisements.</li>
-            <li>Video games and  software.</li>
-            <li>Dramatic works  such as plays and musicals.</li>
-        </ul>
+    <ul>
+        <li>TV Shows, movies  and online videos.</li>
+        <li>Sound recordings  and musical compositions.</li>
+        <li>Written work such  as lectures, articles and books.</li>
+        <li>Visual work such  as paintings, posters and advertisements.</li>
+        <li>Video games and  software.</li>
+        <li>Dramatic works  such as plays and musicals.</li>
+    </ul>
 
-        <p>...</p>
-    </div>
+    <p>
+        Ideas, facts and processes are  not subject to copyright. In order to be eligible for copyright protection, a  work must be both creative and fixed in a tangible medium. Names and title are  not, by themselves, subject to copyright.</p>
+    <p>AirVūz isn’t able to mediate  rights ownership disputes. When we receive a complete DMCA takedown notice, we  remove content as the law requires. When we receive a valid counter  notification, we forward it to the person who requested the removal. After  this, it’s up to the parties involved to resolve the issue in court.</p>
+
+    <p>AirVūz offers a separate removal process for  videos which violate trademark, trade secret, or other laws. </p>
+    <p>If you would like to learn more  about fair use, there are lots of resources available online. You might be  interested in:</p>
+    <ul>
+        <li>The Center for  Media and Social Impact’s Code of Best Practices in Fair Use for Online Video.</li>
+        <li>The Digital Media  Law Project’s detailed explanation of the Four Factors.</li>
+    </ul>
+
+    <p class="copyright-policy-italic"><em>** The above third party websites are referred to for informational  purposes only and are not endorsed by AirVūz.</em></p>
+    {!<p><strong><h3 style="margin-bottom:10px;">Submit a Copyright Removal Notice</h3></strong></p>!}
+    {!<p>If you believe your  copyright-protected work was posted on AirVūz without authorization, you may  submit a copyright infringement notification. These requests should only be  submitted by the copyright owner or agent authorized to act on the owner’s  behalf.</p>!}
+    {!<p style="margin-bottom:10px; margin-top:10px;">You may notify AirVūz of alleged  copyright infringement is via our web form. Click on the form below. You may  otherwise direct copyright infringement notifications to our DMCA Agent at  email: copyright@airvuz.com.</p>!}
+    {!<p class="copyright-policy-italic">** <em>Do not make false claims. Misuse of this process may result in the  suspension of your account or other legal consequences.</em> </p>!}
+    {!<p class="p1">&nbsp;</p>!}
+
+    {!<div class="col-sm-6 copyright-policy-form">!}
+        {!<div class="row">!}
+            {!<form role="form">!}
+
+                {!<div class="form-group">!}
+                    {!<strong><h3 style="margin-left:10px;">Please fill out the form below.</h3></strong><br/>!}
+                    {!<label style="margin-left:10px;">What is the issue?</label>!}
+                {!</div>!}
+
+                {!<div class="checkbox">!}
+                    {!<label style="margin-left:10px;"><input type="checkbox" value="red" name="colorCheckbox" ng-model="checked" ng-init="checked=true" ng-checked="!checked2"> Trademark infringement (someone is using my trademark)</label>!}
+                {!</div>!}
+
+                {!<div class="form-group copyright-policy-form-radio red copyright-policy-form-box" style="margin-left:20px;" ng-show="checked" ng-hide="!checked || checked2">!}
+                    {!<div class="radio" >!}
+                        {!<label><input type="radio" name="trademark" ng-model="copy_subtitle" value="I am affected by trademark infringement">I am affected by trademark infringement</label>!}
+                    {!</div>!}
+                    {!<div class="radio">!}
+                        {!<label><input type="radio" name="trademark" ng-model="copy_subtitle" value="My company, organization, or client is affected by trademark infringement">My company, organization, or client is affected by trademark infringement</label>!}
+                    {!</div>!}
+                    {!<div class="radio ">!}
+                        {!<label><input type="radio" name="trademark" ng-model="copy_subtitle" value="Another trademark owner is affected by trademark infringement">Another trademark owner is affected by trademark infringement</label>!}
+                    {!</div>!}
+                {!</div>!}
+
+                {!<div class="clearfix"></div>!}
+
+                {!<div class="checkbox">!}
+                    {!<label style="margin-left:10px;"><input type="checkbox" value="green" name="colorCheckbox" ng-model="checked2" ng-init="checked2=false" ng-checked="!checked"> Copyright infringement (someone copied my creation)</label>!}
+                {!</div>!}
+
+                {!<div class="form-group copyright-policy-form-radio green copyright-policy-form-box" style="margin-left:20px;" ng-show="checked2" ng-hide="!checked2 || checked">!}
+                    {!<div class="radio">!}
+                        {!<label><input type="radio" name="copyright" ng-model="copy_subtitle" value="I am affected by copyright infringement">I am affected by copyright infringement</label>!}
+                    {!</div>!}
+                    {!<div class="radio">!}
+                        {!<label><input type="radio" name="copyright" ng-model="copy_subtitle" value="My company, organization, or client is affected by copyright infringement">My company, organization, or client is affected by copyright infringement</label>!}
+                    {!</div>!}
+                    {!<div class="radio ">!}
+                        {!<label><input type="radio" name="copyright" ng-model="copy_subtitle" value="Another copyright owner is affected by copyright infringement">Another copyright owner is affected by copyright infringement</label>!}
+                    {!</div>!}
+                {!</div>!}
+
+                {!<div class="clearfix"></div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Video URL of allegedly infringing video to be removed:</label>!}
+                    {!<input type="url" class="form-control"ng-model="copy_video_url" placeholder="Video URL">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Identification of the copyrighted work alleged infringed:</label>!}
+                    {!<input type="url" class="form-control" ng-model="copy_identification" placeholder="URL or directions to access the work">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Copyright Owner Name:</label>!}
+                    {!<input type="text" class="form-control" ng-model="copy_owner" placeholder="Copyright Owner Name">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Authority to make this complaint:</label>!}
+                    {!<input type="text" class="form-control" ng-model="copy_authority" placeholder="Authority to make this complaint:">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Phone:</label>!}
+                    {!<input type="text" class="form-control"ng-model="copy_phone" placeholder="Phone">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">City:</label>!}
+                    {!<input type="text" class="form-control"ng-model="copy_city" placeholder="City">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">State:</label>!}
+                    {!<input type="text" class="form-control"ng-model="copy_state" placeholder="State">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Zip Code:</label>!}
+                    {!<input type="text" class="form-control" ng-model="copy_zip" placeholder="Zip Code">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Country:</label>!}
+                    {!<input type="text" class="form-control"ng-model="copy_country" placeholder="Country">!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">Email:</label>!}
+                    {!<input type="email" class="form-control"ng-model="copy_email" placeholder="Email">!}
+                {!</div>!}
+
+                {!<div class="form-group">!}
+                    {!<label for="email" style="margin-left: 10px;">By checking the following boxes, I state that:</label>!}
+                {!</div>!}
+
+                {!<div class="copyright-policy-form-checkbox" style="margin-left:20px;">!}
+                    {!<div class="checkbox">!}
+                        {!<label><input type="checkbox" required> I have a good faith belief that the use of the material in the manner    complained of is not authorized by the copyright owner, its agent, or the law;</label>!}
+                    {!</div>!}
+                    {!<div class="checkbox">!}
+                        {!<label><input type="checkbox" required> This notification is accurate, and,</label>!}
+                    {!</div>!}
+                    {!<div class="checkbox">!}
+                        {!<label><input type="checkbox" required> UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the    owner of an exclusive right that is allegedly infringed.</label>!}
+                    {!</div>!}
+                    {!<div class="checkbox">!}
+                        {!<label><input type="checkbox" required>I acknowledge that under Section 512(f) of the DMCA any person who    knowingly materially misrepresents that material or activity is infringing may be   subject to liability for damages.</label>!}
+                    {!</div>!}
+                    {!<div class="checkbox">!}
+                        {!<label><input type="checkbox" required> I understand that abuse of this tool will result in termination of my AirVūz     account.</label>!}
+                    {!</div>!}
+                {!</div>!}
+
+                {!<div class="form-group form-group_edit">!}
+                    {!<label for="email" style="margin-left: 10px;">TYPE YOUR FULL NAME IN THIS BOX THAT WILL ACT AS YOUR DIGITAL SIGNATURE: </label>!}
+                    {!<input type="text" class="form-control" ng-model="copy_full_name">!}
+
+                {!</div>!}
+
+                {!<button type="submit" class="btn btn-primary" style="background: #14B9E7;margin-top:10px;border-radius: 40px;width: 180px;outline: none;border-color: #14B9E7;margin-left: 10px;" ng-click="postCopyright()">Submit</button>!}
+            {!</form>!}
+
+        {!</div> <br> <br>!}
+
+    {!</div>!}
 </div>

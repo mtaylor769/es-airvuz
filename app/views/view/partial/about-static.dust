@@ -1,21 +1,52 @@
-<div class="row" id="about-page">
-    <div class="col-md-12">
-        <h3 class="text-center">
-            About
-        </h3>
-        <p>Launched in September, 2015, AirVūz allows people to discover, watch and share aerial videos captured by cameras from drones, quadcopters, multi-copters, and radio controlled airplanes and helicopters.</p>
-
-        <p>AirVūz was founded by a group of passionate aerial video enthusiasts that want to share their creative work in an easy-to-discover video sharing environment. Our mission is to build a community of enthusiasts from around the world that share in this passion to grow, support, enjoy and share similar original aerial videos. We hope this fun and friendly environment fuels your creativity and inspires you to contribute to the AirVūz community in a way that means the most to you.</p>
-        <p>AirVūz is made with ♥ in Minneapolis, Minnesota, USA.</p>
-
-        <h4>Our Mission</h4>
-        <p>
-            To stand alone as the enthusiasm-generating and innovation-stirring community for discovering, sharing, and celebrating breathtaking aerial footage from around the world.
-        </p>
-
-        <h4>Our Vision</h4>
-        <p>Foster an environment in which drones are used for good; Promote the amazing aerial footage they capture; Amplify the enthusiasm in an evolving drone economy.</p>
-        <p>Stay connected with us on Facebook, Twitter and Instagram. Tag #AirVūz on your photos and videos to be featured on our social media.</p>
-        <p>Reach us at <a href="mailto:info@airvuz.com">info@airvuz.com</a></p>
+<div>
+    <div style="text-align: center">
+        <h4>About AirVūz </h4>
     </div>
+    <p>AirVūz was launched in late 2015 as a video-sharing platform for the worldwide drone community.
+        Featuring a blend of user-generated content and original programming, AirVūz has become the premiere
+        online video site for the emerging Drone Age.  </p>
+    <h5 style="font-weight: bold; color: #26bae5">The AirVūz Management Team</h5>
+    <h5 style="color: #26bae5">Mike Israel: President and CEO</h5>
+    <p>Mike is an avid drone enthusiast and RC pilot who founded AirVūz in 2015.  Prior to founding AirVūz, Mike
+        was a Managing Director and co-founder of Mill City Capital L.P., a leading private equity firm based in
+        Minneapolis.   Mike remains an Investment Advisor with Mill City and continues to serve as a director on
+        several Mill City portfolio companies.  Prior to co-founding Mill City Capital, Mike was a Managing Director
+        at Goldner Hawn Johnson & Morrison Incorporated, another leading Minneapolis-based private equity firm, where
+        he worked for nearly 18 years.  Mike began his professional career as an investment banking analyst at Piper
+        Jaffray, Minneapolis, from 1990-1992.  Throughout his career Mike has served as a director of approximately
+        two-dozen private company boards as well as of several non-profit organizations in the Twin Cities.  He holds
+        a BA in Economics from Stanford University.  </p>
+    <h5 style="color: #26bae5">Dan Edwards: Vice President of Content</h5>
+    <p>Dan is responsible for all of the AirVuz original programming concepts.  Dan manages a team of editors and
+        producers currently producing half-dozen different original programming concepts, most of which were of his
+        creation.  He also serves as an Executive Producer of the Droned TV show, which airs on the Science Channel in
+        the summer of 2016.  Dan has a nearly 20-year professional in the media industry.   Prior to joining AirVuz as
+        one of the original management team members, he was the Executive Sports Producer with KARE11, the Twin Cities
+        NBC affiliate.  His experience also includes positions as Creator and Executive Producer of the On the Fly and
+        Fly TV TV series broadcast on the Twin Cities Fox affiliate, and as Program Director for several large radio
+        stations across the U.S.  Dan is a graduate of Brown College, one of the most well-regarded schools for the radio
+        industry.  </p>
+    <h5 style="color: #26bae5">Marty Euerle: Chief Technology Officer</h5>
+    <p>Marty joined the AirVuz management team in late 2015 as the Chief Technology Officer.  A highly experienced
+        developer and technical manager, Marty has previously served as CTO of other startups in the Twin Cities such
+        as NSPHire and ILT (Instant Loan Technologies). Prior to that Marty was a founder of the software-consulting
+        firm OmniStation.  Marty’s 25+-year technical career has included consulting for BestBuy, PTC, Albertson’s,
+        Martin/Williams, Minnesota DHS, MECC and many others.  He is also a long-time RC pilot and more recently a
+        drone pilot as well.  Marty has a BA in Computer Science from the University of Minnesota</p>
+    <h5 style="color: #26bae5">Jenny Mirković: Vice President of Community Management</h5>
+    <p>Jenny was part of the original AirVuz management team and currently is responsible for the Site Editing,
+        Social Media, and Community Relations functions within AirVūz. With a 20+year background in communications
+        and management, her previous posts in corporate, start-up, non-profit, and education settings include
+        management positions with Citibank, IP Commerce, Business Aviation, and Augustana University. Jenny
+        holds a MA in Rhetorical Criticism and a BA in Organizational Communication from the University of
+        South Dakota.</p>
+    <div style="text-align: center;">
+        <h5 style="color: #26bae5">Stay connected with AirVūz</h5>
+        <div style="text-align: center; font-size: 28px">
+            <span class="fa fa-facebook-official" style="margin-right: 10px"><a href="https://www.facebook.com/AirVuz"></a></span>
+            <span class="fa fa-twitter" style="margin-right: 10px"><a href="https://twitter.com/AirVuz"></a></span>
+            <span class="fa fa-instagram"><a href="https://www.instagram.com/airvuz"></a></span>
+        </div>
+    </div>
+
 </div>
