@@ -1,4 +1,4 @@
-/* global Page */
+/* global ga */
 require('bootstrap-tagsinput');
 require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
@@ -12,7 +12,9 @@ var Evaporate     = require('evaporate'),
     categories    = require('./services/category'),
     dialogs       = require('./services/dialogs'),
     utils         = require('./services/utils'),
-    videoSocialShare = require('./services/videoSocialShare');
+    videoSocialShare = require('./services/videoSocialShare'),
+    AVEventTracker = require('./avEventTracker');
+
 
 /**
  * Templates
@@ -212,6 +214,14 @@ function bindEvents() {
 
   function onPublish(event) {
     event.preventDefault();
+
+    AVEventTracker({
+        codeSource: 'upload',
+        eventName: 'video-upload-started',
+        eventType: 'uploadClick'
+    });
+    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
+
     // isUploadVideo will prevent validation
     if (isPublishing || isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
       return false;
@@ -256,7 +266,22 @@ function bindEvents() {
       data        : JSON.stringify(params)
     }).done(function (video) {
       renderStep(3, video);
+
+      AVEventTracker({
+          codeSource: 'upload',
+          eventName: 'video-upload-published',
+          eventType: 'uploadClick'
+      });
+      ga('send', 'event', 'upload', 'video-upload-published', 'upload');
+
     }).fail(function(response) {
+      AVEventTracker({
+          codeSource: 'upload',
+          eventName: 'video-upload-failed',
+          eventType: 'uploadClick'
+      });
+      ga('send', 'event', 'upload', 'video-upload-failed', 'upload');
+
       if (response.status === 400) {
         dialogs.required();
         appendErrorMessage(response.responseJSON.error);
