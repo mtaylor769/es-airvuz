@@ -242,6 +242,14 @@ function bindEvents() {
         setTimeout(function () {
           $loginModal.find('.text-message').addClass('hidden');
         }, 5000);
+
+        AVEventTracker({
+          codeSource: 'core',
+          eventName: 'local-account-created',
+          eventType: 'signUpClick',
+          referrer: document.referrer
+        });
+        ga('send', 'event', 'signup', 'login-account-created', 'signup');
       })
       .fail(function(response) {
         appendErrorMessage(response.responseJSON);

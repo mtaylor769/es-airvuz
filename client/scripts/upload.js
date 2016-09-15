@@ -12,7 +12,9 @@ var Evaporate     = require('evaporate'),
     categories    = require('./services/category'),
     dialogs       = require('./services/dialogs'),
     utils         = require('./services/utils'),
-    videoSocialShare = require('./services/videoSocialShare');
+    videoSocialShare = require('./services/videoSocialShare'),
+    AVEventTracker = require('./avEventTracker');
+
 
 /**
  * Templates
@@ -212,6 +214,13 @@ function bindEvents() {
 
   function onPublish(event) {
     event.preventDefault();
+
+    AVEventTracker({
+        codeSource: 'upload',
+        eventName: 'video-upload-started',
+        eventType: 'uploadClick'
+    });
+
     // isUploadVideo will prevent validation
     if (isPublishing || isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
       return false;
@@ -256,7 +265,19 @@ function bindEvents() {
       data        : JSON.stringify(params)
     }).done(function (video) {
       renderStep(3, video);
+
+      AVEventTracker({
+          codeSource: 'upload',
+          eventName: 'video-upload-published',
+          eventType: 'uploadClick'
+      });
     }).fail(function(response) {
+      AVEventTracker({
+          codeSource: 'upload',
+          eventName: 'video-upload-failed',
+          eventType: 'uploadClick'
+      });
+
       if (response.status === 400) {
         dialogs.required();
         appendErrorMessage(response.responseJSON.error);

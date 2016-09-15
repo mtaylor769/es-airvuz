@@ -10,7 +10,8 @@ var jwt               = require('jsonwebtoken'),
   crypto              = require('crypto'),
   GoogleAuth          = require('google-auth-library'),
   authFactory         = new GoogleAuth(),
-  token               = null;
+  token               = null,
+  EventTrackingCrud	  = require('../../persistence/crud/events/eventTracking');
 
 function localLogin(req, res) {
   var emailAddress  = req.body.emailAddress.trim();
@@ -167,6 +168,13 @@ function _socialLogin(socialData) {
               socialData.userId = user._id;
               return SocialCrud.create(socialData)
                 .then(function () {
+                  EventTrackingCrud.create({
+                    codeSource  : "auth",
+                    eventSource : "nodejs",
+                    eventType   : "post",
+                    eventName   : (socialData.provider === 'google' ? 'google-account-created' : 'facebook-account-created')
+                  });
+
                   return user;
                 });
             })
