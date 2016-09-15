@@ -1599,7 +1599,7 @@ Video Player Slick theme
   }
 
   .up-next-wrapper a > img {
-    width: inherit;
+    width: 100%;
   }
   .up-next-layer {
     width: 100%;
