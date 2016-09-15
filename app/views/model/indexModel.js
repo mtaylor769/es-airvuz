@@ -37,7 +37,6 @@ IndexModel.prototype.getData = function(params) {
 	var userId					= params.request.params.id;
 
 	params.data										= {};
-	params.data.vendor			= {};
 
 	params.data.index							= {};
 	params.data.index.fb					= config.view.fb;
