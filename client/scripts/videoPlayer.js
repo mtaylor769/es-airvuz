@@ -258,12 +258,10 @@ PubSub.subscribe('video-switched', function (msg, data) {
     });
 
     //slide up function for description
-    if ($( window ).width() >= 768) {
-        setTimeout(function() {
-            $('.show-more-description span').removeClass('invisible');
-            $('#video-description').slideUp();
-        }, 5000);
-    }
+    setTimeout(function() {
+        $('.show-more-description span').removeClass('invisible');
+        $('#video-description').slideUp();
+    }, 5000);
 
     // set the virtual page view tracking
     ga('set', 'page', document.location.pathname);
@@ -1191,12 +1189,10 @@ function initialize(videoPath, currentVideo) {
   }
 
   //slide up function for description
-  if ($( window ).width() >= 768) {
-      setTimeout(function() {
-          $('.show-more-description span').removeClass('invisible');
-          $('#video-description').slideUp();
-      }, 5000);
-  }
+  setTimeout(function() {
+      $('.show-more-description span').removeClass('invisible');
+      $('#video-description').slideUp();
+  }, 5000);
 
   // render the social icons
   videoSocialShareTpl({video: video}, function (err, html) {
