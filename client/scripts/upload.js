@@ -153,6 +153,14 @@ function renderThumbnail(thumbnails) {
 
 function onUploadError(message) {
   isUploadingVideo = false;
+
+  AVEventTracker({
+    codeSource: 'upload',
+    eventName: 'video-upload-failed',
+    eventType: 'uploadClick'
+  });
+  ga('send', 'event', 'upload', 'video-upload-failed', 'upload');
+
   console.log('******************** message ********************');
   console.log(message);
   console.log('************************************************');
@@ -263,18 +271,12 @@ function bindEvents() {
       AVEventTracker({
           codeSource: 'upload',
           eventName: 'video-upload-published',
-          eventType: 'uploadClick'
+          eventType: 'uploadClick',
+          videoId: video._id
       });
       ga('send', 'event', 'upload', 'video-upload-published', 'upload');
 
     }).fail(function(response) {
-      AVEventTracker({
-          codeSource: 'upload',
-          eventName: 'video-upload-failed',
-          eventType: 'uploadClick'
-      });
-      ga('send', 'event', 'upload', 'video-upload-failed', 'upload');
-
       if (response.status === 400) {
         dialogs.required();
         appendErrorMessage(response.responseJSON.error);
@@ -306,6 +308,13 @@ function bindEvents() {
     }).done(function (hashName) {
       isUploadingVideo = true;
       currentUploadFile.hashName = hashName;
+
+      AVEventTracker({
+        codeSource: 'upload',
+        eventName: 'video-upload-started',
+        eventType: 'uploadFileDrop'
+      });
+      ga('send', 'event', 'upload', 'video-upload-started', 'upload');
 
       renderStep(2);
 
@@ -464,13 +473,6 @@ function bindEvents() {
   function onUploadExternalUrlClick(event) {
     event.preventDefault();
 
-    AVEventTracker({
-      codeSource: 'upload',
-      eventName: 'video-upload-started',
-      eventType: 'uploadClick'
-    });
-    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
-
     var url = $uploadPage.find('#external-url-input').val();
 
     // TODO: validate url to make sure it is youtube or vimeo
@@ -478,6 +480,13 @@ function bindEvents() {
     if (!url) {
       return;
     }
+
+    AVEventTracker({
+      codeSource: 'upload',
+      eventName: 'video-upload-started',
+      eventType: 'uploadClick'
+    });
+    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
 
     isUploadingVideo = true;
 
