@@ -10,6 +10,7 @@
     function topViewsController($http) {
 
         function getTopViews() {
+            vm.videos = []; // clear previous result
             vm.working = true;
             var data = {};
             data.startDate = vm.startDate;

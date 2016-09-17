@@ -75,8 +75,15 @@ var eventTrackingSchema = mongoose.Schema({
 	
 });
 
+/**
+ * Index
+ */
+// compound indexes for video report
+eventTrackingSchema.index({videoId: 1, eventName: 1});
+eventTrackingSchema.index({eventName: 1});
+
 module.exports = {
 	connectionName	: "events",
 	modelName				: "EventTracking",
 	schema					: eventTrackingSchema
-}
+};
