@@ -36,6 +36,7 @@
         function onImageUploadComplete(file) {
             vm.slide.hashName = file.hashName;
             vm.slidePreviewSrc = file.url;
+            vm.newImage = true;
             vm.srcReady = true;
         }
 
@@ -52,29 +53,47 @@
         }
 
         function saveSlide() {
-            var params = {
-                key: vm.slide.hashName,
-                dir: Amazon.assetBucket + '/slide'
-            };
+            if(vm.newImage){
+                var params = {
+                    key: vm.slide.hashName,
+                    dir: Amazon.assetBucket + '/slide'
+                };
 
-            $http.post('/api/amazon/move-file', params)
-                .then(function () {
-                    vm.slide.imagePath = vm.slide.hashName;
-                    return vm.slide.$update();
-                })
-                .then(function () {
-                    dialog.alert({
-                        title: 'Saved',
-                        content: 'Slide has been saved',
-                        ok: 'OK'
+                $http.post('/api/amazon/move-file', params)
+                    .then(function () {
+                        vm.slide.imagePath = vm.slide.hashName;
+                        return vm.slide.$update();
+                    })
+                    .then(function () {
+                        dialog.alert({
+                            title: 'Saved',
+                            content: 'Slide has been saved',
+                            ok: 'OK'
+                        });
+                    })
+                    .catch(function(error) {
+                        dialog.serverError();
+                    })
+                    .finally(function () {
+                        $state.go('sliders.slides');
                     });
-                })
-                .catch(function(error) {
-                    dialog.serverError();
-                })
-                .finally(function () {
-                    $state.go('sliders.slides');
-                });
+            } else {
+                vm.slide.$update()
+                    .then(function () {
+                        dialog.alert({
+                            title: 'Saved',
+                            content: 'Slide has been saved',
+                            ok: 'OK'
+                        });
+                    })
+                    .catch(function(error) {
+                        dialog.serverError();
+                    })
+                    .finally(function () {
+                        $state.go('sliders.slides');
+                    });
+            }
+
         }
 
     ////////////////////////
