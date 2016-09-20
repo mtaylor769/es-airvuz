@@ -19,6 +19,7 @@
       'ngMaterialDatePicker',
       'angularMoment',
       'ngTagsInput',
-      'vjs.video'
+      'vjs.video',
+      'ngLodash'
     ]);
 })();

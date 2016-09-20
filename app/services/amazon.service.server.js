@@ -7,6 +7,8 @@ var Promise       = require('bluebird'),
     fs            = require('fs'),
     request       = require('request'),
     awsOptions    = {};
+var log4js            = require('log4js');
+var logger            = log4js.getLogger('app.routes.api.amazon');
 
 AWS.config.region       = 'us-west-2';
 AWS.config.httpOptions  = {timeout: 7200000}; // 2 hr
@@ -332,6 +334,7 @@ function signAuth(toSign) {
  * @param {string} params.newName - default to key if doesn't exist
  */
 function moveFile(params) {
+  logger.debug(params);
   var bucket = new AWS.S3(awsOptions);
 
   return new Promise(function (resolve, reject) {
@@ -342,6 +345,7 @@ function moveFile(params) {
       ACL: 'public-read'
     }, function (err, data) {
       if (err) {
+        logger.error(err);
         return reject(err);
       }
       resolve();

@@ -1,0 +1,14 @@
+<div id="slides">
+    <h2>Slides</h2>
+    <div>
+        <md-card class="slider-slide-card" ng-repeat="slide in vm.slides">
+            <div class="slider-card-content">
+                <h5>{{slide.name}}</h5>
+                <img src="{{vm.amazonBucket}}{{slide.imagePath}}">
+                <p>{{slide.description}}</p>
+                <md-button class="md-warn md-raised" ng-click="vm.deleteSlide(slide)">Remove</md-button>
+                <md-button class="md-warn md-raised" ng-click="vm.editSlide(slide)">Edit</md-button>
+            </div>
+        </md-card>
+    </div>
+</div>

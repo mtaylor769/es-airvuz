@@ -2,7 +2,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="/admin/lib/angular-material-datetimepicker/css/material-datetimepicker.min.css">
   <link rel="stylesheet" href="/admin/css/style.css"/>
@@ -53,42 +53,54 @@
         <md-icon class="material-icons">ondemand_video</md-icon>
         <p>Staff Pick Videos</p>
       </md-list-item>
-      <md-list-item ui-sref="sliders">
+      <md-list-item ng-click="vm.sliderMenu = !vm.sliderMenu">
         <md-icon class="material-icons">dashboard</md-icon>
         <p>Sliders</p>
       </md-list-item>
+      <md-list ng-show="vm.sliderMenu">
+        <md-list-item ui-sref="sliders.newSlide" ng-click="vm.sliderMenu = !vm.sliderMenu">
+          <p>New Slide</p>
+        </md-list-item>
+        <md-list-item ui-sref="sliders.newSlider" ng-click="vm.sliderMenu = !vm.sliderMenu">
+          <p>New Slider</p>
+        </md-list-item>
+        <md-list-item ui-sref="sliders.sliders" ng-click="vm.sliderMenu = !vm.sliderMenu">
+          <p>Sliders</p>
+        </md-list-item>
+        <md-list-item ui-sref="sliders.slides" ng-click="vm.sliderMenu = !vm.sliderMenu">
+          <p>Slides</p>
+        </md-list-item>
+      </md-list>
       <md-list-item ng-click="vm.reportMenu = !vm.reportMenu">
         <md-icon class="material-icons">show_chart</md-icon>
         <p>Reports</p>
       </md-list-item>
-      <menu>
-        <md-list ng-show="vm.reportMenu">
-          <md-list-item ui-sref="reports.siteInfo">
-            <p>Site Info</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.videosUploaded">
-            <p>Videos Uploaded</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.commentsMade">
-            <p>Comments Made</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.employeeReport">
-            <p>Employee Report</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.hashtagVideo">
-            <p>Hashtag Video Report</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.hashtagUser">
-            <p>Hashtag User Report</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.top100AllTime">
-            <p>Top 100 Views All Time</p>
-          </md-list-item>
-          <md-list-item ui-sref="reports.videoPercentage">
-            <p>Video Completed Data Report</p>
-          </md-list-item>
-        </md-list>
-      </menu>
+      <md-list ng-show="vm.reportMenu">
+        <md-list-item ui-sref="reports.siteInfo" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Site Info</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.videosUploaded" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Videos Uploaded</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.commentsMade" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Comments Made</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.employeeReport" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Employee Report</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.hashtagVideo" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Hashtag Video Report</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.hashtagUser" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Hashtag User Report</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.top100AllTime" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Top 100 Views All Time</p>
+        </md-list-item>
+        <md-list-item ui-sref="reports.videoPercentage" ng-click="vm.reportMenu = !vm.reportMenu">
+          <p>Video Completed Data Report</p>
+        </md-list-item>
+      </md-list>
       <md-list-item ui-sref="curationRatingInitial">
         <md-icon class="material-icons"></md-icon>
         <p>Video Curation</p>
@@ -108,7 +120,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-sanitize.min.js"></script>
 
 <!-- Angular Material Library -->
-<script src="//ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 
 <script src="/admin/app/app.module.js"></script>
 <script src="/admin/app/app.config.js"></script>
@@ -127,6 +139,7 @@
 <script src="/admin/app/core/services/auth.js"></script>
 <script src="/admin/app/core/services/confirmDelete.js"></script>
 <script src="/admin/app/core/services/amazon.service.js"></script>
+<script src="/admin/app/core/directives/fileupload.directive.js"></script>
 <script src="/admin/app/login/login.controller.js"></script>
 <script src="/admin/app/home/home.controller.js"></script>
 <script src="/admin/app/featuredVideos/featuredVideos.controller.js"></script>
@@ -144,7 +157,12 @@
 <script src="/admin/app/users/users.controller.js"></script>
 <script src="/admin/app/users/user.controller.js"></script>
 <script src="/admin/app/users/userRoles.controller.js"></script>
+<script src="/admin/app/sliders/newSlide.controller.js"></script>
+<script src="/admin/app/sliders/newSlider.controller.js"></script>
 <script src="/admin/app/sliders/sliders.controller.js"></script>
+<script src="/admin/app/sliders/slideEdit.controller.js"></script>
+<script src="/admin/app/sliders/sliderEdit.controller.js"></script>
+<script src="/admin/app/sliders/slides.controller.js"></script>
 <script src="/admin/app/sliders/sliders.service.js"></script>
 <script src="/admin/app/drone-type/droneType.controller.js"></script>
 <script src="/admin/app/drone-type/droneTypeEdit.controller.js"></script>
@@ -168,6 +186,7 @@
 <script src="/admin/lib/ng-tags-input/ng-tags-input.min.js"></script>
 <script src="/admin/lib/video.js/dist/video.min.js"></script>
 <script src="/admin/lib/vjs-video/dist/vjs-video.min.js"></script>
+<script src="/admin/lib/ng-lodash/build/ng-lodash.min.js"></script>
 
 </body>
 </html>

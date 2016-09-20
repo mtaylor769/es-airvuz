@@ -12,16 +12,20 @@ catch(exception) {
 
 function Slider() {}
 
-function getAllSlider(params) {
+function getAllSlider() {
   return SliderModel.find().populate('slides').lean().exec();
+}
+
+function getAllSlidersForDelete() {
+  return SliderModel.find().exec();
 }
 
 function updateSlider(params) {
   return SliderModel.findOneAndUpdate({_id: params._id}, params).exec();
 }
 
-function getSlider() {
-  return SliderModel.findById(params._id, params).populate('slides').exec();
+function getSlider(id) {
+  return SliderModel.findById(id).populate('slides').exec();
 }
 
 function createSlider(params) {
@@ -83,5 +87,5 @@ Slider.prototype.getSlider    = getSlider;
 Slider.prototype.createSlider = createSlider;
 Slider.prototype.removeSlider = removeSlider;
 Slider.prototype.getHomeSlider = getHomeSlider;
-
+Slider.prototype.getAllSlidersForDelete = getAllSlidersForDelete;
 module.exports = new Slider();

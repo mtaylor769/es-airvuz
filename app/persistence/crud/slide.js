@@ -20,7 +20,7 @@ function Slide() {
 
 }
 
-function getAllSlide(params) {
+function getAllSlide() {
   return SlideModel.find().lean().exec();
 }
 
@@ -36,9 +36,14 @@ function removeSlide(id) {
   return SlideModel.findOneAndRemove({_id: id}).exec();
 }
 
+function updateSlide(slideObject) {
+  return SlideModel.findByIdAndUpdate(slideObject._id, slideObject).exec()
+}
+
 Slide.prototype.getAllSlide = getAllSlide;
 Slide.prototype.createSlide = createSlide;
 Slide.prototype.getSlide    = getSlide;
 Slide.prototype.removeSlide = removeSlide;
+Slide.prototype.updateSlide = updateSlide;
 
 module.exports = new Slide();

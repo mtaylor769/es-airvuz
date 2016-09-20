@@ -23,8 +23,26 @@
             .title(options.title)
             .textContent(options.content)
             .ok(options.ok);
-        $mdDialog.show(alert)
+        return $mdDialog.show(alert)
+      },
+      custom: function(options) {
+        var customConfig = {
+          templateUrl: options.templateUrl,
+          controller: options.controller,
+          controllerAs: 'vm',
+          clickOutsideToClose: true,
+          locals: options.locals
+        };
+        return $mdDialog.show(customConfig);
+      },
+      serverError: function() {
+        var error = $mdDialog.alert()
+            .title('Error')
+            .textContent('An error occurred. If this problem persists please contact support.')
+            .ok('OK');
+        return $mdDialog.show(error);
       }
+
     }
 
   }
