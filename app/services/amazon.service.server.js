@@ -242,10 +242,27 @@ function hasImageSize(path) {
   });
 }
 
-function reSizeImage(picture, size) {
-  console.log('******************** resizeImage ********************');
-  console.log(picture);
-  console.log('************************************************');
+function hasImage(bucket, key) {
+  var s3 = new AWS.S3(awsOptions);
+
+  return new Promise(function (resolve, reject) {
+    s3.headObject({
+      Bucket: bucket,
+      Key: key
+    }, function (err) {
+      if (err) {
+        if (err.code === 'NotFound') {
+          return resolve(false);
+        }
+        return reject(err);
+      }
+
+      resolve(true);
+    });
+  });
+}
+
+function reSizeProfileImage(picture, size) {
   var resizePath = 'users/profile-pictures/resize/';
   var originalPath = 'users/profile-pictures/';
   var imagePath = amazonConfig.ASSET_URL + originalPath + picture;
@@ -259,12 +276,17 @@ function reSizeImage(picture, size) {
   var key =  resizePath + pictureWithoutExt + sizeExt + part[1];
 
   return uploadToS3(amazonConfig.ASSET_BUCKET, key, stream).then(function () {
-    console.log('******************** upload done ********************');
     return {
       fileName: picture,
       path: amazonConfig.ASSET_URL + key
     };
   });
+}
+
+function reSizeThumbnailImage(params) {
+  var readStream = request('https://s3-us-west-2.amazonaws.com/' + params.bucket + '/' + params.path);
+  var stream = image.resize(readStream, params.size);
+  return uploadToS3(params.bucket, params.newName, stream);
 }
 
 /**
@@ -358,7 +380,9 @@ module.exports = {
   moveFile            : moveFile,
   uploadToS3          : uploadToS3,
   hasImageSize        : hasImageSize,
-  reSizeImage         : reSizeImage,
+  hasImage            : hasImage,
+  reSizeProfileImage  : reSizeProfileImage,
+  reSizeThumbnailImage: reSizeThumbnailImage,
   // Middleware
   confirmSubscription : confirmSubscription,
 

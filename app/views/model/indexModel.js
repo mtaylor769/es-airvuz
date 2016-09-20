@@ -46,8 +46,9 @@ IndexModel.prototype.getData = function(params) {
 	params.data.index.head.title	= "AirVūz – World’s Best Drone Videos";
 	params.data.index.viewName		= "index";
 
-	params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
+	params.data.s3Bucket 					= amazonConfig.OUTPUT_BUCKET;
 	params.data.s3AssetUrl 				= amazonConfig.ASSET_URL;
+	params.data.cdnUrl						= global.IS_PRODUCTION ? '//d32znywta9rkav.cloudfront.net' : '';
 
 	var promises = [
 		CategoryType.get(),

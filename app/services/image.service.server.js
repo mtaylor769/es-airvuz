@@ -1,6 +1,6 @@
 var gm            = require('gm').subClass({imageMagick: true});
 
-function resize(readStream, size) {
+function resize(readStream, size, quality) {
   var width = size,
       height = size;
   
@@ -11,6 +11,7 @@ function resize(readStream, size) {
   
   return gm(readStream)
     .resize(width, height)
+    .quality(quality || 70)
     .stream();
 }
 
