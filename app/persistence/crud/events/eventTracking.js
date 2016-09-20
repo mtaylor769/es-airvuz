@@ -4,8 +4,8 @@ try {
   var logger              = log4js.getLogger('app.persistence.crud.events.eventTracking');
   var database            = require('../../database/database');
   var EventTrackingModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.events.eventTracking'});
-  var Promise             = require('bluebird');
   var moment              = require('moment');
+  var _                   = require('lodash');
 
   if (global.NODE_ENV === 'production') {
     logger.setLevel('INFO');
@@ -25,39 +25,55 @@ function create(params) {
     .save();
 }
 
+function _getVideoEvent(videoId, startDate, endDate) {
+  return EventTrackingModel.aggregate(
+
+    // Pipeline
+    [
+      // Stage 1
+      {
+        $match: {
+          videoId: videoId.toString(),
+          createdDate: {
+            $gte: startDate,
+            $lte: endDate
+          },
+          $or: [
+            {eventName: 'video-play-start'},
+            {eventName: 'video-ended'},
+            {eventName: 'video-exited-on-playing'}
+          ]
+        }
+      },
+
+      // Stage 2
+      {
+        $group: {
+          _id: '$eventName',
+          videoId: {
+            $last: "$videoId"
+          },
+          total: {$sum: 1},
+          timeWatched: {$sum: '$eventVideoPlaybackDetails.viewDuration'},
+          totalTime: {$sum: '$eventVideoPlaybackDetails.totalDuration'}
+        }
+      }
+    ]
+  ).exec();
+
+}
+
 function getByVideoId(videoId, startDate, endDate) {
-
-  function getVideoStart(videoId, startDate, endDate) {
-    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-play-start'}).exec();
-  }
-
-  function getVideoEnd(videoId, startDate, endDate) {
-    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-ended'}).exec();
-  }
-
-  function getVideoExit(videoId, startDate, endDate) {
-    return EventTrackingModel.find({videoId: videoId, createdDate: {$gte: startDate, $lte: endDate}, eventName: 'video-exited-on-playing'}).exec();
-  }
-
-  var promises = [
-    getVideoStart(videoId, startDate, endDate),
-    getVideoEnd(videoId, startDate, endDate),
-    getVideoExit(videoId, startDate, endDate)
-  ];
-
-  return Promise.all(promises)
-      .spread(function(start, end, exit) {
+  return _getVideoEvent(videoId, startDate, endDate)
+      .then(function(result) {
         var eventsObj = {};
-        eventsObj.videoEnded = end;
-        eventsObj.videoStart = start;
-        eventsObj.videoExit = {};
-        eventsObj.videoExit.timeWatched = 0;
-        eventsObj.videoExit.totalTime = 0;
+        var composedAggregate = _.keyBy(result, '_id');
 
-        exit.forEach(function(event) {
-          eventsObj.videoExit.timeWatched += event.eventVideoPlaybackDetails.viewDuration;
-          eventsObj.videoExit.totalTime += event.eventVideoPlaybackDetails.totalDuration;
-        });
+        eventsObj.videoEnded = composedAggregate['video-ended'] ? composedAggregate['video-ended'].total : 0;
+        eventsObj.videoStart = composedAggregate['video-play-start'] ? composedAggregate['video-play-start'].total : 0;
+        eventsObj.videoExit = {};
+        eventsObj.videoExit.timeWatched = composedAggregate['video-exited-on-playing'] ? composedAggregate['video-exited-on-playing'].timeWatched : 0;
+        eventsObj.videoExit.totalTime = composedAggregate['video-exited-on-playing'] ? composedAggregate['video-exited-on-playing'].totalTime : 0;
 
         return eventsObj;
       });

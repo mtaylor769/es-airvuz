@@ -288,9 +288,9 @@ Reports.prototype.top100Views = function(req, res) {
                 return eventTrackerCrud.getByVideoId(video._id, startDate, endDate)
                     .then(function(eventObj) {
                         video.percentageInfo = {};
-                        video.percentageInfo.videoStarted = eventObj.videoStart.length;
-                        video.percentageInfo.videoEnded = eventObj.videoEnded.length;
-                        video.percentageInfo.percentageFullWatch = (eventObj.videoEnded.length / eventObj.videoStart.length);
+                        video.percentageInfo.videoStarted = eventObj.videoStart;
+                        video.percentageInfo.videoEnded = eventObj.videoEnded;
+                        video.percentageInfo.percentageFullWatch = (eventObj.videoEnded / eventObj.videoStart);
                         video.percentageInfo.percentageWatchedOnExit = (eventObj.videoExit.timeWatched / eventObj.videoExit.totalTime);
                         return video;
                     })
