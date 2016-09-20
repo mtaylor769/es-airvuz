@@ -242,9 +242,12 @@ PubSub.subscribe('video-switched', function (msg, data) {
     videoInfoPartialTpl({video: data}, function (err, html) {
         $('.video-info').empty();
         $('.video-info').prepend(html);
-        $('.video-info').tooltip({
-            selector: "[data-toggle='tooltip']"
-        });
+
+        if (!browser.isMobile()) {
+            $('.video-info').tooltip({
+                selector: "[data-toggle='tooltip']"
+            });
+        }
     });
 
     // render the social icons
