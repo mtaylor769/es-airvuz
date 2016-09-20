@@ -68,7 +68,7 @@
             video.src = amazonConfig.OUTPUT_URL + data.videoPath;
             video.poster = amazonConfig.OUTPUT_URL + data.thumbnailPath;
 
-            $('body').find('.videoback').click();
+            $('body').animate({scrollTop: 0}, 'fast');
 
             _this._updateUrl(data);
 
