@@ -20,6 +20,7 @@ var videoCuration 		= require('./videoCuration');
 var aclRoles 			= require('./aclRoles');
 // var forms               = require('./forms');
 var image               = require('./image');
+var cron                = require('./cron');
 var protect             = require('../../middlewares/protect');
 var token               = require('../../middlewares/token');
 
@@ -348,5 +349,12 @@ apiRouter.route('/api/aclRoles/:id')
 	.get(aclRoles.getUserRoles)
 	.post(aclRoles.removeAclRoleFromUser)
 	.put(aclRoles.addAclRoleToUser);
+
+/**
+ * /api/cron
+ */
+apiRouter.route('/api/cron/trending')
+	.get(cron.runTrending) // manually
+	.post(cron.runTrending); // cron post from cron.yaml
 
 module.exports = apiRouter;
