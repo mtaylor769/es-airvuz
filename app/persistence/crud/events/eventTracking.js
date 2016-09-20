@@ -5,6 +5,7 @@ try {
   var database            = require('../../database/database');
   var EventTrackingModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.events.eventTracking'});
   var Promise             = require('bluebird');
+  var moment              = require('moment');
 
   if (global.NODE_ENV === 'production') {
     logger.setLevel('INFO');
@@ -62,7 +63,26 @@ function getByVideoId(videoId, startDate, endDate) {
       });
 }
 
+/**
+ * check to see if cron ran in the last 4 hour
+ * @returns {Promise|Boolean}
+ */
+function didTrendingRun() {
+  return EventTrackingModel.findOne({eventName: 'cron:trending'}).sort('-createdDate').exec()
+    .then(function (event) {
+      if (!event) {
+        return false;
+      }
+      var lastRun = moment(event.createdDate);
+      var now = moment();
+      var diff = now.diff(lastRun, 'hour', true);
+
+      return diff < 4;
+    });
+}
+
 EventTracking.prototype.create = create;
 EventTracking.prototype.getByVideoId = getByVideoId;
+EventTracking.prototype.didTrendingRun = didTrendingRun;
 
 module.exports = new EventTracking();

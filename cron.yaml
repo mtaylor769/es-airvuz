@@ -1,0 +1,5 @@
+version: 1
+cron:
+  - name: "trending"
+    url: "/api/cron/trending"
+    schedule: "0 */4 * * *"
