@@ -1,0 +1,41 @@
+<div layout-padding>
+    <!---- Title ---->
+    <h2>Edit Slider</h2>
+    <!---- Set name input  ---->
+    <div layout="row">
+        <md-input-container flex="80">
+            <input placeholder="Set Name" ng-model="vm.slider.name">
+        </md-input-container>
+    </div>
+    <!---- Slider start date ---->
+    <div layout="row">
+        <md-input-container>
+            <input mdc-datetime-picker time="false" date="true" placeholder="Start Date" ng-model="vm.slider.startDate">
+        </md-input-container>
+    </div>
+    <!---- Slider end date ---->
+    <div layout="row">
+        <md-input-container>
+            <input mdc-datetime-picker time="false" date="true" placeholder="End Date" ng-model="vm.slider.endDate">
+        </md-input-container>
+    </div>
+    <!----  Slide selector ---->
+    <div layout="row">
+        <md-select ng-model="vm.slideSelect" placeholder="Select Slide" flex="50">
+            <md-option ng-value="slide" ng-repeat="slide in vm.slides">{{slide.name}}</md-option>
+        </md-select>
+        <md-button class="md-raised md-warn" ng-click="vm.addSlideToSlider(slide)">Add</md-button>
+    </div>
+    <md-card class="slider-slide-card" ng-repeat="_slide in vm.slider.slides">
+        <div class="slider-card-content">
+            <h5>{{_slide.name}}</h5>
+            <img src="{{vm.amazonBucket}}{{_slide.imagePath}}">
+            <p>{{_slide.description}}</p>
+            <md-button class="md-warn md-raised" ng-click="vm.removeSlide(_slide)">Remove</md-button>
+        </div>
+    </md-card>
+    <div>
+        <md-button class="md-warn md-raised" ng-click="vm.saveSlider()">Save</md-button>
+        <md-button class="md-warn md-raised" ng-click="vm.cancelEdit()">Cancel</md-button>
+    </div>
+</div>

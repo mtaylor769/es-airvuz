@@ -1,0 +1,36 @@
+<div layout-padding>
+    <h2>Add New Slide</h2>
+    <md-input-container class="md-block">
+        <input class="form-control" type="text" placeholder="Name" ng-model="vm.slide.name">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <input type="text" placeholder="Image Alt" ng-model="vm.slide.imageAlt">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <input type="text" placeholder="Video ID" ng-model="vm.slide.video">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <textarea type="text" placeholder="Description" ng-model="vm.slide.description"></textarea>
+    </md-input-container>
+    <p><strong>Upload Slide Image: </strong>Best resolution for the slide is 1170 x 439 pixels</p>
+    <md-progress-linear md-mode="determinate" value="{{vm.imageUploadProgress}}" flex="95"></md-progress-linear>
+    <div layout="row">
+        <div flex="30" layout="row">
+            <md-button class="md-raised md-accent" file-upload>Choose File</md-button>
+            <input id="upload-file" evaporate="" eva-model="vm.evaData" type="file" accept="image/*">
+            <p>{{vm.fileChosen}}</p>
+        </div>
+    </div>
+    <div ng-hide="vm.srcReady">
+        <p>Slide Image</p>
+        <img src="{{vm.amazonBucket}}{{vm.slide.imagePath}}" width="1170px" height="439px">
+    </div>
+    <div ng-show="vm.srcReady">
+        <p>New Image Preview</p>
+        <img src="{{vm.slidePreviewSrc}}" width="1170px" height="439px">
+    </div>
+    <div>
+        <md-button class="md-warn md-raised" ng-click="vm.saveSlide()">Save</md-button>
+        <md-button class="md-warn md-raised" ng-click="vm.cancelEdit()">Cancel</md-button>
+    </div>
+</div>

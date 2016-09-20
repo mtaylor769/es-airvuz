@@ -191,8 +191,43 @@
       })
       .state('sliders', {
         url: '/admin/sliders',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('sliders.newSlide', {
+        url:'/new-slide',
+        templateUrl: '/admin/app/sliders/partial/new-slide.html',
+        controller: 'newSlideController',
+        controllerAs: 'vm'
+      })
+      .state('sliders.newSlider', {
+        url: '/new-slider',
+        templateUrl: '/admin/app/sliders/partial/new-slider.html',
+        controller: 'newSliderController',
+        controllerAs: 'vm'
+      })
+      .state('sliders.sliders', {
+        url: '/sliders',
         templateUrl: '/admin/app/sliders/partial/sliders.html',
-        controller: 'SlidersController',
+        controller: 'slidersController',
+        controllerAs: 'vm'
+      })
+      .state('sliders.sliderEdit', {
+        url:'/slider-edit/:id',
+        templateUrl: '/admin/app/sliders/partial/slider-edit.html',
+        controller: 'sliderEditController',
+        controllerAs: 'vm'
+      })
+      .state('sliders.slides', {
+        url: '/slides',
+        templateUrl: '/admin/app/sliders/partial/slides.html',
+        controller: 'slidesController',
+        controllerAs: 'vm'
+      })
+      .state('sliders.slideEdit', {
+        url: '/slide-edit/:id',
+        templateUrl: '/admin/app/sliders/partial/slide-edit.html',
+        controller: 'slideEditController',
         controllerAs: 'vm'
       })
       .state('curationRatingInitial', {

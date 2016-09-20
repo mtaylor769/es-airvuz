@@ -1,179 +1,43 @@
-(function () {
-  'use strict';
+(function() {
+    'use strict';
 
-  angular
-    .module('AirvuzAdmin')
-    .controller('SlidersController', SlidersController);
+    angular
+        .module('AirvuzAdmin')
+        .controller('slidersController', slidersController);
 
-  SlidersController.$inject = ['Sliders', '$q', '$http', 'Amazon', 'identity'];
+    slidersController.$inject = ['Sliders', 'dialog', '$state', 'lodash'];
 
-  function SlidersController(Sliders, $q, $http, Amazon, identity) {
-    var Slide = Sliders.createResource('slide');
-    var Slider = Sliders.createResource('slider');
+    function slidersController(Sliders, dialog, $state, lodash) {
+        var sliderResource = Sliders.createResource('slider');
+        getAllSliders();
 
-    function showForm(form) {
-      vm.isOpen[form] = true;
-    }
+        function getAllSliders() {
+            sliderResource.query()
+                .$promise
+                .then(function(data) {
+                    vm.sliders = data;
+                }, function() {
+                    dialog.serverError();
+                });
+        }
 
-    function hideForm(form) {
-      vm.isOpen[form] = false;
+        function editSlider(slider) {
+            $state.go('sliders.sliderEdit', {id: slider._id});
+        }
 
-      if (form === 'slider') {
-        return vm.newSlider = {
-          slide: []
-        };
-      }
-      vm.newSlide = {};
-      vm.imageUploadProgress = 0;
-    }
-    
-    function save(type) {
-      if (type === 'slide') {
-        return saveSlide();
-      }
-      saveSlider();
-    }
+        function deleteSlider(slide) {
+            slide.$delete()
+                .then(function() {
+                    vm.sliders.splice(lodash.indexOf(vm.sliders, slide), 1);
+                })
+        }
 
-    function saveSlider() {
-      angular.forEach(vm.newSlider.slides, function (slide, index) {
-        vm.newSlider.slides[index] = slide._id;
-      });
-      // existing slider
-      if (vm.newSlider._id) {
-        vm.newSlider.$update();
-      } else {
-        var newSlider = new Slider(vm.newSlider);
-        newSlider.$save(function () {
-          vm.sliders.push(newSlider);
-        });
-      }
 
-      hideForm('slider');
-    }
-    
-    function saveSlide() {
-      var params = {
-        key: vm.newSlide.hashName,
-        dir: Amazon.assetBucket + '/slide'
-      };
-
-      $http.post('/api/amazon/move-file', params)
-        .then(function () {
-          vm.newSlide.imagePath = vm.newSlide.hashName;
-          var newSlide = new Slide(vm.newSlide);
-          newSlide.$save(function () {
-            vm.slides.push(newSlide);
-            hideForm('slide');
-          });
-        });
-    }
-
-    function addSlideToSlider() {
-      if (vm.newSlider.slides) {
-        return vm.newSlider.slides.push(vm.selectedSlide);
-      }
-      vm.newSlider.slides = [vm.selectedSlide];
-    }
-    
-    function initialize() {
-      Slide.query()
-        .$promise
-        .then(function (response) {
-          vm.slides = response;
-        });
-
-      Slider.query()
-        .$promise
-        .then(function (response) {
-          vm.sliders = response;
-        })
-    }
-    function onStart(file) {
-      var part = file.name.split('.');
-      return $q.when(md5(Date.now() + part[0]) + '.' + part[1]);
-    }
-
-    function onImageUploadProgress(file) {
-      vm.imageUploadProgress = file.progress;
-    }
-
-    function onImageUploadComplete(file) {
-      vm.newSlide.hashName = file.hashName;
-    }
-
-    function onImageUploadError(file, message) {
-      console.log('******************** file, message ********************');
-      console.log(file, message);
-      console.log('************************************************');
-    }
-
-    function editSlider(slider) {
-      showForm('slider');
-      vm.newSlider = slider;
-    }
-
-    function removeSlider(slider) {
-      var index = vm.sliders.indexOf(slider);
-
-      slider.$remove(function () {
-        vm.sliders.splice(index, 1);
-      });
-    }
-
-    function removeSlide(slide) {
-      var index = vm.slides.indexOf(slide);
-
-      slide.$remove(function () {
-        vm.slides.splice(index, 1);
-      });
-    }
-
-    function editSlide() {
+    ////////////////////
+        var vm = this;
+        vm.editSlider = editSlider;
+        vm.deleteSlider = deleteSlider;
 
     }
-    
-    ///////////////////////
-    var vm = this;
-    vm.showForm = showForm;
-    vm.hideForm = hideForm;
-    vm.selectedSlide = '';
-    vm.newSlider = {
-      slides: []
-    };
-    vm.newSlide = {};
-    vm.save = save;
-    vm.slides = [];
-    vm.sliders = [];
-    vm.addSlideToSlider = addSlideToSlider;
-    vm.removeSlider = removeSlider;
-    vm.editSlider = editSlider;
-    vm.removeSlide = removeSlide;
-    vm.editSlide = editSlide;
-    vm.assetBucket = Amazon.assetBucket;
-    vm.isOpen = {
-      slider: false,
-      slide: false
-    };
 
-    vm.imageUploadProgress = 0;
-
-    vm.evaData = {
-      headersCommon: {
-        'Cache-Control': 'max-age=3600'
-      },
-      headersSigned: {
-        'x-amz-acl': 'public-read'
-      },
-      signHeaders: {
-        Authorization: 'Bearer ' + identity.getToken()
-      },
-      onStart: onStart,
-      onFileProgress: onImageUploadProgress,
-      onFileComplete: onImageUploadComplete,
-      onFileError: onImageUploadError
-    };
-
-    initialize();
-  }
 })();
-

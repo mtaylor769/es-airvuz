@@ -9,32 +9,35 @@ function Slider() {
 function post(req, res) {
   sliderCrud
     .createSlider(req.body)
-    .then(function (user) {
-      res.send(user);
+    .then(function (slider) {
+      res.send(slider);
     });
 }
 
 function getAll(req, res) {
   return sliderCrud
     .getAllSlider()
-    .then(function (user) {
-      res.json(user);
+    .then(function (sliders) {
+      res.json(sliders);
     });
 }
 
 function get(req, res) {
   return sliderCrud
     .getSlider(req.params.id)
-    .then(function (user) {
-      res.json(user);
-    });
+    .then(function (slider) {
+      res.json(slider);
+    })
+    .catch(function(error) {
+        res.sendStatus(500);
+    })
 }
 
 function put(req, res) {
   return sliderCrud
     .updateSlider(req.body)
-    .then(function (user) {
-      res.json(user);
+    .then(function (slider) {
+      res.json(slider);
     });
 }
 

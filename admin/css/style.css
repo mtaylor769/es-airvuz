@@ -107,3 +107,38 @@ tr:nth-child(even) {
 #video-curation-rating .next-video-button {
     margin: 20px;
 }
+
+#new-slide, #new-slider, #sliders, #slides {
+    padding: 30px;
+}
+
+#upload-file {
+    display: none;
+}
+
+.slider-slide-card {
+    width: 600px;
+    height: 390px;
+    font-size: 11px;
+    display: inline-block;
+}
+
+.slider-slide-card img {
+    width: 550px;
+    height: 200px;
+}
+
+.slider-card-content {
+    margin: auto;
+    padding: 10px 25px;
+}
+
+.slider-card-content p{
+    height: 60px;
+    overflow: hidden;
+}
+
+.slider-card-content button{
+    float: right;
+}
+
