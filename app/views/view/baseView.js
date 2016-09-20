@@ -1,56 +1,46 @@
 // IMPORT: BEGIN
-var log4js		= require('log4js');
-var logger		= log4js.getLogger('app.views.view.baseView');
-var _					= require('lodash');
+var log4js = require('log4js');
+var logger = log4js.getLogger('app.views.view.baseView');
+var _ = require('lodash');
 
 try {
-	var Promise		= require('bluebird');
+  if (global.NODE_ENV === "production") {
+    logger.setLevel("WARN");
+  }
 
-	if(global.NODE_ENV === "production") {
-		logger.setLevel("WARN");	
-	}
-
-	logger.info("import complete");	
+  logger.info("import complete");
 }
-catch(exception) {
-	logger.error(" import error:" + exception);
+catch (exception) {
+  logger.error(" import error:" + exception);
 }
 // IMPORT: END
 
-var IndexModel = function(params) {
-	logger.debug("constructor: IN");	
-	
-	BaseModel.apply(this, arguments);
-}
+var BaseView = function (params) {
+  params = params || {};
+  this.viewConfig = params;
+  this.model = null;
+  this.cacheTimeout = this.viewConfig.cacheTimeout || -1;
+  this.lastRenderViewTime = -1;
+  this.cachedView = '';
+};
 
-var BaseView = function(params) {
-	params												= params || {};
-	this.viewConfig								= params;
-	this.model										= null;
-	this.cacheTimeout							= this.viewConfig.cacheTimeout || -1;
-  this.lastRenderViewTime				= -1;
-  this.cachedView								= "";
-}
+BaseView.prototype.getViewConfig = function () {
+  return this.viewConfig;
+};
 
-BaseView.prototype.getViewConfig = function() {
-	return(this.viewConfig);
-}
+BaseView.prototype.getModel = function (params) {
+  return this.model.getData(params)
+    .bind(this)
+    .then(this._mergeDefaultData);
+};
 
-BaseView.prototype.getModel = function(params) {
-	var THIS = this;
-	return new Promise(function(resolve, reject) {
-		THIS.model.getData(params)
-			.then(function(data) {
-				// add the shared data
-				data.data = _.extend(data.data, THIS.model.data);
-				resolve(data);
-		});
-	})
-}
+BaseView.prototype._mergeDefaultData = function (data) {
+  data.data = _.extend(data.data, this.model.data);
+  return data;
+};
 
-BaseView.prototype.getViewName = function() {
-	return(this.viewConfig.viewName);
-}
-
+BaseView.prototype.getViewName = function () {
+  return this.viewConfig.viewName;
+};
 
 module.exports = BaseView;
