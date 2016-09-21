@@ -60,8 +60,8 @@ function getVideoThumbnail(req, res, next) {
   amazonService.hasImage(bucket, originalImageName)
     .then(function (hasOriginalImage) {
       if (!hasOriginalImage) {
-        res.setHeader('content-disposition', 'attachment; filename=no-thumbnail.jpg');
-        return request('http://' + req.hostname + '/client/images/blue-background.jpg').pipe(res);
+        res.setHeader('content-disposition', 'attachment; filename=unavailable-drone-video-thumbnail.jpg');
+        return request('http://' + req.hostname + '/client/images/unavailable-drone-video-thumbnail-226x127.jpg').pipe(res);
       }
       return amazonService.hasImage(bucket, imagePath)
         .then(function (hasResizeImage) {
