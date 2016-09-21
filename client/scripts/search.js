@@ -13,6 +13,15 @@ var videoDisplayTpl = require('../templates/core/video-display.dust');
 
 function bindEvents() {
   $loadMoreBtn.on('click', onLoadMoreBtnClick);
+  _checkImageError();
+}
+
+function _imageLoadError() {
+  $(this).attr('src', AmazonConfig.CDN_URL + '/client/images/unavailable-drone-video-thumbnail-226x127.jpg');
+}
+
+function _checkImageError() {
+  $('.video img').one('error', _imageLoadError);
 }
 
 function onLoadMoreBtnClick() {
@@ -34,8 +43,9 @@ function _getVideos() {
     .then(function (result) {
 
       if (result.videos.length > 0) {
-        videoDisplayTpl({videos: result.videos, s3Bucket: AmazonConfig.OUTPUT_URL, showCategory: true}, function (err, html) {
+        videoDisplayTpl({videos: result.videos, s3Bucket: AmazonConfig.OUTPUT_BUCKET, showCategory: true, cdnUrl: AmazonConfig.CDN_URL}, function (err, html) {
           $currentPage.find('#videos > div').append(html);
+          _checkImageError();
         });
       }
 

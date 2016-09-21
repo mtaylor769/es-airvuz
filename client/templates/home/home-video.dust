@@ -12,7 +12,7 @@
         <div class="video">
           <div class="text-center">
             <a href="/video/{_id}" title="{title}">
-              <img data-lazy="{cdnUrl}/api/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive"/>
+              <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive"/>
             </a>
           </div>
           <div class="video-bottom">

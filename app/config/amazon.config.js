@@ -2,6 +2,7 @@ var INPUT_BUCKET,
   OUTPUT_BUCKET,
   PIPELINE_ID,
   ASSET_BUCKET,
+  CDN_URL = '',
   TEMP_BUCKET = 'airvuz-tmp';
 
 switch(process.env.NODE_ENV || 'development') {
@@ -10,6 +11,7 @@ switch(process.env.NODE_ENV || 'development') {
     OUTPUT_BUCKET = 'airvuz-drone-video';
     PIPELINE_ID   = '1455744809087-s0jcq3';
     ASSET_BUCKET  = 'airvuz-asset';
+    CDN_URL       = '//d32znywta9rkav.cloudfront.net';
     break;
   default:
     // beta & development
@@ -31,6 +33,7 @@ module.exports = {
   INPUT_URL: '//s3-us-west-2.amazonaws.com/' + INPUT_BUCKET + '/',
   ASSET_URL: '//s3-us-west-2.amazonaws.com/' + ASSET_BUCKET + '/',
   TEMP_URL: '//s3-us-west-2.amazonaws.com/' + TEMP_BUCKET + '/',
+  CDN_URL: CDN_URL,
 
   // KEY are for beta
   ACCESS_KEY: process.env.AWS_ACCESS_KEY || 'AKIAIXDMGK4H4EX4BDOQ',

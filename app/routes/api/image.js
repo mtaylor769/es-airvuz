@@ -57,30 +57,26 @@ function getVideoThumbnail(req, res, next) {
   part[1] = part2.join('.');
   imagePath = part.join('/');
 
-  amazonService.hasImage(bucket, originalImageName)
-    .then(function (hasOriginalImage) {
-      if (!hasOriginalImage) {
-        res.setHeader('content-disposition', 'attachment; filename=unavailable-drone-video-thumbnail.jpg');
-        return request('http://' + req.hostname + '/client/images/unavailable-drone-video-thumbnail-226x127.jpg').pipe(res);
-      }
-      return amazonService.hasImage(bucket, imagePath)
-        .then(function (hasResizeImage) {
-          if (hasResizeImage) {
-            return true;
-          }
-          return amazonService.reSizeThumbnailImage({
-            bucket: bucket,
-            path: originalImageName,
-            newName: imagePath,
-            size: size
-          });
-        })
-        .then(function () {
-          res.setHeader('content-disposition', 'attachment; filename=' + resizeImageName);
-          return request('https:' + amazonService.config.OUTPUT_URL + imagePath).pipe(res);
-        })
-    })
-    .catch(next);
+  amazonService.hasImage(bucket, imagePath)
+      .then(function (hasResizeImage) {
+        if (hasResizeImage) {
+          return true;
+        }
+        return amazonService.reSizeThumbnailImage({
+          bucket: bucket,
+          path: originalImageName,
+          newName: imagePath,
+          size: size
+        });
+      })
+      .then(function () {
+        res.setHeader('content-disposition', 'attachment; filename=' + resizeImageName);
+        res.setHeader('Cache-Control', 'public, max-age=7200');
+        return request('https:' + amazonService.config.OUTPUT_URL + imagePath).pipe(res);
+      })
+      .catch(function (req, res) {
+        res.sendStatus(500);
+      });
 }
 
 

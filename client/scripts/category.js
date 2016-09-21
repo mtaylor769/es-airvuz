@@ -24,6 +24,16 @@ function bindEvents() {
     currentSort = $(this).val();
     _getVideos();
   });
+
+  _checkImageError();
+}
+
+function _imageLoadError() {
+  $(this).attr('src', AmazonConfig.CDN_URL + '/client/images/unavailable-drone-video-thumbnail-226x127.jpg');
+}
+
+function _checkImageError() {
+  $('.video img').one('error', _imageLoadError);
 }
 
 function onLoadMoreBtnClick() {
@@ -44,8 +54,9 @@ function _getVideos() {
   return $.ajax(apiUrl)
     .then(function (videos) {
       if (videos.length > 0) {
-        videoDisplayTpl({videos: videos, s3Bucket: AmazonConfig.OUTPUT_URL}, function (err, html) {
+        videoDisplayTpl({videos: videos, s3Bucket: AmazonConfig.OUTPUT_BUCKET, cdnUrl: AmazonConfig.CDN_URL}, function (err, html) {
           $categoryPage.find('#videos > div').append(html);
+          _checkImageError();
         });
       }
       if (videos.length < TOTAL_PER_PAGE) {
