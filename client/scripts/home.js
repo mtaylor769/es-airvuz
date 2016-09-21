@@ -66,10 +66,14 @@ function getFollowerVideos() {
 
           homeVideoTpl(viewData, function (err, html) {
             $homePage.find('#main-row > .border-left').append('<hr/>').append(html);
-            $homePage.find('.video-slick').last().slick(SLICK_CONFIG);
+            $homePage.find('.video-slick').last().slick(SLICK_CONFIG).on('lazyLoadError', _lazyLoadError);
           });
         }
       });
+}
+
+function _lazyLoadError(event, slick, image) {
+  $(image).attr('src', AmazonConfig.CDN_URL + '/client/images/unavailable-drone-video-thumbnail-226x127.jpg');
 }
 
 function initialize(emailConfirm) {
@@ -80,7 +84,7 @@ function initialize(emailConfirm) {
     $sliderSlick = $('#slider-slick');
 
   // Featured Videos, Recent Videos, Trending Videos, Staff Pick Videos
-  $('.video-slick').slick(SLICK_CONFIG);
+  $('.video-slick').slick(SLICK_CONFIG).on('lazyLoadError', _lazyLoadError);
 
   // has sliders
   if ($sliderSlick.length > 0) {

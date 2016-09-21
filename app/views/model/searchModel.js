@@ -31,7 +31,7 @@ SearchModel.prototype.getData = function(params) {
 	params.data.searchKeyWord = params.request.query.q;
 	params.data.currentPage = parseInt(params.request.query.page, 10) || 1;
 
-	params.data.s3Bucket 					= amazonConfig.OUTPUT_URL;
+	params.data.s3Bucket 					= amazonConfig.OUTPUT_BUCKET;
 
 	return Promise.all([CategoryType.get(), Videos.search(params.request.query.q, params.data.currentPage)])
 		.spread(function(category, searchResult) {

@@ -60,8 +60,11 @@ app.use(hsts({
  */
 app.use(cors);
 
+var staticOption = {
+	maxAge: '2h'
+};
 app.use('/public', express.static('public'));
-app.use('/client', express.static('client'));
+app.use('/client', express.static('client', staticOption));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/admin', express.static(path.resolve(__dirname, './admin')));

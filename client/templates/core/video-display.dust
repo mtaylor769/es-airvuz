@@ -3,7 +3,7 @@
     <div class="video">
       <div class="text-center">
         <a href="/video/{_id}" title="{title}" class="video-link">
-          <img src="{s3Bucket}{thumbnailPath}" alt="{title}" class="img-responsive"/>
+          <img src="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive"/>
         </a>
       </div>
       <div class="video-bottom">

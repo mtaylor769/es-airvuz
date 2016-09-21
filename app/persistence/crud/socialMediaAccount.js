@@ -26,7 +26,7 @@ function setProfilePicture(social, user) {
   } else if (social && user.profilePicture.indexOf('facebook') > -1) {
     user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
   } else if (user.profilePicture.indexOf('http') === -1 && user.profilePicture.indexOf('image/profile-picture') === -1 && user.profilePicture.indexOf('images/default.png') === -1) {
-    user.profilePicture = '/api/image/profile-picture' + user.profilePicture + '?size=50';
+    user.profilePicture = '/image/profile-picture' + user.profilePicture + '?size=50';
   }
 }
 

@@ -49,7 +49,7 @@ CategoryModel.prototype.getData = function(params) {
 	};
 	params.data							= {};
 	params.data.title				= "AirVūz – Category";
-	params.data.s3Bucket 		= amazonConfig.OUTPUT_URL;
+	params.data.s3Bucket 		= amazonConfig.OUTPUT_BUCKET;
 
 	// Only category can sort
 	params.data.showSort 		= canSort(currentCategory);
