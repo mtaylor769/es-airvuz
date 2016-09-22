@@ -68,8 +68,8 @@ function createUser(req, res) {
       var mailOptions = {
         to: user.emailAddress,
         subject: 'Account Confirmation',
-        html: '<p>Follow the link below to confirm your account</p><p><a href="' + req.get('host') + '/email-confirmation/' + user._id + '">Confirm Account</a></p>'
-        + '<p>If the link is not working please copy and paste to the url : '+ req.get('host') + '/email-confirmation/' + user._id + '<p>'
+        html: '<p>Follow the link below to confirm your account</p><p><a href="' + req.protocol + '://' + req.get('host') + '/email-confirmation/' + user._id + '">Confirm Account</a></p>'
+        + '<p>If the link is not working please copy and paste to the url : ' + req.protocol + '://' + req.get('host') + '/email-confirmation/' + user._id + '<p>'
       };
 
       return _sendMail(mailOptions);
