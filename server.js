@@ -29,6 +29,8 @@ var http        = require("http").createServer(app);
 
 // prevent x-powerd-by header to show up
 app.disable('x-powered-by');
+// pass https from loadbalancer to the server with X-Forwarded-Proto
+app.enable('trust proxy');
 //   __  __ _     _     _ _
 //  |  \/  (_) __| | __| | | _____      ____ _ _ __ ___
 //  | |\/| | |/ _` |/ _` | |/ _ \ \ /\ / / _` | '__/ _ \
