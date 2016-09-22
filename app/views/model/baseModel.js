@@ -11,7 +11,7 @@ var BaseView = function() {
 			js: scriptPath + sourceManifest['airvuz.js'],
 			vendorJs: scriptPath + sourceManifest['vendor.js']
 		},
-		cdnUrl: CLOUD_FRONT_CDN
+		cdnUrl: ''
 	};
 };
 

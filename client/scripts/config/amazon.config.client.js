@@ -7,7 +7,7 @@ if (IS_PRODUCTION) {
   INPUT_BUCKET = 'airvuz-drone-video-input';
   OUTPUT_BUCKET = 'airvuz-drone-video';
   ASSET_BUCKET = 'airvuz-asset';
-  CDN_URL      = '//d32znywta9rkav.cloudfront.net';
+  // CDN_URL      = '//d32znywta9rkav.cloudfront.net';
 } else {
   INPUT_BUCKET = 'airvuz-videos-beta-input';
   OUTPUT_BUCKET = 'airvuz-videos-beta';
