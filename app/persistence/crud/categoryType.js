@@ -8,16 +8,13 @@ try {
   var ValidationException = require('../../utils/exceptions/ValidationException');
   var CategoryTypeModel = null;
   var database = require('../database/database');
+  var _ = require('lodash');
 
-  CategoryTypeModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.categoryType"})
-  logger.debug('loaded category model');
+  CategoryTypeModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.categoryType"});
 
   if(global.NODE_ENV === "production") {
     logger.setLevel("INFO");
   }
-
-  logger.debug("import complete");
-
 }
 catch(exception) {
   logger.error(" import error:" + exception);
@@ -28,6 +25,26 @@ var CategoryType = function(){
 
 function getByUrl(url) {
   return CategoryTypeModel.findOne({categoryTypeUrl: url}).exec();
+}
+
+/**
+ * get internal category id if exists in categories or else the first category id
+ * @param categories
+ * @return {Promise}
+ */
+function getInternalCategory(categories) {
+  var internalCategory = [
+    '574f91b3b55602296def65bb', // airvuz instagram
+    '574f91b3b55602296def65b1', // airvuz news
+    '574f91b3b55602296def65b4'  // airvuz original
+  ];
+
+  // assuming that a video doesn't have 2+ internal category
+  var found = _.find(categories, function (category) {
+    return internalCategory.indexOf(category._id.toString()) > -1;
+  });
+
+  return Promise.resolve(found ? found._id : categories[0]._id);
 }
 
 /*
@@ -136,5 +153,7 @@ CategoryType.prototype.remove = function(id) {
 };
 
 CategoryType.prototype.getByUrl = getByUrl;
+
+CategoryType.prototype.getInternalCategory = getInternalCategory;
 
 module.exports = new CategoryType();

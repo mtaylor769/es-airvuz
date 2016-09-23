@@ -402,30 +402,31 @@ Video.prototype.getFollowCount = function(req, res) {
       });
 };
 
-Video.prototype.getNextVideos = function(req, res) {
-  var category = req.body;
-
-  VideoCrud
-      .getNextVideos(category)
-      .then(function(videos) {
-          videos.forEach(function (video) {
-              video.fullTitle = video.title;
-              video.displayDate = moment(video.uploadDate).fromNow();
-              video.title = video.title.substring(0, 30);
-              video.description = video.description.substring(0, 90);
-              if (video.title.length === 30) {
-                  video.title = video.title + '...'
-              }
-              if (video.description.length === 90) {
-                  video.description = video.description + '...';
-              }
-          });
-
-          res.json(videos);
-      })
-      .catch(function (error) {
-          res.sendStatus(500);
+Video.prototype.getNextVideos = function (req, res) {
+  VideoCrud.getById(req.query.video)
+    .then(function (video) {
+      return CategoryType.getInternalCategory(video.categories);
+    })
+    .then(VideoCrud.getNextVideos)
+    .then(function (videos) {
+      videos.forEach(function (video) {
+        video.fullTitle = video.title;
+        video.displayDate = moment(video.uploadDate).fromNow();
+        video.title = video.title.substring(0, 30);
+        video.description = video.description.substring(0, 90);
+        if (video.title.length === 30) {
+          video.title = video.title + '...'
+        }
+        if (video.description.length === 90) {
+          video.description = video.description + '...';
+        }
       });
+
+      res.json(videos);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
 };
 
 Video.prototype.getVideoOwnerProfile = function(req, res) {

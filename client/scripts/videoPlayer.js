@@ -158,7 +158,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
         getTopSixVid = $.ajax({type: 'GET', url: '/api/videos/topSixVideos/' + video.userId}),
         getFollowCount = $.ajax({type: 'GET', url: '/api/videos/followCount/' + video.userId}),
         getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
-        getNextVideos = $.ajax({type: 'POST', url: '/api/videos/nextVideos', data: video.categories[0]});
+        getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id});
 
     // re-init the video slick
     $('.video-slick').slick('removeSlide', null, null, true);
