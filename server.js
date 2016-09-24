@@ -63,7 +63,7 @@ app.use(hsts({
 app.use(cors);
 
 var staticOption = {
-	maxAge: '2h'
+	maxAge: '7d'
 };
 app.use('/public', express.static('public'));
 app.use('/client', express.static('client', staticOption));

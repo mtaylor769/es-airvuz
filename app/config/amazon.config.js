@@ -13,6 +13,9 @@ switch(process.env.NODE_ENV || 'development') {
     ASSET_BUCKET  = 'airvuz-asset';
     CDN_URL       = '//d32znywta9rkav.cloudfront.net';
     break;
+  case 'beta':
+    CDN_URL       = '//d6xm2cm58wj2l.cloudfront.net';
+    // beta fallthrough
   default:
     // beta & development
     INPUT_BUCKET = 'airvuz-videos-beta-input';
