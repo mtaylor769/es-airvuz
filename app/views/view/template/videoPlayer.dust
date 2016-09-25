@@ -164,23 +164,7 @@
                             </div>
                         </div>
                         <ul class="next-video-list" style="list-style: none; padding-left: 0">
-                            {#upNext}
-                                <li style="width: 100%; position: relative" class="go-to-video" data-title="{fullTitle}" data-id="{_id}">
-                                    <div class="up-next-wrapper">
-                                        <a href="#" title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%"></a>
-                                        <div class="up-next-layer">
-                                            <a href="#" title="{fullTitle}">
-                                                <strong class="font-white m-l-5 up-next-title">{title}</strong>
-                                                <p class="font-white m-l-5">{userId.userNameDisplay}</p>
-                                            </a>
-                                            <div class="flex up-next-subs">
-                                                <p class="font-white m-l-5"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
-                                                <p class="font-white pos-absolute-r-15">{duration}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {/upNext}
+                            {> "client.templates.videoPlayer.videoNextVideosPartial" /}
                         </ul>
                     </div>
                 </div>
