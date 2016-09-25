@@ -43,7 +43,7 @@
                         <div>
                             <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
                                    controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
-                                   poster="{s3Bucket}{video.thumbnailPath}">
+                                   poster="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}">
                             </video>
                         </div>
                         {!categories!}
@@ -93,7 +93,7 @@
                                 {#topVideos}
                                     <div class="video">
                                         <a href="/video/{_id}" title="{title}" data-id="{_id}">
-                                            <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
+                                            <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}&w=150&h=84" alt="{imageAlt}" class="img-responsive" />
                                         </a>
                                     </div>
                                 {/topVideos}
@@ -179,7 +179,7 @@
         {> "app.views.view.partial.js" /}
         <script>
             $(function() {
-                videoPlayer.initialize('{s3Bucket}{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
+                videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
             });
         </script>
     </body>

@@ -1,4 +1,5 @@
 var amazonService = require('../../services/amazon.service.server.js');
+var request = require('request');
 
 /**
  * Amazon Route
@@ -75,6 +76,11 @@ function moveFile(req, res) {
     });
 }
 
+function getVideo(req, res) {
+  // TODO: add tracking
+  return request('https:' + amazonService.config.OUTPUT_URL + req.params.videoId + '/' + req.params.source).pipe(res);
+}
+
 ////////////////////////////////////////////
 
 Amazon.prototype.signAuth               = signAuth;
@@ -83,6 +89,7 @@ Amazon.prototype.confirmSubscription    = amazonService.confirmSubscription;
 Amazon.prototype.startTranscode         = startTranscode;
 Amazon.prototype.getVideoDuration       = getVideoDuration;
 Amazon.prototype.moveFile               = moveFile;
+Amazon.prototype.getVideo               = getVideo;
 
 module.exports = new Amazon();
 

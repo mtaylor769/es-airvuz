@@ -178,7 +178,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
         $(nextVideosData[0]).each(function(idx, vid) {
            vid.s3Bucket = amazonConfig.OUTPUT_URL;
         });
-        videoNextVideosPartialTpl({upNext: nextVideosData[0]}, function (err, html) {
+        videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
             $('.next-video-list').empty();
             $('.next-video-list').prepend(html);
         });
@@ -1142,7 +1142,10 @@ function updateVideoSrc() {
 //page init function
 function initialize(videoPath, currentVideo) {
   video = currentVideo;
-  videoPathSrc = videoPath;
+
+  // api routes /drone-video/:videoId/:src
+  videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + videoPath;
+
   var defaultRes = '300',
       browserWidth = browser.getSize().width;
 
