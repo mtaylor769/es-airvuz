@@ -71,7 +71,7 @@ function getVideoThumbnail(req, res, next) {
       })
       .then(function () {
         res.setHeader('content-disposition', 'attachment; filename=' + resizeImageName);
-        res.setHeader('Cache-Control', 'public, max-age=7200');
+        res.setHeader('Cache-Control', 'public, max-age=604800'); // 1 week
         return request('https:' + amazonService.config.OUTPUT_URL + imagePath).pipe(res);
       })
       .catch(function (req, res) {

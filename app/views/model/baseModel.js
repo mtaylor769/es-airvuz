@@ -1,7 +1,7 @@
 // YOU MUST RUN WEBPACK FOR THE MANIFEST FILE TO EXIST.
 var sourceManifest = require('../../../public/manifest.json');
 var CLOUD_FRONT_CDN = require('../../../app/config/amazon.config').CDN_URL;
-var scriptPath = (global.IS_PRODUCTION ? CLOUD_FRONT_CDN : '') + '/public/';
+var scriptPath = CLOUD_FRONT_CDN + '/public/';
 
 var BaseView = function() {
 	// share view data
@@ -11,7 +11,7 @@ var BaseView = function() {
 			js: scriptPath + sourceManifest['airvuz.js'],
 			vendorJs: scriptPath + sourceManifest['vendor.js']
 		},
-		cdnUrl: ''
+		cdnUrl: CLOUD_FRONT_CDN
 	};
 };
 

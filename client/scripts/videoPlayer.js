@@ -137,7 +137,8 @@ PubSub.subscribe('video-switched', function (msg, data) {
     video = data;
 
     // update the videopath src
-    videoPathSrc = amazonConfig.OUTPUT_URL + data.videoPath;
+    videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + data.videoPath;
+
     updateVideoSrc();
 
     // reset the flag
@@ -150,8 +151,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
     }
 
     // update video title
-    $('.video-player-title').empty();
-    $('.video-player-title').html(video.title);
+    $('.video-player-title').empty().html(video.title);
 
     var getUserProfile = $.ajax({type: 'GET', url: '/api/video/videoOwnerProfile/' + video.userId}),
         getComments = $.ajax({type: 'GET', url: '/api/videos/videoComments/' + video._id}),
@@ -161,9 +161,10 @@ PubSub.subscribe('video-switched', function (msg, data) {
         getNextVideos = $.ajax({type: 'POST', url: '/api/videos/nextVideos', data: video.categories[0]});
 
     // re-init the video slick
-    $('.video-slick').slick('removeSlide', null, null, true);
-    $('.video-slick').slick('unslick');
-    $('.video-slick').slick(SLICK_CONFIG);
+    var $videoSlick = $('.video-slick');
+    $videoSlick.slick('removeSlide', null, null, true);
+    $videoSlick.slick('unslick');
+    $videoSlick.slick(SLICK_CONFIG);
 
     // make parallel requests
     $.when(
@@ -178,27 +179,23 @@ PubSub.subscribe('video-switched', function (msg, data) {
         $(nextVideosData[0]).each(function(idx, vid) {
            vid.s3Bucket = amazonConfig.OUTPUT_URL;
         });
-        videoNextVideosPartialTpl({upNext: nextVideosData[0]}, function (err, html) {
-            $('.next-video-list').empty();
-            $('.next-video-list').prepend(html);
+        videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
+            $('.next-video-list').empty().prepend(html);
         });
 
         // mobile tabs
         videoMobileTabPartialTpl({video: video}, function (err, html) {
-            $('.mobile-tab-container').empty();
-            $('.mobile-tab-container').prepend(html);
+            $('.mobile-tab-container').empty().prepend(html);
         });
 
         // update the comments template
         commentsTpl({comments: commentsData[0], canEdit: true}, function (err, html) {
-            $('.parent-comments').empty();
-            $('.parent-comments').prepend(html);
+            $('.parent-comments').empty().prepend(html);
         });
 
         // update the has more button template
         videoHasMorePartialTpl({hasMoreComments: video.commentCount > commentsData[0].length}, function (err, html) {
-            $('.more-comments-container').empty();
-            $('.more-comments-container').prepend(html);
+            $('.more-comments-container').empty().prepend(html);
 
             canResetShowMoreCount = true;
 
@@ -207,8 +204,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
         // update categories
         categoriesPartialTpl({video: video}, function (err, html) {
-            $('.video-player-categories').empty();
-            $('.video-player-categories').prepend(html);
+            $('.video-player-categories').empty().prepend(html);
         });
 
         // update videoOwner template
@@ -218,21 +214,19 @@ PubSub.subscribe('video-switched', function (msg, data) {
         // top six videos
         var topSixVid = [];
         $(topSixVidData[0]).each(function (idx, vid) {
-            vid.s3Bucket = amazonConfig.OUTPUT_URL;
             if (vid._id.toString() !== data._id) {
                 topSixVid.push(vid);
             }
         });
 
         // update user video slider
-        videoUserSlickPartialTpl({topVideos: topSixVid}, function (err, html) {
+        videoUserSlickPartialTpl({topVideos: topSixVid, cdnUrl: amazonConfig.CDN_URL, s3Bucket: amazonConfig.OUTPUT_BUCKET}, function (err, html) {
             $('.video-slick').slick('slickAdd', html);
         });
 
         // update video owner info
         videoOwnerPartialTpl({user: userData[0]}, function (err, html) {
-            $('.video-user-container').empty();
-            $('.video-user-container').prepend(html);
+            $('.video-user-container').empty().prepend(html);
 
             videoInfoCheck();
             setCommentOptions();
@@ -240,8 +234,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
     });
     // update video info
     videoInfoPartialTpl({video: data}, function (err, html) {
-        $('.video-info').empty();
-        $('.video-info').prepend(html);
+        $('.video-info').empty().prepend(html);
 
         if (!browser.isMobile()) {
             $('.video-info').tooltip({
@@ -252,8 +245,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
     // render the social icons
     videoSocialShareTpl({video: video}, function (err, html) {
-        $('.social-icons-container').empty(html);
-        $('.social-icons-container').prepend(html);
+        $('.social-icons-container').empty(html).prepend(html);
         videoSocialShare.setIconFontSize('sm');
         videoSocialShare.addClass('vertical-align');
         videoSocialShare.removeColorOnHover(true);
@@ -1142,7 +1134,10 @@ function updateVideoSrc() {
 //page init function
 function initialize(videoPath, currentVideo) {
   video = currentVideo;
-  videoPathSrc = videoPath;
+
+  // api routes /drone-video/:videoId/:src
+  videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + videoPath;
+
   var defaultRes = '300',
       browserWidth = browser.getSize().width;
 

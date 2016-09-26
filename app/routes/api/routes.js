@@ -299,8 +299,14 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
 /**
  * /images
  */
+// TODO: change /image to /images
 apiRouter.get('/image/profile-picture/:picture', image.getProfilePicture);
 apiRouter.get('/image/drone-video-thumbnail', image.getVideoThumbnail);
+
+/**
+ * /drone-video
+ */
+apiRouter.get('/drone-video/:videoId/:source', amazon.getVideo);
 
 /**
  * /api/reports

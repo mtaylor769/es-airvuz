@@ -163,7 +163,8 @@ config.plugins.push ( new webpack.DefinePlugin ( {
   NODE_ENV:       NODE_ENV,
   IS_PRODUCTION:  IS_PRODUCTION,
   IS_DEVELOPMENT: IS_DEVELOPMENT,
-  IS_NODE:        false
+  IS_BETA: IS_BETA,
+  IS_NODE: false
 } ) );
 
 // Common chunks

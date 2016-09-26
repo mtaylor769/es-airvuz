@@ -9,8 +9,8 @@
         <meta property="og:title" content="{video.title}" />
         <meta property="og:updated_time" content="{video.openGraphCacheDate}" />
         <meta property="og:description" content="{video.description}" />
-        <meta property="og:image" content="https:{s3Bucket}{video.thumbnailPath}" />
-        <meta property="og:video:url" content="https:{s3Bucket}{video.videoPath}" />
+        <meta property="og:image" content="https:{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}" />
+        <meta property="og:video:url" content="https:{cdnUrl}/drone-video/{video.videoPath}" />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="700" />
         <meta property="og:video:height" content="393" />
@@ -19,10 +19,10 @@
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@airvuz" />
         <meta name="twitter:creator" content="@airvuz" />
-        <meta name="twitter:url" content="{s3Bucket}{video.videoPath}" />
+        <meta name="twitter:url" content="https:{cdnUrl}/drone-video/{video.videoPath}" />
         <meta name="twitter:title" content="{video.title}" />
         <meta name="twitter:description" content="{video.description}" />
-        <meta name="twitter:image" content="https:{s3Bucket}{video.thumbnailPath}" />
+        <meta name="twitter:image" content="https:{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}" />
 
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,7 +43,7 @@
                         <div>
                             <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
                                    controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
-                                   poster="{s3Bucket}{video.thumbnailPath}">
+                                   poster="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}">
                             </video>
                         </div>
                         {!categories!}
@@ -90,13 +90,7 @@
                                 </div>
                             </div>
                             <div class="video-slick">
-                                {#topVideos}
-                                    <div class="video">
-                                        <a href="/video/{_id}" title="{title}" data-id="{_id}">
-                                            <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
-                                        </a>
-                                    </div>
-                                {/topVideos}
+                                {> "client.templates.videoPlayer.videoUserSlickPartial" /}
                             </div>
                         </div>
                         <div class="gainsboro-background p-15-0 video-info">
@@ -164,23 +158,7 @@
                             </div>
                         </div>
                         <ul class="next-video-list" style="list-style: none; padding-left: 0">
-                            {#upNext}
-                                <li style="width: 100%; position: relative" class="go-to-video" data-title="{fullTitle}" data-id="{_id}">
-                                    <div class="up-next-wrapper">
-                                        <a href="#" title="{fullTitle}"><img src="{s3Bucket}{thumbnailPath}" width="100%"></a>
-                                        <div class="up-next-layer">
-                                            <a href="#" title="{fullTitle}">
-                                                <strong class="font-white m-l-5 up-next-title">{title}</strong>
-                                                <p class="font-white m-l-5">{userId.userNameDisplay}</p>
-                                            </a>
-                                            <div class="flex up-next-subs">
-                                                <p class="font-white m-l-5"><span class="airvuz-blue">VŪZ</span> {viewCount} | {displayDate}</p>
-                                                <p class="font-white pos-absolute-r-15">{duration}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {/upNext}
+                            {> "client.templates.videoPlayer.videoNextVideosPartial" /}
                         </ul>
                     </div>
                 </div>
@@ -195,7 +173,7 @@
         {> "app.views.view.partial.js" /}
         <script>
             $(function() {
-                videoPlayer.initialize('{s3Bucket}{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
+                videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
             });
         </script>
     </body>

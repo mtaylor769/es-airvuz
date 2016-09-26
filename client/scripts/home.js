@@ -61,7 +61,8 @@ function getFollowerVideos() {
               following: videos
             },
             videos: 'following',
-            s3Bucket: AmazonConfig.OUTPUT_BUCKET
+            s3Bucket: AmazonConfig.OUTPUT_BUCKET,
+            cdnUrl: AmazonConfig.CDN_URL
           };
 
           homeVideoTpl(viewData, function (err, html) {

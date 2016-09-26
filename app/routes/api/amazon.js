@@ -1,4 +1,6 @@
 var amazonService = require('../../services/amazon.service.server.js');
+var request = require('request');
+var EventTrackingCrud = require('../../persistence/crud/events/eventTracking');
 
 /**
  * Amazon Route
@@ -75,6 +77,18 @@ function moveFile(req, res) {
     });
 }
 
+function getVideo(req, res) {
+  EventTrackingCrud.create({
+    codeSource  : "amazon",
+    eventSource : "nodejs",
+    eventType   : "videoView",
+    eventName   : "video:" + req.params.videoId,
+    referrer    : req.header('Referrer')
+  });
+  var videoPath = 'https:' + amazonService.config.OUTPUT_URL + req.params.videoId + '/' + req.params.source;
+  req.pipe(request(videoPath)).pipe(res);
+}
+
 ////////////////////////////////////////////
 
 Amazon.prototype.signAuth               = signAuth;
@@ -83,6 +97,7 @@ Amazon.prototype.confirmSubscription    = amazonService.confirmSubscription;
 Amazon.prototype.startTranscode         = startTranscode;
 Amazon.prototype.getVideoDuration       = getVideoDuration;
 Amazon.prototype.moveFile               = moveFile;
+Amazon.prototype.getVideo               = getVideo;
 
 module.exports = new Amazon();
 
