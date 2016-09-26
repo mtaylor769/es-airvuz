@@ -61,6 +61,11 @@ var eventTrackingSchema = mongoose.Schema({
 	 */
 	videoId: String,
 
+	/*
+	 * Image File Type
+	 */
+	imgFileType: String,
+
 
 	/*
 	// "CLIENT" | "SERVER"
