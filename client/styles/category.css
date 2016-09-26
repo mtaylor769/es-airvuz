@@ -10,6 +10,11 @@
     margin-bottom: 10px;
 }
 
+#category-page #videos .video img {
+    width: 100%;
+}
+
+
 @media (min-width: 768px) {
     #category-page #category-sort {
         margin-bottom: 0;
