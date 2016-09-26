@@ -78,7 +78,9 @@ function moveFile(req, res) {
 
 function getVideo(req, res) {
   // TODO: add tracking
-  return request('https:' + amazonService.config.OUTPUT_URL + req.params.videoId + '/' + req.params.source).pipe(res);
+
+  var videoPath = 'https:' + amazonService.config.OUTPUT_URL + req.params.videoId + '/' + req.params.source;
+  req.pipe(request(videoPath)).pipe(res);
 }
 
 ////////////////////////////////////////////
