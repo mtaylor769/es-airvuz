@@ -31,6 +31,7 @@
     min-height: 126px;
     max-height: 202px;
     margin: 0 auto;
+    width: 100%;
 }
 
 #home-page #slider-slick img {
