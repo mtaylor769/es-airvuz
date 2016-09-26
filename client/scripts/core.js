@@ -249,7 +249,7 @@ function bindEvents() {
           eventType: 'signUpClick',
           referrer: document.referrer
         });
-        ga('send', 'event', 'signup', 'login-account-created', 'signup');
+        ga('send', 'event', 'signup', 'local-account-created', 'signup');
       })
       .fail(function(response) {
         appendErrorMessage(response.responseJSON);
