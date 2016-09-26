@@ -214,14 +214,13 @@ PubSub.subscribe('video-switched', function (msg, data) {
         // top six videos
         var topSixVid = [];
         $(topSixVidData[0]).each(function (idx, vid) {
-            vid.s3Bucket = amazonConfig.OUTPUT_URL;
             if (vid._id.toString() !== data._id) {
                 topSixVid.push(vid);
             }
         });
 
         // update user video slider
-        videoUserSlickPartialTpl({topVideos: topSixVid}, function (err, html) {
+        videoUserSlickPartialTpl({topVideos: topSixVid, cdnUrl: amazonConfig.CDN_URL, s3Bucket: amazonConfig.OUTPUT_BUCKET}, function (err, html) {
             $('.video-slick').slick('slickAdd', html);
         });
 

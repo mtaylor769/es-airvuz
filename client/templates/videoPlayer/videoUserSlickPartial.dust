@@ -1,7 +1,7 @@
 {#topVideos}
-    <div class="video">
-        <a href="/video/{_id}" title="{title}" data-id="{_id}">
-            <img data-lazy="{s3Bucket}{thumbnailPath}" alt="{imageAlt}" class="img-responsive" />
-        </a>
-    </div>
+  <div class="video">
+    <a href="/video/{_id}" title="{title}" data-id="{_id}">
+      <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}&w=150&h=84" alt="{imageAlt}" class="img-responsive" />
+    </a>
+  </div>
 {/topVideos}
