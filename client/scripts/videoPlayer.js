@@ -175,10 +175,6 @@ PubSub.subscribe('video-switched', function (msg, data) {
         getVideoCount,
         getNextVideos
     ).done(function(userData, commentsData, topSixVidData, followCountData, videoCountData, nextVideosData) {
-        // update next video lists template
-        $(nextVideosData[0]).each(function(idx, vid) {
-           vid.s3Bucket = amazonConfig.OUTPUT_URL;
-        });
         videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
             $('.next-video-list').empty().prepend(html);
         });
