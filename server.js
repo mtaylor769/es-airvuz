@@ -44,7 +44,7 @@ var bodyParser = require('body-parser');
 var hsts = require('hsts');
 var cors = require('./app/middlewares/cors');
 
-var preferredDomain = require('./app/middlewares/preferred-domain');
+// var preferredDomain = require('./app/middlewares/preferred-domain');
 var enforceHttps = require('./app/middlewares/enforce-https');
 
 app.use(morgan('dev'));
@@ -137,7 +137,7 @@ function loadView(req, res, name) {
 }
 
 app.use(enforceHttps);
-app.use(preferredDomain);
+// app.use(preferredDomain);
 
 app.get("/", function(req, res) {
 	loadView(req, res, indexView.getViewName());
