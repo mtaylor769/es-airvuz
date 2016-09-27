@@ -72,12 +72,12 @@
         </div>
         <div class="col-md-10 border-left">
             {> "client.templates.home.home-video" title="Featured Drone Videos" videos="featuredVideos" viewAll="featured-drone-videos"/}
+            {> "client.templates.home.home-video" title="Ryder Cup — Golf Drone Videos" videos="staffPickVideos" viewAll="ryder-cup-2016"/}
+          <hr/>
           <hr/>
             {> "client.templates.home.home-video" title="Latest Drone Videos" videos="recentVideos" viewAll="latest-drone-videos"/}
           <hr/>
             {> "client.templates.home.home-video" title="Trending Drone Videos" videos="trendingVideos" viewAll="trending-drone-videos"/}
-          <hr/>
-            {> "client.templates.home.home-video" title="Staff Picks Drone Videos" videos="staffPickVideos" viewAll="staff-picks-drone-videos"/}
         </div>
       </div>
     </div>
