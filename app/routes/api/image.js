@@ -79,9 +79,13 @@ function getVideoThumbnail(req, res, next) {
       });
 }
 
-
+function getSlide(req, res) {
+  var videoPath = 'https:' + amazonService.config.ASSET_URL + 'slide/' + req.params.source;
+  req.pipe(request(videoPath)).pipe(res);
+}
 
 Image.prototype.getProfilePicture = getProfilePicture;
 Image.prototype.getVideoThumbnail = getVideoThumbnail;
+Image.prototype.getSlide = getSlide;
 
 module.exports = new Image();

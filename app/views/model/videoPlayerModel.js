@@ -147,7 +147,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 			params.data.facebookAppId 					= config.facebook.clientID;
 
 			params.data.s3Bucket 								= amazonConfig.OUTPUT_BUCKET;
-			params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;
 			return params;
 	});
 
