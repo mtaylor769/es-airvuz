@@ -85,7 +85,7 @@ function bindEvents() {
       // headers
       contentType: params.image.type || 'binary/octet-stream',
       headersCommon: {
-        'Cache-Control': 'max-age=3600'
+        'Cache-Control': 'max-age=604800' // 1 week
       },
       signHeaders: {
         Authorization: 'Bearer ' + identity.getToken()
@@ -744,7 +744,7 @@ function onCustomFileChange() {
     // headers
     contentType: customThumbnailFile.type || 'binary/octet-stream',
     headersCommon: {
-      'Cache-Control': 'max-age=3600'
+      'Cache-Control': 'max-age=604800' // 1 week
     },
     xAmzHeadersAtInitiate: {
       'x-amz-acl': 'public-read'

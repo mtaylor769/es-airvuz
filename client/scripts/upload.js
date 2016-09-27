@@ -322,7 +322,7 @@ function bindEvents() {
         // headers
         contentType: currentUploadFile.type || 'binary/octet-stream',
         headersCommon: {
-          'Cache-Control': 'max-age=3600'
+          'Cache-Control': 'max-age=604800' // 1 week
         },
         signHeaders: {
           Authorization: 'Bearer ' + identity.getToken()
@@ -368,7 +368,7 @@ function bindEvents() {
       // headers
       contentType: customThumbnailFile.type || 'binary/octet-stream',
       headersCommon: {
-        'Cache-Control': 'max-age=3600'
+        'Cache-Control': 'max-age=604800' // 1 week
       },
       signHeaders: {
         Authorization: 'Bearer ' + identity.getToken()
