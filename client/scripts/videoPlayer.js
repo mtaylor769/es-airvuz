@@ -50,6 +50,7 @@ var startViewCount                     = true;
 var initialPlayStart                   = false;
 var canResetShowMoreCount              = false;
 var countDownInterval                  = null;
+var initialUpNextClick                 = false;
 var $videoPlayer;
 var $videoPage;
 var screenWidth;
@@ -99,7 +100,7 @@ function nextVideoHandler(evt) {
         codeSource: 'videoPlayer',
         eventName: 'video-up-next-video-clicked',
         eventType: 'click',
-        videoId: video._id
+        videoId: $(this).data('id')
     });
     // Config parameters
     var CONFIG = {
@@ -357,6 +358,13 @@ function onAutoPlayChange(event, state) {
 
 //bind events
 function bindEvents() {
+  if (browser.isMobile() && !initialUpNextClick) {
+      initialUpNextClick = true;
+      $('.next-video-list > li, .slick-slide a').one('touchstart', function () {
+          $('body').find('video')[0].load();
+          $('body').find('video')[0].pause();
+      });
+  }
 
   //api calls
   function deleteComment() {
