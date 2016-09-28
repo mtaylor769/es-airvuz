@@ -6,6 +6,7 @@ var uuid                    = require('node-uuid');
 var amazonService           = require('./../../../app/services/amazon.service.server');
 var youtubedl               = require('youtube-dl');
 var _                       = require('lodash');
+var youtubedlOption         = {maxBuffer: 1024 * 600}; // 600kb
 
 /**
  * Upload Route
@@ -96,7 +97,7 @@ function transcodeWarning(req, res) {
 
 function _getVideoInfo(url) {
   return new Promise(function (resolve, reject) {
-    youtubedl.getInfo(url, function (err, info) {
+    youtubedl.getInfo(url, [], youtubedlOption, function (err, info) {
       if (err) {
         return reject(err);
       }
@@ -118,11 +119,11 @@ function _isVimeo(url) {
 }
 
 function uploadExternalVideo(req, res) {
+  req.setTimeout(0);
   var url = req.body.url;
   var fileName = md5(url + Date.now() + uuid.v1()) + '.mp4';
   var waitFor;
   var video;
-  var promise;
 
   if (_isVimeo(url)) {
     waitFor = _getVideoInfo(url)
@@ -131,13 +132,11 @@ function uploadExternalVideo(req, res) {
     waitFor = Promise.resolve('best');
   }
 
-  promise = waitFor.then(function (quality) {
-    video = youtubedl(url, ['-f', quality], {});
+  waitFor.then(function (quality) {
+    video = youtubedl(url, ['-f', quality], youtubedlOption);
 
     video.on('error', function () {
-      if (promise.isPending()) {
-        res.sendStatus(500);
-      }
+      throw 'Youtubedl error';
     });
 
     return amazonService.uploadToS3(amazonService.config.INPUT_BUCKET, fileName, video);
