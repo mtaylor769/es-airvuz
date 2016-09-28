@@ -37,7 +37,8 @@ var $uploadPage,
     POLLING_INTERVAL_TIME = 20000, // 20 sec
     customThumbnailName,
     isCustomThumbnail = false,
-    isPublishing = false;
+    isPublishing = false,
+    uploadSource; // use to determine if upload is local, youtube, or vimeo
 
 function appendErrorMessage(errorArray) {
   errorArray.forEach(function(error) {
@@ -154,16 +155,15 @@ function renderThumbnail(thumbnails) {
 function onUploadError(message) {
   isUploadingVideo = false;
 
+  var eventName = 'video-upload-failed:' + uploadSource;
+
   AVEventTracker({
     codeSource: 'upload',
-    eventName: 'video-upload-failed',
+    eventName: eventName,
     eventType: 'uploadClick'
   });
-  ga('send', 'event', 'upload', 'video-upload-failed', 'upload');
+  ga('send', 'event', 'upload', eventName, 'upload');
 
-  console.log('******************** message ********************');
-  console.log(message);
-  console.log('************************************************');
   dialogs.error("There's an error uploading. Please contact support");
 }
 
@@ -219,7 +219,9 @@ function getData() {
 }
 
 function bindEvents() {
-
+  function _isVimeo(url) {
+    return url.indexOf('vimeo.com') > -1;
+  }
   function onPublish(event) {
     event.preventDefault();
 
@@ -268,13 +270,14 @@ function bindEvents() {
     }).done(function (video) {
       renderStep(3, video);
 
+      var eventName = 'video-upload-published:' + uploadSource;
       AVEventTracker({
           codeSource: 'upload',
-          eventName: 'video-upload-published',
+          eventName: eventName,
           eventType: 'uploadClick',
           videoId: video._id
       });
-      ga('send', 'event', 'upload', 'video-upload-published', 'upload');
+      ga('send', 'event', 'upload', eventName, 'upload');
 
     }).fail(function(response) {
       if (response.status === 400) {
@@ -288,6 +291,7 @@ function bindEvents() {
 
   function onFileChange() {
     currentUploadFile = this.files[0];
+    uploadSource = 'local';
     var data = {file: {type: currentUploadFile.type, size: currentUploadFile.size, name: currentUploadFile.name}};
 
     var evaporate = new Evaporate({
@@ -311,10 +315,10 @@ function bindEvents() {
 
       AVEventTracker({
         codeSource: 'upload',
-        eventName: 'video-upload-started',
+        eventName: 'video-upload-started:local',
         eventType: 'uploadFileDrop'
       });
-      ga('send', 'event', 'upload', 'video-upload-started', 'upload');
+      ga('send', 'event', 'upload', 'video-upload-started:local', 'upload');
 
       renderStep(2);
 
@@ -481,12 +485,14 @@ function bindEvents() {
       return;
     }
 
+    uploadSource = _isVimeo(url) ? 'vimeo' : 'youtube';
+
     AVEventTracker({
       codeSource: 'upload',
-      eventName: 'video-upload-started',
+      eventName: 'video-upload-started:' + uploadSource,
       eventType: 'uploadClick'
     });
-    ga('send', 'event', 'upload', 'video-upload-started', 'upload');
+    ga('send', 'event', 'upload', 'video-upload-started:' + uploadSource, 'upload');
 
     isUploadingVideo = true;
 
