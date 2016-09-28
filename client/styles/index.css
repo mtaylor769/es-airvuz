@@ -389,6 +389,10 @@ body.modal-open {
   clear:both;
 }
 
+#video-description p {
+  word-wrap: break-word;
+}
+
 .video-user-picture {
   margin: 31px 15px;
 }
