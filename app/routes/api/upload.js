@@ -6,7 +6,7 @@ var uuid                    = require('node-uuid');
 var amazonService           = require('./../../../app/services/amazon.service.server');
 var youtubedl               = require('youtube-dl');
 var _                       = require('lodash');
-var youtubedlOption         = {maxBuffer: 1024 * 600}; // 600kb
+var youtubedlOption         = {maxBuffer: 1024 * 1000}; // 1mb
 
 /**
  * Upload Route
