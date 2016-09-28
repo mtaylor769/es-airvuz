@@ -362,7 +362,6 @@ apiRouter.route('/api/aclRoles/:id')
  * /api/cron
  */
 apiRouter.route('/api/cron/trending')
-	.get(cron.runTrending) // manually
-	.post(cron.runTrending); // cron post from cron.yaml
+	.get(cron.runTrending);
 
 module.exports = apiRouter;
