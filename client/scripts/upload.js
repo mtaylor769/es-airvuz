@@ -346,7 +346,27 @@ function bindEvents() {
   function onCustomFileChange() {
     var customThumbnailFile = this.files[0];
 
+    if (customThumbnailFile.size === 0) {
+      AVEventTracker({
+        codeSource: 'upload',
+        eventName: 'video-upload-custom-thumbnail-invalid-file-size',
+        imgFileType: customThumbnailFile.type,
+        eventType: 'uploadClick'
+      });
+      ga('send', 'event', 'upload', 'video-upload-custom-thumbnail-invalid-file-size', 'upload');
+      fbq('trackCustom', 'video-upload-custom-thumbnail-invalid-file-size');
+    }
+
     if (!utils.isImage(customThumbnailFile)) {
+      AVEventTracker({
+        codeSource: 'upload',
+        eventName: 'video-upload-custom-thumbnail-invalid-file-type',
+        imgFileType: customThumbnailFile.type,
+        eventType: 'uploadClick'
+      });
+      ga('send', 'event', 'upload', 'video-upload-custom-thumbnail-invalid-file-type', 'upload');
+      fbq('trackCustom', 'video-upload-custom-thumbnail-invalid-file-type');
+
       return dialogs.error('Invalid file type. Please select a jpg or gif file.');
     }
 
