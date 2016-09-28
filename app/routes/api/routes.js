@@ -141,6 +141,9 @@ apiRouter.route('/api/videos/report-video')
 apiRouter.route('/api/videos/videoInfoCheck')
   .get(videos.videoInfoCheck);
 
+apiRouter.route('/api/videos/nextVideos')
+   .get(videos.getNextVideos);
+
 apiRouter.route('/api/videos/:id')
   .get(videos.get)
   .put(protect, videos.put)
@@ -161,8 +164,7 @@ apiRouter.route('/api/videos/videoCount/:id')
 	.get(videos.getVideoCount);
 apiRouter.route('/api/videos/followCount/:id')
 	.get(videos.getFollowCount);
-apiRouter.route('/api/videos/nextVideos')
-	.get(videos.getNextVideos);
+
 apiRouter.route('/api/video/videoOwnerProfile/:id')
 	.get(videos.getVideoOwnerProfile);
 apiRouter.route('/api/videos/videoComments/:id')
