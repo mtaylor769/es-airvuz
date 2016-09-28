@@ -72,7 +72,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 			
 			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
 
-			return videoCrud.getNextVideos(dataObject.video.categories[0]);
+			return categoryCrud.getInternalCategory(dataObject.video.categories)
+				.then(videoCrud.getNextVideos);
 		})
 		.then(function(videos) {
 			videos.forEach(function (video) {
@@ -117,18 +118,20 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function (comments) {
 			return Promise.map(comments, function (comment) {
 				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				comment.showReplies = comment.replyCount > 0 ? true : false;
+				comment.showReplies = comment.replyCount > 0;
+
 				if (comment.userId !== null) {
 					return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
 						.then(function (social) {
 							socialCrud.setProfilePicture(social, comment.userId);
 							return comment;
 						});
-				} else {
-					comment.userId = {};
-					comment.userId.profilePicture = '/client/images/default.png';
-					return comment;
 				}
+
+				comment.userId = {};
+				comment.userId.profilePicture = '/client/images/default.png';
+
+				return comment;
 			});
 		})
 		.then(function (comments) {

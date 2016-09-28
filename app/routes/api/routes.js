@@ -162,7 +162,7 @@ apiRouter.route('/api/videos/videoCount/:id')
 apiRouter.route('/api/videos/followCount/:id')
 	.get(videos.getFollowCount);
 apiRouter.route('/api/videos/nextVideos')
-	.post(videos.getNextVideos);
+	.get(videos.getNextVideos);
 apiRouter.route('/api/video/videoOwnerProfile/:id')
 	.get(videos.getVideoOwnerProfile);
 apiRouter.route('/api/videos/videoComments/:id')
