@@ -117,6 +117,14 @@ function onLoginSuccess() {
       eventName: socialEvent,
       eventType: 'loginClick'
     });
+
+    fbq('trackCustom', 'any-account-created');
+    ga('send', 'event', 'login', 'any-account-created', 'login');
+    AVEventTracker({
+      codeSource: 'core',
+      eventName: 'any-account-created',
+      eventType: 'loginClick'
+    });
   }
 
   fbq('trackCustom', 'login');
@@ -262,7 +270,16 @@ function bindEvents() {
           eventType: 'signUpClick',
           referrer: document.referrer
         });
+        fbq('trackCustom', 'local-account-created');
         ga('send', 'event', 'signup', 'local-account-created', 'signup');
+
+        fbq('trackCustom', 'any-account-created');
+        ga('send', 'event', 'login', 'any-account-created', 'login');
+        AVEventTracker({
+          codeSource: 'core',
+          eventName: 'any-account-created',
+          eventType: 'loginClick'
+        });
       })
       .fail(function(response) {
         appendErrorMessage(response.responseJSON);
