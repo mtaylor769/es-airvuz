@@ -450,7 +450,10 @@ function bindEvents() {
       $.ajax({
           type: 'POST',
           url: '/api/comment',
-          data: {data: JSON.stringify(commentData)}
+          data: {data: JSON.stringify(commentData)},
+          beforeSend: function () {
+              $('#commentSave').prop('disabled', true);
+          }
       })
           .done(function(data) {
               var comment = data;
@@ -466,6 +469,9 @@ function bindEvents() {
 
               fbq('trackCustom', 'comment');
               ga('send', 'event', 'video page', 'comment', 'commenting video');
+          })
+          .always(function () {
+              $('#commentSave').prop('disabled', false);
           });
   }
 
