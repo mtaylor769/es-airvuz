@@ -1,4 +1,4 @@
-/* global ga */
+/* global ga, fbq */
 require('bootstrap-tagsinput');
 require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
@@ -163,6 +163,7 @@ function onUploadError(message) {
     eventType: 'uploadClick'
   });
   ga('send', 'event', 'upload', eventName, 'upload');
+  fbq('trackCustom', 'video-upload-failed');
 
   dialogs.error("There's an error uploading. Please contact support");
 }
@@ -278,6 +279,7 @@ function bindEvents() {
           videoId: video._id
       });
       ga('send', 'event', 'upload', eventName, 'upload');
+      fbq('trackCustom', 'video-upload-published');
 
     }).fail(function(response) {
       if (response.status === 400) {
@@ -319,6 +321,7 @@ function bindEvents() {
         eventType: 'uploadFileDrop'
       });
       ga('send', 'event', 'upload', 'video-upload-started:local', 'upload');
+      fbq('trackCustom', 'video-upload-started');
 
       renderStep(2);
 
@@ -513,6 +516,7 @@ function bindEvents() {
       eventType: 'uploadClick'
     });
     ga('send', 'event', 'upload', 'video-upload-started:' + uploadSource, 'upload');
+    fbq('trackCustom', 'video-upload-started');
 
     isUploadingVideo = true;
 
