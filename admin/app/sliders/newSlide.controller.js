@@ -69,7 +69,7 @@
 
         vm.evaData = {
             headersCommon: {
-                'Cache-Control': 'max-age=3600'
+                'Cache-Control': 'max-age=604800' // 1 week
             },
             headersSigned: {
                 'x-amz-acl': 'public-read'

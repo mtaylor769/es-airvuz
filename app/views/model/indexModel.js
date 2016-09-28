@@ -46,7 +46,6 @@ IndexModel.prototype.getData = function(params) {
 	params.data.index.viewName		= "index";
 
 	params.data.s3Bucket 					= amazonConfig.OUTPUT_BUCKET;
-	params.data.s3AssetUrl 				= amazonConfig.ASSET_URL;
 
 	var promises = [
 		CategoryType.get(),

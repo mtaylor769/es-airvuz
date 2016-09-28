@@ -39,7 +39,7 @@
           {#index.slider.slides}
             <div class="slide hidden">
               <a href="/video/{video._id}">
-                <img data-lazy="{s3AssetUrl}slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
+                <img data-lazy="{cdnUrl}/image/slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
               </a>
               <a href="/video/{video._id}" class="btn btn-default">Watch now</a>
             </div>
