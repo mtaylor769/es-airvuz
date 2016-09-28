@@ -10,8 +10,7 @@ var jwt               = require('jsonwebtoken'),
   crypto              = require('crypto'),
   GoogleAuth          = require('google-auth-library'),
   authFactory         = new GoogleAuth(),
-  token               = null,
-  EventTrackingCrud	  = require('../../persistence/crud/events/eventTracking');
+  token               = null;
 
 function localLogin(req, res) {
   var emailAddress  = req.body.emailAddress.trim();
@@ -134,16 +133,26 @@ function _socialLogin(socialData) {
       // check if local user exists
       return UsersCrud.getUserByEmail(socialData.email)
         .then(function (user) {
+
+          user.socialAccount = {
+              isNew: false,
+              provider: socialData.provider
+          };
+
           if (user) {
             socialData.userId = user._id;
             return SocialCrud.create(socialData)
               .then(function () {
+
+                user.socialAccount.isNew = true;
+
                 if (user.status === 'suspended') {
                   throw 'You are suspended, please contact support';
                 }
                 return _signToken({
                   _id: user._id,
-                  aclRoles: user.aclRoles
+                  aclRoles: user.aclRoles,
+                  socialAccountInfo: user.socialAccount
                 });
               });
           }
@@ -168,12 +177,7 @@ function _socialLogin(socialData) {
               socialData.userId = user._id;
               return SocialCrud.create(socialData)
                 .then(function () {
-                  EventTrackingCrud.create({
-                    codeSource  : "auth",
-                    eventSource : "nodejs",
-                    eventType   : "post",
-                    eventName   : (socialData.provider === 'google' ? 'google-account-created' : 'facebook-account-created')
-                  });
+                  user.socialAccount.isNew = true;
 
                   return user;
                 });
@@ -181,7 +185,8 @@ function _socialLogin(socialData) {
             .then(function(user) {
               return _signToken({
                 _id: user._id,
-                aclRoles: user.aclRoles
+                aclRoles: user.aclRoles,
+                socialAccountInfo: user.socialAccount
               });
             });
         });

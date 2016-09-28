@@ -106,6 +106,19 @@ function onLoginSuccess() {
     $contactUsModal.modal('show');
     contactUsFlag = false;
   }
+
+  if ('socialAccountInfo' in identity && identity.socialAccountInfo !== null && identity.socialAccountInfo.isNew) {
+    var socialEvent = identity.socialAccountInfo.provider === 'google' ? 'google-account-created' : 'facebook-account-created';
+
+    fbq('trackCustom', socialEvent);
+    ga('send', 'event', 'login', socialEvent, 'login');
+    AVEventTracker({
+      codeSource: 'core',
+      eventName: socialEvent,
+      eventType: 'loginClick'
+    });
+  }
+
   fbq('trackCustom', 'login');
   ga('send', 'event', 'login', 'login-success', 'login');
   AVEventTracker({
