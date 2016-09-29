@@ -1,21 +1,370 @@
+<style>
+    .media-object {
+        width: 160px;
+        padding: 5px;
+    }
+
+    em {
+        font-size: small;
+    }
+</style>
 <div class="row" id="media-page">
     <div class="col-md-12">
-        <h3 class="text-center">
-            Drone Laws and Regulations
-        </h3>
-        <p>With the use of drones and other unmanned aircrafts becoming so popular – yet also so new and unfamiliar – laws and regulations are being passed to protect the general public. Our AirVūz team wants to make sure you are getting the most out of your drone flying experience, while also having fun and staying safe.</p>
+        <h2>In the News</h2>
+        <p class="lead">Recent coverage of AirVūz, aerial videography, FPV freestyle, and the exciting sport of drone
+            racing...</p>
+        <div class="col-xs-1"></div>
+        <div class="col-xs-10">
+            <div class="media">
+                <div class="media-left">
+                    <a href="http://www.inc.com/will-yakowicz/drone-racing-as-a-spectator-sport.html" target="_blank">
+                        <img class="media-object"
+                             src="/client/images/media-page/Inc.png"
+                             alt="Inc Magazine Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="http://www.inc.com/will-yakowicz/drone-racing-as-a-spectator-sport.html"
+                           target="_blank">Why ESPN and GoPro Are Betting That Drone Racing Is the Next Big Spectator
+                            Sport<em> (Aug 11, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left">
+                    <a href="http://abcnews.go.com/US/drone-racing-takes-flight-olympic-sized-ambitions/story?id=41266371"
+                       target="_blank">
+                        <img class="media-object"
+                             src="/client/images/media-page/ABCNews.png"
+                             alt="ABC News Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="http://abcnews.go.com/US/drone-racing-takes-flight-olympic-sized-ambitions/story?id=41266371"
+                           target="_blank">
+                            Drone Racing Takes Flight With Olympic-Size Ambitions <em> (Aug 10, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left">
+                    <a href="http://www.wsj.com/video/the-art-of-drone-freestyle/C1C70A9B-E6DC-45DB-8527-43C4282387D6.html"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/WSJ.png"
+                             alt="Wall Street Journal Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="http://www.wsj.com/video/the-art-of-drone-freestyle/C1C70A9B-E6DC-45DB-8527-43C4282387D6.html"
+                           target="_blank">
+                            The Art of Drone Freestyle <em> (Aug 9, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="https://www.theguardian.com/technology/2016/aug/06/national-drone-racing-championship-espn"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/theGuardian.png"
+                             alt="The Guardian Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="https://www.theguardian.com/technology/2016/aug/06/national-drone-racing-championship-espn"
+                           target="_blank">
+                            Surveillance sport: drone racing enters big leagues with ESPN broadcast <em> (Aug 6,
+                            2016)</em> </a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.marketwatch.com/story/money-pouring-into-drone-racing-as-first-espn-broadcast-takes-to-the-air-2016-08-05"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/CBSMarketwatch.png"
+                             alt="CBS Marketwatch Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="http://www.marketwatch.com/story/money-pouring-into-drone-racing-as-first-espn-broadcast-takes-to-the-air-2016-08-05"
+                           target="_blank">
+                            Money Pouring into Drone Racing as First ESPN Broadcast Takes to the Air <em> (Aug 5,
+                            2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.foxnews.com/tech/2016/08/04/cool-commercial-drones-take-flight-in-tv-show-droned.html"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/FoxNewsTech.png"
+                             alt="Foxnews Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="http://www.foxnews.com/tech/2016/08/04/cool-commercial-drones-take-flight-in-tv-show-droned.html"
+                           target="_blank">
+                            Cool Commercial Drones Take Flight in TV-Show DRONED <em> (Aug 4, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.insidevancouver.ca/2016/07/27/vancouver-stars-in-brand-new-discovery-network-series-droned/"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/InsideVancouver.png"
+                             alt="Inside Vancouver Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <a href="http://www.insidevancouver.ca/2016/07/27/vancouver-stars-in-brand-new-discovery-network-series-droned/"
+                           target="_blank">
+                            Vancouver Stars in Brand New Discovery Network Series Droned <em> (July 27, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://dronelife.com/2016/07/22/science-channel-premieres-new-droned-series"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/DroneLife-com.png"
+                             alt="Dronelife Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
 
-        <p>Below is a list* of websites the AirVūz team has gathered from outside sources; these sites list and describe different laws and regulations regarding drone / unmanned aircraft use, as well as specific laws in certain states.**</p>
+                        <a href="http://dronelife.com/2016/07/22/science-channel-premieres-new-droned-series"
+                           target="_blank">
+                            Science Channel Premiers New Droned Series <em> (July 22, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://realscreen.com/2016/07/21/exclusive-clip-science-channels-droned/" target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/RealScreen.png"
+                             alt="RealScreen Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
 
-        <ul>
-            <li><a href="http://dronelaw.net/" target="_blank">dronelaw.net</a></li>
-            <li><a href="http://knowbeforeyoufly.org/for-recreational-users/" target="_blank">knowbeforeyoufly.org</a></li>
-            <li><a href="http://www.ncsl.org/research/transportation/current-unmanned-aircraft-state-law-landscape.aspx" target="_blank">NSCL.org (National Conference of State Legislation) Drone Laws Specific to Certain States</a></li>
-            <li><a href="https://www.faa.gov/uas/faq/" target="_blank">FAA.org (Federal Aviation Administration) </a></li>
-            <li><a href="http://dronelawjournal.com/" target="_blank">DroneLawJournal.com </a></li>
-        </ul>
+                        <a href="http://realscreen.com/2016/07/21/exclusive-clip-science-channels-droned/"
+                           target="_blank">
+                            Exclusive clip: Science Channel’s “Droned” <em> (July 21, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.startribune.com/twin-cities-based-airvuz-tries-to-grab-eyeballs-from-the-sky/387049751/"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/StarTribune.png"
+                             alt="Star Tribune Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <div>
+                        </div>
+                        <a href="http://www.startribune.com/twin-cities-based-airvuz-tries-to-grab-eyeballs-from-the-sky/387049751/"
+                           target="_blank">
+                            Twin Cities-based AirVuz tries to Grab Eyeballs From the Sky <em> (July 17, 2006)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.ew.com/article/2016/07/14/tyler-perry-droned-clip" target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/EntertainmentWeekly.png"
+                             alt="Entertainment Weekly Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
 
-        <p>** These resources listed above are currently just for the United States. The AirVūz Team also wants it to be clear that unmanned aircraft laws differ from country to country. Check back soon -- we’re always updating our site with resources to help our AirVūz community!</p>
-        <p>* This list is just a compilation of laws found on the Internet. Common sense and safety should always be a top priority when flying. The AirVūz Team is not responsible for any laws that are not listed or that may be broken during your flight.</p>
+                        <a href="http://www.ew.com/article/2016/07/14/tyler-perry-droned-clip" target="_blank">
+                            Tyler Perry Wowed by Epic Flying Machines in DRONED- clip Exclusive <em> (July 14,
+                            2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.drone360mag.com/news-notes/2016/07/a-dose-of-drone-reality" target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/Drone360.png"
+                             alt="Drone 360 Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://www.drone360mag.com/news-notes/2016/07/a-dose-of-drone-reality" target="_blank">
+                            A Dose of Drone Reality <em> (July 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.prnewswire.com/news-releases/airvuz-the-leading-online-drone-video-community-unveils-major-upgrades-to-the-website-300280657.html"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/PRnewswire.png"
+                             alt="PR Newswire Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://www.prnewswire.com/news-releases/airvuz-the-leading-online-drone-video-community-unveils-major-upgrades-to-the-website-300280657.html"
+                           target="_blank">
+                            Airvuz, The Leading Online Drone Video Community, Unveils Major Upgrades To The Website
+                            <em> (June 07, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://unmanned-aerial.com/science-channel-premieres-droned-series-this-summer/"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/UnmannedAerial.png"
+                             alt="Unmanned Aerial Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://unmanned-aerial.com/science-channel-premieres-droned-series-this-summer/"
+                           target="_blank">
+                            Science Channel Premieres Droned <em> (May 26, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://dronenationals.com/press/" target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/DroneNationals.png"
+                             alt="Drone Nationals Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://dronenationals.com/press/" target="_blank">
+                            Drone Nationals:</a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.suasnews.com/2016/05/science-channel-air-droned-summer/" target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/sUASNews.png"
+                             alt="sUAS News Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://www.suasnews.com/2016/05/science-channel-air-droned-summer/" target="_blank">
+                            Science Channel to Air DRONED This Summer <em> (May 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.nbc-2.com/story/31605993/new-tv-show-droning-in-america-shows-off-sw-fla"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/NBC2.png"
+                             alt="NBC Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://www.nbc-2.com/story/31605993/new-tv-show-droning-in-america-shows-off-sw-fla"
+                           target="_blank">
+                            New TV show 'Droning in America' shows off SW Fla. <em> (March 30, 2016)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.espn.com/moresports/story/_/id/17244918/drone-racing-nationals-governor-island-stage-emerging-sport"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/ESPN.png"
+                             alt="ESPN Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://www.espn.com/moresports/story/_/id/17244918/drone-racing-nationals-governor-island-stage-emerging-sport"
+                           target="_blank">
+                            Drone Racing Nationals Governor Island Stage Emerging Sport</a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://www.bizjournals.com/twincities/blog/in_private/2015/12/airvuz-drone-video-sharing-website.html"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/MinneapolisStPaulBusinessJournal.png"
+                             alt="Minneapolis St Paul Business Journal Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+                        <div>
+                        </div>
+                        <a href="http://www.bizjournals.com/twincities/blog/in_private/2015/12/airvuz-drone-video-sharing-website.html"
+                           target="_blank">
+                            Minneapolis startup launches website for sharing drone videos <em> (December 2015)</em></a>
+                    </h4>
+                </div>
+            </div>
+            <hr />
+            <div class="media">
+                <div class="media-left ">
+                    <a href="http://tech.mn/news/2015/12/09/minnesota-drone-startup-airvuz-takes-flight/"
+                       target="_blank">
+                        <img class="media-object "
+                             src="/client/images/media-page/TechDotMN.png"
+                             alt="TechDotMN Logo"/></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="">
+
+                        <a href="http://tech.mn/news/2015/12/09/minnesota-drone-startup-airvuz-takes-flight/"
+                           target="_blank">
+                            Minnesota Drone Startup Airvuz Takes Flight <em> (December 09, 2015)</em></a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1"></div>
     </div>
 </div>
+<div style="padding: 15px"></div>
