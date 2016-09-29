@@ -133,13 +133,11 @@ function _socialLogin(socialData) {
       // check if local user exists
       return UsersCrud.getUserByEmail(socialData.email)
         .then(function (user) {
-
-          user.socialAccount = {
+          if (user) {
+            user.socialAccount = {
               isNew: false,
               provider: socialData.provider
-          };
-
-          if (user) {
+            };
             socialData.userId = user._id;
             return SocialCrud.create(socialData)
               .then(function () {
@@ -177,8 +175,10 @@ function _socialLogin(socialData) {
               socialData.userId = user._id;
               return SocialCrud.create(socialData)
                 .then(function () {
-                  user.socialAccount.isNew = true;
-
+                  user.socialAccount = {
+                      provider: socialData.provider,
+                      isNew : true
+                  };
                   return user;
                 });
             })
