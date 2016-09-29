@@ -455,13 +455,13 @@ function bindEvents() {
       comment.userId = userIdentity._id;
       commentData.comment = comment;
       commentData.notification = notificationObject;
+
+      $('#commentSave').prop('disabled', true);
+
       $.ajax({
           type: 'POST',
           url: '/api/comment',
-          data: {data: JSON.stringify(commentData)},
-          beforeSend: function () {
-              $('#commentSave').prop('disabled', true);
-          }
+          data: {data: JSON.stringify(commentData)}
       })
           .done(function(data) {
               var comment = data;
