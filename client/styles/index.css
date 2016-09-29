@@ -1486,6 +1486,17 @@ Video Player Slick theme
   width: 35%;
 }
 
+/* for static pages media */
+
+.media-object {
+  width: 160px;
+  padding: 5px;
+}
+
+em {
+  font-size: small;
+}
+
 @media (min-width: 320px) {
 
   .video-page .video-slick {
