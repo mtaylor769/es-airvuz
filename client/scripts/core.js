@@ -466,6 +466,14 @@ function bindEvents() {
   });
 
   $loginModal.on('click', '#btn-facebook', function() {
+    fbq('trackCustom', 'facebook-login-click');
+    ga('send', 'event', 'login', 'facebook-login-click', 'login');
+    AVEventTracker({
+      codeSource: 'core',
+      eventName: 'facebook-login-click',
+      eventType: 'loginClick'
+    });
+
     FB.login(function (response) {
       if (response.status === 'connected') {
         FB.api('/me', {fields: 'name,email,gender,age_range,updated_time,is_verified,cover,about,bio,birthday,first_name,languages,last_name,link,locale,location,middle_name,timezone,verified'}, function (response) {
@@ -486,6 +494,14 @@ function bindEvents() {
   });
 
   $loginModal.on('click', '#btn-google', function() {
+    fbq('trackCustom', 'google-login-click');
+    ga('send', 'event', 'login', 'google-login-click', 'login');
+    AVEventTracker({
+      codeSource: 'core',
+      eventName: 'google-login-click',
+      eventType: 'loginClick'
+    });
+
     auth2.signIn();
   });
 
