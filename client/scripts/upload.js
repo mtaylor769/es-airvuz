@@ -163,7 +163,7 @@ function onUploadError(message) {
     eventType: 'uploadClick'
   });
   ga('send', 'event', 'upload', eventName, 'upload');
-  fbq('trackCustom', 'video-upload-failed');
+  fbq('trackCustom', eventName);
 
   dialogs.error("There's an error uploading. Please contact support");
 }
@@ -279,7 +279,7 @@ function bindEvents() {
           videoId: video._id
       });
       ga('send', 'event', 'upload', eventName, 'upload');
-      fbq('trackCustom', 'video-upload-published');
+      fbq('trackCustom', eventName);
 
     }).fail(function(response) {
       if (response.status === 400) {
@@ -321,7 +321,7 @@ function bindEvents() {
         eventType: 'uploadFileDrop'
       });
       ga('send', 'event', 'upload', 'video-upload-started:local', 'upload');
-      fbq('trackCustom', 'video-upload-started');
+      fbq('trackCustom', 'video-upload-started:local');
 
       renderStep(2);
 
@@ -510,13 +510,14 @@ function bindEvents() {
 
     uploadSource = _isVimeo(url) ? 'vimeo' : 'youtube';
 
+    var eventName = 'video-upload-started:' + uploadSource;
     AVEventTracker({
       codeSource: 'upload',
-      eventName: 'video-upload-started:' + uploadSource,
+      eventName: eventName,
       eventType: 'uploadClick'
     });
-    ga('send', 'event', 'upload', 'video-upload-started:' + uploadSource, 'upload');
-    fbq('trackCustom', 'video-upload-started');
+    ga('send', 'event', 'upload', eventName, 'upload');
+    fbq('trackCustom', eventName);
 
     isUploadingVideo = true;
 
