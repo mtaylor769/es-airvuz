@@ -9,7 +9,7 @@
         <meta property="og:title" content="{video.title}" />
         <meta property="og:updated_time" content="{video.openGraphCacheDate}" />
         <meta property="og:description" content="{video.description}" />
-        <meta property="og:image" content="https:{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}" />
+        <meta property="og:image" content="https:{cdnUrl}/image/drone-video-thumbnail/{video.thumbnailPath}" />
         <meta property="og:video:url" content="https:{cdnUrl}/drone-video/{video.videoPath}" />
         <meta property="og:video:type" content="video/mp4" />
         <meta property="og:video:width" content="700" />
@@ -22,7 +22,7 @@
         <meta name="twitter:url" content="https:{cdnUrl}/drone-video/{video.videoPath}" />
         <meta name="twitter:title" content="{video.title}" />
         <meta name="twitter:description" content="{video.description}" />
-        <meta name="twitter:image" content="https:{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}" />
+        <meta name="twitter:image" content="https:{cdnUrl}/image/drone-video-thumbnail/{video.thumbnailPath}" />
 
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -303,6 +303,7 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
  */
 // TODO: change /image to /images
 apiRouter.get('/image/profile-picture/:picture', image.getProfilePicture);
+apiRouter.get('/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
 apiRouter.get('/image/drone-video-thumbnail', image.getVideoThumbnail);
 apiRouter.get('/image/slide/:source', image.getSlide);
 

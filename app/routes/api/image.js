@@ -34,6 +34,11 @@ function getProfilePicture(req, res) {
     });
 }
 
+function proxyThumbnail(req, res) {
+  var videoPath = 'https:' + amazonService.config.OUTPUT_URL + req.params.id + '/' + req.params.source;
+  req.pipe(request(videoPath)).pipe(res);
+}
+
 function getVideoThumbnail(req, res, next) {
   if (!req.query.image) {
     return res.status(400).send('required image');
@@ -87,5 +92,6 @@ function getSlide(req, res) {
 Image.prototype.getProfilePicture = getProfilePicture;
 Image.prototype.getVideoThumbnail = getVideoThumbnail;
 Image.prototype.getSlide = getSlide;
+Image.prototype.proxyThumbnail = proxyThumbnail;
 
 module.exports = new Image();
