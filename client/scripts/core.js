@@ -107,8 +107,8 @@ function onLoginSuccess() {
     contactUsFlag = false;
   }
 
-  if ('socialAccountInfo' in identity && identity.socialAccountInfo !== null && identity.socialAccountInfo.isNew) {
-    var socialEvent = identity.socialAccountInfo.provider === 'google' ? 'google-account-created' : 'facebook-account-created';
+  if (identity.socialAccountInfo && identity.socialAccountInfo.isNew) {
+    var socialEvent = 'account-created:' + identity.socialAccountInfo.provider;
 
     fbq('trackCustom', socialEvent);
     ga('send', 'event', 'login', socialEvent, 'login');
@@ -118,11 +118,11 @@ function onLoginSuccess() {
       eventType: 'loginClick'
     });
 
-    fbq('trackCustom', 'any-account-created');
-    ga('send', 'event', 'login', 'any-account-created', 'login');
+    fbq('trackCustom', 'account-created:any');
+    ga('send', 'event', 'login', 'account-created:any', 'login');
     AVEventTracker({
       codeSource: 'core',
-      eventName: 'any-account-created',
+      eventName: 'account-created:any',
       eventType: 'loginClick'
     });
   }
@@ -266,18 +266,18 @@ function bindEvents() {
 
         AVEventTracker({
           codeSource: 'core',
-          eventName: 'local-account-created',
+          eventName: 'account-created:local',
           eventType: 'signUpClick',
           referrer: document.referrer
         });
-        fbq('trackCustom', 'local-account-created');
-        ga('send', 'event', 'signup', 'local-account-created', 'signup');
+        fbq('trackCustom', 'account-created:local');
+        ga('send', 'event', 'signup', 'account-created:local', 'signup');
 
-        fbq('trackCustom', 'any-account-created');
-        ga('send', 'event', 'login', 'any-account-created', 'login');
+        fbq('trackCustom', 'account-created:any');
+        ga('send', 'event', 'login', 'account-created:any', 'login');
         AVEventTracker({
           codeSource: 'core',
-          eventName: 'any-account-created',
+          eventName: 'account-created:any',
           eventType: 'loginClick'
         });
       })
