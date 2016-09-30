@@ -57,7 +57,6 @@ var hstsMaxAge = 10886400000; // 18 weeks
 app.use(hsts({
 	maxAge: hstsMaxAge,
 	includeSubDomains: true,
-	force: true,
 	preload: true
 }));
 
