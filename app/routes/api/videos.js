@@ -49,7 +49,7 @@ function getVideosByCategory(req, res) {
       switch(CATEGORY_TYPE) {
         case 'featured-drone-videos':
           return VideoCollection.getFeaturedVideos();
-        case 'ryder-cup-2016':
+        case 'staff-picks-drone-videos':
           return VideoCollection.getStaffPickVideos();
         case 'latest-drone-videos':
           return VideoCrud.getRecentVideos(videosParam);

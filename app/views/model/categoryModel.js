@@ -33,7 +33,7 @@ util.inherits(CategoryModel, BaseModel);
  * @returns {boolean}
  */
 function canSort(category) {
-	var categories = ['featured-drone-videos', 'ryder-cup-2016', 'trending-drone-videos', 'latest-drone-videos'];
+	var categories = ['featured-drone-videos', 'staff-picks-drone-videos', 'trending-drone-videos', 'latest-drone-videos'];
 
 	return !(categories.indexOf(category) > -1);
 }
@@ -44,7 +44,7 @@ CategoryModel.prototype.getData = function(params) {
 		'featured-drone-videos': 'Featured Drone Videos',
 		'trending-drone-videos': 'Trending Drone Videos',
 		'latest-drone-videos': 'Latest Drone Videos',
-		'ryder-cup-2016': 'Ryder Cup — Golf Drone Videos',
+		'staff-picks-drone-videos': 'Staff Picks Drone Videos',
 		'following-drone-videos': 'Following Drone Videos'
 	};
 	params.data							= {};
@@ -72,7 +72,7 @@ CategoryModel.prototype.getData = function(params) {
 			switch(currentCategory) {
 				case 'featured-drone-videos':
 					return VideoCollection.getFeaturedVideos();
-				case 'ryder-cup-2016':
+				case 'staff-picks-drone-videos':
 					return VideoCollection.getStaffPickVideos();
 				case 'latest-drone-videos':
 					return Videos.getRecentVideos(videosParam);
@@ -115,7 +115,7 @@ CategoryModel.prototype.getData = function(params) {
 			params.data.showLoadMore = videos.length > 11 || currentCategory === 'following-drone-videos' || currentCategory === 'trending-videos';
 
 			// don't show load more button for featured and staff pick since there is no paging and video doesn't exceed over 40?
-			if (currentCategory === 'featured-drone-videos' || currentCategory === 'ryder-cup-2016') {
+			if (currentCategory === 'featured-drone-videos' || currentCategory === 'staff-picks-drone-videos') {
 				params.data.showLoadMore = false;
 			}
 			return params;
