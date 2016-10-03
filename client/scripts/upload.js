@@ -170,6 +170,12 @@ function onUploadError(params) {
     }
   }
 
+  if (uploadSource === 'local') {
+    eventParams.data = {
+      size: currentUploadFile.size // bytes
+    }
+  }
+
   AVEventTracker(eventParams);
   ga('send', 'event', 'upload', eventName, 'upload');
   fbq('trackCustom', eventName);
