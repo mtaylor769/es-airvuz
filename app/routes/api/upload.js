@@ -106,11 +106,23 @@ function _getVideoInfo(url) {
   });
 }
 
-function _selectNonHlsBestQuality(video) {
-  // filter only http and not hls
+/**
+ * select best quality for vimeo
+ * - hls format doesn't work (http live streaming - streaming communications protocol by Apple)
+ * - original format doesn't work (original only show up for recent upload)
+ * @param video
+ * @returns {string} - format
+ * @private
+ */
+function _selectBestQualityForVimeo(video) {
+  var isHttp;
+  // filter only http format
+  // no hls and original format
   // assuming that the quality is low to highest so we pop the last (best)
   return _.filter(video.formats, function (format) {
-    return format.format_id.indexOf('hls') === -1;
+    isHttp = format.format_id.indexOf('http') > -1;
+
+    return isHttp;
   }).pop().format_id;
 }
 
@@ -127,7 +139,7 @@ function uploadExternalVideo(req, res) {
 
   if (_isVimeo(url)) {
     waitFor = _getVideoInfo(url)
-      .then(_selectNonHlsBestQuality);
+      .then(_selectBestQualityForVimeo);
   } else {
     waitFor = Promise.resolve('best');
   }
