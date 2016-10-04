@@ -38,11 +38,9 @@ var videoSocialShare                   = require('./services/videoSocialShare');
 var userIdentity                       = identity;
 var user                               = identity.currentUser;
 var notificationObject                 = {};
-var hasStartedPlaying                  = false;
 var paused                             = false;
 var followData                         = {};
 var isPlaying                          = false;
-var bufferCount                        = 2;
 var hasResChange                       = false;
 var bufferInterval                     = null;
 var isSeeking                          = false;
@@ -51,9 +49,11 @@ var initialPlayStart                   = false;
 var canResetShowMoreCount              = false;
 var countDownInterval                  = null;
 var initialUpNextClick                 = false;
+var isBuffering                        = false;
+var bufferCount                        = 0;
+var bufferTime                         = 2000;
 var $videoPlayer;
 var $videoPage;
-var screenWidth;
 var video;
 var VideoPlayer;
 var videoPathSrc;
@@ -735,30 +735,7 @@ function bindEvents() {
       }
     }
 
-    function timeFunction() {
-      if(hasStartedPlaying) {
-
-        // Buffering usually happens after seeking, we don't want to capture that buffer event
-        if (isSeeking) return;
-
-        AVEventTracker({
-          codeSource: 'videoPlayer',
-          eventName: 'buffering',
-          eventType: 'playerEvent'
-        });
-
-        if (!hasResChange) {
-          bufferInterval = setInterval(bufferIntervalTimer(), 1000);
-        } else {
-          if (bufferInterval !== null) {
-            clearInterval(bufferInterval);
-          }
-        }
-      }
-    }
-
     function playFunction() {
-      hasStartedPlaying = true;
       isPlaying = true;
       isSeeking = false;
 
@@ -793,36 +770,27 @@ function bindEvents() {
       });
     }
 
-    function bufferIntervalTimer () {
-      bufferCount--;
-      if (bufferCount <= 0) {
-        bufferCount = 2;
-        if (!hasResChange) {
-          videoResChangeOnBuffering();
-        }
-      }
-    }
-
     // change the video resolution during buffering
     function videoResChangeOnBuffering() {
       var player = $videoPlayer[0].player,
           playerResolution = player.currentResolution().label;
 
       if (player.readyState() !== 0) {
-        if (browser.isMobile()) {
           player.currentResolution('low');
 
           hasResChange = true;
 
-          ga('send', 'event', 'video page', 'mobile video resolution changed on buffering', 'viewing video');
+          ga('send', 'event', 'video page', 'm-video-resolution-changed-on-buffering', 'viewing video');
           AVEventTracker({
             codeSource: 'videoPlayer',
-            eventName: 'videoResolutionChangedOnBuffering',
-            eventType: 'browser',
+            eventName: 'm-video-resolution-changed-on-buffering',
+            eventType: 'playerEvent',
             videoId: video._id
           });
-        }
       }
+
+      clearInterval(bufferInterval);
+      bufferInterval = null;
     }
 
     function seekFunction() {
@@ -854,15 +822,55 @@ function bindEvents() {
       }
     }
 
+    // progress call back is triggered when data is downloaded
+    function progressFunction() {
+      var player = $videoPlayer[0].player;
+      var currentTime = player.currentTime();
+      var bufferDataDownloaded = player.buffered().end(player.buffered().length - 1);
+
+      if (!browser.isIOS() &&
+          !isBuffering &&
+          !isSeeking &&
+          !player.paused() &&
+          currentTime > bufferDataDownloaded &&
+          !player.ended()) {
+
+          bufferCount++;
+
+          if (bufferCount === 1) {
+              ga('send', 'event', 'video page', 'video-buffering', 'viewing video');
+              AVEventTracker({
+                  codeSource	: "videoPlayer",
+                  eventName		: "video-buffering",
+                  eventType		: "playerEvent",
+                  videoId       : video._id
+              });
+
+              // TODO: handle IOS mobile buffering
+              if (!hasResChange && (browser.isMobile() && browser.isChrome())) {
+                  bufferInterval = setInterval(function () {
+                      videoResChangeOnBuffering();
+                  }, bufferTime);
+              }
+          }
+      } else {
+          bufferCount = 0;
+          if (bufferInterval !== null) {
+              clearInterval(bufferInterval);
+              bufferInterval = null;
+          }
+      }
+    }
+
     videojs("video-player").ready(function() {
       var player = this;
       player
       .on('play', initialPlayFunction)
       .on('playing', playFunction)
       .on('ended', endFunction)
-      // .on('waiting', timeFunction) // Note: comment out for now until Buffering is figured out.
       .on('pause', pauseFunction)
-      .on('seeking', seekFunction);
+      .on('seeking', seekFunction)
+      .on('progress', progressFunction);
 
       /*
        * IOS fallback to native controls

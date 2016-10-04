@@ -18,10 +18,15 @@ function getSize() {
   }
 }
 
+function isChrome() {
+  return (/chrom(e|ium)/.test(navigator.userAgent.toLowerCase()));
+}
+
 /////////////////
 
 browser.getSize = getSize;
 browser.isMobile = isMobile;
 browser.isIOS = isIOS;
+browser.isChrome = isChrome;
 
 module.exports = browser;
