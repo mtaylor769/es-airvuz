@@ -152,16 +152,31 @@ function renderThumbnail(thumbnails) {
   });
 }
 
-function onUploadError(message) {
+function onUploadError(params) {
   isUploadingVideo = false;
 
   var eventName = 'video-upload-failed:' + uploadSource;
-
-  AVEventTracker({
+  var eventParams = {
     codeSource: 'upload',
     eventName: eventName,
     eventType: 'uploadClick'
-  });
+  };
+
+  // * for external fail video
+  // show url the user trying to upload
+  if (params && params.url) {
+    eventParams.data = {
+      url: params.url
+    }
+  }
+
+  if (uploadSource === 'local') {
+    eventParams.data = {
+      size: currentUploadFile.size // bytes
+    }
+  }
+
+  AVEventTracker(eventParams);
   ga('send', 'event', 'upload', eventName, 'upload');
   fbq('trackCustom', eventName);
 
@@ -530,7 +545,9 @@ function bindEvents() {
       type: 'POST',
       data: JSON.stringify({url: url})
     }).done(onStartPolling)
-      .fail(onUploadError);
+      .fail(function () {
+        onUploadError({url: url});
+      });
 
     // fake uploading bar
     var percentage = 0;

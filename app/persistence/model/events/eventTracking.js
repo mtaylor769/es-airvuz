@@ -75,7 +75,10 @@ var eventTrackingSchema = mongoose.Schema({
 	 	ref				: 'User',
 	 	required	: false,
 	 	type			: mongoose.Schema.ObjectId
-	}
+	},
+
+	// store any data related to eventName
+	data: {}
 	
 	
 });
