@@ -94,17 +94,7 @@
                             </div>
                         </div>
                         <div class="gainsboro-background p-15-0 video-info">
-                            <div class="inline m-l-10">
-                                <span class="p-l-10"><span class="bold airvuz-blue">VŪZ</span> {video.viewCount} |  </span>
-                                <span class="bold">  Likes </span><span class="like-count">{video.likeCount} </span>
-                                <span class="bold hidden-xs">| Comments</span><span class="hidden-xs comment-count"> {video.commentCount} </span>
-                            </div>
-                            <div class="video-action-icons pull-right flex">
-                                <span class="glyphicon glyphicon-heart like pointer" data-toggle="tooltip" data-placement="top" title="Like this video"></span>
-                                <span class="glyphicon glyphicon-flag report pointer" data-toggle="tooltip" data-placement="top" title="Report this video"></span>
-                                <span class="glyphicon glyphicon-share share pointer" data-toggle="tooltip" data-placement="bottom" title="Social media share"></span>
-                                <div class="social-icons-container"></div>
-                            </div>
+                            {> "client.templates.videoPlayer.videoInfoPartial" /}
                         </div>
                         {!Mobile tabs!}
                         <div class="mobile-tab-container">
@@ -169,7 +159,6 @@
 
         <div id="fb-root"></div>
 
-        <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
         {> "app.views.view.partial.js" /}
         <script>
             $(function() {

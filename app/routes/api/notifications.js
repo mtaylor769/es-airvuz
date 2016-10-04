@@ -19,12 +19,12 @@ Notification.prototype.post = function(req, res) {
 
     NotificationCrud
       .create(req.body)
-      .then(function(notification) {
-        res.json(notification)
+      .then(function() {
+        res.sendStatus(200);
       })
       .catch(function(err) {
         res.sendStatus(500);
-      })
+      });
 
 };
 

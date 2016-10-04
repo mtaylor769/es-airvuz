@@ -1,3 +1,4 @@
+/* global twttr */
 var AVEventTracker      = require('./../avEventTracker');
 var identity            = require('./identity');
 var amazonConfig        = require('./../config/amazon.config.client.js');
@@ -201,9 +202,22 @@ function initialize(videoObj) {
     });
 }
 
+function loadTwitterScript() {
+    // check if twttr exists already
+    if (!typeof twttr) {
+        return true;
+    }
+    $.ajax({
+        dataType: 'script',
+        cache: true,
+        url: '//platform.twitter.com/widgets.js'
+    });
+}
+
 module.exports = {
     initialize: initialize,
     addClass: addClass,
     setIconFontSize: setIconFontSize,
-    removeColorOnHover: removeColorOnHover
+    removeColorOnHover: removeColorOnHover,
+    loadTwitterScript: loadTwitterScript
 };

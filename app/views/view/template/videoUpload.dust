@@ -18,7 +18,6 @@
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.js" /}
 
-        <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
         <script>
           /** global page **/
           var Page = {};

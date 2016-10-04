@@ -60,6 +60,10 @@ module.exports = new IndexView({
 			{
 				partialName: 'client.templates.videoPlayer.videoUserSlickPartial',
 				partialPath: './client/templates/videoPlayer/videoUserSlickPartial.dust'
+			},
+			{
+				partialName: 'client.templates.videoPlayer.videoInfoPartial',
+				partialPath: './client/templates/videoPlayer/videoInfoPartial.dust'
 			}
 		]
 	});

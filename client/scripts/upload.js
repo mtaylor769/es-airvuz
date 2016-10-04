@@ -197,6 +197,7 @@ function renderStep(step, video) {
         videoSocialShare.setIconFontSize('md');
         videoSocialShare.removeColorOnHover(false);
         videoSocialShare.initialize(video);
+        videoSocialShare.loadTwitterScript();
       });
       break;
   }
