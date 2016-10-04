@@ -18,7 +18,6 @@
             data.limit = vm.limit;
             $http.post('/api/reports/top-views', data).then(function(response) {
                 var videos = response.data;
-                console.log(videos);
                 videos.forEach(function(video) {
                     var categories = video.videoObject.categories;
                     var internalFlag = categories.map(function(category) {
@@ -34,10 +33,16 @@
             })
         }
 
+        function setOrder(orderBy) {
+            vm.orderBy = (vm.orderBy === orderBy ? '-' : '') + orderBy;
+        }
+
 
     //////////////////////////////
         var vm = this;
         vm.top100Input = true;
+        vm.orderBy = '-count';
         vm.getTopViews = getTopViews;
+        vm.setOrder = setOrder;
     }
 })();

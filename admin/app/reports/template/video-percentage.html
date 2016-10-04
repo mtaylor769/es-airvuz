@@ -18,18 +18,16 @@
         <tr>
             <th>Title</th>
             <th>Uploaded By</th>
-            <th>Video Started Count</th>
-            <th>Video End Count</th>
             <th>Video Completed Percentage</th>
             <th>Percentage Completed on Video Exit</th>
+            <th>Total View Percentage</th>
         </tr>
         <tr>
             <td>{{vm.video.title}}</td>
             <td>{{vm.video.userId.userNameDisplay}}</td>
-            <td>{{vm.video.percentageInfo.videoStarted}}</td>
-            <td>{{vm.video.percentageInfo.videoEnded}}</td>
             <td>{{vm.video.percentageInfo.percentageFullWatch * 100 | number: 1}}%</td>
             <td>{{vm.video.percentageInfo.percentageWatchedOnExit * 100 | number: 1}}%</td>
+            <td>{{vm.video.percentageInfo.totalViewPercentage * 100 | number: 1}}%</td>
         </tr>
     </table>
 </md-card>

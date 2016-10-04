@@ -21,17 +21,19 @@
         <tr>
             <th>Title</th>
             <th>Uploaded By</th>
-            <th>View Count</th>
-            <th>Video Percent completed</th>
-            <th>Video Completed On Exit</th>
+            <th>View Count <span class="material-icons sort-icon" ng-click="vm.setOrder('count')">swap_vert</span></th>
+            <th>Video Percent completed <span class="material-icons sort-icon" ng-click="vm.setOrder('percentageInfo.percentageFullWatch')">swap_vert</span></th>
+            <th>Video Completed On Exit <span class="material-icons sort-icon" ng-click="vm.setOrder('percentageInfo.percentageWatchedOnExit')">swap_vert</span></th>
+            <th>Total View Percentage <span class="material-icons sort-icon" ng-click="vm.setOrder('percentageInfo.totalViewPercentage')">swap_vert</span></th>
             <th>Uploaded Date</th>
         </tr>
-        <tr ng-repeat="video in vm.videos" ng-class="{'is-internal' : video.internalFlag}">
+        <tr ng-repeat="video in vm.videos | orderBy : vm.orderBy" ng-class="{'is-internal' : video.internalFlag}">
             <td>{{video.videoObject.title}}</td>
             <td>{{video.videoOwnerObject.userNameDisplay}}</td>
             <td>{{video.count}}</td>
             <td>{{video.percentageInfo.percentageFullWatch * 100 | number: 1}}%</td>
             <td>{{video.percentageInfo.percentageWatchedOnExit * 100 | number: 1}}%</td>
+            <td>{{video.percentageInfo.totalViewPercentage * 100 | number: 1}}%</td>
             <td>{{video.videoObject.uploadDate | date}}</td>
         </tr>
     </table>
