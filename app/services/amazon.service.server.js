@@ -6,17 +6,16 @@ var Promise       = require('bluebird'),
     image         = require('./image.service.server'),
     fs            = require('fs'),
     request       = require('request'),
-    awsOptions    = {};
-var log4js            = require('log4js');
-var logger            = log4js.getLogger('app.routes.api.amazon');
+    awsOptions    = {
+      accessKeyId: amazonConfig.ACCESS_KEY,
+      secretAccessKey: amazonConfig.SECRET_KEY
+    },
+    log4js            = require('log4js'),
+    logger            = log4js.getLogger('app.routes.api.amazon');
 
-AWS.config.region       = 'us-west-2';
-AWS.config.httpOptions  = {timeout: 7200000}; // 2 hr
-
-awsOptions              = {
-                            accessKeyId: amazonConfig.ACCESS_KEY,
-                            secretAccessKey: amazonConfig.SECRET_KEY
-                          };
+AWS.config.region = 'us-west-2';
+AWS.config.setPromisesDependency(require('bluebird'));
+AWS.config.httpOptions = {timeout: 7200000}; // 2 hr
 
 function createPreset(key) {
   var URL_PATH      = amazonConfig.INPUT_URL;
@@ -71,33 +70,36 @@ function createPreset(key) {
     }
   };
 
-  return new Promise(function (resolve, reject) {
-    probe('https:' + URL_PATH + key, function(err, probeData) {
-      if (err) {
-        reject(err);
-      }
+  return _probeVideo('https:' + URL_PATH + key)
+    .then(function (probeData) {
       var duration = Math.floor(probeData.format.duration);
       var interval = Math.floor(duration / amazonConfig.NUMBER_OF_THUMBNAIL);
 
       // if interval is 0 then change it to 1
       presetParams.Thumbnails.Interval = (interval === 0 ? 1 : interval).toString();
       var transcoder = new AWS.ElasticTranscoder(awsOptions);
-      transcoder.createPreset(presetParams, function (err, data) {
-        if (err) {
-          return reject(err);
-        }
-        resolve(data.Preset.Id);
-      });
+
+      return transcoder.createPreset(presetParams).promise()
+        .then(function (data) {
+          return data.Preset.Id
+        });
     });
-  })
 }
 
-function getVideoDuration(key) {
+function _probeVideo(url) {
   return new Promise(function (resolve, reject) {
-    probe('https:' + amazonConfig.INPUT_URL + key, function(err, probeData) {
+    probe(url, function (err, probeData) {
       if (err) {
         return reject(err);
       }
+      resolve(probeData);
+    });
+  });
+}
+
+function getVideoDuration(key) {
+  return _probeVideo('https:' + amazonConfig.INPUT_URL + key)
+    .then(function (probeData) {
       var duration = Math.floor(probeData.format.duration);
       var min = duration / 60;
       var sec = min - Math.floor(min);
@@ -107,69 +109,52 @@ function getVideoDuration(key) {
       duration += ':';
       duration += sec < 9 || sec == 9 ? '0' + sec : sec;
 
-      resolve(duration);
+      return duration;
     });
-  });
 }
 
 function startTranscode(preset, key) {
   var transcoder = new AWS.ElasticTranscoder(awsOptions);
   var keyWithoutMp4 = key.replace('.mp4', '');
-
-  return new Promise(function (resolve, reject) {
-    var params = {
-      Input: { Key: key },
-      PipelineId: amazonConfig.PIPELINE_ID,
-      Outputs: [
-        {
-          // generic 320x340
-          Key: keyWithoutMp4 + '-100.mp4',
-          ThumbnailPattern: '',
-          PresetId: '1351620000001-000061'
-        },
-        {
-          // generic 720p
-          Key: keyWithoutMp4 + '-200.mp4',
-          ThumbnailPattern: '',
-          PresetId: '1351620000001-000010'
-        },
-        {
-          // original-300
-          Key: key,
-          ThumbnailPattern: 'tn_{count}',
-          PresetId: preset
-        },
-        {
-          // generic 1080p
-          Key: keyWithoutMp4 + '-400.mp4',
-          ThumbnailPattern: '',
-          PresetId: '1351620000001-000001'
-        }
-      ],
-      OutputKeyPrefix: keyWithoutMp4 + '/'
-    };
-    transcoder.createJob(params, function (err, data) {
-      if (err) {
-        reject(err);
+  var params = {
+    Input: { Key: key },
+    PipelineId: amazonConfig.PIPELINE_ID,
+    Outputs: [
+      {
+        // generic 320x340
+        Key: keyWithoutMp4 + '-100.mp4',
+        ThumbnailPattern: '',
+        PresetId: '1351620000001-000061'
+      },
+      {
+        // generic 720p
+        Key: keyWithoutMp4 + '-200.mp4',
+        ThumbnailPattern: '',
+        PresetId: '1351620000001-000010'
+      },
+      {
+        // original-300
+        Key: key,
+        ThumbnailPattern: 'tn_{count}',
+        PresetId: preset
+      },
+      {
+        // generic 1080p
+        Key: keyWithoutMp4 + '-400.mp4',
+        ThumbnailPattern: '',
+        PresetId: '1351620000001-000001'
       }
-    })
-      .on('success', function (response) {
-        resolve();
-      });
-  });
+    ],
+    OutputKeyPrefix: keyWithoutMp4 + '/'
+  };
+
+  return transcoder.createJob(params).promise();
 }
 
 function deletePreset(preset) {
   var transcoder = new AWS.ElasticTranscoder(awsOptions);
 
-  return new Promise(function (resolve, reject) {
-    transcoder.deletePreset({Id: preset}, function (err, data) {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
-    });
-  });
+  return transcoder.deletePreset({Id: preset}).promise();
 }
 
 /**
@@ -180,15 +165,12 @@ function deletePreset(preset) {
 function listVideoObjects(key) {
   var bucket = new AWS.S3(awsOptions);
 
-  return new Promise(function (resolve, reject) {
-    bucket.listObjects({
-      Bucket: amazonConfig.OUTPUT_BUCKET,
-      EncodingType: 'url',
-      Prefix: key
-    }, function (err, response) {
-      if (err) {
-        return reject(err);
-      }
+  return bucket.listObjects({
+    Bucket: amazonConfig.OUTPUT_BUCKET,
+    EncodingType: 'url',
+    Prefix: key
+  }).promise()
+    .then(function (response) {
       var videoUrl = '',
         thumbnails = [];
 
@@ -207,12 +189,11 @@ function listVideoObjects(key) {
         thumbnails.length = 6;
       }
 
-      resolve({
+      return {
         thumbnails: thumbnails,
         videoUrl: videoUrl
-      });
+      };
     });
-  });
 }
 
 /**
@@ -303,14 +284,8 @@ function confirmSubscription(token, topicArn) {
     Token: token,
     TopicArn: topicArn
   };
-  return new Promise(function (resolve, reject) {
-    sns.confirmSubscription(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(data);
-    });
-  });
+
+  return sns.confirmSubscription(params).promise();
 }
 
 /**
@@ -361,17 +336,10 @@ function moveFile(params) {
  * @return {Promise}
  */
 function uploadToS3(bucket, key, body) {
-  return new Promise(function (resolve, reject) {
-    var storage = new AWS.S3(awsOptions);
-    var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
+  var storage = new AWS.S3(awsOptions);
+  var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
 
-    storage.upload(params, function (err) {
-      if (err) {
-        return reject(err);
-      }
-      return resolve();
-    });
-  });
+  return storage.upload(params).promise();
 }
 
 module.exports = {
