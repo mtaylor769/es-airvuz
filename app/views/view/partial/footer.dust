@@ -1,4 +1,4 @@
-<div partial-beg="app.views.view.partial.header" id="footer">
+<div partial-beg="app.views.view.partial.footer" id="footer">
   <div class="container height-100-percent container-shadow">
     <div class="row footer-sub1">
       <div class="col-sm-6">
