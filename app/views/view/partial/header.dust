@@ -2,8 +2,8 @@
     <div class="container container-shadow" id="header">
         <div class="logos">
             <a href="/">
-                <img src="/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon" />
-                <img src="/client/images/airvuz.png" alt="AirVuz Logo" class="airvuz-logo" />
+                <img src="{cdnUrl}/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon" />
+                <img src="{cdnUrl}/client/images/airvuz.png" alt="AirVuz Logo" class="airvuz-logo" />
             </a>
         </div>
         <p class="tag-line">Worlds Best Drone Videos</p>
