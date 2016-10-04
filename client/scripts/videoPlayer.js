@@ -1051,6 +1051,8 @@ function bindEvents() {
 
   showMoreComments.page = 2;
 
+  $('.video-info').on('click', '.glyphicon-share', videoSocialShare.loadTwitterScript);
+
   $videoPage
     .on('click', '.description-toggle', descriptionToggleHandler)
     .on('click', '.commentReplies', commentReplies)
