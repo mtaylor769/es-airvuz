@@ -68,7 +68,8 @@ function renderProfileHeader(notification) {
         currentUser: identity.currentUser,
         awsAssetUrl: awsAssetUrl,
         notification: notification,
-        hasNotification: notification.total > 0
+        hasNotification: notification.total > 0,
+        cdnUrl: amazonConfig.CDN_URL
       };
 
   headerProfileTpl(viewData, function (err, html) {

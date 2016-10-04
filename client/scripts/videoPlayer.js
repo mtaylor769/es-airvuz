@@ -148,7 +148,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
     // stop the count down timer
     if (countDownInterval !== null) {
         clearInterval(countDownInterval);
-        $('#video-player div:nth-child(2)').removeClass('video-end-card').empty();
+        $('#video-player').find('.video-end-card').removeClass('video-end-card').empty();
     }
 
     // update video title

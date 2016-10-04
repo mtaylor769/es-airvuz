@@ -26,10 +26,10 @@ function getProfilePicture(req, res) {
       return amazonService.reSizeProfileImage(req.params.picture, size);
     })
     .then(function (response) {
-      res.setHeader('content-disposition', 'attachment; filename=' + response.fileName);
-      return request('https:' + response.path).pipe(res);
+      res.setHeader('Cache-Control', 'public, max-age=604800'); // 1 week
+      req.pipe(request('https:' + response.path)).pipe(res);
     })
-    .catch(function (err) {
+    .catch(function () {
       res.sendStatus(500);
     });
 }
@@ -39,7 +39,7 @@ function proxyThumbnail(req, res) {
   req.pipe(request(videoPath)).pipe(res);
 }
 
-function getVideoThumbnail(req, res, next) {
+function getVideoThumbnail(req, res) {
   if (!req.query.image) {
     return res.status(400).send('required image');
   }
@@ -52,13 +52,11 @@ function getVideoThumbnail(req, res, next) {
       bucket = part.shift(),
       part2 = part[1].split('.'),
       originalImageName,
-      resizeImageName,
       imagePath;
 
   originalImageName = part.join('/');
   // imagePath = 4136edf0907acb8754f9df86fa8f3456/tn_00002.jpg => 4136edf0907acb8754f9df86fa8f3456/tn_00002-226x127.jpg
   part2[0] += '-' + size.width + 'x' + size.height;
-  resizeImageName = part2[0];
   part[1] = part2.join('.');
   imagePath = part.join('/');
 
@@ -75,9 +73,8 @@ function getVideoThumbnail(req, res, next) {
         });
       })
       .then(function () {
-        res.setHeader('content-disposition', 'attachment; filename=' + resizeImageName);
         res.setHeader('Cache-Control', 'public, max-age=604800'); // 1 week
-        return request('https:' + amazonService.config.OUTPUT_URL + imagePath).pipe(res);
+        req.pipe(request('https:' + amazonService.config.OUTPUT_URL + imagePath)).pipe(res);
       })
       .catch(function () {
         res.sendStatus(500);
