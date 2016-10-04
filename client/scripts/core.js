@@ -502,7 +502,30 @@ function bindEvents() {
       eventType: 'loginClick'
     });
 
-    auth2.signIn();
+    auth2.signIn().then(function () {
+      var profile = auth2.currentUser.get().getBasicProfile();
+      var token = auth2.currentUser.get().getAuthResponse().id_token;
+      var ajaxOption = {
+        url: '/api/auth/google',
+        type: 'POST',
+        data: {
+          accountId: profile.getId(),
+          token: token
+          // coverPicture - set later
+        }
+      };
+
+      gapi.client.plus.people.get({
+        'userId': 'me',
+        fields: 'cover/coverPhoto/url,aboutMe,ageRange,birthday,braggingRights,circledByCount,currentLocation,displayName,domain,emails,etag,gender,id,image,isPlusUser,kind,language,name,nickname,objectType,occupation,organizations,placesLived,plusOneCount,relationshipStatus,skills,tagline,url,urls,verified'
+      }).execute(function (response) {
+        if (response.cover && response.cover.coverPhoto && response.cover.coverPhoto.url) {
+          ajaxOption.data.coverPicture = response.cover.coverPhoto.url;
+        }
+        ajaxOption.accountData = response.result;
+        execSocialLogin(ajaxOption);
+      });
+    })
   });
 
   $loginModal.on('click', '#btn-password-reset', onPasswordReset);
@@ -558,36 +581,7 @@ function initialize() {
           client_id: appConfig.google.clientId,
           scope: 'profile email'
         });
-
-        auth2.currentUser.listen(userChanged);
       });
-
-      function userChanged(user) {
-        if (!user.isSignedIn()) {
-          return;
-        }
-        var profile = user.getBasicProfile();
-        var ajaxOption = {
-          url: '/api/auth/google',
-          type: 'POST',
-          data: {
-            accountId: profile.getId(),
-            token: user.getAuthResponse().id_token
-            // coverPicture - set later
-          }
-        };
-
-        gapi.client.plus.people.get({
-          'userId': 'me',
-          fields: 'cover/coverPhoto/url,aboutMe,ageRange,birthday,braggingRights,circledByCount,currentLocation,displayName,domain,emails,etag,gender,id,image,isPlusUser,kind,language,name,nickname,objectType,occupation,organizations,placesLived,plusOneCount,relationshipStatus,skills,tagline,url,urls,verified'
-        }).execute(function (response) {
-          if (response.cover && response.cover.coverPhoto && response.cover.coverPhoto.url) {
-            ajaxOption.data.coverPicture = response.cover.coverPhoto.url;
-          }
-          ajaxOption.accountData = response.result;
-          execSocialLogin(ajaxOption);
-        });
-      }
     });
   });
 }
