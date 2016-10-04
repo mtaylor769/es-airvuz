@@ -55,7 +55,10 @@ function _getVideoEvent(videoId, startDate, endDate) {
           },
           total: {$sum: 1},
           timeWatched: {$sum: '$eventVideoPlaybackDetails.viewDuration'},
-          totalTime: {$sum: '$eventVideoPlaybackDetails.totalDuration'}
+          totalTime: {$sum: '$eventVideoPlaybackDetails.totalDuration'},
+          videoDuration: {
+              $max: '$eventVideoPlaybackDetails.totalDuration'
+          }
         }
       }
     ]
@@ -68,13 +71,18 @@ function getByVideoId(videoId, startDate, endDate) {
       .then(function(result) {
         var eventsObj = {};
         var composedAggregate = _.keyBy(result, '_id');
+        var videoDuration = composedAggregate['video-exited-on-playing'].videoDuration;
+        var endedTotalTime = (videoDuration * composedAggregate['video-ended'].total) || 0;
 
         eventsObj.videoEnded = composedAggregate['video-ended'] ? composedAggregate['video-ended'].total : 0;
         eventsObj.videoStart = composedAggregate['video-play-start'] ? composedAggregate['video-play-start'].total : 0;
         eventsObj.videoExit = {};
         eventsObj.videoExit.timeWatched = composedAggregate['video-exited-on-playing'] ? composedAggregate['video-exited-on-playing'].timeWatched : 0;
         eventsObj.videoExit.totalTime = composedAggregate['video-exited-on-playing'] ? composedAggregate['video-exited-on-playing'].totalTime : 0;
-
+        eventsObj.viewPercentage = {};
+        eventsObj.viewPercentage.timeWatched = ((eventsObj.videoExit.timeWatched ? eventsObj.videoExit.timeWatched : 0) + endedTotalTime);
+        eventsObj.viewPercentage.totalTime = ((eventsObj.videoExit.totalTime ? eventsObj.videoExit.totalTime : 0) + endedTotalTime);
+        eventsObj.viewPercentage.percentage = (eventsObj.viewPercentage.timeWatched / eventsObj.viewPercentage.totalTime) || 0;
         return eventsObj;
       });
 }

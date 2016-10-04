@@ -278,6 +278,16 @@ Reports.prototype.siteInfo = function(req, res) {
     });
 };
 
+function _getVideoPercent(video, eventObj) {
+    video.percentageInfo = {};
+    video.percentageInfo.videoStarted = eventObj.videoStart;
+    video.percentageInfo.videoEnded = eventObj.videoEnded;
+    video.percentageInfo.percentageFullWatch = (eventObj.videoEnded / eventObj.videoStart);
+    video.percentageInfo.percentageWatchedOnExit = (eventObj.videoExit.timeWatched / eventObj.videoExit.totalTime);
+    video.percentageInfo.totalViewPercentage = eventObj.viewPercentage.percentage;
+    return video;
+}
+
 Reports.prototype.top100Views = function(req, res) {
     var startDate = new Date(req.body.startDate);
     var endDate = new Date(req.body.endDate);
@@ -286,19 +296,17 @@ Reports.prototype.top100Views = function(req, res) {
         .then(function(videos) {
             return Promise.map(videos, function(video) {
                 return eventTrackerCrud.getByVideoId(video._id, startDate, endDate)
-                    .then(function(eventObj) {
-                        video.percentageInfo = {};
-                        video.percentageInfo.videoStarted = eventObj.videoStart;
-                        video.percentageInfo.videoEnded = eventObj.videoEnded;
-                        video.percentageInfo.percentageFullWatch = (eventObj.videoEnded / eventObj.videoStart);
-                        video.percentageInfo.percentageWatchedOnExit = (eventObj.videoExit.timeWatched / eventObj.videoExit.totalTime);
-                        return video;
-                    })
+                    .then(function (eventObj) {
+                        return _getVideoPercent(video, eventObj);
+                    });
             })
         })
         .then(function(videos) {
-           res.send(videos)
+           res.json(videos);
         })
+        .catch(function(error) {
+            res.sendStatus(500);
+        });
 
 };
 
@@ -310,23 +318,16 @@ Reports.prototype.videoPercentage = function(req, res) {
     return Videos.getByIdAndPopulateUser(videoId)
         .then(function(video) {
             return eventTrackerCrud.getByVideoId(videoId, startDate, endDate)
-                .then(function(eventObj) {
-                    logger.debug(eventObj);
-                    video.percentageInfo = {};
-                    video.percentageInfo.videoStarted = eventObj.videoStart.length;
-                    video.percentageInfo.videoEnded = eventObj.videoEnded.length;
-                    video.percentageInfo.percentageFullWatch = (eventObj.videoEnded.length/eventObj.videoStart.length);
-                    video.percentageInfo.percentageWatchedOnExit = (eventObj.videoExit.timeWatched / eventObj.videoExit.totalTime);
-                    logger.error(video);
-                    return video;
-                })
-                .then(function(video) {
-                    res.send(video);
-                })
+                .then(function (eventObj) {
+                    return _getVideoPercent(video, eventObj);
+                });
+        })
+        .then(function (video) {
+            res.json(video);
         })
         .catch(function(error) {
             res.send(error);
-        })
+        });
 };
 
 
