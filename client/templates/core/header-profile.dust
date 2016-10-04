@@ -64,10 +64,10 @@
         {#currentUser.externalLink}
         <img src="{currentUser.profilePicture}" alt="user profile picture" class="img-circle"/>
         {:else}
-        <img src="/image/profile-picture{currentUser.profilePicture}?size=50" alt="user profile picture" class="img-circle"/>
+        <img src="{cdnUrl}/image/profile-picture{currentUser.profilePicture}?size=50" alt="user profile picture" class="img-circle"/>
         {/currentUser.externalLink}
       {:else}
-        <img src="/client/images/default.png" alt="user profile picture" class="img-circle"/>
+        <img src="{cdnUrl}/client/images/default.png" alt="user profile picture" class="img-circle"/>
       {/currentUser.profilePicture}
     </div>
   </li>

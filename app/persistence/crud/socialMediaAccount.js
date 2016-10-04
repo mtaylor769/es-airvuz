@@ -4,6 +4,7 @@ try {
   var logger                      = log4js.getLogger('app.persistence.crud.socialMediaAccount');
   var database                    = require('../database/database');
   var SocialModel                 = database.getModelByDotPath({  modelDotPath  : "app.persistence.model.socialMediaAccount" });
+  var amazonConfig                = require('../../config/amazon.config');
 }
 catch(exception) {
   logger.error(" import error:" + exception);
@@ -22,11 +23,11 @@ function setProfilePicture(social, user) {
   if (social && user.profilePicture === '') {
     user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
   } else if (!social && user.profilePicture === '') {
-    user.profilePicture = '/client/images/default.png';
+    user.profilePicture = amazonConfig.CDN_URL + '/client/images/default.png';
   } else if (social && user.profilePicture.indexOf('facebook') > -1) {
     user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=small';
   } else if (user.profilePicture.indexOf('http') === -1 && user.profilePicture.indexOf('image/profile-picture') === -1 && user.profilePicture.indexOf('images/default.png') === -1) {
-    user.profilePicture = '/image/profile-picture' + user.profilePicture + '?size=50';
+    user.profilePicture = amazonConfig.CDN_URL + '/image/profile-picture' + user.profilePicture + '?size=50';
   }
 }
 
