@@ -115,7 +115,7 @@ function initialize(emailConfirm) {
         complete: function () {
           $('#slider-description-row')
             .find('.arrow span')
-            .removeClass('fa-rotate-180').parents('.arrow').removeClass('invisible');
+            .removeClass('rotate-180').parents('.arrow').removeClass('invisible');
         }
       });
 
@@ -124,7 +124,7 @@ function initialize(emailConfirm) {
       $sliderDescriptionSlick.find('.slide-description').slideToggle();
       $(this)
         .find('span')
-        .toggleClass('fa-rotate-180');
+        .toggleClass('rotate-180');
     });
   }
 

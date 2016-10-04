@@ -94,7 +94,7 @@ function getVideoDuration() {
 }
 
 function onCustomThumbnailUploadComplete(name) {
-  $uploadPage.find('#custom-thumbnail-section .fa').addClass('hidden');
+  $uploadPage.find('#custom-thumbnail-section .icon').addClass('hidden');
   $uploadPage.find('.custom-thumbnail-display').css('background-image', 'url(//s3-us-west-2.amazonaws.com/airvuz-tmp/' + name +')');
 }
 
@@ -390,7 +390,7 @@ function bindEvents() {
     }
 
     $uploadPage.find('.custom-thumbnail-display').css('background-image', 'none');
-    $uploadPage.find('#custom-thumbnail-section .fa').removeClass('hidden');
+    $uploadPage.find('#custom-thumbnail-section .icon').removeClass('hidden');
 
     isUploadingCustomThumbnail = true;
 

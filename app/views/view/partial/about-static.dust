@@ -16,9 +16,9 @@
     <div style="text-align: center;">
         <h5 style="color: #26bae5">Stay connected with AirVūz</h5>
         <div style="text-align: center; font-size: 28px">
-            <a href="https://www.facebook.com/AirVuz" style="color: #26bae5"><span class="fa fa-facebook-official" style="margin-right: 10px"></span></a>
-            <a href="https://twitter.com/AirVuz" style="color: #26bae5"><span class="fa fa-twitter" style="margin-right: 10px"></span></a>
-            <a href="https://www.instagram.com/airvuz" style="color: #26bae5"><span class="fa fa-instagram"></span></a>
+            <a href="https://www.facebook.com/AirVuz" style="color: #26bae5"><span class="icon icon-facebook-square" style="margin-right: 10px"></span></a>
+            <a href="https://twitter.com/AirVuz" style="color: #26bae5"><span class="icon icon-twitter" style="margin-right: 10px"></span></a>
+            <a href="https://www.instagram.com/airvuz" style="color: #26bae5"><span class="icon icon-instagram"></span></a>
         </div>
     </div>
 

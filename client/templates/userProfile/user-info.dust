@@ -6,16 +6,16 @@
               <span class="following">FOLLOWING : {following}</span>
           </div>
             <span class="social-media-background hidden">
-                <a class="facebook fa fa-facebook-square" target="_blank"></a>
+                <a class="facebook icon icon-facebook-square" target="_blank"></a>
             </span>
             <span class="social-media-background hidden">
-                <a class="instagram fa fa-instagram" target="_blank"></a>
+                <a class="instagram icon icon-instagram" target="_blank"></a>
             </span>
             <span class="social-media-background hidden">
-                <a class="twitter fa fa-twitter-square" target="_blank"></a>
+                <a class="twitter icon icon-twitter-square" target="_blank"></a>
             </span>
             <span class="social-media-background hidden">
-                <a class="google fa fa-google-plus-square" target="_blank"></a>
+                <a class="google icon icon-google-plus-square" target="_blank"></a>
             </span>
       </div>
       <div class="row" style="position:absolute; bottom: -5px; left: 25px;">

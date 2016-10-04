@@ -19,17 +19,17 @@
       <ul class="list-inline social-media">
         <li>
           <a href="//www.facebook.com/AirVuz" target="_blank">
-            <span class="fa fa-facebook-official"></span>
+            <span class="icon icon-facebook-square"></span>
           </a>
         </li>
         <li>
           <a href="//twitter.com/airvuz" target="_blank">
-            <span class="fa fa-twitter"></span>
+            <span class="icon icon-twitter"></span>
           </a>
         </li>
         <li>
           <a href="//www.instagram.com/airvuz" target="_blank">
-            <span class="fa fa-instagram"></span>
+            <span class="icon icon-instagram"></span>
           </a>
         </li>
         <li>

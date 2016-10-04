@@ -10,9 +10,9 @@
         <h5 class="following">FOLLOWING : {following}</h5>
     </div>
     <div class="row hidden-lg hidden-md aboutme-socialmedia">
-        <a class="facebook-link" href="//www.facebook.com" target="_blank"><span class="facebook fa fa-facebook-square col-xs-3"></span></a>
-        <a class="instagram-link" href="//www.facebook.com" target="_blank"><span class="instagram fa fa-instagram col-xs-3"></span></a>
-        <a class="twitter-link" href="//www.facebook.com" target="_blank"><span class="twitter fa fa-twitter-square col-xs-3"></span></a>
-        <a class="google-link" href="//www.facebook.com" target="_blank"><span class="google fa fa-google-plus-square col-xs-3"></span></a>
+        <a class="facebook-link" href="//www.facebook.com" target="_blank"><span class="facebook icon icon-facebook-square col-xs-3"></span></a>
+        <a class="instagram-link" href="//www.facebook.com" target="_blank"><span class="instagram icon icon-instagram col-xs-3"></span></a>
+        <a class="twitter-link" href="//www.facebook.com" target="_blank"><span class="twitter icon icon-twitter-square col-xs-3"></span></a>
+        <a class="google-link" href="//www.facebook.com" target="_blank"><span class="google icon icon-google-plus-square col-xs-3"></span></a>
     </div>
 </div>

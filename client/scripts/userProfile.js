@@ -726,7 +726,7 @@ function onCustomFileChange() {
   }
 
   $videoEditModal.find('.custom-thumbnail-display').css('background-image', 'none');
-  $videoEditModal.find('#custom-thumbnail-section .fa').removeClass('hidden');
+  $videoEditModal.find('#custom-thumbnail-section .icon').removeClass('hidden');
 
   var evaporate = new Evaporate({
     signerUrl : '/api/amazon/sign-auth',
@@ -767,7 +767,7 @@ function onUploadError(message) {
   // isUploading = false;
 }
 function onCustomThumbnailUploadComplete(name) {
-  $videoEditModal.find('#custom-thumbnail-section .fa').addClass('hidden');
+  $videoEditModal.find('#custom-thumbnail-section .icon').addClass('hidden');
   $videoEditModal.find('.custom-thumbnail-display').css('background-image', 'url(//s3-us-west-2.amazonaws.com/airvuz-tmp/' + name +')');
 }
 
