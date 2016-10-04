@@ -178,6 +178,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
     ).done(function(userData, commentsData, topSixVidData, followCountData, videoCountData, nextVideosData) {
         videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
             $('.next-video-list').empty().prepend(html);
+            lazyLoadImage($('img[data-lazy]', '.next-video-list'));
         });
 
         // mobile tabs
@@ -1061,6 +1062,8 @@ function bindEvents() {
 
   $('.video-info').on('click', '.glyphicon-share', videoSocialShare.loadTwitterScript);
 
+  lazyLoadImage($('img[data-lazy]', '.next-video-list'));
+
   $videoPage
     .on('click', '.description-toggle', descriptionToggleHandler)
     .on('click', '.commentReplies', commentReplies)
@@ -1082,6 +1085,27 @@ function bindEvents() {
     .on('click', '.nextVideos li', nextVideoHandler)
     .on('click', '.slick-slide a', onVideoOwnerVideoHandler)
     .on('click', '.mobile-video-tabs li', mobileTabSwitchHandler);
+}
+
+function lazyLoadImage($imageToLoad) {
+
+  $imageToLoad.each(function (index, image) {
+    var $image = $(image),
+      imageSource =$image.attr('data-lazy'),
+      imageToLoad = document.createElement('img');
+
+    imageToLoad.onload = function() {
+      $image
+        .attr( 'src', imageSource )
+        .removeAttr('data-lazy');
+    };
+
+    imageToLoad.onerror = function() {
+      // TODO: show default thumbnail
+    };
+
+    imageToLoad.src = imageSource;
+  });
 }
 
 function onVideoOwnerVideoHandler(evt) {
