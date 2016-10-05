@@ -129,11 +129,11 @@ UserProfileModel.prototype.getData = function (params) {
 
 			params.data = dataObject;
 
-<<<<<<< HEAD
+<
 			params.data.s3Bucket = amazonConfig.OUTPUT_URL;
 			return params;
 		});
-=======
+
 		params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
 		return params;
 	})
@@ -143,7 +143,7 @@ UserProfileModel.prototype.getData = function (params) {
 		}
 	});
 
->>>>>>> 22a20baed5b8f6776c82ee7a8cfa7c0624f3abc2
+
 };
 
 module.exports = UserProfileModel;
