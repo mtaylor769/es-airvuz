@@ -1,19 +1,19 @@
 // IMPORT: BEGIN
-var log4js 				= require('log4js');
-var logger 				= log4js.getLogger('app.views.model.userProfileModel');
+var log4js							= require('log4js');
+var logger							= log4js.getLogger('app.views.model.userProfileModel');
 
 try {
-	var BaseModel 		= require('./baseModel');
-	var moment 			= require('moment');
-	var util 			= require('util');
-	var unlock 			= require('../../utils/unlockObject');
-	var userCrud1_0_0 	= require('../../persistence/crud/users1-0-0');
-	var videoCrud1_0_0 	= require('../../persistence/crud/videos1-0-0');
-	var socialCrud 		= require('../../persistence/crud/socialMediaAccount');
-	var categoryCrud 	= require('../../persistence/crud/categoryType');
-	var videoCollection = require('../../persistence/crud/videoCollection');
-	var followCrud 		= require('../../persistence/crud/follow');
-	var amazonConfig 	= require('../../config/amazon.config');
+	var BaseModel					= require('./baseModel');
+	var moment					  = require('moment');
+	var util							= require('util');
+	var unlock						= require('../../utils/unlockObject');
+	var usersCrud					= require('../../persistence/crud/users');
+	var videoCrud					= require('../../persistence/crud/videos');
+	var socialCrud				= require('../../persistence/crud/socialMediaAccount');
+	var categoryCrud 			= require('../../persistence/crud/categoryType');
+	var videoCollection   = require('../../persistence/crud/videoCollection');
+	var followCrud				= require('../../persistence/crud/follow');
+	var amazonConfig			= require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -40,6 +40,44 @@ UserProfileModel.prototype.getData = function (params) {
 	var profileUser = null;
 	var sourceManifest = params.sourceManifest;
 	// TODO: run parallel
+	return userCrud1_0_0.getUserByUserNameUrl(userNameUrl)
+		.then(function (user) {
+			profileUser = user;
+			return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
+				.then(function (social) {
+					if (social) {
+						user.facebook = true;
+						user.fbAccount = social.accountId;
+						return user;
+					} else {
+						return user;
+					}
+				});
+		})
+		.then(function (user) {
+			logger.debug(user);
+			if (user.facebook && user.profilePicture === '') {
+				user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+			} else if (!user.facebook && user.profilePicture === '') {
+				user.profilePicture = '/client/images/default.png';
+			} else if (user.facebook && user.profilePicture.indexOf('facebook') > -1) {
+				user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+			} else if (user.profilePicture.indexOf('http') === -1) {
+				user.profilePicture = '/image/profile-picture' + user.profilePicture + '?size=200';
+			} else {
+				user.profilePicture = user.profilePicture;
+			}
+			if (user.coverPicture.indexOf('http') === -1) {
+				user.coverPicture = amazonConfig.ASSET_URL + 'users/cover-pictures' + user.coverPicture;
+			} else {
+				user.coverPicture = user.coverPicture;
+			}
+
+			logger.debug(user);
+			dataObject.user = user;
+			return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
+		})
+		.then(function (videoCollection) {
 
 	return usersCrud.getUserByUserNameUrl(userNameUrl)
 	.then(function(user) {
@@ -76,7 +114,7 @@ UserProfileModel.prototype.getData = function (params) {
 		} else {
 			user.coverPicture = user.coverPicture;
 		}
-		
+
 		logger.debug(user);
 		dataObject.user = user;
 		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
@@ -129,6 +167,9 @@ UserProfileModel.prototype.getData = function (params) {
 
 			params.data = dataObject;
 
+			params.data.s3Bucket = amazonConfig.OUTPUT_URL;
+			return params;
+		});
 <<<<<<< HEAD
 			params.data.s3Bucket = amazonConfig.OUTPUT_URL;
 			return params;
