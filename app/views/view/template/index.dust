@@ -28,7 +28,7 @@
 
     <!-- BEG:Main Container -->
     <div id="home-page" class="container main container-shadow">
-      <div class="row visible-xs-block visible-sm-block">
+      <div class="row visible-xs-block">
         <div class="col-md-12 category-nav">
             {> "app.views.view.partial.left-nav"/}
         </div>

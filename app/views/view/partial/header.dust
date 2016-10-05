@@ -2,11 +2,9 @@
     <div class="container container-shadow" id="header">
         <div class="logos">
             <a href="/">
-                <img src="{cdnUrl}/client/images/airvuz-icon.png" alt="AirVuz Icon" class="airvuz-icon" />
-                <img src="{cdnUrl}/client/images/airvuz.png" alt="AirVuz Logo" class="airvuz-logo" />
+                <img src="{cdnUrl}/client/images/airvuz-drone-logo.jpg" alt="AirVuz Logo" class="airvuz-icon" />
             </a>
         </div>
-        <p class="tag-line">Worlds Best Drone Videos</p>
           <div id="category-collapse">
             <ul class="list-unstyled">
               <li class="dropdown" id="header-categories">
