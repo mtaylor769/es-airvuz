@@ -130,7 +130,6 @@ UserProfileModel.prototype.getData = function (params) {
 
 			params.data = dataObject;
 
-<
 			params.data.s3Bucket = amazonConfig.OUTPUT_URL;
 			return params;
 		});
