@@ -1,5 +1,5 @@
 var acl = require('../../utils/acl'),
-  UserCrud = require('../../persistence/crud/users');
+  UserCrud = require('../../persistence/crud/users1-0-0');
 
 function Acl() {
 }

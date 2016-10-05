@@ -1,34 +1,34 @@
-var namespace				= 'app.views.model.confirmationModel';
-var log4js					= require('log4js');
-var logger					= log4js.getLogger(namespace);
+var namespace           = 'app.views.model.confirmationModel';
+var log4js              = require('log4js');
+var logger              = log4js.getLogger(namespace);
 
 try {
-    var BaseModel	        = require('./baseModel');
-    var util			    = require('util');
-    var Promise             = require('bluebird');
-    var userCrud            = require('../../persistence/crud/users');
+    var BaseModel       = require('./baseModel');
+    var util            = require('util');
+    var Promise         = require('bluebird');
+    var userCrud1_0_0   = require('../../persistence/crud/users1-0-0');
 
-    if(global.NODE_ENV === "production") {
+    if (global.NODE_ENV === "production") {
         logger.setLevel("WARN");
     }
 }
-catch(exception) {
+catch (exception) {
     logger.error(" import error:" + exception);
 }
 // IMPORT: END
 
-var ConfirmationModel = function(params) {
+var ConfirmationModel = function (params) {
     BaseModel.apply(this, arguments);
 };
 
 util.inherits(ConfirmationModel, BaseModel);
 
-ConfirmationModel.prototype.getData = function(params) {
+ConfirmationModel.prototype.getData = function (params) {
     params.data = {
         host: params.request.hostname
     };
 
-    return userCrud.getUserByEmail(params.request.body.emailAddress)
+    return userCrud1_0_0.getUserByEmail(params.request.body.emailAddress)
         .then(function (user) {
             params.data._id = user._id;
             return params;

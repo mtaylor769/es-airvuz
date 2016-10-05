@@ -1,5 +1,5 @@
 var Promise     = require('bluebird');
-var usersCrud    = require('../../persistence/crud/users');
+var usersCrud    = require('../../persistence/crud/users1-0-0');
 var aclCrud     = require('../../persistence/crud/aclRoles');
 
 

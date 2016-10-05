@@ -1,20 +1,20 @@
 // IMPORT: BEGIN
-var log4js		= require('log4js');
-var logger		= log4js.getLogger('app.views.model.indexModel');
+var log4js 				= require('log4js');
+var logger 				= log4js.getLogger('app.views.model.indexModel');
 
 try {
-	var BaseModel				= require('./baseModel');
-	var CategoryType		= require('../../../app/persistence/crud/categoryType');
-	var User						= require('../../../app/persistence/crud/users');
-	var Videos					= require('../../../app/persistence/crud/videos');
-	var Slider					= require('../../../app/persistence/crud/slider');
-	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
-	var TrendingVideo		= require('../../../app/persistence/crud/trendingVideos');
-	var config					= require('../../../config/config')[global.NODE_ENV];
-	var Promise					= require('bluebird');
-	var util						= require('util');
-	var amazonConfig  	= require('../../config/amazon.config');
-	var _								= require('lodash');
+	var BaseModel 		= require('./baseModel');
+	var CategoryType 	= require('../../../app/persistence/crud/categoryType');
+	var userCrud1_0_0 	= require('../../../app/persistence/crud/users1-0-0');
+	var videoCrud1_0_0 	= require('../../../app/persistence/crud/videos1-0-0');
+	var Slider 			= require('../../../app/persistence/crud/slider');
+	var VideoCollection = require('../../../app/persistence/crud/videoCollection');
+	var TrendingVideo 	= require('../../../app/persistence/crud/trendingVideos');
+	var config 			= require('../../../config/config')[global.NODE_ENV];
+	var Promise 	 	= require('bluebird');
+	var util		 	= require('util');
+	var amazonConfig 	= require('../../config/amazon.config');
+	var _ 				= require('lodash');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -27,38 +27,38 @@ catch(exception) {
 }
 // IMPORT: END
 
-var IndexModel = function(params) {
+var IndexModel = function (params) {
 	BaseModel.apply(this, arguments);
 };
 
 util.inherits(IndexModel, BaseModel);
 
-IndexModel.prototype.getData = function(params) {
-	var userId					= params.request.params.id;
+IndexModel.prototype.getData = function (params) {
+	var userId = params.request.params.id;
 
-	params.data										= {};
+	params.data = {};
 
-	params.data.index							= {};
-	params.data.index.fb					= config.view.fb;
-	params.data.index.head				= {};
-	params.data.index.head.og			= config.view.index.og;
-	params.data.index.head.title	= "AirVūz – World’s Best Drone Videos";
-	params.data.index.viewName		= "index";
+	params.data.index = {};
+	params.data.index.fb = config.view.fb;
+	params.data.index.head = {};
+	params.data.index.head.og = config.view.index.og;
+	params.data.index.head.title = "AirVūz – World’s Best Drone Videos";
+	params.data.index.viewName = "index";
 
-	params.data.s3Bucket 					= amazonConfig.OUTPUT_BUCKET;
+	params.data.s3Bucket = amazonConfig.OUTPUT_BUCKET;
 
 	var promises = [
 		CategoryType.get(),
 		VideoCollection.getFeaturedVideos(),
-		Videos.getRecentVideos(),
+		videoCrud1_0_0.getRecentVideos(),
 		TrendingVideo.getVideos({total: 50, page: 1}),
 		VideoCollection.getStaffPickVideos(),
 		Slider.getHomeSlider(params.request.query.banner),
-		User.emailConfirm(userId)
+		userCrud1_0_0.emailConfirm(userId)
 	];
 
 	return Promise.all(promises)
-		.spread(function(categories, featureVideos, recentVideos, trendingVideos, staffPickVideos, slider, isEmailConfirm) {
+		.spread(function (categories, featureVideos, recentVideos, trendingVideos, staffPickVideos, slider, isEmailConfirm) {
 			params.data.categories = categories;
 			params.data.index.featuredVideos = featureVideos;
 			params.data.index.recentVideos = recentVideos;
@@ -75,7 +75,7 @@ IndexModel.prototype.getData = function(params) {
 			params.data.index.staffPickVideos = staffPickVideos;
 			params.data.index.slider = slider;
 
-			if(userId) {
+			if (userId) {
 				params.data.emailConfirm = isEmailConfirm;
 			}
 			return params;

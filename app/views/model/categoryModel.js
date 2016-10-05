@@ -3,15 +3,15 @@ var logger					= log4js.getLogger('app.views.model.categoryModel');
 
 
 try {
-	var BaseModel				= require('./baseModel');
-	var Promise					= require('bluebird');
-	var util						= require('util');
-	var Videos					= require('../../persistence/crud/videos');
+	var BaseModel			= require('./baseModel');
+	var Promise				= require('bluebird');
+	var util				= require('util');
+	var videoCrud1_0_0		= require('../../persistence/crud/videos1-0-0');
 	var CategoryType		= require('../../../app/persistence/crud/categoryType');
 	var TrendingVideo		= require('../../../app/persistence/crud/trendingVideos');
-	var VideoCollection	= require('../../../app/persistence/crud/videoCollection');
-	var amazonConfig  	= require('../../config/amazon.config');
-	var _								= require('lodash');
+	var VideoCollection		= require('../../../app/persistence/crud/videoCollection');
+	var amazonConfig  		= require('../../config/amazon.config');
+	var _					= require('lodash');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -44,7 +44,7 @@ CategoryModel.prototype.getData = function(params) {
 		'featured-drone-videos': 'Featured Drone Videos',
 		'trending-drone-videos': 'Trending Drone Videos',
 		'latest-drone-videos': 'Latest Drone Videos',
-		'staff-picks-drone-videos': 'Staff Picks Drone Videos',
+		'staff-picks-drone-videos': 'Staff Picks Drone videoCrud1_0_0',
 		'following-drone-videos': 'Following Drone Videos'
 	};
 	params.data							= {};
@@ -75,7 +75,7 @@ CategoryModel.prototype.getData = function(params) {
 				case 'staff-picks-drone-videos':
 					return VideoCollection.getStaffPickVideos();
 				case 'latest-drone-videos':
-					return Videos.getRecentVideos(videosParam);
+					return videoCrud1_0_0.getRecentVideos(videosParam);
 				case 'trending-drone-videos':
 					var promises = [
 						VideoCollection.getFeaturedVideos(),
@@ -102,7 +102,7 @@ CategoryModel.prototype.getData = function(params) {
 				default:
 					params.data.category.name = category.name;
 					videosParam.categoryId = category._id;
-					return Videos.getVideoByCategory(videosParam);
+					return videoCrud1_0_0.getVideoByCategory(videosParam);
 			}
 		});
 

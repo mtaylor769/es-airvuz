@@ -1,13 +1,13 @@
 var User = require('../test/mockObjects/adminUser');
-var userCrud = require('../app/persistence/crud/users');
+var userCrud1_0_0 = require('../app/persistence/crud/users1-0-0');
 
 var mongoose = require('../mongoose');
 
 function createAUser(User) {
-  console.log(User);
-  userCrud.create(User)
-  .then(function(user) {
-  })
+    console.log(User);
+    userCrud1_0_0.create(User)
+        .then(function (user) {
+        })
 }
 
 createAUser(User);

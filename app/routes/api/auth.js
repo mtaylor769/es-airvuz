@@ -6,7 +6,7 @@ var jwt               = require('jsonwebtoken'),
   tokenConfig         = require('../../../config/token'),
   appConfig           = require('../../../config/config')[process.env.NODE_ENV || 'development'],
   SocialCrud          = require('../../persistence/crud/socialMediaAccount'),
-  UsersCrud           = require('../../persistence/crud/users'),
+  usersCrud1_0_0      = require('../../persistence/crud/users1-0-0'),
   crypto              = require('crypto'),
   GoogleAuth          = require('google-auth-library'),
   authFactory         = new GoogleAuth(),
@@ -16,7 +16,7 @@ function localLogin(req, res) {
   var emailAddress  = req.body.emailAddress.trim();
   var password      = req.body.password;
 
-  UsersCrud.getUserByEmail(emailAddress)
+  usersCrud1_0_0.getUserByEmail(emailAddress)
     .then(function(user) {
       if (!user || !user.validPassword(password)) {
         throw 'Wrong email or password';
@@ -131,7 +131,7 @@ function _socialLogin(socialData) {
       }
 
       // check if local user exists
-      return UsersCrud.getUserByEmail(socialData.email)
+      return usersCrud1_0_0.getUserByEmail(socialData.email)
         .then(function (user) {
           if (user) {
             user.socialAccount = {
@@ -170,7 +170,7 @@ function _socialLogin(socialData) {
             social: true
           };
 
-          return UsersCrud.create(newUser)
+          return usersCrud1_0_0.create(newUser)
             .then(function(user) {
               socialData.userId = user._id;
               return SocialCrud.create(socialData)
