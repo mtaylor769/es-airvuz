@@ -593,11 +593,9 @@ var APP = {
   initialize: initialize
 };
 
-$(function () {
-  APP.initialize();
-  FacebookPixel.initialize();
-  GoogleAnalytic.initialize();
-  GoogleTagManager.initialize();
-});
+APP.initialize();
+FacebookPixel.initialize();
+GoogleAnalytic.initialize();
+GoogleTagManager.initialize();
 
 module.exports = APP;

@@ -1,6 +1,38 @@
 <!-- BEG: app.views.view.partial.js -->
-  <script src="{script.vendorJs}"></script>
+<script>
+    function downloadJSAtOnload(src, callback) {
+        var script = document.createElement('script'),
+            loaded;
 
-  <script src="{script.js}"></script>
+        script.setAttribute('src', src);
 
+        if (callback) {
+            script.onreadystatechange = script.onload = function() {
+                if (!loaded) {
+                    callback();
+                }
+                loaded = true;
+            };
+
+            script.onerror = function(err) {
+              console.log('The script ' + err.target.src + ' is not accessible.');
+            };
+        }
+        document.body.appendChild(script);
+    }
+
+    function loadScript() {
+        downloadJSAtOnload('{script.vendorJs}', function () {
+            downloadJSAtOnload('{script.js}', initialize);
+        });
+    }
+
+    if (window.addEventListener) {
+        window.addEventListener('load', loadScript, false);
+    } else if (window.attachEvent) {
+        window.attachEvent('onload', loadScript);
+    } else {
+        window.onload = loadScript;
+    }
+</script>
 <!-- END: app.views.view.partial.js -->

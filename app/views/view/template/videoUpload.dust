@@ -23,10 +23,9 @@
           var Page = {};
           Page.categories = {categories|js|s};
 
-          $(function () {
-
+          function initialize() {
               Upload.initialize();
-          });
+          }
         </script>
     </body>
 
