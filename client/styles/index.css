@@ -24,8 +24,8 @@ body.modal-open {
   text-transform: uppercase;
 }
 .btn-primary {
-  background-color: #30c1ed;
-  border-color: #30c1ed;
+  background-color: #0ab7ff;
+  border-color: #0ab7ff;
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary[disabled]:hover {
   background-color: #238bab;
@@ -33,13 +33,13 @@ body.modal-open {
 }
 .btn-default {
   color: #fff;
-  background-color: #f48a4a;
-  border-color: #f48a4a;
+  background-color: #0AB7FF;
+  border-color: #0AB7FF;
 }
 .btn-default:hover, .btn-default:focus, .btn-default[disabled]:hover {
   color: #fff;
-  background-color: #ff7827;
-  border-color: #ff7827;
+  background-color: #23527c;
+  border-color: #23527c;
 }
 .progress-bar {
   background-color: #f48a4a;
@@ -89,12 +89,12 @@ body.modal-open {
   font-weight: 300;
 }
 #footer .social-media {
-  color: #30c1ed;
+  color: #0ab7ff;
   font-size: 15px;
 }
 #footer .social-media a {
   font-size: 30px;
-  color: #30c1ed;
+  color: #0ab7ff;
 }
 
 #footer .social-media a:hover {
@@ -159,7 +159,7 @@ body.modal-open {
  */
 
 #header {
-  background-color: #333333;
+  background-color: #000;
   height: 75px;
   color: #fff;
   margin-right: -15px;
@@ -173,7 +173,7 @@ body.modal-open {
   padding: 26px 10px 33px;
 }
 #header .navbar-toggle.primary {
-  background-color: #30c1ed;
+  background-color: #0ab7ff;
 }
 #header .navbar-toggle .icon-bar {
   background-color: #fff;
@@ -206,7 +206,7 @@ body.modal-open {
   color: #fff;
 }
 #header .right-nav a:hover {
-  color: #30c1ed;
+  color: #0ab7ff;
 }
 #header .av-search input {
   display: inline-block;
@@ -247,8 +247,8 @@ body.modal-open {
   margin-left: 15px;
 }
 #header .airvuz-icon, #header .airvuz-logo {
-  height: 60px;
-  margin-top: 8px;
+  /*height: 60px;*/
+  margin-top: 13px;
 }
 #header #category-collapse {
   display: inline-block;
@@ -265,7 +265,7 @@ body.modal-open {
   display: inline-block;
   position: relative;
   left: 30px;
-  top: 4px;
+  top: 8px;
 }
 #header-categories > a {
   font-size: 20px;
@@ -366,7 +366,7 @@ body.modal-open {
 }
 #notification .dropdown-menu a {
   display: inline-block;
-  color: #30c1ed;
+  color: #0ab7ff;
 }
 #notification .dropdown-menu a:hover {
   background-color: #353535;
@@ -681,7 +681,7 @@ ul.next-video-list > li:first-child {
 }
 
 body .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
-  background: #26bae5;
+  background: #0ab7ff;
 }
 
 #follow {
@@ -1019,7 +1019,7 @@ color: white;
 }
 
 .airvuz-blue {
-  color: #26bae5;
+  color: #0ab7ff;
 }
 
 /*
@@ -1060,7 +1060,7 @@ Begin userProfile CSS
 }
 
 #user-profile .user-social-media a:hover {
-  color: #30c1ed;
+  color: #0ab7ff;
 }
 
 #user-profile #about-me-section .aboutme-socialmedia a {
@@ -1112,7 +1112,7 @@ Begin userProfile CSS
 /*}*/
 
 /*#user-profile .profile-button button:hover {*/
-  /*background: #30c1ed;*/
+  /*background: #0ab7ff;*/
   /*color: white;*/
 /*}*/
 
@@ -1252,13 +1252,13 @@ Begin userProfile CSS
 
 #user-profile .following:hover {
   text-decoration: underline;
-  color: #30c1ed;
+  color: #0ab7ff;
   cursor: pointer;
 }
 
 #user-profile .follower:hover {
   text-decoration: underline;
-  color: #30c1ed;
+  color: #0ab7ff;
   cursor: pointer;
 }
 #follower .follower-wrapper{
@@ -1429,7 +1429,7 @@ use class="glyphicon glyphicon-minus"
 
 #selected-category-list li {
   color: #fff;
-  background-color: #30c1ed;
+  background-color: #0ab7ff;
   margin: 2px 2px 2px 5px;
   padding: 5px;
   cursor: not-allowed;
@@ -1489,7 +1489,7 @@ use class="glyphicon glyphicon-minus"
 #custom-thumbnail-section .custom-thumbnail-display .icon {
   margin: 40px auto;
   display: block;
-  color: #30c1ed;
+  color: #0ab7ff;
 }
 
 /*
@@ -1522,8 +1522,8 @@ End user profile CSS
   padding-top: 15px;
 }
 .video-tab.active {
-  border-bottom:2px solid #26bae5;
-  color: #26bae5;
+  border-bottom:2px solid #0ab7ff;
+  color: #0ab7ff;
 }
 
 
@@ -1623,7 +1623,12 @@ em {
   }
 
 }
-
+@media (max-width: 767px) {
+  /* hide header categories list */
+  #header-categories.open .dropdown-menu {
+    display: none;
+  }
+}
 @media (min-width: 768px) {
   .video-page .video-slick {
     width: 52%;
@@ -1748,18 +1753,18 @@ header logo and tag line media queries
   left: 4px;
 }
 
-#header .airvuz-icon {
-  width: 66px;
-}
+/*#header .airvuz-icon {*/
+  /*width: 66px;*/
+/*}*/
 
 #header .airvuz-logo {
   width: 95px;
 }
 
 @media (min-width: 375px) {
-  #header .airvuz-icon {
-    width: 74px;
-  }
+  /*#header .airvuz-icon {*/
+    /*width: 74px;*/
+  /*}*/
 
   #header .airvuz-logo {
     width: 104px;
@@ -1856,7 +1861,7 @@ header logo and tag line media queries
     margin-right: -15px;
   }
   #header-categories .dropdown-menu {
-    top: 47px;
+    top: 50px;
     left: -5px;
   }
   #header-categories .dropdown-menu > li {
@@ -2037,7 +2042,7 @@ header logo and tag line media queries
   }
   #footer .social-media a {
     font-size: 25px;
-    color: #30c1ed;
+    color: #0ab7ff;
   }
 
   .up-next-wrapper img {
@@ -2251,8 +2256,8 @@ header logo and tag line media queries
   margin-top: 10px;
 }
 .video-js button.btn-primary {
-  background-color: #30c1ed;
-  border-color: #30c1ed;
+  background-color: #0ab7ff;
+  border-color: #0ab7ff;
 }
 
 /* Small devices (tablets, 768px and up) */
