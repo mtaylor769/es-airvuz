@@ -1,7 +1,6 @@
 var browser = require('./services/browser'),
     EVENT_SOURCE = browser.isMobile() ? 'browser-mobile' : 'browser',
-    identity = require('./services/identity'),
-    USER_ID = identity.isAuthenticated() ? identity._id : null;
+    identity = require('./services/identity');
 
 /**
  * @description send event to the server
@@ -24,7 +23,7 @@ function AVEventTracker(params) {
 
   params = params || {};
   params.eventSource = EVENT_SOURCE;
-  params.userId = USER_ID;
+  params.userId = identity.isAuthenticated() ? identity._id : null;
 
   return $.ajax({
     type: 'PUT',
