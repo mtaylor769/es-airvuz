@@ -106,9 +106,9 @@ config.module.loaders.push ({
 
 config.module.loaders.push({
   test: /\.(png|woff|eot|ttf|swf|gif|svg)/,
-  // dataUrl if file is smaller then 10kb
+  // dataUrl if file is smaller then 20kb
   // if greater than the limit the file-loader is used
-  loader: 'url-loader?limit=10000'
+  loader: 'url-loader?limit=20000'
 });
 
 config.module.loaders.push({
