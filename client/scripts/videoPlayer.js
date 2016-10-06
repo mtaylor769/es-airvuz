@@ -781,6 +781,7 @@ function bindEvents() {
 
           hasResChange = true;
 
+          fbq('trackCustom', 'm-video-resolution-changed-on-buffering');
           ga('send', 'event', 'video page', 'm-video-resolution-changed-on-buffering', 'viewing video');
           AVEventTracker({
             codeSource: 'videoPlayer',
@@ -839,6 +840,7 @@ function bindEvents() {
           bufferCount++;
 
           if (bufferCount === 1) {
+              fbq('trackCustom', 'video-buffering');
               ga('send', 'event', 'video page', 'video-buffering', 'viewing video');
               AVEventTracker({
                   codeSource	: "videoPlayer",
