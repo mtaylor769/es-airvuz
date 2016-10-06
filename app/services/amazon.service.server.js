@@ -14,6 +14,7 @@ var Promise       = require('bluebird'),
     logger            = log4js.getLogger('app.routes.api.amazon');
 
 AWS.config.region = 'us-west-2';
+// can only use bluebird promise if the function return AWS.Request
 AWS.config.setPromisesDependency(require('bluebird'));
 AWS.config.httpOptions = {timeout: 7200000}; // 2 hr
 
@@ -165,7 +166,8 @@ function deletePreset(preset) {
 function listVideoObjects(key) {
   var bucket = new AWS.S3(awsOptions);
 
-  return bucket.listObjects({
+  // ListObjectsV2 is the revised List Objects API and is recommend for new application development.
+  return bucket.listObjectsV2({
     Bucket: amazonConfig.OUTPUT_BUCKET,
     EncodingType: 'url',
     Prefix: key
@@ -336,10 +338,17 @@ function moveFile(params) {
  * @return {Promise}
  */
 function uploadToS3(bucket, key, body) {
-  var storage = new AWS.S3(awsOptions);
-  var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
+  return new Promise(function (resolve, reject) {
+    var storage = new AWS.S3(awsOptions);
+    var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
 
-  return storage.upload(params).promise();
+    storage.upload(params, function (err) {
+      if (err) {
+        return reject(err);
+      }
+      return resolve();
+    });
+  });
 }
 
 module.exports = {
