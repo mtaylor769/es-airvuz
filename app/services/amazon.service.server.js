@@ -314,20 +314,12 @@ function moveFile(params) {
   logger.debug(params);
   var bucket = new AWS.S3(awsOptions);
 
-  return new Promise(function (resolve, reject) {
-    bucket.copyObject({
-      Bucket: params.dir,
-      CopySource: 'airvuz-tmp/' + params.key,
-      Key: params.newName || params.key,
-      ACL: 'public-read'
-    }, function (err, data) {
-      if (err) {
-        logger.error(err);
-        return reject(err);
-      }
-      resolve();
-    });
-  });
+  return bucket.copyObject({
+    Bucket: params.dir,
+    CopySource: 'airvuz-tmp/' + params.key,
+    Key: params.newName || params.key,
+    ACL: 'public-read'
+  }).promise();
 }
 
 /**
