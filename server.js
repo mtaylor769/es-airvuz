@@ -68,7 +68,7 @@ app.use(cors);
 var staticOption = {
 	maxAge: '7d'
 };
-app.use('/public', express.static('public'));
+app.use('/public', express.static('public', staticOption));
 app.use('/client', express.static('client', staticOption));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
