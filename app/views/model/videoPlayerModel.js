@@ -121,15 +121,15 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(categories) {
 			
-			dataObject.categories = categories;
-			params.data													= dataObject;
-			params.data.videoPlayer							= {};
-			params.data.videoPlayer.title				= "Video Player";
-			params.data.videoPlayer.viewName		= "Video Player";
-			params.data.url 										= config.baseUrl;
-			params.data.facebookAppId 					= config.facebook.clientID;
+			dataObject.categories               = categories;
+			params.data							= dataObject;
+			params.data.videoPlayer				= {};
+			params.data.videoPlayer.title		= "Video Player";
+			params.data.videoPlayer.viewName	= "Video Player";
+			params.data.url 					= config.baseUrl;
+			params.data.facebookAppId 			= config.facebook.clientID;
 
-			params.data.s3Bucket 								= amazonConfig.OUTPUT_BUCKET;
+			params.data.s3Bucket 				= amazonConfig.OUTPUT_BUCKET;
 			return params;
 	})
 	.catch(function(error) {
