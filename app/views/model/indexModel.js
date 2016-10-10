@@ -54,10 +54,10 @@ IndexModel.prototype.getData = function (params) {
 		videoCollCrud1_0_0.getFeaturedVideos(),
 		videoCrud1_0_0.getRecentVideos(),
 		TrendingVideo.getVideos({total: 50, page: 1}),
-		userCrud1_0_0.emailConfirm(userId),
-		videoCrud1_0_0.getCurrentCustomCarousel(),
 		videoCollCrud1_0_0.getStaffPickVideos(),
-		sliderCrud1_0_0.getHomeSlider(params.request.query.banner)
+		sliderCrud1_0_0.getHomeSlider(params.request.query.banner),
+		userCrud1_0_0.emailConfirm(userId),
+		videoCollCrud1_0_0.getCurrentCustomCarousel()
 	];
 
 	return Promise.all(promises)
