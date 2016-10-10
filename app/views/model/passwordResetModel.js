@@ -1,11 +1,11 @@
-var namespace				= 'app.views.model.resetPasswordModel';
-var log4js					= require('log4js');
-var logger					= log4js.getLogger(namespace);
+var namespace			  = 'app.views.model.resetPasswordModel';
+var log4js				  = require('log4js');
+var logger				  = log4js.getLogger(namespace);
 
 try {
   var BaseModel	          = require('./baseModel');
-  var util			          = require('util');
-  var CategoryType        = require('../../persistence/crud/categoryType');
+  var util			      = require('util');
+  var catTypeCrud1_0_0    = require('../../persistence/crud/categoryType1-0-0');
   var Promise             = require('bluebird');
 
   if(global.NODE_ENV === "production") {
@@ -29,7 +29,7 @@ PasswordResetModel.prototype.getData = function(params) {
   params.data = {};
   params.data.code = code;
 
-  var promise = CategoryType.get()
+  var promise = catTypeCrud1_0_0.get()
     .then(function (categories) {
       params.data.categories = categories;
       return params;

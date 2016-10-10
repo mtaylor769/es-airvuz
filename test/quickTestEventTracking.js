@@ -9,7 +9,7 @@ var EventType								= require('../app/persistence/crud/events/eventType');
 var BaseException						= require('../app/utils/exceptions/BaseException');
 var PersistenceException		= require('../app/utils/exceptions/PersistenceException');
 var ValidationException			= require('../app/utils/exceptions/ValidationException');
-var CategoryType						= require('../app/persistence/crud/categoryType');
+var CategoryType						= require('../app/persistence/crud/categoryType1-0-0');
 
 var createEvent = function(params) {
 	

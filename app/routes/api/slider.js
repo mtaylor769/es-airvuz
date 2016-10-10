@@ -1,72 +1,115 @@
-var sliderCrud              = require('../../persistence/crud/slider');
-var log4js                 = require('log4js');
-var logger                 = log4js.getLogger('app.routes.api.slider');
+var namespace = 'app.routes.api.slider';
 
-function Slider() {
+try {
+    var log4js = require('log4js');
+    var logger = log4js.getLogger(namespace);
+    var slider1_0_0 = require('../apiVersion/slider1-0-0');
 
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch (exception) {
+    logger.error(" import error:" + exception);
+}
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
 }
 
+function Slider() {
+}
+/*
+ * If the request object query contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use defaultVer
+ */
+var defaultVer = "1.0.0";
+
 function post(req, res) {
-  sliderCrud
-    .createSlider(req.body)
-    .then(function (slider) {
-      res.send(slider);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slider1_0_0.post(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getAll(req, res) {
-  return sliderCrud
-    .getAllSlider()
-    .then(function (sliders) {
-      res.json(sliders);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slider1_0_0.getAll(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function get(req, res) {
-  return sliderCrud
-    .getSlider(req.params.id)
-    .then(function (slider) {
-      res.json(slider);
-    })
-    .catch(function(error) {
-        res.sendStatus(500);
-    })
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slider1_0_0.search(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function put(req, res) {
-  return sliderCrud
-    .updateSlider(req.body)
-    .then(function (slider) {
-      res.json(slider);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slider1_0_0.put(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function remove(req, res) {
-  return sliderCrud
-    .removeSlider(req.params.id)
-    .then(function () {
-      res.sendStatus(200);
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    })
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slider1_0_0.remove(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getHomeSlider(req, res) {
-  return sliderCrud.getHomeSlider(req.params.id)
-    .then(function (slider) {
-      res.json(slider);
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slider1_0_0.getHomeSlider(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
-Slider.prototype.post         = post;
-Slider.prototype.get          = get;
-Slider.prototype.getAll       = getAll;
-Slider.prototype.put          = put;
-Slider.prototype.remove       = remove;
-Slider.prototype.getHomeSlider= getHomeSlider;
+Slider.prototype.post = post;
+Slider.prototype.get = get;
+Slider.prototype.getAll = getAll;
+Slider.prototype.put = put;
+Slider.prototype.remove = remove;
+Slider.prototype.getHomeSlider = getHomeSlider;
 
 module.exports = new Slider();

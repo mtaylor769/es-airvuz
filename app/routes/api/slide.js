@@ -1,69 +1,96 @@
-var slideCrud              = require('../../persistence/crud/slide');
-var sliderCrud             = require('../../persistence/crud/slider');
-var log4js                 = require('log4js');
-var logger                 = log4js.getLogger('app.routes.api.slide');
-var Promise                = require('bluebird');
-var _                      = require('lodash');
+var namespace = 'app.routes.api.slide';
 
-function Slide() {
+try {
+    var log4js      = require('log4js');
+    var logger      = log4js.getLogger(namespace);
+    var slide1_0_0  = require('../apiVersion/slide1-0-0');
 
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch(exception) {
+    logger.error(" import error:" + exception);
+}
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
 }
 
+function Slide() {}
+
+/*
+ * If the request object query contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use defaultVer
+ */
+var defaultVer = "1.0.0";
+
 function post(req, res) {
-  slideCrud
-    .createSlide(req.body)
-    .then(function (slide) {
-      res.send(slide);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slide1_0_0.post(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getAll(req, res) {
-  return slideCrud
-    .getAllSlide()
-    .then(function(slides) {
-      res.json(slides);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slide1_0_0.getAll(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function get(req, res) {
-  return slideCrud
-    .getSlide(req.params.id)
-    .then(function (slide) {
-      res.json(slide);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slide1_0_0.get(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function put(req, res) {
-  return slideCrud
-      .updateSlide(req.body)
-      .then(function() {
-          res.sendStatus(200);
-      })
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slide1_0_0.put(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function remove(req, res) {
-    return sliderCrud
-        .getAllSlidersForDelete()
-        .then(function(sliders) {
-          return Promise.map(sliders, function(slider) {
-              if(slider.slides.indexOf(req.params.id)) {
-                  var removeIndex = slider.slides.indexOf(req.params.id);
-                  slider.slides.splice(removeIndex, 1);
-                  return slider.save();
-              } else {
-              return;
-              }
-          })
-        })
-        .then(function() {
-            return slideCrud.removeSlide(req.params.id)
-        })
-        .then(function() {
-            res.sendStatus(200);
-        })
-        .catch(function(error) {
-          res.sendStatus(500);
-        })
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        slide1_0_0.remove(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 Slide.prototype.post         = post;
