@@ -1,19 +1,20 @@
+var namespace = 'app.views.model.userProfileModel';
 // IMPORT: BEGIN
-var log4js 				= require('log4js');
-var logger 				= log4js.getLogger('app.views.model.userProfileModel');
+var log4js 					= require('log4js');
+var logger 					= log4js.getLogger(namespace);
 
 try {
-	var BaseModel 		= require('./baseModel');
-	var moment 			= require('moment');
-	var util 			= require('util');
-	var unlock 			= require('../../utils/unlockObject');
-	var userCrud1_0_0 	= require('../../persistence/crud/users1-0-0');
-	var videoCrud1_0_0 	= require('../../persistence/crud/videos1-0-0');
-	var socialCrud 		= require('../../persistence/crud/socialMediaAccount');
-	var categoryCrud 	= require('../../persistence/crud/categoryType');
-	var videoCollection = require('../../persistence/crud/videoCollection');
-	var followCrud 		= require('../../persistence/crud/follow');
-	var amazonConfig 	= require('../../config/amazon.config');
+	var BaseModel 			= require('./baseModel');
+	var moment 				= require('moment');
+	var util 				= require('util');
+	var unlock 				= require('../../utils/unlockObject');
+	var userCrud1_0_0 		= require('../../persistence/crud/users1-0-0');
+	var videoCrud1_0_0 		= require('../../persistence/crud/videos1-0-0');
+	var socialCrud 			= require('../../persistence/crud/socialMediaAccount');
+	var catTypeCrud1_0_0 	= require('../../persistence/crud/categoryType1-0-0');
+	var videoCollCrud1_0_0 	= require('../../persistence/crud/videoCollection1-0-0');
+	var followCrud 			= require('../../persistence/crud/follow1-0-0');
+	var amazonConfig 		= require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -41,7 +42,7 @@ UserProfileModel.prototype.getData = function (params) {
 	var sourceManifest = params.sourceManifest;
 	// TODO: run parallel
 
-	return usersCrud.getUserByUserNameUrl(userNameUrl)
+	return userCrud1_0_0.getUserByUserNameUrl(userNameUrl)
 	.then(function(user) {
 		if(!user) {
 			throw {error: 404};
@@ -76,10 +77,10 @@ UserProfileModel.prototype.getData = function (params) {
 		} else {
 			user.coverPicture = user.coverPicture;
 		}
-		
+
 		logger.debug(user);
 		dataObject.user = user;
-		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
+		return videoCollCrud1_0_0.createVideoCollection({user: user._id, name: 'showcase'})
 	})
 	.then(function(videoCollection){
 			var videos = videoCollection.videos;
@@ -89,7 +90,7 @@ UserProfileModel.prototype.getData = function (params) {
 				logger.debug(video);
 			});
 			dataObject.showcase = videos;
-			return categoryCrud.get();
+			return catTypeCrud1_0_0.get();
 		})
 		.then(function (categories) {
 			if (!categories.length) {

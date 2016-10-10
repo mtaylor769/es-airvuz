@@ -1,5 +1,5 @@
 var comment = require('../test/mockObjects/comment');
-var commentCrud = require('../app/persistence/crud/comment');
+var commentCrud = require('../app/persistence/crud/comment1-0-0');
 var log4js											= require('log4js');
 var logger											= log4js.getLogger();
 var mongoose = require('../mongoose');

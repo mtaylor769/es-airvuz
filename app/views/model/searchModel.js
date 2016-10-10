@@ -1,13 +1,13 @@
-var log4js				= require('log4js');
-var logger				= log4js.getLogger('app.views.model.searchModel');
+var log4js					= require('log4js');
+var logger					= log4js.getLogger('app.views.model.searchModel');
 
 try {
-	var BaseModel	    = require('./baseModel');
-	var Promise		    = require('bluebird');
-	var util			= require('util');
-	var videoCrud1_0_0	= require('../../persistence/crud/videos1-0-0');
-	var CategoryType	= require('../../../app/persistence/crud/categoryType');
-	var amazonConfig    = require('../../config/amazon.config');
+	var BaseModel	    	= require('./baseModel');
+	var Promise		    	= require('bluebird');
+	var util				= require('util');
+	var videoCrud1_0_0		= require('../../persistence/crud/videos1-0-0');
+	var catTypeCrud1_0_0	= require('../../../app/persistence/crud/categoryType1-0-0');
+	var amazonConfig    	= require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -32,7 +32,7 @@ SearchModel.prototype.getData = function(params) {
 
 	params.data.s3Bucket 					= amazonConfig.OUTPUT_BUCKET;
 
-	return Promise.all([CategoryType.get(), videoCrud1_0_0.search(params.request.query.q, params.data.currentPage)])
+	return Promise.all([catTypeCrud1_0_0.get(), videoCrud1_0_0.search(params.request.query.q, params.data.currentPage)])
 		.spread(function(category, searchResult) {
 			params.data.categories = category;
 			params.data.videos = searchResult.videos;
