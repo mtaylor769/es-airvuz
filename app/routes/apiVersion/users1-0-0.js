@@ -1,20 +1,26 @@
-try {
-    var nodemailer             = require('nodemailer');
-    var _                      = require('lodash');
-    var log4js                 = require('log4js');
-    var Promise                = require('bluebird');
-    var logger                 = log4js.getLogger('app.routes.api.users');
+var namespace = 'app.routes.apiVersion.users1-0-0';
 
-    var aclUtil                = require('../../utils/acl');
-    var usersCrud1_0_0         = require('../../persistence/crud/users1-0-0');
+try {
+    var nodemailer                  = require('nodemailer');
+    var _                           = require('lodash');
+    var log4js                      = require('log4js');
+    var Promise                     = require('bluebird');
+    var logger                      = log4js.getLogger(namespace);
+
+    var aclUtil                     = require('../../utils/acl');
+    var usersCrud1_0_0              = require('../../persistence/crud/users1-0-0');
     var videoCrud1_0_0              = require('../../persistence/crud/videos1-0-0');
-    var socialCrud             = require('../../persistence/crud/socialMediaAccount');
-    //var videoCollectionCrud    = require('../../persistence/crud/videoCollection');
-    //var followCrud             = require('../../persistence/crud/follow');
-    var commentCrud            = require('../../persistence/crud/comment');
-    //var notificationCrud       = require('../../persistence/crud/notifications');
-    //var likeCrud               = require('../../persistence/crud/videoLike');
-    //var videoViewCrud          = require('../../persistence/crud/videoViews');
+    var socialCrud                  = require('../../persistence/crud/socialMediaAccount');
+    var videoCollCrud1_0_0          = require('../../persistence/crud/videoCollection1-0-0');
+    var followCrud1_0_0             = require('../../persistence/crud/follow1-0-0');
+    var commentCrud1_0_0            = require('../../persistence/crud/comment1-0-0');
+    var notificationCrud1_0_0       = require('../../persistence/crud/notifications1-0-0');
+    var videoLikeCrud1_0_0          = require('../../persistence/crud/videoLike1-0-0');
+    var videoViewCrud               = require('../../persistence/crud/videoViews');
+
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
 
 
 } catch(exception) {
@@ -23,6 +29,58 @@ try {
 
 function User() {}
 
+/**
+ * route: GET /api/users/search/?username=userNameDisplay
+ * @param req
+ * @param res
+ * @returns
+ * {
+    "_id": "57f3eff096190c114272aa8a",
+    "coverPicture": "https://scontent.xx.fbcdn.net/v/t1.0-0/p180x540/13529096_10154283959321660_1226387418316521094_n.jpg?oh=13105693a82e18a16b2a0268b4d4597c&oe=587A083B",
+    "emailAddress": "bluemagma@gmail.com",
+    "userNameDisplay": "bluemagma-at-gmail",
+    "profilePicture": "",
+    "userNameUrl": "bluemagma-at-gmail",
+    "version": "2.0.0",
+    "socialMediaLinks": [
+        {
+            "url": "",
+            "socialType": "FACEBOOK",
+            "_id": "57f5479efce8b505442e2aae"
+        },
+        {
+            "url": "",
+            "socialType": "GOOGLE+",
+            "_id": "57f5479efce8b505442e2aad"
+        },
+        {
+            "url": "",
+            "socialType": "INSTAGRAM",
+            "_id": "57f5479efce8b505442e2aac"
+        },
+        {
+            "url": "",
+            "socialType": "TWITTER",
+            "_id": "57f5479efce8b505442e2aab"
+        }
+    ],
+    "lastLoginDate": "2016-10-04T18:07:44.528Z",
+    "isSubscribeAirVuzNews": false,
+    "status": "active",
+    "autoPlay": true,
+    "accountCreatedDate": "2016-10-04T18:07:44.528Z",
+    "allowHire": false,
+    "allowDonation": false,
+    "aclRoles": [
+        "user-general"
+    ],
+    "__v": 0,
+    "aboutMe": "",
+    "lastName": "",
+    "firstName": "Bryce",
+    "resetPasswordCode": "2e83a91062ff132f63a8"
+}
+ */
 function search(req, res) {
     // aclUtil.isAllowed(req.user._id, 'user', 'search')
     //   .then(function (isAllow) {
@@ -37,7 +95,12 @@ function search(req, res) {
         // })
         .catch(logger.error);
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function get(req, res) {
     return usersCrud1_0_0
         .getUserById(req.params.id)
@@ -45,7 +108,12 @@ function get(req, res) {
             res.json(user);
         });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function createUser(req, res) {
     var userParams = {
         emailAddress            : req.body.email.toLowerCase().trim(),
@@ -82,7 +150,11 @@ function createUser(req, res) {
             return res.sendStatus(500);
         });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function put(req, res) {
     var updateObject  = req.body;
     var userId        = req.params.id;
@@ -101,7 +173,11 @@ function put(req, res) {
             res.send(data);
         });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 // TODO: move html to a template
 function hireMe(req, res) {
     var params = req.body;
@@ -171,7 +247,11 @@ function _sendPasswordResetMail(user, host) {
 
     return _sendMail(mailOptions);
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function passwordResetRequest(req, res) {
     var email = req.body.email.toLowerCase().trim();
     usersCrud1_0_0
@@ -186,7 +266,11 @@ function passwordResetRequest(req, res) {
             res.sendStatus(500);
         });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function passwordResetChange(req, res) {
     var code      = req.body.code,
         password  = req.body.password;
@@ -200,7 +284,11 @@ function passwordResetChange(req, res) {
             res.sendStatus(500);
         });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function deleteUser(req, res) {
     logger.debug('***** delete function in ********');
     var roles = req.user.aclRoles;
@@ -238,13 +326,13 @@ function deleteUser(req, res) {
                 //map videos
                 return Promise.map(videos, function(video) {
                     //find video comments
-                    return commentCrud
+                    return commentCrud1_0_0
                         .getByVideoId(video._id)
                         .then(function(comments) {
                             //map video comments
                             return Promise.map(comments, function(comment) {
                                 //delete video comments
-                                return commentCrud.remove(comment._id);
+                                return commentCrud1_0_0.remove(comment._id);
                             })
                         }).then(function() {
                             //delete video
@@ -254,29 +342,29 @@ function deleteUser(req, res) {
             })
             .then(function() {
                 //find comments
-                return commentCrud.findByUserId(userId);
+                return commentCrud1_0_0.findByUserId(userId);
             })
             .then(function(comments) {
                 //map comments
                 return Promise.map(comments, function(comment) {
                     //delete comments
-                    return commentCrud.remove(comment._id);
+                    return commentCrud1_0_0.remove(comment._id);
                 })
             })
             // .then(function() {
-            //   return followCrud.findByFollowingUserIdAndUserId(userId);
+            //   return followCrud1_0_0.findByFollowingUserIdAndUserId(userId);
             // })
             // .then(function(follows) {
             //   return Promise.map(follows, function(follow) {
-            //     return followCrud.delete(follow._id);
+            //     return followCrud1_0_0.delete(follow._id);
             //   })
             // })
             // .then(function() {
-            //   return notificationCrud.findByNotifiedUserIdAndActionUserId(userId);
+            //   return notificationCrud1_0_0.findByNotifiedUserIdAndActionUserId(userId);
             // })
             // .then(function(notifications) {
             //   return Promise.map(notifications, function(notification) {
-            //     return notificationCrud.delete(notification._id);
+            //     return notificationCrud1_0_0.delete(notification._id);
             //   })
             // })
             // .then(function() {
@@ -289,12 +377,12 @@ function deleteUser(req, res) {
             // })
             // .then(function() {
             //   //find likes
-            //   return likeCrud.findByUserId(userId);
+            //   return videoLikeCrud1_0_0.findByUserId(userId);
             // })
             // .then(function(likes) {
             //   //remove likes
             //   return Promise.map(likes, function(like) {
-            //     return likeCrud.delete(like._id);
+            //     return videoLikeCrud1_0_0.delete(like._id);
             //   })
             // })
             // .then(function() {
@@ -325,7 +413,11 @@ function deleteUser(req, res) {
     }
 
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function statusChange(req, res) {
     aclUtil.isAllowed(req.user._id, 'user', 'update-status')
         .then(function (isAllow) {
@@ -345,7 +437,12 @@ function statusChange(req, res) {
             res.sendStatus(500);
         });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function contactUs(req, res) {
     var userId = req.body.contactingUser;
     var message = req.body.contactUsMessage;
@@ -399,7 +496,11 @@ function contactUs(req, res) {
             })
         })
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function resendConfirmation(req, res) {
     var confirmMailOptions = {
         to: req.body.emailAddress,

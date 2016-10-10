@@ -1,169 +1,119 @@
-var UploadCrud              = require('../../persistence/crud/upload');
-var log4js                  = require('log4js');
-var logger                  = log4js.getLogger('app.routes.api.upload');
-var md5                     = require('md5');
-var uuid                    = require('node-uuid');
-var amazonService           = require('./../../../app/services/amazon.service.server');
-var youtubedl               = require('youtube-dl');
-var _                       = require('lodash');
-var youtubedlOption         = {maxBuffer: 1024 * 1000}; // 1mb
+var namespace = 'app.routes.api.upload';
+try {
+    var log4js      = require('log4js');
+    var logger      = log4js.getLogger(namespace);
+    var upload1_0_0 = require('../apiVersion/upload1-0-0');
 
+    if (global.NODE_ENV === "production") {
+      logger.setLevel("INFO");
+    }
+}
+catch(exception) {
+    logger.error(" import error:" + exception);
+}
 /**
- * Upload Route
- * @constructor
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
  */
+function incorrectVer(req, res) {
+  logger.info("incorrect api version requested: " + req.query.apiVer +
+      ", requester IP: " + req.connection.remoteAddress);
+  res.status(400).json({error: "invalid api version"});
+}
+
 function Upload() {}
 
-/**
- * Start upload by creating a record
- * @param req
- * @param res
+/*
+ * If the request object query contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use defaultVer
  */
+var defaultVer = "1.0.0";
+
 function post(req, res) {
-  var hashName = md5(Date.now() + req.body.file.name + uuid.v1());
-  var params = {
-    _id: hashName,
-    file: req.body,
-    //user: req.user._id,
-    status: 'uploading',
-    userAgent: req.headers['user-agent']
-  };
 
-  UploadCrud
-    .createRecord(params)
-    .then(function () {
-      res.send(hashName);
-    });
+    var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    upload1_0_0.post(req, res);
+  }
+  else {
+      incorrectVer(req,res);
+  }
 }
 
-/**
- * get status of amazon video processing to see if it is complete or failure
- */
 function getStatus(req, res, next) {
-  UploadCrud
-    .getStatus(req.params.id)
-    .then(function (status) {
-      if (status === 'completion') {
-        // let the next middleware (amazon) handle the response
-        return next();
-      }
-      if (status === 'failure') {
-        return res.sendStatus(500);
-      }
-      return res.send('processing');
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    });
-}
 
-/**
- * Update update status state
- * @private
- * @param req
- * @param res
- * @param status
- */
-function updateTranscodeStatus(req, res, status) {
-  var id = 123; //req.body.id ?
-  UploadCrud
-    .updateTranscodeStatus(id, status)
-    .then(function() {
-      res.sendStatus(200);
-    });
+    var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    upload1_0_0.getStatus(req, res, next);
+  }
+  else {
+      incorrectVer(req,res);
+  }
 }
 
 function transcodeProgression(req, res) {
-  updateTranscodeStatus(req, res, 'processing');
+
+    var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    upload1_0_0.transcodeProgression(req, res);
+  }
+  else {
+      incorrectVer(req,res);
+  }
 }
 
 function transcodeCompletion(req, res) {
-  updateTranscodeStatus(req, res, 'completion');
+
+    var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    upload1_0_0.transcodeCompletion(req, res);
+  }
+  else {
+      incorrectVer(req,res);
+  }
 }
 
 function transcodeFailure(req, res) {
-  updateTranscodeStatus(req, res, 'failure');
+
+    var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    upload1_0_0.transcodeFailure(req, res);
+  }
+  else {
+      incorrectVer(req,res);
+  }
 }
 
 function transcodeWarning(req, res) {
-  var id      = null; //req.body.id...
-  var message = ''; // req.body...
-  UploadCrud
-    .updateMessageStatus(id, message)
-    .then(function() {
-      res.sendStatus(200);
-    });
-}
 
-function _getVideoInfo(url) {
-  return new Promise(function (resolve, reject) {
-    youtubedl.getInfo(url, [], youtubedlOption, function (err, info) {
-      if (err) {
-        return reject(err);
-      }
-      resolve(info);
-    });
-  });
-}
+    var version = req.query.apiVer || defaultVer;
 
-/**
- * select best quality for vimeo
- * - hls format doesn't work (http live streaming - streaming communications protocol by Apple)
- * - original format doesn't work (original only show up for recent upload)
- * @param video
- * @returns {string} - format
- * @private
- */
-function _selectBestQualityForVimeo(video) {
-  var isHttp;
-  // filter only http format
-  // no hls and original format
-  // assuming that the quality is low to highest so we pop the last (best)
-  return _.filter(video.formats, function (format) {
-    isHttp = format.format_id.indexOf('http') > -1;
-
-    return isHttp;
-  }).pop().format_id;
-}
-
-function _isVimeo(url) {
-  return url.indexOf('vimeo.com') > -1;
+  if (version === "1.0.0") {
+    upload1_0_0.transcodeWarning(req, res);
+  }
+  else {
+      incorrectVer(req,res);
+  }
 }
 
 function uploadExternalVideo(req, res) {
-  req.setTimeout(0);
-  var url = req.body.url;
-  var fileName = md5(url + Date.now() + uuid.v1()) + '.mp4';
-  var waitFor;
-  var video;
 
-  if (_isVimeo(url)) {
-    waitFor = _getVideoInfo(url)
-      .then(_selectBestQualityForVimeo);
-  } else {
-    waitFor = Promise.resolve('best');
+    var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    upload1_0_0.uploadExternalVideo(req, res);
   }
-
-  waitFor.then(function (quality) {
-    video = youtubedl(url, ['-f', quality], youtubedlOption);
-
-    video.on('error', function () {
-      throw 'Youtubedl error';
-    });
-
-    return amazonService.uploadToS3(amazonService.config.INPUT_BUCKET, fileName, video);
-  })
-  .then(function () {
-    // TODO: change to create new preset?
-    // current using custom preset
-    return amazonService.startTranscode('1463271020793-svwgsd', fileName)
-  })
-  .then(function () {
-    res.json(fileName);
-  })
-  .catch(function () {
-    res.sendStatus(500);
-  });
+  else {
+      incorrectVer(req,res);
+  }
 }
 
 Upload.prototype.post                     = post;

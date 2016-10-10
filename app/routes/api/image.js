@@ -1,89 +1,84 @@
-var request                 = require('request');
-var amazonService           = require('../../services/amazon.service.server.js');
+var namespace = 'app.routes.api.image';
 
-function Image() {}
+try {
+    var log4js      = require('log4js');
+    var logger      = log4js.getLogger(namespace);
+    var image1_0_0  = require('../apiVersion/image1-0-0');
+
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch (exception) {
+    logger.error(" import error:" + exception);
+}
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
+}
+function Image() {
+}
+
+/*
+ * If the request object param contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use default
+ */
+var defaultVer = "1.0.0";
 
 function getProfilePicture(req, res) {
-  var availableSize = {
-    50: true,
-    200: true
-  };
 
-  var size = req.query.size;
+    var version = req.query.apiVer || defaultVer;
 
-  if (!(size in availableSize)) {
-    size = 50;
-  }
-  var part = req.params.picture.split('.');
-  // 2adf3sdf-50x50.jpg
-  var picture = part[0] + '-' + size + 'x' + size + '.' + part[1];
-
-  amazonService.hasImageSize(picture)
-    .then(function (response) {
-      if (response && response.hasImage) {
-        return response;
-      }
-      return amazonService.reSizeProfileImage(req.params.picture, size);
-    })
-    .then(function (response) {
-      res.setHeader('Cache-Control', 'public, max-age=604800'); // 1 week
-      req.pipe(request('https:' + response.path)).pipe(res);
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    });
+    if (version === "1.0.0") {
+        image1_0_0.getProfilePicture(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function proxyThumbnail(req, res) {
-  var videoPath = 'https:' + amazonService.config.OUTPUT_URL + req.params.id + '/' + req.params.source;
-  req.pipe(request(videoPath)).pipe(res);
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        image1_0_0.proxyThumbnail(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getVideoThumbnail(req, res) {
-  if (!req.query.image) {
-    return res.status(400).send('required image');
-  }
 
-  var size = {
-        width: req.query.w || '226',
-        height: req.query.h || '127'
-      },
-      part = req.query.image.split('/'),
-      bucket = part.shift(),
-      part2 = part[1].split('.'),
-      originalImageName,
-      imagePath;
+    var version = req.query.apiVer || defaultVer;
 
-  originalImageName = part.join('/');
-  // imagePath = 4136edf0907acb8754f9df86fa8f3456/tn_00002.jpg => 4136edf0907acb8754f9df86fa8f3456/tn_00002-226x127.jpg
-  part2[0] += '-' + size.width + 'x' + size.height;
-  part[1] = part2.join('.');
-  imagePath = part.join('/');
-
-  amazonService.hasImage(bucket, imagePath)
-      .then(function (hasResizeImage) {
-        if (hasResizeImage) {
-          return true;
-        }
-        return amazonService.reSizeThumbnailImage({
-          bucket: bucket,
-          path: originalImageName,
-          newName: imagePath,
-          size: size
-        });
-      })
-      .then(function () {
-        res.setHeader('Cache-Control', 'public, max-age=604800'); // 1 week
-        req.pipe(request('https:' + amazonService.config.OUTPUT_URL + imagePath)).pipe(res);
-      })
-      .catch(function () {
-        res.sendStatus(500);
-      });
+    if (version === "1.0.0") {
+        image1_0_0.getVideoThumbnail(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getSlide(req, res) {
-  var videoPath = 'https:' + amazonService.config.ASSET_URL + 'slide/' + req.params.source;
-  req.pipe(request(videoPath)).pipe(res);
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        image1_0_0.getSlide(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 Image.prototype.getProfilePicture = getProfilePicture;

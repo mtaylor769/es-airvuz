@@ -1,17 +1,18 @@
-var log4js					= require('log4js');
-var logger					= log4js.getLogger('app.views.model.categoryModel');
+var namespace = 'app.views.model.categoryModel';
 
+var log4js						= require('log4js');
+var logger						= log4js.getLogger(namespace);
 
 try {
-	var BaseModel			= require('./baseModel');
-	var Promise				= require('bluebird');
-	var util				= require('util');
-	var videoCrud1_0_0		= require('../../persistence/crud/videos1-0-0');
-	var CategoryType		= require('../../../app/persistence/crud/categoryType');
-	var TrendingVideo		= require('../../../app/persistence/crud/trendingVideos');
-	var VideoCollection		= require('../../../app/persistence/crud/videoCollection');
-	var amazonConfig  		= require('../../config/amazon.config');
-	var _					= require('lodash');
+	var BaseModel				= require('./baseModel');
+	var Promise					= require('bluebird');
+	var util					= require('util');
+	var videoCrud1_0_0			= require('../../persistence/crud/videos1-0-0');
+	var catTypeCrud1_0_0		= require('../../../app/persistence/crud/categoryType1-0-0');
+	var TrendingVideo			= require('../../../app/persistence/crud/trendingVideos');
+	var videoCollCrud1_0_0		= require('../../../app/persistence/crud/videoCollection1-0-0');
+	var amazonConfig  			= require('../../config/amazon.config');
+	var _						= require('lodash');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -44,7 +45,7 @@ CategoryModel.prototype.getData = function(params) {
 		'featured-drone-videos': 'Featured Drone Videos',
 		'trending-drone-videos': 'Trending Drone Videos',
 		'latest-drone-videos': 'Latest Drone Videos',
-		'staff-picks-drone-videos': 'Staff Picks Drone videoCrud1_0_0',
+		'staff-picks-drone-videos': 'Staff Picks Drone Videos',
 		'following-drone-videos': 'Following Drone Videos'
 	};
 	params.data = {};
@@ -65,21 +66,21 @@ CategoryModel.prototype.getData = function(params) {
 		sort: params.request.query.sort || 'uploadDate'
 	};
 
-	videoPromise = CategoryType.getByUrl(currentCategory)
+	videoPromise = catTypeCrud1_0_0.getByUrl(currentCategory)
 		.then(function (category) {
 			params.data.category.uri = currentCategory;
 			params.data.category.name = categoryNameMap[currentCategory];
 			switch (currentCategory) {
 				case 'featured-drone-videos':
-					return VideoCollection.getFeaturedVideos();
+					return videoCollCrud1_0_0.getFeaturedVideos();
 				case 'staff-picks-drone-videos':
-					return VideoCollection.getStaffPickVideos();
+					return videoCollCrud1_0_0.getStaffPickVideos();
 				case 'latest-drone-videos':
 					return videoCrud1_0_0.getRecentVideos(videosParam);
 				case 'trending-drone-videos':
 					var promises = [
-						VideoCollection.getFeaturedVideos(),
-						VideoCollection.getStaffPickVideos(),
+						videoCollCrud1_0_0.getFeaturedVideos(),
+						videoCollCrud1_0_0.getStaffPickVideos(),
 						TrendingVideo.getVideos({total: 50, page: videosParam.page})
 					];
 
@@ -107,7 +108,7 @@ CategoryModel.prototype.getData = function(params) {
 		});
 
 
-	return Promise.all([CategoryType.get(), videoPromise])
+	return Promise.all([catTypeCrud1_0_0.get(), videoPromise])
 		.spread(function (categories, videos) {
 			params.data.categories = categories;
 			params.data.videos = videos;
