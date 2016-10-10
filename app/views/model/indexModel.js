@@ -1,3 +1,5 @@
+var namespace = 'app.views.model.indexModel';
+
 // IMPORT: BEGIN
 var log4js 					= require('log4js');
 var logger 					= log4js.getLogger(namespace);
@@ -52,10 +54,10 @@ IndexModel.prototype.getData = function (params) {
 		videoCollCrud1_0_0.getFeaturedVideos(),
 		videoCrud1_0_0.getRecentVideos(),
 		TrendingVideo.getVideos({total: 50, page: 1}),
-		VideoCollection.getStaffPickVideos(),
-		Slider.getHomeSlider(params.request.query.banner),
+		videoCollCrud1_0_0.getStaffPickVideos(),
+		sliderCrud1_0_0.getHomeSlider(params.request.query.banner),
 		userCrud1_0_0.emailConfirm(userId),
-		VideoCollection.getCurrentCustomCarousel()
+		videoCollCrud1_0_0.getCurrentCustomCarousel()
 	];
 
 	return Promise.all(promises)

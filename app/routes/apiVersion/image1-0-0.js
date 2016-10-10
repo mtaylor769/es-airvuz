@@ -122,9 +122,9 @@ function getSlide(req, res) {
   req.pipe(request(videoPath)).pipe(res);
 }
 
-Image.prototype.getProfilePicture = getProfilePicture;
-Image.prototype.getVideoThumbnail = getVideoThumbnail;
-Image.prototype.getSlide = getSlide;
-Image.prototype.proxyThumbnail = proxyThumbnail;
+Image.prototype.getProfilePicture   = getProfilePicture;
+Image.prototype.getVideoThumbnail   = getVideoThumbnail;
+Image.prototype.getSlide            = getSlide;
+Image.prototype.proxyThumbnail      = proxyThumbnail;
 
 module.exports = new Image();
