@@ -8,7 +8,7 @@ var logger									= log4js.getLogger("test.quickTestCrud");
 var BaseException						= require('../app/utils/exceptions/BaseException');
 var PersistenceException		= require('../app/utils/exceptions/PersistenceException');
 var ValidationException			= require('../app/utils/exceptions/ValidationException');
-var Videos									= require('../app/persistence/crud/videos');
+var Videos									= require('../app/persistence/crud/videos1-0-0');
 var CameraType										= require('../app/persistence/crud/cameraType');
 
 

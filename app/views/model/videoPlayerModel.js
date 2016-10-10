@@ -9,13 +9,13 @@ try {
 	var Promise		    	= require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
-	var videoCrud1_0_0     		= require('../../persistence/crud/videos1-0-0');
+	var videoCrud1_0_0     	= require('../../persistence/crud/videos1-0-0');
 	var usersCrud1_0_0      = require('../../persistence/crud/users1-0-0');
 	var socialCrud			= require('../../persistence/crud/socialMediaAccount');
-	var commentCrud   		= require('../../persistence/crud/comment');
-	var videoLikeCrud 		= require('../../persistence/crud/videoLike');
-	var categoryCrud  		= require('../../persistence/crud/categoryType');
-	var followCrud			= require('../../persistence/crud/follow');
+	var commentCrud1_0_0   	= require('../../persistence/crud/comment1-0-0');
+	var videoLikeCrud1_0_0 	= require('../../persistence/crud/videoLike1-0-0');
+	var catTypeCrud1_0_0  	= require('../../persistence/crud/categoryType1-0-0');
+	var followCrud			= require('../../persistence/crud/follow1-0-0');
 	var amazonConfig  		= require('../../config/amazon.config');
 	var config				= require('../../../config/config')[global.NODE_ENV];
 
@@ -72,7 +72,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			
 			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
 
-			return categoryCrud.getInternalCategory(dataObject.video.categories)
+			return catTypeCrud1_0_0.getInternalCategory(dataObject.video.categories)
 				.then(videoCrud1_0_0.getNextVideos);
 		})
 		.then(function(videos) {
@@ -109,11 +109,11 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function(followCount) {
 			dataObject.followCount = followCount;
 
-			return videoLikeCrud.videoLikeCheck(checkObject);
+			return videoLikeCrud1_0_0.videoLikeCheck(checkObject);
 		})
 		.then(function(likeBoolean) {
 			dataObject.likeBoolean = likeBoolean;
-			return commentCrud.getParentCommentByVideoId({videoId: videoId});
+			return commentCrud1_0_0.getParentCommentByVideoId({videoId: videoId});
 		})
 		.then(function (comments) {
 			return Promise.map(comments, function (comment) {
@@ -137,7 +137,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function (comments) {
 			dataObject.comments = comments;
 			dataObject.hasMoreComments = dataObject.video.commentCount > comments.length;
-			return categoryCrud.get();
+			return catTypeCrud1_0_0.get();
 		})
 		.then(function(categories) {
 			

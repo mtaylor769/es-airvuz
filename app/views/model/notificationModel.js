@@ -1,16 +1,16 @@
 // IMPORT: BEGIN
-var namespace				= 'app.views.model.notificationModel';
-var log4js					= require('log4js');
-var logger					= log4js.getLogger(namespace);
-var _               = require('lodash');
+var namespace				  = 'app.views.model.notificationModel';
+var log4js					  = require('log4js');
+var logger					  = log4js.getLogger(namespace);
+var _                         = require('lodash');
 
 
 try {
-  var BaseModel	          = require('./baseModel');
-  var notificationCrud    = require('../../persistence/crud/notifications');
-  var moment				      = require('moment');
+  var BaseModel	              = require('./baseModel');
+  var notificationCrud1_0_0   = require('../../persistence/crud/notifications1-0-0');
+  var moment				  = require('moment');
   var util			          = require('util');
-  var config				      = require('../../../config/config')[process.env.NODE_ENV || 'development'];
+  var config				  = require('../../../config/config')[process.env.NODE_ENV || 'development'];
   var amazonConfig			  = require('../../config/amazon.config');
 
   if(global.NODE_ENV === "production") {
@@ -36,7 +36,7 @@ NotificationModel.prototype.getData = function(params) {
   var userId          = params.request.params.id;
   var dataObject      = {};
 
-  return notificationCrud.getAllByUserId(userId)
+  return notificationCrud1_0_0.getAllByUserId(userId)
     .then(function(notifications) {
 
       var notificationClone = [];

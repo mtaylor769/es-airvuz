@@ -1,20 +1,22 @@
+var namespace = 'app.views.model.indexModel';
+
 // IMPORT: BEGIN
-var log4js 				= require('log4js');
-var logger 				= log4js.getLogger('app.views.model.indexModel');
+var log4js 					= require('log4js');
+var logger 					= log4js.getLogger(namespace);
 
 try {
-	var BaseModel 		= require('./baseModel');
-	var CategoryType 	= require('../../../app/persistence/crud/categoryType');
-	var userCrud1_0_0 	= require('../../../app/persistence/crud/users1-0-0');
-	var videoCrud1_0_0 	= require('../../../app/persistence/crud/videos1-0-0');
-	var Slider 			= require('../../../app/persistence/crud/slider');
-	var VideoCollection = require('../../../app/persistence/crud/videoCollection');
-	var TrendingVideo 	= require('../../../app/persistence/crud/trendingVideos');
-	var config 			= require('../../../config/config')[global.NODE_ENV];
-	var Promise 	 	= require('bluebird');
-	var util		 	= require('util');
-	var amazonConfig 	= require('../../config/amazon.config');
-	var _ 				= require('lodash');
+	var BaseModel 			= require('./baseModel');
+	var catTypeCrud1_0_0 	= require('../../../app/persistence/crud/categoryType1-0-0');
+	var userCrud1_0_0 		= require('../../../app/persistence/crud/users1-0-0');
+	var videoCrud1_0_0 		= require('../../../app/persistence/crud/videos1-0-0');
+	var sliderCrud1_0_0 	= require('../../../app/persistence/crud/slider1-0-0');
+	var videoCollCrud1_0_0 	= require('../../../app/persistence/crud/videoCollection1-0-0');
+	var TrendingVideo 		= require('../../../app/persistence/crud/trendingVideos');
+	var config 				= require('../../../config/config')[global.NODE_ENV];
+	var Promise 	 		= require('bluebird');
+	var util		 		= require('util');
+	var amazonConfig 		= require('../../config/amazon.config');
+	var _ 					= require('lodash');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");	
@@ -48,12 +50,12 @@ IndexModel.prototype.getData = function (params) {
 	params.data.s3Bucket = amazonConfig.OUTPUT_BUCKET;
 
 	var promises = [
-		CategoryType.get(),
-		VideoCollection.getFeaturedVideos(),
+		catTypeCrud1_0_0.get(),
+		videoCollCrud1_0_0.getFeaturedVideos(),
 		videoCrud1_0_0.getRecentVideos(),
 		TrendingVideo.getVideos({total: 50, page: 1}),
-		VideoCollection.getStaffPickVideos(),
-		Slider.getHomeSlider(params.request.query.banner),
+		videoCollCrud1_0_0.getStaffPickVideos(),
+		sliderCrud1_0_0.getHomeSlider(params.request.query.banner),
 		userCrud1_0_0.emailConfirm(userId)
 	];
 

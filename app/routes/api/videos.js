@@ -1,192 +1,264 @@
+var namespace = 'app.routes.api.videos';
+
 try {
-    var log4js = require('log4js');
-    var logger = log4js.getLogger('app.routes.api.videos');
+    var log4js      = require('log4js');
+    var logger      = log4js.getLogger(namespace);
     var videos1_0_0 = require('../apiVersion/videos1-0-0');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
     }
-    logger.debug("import complete");
 }
 catch (exception) {
     logger.error(" import error:" + exception);
+}
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
 }
 
 function Video() {}
 
 /*
-* If the request object param contains "apiVer" use its value to set version
+* If the request object query contains "apiVer" use its value to set version
 * and call corresponding version of video api object
-* if "apiVer" is not present, use default
+* if "apiVer" is not present, use defaultVer
  */
+var defaultVer = "1.0.0";
+
+
 function getVideosByCategory(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getVideosByCategory(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function search(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.search(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function post(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.post(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function get(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.get(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function put(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.put(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function deleteVideo(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.delete(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function like(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.like(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function loaded(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.loaded(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function showcaseUpdate(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.showcaseUpdate(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function reportVideo(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.reportVideo(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function videoInfoCheck(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.videoInfoCheck(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getVideosByUser(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getVideosByUser(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getShowcaseByUser(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getShowcaseByUser(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getTopSixVideos(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getTopSixVideos(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getVideoCount(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getVideoCount(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getFollowCount(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getFollowCount(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getNextVideos(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getNextVideos(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getVideoOwnerProfile(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getVideoOwnerProfile(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
 function getCommentsByVideoId(req, res) {
 
-    var version = req.params.apiVer || "1.0.0";
+    var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
         videos1_0_0.getCommentsByVideoId(req, res);
+    }
+    else {
+        incorrectVer(req,res);
     }
 }
 
