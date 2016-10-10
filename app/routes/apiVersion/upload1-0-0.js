@@ -96,19 +96,11 @@ function updateTranscodeStatus(req, res, status) {
 function transcodeProgression(req, res) {
   updateTranscodeStatus(req, res, 'processing');
 }
-/**
- * route: POST /api/amazon/transcode/completion
- * @param req
- * @param res
- */
+
 function transcodeCompletion(req, res) {
   updateTranscodeStatus(req, res, 'completion');
 }
-/**
- * route: POST /api/amazon/transcode/failure
- * @param req
- * @param res
- */
+
 function transcodeFailure(req, res) {
   updateTranscodeStatus(req, res, 'failure');
 }

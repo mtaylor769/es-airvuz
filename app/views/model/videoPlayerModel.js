@@ -76,7 +76,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			
 			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
 
-			return catTypeCrud1_0_0.getInternalCategory(dataObject.video.categories)
+			return categoryCrud.getInternalCategory(dataObject.video.categories)
 				.then(videoCrud1_0_0.getNextVideos);
 		})
 		.then(function(videos) {
@@ -113,7 +113,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		.then(function(followCount) {
 			dataObject.followCount = followCount;
 
-			return videoLikeCrud1_0_0.videoLikeCheck(checkObject);
+			return videoLikeCrud.videoLikeCheck(checkObject);
 		})
 		.then(function(likeBoolean) {
 			dataObject.likeBoolean = likeBoolean;
