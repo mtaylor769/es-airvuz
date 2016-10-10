@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-  categoryTypeCrud = require('../app/persistence/crud/categoryType');
+  catTypeCrud1_0_0 = require('../app/persistence/crud/categoryType1-0-0');
 
 var category = [
   {
@@ -16,7 +16,7 @@ function createCategoryType() {
   var promises = [];
 
   category.forEach(function (camera) {
-    promises.push(categoryTypeCrud.create(camera));
+    promises.push(catTypeCrud1_0_0.create(camera));
   });
 
   return Promise.all(promises);

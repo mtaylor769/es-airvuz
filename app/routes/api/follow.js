@@ -1,141 +1,85 @@
-var FollowCrud = require('../../persistence/crud/follow');
-var NotificationCrud = require('../../persistence/crud/notifications');
-var socialCrud = require('../../persistence/crud/socialMediaAccount');
-var Promise = require('bluebird');
-var moment = require('moment');
+var namespace = 'app.routes.api.follow';
 
-function Follow() {}
+try {
+    var log4js      = require('log4js');
+    var logger      = log4js.getLogger(namespace);
+    var follow1_0_0 = require('../apiVersion/follow1-0-0');
+
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch (exception) {
+    logger.error(" import error:" + exception);
+}
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
+}
+
+function Follow() {
+}
+
+/*
+ * If the request object param contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use default
+ */
+var defaultVer = "1.0.0";
 
 function getCheckFollowing(req, res) {
-  var data = req.body;
-  FollowCrud
-    .followCheck(data)
-    .then(function(follow){
-      if (follow) {
-        res.json({ status: 'followed' });
-      } else {
-        res.json({ status: 'unfollowed'});
-      }
-    })
-    .error(function(error){
-      console.log(error);
-      if(error.followId) {
-        FollowCrud.delete(error.followId)
-          .then(function(follow) {
-            res.json({ status: 'unfollowed'});
-          })
-      } else {
-        res.send(500);
-      }
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        follow1_0_0.getCheckFollowing(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function post(req, res) {
-  var json = JSON.parse(req.body.data);
-  var follow = json.follow;
-  var notification = json.notification;
-  FollowCrud
-    .create(follow)
-    .then(function(follow) {
-      NotificationCrud.create(notification)
-        .then(function(notification) {
-          res.json({ status: 'followed' });
-        })
-    })
-    .catch(function(err) {
-      if(err.followId) {
-        FollowCrud.delete(err.followId)
-          .then(function(follow) {
-            res.json({ status: 'unfollowed' });
-          })
-      } else {
-        res.send(500);
-      }
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        follow1_0_0.post(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getFollowers(req, res) {
-  var userId = req.query.userId;
-  var skip = (req.query.skip) * 10;
-  var sendArray = [];
-  FollowCrud
-    .getFollowers(userId, skip)
-    .then(function(followers) {
-      Promise.map(followers, function(follower) {
-        console.log(follower.createdDate);
-        follower.createdDate =  moment(follower.createdDate).format('MM-DD-YYYY');
-        if (follower.userId) {
-          return socialCrud.findByUserIdAndProvider(follower.userId._id, 'facebook')
-            .then(function (social) {
-              socialCrud.setProfilePicture(social, follower.userId);
-              return follower;
-            })
-            .then(function(follower) {
-              sendArray.push(follower);
-            });
-        }
-      })
-      .then(function(){
-        sendArray.sort(function(a,b) {
-          if(a.createdDate < b.createdDate){
-            return 1;
-          }
-          if(a.createdDate > b.createdDate){
-            return -1;
-          }
-          return 0;
-        });
-      })
-      .then(function() {
-        res.send(sendArray);
-      })
-    })
-    .catch(function(error) {
-      res.sendStatus(500);
-    })
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        follow1_0_0.getFollowers(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getFollowing(req, res) {
-  var userId = req.query.userId;
-  var skip = (req.query.skip) * 10;
-  var sendArray = [];
-  FollowCrud
-    .getFollowing(userId, skip)
-    .then(function(followers) {
-      Promise.map(followers, function(follower) {
-        console.log(follower.createdDate);
-        follower.createdDate =  moment(follower.createdDate).format('MM-DD-YYYY');
-        if (follower.followingUserId) {
-          return socialCrud.findByUserIdAndProvider(follower.followingUserId._id, 'facebook')
-            .then(function (social) {
-              socialCrud.setProfilePicture(social, follower.followingUserId);
-              return follower;
-            })
-            .then(function(follower) {
-              console.log('post promise');
-              console.log(follower.createdDate);
-              sendArray.push(follower);
-            })
-        }
-      })
-        .then(function(){
-          sendArray.sort(function(a,b) {
-            if(a.createdDate < b.createdDate){
-              return 1;
-            }
-            if(a.createdDate > b.createdDate){
-              return -1;
-            }
-            return 0;
-          });
-        })
-        .then(function() {
-          res.send(sendArray);
-        })
-    })
-    .catch(function(error) {
-      res.sendStatus(500);
-    })
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        follow1_0_0.getFollowing(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 Follow.prototype.getCheckFollowing = getCheckFollowing;

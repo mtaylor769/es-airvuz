@@ -1,29 +1,29 @@
 var mongoose = require('mongoose'),
-  droneTypeCrud = require('../app/persistence/crud/droneType');
+    droneTypeCrud1_0_0 = require('../app/persistence/crud/droneType1-0-0');
 
 var drones = [
-  {
-    model: 'Chroma',
-    manufacturer : 'Horizon/Blade',
-    isVisible: true
-  },
-  {
-    model: '350QX/QX2/QX3',
-    manufacturer : 'Horizon/Blade',
-    isVisible: true
-  }
+    {
+        model: 'Chroma',
+        manufacturer: 'Horizon/Blade',
+        isVisible: true
+    },
+    {
+        model: '350QX/QX2/QX3',
+        manufacturer: 'Horizon/Blade',
+        isVisible: true
+    }
 ];
 
 function createDroneType() {
-  var promises = [];
+    var promises = [];
 
-  drones.forEach(function (drone) {
-    promises.push(droneTypeCrud.create(drone));
-  });
+    drones.forEach(function (drone) {
+        promises.push(droneTypeCrud1_0_0.create(drone));
+    });
 
-  return Promise.all(promises);
+    return Promise.all(promises);
 }
 
 setTimeout(function () {
-  createDroneType();
+    createDroneType();
 }, 5000);

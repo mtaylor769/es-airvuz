@@ -2,10 +2,10 @@ var log4js					= require('log4js');
 var logger					= log4js.getLogger('app.views.model.staticModel');
 
 try {
-	var BaseModel	    = require('./baseModel');
-	var Promise		    = require('bluebird');
+	var BaseModel	    	= require('./baseModel');
+	var Promise		    	= require('bluebird');
 	var util			    = require('util');
-	var CategoryType  = require('../../persistence/crud/categoryType');
+	var catTypeCrud1_0_0  	= require('../../persistence/crud/categoryType1-0-0');
 
 	if(global.NODE_ENV === "production") {
 		logger.setLevel("WARN");
@@ -28,7 +28,7 @@ StaticModel.prototype.getData = function(params) {
 	params.data.viewName		= staticView;
 	params.data.staticPage  = staticView;
 
-	var promise = CategoryType.get()
+	var promise = catTypeCrud1_0_0.get()
 			.then(function (categories) {
 				params.data.categories = categories;
 				return params;

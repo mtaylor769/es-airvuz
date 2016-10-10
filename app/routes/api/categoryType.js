@@ -1,83 +1,116 @@
-var CategoryTypeCrud  = require('../../persistence/crud/categoryType');
-var _                 = require('lodash');
+var namespace = 'app.routes.api.categoryType';
 
-function CategoryType() {}
+try {
+    var log4js            = require('log4js');
+    var logger            = log4js.getLogger(namespace);
+    var categoryType1_0_0 = require('../apiVersion/categoryType1-0-0');
 
-CategoryType.prototype.post = function(req, res) {
-  CategoryTypeCrud
-  .create(req.body)
-  .then(function(category) {
-    res.send(category);
-  })
-};
-
-CategoryType.prototype.get = function(req, res) {
-  CategoryTypeCrud
-  .get()
-  .then(function(categories) {
-    res.send(categories);
-  })
-};
-
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch(exception) {
+    logger.error(" import error:" + exception);
+}
 /**
- * return a new array of categories without the argument "name" category
- * @param categories
- * @param name
- * @returns {Array}
- * @private
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
  */
-function _rejectCategory(categories, name) {
-  return _.reject(categories, function (category) {
-    return category.name === name;
-  });
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
 }
 
-CategoryType.prototype.getByRoles = function(req, res) {
-  var roles = req.user.aclRoles;
+function CategoryType() {
+}
 
-  CategoryTypeCrud
-    .get()
-    .then(function(categories) {
-      if (roles.indexOf('user-root') === -1 && roles.indexOf('root') === -1) {
-        if (roles.indexOf('user-news') === -1) {
-          categories = _rejectCategory(categories, 'AirVūz News');
-        }
-        if (roles.indexOf('user-instagram') === -1) {
-          categories = _rejectCategory(categories, 'AirVūz Instagram');
-        }
-        if (roles.indexOf('user-originals') === -1) {
-          categories = _rejectCategory(categories, 'AirVūz Originals');
-        }
-      }
-      res.json(categories);
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    });
-};
+/*
+ * If the request object param contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use default
+ */
+var defaultVer = "1.0.0";
 
-CategoryType.prototype.getById = function(req, res) {
-  CategoryTypeCrud
-  .getById(req.params.id)
-  .then(function(category) {
-    res.send(category);
-  })
-};
+function post(req, res) {
 
-CategoryType.prototype.put = function(req, res) {
-  CategoryTypeCrud
-  .update({id: req.body._id, update: req.body})
-  .then(function(category) {
-    res.send(category);
-  })
-};
+    var version = req.query.apiVer || defaultVer;
 
-CategoryType.prototype.delete = function(req, res) {
-  CategoryTypeCrud
-  .remove(req.params.id)
-  .then(function() {
-    res.sendStatus(200);
-  })
-};
+    if (version === "1.0.0") {
+        categoryType1_0_0.post(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function get(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        categoryType1_0_0.get(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function getByRoles(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        categoryType1_0_0.getByRoles(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function getById(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        categoryType1_0_0.getById(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function put(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        categoryType1_0_0.put(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function deleteCat(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        categoryType1_0_0.delete(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+CategoryType.prototype.post = post;
+CategoryType.prototype.get = get;
+CategoryType.prototype.getByRoles = getByRoles;
+CategoryType.prototype.getById = getById;
+CategoryType.prototype.put = put;
+CategoryType.prototype.delete = deleteCat;
 
 module.exports = new CategoryType();
