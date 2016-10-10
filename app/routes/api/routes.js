@@ -273,12 +273,12 @@ apiRouter.route('/api/slide/:id')
  * /api/featured-videos/
  */
 apiRouter.route('/api/featured-videos')
-  .get(videoCollection.getFeaturedVideos)
-  .put(protect, videoCollection.updateFeaturedVideos);
+  .get(videoCollection.getVideos('Featured Videos'))
+  .put(protect, videoCollection.updateVideo('Featured Videos'));
 
 apiRouter.route('/api/staff-pick-videos')
-  .get(videoCollection.getStaffPickVideos)
-  .put(protect, videoCollection.updateStaffPickVideos);
+  .get(videoCollection.getVideos('Staff Pick Videos'))
+  .put(protect, videoCollection.updateVideo('Staff Pick Videos'));
 
 apiRouter.route('/api/video-collection/update-collection')
   .post(protect, videoCollection.updateCollectionVideos);
