@@ -78,22 +78,22 @@ var usersArray = [];
         return Promise.map(users, function (user) {
           var userInfo = {};
           userInfo.user = user;
-          return Likes.findByUserIdAndDate(user._id, startDate, endDate)
+          return videoLikeCrud1_0_0.findByUserIdAndDate(user._id, startDate, endDate)
               .then(function(likes) {
                 userInfo.likes = likes;
-                return Comment.getByUserAndDate(user._id, startDate, endDate)
+                return commentCrud1_0_0.getByUserAndDate(user._id, startDate, endDate)
               })
               .then(function(comments) {
                 userInfo.comments = comments;
-                return Follow.findFollowersByUserIdAndDate(user._id, startDate, endDate)
+                return followCrud1_0_0.findFollowersByUserIdAndDate(user._id, startDate, endDate)
               })
               .then(function(followers) {
                 userInfo.followers = followers;
-                return Follow.findFollowingByUserIdAndDate(user._id, startDate, endDate)
+                return followCrud1_0_0.findFollowingByUserIdAndDate(user._id, startDate, endDate)
               })
               .then(function(following) {
                 userInfo.following = following;
-                return Videos.findByUserIdAndDate(user._id, startDate, endDate)
+                return videoCrud1_0_0.findByUserIdAndDate(user._id, startDate, endDate)
               })
               .then(function(videos) {
                 userInfo.uploadedVideos = videos;
