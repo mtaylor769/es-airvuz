@@ -117,7 +117,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(likeBoolean) {
 			dataObject.likeBoolean = likeBoolean;
-			return categoryCrud.get();
+			return catTypeCrud1_0_0.get();
 		})
 		.then(function(categories) {
 			

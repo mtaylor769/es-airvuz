@@ -188,9 +188,9 @@ users.prototype.validateCreateUser = function (params) {
 };
 
 
-var 	ValidateUserName = function(id, params) {
-	var sourceLocation				= "persistence.crud.Users.update";
-	var errorMessage					= new ErrorMessage();
+var ValidateUserName = function (id, params) {
+    var sourceLocation = "persistence.crud.Users.update";
+    var errorMessage = new ErrorMessage();
 
     return (new Promise(function (resolve, reject) {
             if (params.userNameDisplay) {
