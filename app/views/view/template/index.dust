@@ -71,6 +71,10 @@
             {> "app.views.view.partial.left-nav"/}
         </div>
         <div class="col-md-10 border-left">
+            {?index.customSliderVideos}
+                {> "client.templates.home.home-video" title="{index.customSliderName}" videos="customSliderVideos" viewAll="{index.customSliderNameUrl}"/}
+                <hr/>
+            {/index.customSliderVideos}
             {> "client.templates.home.home-video" title="Featured Drone Videos" videos="featuredVideos" viewAll="featured-drone-videos"/}
           <hr/>
             {> "client.templates.home.home-video" title="Latest Drone Videos" videos="recentVideos" viewAll="latest-drone-videos"/}

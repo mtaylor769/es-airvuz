@@ -68,6 +68,7 @@
     "postcss-simple-vars": "^1.2.0",
     "pubsub-js": "^1.5.3",
     "rucksack-css": "^0.8.5",
+    "shortid": "^2.2.6",
     "sinon": "^1.17.3",
     "slick-carousel": "^1.6.0",
     "socket.io": "^1.4.6",

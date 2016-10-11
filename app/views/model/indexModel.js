@@ -54,14 +54,20 @@ IndexModel.prototype.getData = function(params) {
 		TrendingVideo.getVideos({total: 50, page: 1}),
 		VideoCollection.getStaffPickVideos(),
 		Slider.getHomeSlider(params.request.query.banner),
-		User.emailConfirm(userId)
+		User.emailConfirm(userId),
+		VideoCollection.getCurrentCustomCarousel()
 	];
 
 	return Promise.all(promises)
-		.spread(function(categories, featureVideos, recentVideos, trendingVideos, staffPickVideos, slider, isEmailConfirm) {
+		.spread(function(categories, featureVideos, recentVideos, trendingVideos, staffPickVideos, slider, isEmailConfirm, customCarousel) {
 			params.data.categories = categories;
 			params.data.index.featuredVideos = featureVideos;
 			params.data.index.recentVideos = recentVideos;
+			if(customCarousel) {
+				params.data.index.customSliderVideos = customCarousel.videos;
+				params.data.index.customSliderName = customCarousel.name;
+				params.data.index.customSliderNameUrl = customCarousel.nameUrl;
+			}
 			var videoToOmit = [];
 
 			featureVideos.concat(staffPickVideos).forEach(function toOmit(video) {

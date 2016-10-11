@@ -241,6 +241,29 @@
         templateUrl: '/admin/app/video-curation/partial/rating.html',
         controller: 'ratingController',
         controllerAs: 'vm'
+      })
+      .state('customCarousel', {
+        url: '/admin/carousel',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('customCarousel.all', {
+        url: '/view-all',
+        templateUrl: '/admin/app/custom-carousel/partials/view-all.html',
+        controller: 'carouselViewAllController',
+        controllerAs: 'vm'
+      })
+      .state('customCarousel.create', {
+        url: '/create',
+        templateUrl: '/admin/app/custom-carousel/partials/create.html',
+        controller: 'carouselCreateController',
+        controllerAs: 'vm'
+      })
+      .state('customCarousel.edit', {
+        url: '/edit/:id',
+        templateUrl: '/admin/app/custom-carousel/partials/edit.html',
+        controller: 'carouselEditController',
+        controllerAs: 'vm'
       });
     $urlRouterProvider.otherwise('/admin');
   }

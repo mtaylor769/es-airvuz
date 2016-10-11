@@ -18,6 +18,7 @@ var reports 			= require('./reports');
 var keywords			= require('./keywords');
 var videoCuration 		= require('./videoCuration');
 var aclRoles 			= require('./aclRoles');
+var customCarousel 		= require('./customCarousel');
 // var forms               = require('./forms');
 var image               = require('./image');
 var cron                = require('./cron');
@@ -366,5 +367,18 @@ apiRouter.route('/api/aclRoles/:id')
  */
 apiRouter.route('/api/cron/trending')
 	.get(cron.runTrending);
+
+/**
+ * /api/video-collection
+ */
+apiRouter.route('/api/custom-carousel')
+	.post(customCarousel.createCustomCarousel)
+	.get(customCarousel.getAllCustomCarousels);
+
+apiRouter.route('/api/custom-carousel/:id')
+	.get(customCarousel.getById)
+	.delete(customCarousel.removeCarousel)
+	.put(customCarousel.updateCarousel);
+
 
 module.exports = apiRouter;

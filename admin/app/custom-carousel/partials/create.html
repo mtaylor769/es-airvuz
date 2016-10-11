@@ -1,0 +1,98 @@
+<div layout-padding>
+    <h2>Create Custom Carousel</h2>
+
+    <!---- Input container for carousel name ---->
+    <md-input-container class="md-block">
+        <input type="text" placeholder="Title" ng-model="vm.carousel.name" required>
+    </md-input-container>
+
+    <!---- Input container for carousel description ---->
+    <md-input-container class="md-block">
+        <textarea placeholder="Description" ng-model="vm.carousel.description" required></textarea>
+    </md-input-container>
+
+    <!---- Input container for carousel description ---->
+    <md-input-container class="md-block">
+        <textarea placeholder="Video List Description" ng-model="vm.carousel.listDescription" required></textarea>
+    </md-input-container>
+
+    <!---- checkbox to allow for homepage date inputs ---->
+    <div layout-padding>
+        <md-checkbox ng-model="vm.homepageDisplay">Check this box to enable homepage carousel display and select date range</md-checkbox>
+    </div>
+
+    <!---- Input container for start date ---->
+    <md-input-container class="md-block">
+        <input mdc-datetime-picker time="false" date="true" placeholder="Start Date" ng-model="vm.carousel.startDate" ng-disabled="!vm.homepageDisplay">
+    </md-input-container>
+
+    <!---- Input container for end date ---->
+    <md-input-container class="md-block">
+        <input mdc-datetime-picker time="false" date="true" placeholder="End Date" ng-model="vm.carousel.endDate" ng-disabled="!vm.homepageDisplay">
+    </md-input-container>
+
+    <!---- Title for banner selection options ---->
+    <p required>Banner Selection</p>
+
+    <!---- checkboxes for banner selection options ---->
+    <div layout-padding>
+        <md-checkbox ng-model="vm.videoInput">Display Video</md-checkbox>
+        <md-checkbox ng-model="vm.imageInput">Display Image</md-checkbox>
+    </div>
+
+    <!---- Input container for display video Id ---->
+    <md-input-container class="md-block" ng-show="vm.videoInput">
+        <input type="text" placeholder="Display Video Id" ng-model="vm.carousel.displayVideoId">
+    </md-input-container>
+
+    <!---- Input button for display image selection ---->
+    <div ng-show="vm.imageInput">
+        <md-progress-linear md-mode="determinate" value="{{vm.imageUploadProgress}}" flex="95"></md-progress-linear>
+        <div layout="row">
+            <div flex="30" layout="row">
+                <md-button class="md-raised md-accent" file-upload>Choose File</md-button>
+                <input id="upload-file" evaporate="" eva-model="vm.evaData" type="file" accept="image/*">
+                <p>{{vm.fileChosen}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!---- image preview section ---->
+    <div ng-show="vm.srcReady">
+        <p>Slide Image Preview</p>
+        <img src="{{vm.slidePreviewSrc}}" width="1170px" height="439px">
+    </div>
+    <div layout="row">
+
+        <!---- Input container for videos to add to carousel ---->
+        <md-input-container flex="66">
+            <input type="text" placeholder="Video Id" ng-model="vm.videoId" required>
+        </md-input-container>
+
+        <!---- button to add to videos to carousel ---->
+        <div layout="column">
+            <md-button class="md-warn md-raised" ng-click="vm.getVideoById()">Add Video</md-button>
+        </div>
+    </div>
+
+    <!---- display section for videos in carousel ---->
+    <div ng-show="vm.stagedVideos.length > 0">
+        <h4>Videos In Carousel</h4>
+        <div layout="row" layout-wrap>
+            <div layout="column" ng-repeat="video in vm.stagedVideos" flex="100" flex-sm="50" flex-gt-sm="25">
+                <md-card class="carousel-video-card" layout-padding>
+                    <div class="carousel-video-card-content">
+                        <p>{{video.title}}</p>
+                        <img src="{{vm.amazonBucket}}{{video.thumbnailPath}}" width="100%">
+                        <md-button class="md-warn md-raised" ng-click="vm.removeVideo(video._id, video)">Remove</md-button>
+                    </div>
+                </md-card>
+            </div>
+        </div>
+    </div>
+
+    <!---- button to save carousel ---->
+    <div>
+        <md-button class="md-warn md-raised" ng-click="vm.createCarousel()">Save</md-button>
+    </div>
+</div>

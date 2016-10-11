@@ -23,7 +23,7 @@ var IndexView = function(params) {
 	BaseView.apply(this, arguments);
 	
 	this.model = new IndexModel();
-}
+};
 
 util.inherits(IndexView, BaseView);
 
