@@ -100,9 +100,9 @@
                         <div class="mobile-tab-container">
                             <div class="mobile-video-tab-wrapper visible-xs">
                                 <ul class="mobile-video-tabs list-inline">
-                                    <li class="video-tab col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
-                                    <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
-                                    <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
+                                    <li class="video-tab video-tab-upnext col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
+                                    <li class="video-tab video-tab-description col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
+                                    <li class="video-tab video-tab-comments col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
                                 </ul>
                             </div>
                             <div class="mobile-tab-body" style="margin-top:10px; display:none;">
@@ -126,6 +126,11 @@
                             <div class="flex write-comment">
                                 <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
                                 <button class="btn background-orange border-radius-0 font-white" id="commentSave">Comment</button>
+                            </div>
+                            <div class="loading-comment-spinner text-center m-t-15 hidden" style="height:45px;">
+                                <div class="icon icon-spinner pulse">
+                                </div>
+                                <span>&nbsp;Loading...</span>
                             </div>
                             <ul class="parent-comments">
                                 {> "client.templates.videoPlayer.comments"/}
