@@ -23,7 +23,7 @@ catch (exception) {
 function Follow() {
 }
 /**
- *
+ * route: POST /api/follow/check
  * @param req
  * @param res
  */
@@ -51,7 +51,7 @@ function getCheckFollowing(req, res) {
         });
 }
 /**
- *
+ * route: POST /api/follow
  * @param req
  * @param res
  */
@@ -79,7 +79,7 @@ function post(req, res) {
         });
 }
 /**
- *
+ * route: GET /api/follow/get-followers
  * @param req
  * @param res
  */
@@ -124,7 +124,7 @@ function getFollowers(req, res) {
         })
 }
 /**
- *
+ * route: GET /api/follow/get-following
  * @param req
  * @param res
  */
@@ -171,9 +171,9 @@ function getFollowing(req, res) {
         })
 }
 
-Follow.prototype.getCheckFollowing = getCheckFollowing;
-Follow.prototype.post = post;
-Follow.prototype.getFollowers = getFollowers;
-Follow.prototype.getFollowing = getFollowing;
+Follow.prototype.getCheckFollowing  = getCheckFollowing;
+Follow.prototype.post               = post;
+Follow.prototype.getFollowers       = getFollowers;
+Follow.prototype.getFollowing       = getFollowing;
 
 module.exports = new Follow();
