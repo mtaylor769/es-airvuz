@@ -1184,7 +1184,8 @@ function initialize(videoPath, currentVideo) {
   // api routes /drone-video/:videoId/:src
   videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + videoPath;
 
-  var defaultRes = '300',
+  var vqResUrlParam = browser.getUrlParams('vqres'),
+      defaultRes = '300',
       browserWidth = browser.getSize().width;
 
   if (browser.isMobile()) {
@@ -1208,7 +1209,7 @@ function initialize(videoPath, currentVideo) {
   VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
-        default: defaultRes
+        default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes
       }
     }
   }, function () {
