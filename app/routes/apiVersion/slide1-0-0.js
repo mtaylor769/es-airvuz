@@ -19,7 +19,7 @@ catch(exception) {
 
 function Slide() {}
 /**
- *
+ * route: PROTECTED POST /api/slide
  * @param req
  * @param res
  */
@@ -31,7 +31,7 @@ function post(req, res) {
     });
 }
 /**
- *
+ * route: GET /api/slide
  * @param req
  * @param res
  * @returns {*}
@@ -44,7 +44,7 @@ function getAll(req, res) {
     });
 }
 /**
- *
+ * route: GET /api/slide/:id
  * @param req
  * @param res
  * @returns {*}
@@ -57,7 +57,7 @@ function get(req, res) {
     });
 }
 /**
- *
+ * route: PROTECTED PUT /api/slide/:id
  * @param req
  * @param res
  * @returns {*}
@@ -70,7 +70,7 @@ function put(req, res) {
       })
 }
 /**
- *
+ * route: PROTECTED DELETE /api/slide/:id
  * @param req
  * @param res
  * @returns {*}

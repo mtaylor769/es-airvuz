@@ -75,9 +75,9 @@ function getUserRoles (req, res) {
         })
 }
 
-AclRoles.prototype.addAclRoleToUser = addAclRoleToUser;
-AclRoles.prototype.removeAclRoleFromUser = removeAclRoleFromUser;
-AclRoles.prototype.getUserRoles = getUserRoles;
+AclRoles.prototype.addAclRoleToUser         = addAclRoleToUser;
+AclRoles.prototype.removeAclRoleFromUser    = removeAclRoleFromUser;
+AclRoles.prototype.getUserRoles             = getUserRoles;
 
 
 module.exports = new AclRoles();

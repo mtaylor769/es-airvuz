@@ -16,7 +16,11 @@ catch(exception) {
 function Slider() {
 
 }
-
+/**
+ * route: PROTECTED POST /api/slider
+ * @param req
+ * @param res
+ */
 function post(req, res) {
   sliderCrud1_0_0
     .createSlider(req.body)
@@ -24,7 +28,12 @@ function post(req, res) {
       res.send(slider);
     });
 }
-
+/**
+ * route: GET /api/slider
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function getAll(req, res) {
   return sliderCrud1_0_0
     .getAllSlider()
@@ -32,7 +41,12 @@ function getAll(req, res) {
       res.json(sliders);
     });
 }
-
+/**
+ * route: GET /api/slider/:id
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function get(req, res) {
   return sliderCrud1_0_0
     .getSlider(req.params.id)
@@ -43,7 +57,12 @@ function get(req, res) {
         res.sendStatus(500);
     })
 }
-
+/**
+ * route: PROTECTED PUT /api/slider/:id
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function put(req, res) {
   return sliderCrud1_0_0
     .updateSlider(req.body)
@@ -51,7 +70,12 @@ function put(req, res) {
       res.json(slider);
     });
 }
-
+/**
+ * route: PROTECTED DELETE /api/slider/:id
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function remove(req, res) {
   return sliderCrud1_0_0
     .removeSlider(req.params.id)
@@ -62,7 +86,12 @@ function remove(req, res) {
       res.sendStatus(500);
     })
 }
-
+/**
+ * route: GET /api/home-slider/:id
+ * @param req
+ * @param res
+ * @returns {*}
+ */
 function getHomeSlider(req, res) {
   return sliderCrud1_0_0.getHomeSlider(req.params.id)
     .then(function (slider) {
@@ -73,11 +102,11 @@ function getHomeSlider(req, res) {
     });
 }
 
-Slider.prototype.post         = post;
-Slider.prototype.get          = get;
-Slider.prototype.getAll       = getAll;
-Slider.prototype.put          = put;
-Slider.prototype.remove       = remove;
-Slider.prototype.getHomeSlider= getHomeSlider;
+Slider.prototype.post           = post;
+Slider.prototype.get            = get;
+Slider.prototype.getAll         = getAll;
+Slider.prototype.put            = put;
+Slider.prototype.remove         = remove;
+Slider.prototype.getHomeSlider  = getHomeSlider;
 
 module.exports = new Slider();

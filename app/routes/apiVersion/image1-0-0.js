@@ -21,6 +21,7 @@ function Image() {}
 /**
  * get the profile image for the user from amazon
  * set the size to the value in query parameter
+ * route: GET /image/profile-picture/:picture
  * @param req
  * @param res
  */
@@ -55,7 +56,7 @@ function getProfilePicture(req, res) {
     });
 }
 /**
- *
+ * route: GET /image/drone-video-thumbnail/:id/:source
  * @param req
  * @param res
  */
@@ -65,6 +66,7 @@ function proxyThumbnail(req, res) {
 }
 /**
  * get the thumbnail image for the video from amazon
+ * route: GET /image/drone-video-thumbnail
  * @param req
  * @param res
  * @returns {*}
@@ -111,7 +113,7 @@ function getVideoThumbnail(req, res) {
       });
 }
 /**
- *
+ * route: GET /image/slide/:source
  * @param req
  * @param res
  */

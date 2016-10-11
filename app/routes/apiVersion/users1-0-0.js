@@ -96,7 +96,7 @@ function search(req, res) {
         .catch(logger.error);
 }
 /**
- *
+ * route: PROTECTED GET /api/users/search
  * @param req
  * @param res
  * @returns {*}
@@ -109,7 +109,7 @@ function get(req, res) {
         });
 }
 /**
- *
+ * route: POST /api/users/create
  * @param req
  * @param res
  * @returns {*}
@@ -151,7 +151,7 @@ function createUser(req, res) {
         });
 }
 /**
- *
+ * route: PROTECTED PUT /api/users/:id
  * @param req
  * @param res
  */
@@ -174,7 +174,7 @@ function put(req, res) {
         });
 }
 /**
- *
+ * route: POST /api/users/hireme
  * @param req
  * @param res
  */
@@ -248,7 +248,7 @@ function _sendPasswordResetMail(user, host) {
     return _sendMail(mailOptions);
 }
 /**
- *
+ * route: POST /api/users/password-reset
  * @param req
  * @param res
  */
@@ -267,7 +267,7 @@ function passwordResetRequest(req, res) {
         });
 }
 /**
- *
+ * route: PUT /api/users/password-reset
  * @param req
  * @param res
  */
@@ -285,7 +285,7 @@ function passwordResetChange(req, res) {
         });
 }
 /**
- *
+ * route: PROTECTED DELETE /api/users/:id
  * @param req
  * @param res
  */
@@ -414,7 +414,7 @@ function deleteUser(req, res) {
 
 }
 /**
- *
+ * route: PROTECTED PUT /api/users/:id
  * @param req
  * @param res
  */
@@ -438,7 +438,7 @@ function statusChange(req, res) {
         });
 }
 /**
- *
+ * route: POST /api/users/contact-us
  * @param req
  * @param res
  * @returns {*}
@@ -497,7 +497,7 @@ function contactUs(req, res) {
         })
 }
 /**
- *
+ * route: POST /api/users/resend-confirmation
  * @param req
  * @param res
  */
@@ -532,17 +532,17 @@ function addAclRole(req, res) {
 
 }
 
-User.prototype.hireMe               = hireMe;
-User.prototype.search               = search;
-User.prototype.get                  = get;
-User.prototype.createUser           = createUser;
-User.prototype.put                  = put;
-User.prototype.delete               = deleteUser;
-User.prototype.passwordResetRequest = passwordResetRequest;
-User.prototype.passwordResetChange  = passwordResetChange;
-User.prototype.statusChange         = statusChange;
-User.prototype.contactUs            = contactUs;
-User.prototype.resendConfirmation   = resendConfirmation;
-User.prototype.addAclRole           = addAclRole;
+User.prototype.hireMe                   = hireMe;
+User.prototype.search                   = search;
+User.prototype.get                      = get;
+User.prototype.createUser               = createUser;
+User.prototype.put                      = put;
+User.prototype.delete                   = deleteUser;
+User.prototype.passwordResetRequest     = passwordResetRequest;
+User.prototype.passwordResetChange      = passwordResetChange;
+User.prototype.statusChange             = statusChange;
+User.prototype.contactUs                = contactUs;
+User.prototype.resendConfirmation       = resendConfirmation;
+User.prototype.addAclRole               = addAclRole;
 
 module.exports = new User();
