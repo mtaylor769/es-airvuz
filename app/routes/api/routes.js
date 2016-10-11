@@ -324,7 +324,7 @@ apiRouter.get('/api/image/drone-video-thumbnail', image.getVideoThumbnail);
 
 apiRouter.get('/image/slide/:source', image.getSlide);
 // for better support of external api consumers, an additional route that starts with '/api'
-apiRouter.get('/api//image/slide/:source', image.getSlide);
+apiRouter.get('/api/image/slide/:source', image.getSlide);
 
 /**
  * /drone-video
