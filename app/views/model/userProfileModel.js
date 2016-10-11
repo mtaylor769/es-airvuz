@@ -82,8 +82,8 @@ UserProfileModel.prototype.getData = function (params) {
 			dataObject.user = user;
 			return videoCollCrud1_0_0.createVideoCollection({user: user._id, name: 'showcase'})
 		})
-		.then(function (videoCollCrud1_0_0) {
-			var videos = videoCollCrud1_0_0.videos;
+		.then(function (videoCollection) {
+			var videos = videoCollection.videos;
 			videos = unlock(videos);
 			videos.forEach(function (video) {
 				video.uploadDate = moment(video.uploadDate).fromNow();
