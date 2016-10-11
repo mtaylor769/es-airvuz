@@ -1,7 +1,7 @@
 var namespace = 'app.routes.apiVersion.upload1-0-0';
 try {
-    var log4js      = require('log4js');
-    var logger      = log4js.getLogger(namespace);
+    var log4js                  = require('log4js');
+    var logger                  = log4js.getLogger(namespace);
     var UploadCrud              = require('../../persistence/crud/upload');
     var md5                     = require('md5');
     var uuid                    = require('node-uuid');
@@ -27,6 +27,7 @@ function Upload() {}
 
 /**
  * Start upload by creating a record
+ * route: PROTECTED POST /api/upload
  * @param req
  * @param res
  */
@@ -49,6 +50,10 @@ function post(req, res) {
 
 /**
  * get status of amazon video processing to see if it is complete or failure
+ * route: GET /api/upload/:id - the current route definition does not call this function
+ * @param req
+ * @param res
+ * @param next
  */
 function getStatus(req, res, next) {
   UploadCrud
@@ -83,19 +88,35 @@ function updateTranscodeStatus(req, res, status) {
       res.sendStatus(200);
     });
 }
-
+/**
+ * route: POST /api/amazon/transcode/progression
+ * @param req
+ * @param res
+ */
 function transcodeProgression(req, res) {
   updateTranscodeStatus(req, res, 'processing');
 }
-
+/**
+ * route: POST /api/amazon/transcode/completion
+ * @param req
+ * @param res
+ */
 function transcodeCompletion(req, res) {
   updateTranscodeStatus(req, res, 'completion');
 }
-
+/**
+ * route: POST /api/amazon/transcode/failure
+ * @param req
+ * @param res
+ */
 function transcodeFailure(req, res) {
   updateTranscodeStatus(req, res, 'failure');
 }
-
+/**
+ * route: POST /api/amazon/transcode/warning
+ * @param req
+ * @param res
+ */
 function transcodeWarning(req, res) {
   var id      = null; //req.body.id...
   var message = ''; // req.body...
@@ -105,7 +126,12 @@ function transcodeWarning(req, res) {
       res.sendStatus(200);
     });
 }
-
+/**
+ *
+ * @param url
+ * @returns {Promise}
+ * @private
+ */
 function _getVideoInfo(url) {
   return new Promise(function (resolve, reject) {
     youtubedl.getInfo(url, [], youtubedlOption, function (err, info) {
@@ -136,11 +162,20 @@ function _selectBestQualityForVimeo(video) {
     return isHttp;
   }).pop().format_id;
 }
-
+/**
+ *
+ * @param url
+ * @returns {boolean}
+ * @private
+ */
 function _isVimeo(url) {
   return url.indexOf('vimeo.com') > -1;
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function uploadExternalVideo(req, res) {
   req.setTimeout(0);
   var url = req.body.url;

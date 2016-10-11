@@ -1,8 +1,8 @@
 var namespace = 'app.routes.apiVersion.notifications1-0-0';
 try {
-    var log4js      = require('log4js');
-    var logger      = log4js.getLogger(namespace);
-    var notificationCrud1_0_0 = require('../../persistence/crud/notifications1-0-0');
+    var log4js                  = require('log4js');
+    var logger                  = log4js.getLogger(namespace);
+    var notificationCrud1_0_0   = require('../../persistence/crud/notifications1-0-0');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -18,7 +18,7 @@ catch(exception) {
 function Notification() {
 }
 /**
- *
+ * route: PROTECTED POST /api/notifications/seen
  * @param req
  * @param res
  */
@@ -35,7 +35,7 @@ function seen(req, res) {
         });
 }
 /**
- *
+ * route: PROTECTED POST /api/notifications
  * @param req
  * @param res
  */
@@ -52,7 +52,7 @@ function post(req, res) {
 
 }
 /**
- *
+ * route: PROTECTED GET /api/notifications
  * @param req
  * @param res
  */
@@ -78,7 +78,7 @@ function getUnseen(req, res) {
         })
 }
 /**
- *
+ * route: GET /api/notifications/get-all/:id
  * @param req
  * @param res
  */
@@ -94,10 +94,10 @@ function getAll(req, res) {
         })
 }
 
-Notification.prototype.seen = seen;
-Notification.prototype.post = post;
-Notification.prototype.getUnseen = getUnseen;
-Notification.prototype.getAll = getAll;
+Notification.prototype.seen         = seen;
+Notification.prototype.post         = post;
+Notification.prototype.getUnseen    = getUnseen;
+Notification.prototype.getAll       = getAll;
 
 
 module.exports = new Notification();
