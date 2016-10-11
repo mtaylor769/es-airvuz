@@ -23,6 +23,7 @@ try {
 	var keywords			= require('./keywords');
 	var videoCuration 		= require('./videoCuration');
 	var aclRoles 			= require('./aclRoles');
+  var customCarousel    = require('./customCarousel');
 // var forms               	= require('./forms');
 	var image               = require('./image');
 	var cron                = require('./cron');
@@ -270,12 +271,12 @@ apiRouter.route('/api/slide/:id')
  * /api/featured-videos/
  */
 apiRouter.route('/api/featured-videos')
-  .get(videoCollection.getVideos('Featured Videos'))
-  .put(protect, videoCollection.updateVideo('Featured Videos'));
+  .get(videoCollection.getFeaturedVideos)
+  .put(protect, videoCollection.updateFeaturedVideos);
 
 apiRouter.route('/api/staff-pick-videos')
-  .get(videoCollection.getVideos('Staff Pick Videos'))
-  .put(protect, videoCollection.updateVideo('Staff Pick Videos'));
+  .get(videoCollection.getStaffPickVideos)
+  .put(protect, videoCollection.updateStaffPickVideos);
 
 apiRouter.route('/api/video-collection/update-collection')
   .post(protect, videoCollection.updateCollectionVideos);
@@ -311,27 +312,14 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
  */
 // TODO: change /image to /images
 apiRouter.get('/image/profile-picture/:picture', image.getProfilePicture);
-// for better support of external api consumers, an additional route that starts with '/api'
-apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
-
 apiRouter.get('/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
-// for better support of external api consumers, an additional route that starts with '/api/'
-apiRouter.get('/api/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
-
 apiRouter.get('/image/drone-video-thumbnail', image.getVideoThumbnail);
-// for better support of external api consumers, an additional route that starts with '/api'
-apiRouter.get('/api/image/drone-video-thumbnail', image.getVideoThumbnail);
-
 apiRouter.get('/image/slide/:source', image.getSlide);
-// for better support of external api consumers, an additional route that starts with '/api'
-apiRouter.get('/api/image/slide/:source', image.getSlide);
 
 /**
  * /drone-video
  */
 apiRouter.get('/drone-video/:videoId/:source', amazon.getVideo);
-// for better support of external api consumers, an additional route that starts with '/api'
-apiRouter.get('/api/drone-video/:videoId/:source', amazon.getVideo);
 
 /**
  * /api/reports
