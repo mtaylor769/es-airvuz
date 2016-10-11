@@ -26,7 +26,7 @@ function Reports() {
 
 }
 /**
- *
+ * route: GET /api/reports/videos
  * @param req
  * @param res
  */
@@ -44,9 +44,9 @@ function getVideos(req, res) {
       res.send(videos)
     })
   
-};
+}
 /**
- *
+ * route: GET /api/reports/comments
  * @param req
  * @param res
  */
@@ -62,9 +62,9 @@ function getComments(req, res) {
     .then(function(comments) {
       res.json({commentCount: comments});
     })
-};
+}
 /**
- *
+ * route: POST /api/reports/employee-contributor
  * @param req
  * @param res
  * @returns {*}
@@ -107,9 +107,9 @@ var usersArray = [];
           res.send(usersArray);
         })
       })
-};
+}
 /**
- *
+ * route: POST /api/reports/hashtag
  * @param req
  * @param res
  * @returns {*}
@@ -198,9 +198,9 @@ function hashTag(req, res) {
             logger.error(error);
             res.sendStatus(500);
         })
-};
+}
 /**
- *
+ * route: POST /api/reports/user-hashtag
  * @param req
  * @param res
  * @returns {*}
@@ -287,9 +287,9 @@ function userHashtag(req, res) {
             logger.error(error);
             res.sendStatus(500);
         })
-};
+}
 /**
- *
+ * route: GET /api/reports/site-info
  * @param req
  * @param res
  */
@@ -314,7 +314,7 @@ function siteInfo(req, res) {
         newVideos: newVideos,
         newUsersList: newUsersList});
     });
-};
+}
 /**
  *
  * @param video
@@ -358,9 +358,9 @@ function top100Views(req, res) {
             res.sendStatus(500);
         });
 
-};
+}
 /**
- *
+ * route: GET /api/reports/video-percentage
  * @param req
  * @param res
  * @returns {*}
@@ -383,15 +383,15 @@ function videoPercentage(req, res) {
         .catch(function(error) {
             res.send(error);
         });
-};
+}
 
-Reports.prototype.getVideos = getVideos;
-Reports.prototype.getComments = getComments;
-Reports.prototype.employeeContributor = employeeContributor;
-Reports.prototype.hashTag = hashTag;
-Reports.prototype.userHashtag = userHashtag;
-Reports.prototype.siteInfo = siteInfo;
-Reports.prototype.top100Views = top100Views;
-Reports.prototype.videoPercentage = videoPercentage;
+Reports.prototype.getVideos             = getVideos;
+Reports.prototype.getComments           = getComments;
+Reports.prototype.employeeContributor   = employeeContributor;
+Reports.prototype.hashTag               = hashTag;
+Reports.prototype.userHashtag           = userHashtag;
+Reports.prototype.siteInfo              = siteInfo;
+Reports.prototype.top100Views           = top100Views;
+Reports.prototype.videoPercentage       = videoPercentage;
 
 module.exports = new Reports();

@@ -19,7 +19,7 @@ catch (exception) {
  */
 function Keyword() {}
 /**
- *
+ * route: POST /api/keyword
  * @param req
  * @param res
  */
@@ -38,7 +38,7 @@ function create(req, res) {
         })
 }
 /**
- *
+ * route: GET /api/keyword
  * @param req
  * @param res
  */

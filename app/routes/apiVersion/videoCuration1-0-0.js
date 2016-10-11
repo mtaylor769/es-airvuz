@@ -113,7 +113,7 @@ function rating(req, res) {
     .catch(function(error) {
         res.send(500);
     });
-};
+}
 
 VideoCuration.prototype.rating = rating;
 module.exports = new VideoCuration();

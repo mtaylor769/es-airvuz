@@ -478,7 +478,8 @@ function reportVideo (req, res) {
  * route: GET /api/videos/videoInfoCheck?userId=, videoId=, videoUserId
  * @param req
  * @param res
- * @returns {
+ * @returns
+ * {
   "like": false,
   "follow": false
 }
@@ -805,25 +806,25 @@ function getCommentsByVideoId (req, res) {
         });
 }
 
-Video.prototype.getVideosByCategory = getVideosByCategory;
-Video.prototype.search = search;
-Video.prototype.post = post;
-Video.prototype.get = get;
-Video.prototype.put = put;
-Video.prototype.delete = deleteVideo;
-Video.prototype.like = like;
-Video.prototype.loaded = loaded;
-Video.prototype.showcaseUpdate = showcaseUpdate;
-Video.prototype.reportVideo = reportVideo;
-Video.prototype.videoInfoCheck = videoInfoCheck;
-Video.prototype.getVideosByUser = getVideosByUser;
-Video.prototype.getShowcaseByUser = getShowcaseByUser;
-Video.prototype.getTopSixVideos = getTopSixVideos;
-Video.prototype.getVideoCount = getVideoCount;
-Video.prototype.getFollowCount = getFollowCount;
-Video.prototype.getNextVideos = getNextVideos;
-Video.prototype.getVideoOwnerProfile = getVideoOwnerProfile;
-Video.prototype.getCommentsByVideoId = getCommentsByVideoId;
+Video.prototype.getVideosByCategory     = getVideosByCategory;
+Video.prototype.search                  = search;
+Video.prototype.post                    = post;
+Video.prototype.get                     = get;
+Video.prototype.put                     = put;
+Video.prototype.delete                  = deleteVideo;
+Video.prototype.like                    = like;
+Video.prototype.loaded                  = loaded;
+Video.prototype.showcaseUpdate          = showcaseUpdate;
+Video.prototype.reportVideo             = reportVideo;
+Video.prototype.videoInfoCheck          = videoInfoCheck;
+Video.prototype.getVideosByUser         = getVideosByUser;
+Video.prototype.getShowcaseByUser       = getShowcaseByUser;
+Video.prototype.getTopSixVideos         = getTopSixVideos;
+Video.prototype.getVideoCount           = getVideoCount;
+Video.prototype.getFollowCount          = getFollowCount;
+Video.prototype.getNextVideos           = getNextVideos;
+Video.prototype.getVideoOwnerProfile    = getVideoOwnerProfile;
+Video.prototype.getCommentsByVideoId    = getCommentsByVideoId;
 
 module.exports = new Video();
 

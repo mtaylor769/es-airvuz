@@ -25,6 +25,7 @@ function VideoCollection() {
 // }
 /**
  * Get all the featured videos as a json object
+ * route: GET /api/featured-videos
  * @param res
  * @param req
  */
@@ -47,6 +48,7 @@ function getFeaturedVideos(req, res) {
 // }
 /**
  * Update the featured video collection
+ * route: PROTECTED PUT /api/featured-videos
  * @param res
  * @param req
  */
@@ -59,6 +61,7 @@ function updateFeaturedVideos (req, res) {
 }
 /**
  * get all the videos in the staff pick video collection
+ * route: GET /api/staff-pick-videos
  * @param req
  * @param res
  */
@@ -71,6 +74,7 @@ function getStaffPickVideos (req, res) {
 }
 /**
  * update staff pick videos
+ * route: PROTECTED PUT /api/staff-pick-videos
  * @param req
  * @param res
  */
@@ -83,6 +87,7 @@ function updateStaffPickVideos (req, res) {
 }
 /**
  * update a video collection indicated in params.name
+ * route: PROTECTED POST /api/video-collection/update-collection
  * @param req
  * @param res
  */
@@ -98,10 +103,10 @@ function updateCollectionVideos(req, res) {
         })
 }
 
-VideoCollection.prototype.getFeaturedVideos = getFeaturedVideos;
-VideoCollection.prototype.updateFeaturedVideos = updateFeaturedVideos;
-VideoCollection.prototype.getStaffPickVideos = getStaffPickVideos;
-VideoCollection.prototype.updateStaffPickVideos = updateStaffPickVideos;
-VideoCollection.prototype.updateCollectionVideos = updateCollectionVideos;
+VideoCollection.prototype.getFeaturedVideos         = getFeaturedVideos;
+VideoCollection.prototype.updateFeaturedVideos      = updateFeaturedVideos;
+VideoCollection.prototype.getStaffPickVideos        = getStaffPickVideos;
+VideoCollection.prototype.updateStaffPickVideos     = updateStaffPickVideos;
+VideoCollection.prototype.updateCollectionVideos    = updateCollectionVideos;
 
 module.exports = new VideoCollection();
