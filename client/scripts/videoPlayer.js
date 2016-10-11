@@ -52,11 +52,13 @@ var initialUpNextClick                 = false;
 var isBuffering                        = false;
 var bufferCount                        = 0;
 var bufferTime                         = 2000;
+var initialPageLoad                    = false;
 var $videoPlayer;
 var $videoPage;
 var video;
 var VideoPlayer;
 var videoPathSrc;
+var commentsLoader;
 
 var SLICK_CONFIG = {
   slidesToShow: 3,
@@ -129,6 +131,9 @@ function mobileTabSwitchHandler(tabName) {
             $('.comments-wrapper').show();
             $('.mobile-tab-body').hide();
             $('#next').hide();
+
+            loadCommentsOnDemand();
+
             break;
     }
 }
@@ -137,6 +142,12 @@ PubSub.subscribe('video-switched', function (msg, data) {
     // update the current video object
     video = data;
 
+    initialPageLoad = false;
+
+    // clear the dom
+    $('.parent-comments').empty();
+    $('.more-comments-container').empty();
+
     // update the videopath src
     videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + data.videoPath;
 
@@ -144,6 +155,9 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
     // reset the flag
     startViewCount = true;
+
+    // show the comments loading spinner
+    commentsLoader.removeClass('hidden');
 
     // stop the count down timer
     if (countDownInterval !== null) {
@@ -155,7 +169,6 @@ PubSub.subscribe('video-switched', function (msg, data) {
     $('.video-player-title').empty().html(video.title);
 
     var getUserProfile = $.ajax({type: 'GET', url: '/api/video/videoOwnerProfile/' + video.userId}),
-        getComments = $.ajax({type: 'GET', url: '/api/videos/videoComments/' + video._id}),
         getTopSixVid = $.ajax({type: 'GET', url: '/api/videos/topSixVideos/' + video.userId}),
         getFollowCount = $.ajax({type: 'GET', url: '/api/videos/followCount/' + video.userId}),
         getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
@@ -170,12 +183,11 @@ PubSub.subscribe('video-switched', function (msg, data) {
     // make parallel requests
     $.when(
         getUserProfile,
-        getComments,
         getTopSixVid,
         getFollowCount,
         getVideoCount,
         getNextVideos
-    ).done(function(userData, commentsData, topSixVidData, followCountData, videoCountData, nextVideosData) {
+    ).done(function(userData, topSixVidData, followCountData, videoCountData, nextVideosData) {
         videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
             $('.next-video-list').empty().prepend(html);
             lazyLoadImage($('img[data-lazy]', '.next-video-list'));
@@ -184,20 +196,6 @@ PubSub.subscribe('video-switched', function (msg, data) {
         // mobile tabs
         videoMobileTabPartialTpl({video: video}, function (err, html) {
             $('.mobile-tab-container').empty().prepend(html);
-        });
-
-        // update the comments template
-        commentsTpl({comments: commentsData[0], canEdit: true}, function (err, html) {
-            $('.parent-comments').empty().prepend(html);
-        });
-
-        // update the has more button template
-        videoHasMorePartialTpl({hasMoreComments: video.commentCount > commentsData[0].length}, function (err, html) {
-            $('.more-comments-container').empty().prepend(html);
-
-            canResetShowMoreCount = true;
-
-            setCommentOptions();
         });
 
         // update categories
@@ -240,6 +238,11 @@ PubSub.subscribe('video-switched', function (msg, data) {
             });
         }
     });
+
+    // get the comments - fire ajax for devices with viewport > 768
+    if (browser.getSize().width > 768) {
+        getComments();
+    }
 
     // render the social icons
     videoSocialShareTpl({video: video}, function (err, html) {
@@ -1089,6 +1092,49 @@ function bindEvents() {
     .on('click', '.mobile-video-tabs li', mobileTabSwitchHandler);
 }
 
+function getComments() {
+    $.ajax({
+        type: 'GET',
+        url: '/api/videos/videoComments/' + video._id
+    }).done(function(resp) {
+        commentsLoader.addClass('hidden');
+
+        $('.video-tab-comments').data('clicked', true);
+
+        // update the comments template
+        commentsTpl({comments: resp, canEdit: true}, function (err, html) {
+            $('.parent-comments').html(html);
+        });
+
+        // update the has more button template
+        videoHasMorePartialTpl({hasMoreComments: video.commentCount > resp.length}, function (err, html) {
+            $('.more-comments-container').html(html);
+
+            canResetShowMoreCount = true;
+
+            setCommentOptions();
+        });
+    }).fail(function(err) {
+        console.log(err);
+    });
+}
+
+
+// fires off when the page initially loads and on mobile comment tab clicked
+function loadCommentsOnDemand() {
+    if (!initialPageLoad) {
+        var commentsTabClicked = $('.video-tab-comments').data('clicked');
+
+        if (commentsTabClicked) return;
+
+        commentsLoader.removeClass('hidden');
+
+        getComments();
+    } else {
+        getComments();
+    }
+}
+
 function lazyLoadImage($imageToLoad) {
 
   $imageToLoad.each(function (index, image) {
@@ -1181,6 +1227,8 @@ function updateVideoSrc() {
 function initialize(videoPath, currentVideo) {
   video = currentVideo;
 
+  initialPageLoad = true;
+
   // api routes /drone-video/:videoId/:src
   videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + videoPath;
 
@@ -1218,6 +1266,8 @@ function initialize(videoPath, currentVideo) {
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
 
+  commentsLoader = $('.loading-comment-spinner');
+
   $('.video-slick').slick(SLICK_CONFIG);
 
   setAutoPlay();
@@ -1227,6 +1277,8 @@ function initialize(videoPath, currentVideo) {
   setCommentOptions();
 
   bindEvents();
+
+  loadCommentsOnDemand();
 
   if (!browser.isMobile()) {
     $('[data-toggle="tooltip"]').tooltip();

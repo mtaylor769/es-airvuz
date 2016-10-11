@@ -1,8 +1,8 @@
 <div class="mobile-video-tab-wrapper visible-xs">
     <ul class="mobile-video-tabs list-inline">
-        <li class="video-tab col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
-        <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
-        <li class="video-tab col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
+        <li class="video-tab video-tab-upnext col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
+        <li class="video-tab video-tab-description col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
+        <li class="video-tab video-tab-comments col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
     </ul>
 </div>
 <div class="mobile-tab-body" style="margin-top:10px; display:none;">
