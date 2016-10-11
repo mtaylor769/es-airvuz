@@ -313,14 +313,27 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
  */
 // TODO: change /image to /images
 apiRouter.get('/image/profile-picture/:picture', image.getProfilePicture);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
+
 apiRouter.get('/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
+// for better support of external api consumers, an additional route that starts with '/api/'
+apiRouter.get('/api/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
+
 apiRouter.get('/image/drone-video-thumbnail', image.getVideoThumbnail);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/image/drone-video-thumbnail', image.getVideoThumbnail);
+
 apiRouter.get('/image/slide/:source', image.getSlide);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api//image/slide/:source', image.getSlide);
 
 /**
  * /drone-video
  */
 apiRouter.get('/drone-video/:videoId/:source', amazon.getVideo);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/drone-video/:videoId/:source', amazon.getVideo);
 
 /**
  * /api/reports
