@@ -1119,6 +1119,8 @@ function getComments() {
     });
 }
 
+
+// fires off when the page initially loads and on mobile comment tab clicked
 function loadCommentsOnDemand() {
     if (!initialPageLoad) {
         var commentsTabClicked = $('.video-tab-comments').data('clicked');
@@ -1127,6 +1129,8 @@ function loadCommentsOnDemand() {
 
         commentsLoader.removeClass('hidden');
 
+        getComments();
+    } else {
         getComments();
     }
 }
@@ -1273,6 +1277,8 @@ function initialize(videoPath, currentVideo) {
   setCommentOptions();
 
   bindEvents();
+
+  loadCommentsOnDemand();
 
   if (!browser.isMobile()) {
     $('[data-toggle="tooltip"]').tooltip();
