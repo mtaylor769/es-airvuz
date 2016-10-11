@@ -13,11 +13,11 @@ try {
 	var socialCrud 			= require('../../persistence/crud/socialMediaAccount');
 	var catTypeCrud1_0_0 	= require('../../persistence/crud/categoryType1-0-0');
 	var videoCollCrud1_0_0 	= require('../../persistence/crud/videoCollection1-0-0');
-	var followCrud 			= require('../../persistence/crud/follow1-0-0');
+	var followCrud1_0_0 	= require('../../persistence/crud/follow1-0-0');
 	var amazonConfig 		= require('../../config/amazon.config');
 
 	if(global.NODE_ENV === "production") {
-		logger.setLevel("WARN");	
+		logger.setLevel("INFO");
 	}
 
 	logger.info("import complete");	
@@ -42,7 +42,7 @@ UserProfileModel.prototype.getData = function (params) {
 	var sourceManifest = params.sourceManifest;
 	// TODO: run parallel
 
-	return usersCrud.getUserByUserNameUrl(userNameUrl)
+	return userCrud1_0_0.getUserByUserNameUrl(userNameUrl)
 	.then(function(user) {
 		if(!user) {
 			throw {error: 404};
@@ -78,11 +78,11 @@ UserProfileModel.prototype.getData = function (params) {
 			user.coverPicture = user.coverPicture;
 		}
 
-		logger.debug(user);
-		dataObject.user = user;
-		return videoCollection.createVideoCollection({user: user._id, name: 'showcase'})
-	})
-	.then(function(videoCollection){
+			logger.debug(user);
+			dataObject.user = user;
+			return videoCollCrud1_0_0.createVideoCollection({user: user._id, name: 'showcase'})
+		})
+		.then(function (videoCollection) {
 			var videos = videoCollection.videos;
 			videos = unlock(videos);
 			videos.forEach(function (video) {
@@ -98,11 +98,11 @@ UserProfileModel.prototype.getData = function (params) {
 			} else {
 				dataObject.categories = categories;
 			}
-			return followCrud.followingCount(profileUser._id);
+			return followCrud1_0_0.followingCount(profileUser._id);
 		})
 		.then(function (following) {
 			dataObject.following = following;
-			return followCrud.followCount(profileUser._id);
+			return followCrud1_0_0.followCount(profileUser._id);
 		})
 		.then(function (followers) {
 			dataObject.followers = followers;

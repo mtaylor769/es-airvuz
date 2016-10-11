@@ -1,10 +1,10 @@
 var namespace = 'app.routes.apiVersion.categoryType1-0-0';
 
 try {
-    var log4js      = require('log4js');
-    var logger      = log4js.getLogger(namespace);
-    var catTypeCrud1_0_0 = require('../../persistence/crud/categoryType1-0-0');
-    var _ = require('lodash');
+    var log4js              = require('log4js');
+    var logger              = log4js.getLogger(namespace);
+    var catTypeCrud1_0_0    = require('../../persistence/crud/categoryType1-0-0');
+    var _                   = require('lodash');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -122,11 +122,11 @@ function deleteCat(req, res) {
         })
 }
 
-CategoryType.prototype.post = post;
-CategoryType.prototype.get = get;
-CategoryType.prototype.getByRoles = getByRoles;
-CategoryType.prototype.getById = getById;
-CategoryType.prototype.put = put;
-CategoryType.prototype.delete = deleteCat;
+CategoryType.prototype.post         = post;
+CategoryType.prototype.get          = get;
+CategoryType.prototype.getByRoles   = getByRoles;
+CategoryType.prototype.getById      = getById;
+CategoryType.prototype.put          = put;
+CategoryType.prototype.delete       = deleteCat;
 
 module.exports = new CategoryType();
