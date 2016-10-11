@@ -47,18 +47,18 @@ CategoryModel.prototype.getData = function(params) {
 		'staff-picks-drone-videos': 'Staff Picks Drone Videos',
 		'following-drone-videos': 'Following Drone Videos'
 	};
-	params.data							= {};
-	params.data.title				= "AirVūz – Category";
-	params.data.s3Bucket 		= amazonConfig.OUTPUT_BUCKET;
+	params.data = {};
+	params.data.title = "AirVūz – Category";
+	params.data.s3Bucket = amazonConfig.OUTPUT_BUCKET;
 
 	// Only category can sort
-	params.data.showSort 		= canSort(currentCategory);
+	params.data.showSort = canSort(currentCategory);
 
 	var videoPromise,
-			TOTAL_PER_PAGE = 20;
+		TOTAL_PER_PAGE = 20;
 
 	params.data.category = {};
-	
+
 	var videosParam = {
 		total: TOTAL_PER_PAGE,
 		page: 1,
@@ -69,7 +69,7 @@ CategoryModel.prototype.getData = function(params) {
 		.then(function (category) {
 			params.data.category.uri = currentCategory;
 			params.data.category.name = categoryNameMap[currentCategory];
-			switch(currentCategory) {
+			switch (currentCategory) {
 				case 'featured-drone-videos':
 					return VideoCollection.getFeaturedVideos();
 				case 'staff-picks-drone-videos':
@@ -120,6 +120,7 @@ CategoryModel.prototype.getData = function(params) {
 			}
 			return params;
 		});
+
 };
 
 module.exports = CategoryModel;

@@ -148,3 +148,21 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
+.carousel-video-card-content button{
+    float: right;
+    margin: 20px 0 0 0;
+}
+
+.carousel-video-card-content {
+    margin: auto;
+}
+
+.menu-accordion {
+    color: white;
+    padding-left: 30px;
+    background: gray;
+}
+
+.card-list {
+    list-style: none;
+}

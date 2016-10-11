@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+    <html view="app.views.view.template.customCategory">
+    <head>
+        <meta http-equiv="Cache-control" content="public">
+        <title>{title}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="{script.css}">
+    </head>
+    <body>
+        {> "app.views.view.partial.header" /}
+        <div id="category-page" class="container main">
+            <div class="row">
+                <div class="col-md-2 category-nav">
+                    {> "app.views.view.partial.left-nav"/}
+                </div>
+                <div class="col-md-10 border-left">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3>{category.name}</h3>
+                        </div>
+                    </div>
+                    {?videoHeader}
+                        <div class="row">
+                            <div class="col-md-6 right-space">
+                                <a href="/video/{category.displayVideo}">
+                                    <img src="{displayVideoSrc}" width="100%">
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{category.description}</p>
+                            </div>
+                        </div>
+                    {:else}
+                        <div class="header-image">
+                            <div class="row">
+                                <img src="{s3_ASSET_Bucket}videoCollection/{category.displayImage}" width="100%" class="img-responsive">
+                            </div>
+                            <div class="row">
+                                <p>{category.description}</p>
+                            </div>
+                        </div>
+                    {/videoHeader}
+                    <div class="row" id="videos">
+                        <div class="col-md-12">
+                            {> "client.templates.core.video-display"/}
+                        </div>
+                    </div>
+                    <div class="row top-space text-space">
+                        <p>{category.listDescription}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {> "app.views.view.partial.footer" /}
+        {> "app.views.view.partial.js" /}
+    </body>
+</html>

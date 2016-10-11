@@ -87,30 +87,32 @@ app.use('/admin/*', function (req, res) {
 app.use(require('./app/routes/api/routes'));
 
 
-var viewManager							= require('./app/views/manager/viewManager');
-var indexView								= require('./app/views/view/indexView');
+var viewManager						= require('./app/views/manager/viewManager');
+var indexView						= require('./app/views/view/indexView');
 var videoPlayerView					= require('./app/views/view/videoPlayerView');
 var userProfileView					= require('./app/views/view/userProfileView');
 var videoUploadView					= require('./app/views/view/videoUploadView');
-var searchView							= require('./app/views/view/searchView');
-var categoryView						= require('./app/views/view/categoryView');
-var staticView							= require('./app/views/view/staticView');
-var videoPlayerEmbedView 		= require('./app/views/view/videoPlayerEmbedView');
+var searchView						= require('./app/views/view/searchView');
+var categoryView					= require('./app/views/view/categoryView');
+var customCategoryView 				= require('./app/views/view/customCategoryView');
+var staticView						= require('./app/views/view/staticView');
+var videoPlayerEmbedView	 		= require('./app/views/view/videoPlayerEmbedView');
 var notificationView				= require('./app/views/view/notificationView');
 var passwordResetView				= require('./app/views/view/passwordResetView');
-var notFoundView						= require('./app/views/view/notFoundView');
+var notFoundView					= require('./app/views/view/notFoundView');
 
 
-viewManager.addView({	view : indexView });
-viewManager.addView({	view : userProfileView });
-viewManager.addView({	view : videoPlayerView });
+viewManager.addView({ view : indexView });
+viewManager.addView({ view : userProfileView });
+viewManager.addView({ view : videoPlayerView });
 viewManager.addView({ view : videoPlayerEmbedView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
 viewManager.addView({ view : categoryView });
-viewManager.addView({ view : notificationView});
-viewManager.addView({ view : passwordResetView});
-viewManager.addView({ view : notFoundView});
+viewManager.addView({ view : customCategoryView });
+viewManager.addView({ view : notificationView });
+viewManager.addView({ view : passwordResetView });
+viewManager.addView({ view : notFoundView });
 viewManager.addView({ view : staticView('terms') });
 viewManager.addView({ view : staticView('privacy') });
 viewManager.addView({ view : staticView('copyright') });
@@ -172,7 +174,11 @@ app.get("/search", function(req, res) {
 });
 
 app.get("/category/:category", function(req, res) {
-	loadView(req, res, categoryView.getViewName());
+	if(req.query.id) {
+		loadView(req, res, customCategoryView.getViewName())
+	} else {
+		loadView(req, res, categoryView.getViewName());
+	}
 });
 
 app.get("/notifications/:id", function(req, res) {

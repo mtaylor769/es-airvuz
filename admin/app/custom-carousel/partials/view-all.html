@@ -1,0 +1,22 @@
+<div layout-padding>
+    <md-card ng-repeat="carousel in vm.carousels">
+        <div layout="row">
+            <ul class="card-list" flex>
+                <li><strong>Name : </strong>{{carousel.name}}</li>
+                <li><strong>Name Url : </strong>{{carousel.nameUrl}}</li>
+                <li><strong>Description : </strong>{{carousel.description}}</li>
+                <li ng-show="carousel.startDate"><strong>Start Date : </strong>{{carousel.startDate}}</li>
+                <li ng-show="carousel.endDate"><strong>End Date : </strong>{{carousel.endDate}}</li>
+                <li><strong>Video Count : </strong>{{carousel.videos.length}}</li>
+            </ul>
+            <div>
+                <md-button class="md-raised md-fab" ng-click="vm.editCarousel(carousel._id)">
+                    <md-icon class="material-icons">edit</md-icon>
+                </md-button>
+                <md-button class="md-raised md-fab" ng-click="vm.deleteCarousel(carousel._id)">
+                    <md-icon class="material-icons">delete</md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-card>
+</div>
