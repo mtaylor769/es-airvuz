@@ -122,12 +122,13 @@ viewManager.addView({ view : staticView('media') });
 viewManager.addView({ view : staticView('faq') });
 // viewManager.addView({ view : staticView('forms') });
 
-function loadView(req, res, name) {
+function loadView(req, res, name, next) {
 	viewManager
 			.getView({
 				viewName				: name,
 				request					: req,
-				response				: res
+				response				: res,
+				next						: next
 			})
 			.then(function(view) {
 				res.send(view);
@@ -148,8 +149,8 @@ app.get("/email-confirmation/:id", function(req, res) {
 	loadView(req, res, indexView.getViewName());
 });
 
-app.get("/user/:userNameUrl", function(req, res) {
-	loadView(req, res, userProfileView.getViewName());
+app.get("/user/:userNameUrl", function(req, res, next) {
+	loadView(req, res, userProfileView.getViewName(), next);
 });
 
 // support older url /play?id=...
@@ -157,8 +158,8 @@ app.get('/play', function (req, res) {
 	res.redirect('/video/' + req.query.id);
 });
 
-app.get("/video/:id", function(req, res) {
-	loadView(req, res, videoPlayerView.getViewName());
+app.get("/video/:id", function(req, res, next) {
+	loadView(req, res, videoPlayerView.getViewName(), next);
 });
 
 app.get("/videoPlayerEmbed/:id", function(req, res) {
@@ -173,16 +174,16 @@ app.get("/search", function(req, res) {
 	loadView(req, res, searchView.getViewName());
 });
 
-app.get("/category/:category", function(req, res) {
+app.get("/category/:category", function(req, res, next) {
 	if(req.query.id) {
-		loadView(req, res, customCategoryView.getViewName())
+		loadView(req, res, customCategoryView.getViewName(), next)
 	} else {
-		loadView(req, res, categoryView.getViewName());
+		loadView(req, res, categoryView.getViewName(), next);
 	}
 });
 
-app.get("/notifications/:id", function(req, res) {
-	loadView(req, res, notificationView.getViewName());
+app.get("/notifications/:id", function(req, res, next) {
+	loadView(req, res, notificationView.getViewName(), next);
 });
 
 app.get('/password-reset/:code', function (req, res) {

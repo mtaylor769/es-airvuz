@@ -38,11 +38,8 @@ NotificationModel.prototype.getData = function(params) {
 
   return notificationCrud.getAllByUserId(userId)
     .then(function(notifications) {
-
       var notificationClone = [];
-      
       notifications.forEach(function(notification) {
-
         //new notification object for manual clone
         var notificationObject = {};
 
@@ -88,6 +85,9 @@ NotificationModel.prototype.getData = function(params) {
 
       params.data.s3AssetUrl 							= amazonConfig.ASSET_URL;
       return params;
+    })
+    .catch(function(error) {
+      params.next();
     });
 
 };
