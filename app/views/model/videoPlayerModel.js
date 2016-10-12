@@ -5,18 +5,18 @@ var logger					= log4js.getLogger(namespace);
 
 
 try {
-	var BaseModel	    = require('./baseModel');
-	var Promise		    = require('bluebird');
+	var BaseModel	    	= require('./baseModel');
+	var Promise		    	= require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
-	var videoCrud     = require('../../persistence/crud/videos');
-	var userCrud      = require('../../persistence/crud/users');
-	var socialCrud		= require('../../persistence/crud/socialMediaAccount');
-	var commentCrud   = require('../../persistence/crud/comment');
-	var videoLikeCrud = require('../../persistence/crud/videoLike');
-	var categoryCrud  = require('../../persistence/crud/categoryType');
-	var followCrud		= require('../../persistence/crud/follow');
-	var amazonConfig  = require('../../config/amazon.config');
+	var videoCrud1_0_0     		= require('../../persistence/crud/videos1-0-0');
+	var usersCrud1_0_0      = require('../../persistence/crud/users1-0-0');
+	var socialCrud			= require('../../persistence/crud/socialMediaAccount');
+	var commentCrud   		= require('../../persistence/crud/comment');
+	var videoLikeCrud 		= require('../../persistence/crud/videoLike');
+	var categoryCrud  		= require('../../persistence/crud/categoryType');
+	var followCrud			= require('../../persistence/crud/follow');
+	var amazonConfig  		= require('../../config/amazon.config');
 	var config				= require('../../../config/config')[global.NODE_ENV];
 
 	if(global.NODE_ENV === "production") {
@@ -44,7 +44,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 	var checkObject 		= {};
 
 	// TODO: run parallel
-	return videoCrud.getById(videoId)
+	return videoCrud1_0_0.getById(videoId)
 		.then(function(video) {
 			if(video.title.length > 45) {
 				video.title = video.title.substring(0, 45) + '...';
@@ -53,7 +53,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			video.openGraphCacheDate = moment(video.openGraphCacheDate).format('x');
 			dataObject.video 	= video;
 			checkObject.video = video._id;
-			return userCrud.getUserById(video.userId);
+			return usersCrud1_0_0.getUserById(video.userId);
 		})
 		.then(function(user){
 			if (user !== null) {
@@ -73,7 +73,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
 
 			return categoryCrud.getInternalCategory(dataObject.video.categories)
-				.then(videoCrud.getNextVideos);
+				.then(videoCrud1_0_0.getNextVideos);
 		})
 		.then(function(videos) {
 			videos.forEach(function (video) {
@@ -89,11 +89,11 @@ VideoPlayerModel.prototype.getData = function(params) {
 				}
 			});
 			dataObject.upNext = videos;
-			return videoCrud.getVideoCount(checkObject.user);
+			return videoCrud1_0_0.getVideoCount(checkObject.user);
 		})
 		.then(function(videoCount) {
 			dataObject.videoCount = videoCount;
-			return videoCrud.getTopSixVideos(checkObject.user);
+			return videoCrud1_0_0.getTopSixVideos(checkObject.user);
 			})
 		.then(function(topSixVideos) {
 			var topVideos = [];

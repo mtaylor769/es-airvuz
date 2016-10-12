@@ -1,7 +1,7 @@
 var commentCrud       = require('../../persistence/crud/comment');
 var NotificationCrud  = require('../../persistence/crud/notifications');
 var socialCrud        = require('../../persistence/crud/socialMediaAccount');
-var videoCrud         = require('../../persistence/crud/videos');
+var videoCrud1_0_0    = require('../../persistence/crud/videos1-0-0');
 var log4js            = require('log4js');
 var logger            = log4js.getLogger('app.routes.api.users');
 var Promise           = require('bluebird');
@@ -10,9 +10,7 @@ var moment            = require('moment');
 var nodemailer        = require('nodemailer');
 
 
-function Comment() {
-
-}
+function Comment() {}
 
 Comment.prototype.post = function(req, res) {
   var json = JSON.parse(req.body.data);
@@ -154,7 +152,7 @@ Comment.prototype.delete = function(req, res) {
     }
   })
   .then(function(removeObject) {
-    videoCrud.getById(removeObject.videoId)
+    videoCrud1_0_0.getById(removeObject.videoId)
       .then(function(video) {
         var updateObject = {};
         updateObject.id = video._id;
@@ -162,7 +160,7 @@ Comment.prototype.delete = function(req, res) {
         updateObject.update.commentCount = video.commentCount - removeObject.removeCount;
         logger.error('this is the update object');
         logger.debug(updateObject);
-        return videoCrud.updateVideoFieldCounts(updateObject);
+        return videoCrud1_0_0.updateVideoFieldCounts(updateObject);
       })
   })
   .then(function() {

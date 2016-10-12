@@ -1,244 +1,244 @@
 var mongoose = require('mongoose'),
-  userCrud = require('../app/persistence/crud/users'),
-  acl;
+    userCrud1_0_0 = require('../app/persistence/crud/users1-0-0'),
+    acl;
 
 var DATABASE = {
-  HOST : "localhost",
-  NAME : "AirVuz2"
+    HOST: "localhost",
+    NAME: "AirVuz2"
 };
 
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://' + DATABASE.HOST + '/' + DATABASE.NAME);
 
 function createSystemRootUser() {
-  var Root = {
-    aclRoles: ['root'],
-    emailAddress: 'root@airvuz.com',
-    firstName: 'root',
-    lastName: 'airvuz',
-    password: '2016AVaDMin',
-    userName: 'root'
-  };
+    var Root = {
+        aclRoles: ['root'],
+        emailAddress: 'root@airvuz.com',
+        firstName: 'root',
+        lastName: 'airvuz',
+        password: '2016AVaDMin',
+        userName: 'root'
+    };
 
-  return userCrud.create(Root)
-    .then(function (user) {
-      return acl.addUserRoles(user._id, 'root');
-    });
+    return userCrud1_0_0.create(Root)
+        .then(function (user) {
+            return acl.addUserRoles(user._id, 'root');
+        });
 }
 
 function createRootUser() {
-  var Root = {
-    aclRoles: ['user-root'],
-    emailAddress: 'user.root@airvuz.com',
-    firstName: 'root',
-    lastName: 'airvuz',
-    password: '2016AVaDMin',
-    userName: 'userroot'
-  };
+    var Root = {
+        aclRoles: ['user-root'],
+        emailAddress: 'user.root@airvuz.com',
+        firstName: 'root',
+        lastName: 'airvuz',
+        password: '2016AVaDMin',
+        userName: 'userroot'
+    };
 
-  return userCrud.create(Root)
-    .then(function (user) {
-      return acl.addUserRoles(user._id, 'user-root');
-    });
+    return userCrud1_0_0.create(Root)
+        .then(function (user) {
+            return acl.addUserRoles(user._id, 'user-root');
+        });
 }
 
 function createAdminUser() {
-  var Admin = {
-    aclRoles: ['user-admin'],
-    emailAddress: 'admin@airvuz.com',
-    firstName: 'admin',
-    lastName: 'airvuz',
-    password: '2016AVaDMin',
-    userName: 'admin'
-  };
+    var Admin = {
+        aclRoles: ['user-admin'],
+        emailAddress: 'admin@airvuz.com',
+        firstName: 'admin',
+        lastName: 'airvuz',
+        password: '2016AVaDMin',
+        userName: 'admin'
+    };
 
-  return userCrud.create(Admin)
-    .then(function (user) {
-      return acl.addUserRoles(user._id, 'user-admin');
-    });
+    return userCrud1_0_0.create(Admin)
+        .then(function (user) {
+            return acl.addUserRoles(user._id, 'user-admin');
+        });
 }
 
 function createGeneralUser() {
-  var General = {
-    aclRoles: ['user-general'],
-    emailAddress: 'user@airvuz.com',
-    firstName: 'user',
-    lastName: 'airvuz',
-    password: '2016AVaDMin',
-    userName: 'userAirvuz'
-  };
+    var General = {
+        aclRoles: ['user-general'],
+        emailAddress: 'user@airvuz.com',
+        firstName: 'user',
+        lastName: 'airvuz',
+        password: '2016AVaDMin',
+        userName: 'userAirvuz'
+    };
 
-  return userCrud.create(General)
-    .then(function (user) {
-      return acl.addUserRoles(user._id, 'user-general');
-    });
+    return userCrud1_0_0.create(General)
+        .then(function (user) {
+            return acl.addUserRoles(user._id, 'user-general');
+        });
 }
 
 function closeDatabaseConnection() {
-  mongoose.connection.close();
-  console.log('******************** close database connection ********************');
+    mongoose.connection.close();
+    console.log('******************** close database connection ********************');
 }
 
 function setPermission() {
-  return acl.allowArray([
-    {
-      roles: ['root'],
-      allows: [
+    return acl.allowArray([
         {
-          resources: ['comment'],
-          permissions : ['*']
+            roles: ['root'],
+            allows: [
+                {
+                    resources: ['comment'],
+                    permissions: ['*']
+                },
+                {
+                    resources: ['report'],
+                    permissions: ['*']
+                },
+                {
+                    resources: ['user'],
+                    permissions: ['*']
+                },
+                {
+                    resources: ['video'],
+                    permissions: ['*']
+                },
+                {
+                    resources: ['acl'],
+                    permissions: ['*']
+                }
+            ]
         },
         {
-          resources: ['report'],
-          permissions : ['*']
+            roles: ['user-general'],
+            allows: [
+                {
+                    resources: ['user'],
+                    permissions: ['delete', 'edit', 'view']
+                },
+                {
+                    resources: ['video'],
+                    permissions: ['create', 'delete', 'edit', 'view']
+                }
+            ]
         },
         {
-          resources: ['user'],
-          permissions : ['*']
+            roles: ['user-contributor'],
+            allows: [
+                {
+                    resources: ['user'],
+                    permissions: ['edit']
+                }
+            ]
         },
         {
-          resources: ['video'],
-          permissions : ['*']
+            roles: ['user-root'],
+            allows: [
+                {
+                    resources: ['user'],
+                    permissions: ['create', 'delete', 'edit', 'view']
+                }
+            ]
         },
         {
-          resources: ['acl'],
-          permissions: ['*']
-        }
-      ]
-    },
-    {
-      roles: ['user-general'],
-      allows: [
-        {
-          resources: ['user'],
-          permissions: ['delete', 'edit', 'view']
+            roles: ['user-admin'],
+            allows: [
+                {
+                    resources: ['user'],
+                    permissions: ['edit', 'hide', 'show', 'view', 'search']
+                },
+                {
+                    resources: ['acl'],
+                    permissions: ['edit']
+                }
+            ]
         },
         {
-          resources: ['video'],
-          permissions: ['create', 'delete', 'edit', 'view']
-        }
-      ]
-    },
-    {
-      roles: ['user-contributor'],
-      allows: [
-        {
-          resources: ['user'],
-          permissions: ['edit']
-        }
-      ]
-    },
-    {
-      roles: ['user-root'],
-      allows: [
-        {
-          resources: ['user'],
-          permissions: ['create', 'delete', 'edit', 'view']
-        }
-      ]
-    },
-    {
-      roles: ['user-admin'],
-      allows: [
-        {
-          resources: ['user'],
-          permissions: ['edit', 'hide', 'show', 'view', 'search']
+            roles: ['video-root'],
+            allows: [
+                {
+                    resources: ['video'],
+                    permissions: ['create', 'delete', 'edit', 'hide', 'show', 'view']
+                }
+            ]
         },
         {
-          resources: ['acl'],
-          permissions: ['edit']
-        }
-      ]
-    },
-    {
-      roles: ['video-root'],
-      allows: [
+            roles: ['video-admin'],
+            allows: [
+                {
+                    resources: ['video'],
+                    permissions: ['create', 'edit', 'hide', 'show', 'view']
+                }
+            ]
+        },
         {
-          resources: ['video'],
-          permissions: ['create', 'delete', 'edit', 'hide', 'show', 'view']
-        }
-      ]
-    },
-    {
-      roles: ['video-admin'],
-      allows: [
+            roles: ['comment-root'],
+            allows: [
+                {
+                    resources: ['comment'],
+                    permissions: ['delete', 'edit']
+                }
+            ]
+        },
         {
-          resources: ['video'],
-          permissions: ['create', 'edit', 'hide', 'show', 'view']
-        }
-      ]
-    },
-    {
-      roles: ['comment-root'],
-      allows: [
+            roles: ['report-root'],
+            allows: [
+                {
+                    resources: ['report'],
+                    permissions: ['*']
+                }
+            ]
+        },
         {
-          resources: ['comment'],
-          permissions: ['delete', 'edit']
-        }
-      ]
-    },
-    {
-      roles: ['report-root'],
-      allows: [
+            roles: ['report-admin'],
+            allows: [
+                {
+                    resources: ['report'],
+                    permissions: [/*'search-users', 'search-videos',*/ 'view-user-report', 'view-video-report']
+                }
+            ]
+        },
         {
-          resources: ['report'],
-          permissions: ['*']
-        }
-      ]
-    },
-    {
-      roles: ['report-admin'],
-      allows: [
+            roles: ['report-user'],
+            allows: [
+                {
+                    resources: ['report'],
+                    permissions: ['view-user-report']
+                }
+            ]
+        },
         {
-          resources: ['report'],
-          permissions: [/*'search-users', 'search-videos',*/ 'view-user-report', 'view-video-report']
-        }
-      ]
-    },
-    {
-      roles: ['report-user'],
-      allows: [
+            roles: ['report-video'],
+            allows: [
+                {
+                    resources: ['report'],
+                    permissions: ['view-video-report']
+                }
+            ]
+        },
         {
-          resources: ['report'],
-          permissions: ['view-user-report']
+            roles: ['sliders-root'],
+            allows: [
+                {
+                    resources: ['sliders'],
+                    permissions: ['create', 'edit', 'delete']
+                }
+            ]
         }
-      ]
-    },
-    {
-      roles: ['report-video'],
-      allows: [
-        {
-          resources: ['report'],
-          permissions: ['view-video-report']
-        }
-      ]
-    },
-    {
-      roles: ['sliders-root'],
-      allows: [
-        {
-          resources: ['sliders'],
-          permissions: ['create', 'edit', 'delete']
-        }
-      ]
-    }
-  ]);
+    ]);
 }
 
-mongoose.connection.once('connected', function() {
-  console.log('******************** connected to database ********************');
+mongoose.connection.once('connected', function () {
+    console.log('******************** connected to database ********************');
 
-  acl = require('../app/utils/acl');
+    acl = require('../app/utils/acl');
 
-  setPermission()
-    .then(createSystemRootUser)
-    .then(createRootUser)
-    .then(createAdminUser)
-    .then(createGeneralUser)
-    .catch(function (err) {
-      console.log('******************** err ********************');
-      console.log(err);
-      console.log('************************************************');
-    })
-    .finally(closeDatabaseConnection);
+    setPermission()
+        .then(createSystemRootUser)
+        .then(createRootUser)
+        .then(createAdminUser)
+        .then(createGeneralUser)
+        .catch(function (err) {
+            console.log('******************** err ********************');
+            console.log(err);
+            console.log('************************************************');
+        })
+        .finally(closeDatabaseConnection);
 });

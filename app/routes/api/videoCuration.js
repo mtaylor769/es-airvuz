@@ -1,5 +1,5 @@
 var keywordCrud     = require('../../persistence/crud/keywords');
-var videoCrud       = require('../../persistence/crud/videos');
+var videoCrud       = require('../../persistence/crud/videos1-0-0');
 var Promise         = require('bluebird');
 
 function VideoCuration() {}
