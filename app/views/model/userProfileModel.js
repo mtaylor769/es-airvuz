@@ -42,6 +42,9 @@ UserProfileModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return usersCrud.getUserByUserNameUrl(userNameUrl)
 	.then(function(user) {
+		if(!user) {
+			throw {error: 404};
+		}
 		profileUser = user;
 		return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
 			.then(function (social) {
@@ -127,7 +130,13 @@ UserProfileModel.prototype.getData = function(params) {
 
 		params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
 		return params;
+	})
+	.catch(function(error) {
+		if(error.error === 404) {
+			params.next();
+		}
 	});
+
 };
 
 module.exports = UserProfileModel;
