@@ -50,22 +50,33 @@
         }
 
         function saveCarousel() {
-            var params = {
-              key: vm.displayImage.hashname,
-              dir: Amazon.assetBucket + '/videoCollection'
-            };
-            $http.post('/api/amazon/move-file', params)
-              .then(function() {
-                  vm.carousel.homepageDisplay = vm.homepageDisplay;
-                  $http.post('/api/custom-carousel', vm.carousel)
-                    .then(function(response) {
-                        $state.go('customCarousel.all');
-                    }, function(error) {
-                        dialog.serverError();
-                    });
-              }, function(error) {
-                  dialog.serverError();
-              });
+            if(vm.carousel.displayImage) {
+                var params = {
+                    key: vm.displayImage.hashname,
+                    dir: Amazon.assetBucket + '/videoCollection'
+                };
+                $http.post('/api/amazon/move-file', params)
+                  .then(function() {
+                      vm.carousel.homepageDisplay = vm.homepageDisplay;
+                      $http.post('/api/custom-carousel', vm.carousel)
+                        .then(function(response) {
+                            $state.go('customCarousel.all');
+                        }, function(error) {
+                            dialog.serverError();
+                        });
+                  }, function(error) {
+                      dialog.serverError();
+                  });
+            } else {
+                vm.carousel.homepageDisplay = vm.homepageDisplay;
+                $http.post('/api/custom-carousel', vm.carousel)
+                  .then(function(response) {
+                      $state.go('customCarousel.all');
+                  }, function(error) {
+                      dialog.serverError();
+                  });
+            }
+
         }
 
 
