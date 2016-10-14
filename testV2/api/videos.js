@@ -25,18 +25,17 @@ describe('Video API tests', function () {
          * Attempt to get data for a known user
          * prerequisites: userId exists, valid token
          */
-        describe('Search using a valid video', function () {
-            it('should return the json for a video', function (done) {
-                chai.request(server)
-                    .get('/api/videos/')
-                    .end(function (err, res) {
-                        var data = res.body;
-                        expect(res).to.have.status(200);
-                        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
-
-                        done();
-                    });
-            });
-        });
+        // describe('Search using a valid video', function () {
+        //     it('should return the json for a video', function (done) {
+        //         chai.request(server)
+        //             .get('/api/videos/')
+        //             .end(function (err, res) {
+        //                 var data = res.body;
+        //                 expect(res).to.have.status(200);
+        //                 expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
+        //                 done();
+        //             });
+        //     });
+        // });
     });
 });
