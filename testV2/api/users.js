@@ -4,6 +4,9 @@ var host        = 'http://' + (process.env.HOST || 'localhost');
 var server      = host + ":" + (process.env.PORT || 80);
 var expect      = require('chai').expect;
 
+var user        = require('../../app/persistence/crud/users1-0-0');
+
+
 var token;
 var userId = '56a7473c2defb658467acb6e';
 var userNameDisplay = 'bryceb';
@@ -94,6 +97,30 @@ describe('Users API tests', function () {
                     });
             });
         });
+        describe('Request a password reset', function() {
+            it('should return an OK', function(done) {
+                this.timeout(10000);
+                setTimeout(done, 10000);
+                chai.request(server)
+                    .post('/api/users/password-reset')
+                    .send({ email: 'bryce.blilie@airvuz.com' })
+                    .end(function (err, res) {
+                        expect(res).to.have.status(200);
+                        done();
+                    });
+            });
+        });
+        // describe('Change password after reset request', function() {
+        //     it('should return ', function(done) {
+        //         chai.request(server)
+        //             .put('/api/users/password-reset')
+        //             .send({ email: 'bryce.blilie@airvuz.com' })
+        //             .end(function (err, res) {
+        //                 expect(res).to.have.status(200);
+        //                 done();
+        //             });
+        //     });
+        // });
     });
 
     describe('Users tests apiVer set to default (1.0.0)', function() {
