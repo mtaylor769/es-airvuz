@@ -1,32 +1,18 @@
 'use strict';
-
 try {
-  var log4js                  = require('log4js');
-  var logger                  = log4js.getLogger('app.persistence.crud.videoCollection');
-  var database                = require('../database/database');
-  var VideoCollectionModel    = database.getModelByDotPath({modelDotPath: 'app.persistence.model.videoCollection'});
-  var ErrorMessage            = require('../../utils/errorMessage');
-  var generateShortId         = require('../../utils/generateShortId');
-  var urlFriendlyString       = require('../../utils/urlFriendlyString');
-
-
+  var log4js                = require('log4js');
+  var logger                = log4js.getLogger('app.persistence.crud.videoCollection');
   var _                     = require('lodash');
-  var moment                = require('moment');
-  var Promise               = require('bluebird');
 
+  var database              = require('../database/database');
+  var VideoCollectionModel  = database.getModelByDotPath({modelDotPath: 'app.persistence.model.videoCollection'});
+  var moment                = require('moment');
 
 } catch (exception) {
   logger.error(' import error:' + exception);
 }
 
 function VideoCollection() {}
-
-function updateDateWithMoment(videos) {
-    return videos.map(function (video) {
-        video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
-        return video;
-    });
-}
 
 function getVideo(type) {
   return VideoCollectionModel.findOne({name: type, user: null}).lean().exec()
@@ -135,49 +121,6 @@ function removeFromCollectionVideos(userId, name, video) {
   return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: video}},{safe: true}).exec();
 }
 
-function getCurrentCustomCarousel() {
-    return VideoCollectionModel.find({startDate: {$lte: Date.now()}, endDate: {$gte: Date.now()}})
-        .populate('videos')
-        .sort({startDate: -1})
-        .lean()
-        .exec()
-        .then(function(carousels) {
-            if(carousels.length === 0) {
-                return null;
-            } else {
-                return VideoCollectionModel.populate(carousels[0], {path: 'videos.userId', model: 'Users', select: 'userNameDisplay userNameUrl'}).then(function(carousel) {
-                    carousel.videos.forEach(function(video) {
-                        video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
-                    });
-                    return carousel;
-                });
-
-            }
-        })
-        .catch(function(error) {
-           return error;
-        });
-}
-
-function findByUrlId(id) {
-    return VideoCollectionModel.findOne({urlId: id})
-        .populate('videos')
-        .sort({startDate: -1})
-        .lean()
-        .exec()
-        .then(function(category) {
-           return VideoCollectionModel.populate(category, {path: 'videos.userId', model: 'Users', select: 'userNameDisplay userNameUrl'})               .then(function(category) {
-                   category.videos.forEach(function(video) {
-                       video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
-                   });
-                    return category;
-                });
-        })
-        .catch(function(error) {
-           return error;
-        });
-}
-
 function findByUserId(id) {
   return VideoCollectionModel.find({user: id}).exec();
 }
@@ -186,164 +129,14 @@ function remove(id) {
   return VideoCollectionModel.findByIdAndRemove(id).exec();
 }
 
-
-function customCarouselValidation(params) {
-  var sourceLocation            = 'persistence.crud.videoCollection.createCustomCarousel';
-  var errorMessage              = new ErrorMessage();
-  var info                      = {};
-  info.data                     = {};
-  info.data.name                = params.name || null;
-  info.data.description         = params.description || null;
-  info.data.listDescription     = params.listDescription || null;
-  info.data.displayImage        = params.displayImage || null;
-  info.data.displayVideo        = params.displayVideo || null;
-  info.data.videos              = params.videos || null;
-  if(params.homepageDisplay === false) {
-    info.data.startDate = undefined;
-    info.data.endDate = undefined;
-  } else {
-    info.data.startDate           = new Date(params.startDate) || null;
-    info.data.endDate             = new Date(params.endDate) || null;
-  }
-
-  if(info.data.name === null) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "Title"
-      },
-      sourceError			: "#name",
-      displayMsg			: "This field is required",
-      errorMessage		: "Title is null",
-      sourceLocation	: sourceLocation
-    })
-  }
-  if(info.data.description === null) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "Description"
-      },
-      sourceError			: "#description",
-      displayMsg			: "This field is required",
-      errorMessage		: "Description is null",
-      sourceLocation	: sourceLocation
-    })
-  }
-  if(info.data.listDescription === null) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "List Description"
-      },
-      sourceError			: "#listDescription",
-      displayMsg			: "This field is required",
-      errorMessage		: "List Description is null",
-      sourceLocation	: sourceLocation
-    })
-  }
-  if(info.data.displayImage === null && info.data.displayVideo === null) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "Banner Selection"
-      },
-      sourceError			: "#bannerSelection",
-      displayMsg			: "This field is required",
-      errorMessage		: "Banner Selection is null",
-      sourceLocation	: sourceLocation
-    })
-  }
-  if(info.data.startDate !== null && info.data.endDate !== null && info.data.startDate >= info.data.endDate) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "Date Range"
-      },
-      sourceError			: "#endDate",
-      displayMsg			: "End Date cannot come before or run concurrent with Start Date",
-      errorMessage		: "Invalid Date Range",
-      sourceLocation	: sourceLocation
-    })
-  }
-  // if(info.data.videos.length < 10) {
-  //   info.errors = errorMessage.getErrorMessage({
-  //     statusCode			: "400",
-  //     errorId					: "VALIDA1000",
-  //     templateParams	: {
-  //       name : "Videos"
-  //     },
-  //     sourceError			: "#videos",
-  //     displayMsg			: "Requires a minimum of 10 videos",
-  //     errorMessage		: "Video minimum not met",
-  //     sourceLocation	: sourceLocation
-  //   })
-  // }
-
-  return Promise.resolve(info);
-}
-
-function createCustomCarouselParams(info) {
-  var carouselId      = generateShortId.generate();
-  var scrubbedUrl     = urlFriendlyString.createUrl(info.name.trim());
-  info.nameUrl   = scrubbedUrl + '?id=' + carouselId;
-  info.urlId     = carouselId;
-  return Promise.resolve(info);
-}
-
-function createCustomCarousel(params) {
-  return customCarouselValidation(params).then(function(info) {
-      if(info.errors) {
-        throw info.errors;
-      } else {
-        return createCustomCarouselParams(info.data)
-          .then(function(info) {
-            var videoCollection = new VideoCollectionModel(info);
-            return videoCollection.save();
-          });
-    }
-  });
-
-}
-
-function getAllCustom() {
-  return VideoCollectionModel.find({urlId: {$ne: null}}).sort({createdDate: -1}).exec()
-}
-
-function getCustomById(id) {
-  return VideoCollectionModel.findById(id).populate('videos').exec();
-}
-
-function updateCustom(carouselId, carouselUpdates) {
-  return customCarouselValidation(carouselUpdates)
-    .then(function(updates) {
-      return VideoCollectionModel.findByIdAndUpdate(carouselId, updates.data).exec();
-    });
-}
-
-function removeCustom(carouselId) {
-  return VideoCollectionModel.findByIdAndRemove(carouselId).exec();
-}
-
-VideoCollection.prototype.getFeaturedVideos           = getFeaturedVideos;
-VideoCollection.prototype.getStaffPickVideos          = getStaffPickVideos;
-VideoCollection.prototype.getVideo                    = getVideo;
-VideoCollection.prototype.updateVideos                = updateVideos;
-VideoCollection.prototype.getCollectionVideos         = getCollectionVideos;
-VideoCollection.prototype.createVideoCollection       = createVideoCollection;
-VideoCollection.prototype.updateCollection            = updateCollection;
-VideoCollection.prototype.findByUserId                = findByUserId;
-VideoCollection.prototype.delete                      = remove;
-VideoCollection.prototype.createCustomCarousel        = createCustomCarousel;
-VideoCollection.prototype.getCurrentCustomCarousel    = getCurrentCustomCarousel;
-VideoCollection.prototype.findByUrlId                 = findByUrlId;
-VideoCollection.prototype.getAllCustom                = getAllCustom;
-VideoCollection.prototype.getCustomById               = getCustomById;
-VideoCollection.prototype.updateCustom                = updateCustom;
+VideoCollection.prototype.getFeaturedVideos     = getFeaturedVideos;
+VideoCollection.prototype.getStaffPickVideos    = getStaffPickVideos;
+VideoCollection.prototype.getVideo              = getVideo;
+VideoCollection.prototype.updateVideos          = updateVideos;
+VideoCollection.prototype.getCollectionVideos   = getCollectionVideos;
+VideoCollection.prototype.createVideoCollection = createVideoCollection;
+VideoCollection.prototype.updateCollection      = updateCollection;
+VideoCollection.prototype.findByUserId          = findByUserId;
+VideoCollection.prototype.delete                = remove;
 
 module.exports = new VideoCollection();
