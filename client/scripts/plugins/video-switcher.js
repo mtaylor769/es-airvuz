@@ -2,10 +2,9 @@
  * jQuery plugin - Video switcher
  */
 
-(function ($,window, document) {
+(function ($, window) {
     var PubSub          = require('pubsub-js');
     var amazonConfig    = require('../config/amazon.config.client');
-    var browser         = require('../services/browser');
     var moment          = require('moment');
 
     var pluginName = 'switchVideo',
@@ -60,7 +59,8 @@
         // update the video src
         _updateVideoSrc: function (data) {
             var _this = this,
-                video = $('body').find('video')[0];
+                $body = $('body'),
+                video = $body.find('video')[0];
 
             PubSub.publish('video-switched', data);
 
@@ -68,7 +68,7 @@
             video.src = amazonConfig.OUTPUT_URL + data.videoPath;
             video.poster = amazonConfig.OUTPUT_URL + data.thumbnailPath;
 
-            $('body').animate({scrollTop: 0}, 'fast');
+            $body.animate({scrollTop: 0}, 'fast');
 
             _this._updateUrl(data);
 
@@ -101,4 +101,4 @@
         });
     }
 
-}(jQuery, window, document));
+}(jQuery, window));

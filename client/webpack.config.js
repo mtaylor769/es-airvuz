@@ -69,7 +69,17 @@ config.entry.vendor = [
   //'lodash'
   'jquery',
   'bootstrap',
-  'pubsub-js'
+  'bootstrap-tagsinput',
+  'bootstrap-switch',
+  'pubsub-js',
+  'dustjs-helpers',
+  'jwt-decode',
+  'slick-carousel',
+  'moment',
+  'video.js',
+  'evaporate',
+  'videojs-resolution-switcher',
+  'md5'
 ];
 
 // Entry points for webpack to compile code.
