@@ -23,7 +23,7 @@ try {
 	var keywords			= require('./keywords');
 	var videoCuration 		= require('./videoCuration');
 	var aclRoles 			= require('./aclRoles');
-  var customCarousel    = require('./customCarousel');
+    var customCarousel      = require('./customCarousel');
 // var forms               	= require('./forms');
 	var image               = require('./image');
 	var cron                = require('./cron');
