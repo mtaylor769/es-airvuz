@@ -93,6 +93,9 @@ IndexModel.prototype.getData = function (params) {
 				params.data.emailConfirm = isEmailConfirm;
 			}
 			return params;
+		})
+		.catch(function(error) {
+			params.next();
 		});
 
 };

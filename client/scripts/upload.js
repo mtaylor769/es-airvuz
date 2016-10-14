@@ -156,6 +156,7 @@ function onUploadError(params) {
   isUploadingVideo = false;
 
   var eventName = 'video-upload-failed:' + uploadSource;
+  var eventNameAny = 'video-upload-failed:any';
   var eventParams = {
     codeSource: 'upload',
     eventName: eventName,
@@ -176,9 +177,7 @@ function onUploadError(params) {
     }
   }
 
-  AVEventTracker(eventParams);
-  ga('send', 'event', 'upload', eventName, 'upload');
-  fbq('trackCustom', eventName);
+  _trackUploadEvent(eventName, eventNameAny, eventParams);
 
   dialogs.error("There's an error uploading. Please contact support");
 }
@@ -288,14 +287,15 @@ function bindEvents() {
       renderStep(3, video);
 
       var eventName = 'video-upload-published:' + uploadSource;
-      AVEventTracker({
-          codeSource: 'upload',
-          eventName: eventName,
-          eventType: 'uploadClick',
-          videoId: video._id
-      });
-      ga('send', 'event', 'upload', eventName, 'upload');
-      fbq('trackCustom', eventName);
+      var eventNameAny = 'video-upload-published:any';
+      var eventParams = {
+        codeSource: 'upload',
+        eventName: eventName,
+        eventType: 'uploadClick',
+        videoId: video._id
+      };
+
+      _trackUploadEvent(eventName, eventNameAny, eventParams);
 
     }).fail(function(response) {
       if (response.status === 400) {
@@ -330,14 +330,14 @@ function bindEvents() {
     }).done(function (hashName) {
       isUploadingVideo = true;
       currentUploadFile.hashName = hashName;
-
-      AVEventTracker({
+      var eventName = 'video-upload-started:' + uploadSource;
+      var eventNameAny = 'video-upload-started:any';
+      var eventParams = {
         codeSource: 'upload',
-        eventName: 'video-upload-started:local',
+        eventName: eventName,
         eventType: 'uploadFileDrop'
-      });
-      ga('send', 'event', 'upload', 'video-upload-started:local', 'upload');
-      fbq('trackCustom', 'video-upload-started:local');
+      };
+      _trackUploadEvent(eventName, eventNameAny, eventParams);
 
       renderStep(2);
 
@@ -527,13 +527,13 @@ function bindEvents() {
     uploadSource = _isVimeo(url) ? 'vimeo' : 'youtube';
 
     var eventName = 'video-upload-started:' + uploadSource;
-    AVEventTracker({
+    var eventNameAny = 'video-upload-started:any';
+    var eventParams = {
       codeSource: 'upload',
       eventName: eventName,
       eventType: 'uploadClick'
-    });
-    ga('send', 'event', 'upload', eventName, 'upload');
-    fbq('trackCustom', eventName);
+    };
+    _trackUploadEvent(eventName, eventNameAny, eventParams);
 
     isUploadingVideo = true;
 
@@ -587,6 +587,22 @@ function bindEvents() {
 
   $(window).on('beforeunload', onBeforeUnload);
 
+}
+
+/**
+ * track upload event
+ * @param eventName
+ * @param eventNameAny
+ * @param eventParams
+ * @private
+ */
+function _trackUploadEvent(eventName, eventNameAny, eventParams) {
+  AVEventTracker(eventParams);
+  ga('send', 'event', 'upload', eventName, 'upload');
+  ga('send', 'event', 'upload', eventNameAny, 'upload');
+  eventParams.eventName = eventNameAny;
+  AVEventTracker(eventParams);
+  fbq('trackCustom', eventName);
 }
 
 function initialize() {

@@ -202,7 +202,6 @@ ViewManager.prototype.getView = function(params) {
 				logger.error("getView: forced failure");
 				reject(error);
 			})
-
 	});
 };
 

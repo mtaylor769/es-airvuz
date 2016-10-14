@@ -40,12 +40,17 @@ util.inherits(VideoPlayerModel, BaseModel);
 
 VideoPlayerModel.prototype.getData = function(params) {
 	var videoId         = params.request.params.id;
+	logger.error(videoId);
 	var dataObject      = {};
 	var checkObject 		= {};
 
 	// TODO: run parallel
 	return videoCrud1_0_0.getById(videoId)
 		.then(function(video) {
+			logger.error(video);
+			if(!video) {
+				throw {error: 404};
+			}
 			if(video.title.length > 45) {
 				video.title = video.title.substring(0, 45) + '...';
 			}
@@ -127,6 +132,9 @@ VideoPlayerModel.prototype.getData = function(params) {
 
 			params.data.s3Bucket 								= amazonConfig.OUTPUT_BUCKET;
 			return params;
+	})
+	.catch(function(error) {
+		params.next();
 	});
 
 };

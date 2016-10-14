@@ -62,6 +62,9 @@ CustomCategoryModel.prototype.getData = function(params) {
           } else {
             return params;
           }
+        })
+        .catch(function(error) {
+          params.next();
         });
 
 };

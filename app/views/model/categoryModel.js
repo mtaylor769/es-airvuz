@@ -119,6 +119,9 @@ CategoryModel.prototype.getData = function(params) {
 				params.data.showLoadMore = false;
 			}
 			return params;
+		})
+		.catch(function(error) {
+			params.next();
 		});
 
 };
