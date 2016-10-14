@@ -155,7 +155,7 @@ function generateHash(password) {
 }
 
 function purgeUserNameDisplay(userNameDisplay) {
-	return userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*]/g, '');
+	return userNameDisplay.replace(/[\s#!$=@;'+,<>:"%^&()\/\\|\?\*{}\.~`\[\]]/g, '');
 }
 
 usersSchema.statics.purgeUserNameDisplay 	= purgeUserNameDisplay;
