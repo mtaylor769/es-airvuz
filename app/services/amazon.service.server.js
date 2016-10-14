@@ -6,17 +6,16 @@ var Promise       = require('bluebird'),
     image         = require('./image.service.server'),
     fs            = require('fs'),
     request       = require('request'),
-    awsOptions    = {
-      accessKeyId: amazonConfig.ACCESS_KEY,
-      secretAccessKey: amazonConfig.SECRET_KEY
-    },
     log4js            = require('log4js'),
     logger            = log4js.getLogger('app.routes.api.amazon');
 
+// AWS Global Configuration
 AWS.config.region = 'us-west-2';
 // can only use bluebird promise if the function return AWS.Request
 AWS.config.setPromisesDependency(require('bluebird'));
 AWS.config.httpOptions = {timeout: 7200000}; // 2 hr
+AWS.config.accessKeyId = amazonConfig.ACCESS_KEY;
+AWS.config.secretAccessKey = amazonConfig.SECRET_KEY;
 
 function createPreset(key) {
   var URL_PATH      = amazonConfig.INPUT_URL;
@@ -78,7 +77,7 @@ function createPreset(key) {
 
       // if interval is 0 then change it to 1
       presetParams.Thumbnails.Interval = (interval === 0 ? 1 : interval).toString();
-      var transcoder = new AWS.ElasticTranscoder(awsOptions);
+      var transcoder = new AWS.ElasticTranscoder();
 
       return transcoder.createPreset(presetParams).promise()
         .then(function (data) {
@@ -115,7 +114,7 @@ function getVideoDuration(key) {
 }
 
 function startTranscode(preset, key) {
-  var transcoder = new AWS.ElasticTranscoder(awsOptions);
+  var transcoder = new AWS.ElasticTranscoder();
   var keyWithoutMp4 = key.replace('.mp4', '');
   var params = {
     Input: { Key: key },
@@ -153,7 +152,7 @@ function startTranscode(preset, key) {
 }
 
 function deletePreset(preset) {
-  var transcoder = new AWS.ElasticTranscoder(awsOptions);
+  var transcoder = new AWS.ElasticTranscoder();
 
   return transcoder.deletePreset({Id: preset}).promise();
 }
@@ -164,7 +163,7 @@ function deletePreset(preset) {
  * @returns {Promise} - {videoUrl, thumbnails}
  */
 function listVideoObjects(key) {
-  var bucket = new AWS.S3(awsOptions);
+  var bucket = new AWS.S3();
 
   // ListObjectsV2 is the revised List Objects API and is recommend for new application development.
   return bucket.listObjectsV2({
@@ -203,7 +202,7 @@ function listVideoObjects(key) {
  * @param path
  */
 function hasImageSize(path) {
-  var bucket = new AWS.S3(awsOptions),
+  var bucket = new AWS.S3(),
       key = 'users/profile-pictures/resize/' + path;
 
   return new Promise(function (resolve, reject) {
@@ -228,7 +227,7 @@ function hasImageSize(path) {
 }
 
 function hasImage(bucket, key) {
-  var s3 = new AWS.S3(awsOptions);
+  var s3 = new AWS.S3();
 
   return new Promise(function (resolve, reject) {
     s3.headObject({
@@ -281,7 +280,7 @@ function reSizeThumbnailImage(params) {
  * @returns {Promise}
  */
 function confirmSubscription(token, topicArn) {
-  var sns = new AWS.SNS(awsOptions);
+  var sns = new AWS.SNS();
   var params = {
     Token: token,
     TopicArn: topicArn
@@ -312,7 +311,7 @@ function signAuth(toSign) {
  */
 function moveFile(params) {
   logger.debug(params);
-  var bucket = new AWS.S3(awsOptions);
+  var bucket = new AWS.S3();
 
   return bucket.copyObject({
     Bucket: params.dir,
@@ -331,7 +330,7 @@ function moveFile(params) {
  */
 function uploadToS3(bucket, key, body) {
   return new Promise(function (resolve, reject) {
-    var storage = new AWS.S3(awsOptions);
+    var storage = new AWS.S3();
     var params = { Bucket: bucket, Key: key, Body: body, ACL: 'public-read' };
 
     storage.upload(params, function (err) {
