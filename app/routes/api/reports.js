@@ -305,6 +305,7 @@ Reports.prototype.top100Views = function(req, res) {
            res.json(videos);
         })
         .catch(function(error) {
+          logger.error(error);
             res.sendStatus(500);
         });
 
