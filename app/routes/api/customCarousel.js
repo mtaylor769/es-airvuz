@@ -1,7 +1,7 @@
 try {
     var log4js				    = require('log4js');
     var logger				    = log4js.getLogger('app.routes.api.customCarousel');
-    var VideoCollectionCrud     = require('../../persistence/crud/videoCollection');
+    var videoCollCrud1_0_0     = require('../../persistence/crud/videoCollection1-0-0');
     var generateShortId         = require('../../utils/generateShortId');
     var urlFriendlyString       = require('../../utils/urlFriendlyString');
 
@@ -24,7 +24,7 @@ function CustomCarousel() {
 
 function createCustomCarousel(req, res) {
     var params = req.body;
-    return VideoCollectionCrud.createCustomCarousel(params)
+    return videoCollCrud1_0_0.createCustomCarousel(params)
         .then(function(newCollection) {
             logger.debug(newCollection);
             res.sendStatus(200);
@@ -39,7 +39,7 @@ function createCustomCarousel(req, res) {
 }
 
 function getAllCustomCarousels(req, res) {
-    return VideoCollectionCrud.getAllCustom()
+    return videoCollCrud1_0_0.getAllCustom()
       .then(function(carousels) {
         res.json(carousels);
       })
@@ -50,7 +50,7 @@ function getAllCustomCarousels(req, res) {
 
 function getById(req, res) {
     var carouselId = req.params.id;
-    return VideoCollectionCrud.getCustomById(carouselId)
+    return videoCollCrud1_0_0.getCustomById(carouselId)
       .then(function(carousel) {
           res.json(carousel);
       })
@@ -62,7 +62,7 @@ function getById(req, res) {
 function updateCarousel(req, res) {
     var carouselId = req.params.id;
     var carouselUpdates = req.body;
-    return VideoCollectionCrud.updateCustom(carouselId, carouselUpdates)
+    return videoCollCrud1_0_0.updateCustom(carouselId, carouselUpdates)
       .then(function(data) {
           res.json(data);
       })
@@ -73,7 +73,7 @@ function updateCarousel(req, res) {
 
 function removeCarousel(req, res) {
     var carouselId = req.params.id;
-    return VideoCollectionCrud.delete(carouselId)
+    return videoCollCrud1_0_0.delete(carouselId)
       .then(function(carousel) {
           res.json(carousel);
       })

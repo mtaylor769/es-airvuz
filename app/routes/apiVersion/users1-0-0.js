@@ -6,6 +6,8 @@ try {
     var log4js                      = require('log4js');
     var Promise                     = require('bluebird');
     var logger                      = log4js.getLogger(namespace);
+    var viewManager                 = require('../../views/manager/viewManager');
+    var confirmationView            = require('../../views/view/confirmationView');
 
     var aclUtil                     = require('../../utils/acl');
     var usersCrud1_0_0              = require('../../persistence/crud/users1-0-0');
@@ -17,6 +19,9 @@ try {
     var notificationCrud1_0_0       = require('../../persistence/crud/notifications1-0-0');
     var videoLikeCrud1_0_0          = require('../../persistence/crud/videoLike1-0-0');
     var videoViewCrud               = require('../../persistence/crud/videoViews');
+
+    // add dust template
+    viewManager.addView({view: confirmationView});
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -422,7 +427,7 @@ function statusChange(req, res) {
     aclUtil.isAllowed(req.user._id, 'user', 'update-status')
         .then(function (isAllow) {
             if (!isAllow) {
-                throw 'you are not allow to update user status';
+                throw 'you are not allowed to update a users status';
             }
             return usersCrud1_0_0
                 .updateStatus(req.params.id, req.body.status);
@@ -472,7 +477,7 @@ function contactUs(req, res) {
             // TODO: make domain dynamic
             var mailOptions = {
                 from:'noreply <noreply@airvuz.com>',
-                to: 'support@airvuz.com',
+                to: 'bryce.blilie@airvuz.com',
                 subject: 'Contact Us',
                 html: '<div>'+
                 '<h4>Someone has sent a request for information</h4>'+
