@@ -17,6 +17,7 @@ describe('Users', function () {
     }
 
     var validUserId = '';
+//    validUserId = '580506fe3e3c0c32a75a5dd2';
 
     var validSocialId = '901463806634921';
 
@@ -24,7 +25,10 @@ describe('Users', function () {
 
     var validStartDate = new Date('1 Jan 2015');    // arbitrary early date (before founding of Air Vuz)
     var validEndDate = new Date();
-    var validCode = '8484983a3dac7543f687';
+
+    //var validCode = '8484983a3dac7543f687';     // TODO:  get dynamically
+    var validResetPasswordCode = '';
+
 
     var validStatus = 'email-confirm';  // TODO: enumerate valid options
 
@@ -48,11 +52,12 @@ describe('Users', function () {
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     validUserId = retVal._id;
+                    logger.info (retVal);
                     done();
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -68,7 +73,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -84,7 +89,7 @@ describe('Users', function () {
                 })
                 .catch(function (retVal) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -100,7 +105,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -116,7 +121,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
 
@@ -133,7 +138,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -149,7 +154,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -187,7 +192,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -203,7 +208,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -219,7 +224,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -236,7 +241,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -253,14 +258,14 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
 
 
     // newUserList()
-    describe('', function () {
+    describe('newUserList', function () {
         it('should return an array of objects', function (done) {
             Users.newUserList(validStartDate, validEndDate)
                 .then(function (retVal) {
@@ -269,7 +274,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -285,7 +290,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -301,7 +306,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -317,7 +322,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -332,11 +337,12 @@ describe('Users', function () {
             Users.resetPasswordRequest(validUser.emailAddress)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
+                    logger.info (retVal);
                     done();
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -345,14 +351,14 @@ describe('Users', function () {
     // resetPasswordChange()
     describe('resetPasswordChange()', function () {
         it('should return ...', function (done) {
-            Users.resetPasswordChange(validCode, validUser.password)
+            Users.resetPasswordChange(validResetPasswordCode, validUser.password)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -368,7 +374,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -384,7 +390,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -400,7 +406,7 @@ describe('Users', function () {
                 })
                 .catch(function (err) {
                     logger.error(err);
-                    done();
+                    throw new Error(err);
                 });
         });
     });
@@ -412,14 +418,18 @@ describe('Users', function () {
             Users.remove(validUserId)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
+                    logger.info (retVal);
                     done();
                 })
-                .catch(function (err) {
-                    logger.error(err);
-                    done();
-                });
+            .catch(function (err) {
+                logger.error(err);
+                throw new Error(err);
+            });
         });
     });
+
+
+
 
 
 });
