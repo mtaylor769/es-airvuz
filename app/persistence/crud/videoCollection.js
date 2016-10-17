@@ -232,19 +232,6 @@ function customCarouselValidation(params) {
       sourceLocation	: sourceLocation
     })
   }
-  if(info.data.listDescription === null) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "List Description"
-      },
-      sourceError			: "#listDescription",
-      displayMsg			: "This field is required",
-      errorMessage		: "List Description is null",
-      sourceLocation	: sourceLocation
-    })
-  }
   if(info.data.displayImage === null && info.data.displayVideo === null) {
     info.errors = errorMessage.getErrorMessage({
       statusCode			: "400",
