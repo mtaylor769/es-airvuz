@@ -40,7 +40,7 @@ describe('Users', function () {
 
 
     // create()
-    describe('create', function () {
+    describe('create()', function () {
         it('should return an object after submitting valid parameters', function (done) {
             Users.create(validUser)
                 .then(function (retVal) {
@@ -58,7 +58,7 @@ describe('Users', function () {
 
 
     // validateCreateUser()
-    describe('validateCreateUser', function () {
+    describe('validateCreateUser()', function () {
         it('should return ...', function (done) {
             Users.validateCreateUser(validParams)
                 .then(function (retVal) {
@@ -74,7 +74,7 @@ describe('Users', function () {
 
 
     // validateUpdateUser()
-    describe('validateUpdateUser', function () {
+    describe('validateUpdateUser()', function () {
         it('should return an object', function (done) {
             Users.validateUpdateUser(validUserId, validParams)
                 .then(function (retVal) {
@@ -90,7 +90,7 @@ describe('Users', function () {
 
 
     // getAllUsers()
-    describe('getAllUsers', function () {
+    describe('getAllUsers()', function () {
         it('should return an object', function (done) {
             Users.getAllUsers()
                 .then(function (retVal) {
@@ -106,9 +106,8 @@ describe('Users', function () {
     });
 
 
-
     // getUserById()
-    describe('getUserById', function () {
+    describe('getUserById()', function () {
         it('should return an object for a valid User ID', function (done) {
             Users.getUserById(validUserId)
                 .then(function (retVal) {
@@ -125,7 +124,7 @@ describe('Users', function () {
 
 
     // getUserBySocialId()
-    describe('getUserBySocialId', function () {
+    describe('getUserBySocialId()', function () {
         it('should return an object', function (done) {
             Users.getUserBySocialId(validSocialId)
                 .then(function (retVal) {
@@ -141,7 +140,7 @@ describe('Users', function () {
 
 
     // getUserByEmail()
-    describe('getUserByEmail', function () {
+    describe('getUserByEmail()', function () {
         it('should return an object', function (done) {
             Users.getUserByEmail(validUser.emailAddress)
                 .then(function (retVal) {
@@ -210,7 +209,7 @@ describe('Users', function () {
 
 
     // addAclRole()
-    describe('addAclRole', function () {
+    describe('addAclRole()', function () {
         it('should return an User object after adding a User role', function (done) {
             Users.addAclRole(validUserId, 'user-employee')
                 .then(function (retVal) {
@@ -241,7 +240,7 @@ describe('Users', function () {
 
 
     // totalUsersByEndDate
-    describe('', function () {
+    describe('totalUsersByEndDate()', function () {
         it('should return a number greater than or equal to zero', function (done) {
             Users.totalUsersByEndDate(validEndDate)
                 .then(function (retVal) {
@@ -275,7 +274,7 @@ describe('Users', function () {
 
 
     // newUserList()
-    describe('newUserList', function () {
+    describe('newUserList()', function () {
         it('should return an array of objects', function (done) {
             Users.newUserList(validStartDate, validEndDate)
                 .then(function (retVal) {
@@ -291,7 +290,7 @@ describe('Users', function () {
 
 
     // getByUserName()
-    describe('getByUserName', function () {
+    describe('getByUserName()', function () {
         it('should return a User object', function (done) {
             Users.getByUserName(validUser.userNameDisplay)
                 .then(function (retVal) {
@@ -310,7 +309,7 @@ describe('Users', function () {
 
 
     // resetPasswordRequest()
-    describe('resetPasswordRequest', function () {
+    describe('resetPasswordRequest()', function () {
         it('should return an object', function (done) {
             Users.resetPasswordRequest(validUser.emailAddress)
                 .then(function (retVal) {
@@ -409,7 +408,7 @@ describe('Users', function () {
 
 
     // remove()
-    describe('remove valid User', function () {
+    describe('remove valid User()', function () {
         it('should return an object after removing (deleting) a valid User fron the database', function (done) {
            Users.remove(validUserId)
 //            Users.remove('580540b8dea021345aac26e1')
