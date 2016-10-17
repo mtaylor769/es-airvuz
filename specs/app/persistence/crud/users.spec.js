@@ -19,16 +19,12 @@ describe('Users', function () {
     var validUserId = '';
 
     var validSocialId = '901463806634921';
-    var validUserEmail = 'karl@karljones.com';      // TODO refactor out
-    var validRole = 'user-general';
 
-    var validUserNameUrl = 'KarlG.Jones';           // TODO refactor out
-    var validUserNameDisplay = 'Karl G. Jones';     // TODO refactor out
+    var validRole = 'user-general';
 
     var validStartDate = new Date('1 Jan 2015');    // arbitrary early date (before founding of Air Vuz)
     var validEndDate = new Date();
     var validCode = '8484983a3dac7543f687';
-    var validPassword = 'MyPassword';
 
     var validStatus = 'email-confirm';  // TODO: enumerate valid options
 
@@ -52,7 +48,6 @@ describe('Users', function () {
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     validUserId = retVal._id;
-                    logger.info('Created user: ' + validUserId);
                     done();
                 })
                 .catch(function (err) {
@@ -147,7 +142,7 @@ describe('Users', function () {
     // getUserByEmail()
     describe('getUserByEmail', function () {
         it('should return an object', function (done) {
-            Users.getUserByEmail(validUserEmail)
+            Users.getUserByEmail(validUser.emailAddress)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
@@ -219,7 +214,6 @@ describe('Users', function () {
         it('should return ... TODO, what?', function (done) {
             Users.getEmployeeContributor()
                 .then(function (retVal) {
-                    logger.info(retVal);
                     expect(user).to.be.an('object');
                     done();
                 })
@@ -238,7 +232,6 @@ describe('Users', function () {
                 .then(function (retVal) {
                     expect(retVal).to.be.a('number');
                     expect(retVal).to.be.at.least(0);
-                    logger.info(retVal);
                     done();
                 })
                 .catch(function (err) {
@@ -271,7 +264,6 @@ describe('Users', function () {
         it('should return an array of objects', function (done) {
             Users.newUserList(validStartDate, validEndDate)
                 .then(function (retVal) {
-                    logger.info(retVal);
                     expect(retVal).to.be.instanceof(Array);
                     done();
                 })
@@ -286,7 +278,7 @@ describe('Users', function () {
     // getByUserName()
     describe('should return a User object', function () {
         it('', function (done) {
-            Users.getByUserName(validUserNameDisplay)
+            Users.getByUserName(validUser.userNameDisplay)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
@@ -337,7 +329,7 @@ describe('Users', function () {
     // resetPasswordRequest()
     describe('resetPasswordRequest', function () {
         it('should return ...', function (done) {
-            Users.resetPasswordRequest(validUserEmail)
+            Users.resetPasswordRequest(validUser.emailAddress)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
@@ -353,7 +345,7 @@ describe('Users', function () {
     // resetPasswordChange()
     describe('resetPasswordChange()', function () {
         it('should return ...', function (done) {
-            Users.resetPasswordChange(validCode, validPassword)
+            Users.resetPasswordChange(validCode, validUser.password)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
@@ -369,7 +361,7 @@ describe('Users', function () {
     // getUserByUserNameUrl()
     describe('getUserByUserNameUrl()', function () {
         it('should return User object', function (done) {
-            Users.getUserByUserNameUrl(validUserNameUrl)
+            Users.getUserByUserNameUrl(validUser.userNameUrl)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
