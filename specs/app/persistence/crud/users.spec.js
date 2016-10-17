@@ -18,11 +18,8 @@ describe('Users', function () {
     }
 
     var validUserId = '';
-    // validUserId = '58053507d2033e34063fd10d';
 
     var validSocialId = '901463806634921';
-
-    var validRole = 'user-general';  // 'user-employee', 'user-contributor'
 
     var validStartDate = new Date('1 Jan 2015');    // arbitrary early date (before founding of Air Vuz)
     var validEndDate = new Date();
@@ -160,22 +157,21 @@ describe('Users', function () {
 
 
     // update()     // TODO finish
-    /*
-     describe('update()'
-     function () {
-     is('should return an object', function (done) {
-     Users.update(validUserId, validParams)
-     .then(function (retVal) {
-     expect(retVal).to.be.an('object');
-     done();
-     })
-     .catch(function (retVal) {
-     logger.error(err);
-     done();
+     describe('update()',
+         function () {
+         it('should return an object', function (done) {
+             Users.update(validUserId, { userNameDisplay: "Karl Updated Jones" })
+                 .then(function (retVal) {
+                     expect(retVal).to.be.an('object');
+                     done();
+                 })
+                 .catch(function (retVal) {
+                     logger.error(err);
+                     throw new Error(err);
+                 });
+         });
      });
-     });
-     });
-     */
+
 
     // emailConfirm()
     describe('emailConfirm()', function () {
@@ -295,8 +291,8 @@ describe('Users', function () {
 
 
     // getByUserName()
-    describe('should return a User object', function () {
-        it('', function (done) {
+    describe('getByUserName', function () {
+        it('should return a User object', function (done) {
             Users.getByUserName(validUser.userNameDisplay)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
@@ -415,7 +411,8 @@ describe('Users', function () {
     // remove()
     describe('remove valid User', function () {
         it('should return an object after removing (deleting) a valid User fron the database', function (done) {
-            Users.remove(validUserId)
+           Users.remove(validUserId)
+//            Users.remove('580540b8dea021345aac26e1')
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     logger.info (retVal);
@@ -427,9 +424,6 @@ describe('Users', function () {
             });
         });
     });
-
-
-
 
 
 });
