@@ -4,11 +4,6 @@ try {
     var log4js      = require('log4js');
     var logger      = log4js.getLogger(namespace);
     var users1_0_0 = require('../apiVersion/users1-0-0');
-    var viewManager = require('../../views/manager/viewManager');
-    var confirmationView = require('../../views/view/confirmationView');
-
-    // add dust template
-    viewManager.addView({view: confirmationView});
 
     if(global.NODE_ENV === "production") {
         logger.setLevel("INFO");
