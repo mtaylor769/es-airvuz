@@ -21,7 +21,7 @@ describe('Users', function () {
         lastName: "Thao"
     }
 
-    var validUserId = '57ffb7163bfa3d2e454423b7';  // KarlG.Jones
+    var validUserId = '5804d42d0a128131195038cf';  // KarlG.Jones
 
     var validSocialId = '901463806634921';
     var validUserEmail = 'karl@karljones.com';
@@ -37,37 +37,68 @@ describe('Users', function () {
 
     var validStatus = 'email-confirm';  // TODO: enumerate valid options
 
-/*
-    // KGJ TODO
-    describe ('validateCreateUser', function () {
-        it ('')
-    });
- */
+    var validParams = {};
 
-    /*
-     // KGJ TODO
-     describe ('validateUpdateUser', function () {
-     it ('')
-     });
-     */
+    validParams.coverPicture = '';
+    validParams.emailAddress = '';
+    validParams.userNameDisplay = '';
+    validParams.aclRoles = 'user-general';
+    validParams.profilePicture = '';
+    validParams.isSubscribeAirVuzNews = '';
+    validParams.social = '';
+    validParams.password = '';
+    validParams.confirmPassword = '';
 
-    //
 
-    describe ('create', function (){
-        it ('should return an object after submitting valid parameters', function(done){
-            Users.create(validUser)
-                .then (function (retVal){
-                    expect (retVal).to.be.an('object');
+    // validateCreateUser()
+    describe('validateCreateUser', function () {
+        it('should return ...', function (done) {
+            Users.validateCreateUser(validParams)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
                     done();
                 })
                 .catch(function (err) {
-                    logger.error (err);
+                    logger.error(err);
                     done();
                 });
         });
     });
 
 
+    // validateUpdateUser()
+    describe('validateUpdateUser', function () {
+        it('should return an object', function (done) {
+            Users.validateUpdateUser(validUserId, validParams)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (retVal) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // create()
+    describe('create', function () {
+        it('should return an object after submitting valid parameters', function (done) {
+            Users.create(validUser)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // getAllUsers()
     describe('getAllUsers', function () {
         it('should return an object', function (done) {
             Users.getAllUsers()
@@ -76,115 +107,145 @@ describe('Users', function () {
                     done();
                 })
                 .catch(function (err) {
-                    logger.error (err);
-                    done();
-                });
-        });
-    });
-
-
-    describe('getUserById', function () {
-        it('should return an object for a valid User ID', function (done) {
-            Users.getUserById( validUserId )
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error (err);
-                    done();
-                });
-        });
-
-    });
-
-
-    describe('getUserBySocialId', function () {
-        it('should return an object', function (done) {
-            Users.getUserBySocialId( validSocialId )
-                .then(function (retVal) {
-                    //expect(retVal).to.be.an('object');   // TODO: EXPECT ARRAY
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error (err);
-                    done();
-                });
-        });
-    });
-
-
-    describe('getUserByEmail', function () {
-        it('should return an object', function (done) {
-            Users.getUserByEmail( validUserEmail )
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error (err);
-                    done();
-                });
-        });
-    });
-
-
-    describe ('remove valid User', function () {
-        it ('should return an object after removing (deleting) a valid User fron the database', function (done){
-            Users.remove(validUserId)
-                .then (function (retVal){
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch (function (err){
-                    logger.error (err);
-                    done();
-                });
-        });
-    });
-
-
-    describe ('emailConfirm()', function (){
-        it ('should return a string (either "true" or "false") after confirming email', function (done){
-            Users.emailConfirm(validUserId)
-                .then ( function (retVal){
-                    // retVal should be string, either "true" or "false"
-                    // TODO: make emailConfirm() return Boolean instead of String
-                    expect(retVal).to.satisfy(function(retVal) { return retVal === 'true' || retVal === 'false'; });
-                    done();
-                })
-                .catch (function(err){
                     logger.error(err);
                     done();
                 });
         });
     });
 
-    describe ('findById()', function (){
-        it ('should return a User model object', function(done){
-            Users.findById(validUserId)
-                .then ( function (retVal){
-                    expect (retVal).to.be.an('object');
+
+    // getUserById()
+    describe('getUserById', function () {
+        it('should return an object for a valid User ID', function (done) {
+            Users.getUserById(validUserId)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch ( function (err){
-                    logger.error (err);
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+
+    });
+
+
+    // getUserBySocialId()
+    describe('getUserBySocialId', function () {
+        it('should return an object', function (done) {
+            Users.getUserBySocialId(validSocialId)
+                .then(function (retVal) {
+                    //expect(retVal).to.be.an('object');   // TODO: EXPECT ARRAY
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
                     done();
                 });
         });
     });
 
 
-    describe ('getEmployeeContributor()', function (){
-        it ('should return ... TODO, what?', function (done){
-            Users.getEmployeeContributor()
-                .then ( function (retVal){
-                    logger.info (retVal);
-                    expect (user).to.be.an('object');
+    // getUserByEmail()
+    describe('getUserByEmail', function () {
+        it('should return an object', function (done) {
+            Users.getUserByEmail(validUserEmail)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch(function (err){
-                    logger.error (err);
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // remove()
+    describe('remove valid User', function () {
+        it('should return an object after removing (deleting) a valid User fron the database', function (done) {
+            Users.remove(validUserId)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // update()
+    describe('update()'
+    function () {
+        is('should return an object', function (done) {
+            Users.update(validUserId, validParams)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (retVal) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    }
+
+    )
+    ;
+
+
+    // emailConfirm()
+    describe('emailConfirm()', function () {
+        it('should return a string (either "true" or "false") after confirming email', function (done) {
+            Users.emailConfirm(validUserId)
+                .then(function (retVal) {
+                    // retVal should be string, either "true" or "false"
+                    // TODO: make emailConfirm() return Boolean instead of String
+                    expect(retVal).to.satisfy(function (retVal) {
+                        return retVal === 'true' || retVal === 'false';
+                    });
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // findById()
+    describe('findById()', function () {
+        it('should return a User model object', function (done) {
+            Users.findById(validUserId)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // getEmployeeContributor()
+    describe('getEmployeeContributor()', function () {
+        it('should return ... TODO, what?', function (done) {
+            Users.getEmployeeContributor()
+                .then(function (retVal) {
+                    logger.info(retVal);
+                    expect(user).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
                     done();
                 });
         });
@@ -192,128 +253,133 @@ describe('Users', function () {
 
 
     // totalUsersByEndDate
-    describe ('', function(){
-        it('should return a number greater than or equal to zero', function(done){
-            Users.totalUsersByEndDate( validEndDate )
-                .then(function(retVal){
-                    expect (retVal).to.be.a('number');
-                    expect (retVal).to.be.at.least (0);
-                    logger.info (retVal);
+    describe('', function () {
+        it('should return a number greater than or equal to zero', function (done) {
+            Users.totalUsersByEndDate(validEndDate)
+                .then(function (retVal) {
+                    expect(retVal).to.be.a('number');
+                    expect(retVal).to.be.at.least(0);
+                    logger.info(retVal);
                     done();
                 })
-                .catch(function(err){
+                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
         });
     });
+
 
     //newUsersBetweenDates
-    describe ('newUsersBetweenDates()', function (){
-        it ('should return a number greater than or equal to zero', function(done){
+    describe('newUsersBetweenDates()', function () {
+        it('should return a number greater than or equal to zero', function (done) {
             Users.newUsersBetweenDates(validStartDate, validEndDate)
-                .then(function (retVal){
-                    expect (retVal).to.be.a('number');
-                    expect (retVal).to.be.at.least (0);
+                .then(function (retVal) {
+                    expect(retVal).to.be.a('number');
+                    expect(retVal).to.be.at.least(0);
                     done();
                 })
-                .catch(function(err){
+                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
         });
     });
 
-    // newUserList
-    describe ('', function (){
-        it('should return an array of objects', function(done){
+
+    // newUserList()
+    describe('', function () {
+        it('should return an array of objects', function (done) {
             Users.newUserList(validStartDate, validEndDate)
-                .then( function (retVal){
-                    logger.info (retVal);
-                    expect (retVal).to.be.instanceof(Array);
+                .then(function (retVal) {
+                    logger.info(retVal);
+                    expect(retVal).to.be.instanceof(Array);
                     done();
                 })
-                .catch( function (err){
+                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
         });
     });
 
-    // getByUserName
-    describe ('should return a User object', function (){
-        it('', function(done){
+
+    // getByUserName()
+    describe('should return a User object', function () {
+        it('', function (done) {
             Users.getByUserName(validUserNameDisplay)
-                .then ( function (retVal){
-                    expect (retVal).to.be.an('object');
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch( function(err){
-                    logger.error (err);
+                .catch(function (err) {
+                    logger.error(err);
                     done();
                 });
         });
     });
 
-    // addAclRole
-    describe ('addAclRole', function (){
-        it ('should return ... after adding a role', function (done){
+
+    // addAclRole()
+    describe('addAclRole', function () {
+        it('should return ... after adding a role', function (done) {
             Users.addAclRole(validUserId, validRole)
-                .then ( function (retVal){
-                    expect (retVal).to.be.an('object');
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch (function(err){
-                    logger.error (err);
+                .catch(function (err) {
+                    logger.error(err);
                     done();
                 });
         });
     });
 
 
-    // removeAclRole
-    describe ('removeAclRole()', function (){
-        it('should return ...', function(done){
+    // removeAclRole()
+    describe('removeAclRole()', function () {
+        it('should return ...', function (done) {
             Users.removeAclRole(validUserId, validRole)
-                .then ( function (retVal){
-                    expect (retVal).to.be.an('object');
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch(function (err){
-                    logger.error (err);
+                .catch(function (err) {
+                    logger.error(err);
                     done();
                 });
         });
     });
 
 
-    //updateRoles:  source code TODO
+    //updateRoles() =  source code TODO
 
 
-
-    //resetPasswordRequest
-    describe ('resetPasswordRequest', function(){
-        it('should return ...', function (done){
+    // resetPasswordRequest()
+    describe('resetPasswordRequest', function () {
+        it('should return ...', function (done) {
             Users.resetPasswordRequest(validUserEmail)
-                .then ( function (retVal){
+                .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch(function (err){
+                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
         });
     });
 
-    describe ('resetPasswordChange()', function (){
-        it('should return ...', function (done){
+
+    // resetPasswordChange()
+    describe('resetPasswordChange()', function () {
+        it('should return ...', function (done) {
             Users.resetPasswordChange(validCode, validPassword)
-                .then ( function (retVal){
+                .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch( function (err){
+                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
@@ -321,8 +387,8 @@ describe('Users', function () {
     });
 
 
-    //getUserByUserNameUrl
-    describe ('getUserByUserNameUrl()', function () {
+    // getUserByUserNameUrl()
+    describe('getUserByUserNameUrl()', function () {
         it('should return User object', function (done) {
             Users.getUserByUserNameUrl(validUserNameUrl)
                 .then(function (retVal) {
@@ -337,15 +403,31 @@ describe('Users', function () {
     });
 
 
-    // updateStatus
-    describe('updateStatus()', function (){
-        it('should return ...', function (done){
+    // updateStatus()
+    describe('updateStatus()', function () {
+        it('should return a User model object', function (done) {
             Users.updateStatus(validUserId, validStatus)
-                .then ( function (retVal){
+                .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
                 })
-                .catch ( function (err){
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // verifyStatus()
+    describe('verifyStatus()', function () {
+        it('should return a user model object', function (done) {
+            Users.verifyStatus(validUserId)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
