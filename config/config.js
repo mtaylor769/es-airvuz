@@ -54,7 +54,7 @@ module.exports = {
 				og : {
 					description			: "Discover, watch, and share aerial videos captured by cameras from drones, quadcopters, multi-copters, and radio controlled airplanes and helicopters.",
 					image						: "http://airvuz.com/assets/img/airvuz_banner.png",
-					title						: "AirVūz – Drone Video Community",
+					title						: "AirVūz – United By Drone",
 					type						: "website",
 					updated_time		: "1458850844571",
 					url							: "https://www.airvuz.com"
@@ -102,7 +102,7 @@ module.exports = {
         og : {
           description			: "Discover, watch, and share aerial videos captured by cameras from drones, quadcopters, multi-copters, and radio controlled airplanes and helicopters.",
           image						: "http://airvuz.com/assets/img/airvuz_banner.png",
-          title						: "AirVūz – World’s Best Drone Videos",
+          title						: "AirVūz – United By Drone",
           type						: "website",
           updated_time		: "1458850844571",
           url							: "https://www.airvuz.com"
@@ -147,10 +147,10 @@ module.exports = {
 				og : {
 					description			: "Discover, watch, and share breathtaking drone videos from some of the most scenic locations on earth as well as videos from the world’s top drone racing and FPV freestyle pilots.",
 					image						: "http://airvuz.com/assets/img/airvuz_banner.png",
-					title						: "AirVūz – World’s Best Drone Videos",
+					title						: "AirVūz – United By Drone",
 					type						: "website",
 					updated_time		: "1458850844571",
-					url							: "https://www.airvuz.com"
+					url							: "https://beta.airvuz.com"
 				}
 			}
 			
