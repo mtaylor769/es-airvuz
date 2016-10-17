@@ -98,14 +98,17 @@ describe('Users API tests', function () {
             });
         });
         describe('Request a password reset', function() {
-            it('should return an OK', function(done) {
-                this.timeout(10000);
-                setTimeout(done, 10000);
+            it('should return an OK within 3 seconds', function(done) {
+                this.timeout(3000);
+                setTimeout(done, 3000);
                 chai.request(server)
                     .post('/api/users/password-reset')
                     .send({ email: 'bryce.blilie@airvuz.com' })
                     .end(function (err, res) {
+                        var data = res.text;
                         expect(res).to.have.status(200);
+                        expect(res).to.have.header('content-type', 'text/plain; charset=utf-8');
+                        expect(data).to.equal("OK");
                         done();
                     });
             });
@@ -121,6 +124,88 @@ describe('Users API tests', function () {
         //             });
         //     });
         // });
+        describe('Requst a hire me', function() {
+            it('should return OK and send an email', function(done) {
+                chai.request(server)
+                    .post('/api/users/hireme')
+                    .set('Content-Type', 'application/json')
+                    .set('Authorization', token)
+                    .send({ name: 'bryce',
+                        email : 'bryce.blilie@airvuz.com',
+                        message : 'message text',
+                        profileUser : { emailAddress : 'bblilie@hotmail.com' }
+                    })
+                    .end(function (err, res) {
+                        var data = res.text;
+                        expect(res).to.have.status(200);
+                        expect(res).to.have.header('content-type', 'text/plain; charset=utf-8');
+                        expect(data).to.equal("OK");
+                        done();
+                    });
+            });
+        });
+        describe('Follow a user', function() {
+            it('should return JSON indicating followed if user was not previously followed and unfollowed if vice-versa', function(done) {
+                chai.request(server)
+                    .post('/api/follow')
+                    .set('Authorization', token)
+                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+                    .send({ data: '{"follow":{"userId":"57e96ae61ef82b3db949d2a8", "followingUserId":"56d9fb7ae79075c65132d1c4"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"57e96ae61ef82b3db949d2a8","notifiedUserId":"56d9fb7ae79075c65132d1c4"}}'})
+                    .end(function (err, res) {
+                        var data = res.body;
+                        expect(res).to.have.status(200);
+                        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
+                        expect(data).to.have.property('status');
+                        done();
+                    });
+            });
+        });
+        describe('Send a contact us message', function() {
+            it('should return plain text "ok"', function (done) {
+                chai.request(server)
+                    .post('/api/users/contact-us')
+                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+                    .send({contactUsMessage: 'testing api', contactingUser: '57e96ae61ef82b3db949d2a8'})
+                    .end(function (err, res) {
+                        var data = res.text;
+                        expect(res).to.have.status(200);
+                        expect(res).to.have.header('content-type', 'text/plain; charset=utf-8');
+                        expect(data).to.equal('OK');
+                        done();
+                    });
+            });
+        });
+        describe('Update "ramputty8@gmail.com" status to suspended', function() {
+            it('should return 401 unauthorized', function(done) {
+                chai.request(server)
+                    .put('/api/users/56a7473c2defb658467acb6e/status')
+                    .set('Authorization', token)
+                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+                    .send({ status: 'suspended'})
+                    .end(function(err, res) {
+                        var data = res.text;
+                        expect(res).to.have.status(401);
+                        expect(res).to.have.header('content-type', 'text/html; charset=utf-8');
+                        expect(data).to.equal('you are not allowed to update a users status');
+                        done();
+                    });
+            });
+        });
+        describe('Request a confirmation email be re-sent', function() {
+            it('should re-send a users confirmation email',function(done) {
+                chai.request(server)
+                    .post('/api/users/resend-confirmation')
+                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+                    .send({ emailAddress: 'bryce.blilie@airvuz.com'})
+                    .end(function(err, res) {
+                        var data = res.text;
+                        expect(res).to.have.status(200);
+                        expect(res).to.have.header('content-type', 'text/plain; charset=utf-8');
+                        expect(data).to.equal('OK');
+                        done();
+                    })
+            })
+        })
     });
 
     describe('Users tests apiVer set to default (1.0.0)', function() {
