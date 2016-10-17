@@ -11,24 +11,19 @@ describe('Users', function () {
         confirmPassword: "testABC124",
         userName: "karljones",
         userNameDisplay: "Karl G. Jones",
+        userNameUrl: "KarlG.Jones",
         firstName: "Karl",
         lastName: "Jones"
     }
 
-    var invalidUser = {
-        sessionId: "sessionId",
-        firstName: "Zeke",
-        lastName: "Thao"
-    }
-
-    var validUserId = '5804d42d0a128131195038cf';  // KarlG.Jones
+    var validUserId = '';
 
     var validSocialId = '901463806634921';
-    var validUserEmail = 'karl@karljones.com';
+    var validUserEmail = 'karl@karljones.com';      // TODO refactor out
     var validRole = 'user-general';
 
-    var validUserNameUrl = 'KarlG.Jones';
-    var validUserNameDisplay = 'Karl G. Jones';
+    var validUserNameUrl = 'KarlG.Jones';           // TODO refactor out
+    var validUserNameDisplay = 'Karl G. Jones';     // TODO refactor out
 
     var validStartDate = new Date('1 Jan 2015');    // arbitrary early date (before founding of Air Vuz)
     var validEndDate = new Date();
@@ -48,6 +43,24 @@ describe('Users', function () {
     validParams.social = '';
     validParams.password = '';
     validParams.confirmPassword = '';
+
+
+    // create()
+    describe('create', function () {
+        it('should return an object after submitting valid parameters', function (done) {
+            Users.create(validUser)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    validUserId = retVal._id;
+                    logger.info ('Created user: ' + validUserId);
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
 
 
     // validateCreateUser()
@@ -75,22 +88,6 @@ describe('Users', function () {
                     done();
                 })
                 .catch(function (retVal) {
-                    logger.error(err);
-                    done();
-                });
-        });
-    });
-
-
-    // create()
-    describe('create', function () {
-        it('should return an object after submitting valid parameters', function (done) {
-            Users.create(validUser)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
                     logger.error(err);
                     done();
                 });
@@ -163,23 +160,10 @@ describe('Users', function () {
     });
 
 
-    // remove()
-    describe('remove valid User', function () {
-        it('should return an object after removing (deleting) a valid User fron the database', function (done) {
-            Users.remove(validUserId)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error(err);
-                    done();
-                });
-        });
-    });
 
 
-    // update()
+    // update()     // TODO finish
+/*
     describe('update()'
     function () {
         is('should return an object', function (done) {
@@ -193,11 +177,8 @@ describe('Users', function () {
                     done();
                 });
         });
-    }
-
-    )
-    ;
-
+    });
+*/
 
     // emailConfirm()
     describe('emailConfirm()', function () {
@@ -423,6 +404,22 @@ describe('Users', function () {
     describe('verifyStatus()', function () {
         it('should return a user model object', function (done) {
             Users.verifyStatus(validUserId)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    done();
+                });
+        });
+    });
+
+
+    // remove()
+    describe('remove valid User', function () {
+        it('should return an object after removing (deleting) a valid User fron the database', function (done) {
+            Users.remove(validUserId)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
