@@ -13,22 +13,19 @@ describe('Users', function () {
         userNameDisplay: "Karl G. Jones",
         userNameUrl: "KarlG.Jones",
         firstName: "Karl",
-        lastName: "Jones"
+        lastName: "Jones",
+        resetPasswordCode: ""
     }
 
     var validUserId = '';
-//    validUserId = '580506fe3e3c0c32a75a5dd2';
+    // validUserId = '58053507d2033e34063fd10d';
 
     var validSocialId = '901463806634921';
 
-    var validRole = 'user-general';
+    var validRole = 'user-general';  // 'user-employee', 'user-contributor'
 
     var validStartDate = new Date('1 Jan 2015');    // arbitrary early date (before founding of Air Vuz)
     var validEndDate = new Date();
-
-    //var validCode = '8484983a3dac7543f687';     // TODO:  get dynamically
-    var validResetPasswordCode = '';
-
 
     var validStatus = 'email-confirm';  // TODO: enumerate valid options
 
@@ -108,7 +105,9 @@ describe('Users', function () {
                     throw new Error(err);
                 });
         });
+
     });
+
 
 
     // getUserById()
@@ -214,12 +213,27 @@ describe('Users', function () {
     });
 
 
+    // addAclRole()
+    describe('addAclRole', function () {
+        it('should return an User object after adding a User role', function (done) {
+            Users.addAclRole(validUserId, 'user-employee')
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    throw new Error(err);
+                });
+        });
+    });
+
     // getEmployeeContributor()
     describe('getEmployeeContributor()', function () {
-        it('should return ... TODO, what?', function (done) {
+        it('should return an array of objects for a user having either the Employee role or the Contributor role', function (done) {
             Users.getEmployeeContributor()
                 .then(function (retVal) {
-                    expect(user).to.be.an('object');
+                    expect(retVal).to.be.instanceof(Array);
                     done();
                 })
                 .catch(function (err) {
@@ -296,48 +310,17 @@ describe('Users', function () {
     });
 
 
-    // addAclRole()
-    describe('addAclRole', function () {
-        it('should return ... after adding a role', function (done) {
-            Users.addAclRole(validUserId, validRole)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error(err);
-                    throw new Error(err);
-                });
-        });
-    });
-
-
-    // removeAclRole()
-    describe('removeAclRole()', function () {
-        it('should return ...', function (done) {
-            Users.removeAclRole(validUserId, validRole)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error(err);
-                    throw new Error(err);
-                });
-        });
-    });
-
-
     //updateRoles() =  source code TODO
 
 
     // resetPasswordRequest()
     describe('resetPasswordRequest', function () {
-        it('should return ...', function (done) {
+        it('should return an object', function (done) {
             Users.resetPasswordRequest(validUser.emailAddress)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     logger.info (retVal);
+                    validUser.resetPasswordCode = retVal.resetPasswordCode;
                     done();
                 })
                 .catch(function (err) {
@@ -350,8 +333,8 @@ describe('Users', function () {
 
     // resetPasswordChange()
     describe('resetPasswordChange()', function () {
-        it('should return ...', function (done) {
-            Users.resetPasswordChange(validResetPasswordCode, validUser.password)
+        it('should return an object', function (done) {
+            Users.resetPasswordChange(validUser.resetPasswordCode, validUser.password)
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
@@ -400,6 +383,23 @@ describe('Users', function () {
     describe('verifyStatus()', function () {
         it('should return a user model object', function (done) {
             Users.verifyStatus(validUserId)
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    done();
+                })
+                .catch(function (err) {
+                    logger.error(err);
+                    throw new Error(err);
+                });
+        });
+    });
+
+
+
+    // removeAclRole()
+    describe('removeAclRole()', function () {
+        it('should return an object after removing a role from a user', function (done) {
+            Users.removeAclRole(validUserId, 'user-employee')
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     done();
