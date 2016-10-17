@@ -52,7 +52,7 @@ describe('Users', function () {
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     validUserId = retVal._id;
-                    logger.info ('Created user: ' + validUserId);
+                    logger.info('Created user: ' + validUserId);
                     done();
                 })
                 .catch(function (err) {
@@ -160,25 +160,23 @@ describe('Users', function () {
     });
 
 
-
-
     // update()     // TODO finish
-/*
-    describe('update()'
-    function () {
-        is('should return an object', function (done) {
-            Users.update(validUserId, validParams)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (retVal) {
-                    logger.error(err);
-                    done();
-                });
-        });
-    });
-*/
+    /*
+     describe('update()'
+     function () {
+     is('should return an object', function (done) {
+     Users.update(validUserId, validParams)
+     .then(function (retVal) {
+     expect(retVal).to.be.an('object');
+     done();
+     })
+     .catch(function (retVal) {
+     logger.error(err);
+     done();
+     });
+     });
+     });
+     */
 
     // emailConfirm()
     describe('emailConfirm()', function () {
