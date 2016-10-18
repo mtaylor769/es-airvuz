@@ -38,12 +38,12 @@ describe('Video API tests', function () {
         /**
          * Test all video API routes using no apiVer query param
          */
-        var apiVer = '';
+        var apiVer = 'apiVer=';
 
         describe('Post a new video', function () {
             it('should return json with the posted fields as properties', function (done) {
                 chai.request(server)
-                    .post('/api/videos' + apiVer)
+                    .post('/api/videos/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded')
                     .send({
@@ -79,7 +79,7 @@ describe('Video API tests', function () {
         describe('Update the video just posted', function () {
             it('should return json with the updated values', function (done) {
                 chai.request(server)
-                    .put('/api/videos/' + videoId)
+                    .put('/api/videos/' + videoId + '/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded')
                     .send({
@@ -115,7 +115,7 @@ describe('Video API tests', function () {
         describe('Search for a video using userId', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=' + userNameDisplay + apiVer)
+                    .get('/api/videos/search/?q=' + userNameDisplay + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -128,7 +128,7 @@ describe('Video API tests', function () {
         describe('Search for a video using description', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=description' + apiVer)
+                    .get('/api/videos/search/?q=description' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -141,7 +141,7 @@ describe('Video API tests', function () {
         describe('Search for a video using title', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=title' + apiVer)
+                    .get('/api/videos/search/?q=title' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -167,7 +167,7 @@ describe('Video API tests', function () {
         describe('Search for a video using keyword', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=keyword' + apiVer)
+                    .get('/api/videos/search/?q=keyword' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -180,7 +180,7 @@ describe('Video API tests', function () {
         describe('Like a video', function () {
             it('should return a status of liked', function (done) {
                 chai.request(server)
-                    .post('/api/video-like' + apiVer)
+                    .post('/api/video-like/?' + apiVer)
                     .send({data: '{"like":{"videoId":"57e8366a7b09480e3378289f","userId":"57e96a719ddd2b02f44f3367","videoOwnerId":"56703d3b8440cc2451a06d8b"},"notification":{"notificationType":"LIKE","notifiedUserId":"56703d3b8440cc2451a06d8b","notificationMessage":"liked your video","videoId":"57e8366a7b09480e3378289f","actionUserId":"57e96a719ddd2b02f44f3367"}}'})
                     .end(function (err, res) {
                         var data = res.body;
@@ -194,7 +194,7 @@ describe('Video API tests', function () {
         describe('Report a video', function () {
             it('should return an "OK"', function (done) {
                 chai.request(server)
-                    .post('/api/videos/report-video' + apiVer)
+                    .post('/api/videos/report-video/?' + apiVer)
                     .send({
                         videoId: videoId,
                         userId: userId,
@@ -212,7 +212,7 @@ describe('Video API tests', function () {
         describe('Video info check', function () {
             it('should return json with boolean for like and follow', function (done) {
                 chai.request(server)
-                    .get('/api/videos/videoinfocheck/?videoid=' + videoId + '/&userid=' + userId + '/&' + apiVer)
+                    .get('/api/videos/videoinfocheck/?videoid=' + videoId + '&userid=' + userId + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -226,7 +226,7 @@ describe('Video API tests', function () {
         describe('Get videos for a user', function () {
             it('should return json with a data array', function (done) {
                 chai.request(server)
-                    .get('/api/videos/user/' + userId + apiVer)
+                    .get('/api/videos/user/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -241,7 +241,7 @@ describe('Video API tests', function () {
         describe('Get showcase videos for a user', function () {
             it('should return json with a data array', function (done) {
                 chai.request(server)
-                    .get('/api/videos/showcase/' + userId + apiVer)
+                    .get('/api/videos/showcase/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -253,7 +253,7 @@ describe('Video API tests', function () {
         describe('Get top six videos for a user', function () {
             it('should return json with a data array', function (done) {
                 chai.request(server)
-                    .get('/api/videos/topsixvideos/' + userId + apiVer)
+                    .get('/api/videos/topsixvideos/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -265,7 +265,7 @@ describe('Video API tests', function () {
         describe('Get video count for a user', function () {
             it('should return json ', function (done) {
                 chai.request(server)
-                    .get('/api/videos/videocount/' + userId + apiVer)
+                    .get('/api/videos/videocount/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -277,7 +277,7 @@ describe('Video API tests', function () {
         describe('Get follow count for a user', function () {
             it('should return json with a numeric value', function (done) {
                 chai.request(server)
-                    .get('/api/videos/followcount/' + userId + apiVer)
+                    .get('/api/videos/followcount/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -289,7 +289,7 @@ describe('Video API tests', function () {
         describe('Get next videos', function () {
             it('should return json with an array of videos', function (done) {
                 chai.request(server)
-                    .get('/api/videos/nextvideos/?video=' + videoId + apiVer)
+                    .get('/api/videos/nextvideos/?video=' + videoId + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -324,7 +324,7 @@ describe('Video API tests', function () {
         describe('Get a video by valid videoId', function () {
             it('should return json with userId, title, and description properties', function (done) {
                 chai.request(server)
-                    .get('/api/videos/' + videoId)
+                    .get('/api/videos/' + videoId + '/?' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -339,7 +339,7 @@ describe('Video API tests', function () {
         describe('Get video owner profile', function () {
             it('should return json data containing user email, profile pic, usernameurl, first and last name', function(done) {
                 chai.request(server)
-                    .get('/api/video/videoownerprofile/' + userId + apiVer)
+                    .get('/api/video/videoownerprofile/' + userId + '/?' + apiVer)
                     .end(function(err, res) {
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
                         expect(res.body._id).to.equal(userId);
@@ -359,7 +359,7 @@ describe('Video API tests', function () {
         describe('Get comments for a video', function() {
             it('should return json data', function(done) {
                 chai.request(server)
-                    .get('/api/videos/videocomments/' + videoId + apiVer)
+                    .get('/api/videos/videocomments/' + videoId + '/?' + apiVer)
                     .end(function(err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -410,7 +410,7 @@ describe('Video API tests', function () {
         describe('Delete the posted video', function () {
             it('should delete the video and return plain text "ok"', function (done) {
                 chai.request(server)
-                    .delete('/api/videos/' + videoId + apiVer)
+                    .delete('/api/videos/' + videoId + '/?' + apiVer)
                     .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
@@ -502,7 +502,7 @@ describe('Video API tests', function () {
         describe('Search for a video using userId', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=' + userNameDisplay + '/&' + apiVer)
+                    .get('/api/videos/search/?q=' + userNameDisplay + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -515,7 +515,7 @@ describe('Video API tests', function () {
         describe('Search for a video using description', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=description' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=description' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -528,7 +528,7 @@ describe('Video API tests', function () {
         describe('Search for a video using title', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=title' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=title' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -541,7 +541,7 @@ describe('Video API tests', function () {
         describe('Search for a video using video location', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=location' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=location' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -554,7 +554,7 @@ describe('Video API tests', function () {
         describe('Search for a video using keyword', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=keyword' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=keyword' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -599,7 +599,7 @@ describe('Video API tests', function () {
         describe('Video info check', function () {
             it('should return json with boolean for like and follow', function (done) {
                 chai.request(server)
-                    .get('/api/videos/videoinfocheck/?videoid=' + videoId + '/&userid=' + userId + '/&' + apiVer)
+                    .get('/api/videos/videoinfocheck/?videoid=' + videoId + '/&userid=' + userId + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -676,7 +676,7 @@ describe('Video API tests', function () {
         describe('Get next videos', function () {
             it('should return json with an array of videos', function (done) {
                 chai.request(server)
-                    .get('/api/videos/nextvideos/?video=' + videoId + '/&' + apiVer)
+                    .get('/api/videos/nextvideos/?video=' + videoId + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -867,7 +867,7 @@ describe('Video API tests', function () {
         describe('Search for a video using userId', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=' + userNameDisplay + '/&' + apiVer)
+                    .get('/api/videos/search/?q=' + userNameDisplay + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version")
@@ -878,7 +878,7 @@ describe('Video API tests', function () {
         describe('Search for a video using description', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=description' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=description' + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version")
@@ -889,7 +889,7 @@ describe('Video API tests', function () {
         describe('Search for a video using title', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=title' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=title' + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version")
@@ -900,7 +900,7 @@ describe('Video API tests', function () {
         describe('Search for a video using video location', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=location' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=location' + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version")
@@ -911,7 +911,7 @@ describe('Video API tests', function () {
         describe('Search for a video using keyword', function () {
             it('should return JSON list of videos the user has uploaded', function (done) {
                 chai.request(server)
-                    .get('/api/videos/search/?q=keyword' + '/&' + apiVer)
+                    .get('/api/videos/search/?q=keyword' + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version")
@@ -950,7 +950,7 @@ describe('Video API tests', function () {
         describe('Video info check', function () {
             it('should return json with boolean for like and follow', function (done) {
                 chai.request(server)
-                    .get('/api/videos/videoinfocheck/?' + videoId + '/&' +apiVer)
+                    .get('/api/videos/videoinfocheck/?' + videoId + '&' +apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version")
