@@ -315,8 +315,6 @@ describe('Users API tests', function () {
         // });
         describe('Requst a hire me', function () {
             it('should return OK and send an email', function (done) {
-
-
                 chai.request(server)
                     .post('/api/users/hireme/?' + apiVer)
                     .set('Content-Type', 'application/json')
