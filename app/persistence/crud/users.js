@@ -454,7 +454,6 @@ users.prototype.getUserById = function (userId) {
 					}
 					return user;
 				})
-
 				.then(function(user) {
 					resolve(user)
 				})
