@@ -71,8 +71,8 @@ function getByVideoId(videoId, startDate, endDate) {
       .then(function(result) {
         var eventsObj = {};
         var composedAggregate = _.keyBy(result, '_id');
-        var videoDuration = composedAggregate['video-exited-on-playing'].videoDuration;
-        var endedTotalTime = (videoDuration * composedAggregate['video-ended'].total) || 0;
+        var videoDuration = composedAggregate['video-exited-on-playing'] ? composedAggregate['video-exited-on-playing'].videoDuration : 0;
+        var endedTotalTime = composedAggregate['video-ended'] ? (videoDuration * composedAggregate['video-ended'].total) : 0;
 
         eventsObj.videoEnded = composedAggregate['video-ended'] ? composedAggregate['video-ended'].total : 0;
         eventsObj.videoStart = composedAggregate['video-play-start'] ? composedAggregate['video-play-start'].total : 0;
@@ -82,7 +82,7 @@ function getByVideoId(videoId, startDate, endDate) {
         eventsObj.viewPercentage = {};
         eventsObj.viewPercentage.timeWatched = ((eventsObj.videoExit.timeWatched ? eventsObj.videoExit.timeWatched : 0) + endedTotalTime);
         eventsObj.viewPercentage.totalTime = ((eventsObj.videoExit.totalTime ? eventsObj.videoExit.totalTime : 0) + endedTotalTime);
-        eventsObj.viewPercentage.percentage = (eventsObj.viewPercentage.timeWatched / eventsObj.viewPercentage.totalTime) || 0;
+        eventsObj.viewPercentage.percentage = (eventsObj.viewPercentage.timeWatched / eventsObj.viewPercentage.totalTime);
         return eventsObj;
       });
 }
