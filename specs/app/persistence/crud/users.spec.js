@@ -24,19 +24,12 @@ describe('Users', function () {
     var validStartDate = new Date('1 Jan 2015');    // arbitrary early date (before founding of Air Vuz)
     var validEndDate = new Date();
 
+    var retValUser;
+
+    var x = 'test';
+
     var validStatus = 'email-confirm';  // TODO: enumerate valid options
 
-    var validParams = {};
-
-    validParams.coverPicture = '';
-    validParams.emailAddress = '';
-    validParams.userNameDisplay = '';
-    validParams.aclRoles = 'user-general';
-    validParams.profilePicture = '';
-    validParams.isSubscribeAirVuzNews = '';
-    validParams.social = '';
-    validParams.password = '';
-    validParams.confirmPassword = '';
 
 
     // create()
@@ -46,7 +39,7 @@ describe('Users', function () {
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     validUserId = retVal._id;
-                    logger.info (retVal);
+                    retValUser = retVal;
                     done();
                 })
                 .catch(function (err) {
@@ -58,35 +51,19 @@ describe('Users', function () {
 
 
     // validateCreateUser()
-    describe('validateCreateUser()', function () {
-        it('should return ...', function (done) {
-            Users.validateCreateUser(validParams)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (err) {
-                    logger.error(err);
-                    throw new Error(err);
-                });
-        });
-    });
-
-
-    // validateUpdateUser()
-    describe('validateUpdateUser()', function () {
-        it('should return an object', function (done) {
-            Users.validateUpdateUser(validUserId, validParams)
-                .then(function (retVal) {
-                    expect(retVal).to.be.an('object');
-                    done();
-                })
-                .catch(function (retVal) {
-                    logger.error(err);
-                    throw new Error(err);
-                });
-        });
-    });
+     describe('validateCreateUser()', function () {
+         it('should return an object', function (done) {
+             Users.validateCreateUser(retValUser)
+                 .then(function (retVal) {
+                     expect(retVal).to.be.an('object');
+                     done();
+                     })
+                 .catch(function (err) {
+                     logger.error(err);
+                     throw new Error(err);
+                 });
+         });
+     });
 
 
     // getAllUsers()
@@ -153,23 +130,6 @@ describe('Users', function () {
                 });
         });
     });
-
-
-    // update()     // TODO finish
-     describe('update()',
-         function () {
-         it('should return an object', function (done) {
-             Users.update(validUserId, { userNameDisplay: "Karl Updated Jones" })
-                 .then(function (retVal) {
-                     expect(retVal).to.be.an('object');
-                     done();
-                 })
-                 .catch(function (retVal) {
-                     logger.error(err);
-                     throw new Error(err);
-                 });
-         });
-     });
 
 
     // emailConfirm()
@@ -305,9 +265,6 @@ describe('Users', function () {
     });
 
 
-    //updateRoles() =  source code TODO
-
-
     // resetPasswordRequest()
     describe('resetPasswordRequest()', function () {
         it('should return an object', function (done) {
@@ -390,6 +347,40 @@ describe('Users', function () {
     });
 
 
+    // update()
+    describe('update()', function () {
+        it('should return an object', function (done) {
+            Users.update(validUserId, { userNameDisplay: "Karl Updated Jones" })
+                .then(function (retVal) {
+                    expect(retVal).to.be.an('object');
+                    retValUser = retVal;
+                    logger.info (retValUser);
+                    done();
+                })
+                .catch(function (retVal) {
+                    logger.error(err);
+                    throw new Error(err);
+                });
+        });
+    });
+
+
+     // validateUpdateUser()
+    /*
+     describe('validateUpdateUser()', function () {
+         it('should return an object', function (done) {
+             Users.validateUpdateUser(validUserId, retValUser)
+                 .then(function (retVal) {
+                     expect(retVal).to.be.an('object');
+                     done();
+                 })
+                 .catch(function (err) {
+                     logger.error(err);
+                     throw new Error(err);
+                 });
+         });
+     });
+    */
 
     // removeAclRole()
     describe('removeAclRole()', function () {
@@ -411,7 +402,6 @@ describe('Users', function () {
     describe('remove valid User()', function () {
         it('should return an object after removing (deleting) a valid User fron the database', function (done) {
            Users.remove(validUserId)
-//            Users.remove('580540b8dea021345aac26e1')
                 .then(function (retVal) {
                     expect(retVal).to.be.an('object');
                     logger.info (retVal);
