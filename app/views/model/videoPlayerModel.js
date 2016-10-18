@@ -6,13 +6,11 @@ var logger					= log4js.getLogger(namespace);
 
 try {
 	var BaseModel	    = require('./baseModel');
-	var Promise		    = require('bluebird');
 	var moment				= require('moment');
 	var util			    = require('util');
 	var videoCrud     = require('../../persistence/crud/videos');
 	var userCrud      = require('../../persistence/crud/users');
 	var socialCrud		= require('../../persistence/crud/socialMediaAccount');
-	var commentCrud   = require('../../persistence/crud/comment');
 	var videoLikeCrud = require('../../persistence/crud/videoLike');
 	var categoryCrud  = require('../../persistence/crud/categoryType');
 	var followCrud		= require('../../persistence/crud/follow');
