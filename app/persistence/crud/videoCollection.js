@@ -198,7 +198,7 @@ function customCarouselValidation(params) {
   info.data.displayImage        = params.displayImage || null;
   info.data.displayVideo        = params.displayVideo || null;
   info.data.videos              = params.videos || null;
-  if(params.homepageDisplay === false) {
+  if(!params.homepageDisplay) {
     info.data.startDate = undefined;
     info.data.endDate = undefined;
   } else {
