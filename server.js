@@ -182,6 +182,15 @@ app.get("/category/:category", function(req, res, next) {
 	}
 });
 
+app.get("/racing", function(req, res, next) {
+	if(IS_BETA) {
+		req.query.id = 'BJ3LlFAC'
+	} else {
+		req.query.id = 'S1deCy4kx';
+	}
+	loadView(req, res, customCategoryView.getViewName(), next)
+});
+
 app.get("/notifications/:id", function(req, res, next) {
 	loadView(req, res, notificationView.getViewName(), next);
 });
