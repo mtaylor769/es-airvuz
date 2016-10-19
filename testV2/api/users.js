@@ -5,20 +5,36 @@ var server = host + ":" + (process.env.PORT || 80);
 var expect = require('chai').expect;
 
 var token;
-var userId = '56a7473c2defb658467acb6e';
+var userId;
 var userNameDisplay = 'bryceb';
 
 chai.use(chaiHttp);
 
 describe('Users API tests', function () {
     before(function (done) {
-        chai.request(server)
-            .post('/api/auth')
-            .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
-            .end(function (err, res) {
-                token = "Bearer " + res.text;
-                done();
-            });
+        describe('get a token', function () {
+            /**
+             * Login with valid username and password
+             */
+            chai.request(server)
+                .post('/api/auth')
+                .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
+                .then(function (res) {
+                    return token = "Bearer " + res.text;
+                })
+                /**
+                 * search for the user just logged in with to get userID
+                 */
+                .then(function (token) {
+                    chai.request(server)
+                        .get('/api/users/search/?username=' + userNameDisplay)
+                        .set('Authorization', token)
+                        .end(function (err, res) {
+                            userId = res.body._id;
+                            done();
+                        });
+                });
+        });
     });
     describe('Users tests no apiVer', function () {
         /**
@@ -440,7 +456,7 @@ describe('Users API tests', function () {
          * prereq: valid userNameDisplay
          */
         describe('Retrieve user info from a valid search', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/users/search/?username=' + userNameDisplay + '/&' + apiVer)
                     .set('Authorization', token)
@@ -453,7 +469,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Search for an unknown user', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/users/search/?username=9871234876129876827638746187/&' + apiVer)
                     .set('Authorization', token)
@@ -466,7 +482,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Request a password reset', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 this.timeout(3000);
                 setTimeout(done, 3000);
                 chai.request(server)
@@ -481,7 +497,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Requst a hire me', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/users/hireme/?' + apiVer)
                     .set('Content-Type', 'application/json')
@@ -501,7 +517,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Follow a user', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Authorization', token)
@@ -516,7 +532,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Send a contact us message', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/users/contact-us/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
@@ -530,7 +546,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Update "ramputty8@gmail.com" status to suspended', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .put('/api/users/56a7473c2defb658467acb6e/status/?' + apiVer)
                     .set('Authorization', token)
@@ -545,7 +561,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Request a confirmation email be re-sent', function () {
-            it('should return 400', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/users/resend-confirmation/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
