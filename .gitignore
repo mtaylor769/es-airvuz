@@ -149,3 +149,4 @@ node_modules
 
 nbproject/
 *.zip
+.elasticbeanstalk
