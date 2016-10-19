@@ -300,7 +300,7 @@ describe('Comment API Tests', function() {
         var apiVer = 'apiVer=2.0.0';
         comment = makeComment();
         describe('Post a comment with no parent comment', function () {
-            it('should post a comment and return json with posted comment data', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
@@ -315,7 +315,7 @@ describe('Comment API Tests', function() {
         });
         describe('Update a comment with no parent comment', function () {
             updatedComment = 'updated ' + makeComment();
-            it('should update a comment and return json with posted comment data', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .put('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .set('Authorization', token)
@@ -329,7 +329,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('Get the comment just posted', function(){
-            it('should find the comment just posted', function(done) {
+            it('should a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/comment/byVideo/?videoId=' + videoId + '&' + apiVer)
                     .end(function (err, res) {
@@ -341,7 +341,7 @@ describe('Comment API Tests', function() {
         });
         describe('Post a reply to a comment', function() {
             replyComment = makeComment();
-            it('should post a reply to a comment', function(done) {
+            it('should a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
@@ -355,7 +355,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('Get the reply comment', function() {
-            it('should find the reply comment', function(done) {
+            it('should a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/comment/byParent/?parentId=' + parentCommentId + '&' + apiVer)
                     .end(function (err, res) {
@@ -367,7 +367,7 @@ describe('Comment API Tests', function() {
         });
         // Doesnt appear to be a way to do this on the site
         describe('Report a comment', function() {
-            it('should send an email about the comment', function(done) {
+            it('should a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .post('/api/comment/report/?' + apiVer)
                     .set('Authorization', token)
@@ -381,7 +381,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('Delete an updated comment with no parent comment', function () {
-            it('should delete the updated comment', function (done) {
+            it('should a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .delete('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .set('Authorization', token)
@@ -395,7 +395,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('try to find comment just deleted', function() {
-            it('should fail to find the updated comment', function(done) {
+            it('should a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .end(function (err, res) {
