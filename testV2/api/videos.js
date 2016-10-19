@@ -177,20 +177,6 @@ describe('Video API tests', function () {
                     });
             });
         });
-        describe('Like a video', function () {
-            it('should return a status of liked', function (done) {
-                chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .send({data: '{"like":{"videoId":"57e8366a7b09480e3378289f","userId":"57e96a719ddd2b02f44f3367","videoOwnerId":"56703d3b8440cc2451a06d8b"},"notification":{"notificationType":"LIKE","notifiedUserId":"56703d3b8440cc2451a06d8b","notificationMessage":"liked your video","videoId":"57e8366a7b09480e3378289f","actionUserId":"57e96a719ddd2b02f44f3367"}}'})
-                    .end(function (err, res) {
-                        var data = res.body;
-                        expect(res).to.have.status(200);
-                        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
-                        expect(data).to.have.property('status');
-                        done();
-                    });
-            });
-        });
         describe('Report a video', function () {
             it('should return an "OK"', function (done) {
                 chai.request(server)
@@ -200,6 +186,7 @@ describe('Video API tests', function () {
                         userId: userId,
                         message: "this is so offensive"
                     })
+                    // TODO respond with JSON
                     .end(function (err, res) {
                         var data = res.text;
                         expect(res).to.have.status(200);
@@ -564,20 +551,7 @@ describe('Video API tests', function () {
                     });
             });
         });
-        describe('Like a video', function () {
-            it('should return a status of liked', function (done) {
-                chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .send({data: '{"like":{"videoId":"57e8366a7b09480e3378289f","userId":"57e96a719ddd2b02f44f3367","videoOwnerId":"56703d3b8440cc2451a06d8b"},"notification":{"notificationType":"LIKE","notifiedUserId":"56703d3b8440cc2451a06d8b","notificationMessage":"liked your video","videoId":"57e8366a7b09480e3378289f","actionUserId":"57e96a719ddd2b02f44f3367"}}'})
-                    .end(function (err, res) {
-                        var data = res.body;
-                        expect(res).to.have.status(200);
-                        expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
-                        expect(data).to.have.property('status');
-                        done();
-                    });
-            });
-        });
+
         describe('Report a video', function () {
             it('should return an "OK"', function (done) {
                 chai.request(server)
@@ -815,7 +789,7 @@ describe('Video API tests', function () {
         var apiVer = 'apiVer=2.0.0';
 
         describe('Post a new video', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/videos/?' + apiVer)
                     .set('Authorization', token)
@@ -840,7 +814,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Update the video just posted', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .put('/api/videos/' + videoId + '/?' + apiVer)
                     .set('Authorization', token)
@@ -865,7 +839,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Search for a video using userId', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/search/?q=' + userNameDisplay + '&' + apiVer)
                     .end(function (err, res) {
@@ -876,7 +850,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Search for a video using description', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/search/?q=description' + '&' + apiVer)
                     .end(function (err, res) {
@@ -887,7 +861,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Search for a video using title', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/search/?q=title' + '&' + apiVer)
                     .end(function (err, res) {
@@ -898,7 +872,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Search for a video using video location', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/search/?q=location' + '&' + apiVer)
                     .end(function (err, res) {
@@ -909,7 +883,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Search for a video using keyword', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/search/?q=keyword' + '&' + apiVer)
                     .end(function (err, res) {
@@ -919,20 +893,9 @@ describe('Video API tests', function () {
                     });
             });
         });
-        describe('Like a video', function () {
-            it('should a 400 and invalid api version json', function (done) {
-                chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .send({data: '{"like":{"videoId":"57e8366a7b09480e3378289f","userId":"57e96a719ddd2b02f44f3367","videoOwnerId":"56703d3b8440cc2451a06d8b"},"notification":{"notificationType":"LIKE","notifiedUserId":"56703d3b8440cc2451a06d8b","notificationMessage":"liked your video","videoId":"57e8366a7b09480e3378289f","actionUserId":"57e96a719ddd2b02f44f3367"}}'})
-                    .end(function (err, res) {
-                        expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version")
-                        done();
-                    });
-            });
-        });
+
         describe('Report a video', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/videos/report-video/?' + apiVer)
                     .send({
@@ -948,7 +911,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Video info check', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/videoinfocheck/?' + videoId + '&' +apiVer)
                     .end(function (err, res) {
@@ -959,7 +922,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get videos for a user', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/user/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -970,7 +933,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get showcase videos for a user', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/showcase/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -981,7 +944,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get top six videos for a user', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/topsixvideos/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -992,7 +955,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get video count for a user', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/videocount/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -1003,7 +966,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get follow count for a user', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/followcount/' + userId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -1014,7 +977,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get next videos', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/nextvideos/?video=' + videoId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -1025,7 +988,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get a video by valid videoId', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/videos/' + videoId + '/?' + apiVer)
                     .end(function (err, res) {
@@ -1036,7 +999,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get video owner profile', function () {
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/video/videoownerprofile/' + userId + '/?' +apiVer)
                     .end(function(err, res) {
@@ -1047,7 +1010,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Get comments for a video', function() {
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/videos/videocomments/' + videoId + '/?' + apiVer)
                     .end(function(err, res) {
@@ -1058,7 +1021,7 @@ describe('Video API tests', function () {
             });
         });
         describe('Delete the posted video', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .delete('/api/videos/' + videoId + '/?' + apiVer)
                     .set('Authorization', token)

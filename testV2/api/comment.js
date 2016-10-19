@@ -58,7 +58,22 @@ describe('Comment API Tests', function() {
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-                    .send({data: '{"comment":{"videoId":"' + videoId + '","comment":"' + comment + '","userId":"' + userId + '"},"notification":{"notificationType":"COMMENT","notifiedUserId":"57b248b28f6b2e883860fd6f","notificationMessage":"test","videoId":"'+ videoId +'","actionUserId":"57e96ae61ef82b3db949d2a8"}}'})
+                    // TODO Send JSON instead of JSON in a string
+                    .send({data: '{' +
+                    '"comment": {' +
+                    '"videoId":"' + videoId + '",' +
+                    '"comment":"' + comment + '",' +
+                    '"userId":"' + userId + '"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"COMMENT",' +
+                    '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
+                    '"notificationMessage":"test",' +
+                    '"videoId":"'+ videoId +'",' +
+                    '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -105,7 +120,21 @@ describe('Comment API Tests', function() {
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-                    .send({data: '{"comment":{"videoId":"' + videoId + '","comment":"' + replyComment + '","parentCommentId":"'+ parentCommentId + '","userId":"' + userId + '"},"notification":{"notificationType":"COMMENT","notifiedUserId":"57b248b28f6b2e883860fd6f","notificationMessage":"test","videoId":"'+ videoId +'","actionUserId":"57e96ae61ef82b3db949d2a8"}}'})
+                    .send({data: '{' +
+                    '"comment": {' +
+                    '"videoId":"' + videoId + '",' +
+                    '"comment":"' + replyComment + '",' +
+                    '"parentCommentId":"'+ parentCommentId + '",' +
+                    '"userId":"' + userId + '"' +
+                    '},"notification": {' +
+                    '"notificationType":"COMMENT",' +
+                    '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
+                    '"notificationMessage":"test",' +
+                    '"videoId":"'+ videoId +'",' +
+                    '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -160,7 +189,7 @@ describe('Comment API Tests', function() {
                     });
             });
         });
-        describe('try to find comment just deleted', function() {
+        describe('Try to find comment just deleted', function() {
             it('should fail to find the updated comment', function(done) {
                 chai.request(server)
                     .get('/api/comment/' + parentCommentId + '/?' + apiVer)
@@ -284,7 +313,7 @@ describe('Comment API Tests', function() {
                     });
             });
         });
-        describe('try to find comment just deleted', function() {
+        describe('Try to find comment just deleted', function() {
             it('should fail to find the updated comment', function(done) {
                 chai.request(server)
                     .get('/api/comment/' + parentCommentId + '/?' + apiVer)
@@ -300,7 +329,7 @@ describe('Comment API Tests', function() {
         var apiVer = 'apiVer=2.0.0';
         comment = makeComment();
         describe('Post a comment with no parent comment', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
@@ -315,7 +344,7 @@ describe('Comment API Tests', function() {
         });
         describe('Update a comment with no parent comment', function () {
             updatedComment = 'updated ' + makeComment();
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .put('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .set('Authorization', token)
@@ -329,7 +358,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('Get the comment just posted', function(){
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/comment/byVideo/?videoId=' + videoId + '&' + apiVer)
                     .end(function (err, res) {
@@ -341,7 +370,7 @@ describe('Comment API Tests', function() {
         });
         describe('Post a reply to a comment', function() {
             replyComment = makeComment();
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
@@ -355,7 +384,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('Get the reply comment', function() {
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/comment/byParent/?parentId=' + parentCommentId + '&' + apiVer)
                     .end(function (err, res) {
@@ -367,7 +396,7 @@ describe('Comment API Tests', function() {
         });
         // Doesnt appear to be a way to do this on the site
         describe('Report a comment', function() {
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .post('/api/comment/report/?' + apiVer)
                     .set('Authorization', token)
@@ -381,7 +410,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('Delete an updated comment with no parent comment', function () {
-            it('should a 400 and invalid api version json', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .delete('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .set('Authorization', token)
@@ -395,7 +424,7 @@ describe('Comment API Tests', function() {
             });
         });
         describe('try to find comment just deleted', function() {
-            it('should a 400 and invalid api version json', function(done) {
+            it('should return a 400 and invalid api version json', function(done) {
                 chai.request(server)
                     .get('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .end(function (err, res) {
