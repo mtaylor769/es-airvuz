@@ -40,7 +40,7 @@ describe('Follow API tests', function() {
             it('should return follow status', function (done) {
                 chai.request(server)
                     .post('/api/follow/check?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+                    .set('Content-Type', 'application/json; charset=UTF-8')
                     .send({ followingUserId: followingUserId, userId: userId })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
@@ -55,7 +55,20 @@ describe('Follow API tests', function() {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"'+followingUserId+'"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"'+followingUserId+'"}}'})
+                    // TODO send pure JSON instead of JSON in a string
+                    .send({data:'{' +
+                    '"follow": {' +
+                    '"userId":"'+userId+'",' +
+                    '"followingUserId":"'+followingUserId+'"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"FOLLOW",' +
+                    '"notificationMessage":"started following you",' +
+                    '"actionUserId":"'+userId+'",' +
+                    '"notifiedUserId":"'+followingUserId+'"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -65,11 +78,24 @@ describe('Follow API tests', function() {
             });
         });
         describe('Un-Follow a user', function() {
-            it('should follow a user', function(done) {
+            it('should unfollow a user', function(done) {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data:'{"follow":{"userId":"'+userId+'","followingUserId":"'+followingUserId+'"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"'+userId+'","notifiedUserId":"'+followingUserId+'"}}'})
+                    // TODO send pure JSON instead of JSON in a string
+                    .send({data:'{' +
+                    '"follow": {' +
+                    '"userId":"'+userId+'",' +
+                    '"followingUserId":"'+followingUserId+'"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"FOLLOW",' +
+                    '"notificationMessage":"started following you",' +
+                    '"actionUserId":"'+userId+'",' +
+                    '"notifiedUserId":"'+followingUserId+'"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -82,7 +108,6 @@ describe('Follow API tests', function() {
             it('should return json with follower data', function(done) {
                 chai.request(server)
                     .get('/api/follow/get-followers/?userId=' + userId + '&' + apiVer)
-                    .send({data:'{"follow":{"userId":"'+userId+'","followingUserId":"'+followingUserId+'"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"'+userId+'","notifiedUserId":"'+followingUserId+'"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -98,7 +123,6 @@ describe('Follow API tests', function() {
             it('should return json with followed users', function(done) {
                 chai.request(server)
                     .get('/api/follow/get-following/?userId=' + userId + '&' + apiVer)
-                    .send({data:'{"follow":{"userId":"'+userId+'","followingUserId":"'+followingUserId+'"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"'+userId+'","notifiedUserId":"'+followingUserId+'"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -110,7 +134,6 @@ describe('Follow API tests', function() {
                     });
             });
         });
-    //no apiVer end
     });
     describe('Follow tests apiVer=1.0.0', function() {
         var apiVer = 'apiVer=1.0.0';
@@ -133,7 +156,19 @@ describe('Follow API tests', function() {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
+                    .send({data:'{' +
+                    '"follow": {' +
+                    '"userId":"'+userId+'",' +
+                    '"followingUserId":"'+followingUserId+'"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"FOLLOW",' +
+                    '"notificationMessage":"started following you",' +
+                    '"actionUserId":"'+userId+'",' +
+                    '"notifiedUserId":"'+followingUserId+'"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -143,11 +178,23 @@ describe('Follow API tests', function() {
             });
         });
         describe('Un-Follow a user', function () {
-            it('should follow a user', function (done) {
+            it('should un-follow a user', function (done) {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
+                    .send({data:'{' +
+                    '"follow": {' +
+                    '"userId":"'+userId+'",' +
+                    '"followingUserId":"'+followingUserId+'"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"FOLLOW",' +
+                    '"notificationMessage":"started following you",' +
+                    '"actionUserId":"'+userId+'",' +
+                    '"notifiedUserId":"'+followingUserId+'"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -160,7 +207,6 @@ describe('Follow API tests', function() {
             it('should return json with follower data', function (done) {
                 chai.request(server)
                     .get('/api/follow/get-followers/?userId=' + userId + '&' + apiVer)
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -176,7 +222,6 @@ describe('Follow API tests', function() {
             it('should return json with followed users', function (done) {
                 chai.request(server)
                     .get('/api/follow/get-following/?userId=' + userId + '&' + apiVer)
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -192,10 +237,10 @@ describe('Follow API tests', function() {
     describe('Follow tests apiVer=2.0.0', function() {
         var apiVer = 'apiVer=2.0.0';
         describe('Check following a user', function () {
-            it('should return follow status', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/follow/check?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+                    .set('Content-Type', 'application/json; charset=UTF-8')
                     .send({followingUserId: followingUserId, userId: userId})
                     .end(function (err, res) {
                         var data = res.body;
@@ -206,11 +251,23 @@ describe('Follow API tests', function() {
             });
         });
         describe('Follow a user', function () {
-            it('should follow a user', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
+                    .send({data:'{' +
+                    '"follow": {' +
+                    '"userId":"'+userId+'",' +
+                    '"followingUserId":"'+followingUserId+'"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"FOLLOW",' +
+                    '"notificationMessage":"started following you",' +
+                    '"actionUserId":"'+userId+'",' +
+                    '"notifiedUserId":"'+followingUserId+'"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(400);
@@ -220,11 +277,23 @@ describe('Follow API tests', function() {
             });
         });
         describe('Un-Follow a user', function () {
-            it('should follow a user', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/follow/?' + apiVer)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
+                    .send({data:'{' +
+                    '"follow": {' +
+                    '"userId":"'+userId+'",' +
+                    '"followingUserId":"'+followingUserId+'"' +
+                    '},' +
+                    '"notification": {' +
+                    '"notificationType":"FOLLOW",' +
+                    '"notificationMessage":"started following you",' +
+                    '"actionUserId":"'+userId+'",' +
+                    '"notifiedUserId":"'+followingUserId+'"' +
+                    '}' +
+                    '}'
+                    })
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(400);
@@ -234,10 +303,9 @@ describe('Follow API tests', function() {
             });
         });
         describe('Get a users followers', function () {
-            it('should return json with follower data', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/follow/get-followers/?userId=' + userId + '&' + apiVer)
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(400);
@@ -247,10 +315,9 @@ describe('Follow API tests', function() {
             });
         });
         describe('Get followed users for a user', function () {
-            it('should return json with followed users', function (done) {
+            it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .get('/api/follow/get-following/?userId=' + userId + '&' + apiVer)
-                    .send({data: '{"follow":{"userId":"' + userId + '","followingUserId":"' + followingUserId + '"},"notification":{"notificationType":"FOLLOW","notificationMessage":"started following you","actionUserId":"' + userId + '","notifiedUserId":"' + followingUserId + '"}}'})
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(400);
