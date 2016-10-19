@@ -26,13 +26,12 @@ _**Note:** When setting an environmental variable for Windows make sure to not a
 ## Nick's Notes
 
 - I recommend against hard coding ports into the code. All ports should be able to be changed using an environmental variable or config file.
-- Force HTTPS by redirecting all HTTP requests. Easy way is to make a second Express app that runs on HTTP and uses `res.redirect`.
 - Disable SSL and force TSL on HTTPS. _98% of all browsers support some form of TSL._
 - At some point make Express start up webpack. [Documentation can be found here.](http://webpack.github.io/docs/node.js-api.html)
 - For E2E testing I recommend Cucumber.js it has support for Karma and is framework agnostic.
 
 ##URL Parameters
-#For debugging purposes and live reload when making front end changes append this to the end of the URL
+For debugging purposes and live reload when making front end changes append this to the end of the URL
 ?viewPrettyPrint=true&reloadView=true
 ?reloadView=true
 
@@ -46,3 +45,22 @@ _**Note:** When setting an environmental variable for Windows make sure to not a
 ## Dependencies
 - ffprobe
 - imageMagick
+
+## Deployment
+install [awsebcli](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html)
+Initialize EB CLI Project `eb init`
+- default region: us-west-2 (Oregon)
+- aws-accesss-id
+- aws-secret-key
+- select the airvuz application
+- platform is Node.js
+- set up the ssh with your keypair
+
+Commands:
+- `eb list` - use to list all available environments for the current eb application
+- `eb use (beta | airvuz-prod)` - switch branch to use an environment
+- `eb deploy` - user to deploy the HEAD of the current git branch
+- `eb deploy` --staged - use to deploy the HEAD and stage file of the current git branch
+
+Set master branch to use airvuz-prod - `eb use airvuz-prod`
+Rebase with develop then use the command to deploy

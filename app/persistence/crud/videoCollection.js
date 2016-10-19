@@ -198,7 +198,7 @@ function customCarouselValidation(params) {
   info.data.displayImage        = params.displayImage || null;
   info.data.displayVideo        = params.displayVideo || null;
   info.data.videos              = params.videos || null;
-  if(params.homepageDisplay === false) {
+  if(!params.homepageDisplay) {
     info.data.startDate = undefined;
     info.data.endDate = undefined;
   } else {
@@ -229,19 +229,6 @@ function customCarouselValidation(params) {
       sourceError			: "#description",
       displayMsg			: "This field is required",
       errorMessage		: "Description is null",
-      sourceLocation	: sourceLocation
-    })
-  }
-  if(info.data.listDescription === null) {
-    info.errors = errorMessage.getErrorMessage({
-      statusCode			: "400",
-      errorId					: "VALIDA1000",
-      templateParams	: {
-        name : "List Description"
-      },
-      sourceError			: "#listDescription",
-      displayMsg			: "This field is required",
-      errorMessage		: "List Description is null",
       sourceLocation	: sourceLocation
     })
   }

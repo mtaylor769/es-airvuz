@@ -20,10 +20,10 @@
               });
         }
 
-        function deleteCarousel(id) {
-          customCarousel.delete({id: id})
+        function deleteCarousel(carousel) {
+          customCarousel.delete({id: carousel._id})
             .$promise
-            .then(function(carousel) {
+            .then(function() {
               var removeIndex = vm.carousels.indexOf(carousel);
               vm.carousels.splice(removeIndex, 1);
             })

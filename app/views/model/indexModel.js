@@ -38,12 +38,11 @@ IndexModel.prototype.getData = function (params) {
 
 	params.data = {};
 
-	params.data.index = {};
-	params.data.index.fb = config.view.fb;
-	params.data.index.head = {};
-	params.data.index.head.og = config.view.index.og;
-	params.data.index.head.title = "AirVūz – World’s Best Drone Videos";
-	params.data.index.viewName = "index";
+	params.data.index							= {};
+	params.data.index.fb					= config.view.fb;
+	params.data.index.head				= {};
+	params.data.index.head.og			= config.view.index.og;
+	params.data.index.viewName		= "index";
 
 	params.data.s3Bucket = amazonConfig.OUTPUT_BUCKET;
 
@@ -54,20 +53,12 @@ IndexModel.prototype.getData = function (params) {
 		TrendingVideo.getVideos({total: 50, page: 1}),
 		VideoCollection.getStaffPickVideos(),
 		Slider.getHomeSlider(params.request.query.banner),
-<<<<<<< 2ab0761d53250f255a31634d16ed38759ead1c06
-		User.emailConfirm(userId),
+		userCrud1_0_0.emailConfirm(userId),
 		VideoCollection.getCurrentCustomCarousel()
 	];
 
 	return Promise.all(promises)
 		.spread(function(categories, featureVideos, recentVideos, trendingVideos, staffPickVideos, slider, isEmailConfirm, customCarousel) {
-=======
-		userCrud1_0_0.emailConfirm(userId)
-	];
-
-	return Promise.all(promises)
-		.spread(function (categories, featureVideos, recentVideos, trendingVideos, staffPickVideos, slider, isEmailConfirm) {
->>>>>>> refactor api version
 			params.data.categories = categories;
 			params.data.index.featuredVideos = featureVideos;
 			params.data.index.recentVideos = recentVideos;

@@ -3,7 +3,7 @@
   <head>
         <meta http-equiv="Cache-control" content="public">
 
-        <title>{index.head.title}</title>
+        <title>{index.head.og.title}</title>
 
         <!-- BEGIN: OG -->
         <meta property="og:url" content="{index.head.og.url}"/>
