@@ -91,14 +91,13 @@
   <div class="video-container hidden">
       <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player" controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"></video>
   </div>
-    {> "app.views.view.partial.footer" /}
-    {> "app.views.view.partial.js" /}
 
     <script>
-        function initialize() {
-            Home.initialize({emailConfirm|j|s});
-        }
+      window.page = 'home';
+      window.pageParams = '{emailConfirm|j|s}';
     </script>
+    {> "app.views.view.partial.footer" /}
+    {> "app.views.view.partial.js" /}
   </body>
     
 </html>

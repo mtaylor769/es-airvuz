@@ -1,29 +1,11 @@
 /* global ga, fbq */
-require('bootstrap-tagsinput');
-require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
-require('../styles/upload.css');
-
-var Evaporate     = require('evaporate'),
-    AmazonConfig  = require('./config/amazon.config.client'),
+var AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
-    camera        = require('./services/camera'),
-    drone         = require('./services/drone'),
     categories    = require('./services/category'),
     dialogs       = require('./services/dialogs'),
     utils         = require('./services/utils'),
-    videoSocialShare = require('./services/videoSocialShare'),
     AVEventTracker = require('./avEventTracker');
-
-
-/**
- * Templates
- */
-var thumbnailTpl = require('../templates/upload/thumbnail.dust');
-var step1Tpl = require('../templates/upload/step-1.dust');
-var step2Tpl = require('../templates/upload/step-2.dust');
-var step3Tpl = require('../templates/upload/step-3.dust');
-var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
 
 var $uploadPage,
     $tags,
@@ -147,8 +129,10 @@ function onTranscodeComplete(response) {
 }
 
 function renderThumbnail(thumbnails) {
-  thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
-    $uploadPage.find('#generated-thumbnails').html(html);
+  require(['../templates/upload/thumbnail.dust'], function (thumbnailTpl) {
+    thumbnailTpl({thumbnails: thumbnails, url: AmazonConfig.OUTPUT_URL}, function (err, html) {
+      $uploadPage.find('#generated-thumbnails').html(html);
+    });
   });
 }
 
@@ -185,53 +169,43 @@ function onUploadError(params) {
 function renderStep(step, video) {
   switch(step) {
     case 1:
-      step1Tpl({}, function (err, html) {
-        $uploadPage.html(html);
+      require(['../templates/upload/step-1.dust'], function (step1Tpl) {
+        step1Tpl({}, function (err, html) {
+          $uploadPage.html(html);
+        });
       });
+
       break;
     case 2:
-      step2Tpl(VIEW_MODEL, function (err, html) {
-        $uploadPage.html(html);
+      require(['../templates/upload/step-2.dust', 'bootstrap-tagsinput'], function (step2Tpl) {
+        step2Tpl(VIEW_MODEL, function (err, html) {
+          $uploadPage.html(html);
 
-        $tags = $('#tags');
-        // initalize plugin
-        $tags.tagsinput({
-          // enter, commas, and space
-          confirmKeys: [13, 188, 32]
+          $tags = $('#tags');
+          // initalize plugin
+          $tags.tagsinput({
+            // enter, commas, and space
+            confirmKeys: [13, 188, 32]
+          });
         });
       });
       break;
     case 3:
-      step3Tpl({video: video, domain: window.location.hostname}, function (err, html) {
-        $uploadPage.html(html);
-      });
+      require(['./services/videoSocialShare', '../templates/social/videoSocialShare.dust', '../templates/upload/step-3.dust'], function (videoSocialShare, videoSocialShareTpl, step3Tpl) {
+        step3Tpl({video: video, domain: window.location.hostname}, function (err, html) {
+          $uploadPage.html(html);
+        });
 
-      videoSocialShareTpl({video: video}, function (err, html) {
-        $uploadPage.find('.social-icons-container').html(html);
-        videoSocialShare.setIconFontSize('md');
-        videoSocialShare.removeColorOnHover(false);
-        videoSocialShare.initialize(video);
-        videoSocialShare.loadTwitterScript();
+        videoSocialShareTpl({video: video}, function (err, html) {
+          $uploadPage.find('.social-icons-container').html(html);
+          videoSocialShare.setIconFontSize('md');
+          videoSocialShare.removeColorOnHover(false);
+          videoSocialShare.initialize(video);
+          videoSocialShare.loadTwitterScript();
+        });
       });
       break;
   }
-}
-
-function getData() {
-  camera.getAll()
-    .then(function (cameras) {
-      VIEW_MODEL.cameras = cameras;
-    });
-
-  drone.getAll()
-    .then(function (drones) {
-      VIEW_MODEL.drones = drones;
-    });
-
-  categories.getByRoles()
-    .then(function (categories) {
-      VIEW_MODEL.categories = categories;
-    });
 }
 
 function bindEvents() {
@@ -252,8 +226,6 @@ function bindEvents() {
       videoLocation     : $uploadPage.find('#location').val(),
       videoPath         : currentUploadFile.videoPath,
       duration          : currentUploadFile.duration,
-      cameraType        : $uploadPage.find('#camera-type').val(),
-      droneType         : $uploadPage.find('#drone-type').val(),
       categories        : $uploadPage.find('#selected-category-list li').map(function (index, li) {
                             return $(li).data('id');
                           }).toArray(),
@@ -312,52 +284,41 @@ function bindEvents() {
     uploadSource = 'local';
     var data = {file: {type: currentUploadFile.type, size: currentUploadFile.size, name: currentUploadFile.name}};
 
-    var evaporate = new Evaporate({
-      signerUrl : '/api/amazon/sign-auth',
-      aws_key   : AmazonConfig.ACCESS_KEY,
-      bucket    : AmazonConfig.INPUT_BUCKET,
-      aws_url   : 'https://s3-us-west-2.amazonaws.com',
+    require(['./services/evaporate'], function (evaporate) {
+      $.ajax({
+        url         : '/api/upload',
+        contentType : 'application/json',
+        type        : 'POST',
+        data        : JSON.stringify(data)
+      }).done(function (hashName) {
+        isUploadingVideo = true;
+        currentUploadFile.hashName = hashName;
+        var eventName = 'video-upload-started:' + uploadSource;
+        var eventNameAny = 'video-upload-started:any';
+        var eventParams = {
+          codeSource: 'upload',
+          eventName: eventName,
+          eventType: 'uploadFileDrop'
+        };
+        _trackUploadEvent(eventName, eventNameAny, eventParams);
 
-      partSize  : 200 * 1024 * 1024,
-      logging   : !IS_PRODUCTION
-    });
+        renderStep(2);
 
-    $.ajax({
-      url         : '/api/upload',
-      contentType : 'application/json',
-      type        : 'POST',
-      data        : JSON.stringify(data)
-    }).done(function (hashName) {
-      isUploadingVideo = true;
-      currentUploadFile.hashName = hashName;
-      var eventName = 'video-upload-started:' + uploadSource;
-      var eventNameAny = 'video-upload-started:any';
-      var eventParams = {
-        codeSource: 'upload',
-        eventName: eventName,
-        eventType: 'uploadFileDrop'
-      };
-      _trackUploadEvent(eventName, eventNameAny, eventParams);
-
-      renderStep(2);
-
-      evaporate.add({
-        // headers
-        contentType: currentUploadFile.type || 'binary/octet-stream',
-        headersCommon: {
-          'Cache-Control': 'max-age=604800' // 1 week
-        },
-        signHeaders: {
-          Authorization: 'Bearer ' + identity.getToken()
-        },
-        // filename, relative to bucket
-        name: currentUploadFile.hashName + '.mp4',
-        // content
-        file: currentUploadFile,
-        // event callbacks
-        complete: onUploadComplete,
-        progress: onProgress,
-        error: onUploadError
+        evaporate.upload({
+          // headers
+          contentType: currentUploadFile.type || 'binary/octet-stream',
+          signHeaders: {
+            Authorization: 'Bearer ' + identity.getToken()
+          },
+          // filename, relative to bucket
+          name: currentUploadFile.hashName + '.mp4',
+          // content
+          file: currentUploadFile,
+          // event callbacks
+          complete: onUploadComplete,
+          progress: onProgress,
+          error: onUploadError
+        });
       });
     });
   }
@@ -394,44 +355,34 @@ function bindEvents() {
 
     isUploadingCustomThumbnail = true;
 
-    var evaporate = new Evaporate({
-      signerUrl : '/api/amazon/sign-auth',
-      aws_key   : AmazonConfig.ACCESS_KEY,
-      bucket    : AmazonConfig.TEMP_BUCKET,
-      aws_url   : 'https://s3-us-west-2.amazonaws.com',
-      partSize  : 200 * 1024 * 1024,
-      logging   : !IS_PRODUCTION
-    });
+    require(['./services/evaporate'], function (evaporate) {
+      // add Date.now() incase the user reupload again.
+      // without it the image won't change or reload because it is the same name
+      customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1].toLowerCase();
 
-    // add Date.now() incase the user reupload again.
-    // without it the image won't change or reload because it is the same name
-    customThumbnailName = 'tn_custom-' + currentUploadFile.hashName + '-' + Date.now() + '.' + customThumbnailFile.name.split('.')[1].toLowerCase();
-
-    evaporate.add({
-      // headers
-      contentType: customThumbnailFile.type || 'binary/octet-stream',
-      headersCommon: {
-        'Cache-Control': 'max-age=604800' // 1 week
-      },
-      signHeaders: {
-        Authorization: 'Bearer ' + identity.getToken()
-      },
-      xAmzHeadersAtInitiate: {
-        'x-amz-acl': 'public-read'
-      },
-      // filename, relative to bucket
-      name: customThumbnailName,
-      // content
-      file: customThumbnailFile,
-      // event callbacks
-      complete: function () {
-        onCustomThumbnailUploadComplete(customThumbnailName);
-        isUploadingCustomThumbnail = false;
-      },
-      error: function () {
-        onUploadError();
-        isUploadingCustomThumbnail = false;
-      }
+      evaporate.upload({
+        // headers
+        contentType: customThumbnailFile.type || 'binary/octet-stream',
+        signHeaders: {
+          Authorization: 'Bearer ' + identity.getToken()
+        },
+        xAmzHeadersAtInitiate: {
+          'x-amz-acl': 'public-read'
+        },
+        // filename, relative to bucket
+        name: customThumbnailName,
+        // content
+        file: customThumbnailFile,
+        // event callbacks
+        complete: function () {
+          onCustomThumbnailUploadComplete(customThumbnailName);
+          isUploadingCustomThumbnail = false;
+        },
+        error: function () {
+          onUploadError();
+          isUploadingCustomThumbnail = false;
+        }
+      }, 'temp');
     });
   }
 
@@ -614,7 +565,11 @@ function initialize() {
 
   $uploadPage = $('#upload-page');
 
-  getData();
+  categories.getByRoles()
+    .then(function (categories) {
+      VIEW_MODEL.categories = categories;
+    });
+
   bindEvents();
 }
 

@@ -39,15 +39,16 @@
 
         <div id="fb-root"></div>
 
-        {> "app.views.view.partial.js" /}
-        <script>
-            var commentSpinner = document.getElementsByClassName('loading-comment-spinner');
-            commentSpinner[0].classList.remove("hidden");
 
-            function initialize() {
-                videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
-            }
+        <script>
+          window.page = 'videoPlayer';
+          window.pageParams = {
+            videoPath: '{video.videoPath}',
+            currentVideo: {?video}{video|js|s}{:else}{}{/video}
+          }
         </script>
+
+        {> "app.views.view.partial.js" /}
     </body>
 
 </html>

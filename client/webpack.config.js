@@ -69,17 +69,8 @@ config.entry.vendor = [
   //'lodash'
   'jquery',
   'bootstrap',
-  'bootstrap-tagsinput',
-  'bootstrap-switch',
-  'pubsub-js',
   'dustjs-helpers',
-  'jwt-decode',
-  'slick-carousel',
-  'moment',
-  'video.js',
-  'evaporate',
-  'videojs-resolution-switcher',
-  'md5'
+  'jwt-decode'
 ];
 
 // Entry points for webpack to compile code.
@@ -91,6 +82,18 @@ config.output = {};
 config.output.path          = path.resolve ( __dirname, '../public/' );
 config.output.filename      = IS_PRODUCTION ? '[name].[chunkhash].js' : '[name].bundle.js';
 config.output.chunkFilename = IS_PRODUCTION ? 'airvuz.[name].[chunkhash].js' : 'airvuz.[name].chunk.js';
+
+switch(NODE_ENV) {
+  case 'development':
+    config.output.publicPath = '/public/';
+    break;
+  case 'beta':
+    config.output.publicPath = 'https://d6xm2cm58wj2l.cloudfront.net/public/';
+    break;
+  case 'production':
+    config.output.publicPath = 'https://d32znywta9rkav.cloudfront.net/public/';
+    break;
+}
 
 // Loaders
 config.module = { loaders: [] };

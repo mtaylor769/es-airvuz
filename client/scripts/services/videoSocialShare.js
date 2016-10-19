@@ -98,25 +98,24 @@ function fbClickHandler(e) {
             if(identity.isAuthenticated()) {
                 notificationObject.actionUserId = identity._id;
             }
-            if(response.post_id) {
+            // response is not undefined and have a post_id
+            if(response && response.post_id) {
                 $.ajax({
                     type: 'POST',
                     url: '',
                     data: notificationObject
                 })
-                    .done(function(response) {
-                        fbq('trackCustom', 'social-share-facebook');
-                        ga('send', 'social', 'facebook', 'share', window.location.href);
-                        ga('send', 'event', 'video page', 'facebook-share', 'sharing video');
-                        AVEventTracker({
-                            codeSource: 'videoPlayer',
-                            eventName: 'facebook-share',
-                            eventType: 'click',
-                            videoId: video._id
-                        });
-                    })
-                    .fail(function(error) {
+                .done(function(response) {
+                    fbq('trackCustom', 'social-share-facebook');
+                    ga('send', 'social', 'facebook', 'share', window.location.href);
+                    ga('send', 'event', 'video page', 'facebook-share', 'sharing video');
+                    AVEventTracker({
+                        codeSource: 'videoPlayer',
+                        eventName: 'facebook-share',
+                        eventType: 'click',
+                        videoId: video._id
                     });
+                }); // TODO: add fail handler
             }
         }
     );
@@ -136,7 +135,7 @@ function twitterClickHandler() {
         url: '/api/notifications',
         data: notificationObject
     })
-        .done(function(response) {
+        .done(function() {
             fbq('trackCustom', 'social-share-twitter');
             ga('send', 'social', 'twitter', 'share', window.location.href);
             ga('send', 'event', 'video page', 'twitter-share', 'sharing video');
@@ -146,9 +145,7 @@ function twitterClickHandler() {
                 eventType: 'click',
                 videoId: video._id
             });
-        })
-        .fail(function(error) {
-        })
+        }); // TODO: add fail handler
 }
 
 // google icon click handler
@@ -175,9 +172,7 @@ function googleClickHandler() {
                 eventType: 'click',
                 videoId: video._id
             });
-        })
-        .fail(function(error) {
-        });
+        }); // TODO: add fail handler
 }
 
 /**

@@ -5,7 +5,6 @@
 (function ($, window) {
     var PubSub          = require('pubsub-js');
     var amazonConfig    = require('../config/amazon.config.client');
-    var moment          = require('moment');
 
     var pluginName = 'switchVideo',
         defaults = {
@@ -48,12 +47,14 @@
 
             $.ajax({url: '/api/videos/' + selectedVideoId})
                 .then(function (resp) {
-                    resp.displayDate = moment(resp.uploadDate).fromNow();
-                    resp.openGraphCacheDate = moment(resp.openGraphCacheDate).format('x');
-                    if(resp.title.length > 45) {
-                        resp.title = resp.title.substring(0, 45) + '...';
-                    }
-                    _this._updateVideoSrc(resp);
+                    require(['moment'], function (moment) {
+                        resp.displayDate = moment(resp.uploadDate).fromNow();
+                        resp.openGraphCacheDate = moment(resp.openGraphCacheDate).format('x');
+                        if(resp.title.length > 45) {
+                            resp.title = resp.title.substring(0, 45) + '...';
+                        }
+                        _this._updateVideoSrc(resp);
+                    });
                 });
         },
         // update the video src

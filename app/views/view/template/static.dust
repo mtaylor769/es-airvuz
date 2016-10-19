@@ -17,11 +17,6 @@
 
         {> "app.views.view.partial.footer" /}
         {> "app.views.view.partial.js" /}
-        <script>
-            function initialize() {
-                Static.initialize();
-            }
-        </script>
     </body>
 
 </html>

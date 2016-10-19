@@ -40,9 +40,6 @@
     </div>
     {> "app.views.view.partial.footer" /}
     {> "app.views.view.partial.js" /}
-    <script>
-        function initialize() {}
-    </script>
 </body>
 
 </html>

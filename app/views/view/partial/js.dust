@@ -23,7 +23,7 @@
 
     function loadScript() {
         downloadJSAtOnload('{script.vendorJs}', function () {
-            downloadJSAtOnload('{script.js}', window.initialize || function noop() {});
+            downloadJSAtOnload('{script.js}');
         });
     }
 

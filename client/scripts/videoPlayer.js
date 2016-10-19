@@ -4,13 +4,8 @@
  */
 var videojs = require('video.js');
 var PubSub  = require('pubsub-js');
-var moment = require('moment');
+
 require('slick-carousel');
-require('../../node_modules/slick-carousel/slick/slick.css');
-require('../../node_modules/slick-carousel/slick/slick-theme.css');
-require('../../node_modules/video.js/dist/video-js.css');
-require('../../node_modules/videojs-resolution-switcher/lib/videojs-resolution-switcher.css');
-require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css');
 require('videojs-resolution-switcher');
 require('bootstrap-switch');
 require('./plugins/video-switcher');
@@ -21,13 +16,7 @@ require('./plugins/video-switcher');
 var commentsTpl = require('../templates/videoPlayer/comments.dust');
 var repliesTpl = require('../templates/videoPlayer/replies.dust');
 var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
-var categoriesPartialTpl = require('../templates/videoPlayer/categoriesPartial.dust');
-var videoOwnerPartialTpl = require('../templates/videoPlayer/videoOwnerPartial.dust');
-var videoInfoPartialTpl = require('../templates/videoPlayer/videoInfoPartial.dust');
-var videoUserSlickPartialTpl = require('../templates/videoPlayer/videoUserSlickPartial.dust');
-var videoNextVideosPartialTpl = require('../templates/videoPlayer/videoNextVideosPartial.dust');
 var videoHasMorePartialTpl = require('../templates/videoPlayer/videoHasMorePartial.dust');
-var videoMobileTabPartialTpl = require('../templates/videoPlayer/videoMobileTabPartial.dust');
 
 var AVEventTracker			           = require('./avEventTracker');
 var identity                           = require('./services/identity');
@@ -138,6 +127,21 @@ function mobileTabSwitchHandler(tabName) {
 }
 
 PubSub.subscribe('video-switched', function (msg, data) {
+  require([
+    '../templates/videoPlayer/videoMobileTabPartial.dust',
+    '../templates/videoPlayer/categoriesPartial.dust',
+    '../templates/videoPlayer/videoOwnerPartial.dust',
+    '../templates/videoPlayer/videoInfoPartial.dust',
+    '../templates/videoPlayer/videoUserSlickPartial.dust',
+    '../templates/videoPlayer/videoNextVideosPartial.dust'
+  ], function (
+    videoMobileTabPartialTpl,
+    categoriesPartialTpl,
+    videoOwnerPartialTpl,
+    videoInfoPartialTpl,
+    videoUserSlickPartialTpl,
+    videoNextVideosPartialTpl
+  ) {
     // update the current video object
     video = data;
 
@@ -160,18 +164,18 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
     // stop the count down timer
     if (countDownInterval !== null) {
-        clearInterval(countDownInterval);
-        $('#video-player').find('.video-end-card').removeClass('video-end-card').empty();
+      clearInterval(countDownInterval);
+      $('#video-player').find('.video-end-card').removeClass('video-end-card').empty();
     }
 
     // update video title
     $('.video-player-title').empty().html(video.title);
 
     var getUserProfile = $.ajax({type: 'GET', url: '/api/video/videoOwnerProfile/' + video.userId}),
-        getTopSixVid = $.ajax({type: 'GET', url: '/api/videos/topSixVideos/' + video.userId}),
-        getFollowCount = $.ajax({type: 'GET', url: '/api/videos/followCount/' + video.userId}),
-        getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
-        getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id});
+      getTopSixVid = $.ajax({type: 'GET', url: '/api/videos/topSixVideos/' + video.userId}),
+      getFollowCount = $.ajax({type: 'GET', url: '/api/videos/followCount/' + video.userId}),
+      getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
+      getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id});
 
     // re-init the video slick
     var $videoSlick = $('.video-slick');
@@ -181,86 +185,87 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
     // make parallel requests
     $.when(
-        getUserProfile,
-        getTopSixVid,
-        getFollowCount,
-        getVideoCount,
-        getNextVideos
+      getUserProfile,
+      getTopSixVid,
+      getFollowCount,
+      getVideoCount,
+      getNextVideos
     ).done(function(userData, topSixVidData, followCountData, videoCountData, nextVideosData) {
-        videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
-            $('.next-video-list').empty().prepend(html);
-            lazyLoadImage($('img[data-lazy]', '.next-video-list'));
-        });
+      videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
+        $('.next-video-list').empty().prepend(html);
+        lazyLoadImage($('img[data-lazy]', '.next-video-list'));
+      });
 
-        // mobile tabs
-        videoMobileTabPartialTpl({video: video}, function (err, html) {
-            $('.mobile-tab-container').empty().prepend(html);
-        });
+      // mobile tabs
+      videoMobileTabPartialTpl({video: video}, function (err, html) {
+        $('.mobile-tab-container').empty().prepend(html);
+      });
 
-        // update categories
-        categoriesPartialTpl({video: video}, function (err, html) {
-            $('.video-player-categories').empty().prepend(html);
-        });
+      // update categories
+      categoriesPartialTpl({video: video}, function (err, html) {
+        $('.video-player-categories').empty().prepend(html);
+      });
 
-        // update videoOwner template
-        userData[0].followCount = followCountData[0];
-        userData[0].videoCount = videoCountData[0];
+      // update videoOwner template
+      userData[0].followCount = followCountData[0];
+      userData[0].videoCount = videoCountData[0];
 
-        // top six videos
-        var topSixVid = [];
-        $(topSixVidData[0]).each(function (idx, vid) {
-            if (vid._id.toString() !== data._id) {
-                topSixVid.push(vid);
-            }
-        });
+      // top six videos
+      var topSixVid = [];
+      $(topSixVidData[0]).each(function (idx, vid) {
+        if (vid._id.toString() !== data._id) {
+          topSixVid.push(vid);
+        }
+      });
 
-        // update user video slider
-        videoUserSlickPartialTpl({topVideos: topSixVid, cdnUrl: amazonConfig.CDN_URL, s3Bucket: amazonConfig.OUTPUT_BUCKET}, function (err, html) {
-            $('.video-slick').slick('slickAdd', html);
-        });
+      // update user video slider
+      videoUserSlickPartialTpl({topVideos: topSixVid, cdnUrl: amazonConfig.CDN_URL, s3Bucket: amazonConfig.OUTPUT_BUCKET}, function (err, html) {
+        $('.video-slick').slick('slickAdd', html);
+      });
 
-        // update video owner info
-        videoOwnerPartialTpl({user: userData[0]}, function (err, html) {
-            $('.video-user-container').empty().prepend(html);
+      // update video owner info
+      videoOwnerPartialTpl({user: userData[0]}, function (err, html) {
+        $('.video-user-container').empty().prepend(html);
 
-            videoInfoCheck();
-            setCommentOptions();
-        });
+        videoInfoCheck();
+        setCommentOptions();
+      });
     });
     // update video info
     videoInfoPartialTpl({video: data}, function (err, html) {
-        $('.video-info').empty().prepend(html);
+      $('.video-info').empty().prepend(html);
 
-        if (!browser.isMobile()) {
-            $('.video-info').tooltip({
-                selector: "[data-toggle='tooltip']"
-            });
-        }
+      if (!browser.isMobile()) {
+        $('.video-info').tooltip({
+          selector: "[data-toggle='tooltip']"
+        });
+      }
     });
 
     // get the comments - fire ajax for devices with viewport > 768
     if (browser.getSize().width > 768) {
-        getComments();
+      getComments();
     }
 
     // render the social icons
     videoSocialShareTpl({video: video}, function (err, html) {
-        $('.social-icons-container').empty(html).prepend(html);
-        videoSocialShare.setIconFontSize('sm');
-        videoSocialShare.addClass('vertical-align');
-        videoSocialShare.removeColorOnHover(true);
-        videoSocialShare.initialize(video);
+      $('.social-icons-container').empty(html).prepend(html);
+      videoSocialShare.setIconFontSize('sm');
+      videoSocialShare.addClass('vertical-align');
+      videoSocialShare.removeColorOnHover(true);
+      videoSocialShare.initialize(video);
     });
 
     //slide up function for description
     setTimeout(function() {
-        $('.show-more-description span').removeClass('invisible');
-        $('#video-description').slideUp();
+      $('.show-more-description span').removeClass('invisible');
+      $('#video-description').slideUp();
     }, 5000);
 
     // set the virtual page view tracking
     ga('set', 'page', document.location.pathname);
     ga('send', 'pageview');
+  });
 });
 
 //video increment
@@ -461,18 +466,20 @@ function bindEvents() {
       })
           .done(function(data) {
               var comment = data;
-              comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-              commentsTpl({comments: [comment], canEdit: true}, function (err, html) {
+              require(['moment'], function (moment) {
+                comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+                commentsTpl({comments: [comment], canEdit: true}, function (err, html) {
                   $('.parent-comments').prepend(html);
+                });
+
+                $('#comment-text').val('');
+                var currentCount = $('.comment-count').text();
+                var toNumber = Number(currentCount);
+                $('.comment-count').text('  ' + (toNumber + 1) + '  ');
+
+                fbq('trackCustom', 'comment');
+                ga('send', 'event', 'video page', 'comment', 'commenting video');
               });
-
-              $('#comment-text').val('');
-              var currentCount = $('.comment-count').text();
-              var toNumber = Number(currentCount);
-              $('.comment-count').text('  ' + (toNumber + 1) + '  ');
-
-              fbq('trackCustom', 'comment');
-              ga('send', 'event', 'video page', 'comment', 'commenting video');
           })
           .always(function () {
               $('#commentSave').prop('disabled', false);
@@ -944,26 +951,29 @@ function bindEvents() {
         })
         .done(function(reply) {
           //insert comment on DOM
-          reply.commentDisplayDate = moment(reply.commentCreatedDate).fromNow();
+          require(['moment'], function (moment) {
+            reply.commentDisplayDate = moment(reply.commentCreatedDate).fromNow();
 
-          repliesTpl({replies: [reply], optionHtml: true}, function(error, html) {
-            $(self).parents('.comment-wrap').find('.parentComment').append(html);
+            repliesTpl({replies: [reply], optionHtml: true}, function(error, html) {
+              $(self).parents('.comment-wrap').find('.parentComment').append(html);
+            });
+
+            $('.commentBox').remove();
+            $('.reply').show();
+            var currentCount = $('.commentCount').text();
+            var toNumber = Number(currentCount);
+            $('.commentCount').text('  ' + (toNumber + 1) + '  ');
+
+            fbq('trackCustom', 'video-commented');
+            ga('send', 'event', 'video page', 'video-commented', 'commenting video');
+            AVEventTracker({
+              codeSource: 'videoPlayer',
+              eventName: 'video-commented',
+              eventType: 'browser',
+              videoId: video._id
+            });
           });
 
-          $('.commentBox').remove();
-          $('.reply').show();
-          var currentCount = $('.commentCount').text();
-          var toNumber = Number(currentCount);
-          $('.commentCount').text('  ' + (toNumber + 1) + '  ');
-
-          fbq('trackCustom', 'video-commented');
-          ga('send', 'event', 'video page', 'video-commented', 'commenting video');
-          AVEventTracker({
-            codeSource: 'videoPlayer',
-            eventName: 'video-commented',
-            eventType: 'browser',
-            videoId: video._id
-          });
         });
     });
   }
@@ -1097,6 +1107,7 @@ function getComments() {
         type: 'GET',
         url: '/api/videos/videoComments/' + video._id
     }).done(function(resp) {
+        _removeCommetLoading();
         commentsLoader.addClass('hidden');
 
         $('.video-tab-comments').data('clicked', true);
@@ -1223,18 +1234,31 @@ function updateVideoSrc() {
     ]);
 }
 
-//page init function
-function initialize(videoPath, currentVideo) {
-  video = currentVideo;
-    //set video page
-    $videoPage = $('.video-page');
-    $videoPlayer = $('#video-player');
+function _removeCommetLoading() {
+  var commentSpinner = document.getElementsByClassName('loading-comment-spinner');
+  commentSpinner[0].classList.remove("hidden");
+}
 
+//page init function
+/**
+ *
+ * @param params
+ * @param params.currentVideo
+ * @param params.videoPath
+ */
+function initialize(params) {
+  // load require css
+  // require(['../../node_modules/slick-carousel/slick/slick.css', '../../node_modules/slick-carousel/slick/slick-theme.css']);
+
+  video = params.currentVideo;
+  //set video page
+  $videoPage = $('.video-page');
+  $videoPlayer = $('#video-player');
 
   initialPageLoad = true;
 
   // api routes /drone-video/:videoId/:src
-  videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + videoPath;
+  videoPathSrc = amazonConfig.CDN_URL + '/drone-video/' + params.videoPath;
 
   var vqResUrlParam = browser.getUrlParams('vqres'),
       defaultRes = '300',
