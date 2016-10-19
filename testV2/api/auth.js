@@ -29,9 +29,9 @@ describe('Authorization tests', function() {
      * prereq: existing emailAddress, password
      */
     describe('Valid authorize with an invalid apiVer', function () {
-        it('should return a 400', function (done) {
+        it('should a 400 and invalid api version json', function (done) {
             chai.request(server)
-                .post('/api/auth?apiVer=1.0.1')
+                .post('/api/auth?apiVer=2.0.0')
                 .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
                 .end(function (err, res) {
                     expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
