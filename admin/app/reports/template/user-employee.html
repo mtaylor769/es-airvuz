@@ -1,10 +1,10 @@
 <md-card ng-show="vm.employeeReportInput">
     <md-input-container>
-        <label for="employeeReportStartDate">Start Date</label>
+        <label for="employeeReportStartDate">Start Date (Start Time is set to 12AM of Start Date)</label>
         <input class="form-control" type="text" id="employeeReportStartDate" ng-model="employeeReportStartDate">
     </md-input-container>
     <md-input-container>
-        <label for="employeeReportEndDate">End Date</label>
+        <label for="employeeReportEndDate">End Date (End Time is set to 12AM of End Date, numbers of the date set as end will NOT be included)</label>
         <input class="form-control" type="text" id="employeeReportEndDate" ng-model="employeeReportEndDate">
     </md-input-container>
     <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getEmployeeReport(employeeReportStartDate, employeeReportEndDate)">Employee Report</md-button>

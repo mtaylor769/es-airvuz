@@ -17,8 +17,8 @@ function Reports() {
 
 Reports.prototype.getVideos = function(req, res) {
   var username = req.query.username;
-  var startDate = req.query.startDate;
-  var endDate = req.query.endDate;
+  var startDate = new Date(req.query.startDate);
+  var endDate = new Date(req.query.endDate);
   
   User.getByUserName(username)
     .then(function(user) {
@@ -33,8 +33,8 @@ Reports.prototype.getVideos = function(req, res) {
 
 Reports.prototype.getComments = function(req, res) {
   var username = req.query.username;
-  var startDate = req.query.startDate;
-  var endDate = req.query.endDate;
+  var startDate = new Date(req.query.startDate);
+  var endDate = new Date(req.query.endDate);
 
   User.getByUserName(username)
     .then(function(user) {
@@ -47,8 +47,8 @@ Reports.prototype.getComments = function(req, res) {
 
 Reports.prototype.employeeContributor = function(req, res) {
   var usersArray = [];
-  var startDate = req.body.startDate;
-  var endDate = req.body.endDate;
+  var startDate = new Date(req.body.startDate);
+  var endDate = new Date(req.body.endDate);
   return User.getEmployeeContributor()
       .then(function(users) {
         return Promise.map(users, function (user) {
@@ -256,8 +256,8 @@ Reports.prototype.userHashtag = function(req, res) {
 };
 
 Reports.prototype.siteInfo = function(req, res) {
-  var endDate = req.query.endDate;
-  var startDate = req.query.startDate;
+  var endDate = new Date(req.query.endDate);
+  var startDate = new Date(req.query.startDate);
   var promises = [
     User.totalUsersByEndDate(endDate),
     Videos.totalVideosByEndDate(endDate),
