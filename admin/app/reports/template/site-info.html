@@ -1,10 +1,10 @@
 <md-card ng-show="vm.siteInfoInput">
     <md-input-container>
-        <label for="siteInfoStartDate">Start Date</label>
+        <label for="siteInfoStartDate">Start Date (Start Time is set to 12AM of Start Date)</label>
         <input class="form-control" type="text" id="siteInfoStartDate" ng-model="vm.siteInfoStartDate">
     </md-input-container>
     <md-input-container>
-        <label for="siteInfoEndDate">End Date</label>
+        <label for="siteInfoEndDate">End Date (End Time is set to 12AM of End Date, numbers of the date set as end will NOT be included)</label>
         <input class="form-control" type="text" id="siteInfoEndDate" ng-model="vm.siteInfoEndDate">
     </md-input-container>
     <md-button class="btn btn-primary pull-right m-t-15" ng-click="vm.getSiteInfo(vm.siteInfoStartDate, vm.siteInfoEndDate)">Site Information</md-button>
