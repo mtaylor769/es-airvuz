@@ -1,3 +1,9 @@
+var isSSL = window.location.protocol === 'https:';
+
+if (!isSSL && window.location.hostname !== 'localhost') {
+  window.location.href = 'https://' + window.location.host + window.location.pathname;
+}
+
 require('jquery');
 require('bootstrap');
 require('../../node_modules/bootstrap/dist/css/bootstrap.css');
