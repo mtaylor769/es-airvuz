@@ -34,7 +34,7 @@ function getVideos(req, res) {
   var username = req.query.username;
   var startDate = req.query.startDate;
   var endDate = req.query.endDate;
-  
+
   userCrud1_0_0.getByUserName(username)
     .then(function(user) {
       logger.debug(user);
@@ -43,7 +43,7 @@ function getVideos(req, res) {
     .then(function(videos) {
       res.send(videos)
     })
-  
+
 }
 /**
  * route: GET /api/reports/comments
