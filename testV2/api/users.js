@@ -88,7 +88,7 @@ describe('Users API tests', function () {
             });
         });
         describe('Request a password reset', function () {
-            it('should return an OK within 3 seconds', function (done) {
+            it('should return an OK', function (done) {
                 chai.request(server)
                     .post('/api/users/password-reset' + apiVer)
                     .set('Content-Type', 'application/json')
