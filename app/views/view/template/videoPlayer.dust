@@ -2,7 +2,7 @@
 <html view="app.views.view.template.videoPlayer">
     <head>
         <meta http-equiv="Cache-control" content="public" />
-        <title>{video.title} | Drone Video | AirVūz</title>
+        <title>{video.title} Drone Video | AirVūz</title>
 
         <meta property="og:url" content="{url}video/{video._id}"/>
         <meta property="og:type" content="video.other" />
