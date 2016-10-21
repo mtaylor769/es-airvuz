@@ -22,6 +22,7 @@ function Slide() {}
  * route: PROTECTED POST /api/slide
  * @param req
  * @param res
+ * TODO If you POST to api/slide with no form fields it still creates a slide
  */
 function post(req, res) {
   slideCrud1_0_0
@@ -61,6 +62,7 @@ function get(req, res) {
  * @param req
  * @param res
  * @returns {*}
+ * TODO update so slide Id is taken from params not body
  */
 function put(req, res) {
   return slideCrud1_0_0

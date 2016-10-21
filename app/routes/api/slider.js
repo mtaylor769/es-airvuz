@@ -62,7 +62,7 @@ function get(req, res) {
     var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
-        slider1_0_0.search(req, res);
+        slider1_0_0.get(req, res);
     }
     else {
         incorrectVer(req,res);
