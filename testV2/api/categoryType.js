@@ -35,7 +35,7 @@ describe('Category Type API tests', function() {
         });
     });
     describe('Category API tests no apiVer', function() {
-        var apiVer = '';
+        var apiVer = 'apiVer=';
         describe('Create a category', function() {
           it('should create a category and return json with inserted data', function(done) {
               chai.request(server)
