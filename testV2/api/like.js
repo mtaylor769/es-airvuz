@@ -180,9 +180,8 @@ describe('Like API tests', function() {
                         '}'
                     })
                     .end(function (err, res) {
-                        var data = res.body;
                         expect(res).to.have.status(400);
-                        expect(data).to.have.property("error", "invalid api version")
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -208,9 +207,8 @@ describe('Like API tests', function() {
                         '}'
                     })
                     .end(function (err, res) {
-                        var data = res.body;
                         expect(res).to.have.status(400);
-                        expect(data).to.have.property("error", "invalid api version")
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
