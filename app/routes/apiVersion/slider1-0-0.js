@@ -69,7 +69,7 @@ function put(req, res) {
     .then(function (slider) {
       res.json(slider);
     });
-}
+1}
 /**
  * route: PROTECTED DELETE /api/slider/:id
  * @param req
