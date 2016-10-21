@@ -48,7 +48,6 @@ CategoryModel.prototype.getData = function(params) {
 		'following-drone-videos': 'Following Drone Videos'
 	};
 	params.data = {};
-	params.data.title = "AirVūz – Category";
 	params.data.s3Bucket = amazonConfig.OUTPUT_BUCKET;
 
 	// Only category can sort
@@ -118,6 +117,8 @@ CategoryModel.prototype.getData = function(params) {
 			if (currentCategory === 'featured-drone-videos' || currentCategory === 'staff-picks-drone-videos') {
 				params.data.showLoadMore = false;
 			}
+
+			params.data.title = "AirVūz – " + params.data.category.name;
 			return params;
 		})
 		.catch(function(error) {

@@ -36,7 +36,6 @@ util.inherits(CustomCategoryModel, BaseModel);
 CustomCategoryModel.prototype.getData = function(params) {
     //config params
     params.data = {};
-    params.data.title = 'AirVūz - Category';
     params.data.s3_OUTPUT_Bucket = amazonConfig.OUTPUT_URL;
     params.data.s3Bucket = amazonConfig.OUTPUT_BUCKET;
     params.data.s3_ASSET_Bucket = amazonConfig.ASSET_URL;
@@ -57,9 +56,11 @@ CustomCategoryModel.prototype.getData = function(params) {
             return videoCrud.getById(params.data.category.displayVideo)
               .then(function(video) {
                 params.data.displayVideoSrc = amazonConfig.OUTPUT_URL + video.thumbnailPath;
+                params.data.title = 'AirVūz - ' + params.data.category.name;
                 return params;
               })
           } else {
+            params.data.title = 'AirVūz - ' + params.data.category.name;
             return params;
           }
         })
