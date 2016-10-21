@@ -31,18 +31,18 @@ function Reports() {
  * @param res
  */
 function getVideos(req, res) {
-  var username = req.query.username;
-  var startDate = req.query.startDate;
-  var endDate = req.query.endDate;
+    var username = req.query.username;
+    var startDate = new Date(req.query.startDate);
+    var endDate = new Date(req.query.endDate);
 
-  userCrud1_0_0.getByUserName(username)
-    .then(function(user) {
-      logger.debug(user);
-      return videoCrud1_0_0.getByUserAndDate(user._id, startDate, endDate)
-    })
-    .then(function(videos) {
-      res.send(videos)
-    })
+    userCrud1_0_0.getByUserName(username)
+        .then(function(user) {
+            logger.debug(user);
+            return videoCrud1_0_0.getByUserAndDate(user._id, startDate, endDate)
+        })
+        .then(function(videos) {
+            res.send(videos)
+        })
 
 }
 /**
@@ -51,17 +51,17 @@ function getVideos(req, res) {
  * @param res
  */
 function getComments(req, res) {
-  var username = req.query.username;
-  var startDate = req.query.startDate;
-  var endDate = req.query.endDate;
+    var username = req.query.username;
+    var startDate = new Date(req.query.startDate);
+    var endDate = new Date(req.query.endDate);
 
-  userCrud1_0_0.getByUserName(username)
-    .then(function(user) {
-      return commentCrud1_0_0.getByUserAndDate(userCrud1_0_0._id, startDate, endDate)
-    })
-    .then(function(comments) {
-      res.json({commentCount: comments});
-    })
+    userCrud1_0_0.getByUserName(username)
+        .then(function(user) {
+            return commentCrud1_0_0.getByUserAndDate(user._id, startDate, endDate)
+        })
+        .then(function(comments) {
+            res.json({commentCount: comments});
+        })
 }
 /**
  * route: POST /api/reports/employee-contributor
@@ -124,15 +124,15 @@ function hashTag(req, res) {
         .then(function(commentAggregate) {
             return Promise.map(commentAggregate, function(comment) {
                 var userHasLike = [];
-                    return Promise.map(comment.users, function(user) {
-                        return videoLikeCrud1_0_0.findByUserIdAndVideoId(user.userId, comment.video)
-                            .then(function(like) {
-                                if(like) {
-                                    user.like = like;
-                                    userHasLike.push(user);
-                                }
-                            })
-                    })
+                return Promise.map(comment.users, function(user) {
+                    return videoLikeCrud1_0_0.findByUserIdAndVideoId(user.userId, comment.video)
+                        .then(function(like) {
+                            if(like) {
+                                user.like = like;
+                                userHasLike.push(user);
+                            }
+                        })
+                })
                     .then(function() {
                         comment.users = userHasLike;
                         if(comment.users.length > 0) {
@@ -160,9 +160,9 @@ function hashTag(req, res) {
                             return;
                         }
                     })
-                    .then(function() {
-                        aggregateHasFollow.push(comment);
-                    });
+                        .then(function() {
+                            aggregateHasFollow.push(comment);
+                        });
                 } else {
                     return Promise.map(comment.users, function (user) {
                         if(user.like.videoOwnerId) {
@@ -214,7 +214,7 @@ function userHashtag(req, res) {
         .then(function(users) {
             return Promise.map(users, function(user) {
                 user.comment = _.uniqBy(user.comment, function(comment){
-                  return JSON.stringify(comment.videoId);
+                    return JSON.stringify(comment.videoId);
                 });
                 return Promise.map(user.comment, function(comment) {
                     return videoLikeCrud1_0_0.findByUserIdAndVideoId(user._id, comment.videoId)
@@ -304,16 +304,16 @@ function siteInfo(req, res) {
     userCrud1_0_0.newUserList(startDate, endDate)
   ];
 
-  Promise.all(promises)
-    .spread(function (totalUsers, totalVideos, newUsersCount, newVideos, newUsersList) {
-      res.json({
-        title: 'Site Info',
-        totalUsers: totalUsers,
-        totalVideos: totalVideos,
-        newUsersCount: newUsersCount,
-        newVideos: newVideos,
-        newUsersList: newUsersList});
-    });
+    Promise.all(promises)
+        .spread(function (totalUsers, totalVideos, newUsersCount, newVideos, newUsersList) {
+            res.json({
+                title: 'Site Info',
+                totalUsers: totalUsers,
+                totalVideos: totalVideos,
+                newUsersCount: newUsersCount,
+                newVideos: newVideos,
+                newUsersList: newUsersList});
+        });
 }
 /**
  *
@@ -351,13 +351,12 @@ function top100Views(req, res) {
             })
         })
         .then(function(videos) {
-           res.json(videos);
+            res.json(videos);
         })
         .catch(function(error) {
           logger.error(error);
             res.sendStatus(500);
         });
-
 }
 /**
  * route: GET /api/reports/video-percentage
