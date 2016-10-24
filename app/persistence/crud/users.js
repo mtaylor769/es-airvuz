@@ -189,7 +189,7 @@ users.prototype.validateCreateUser = function(params) {
 };
 
 
-var ValidateUserName = function(id, params) {
+var 	ValidateUserName = function(id, params) {
 	var sourceLocation				= "persistence.crud.Users.update";
 	var errorMessage					= new ErrorMessage();
 
@@ -238,23 +238,27 @@ var ValidateEmailAddress = function(id, params) {
 		if (params.emailAddress) {
 			UserModel.findOne({emailAddress : params.emailAddress})
 			.then(function(user){
-				if (user._doc._id !== id) {
-					var errors = errorMessage.getErrorMessage({
-						statusCode			: "400",
-						errorId					: "VALIDA1000",
-						templateParams	: {
-							name : "emailAddress"
-						},
-						sourceError			: "#email",
-						displayMsg			: "Email already exists",
-						errorMessage		: "Email already exists",
-						sourceLocation	: sourceLocation
-					});
-					reject(errors);
-					return;
+				if(user) {
+					if (user._id !== id) {
+						var errors = errorMessage.getErrorMessage({
+							statusCode			: "400",
+							errorId					: "VALIDA1000",
+							templateParams	: {
+								name : "emailAddress"
+							},
+							sourceError			: "#email",
+							displayMsg			: "Email already exists",
+							errorMessage		: "Email already exists",
+							sourceLocation	: sourceLocation
+						});
+						reject(errors);
+						return;
+					}
+					return resolve();
+				} else {
+					return resolve();
 				}
-				return resolve();
-			})
+				})
 			.catch(function(error) {
 				reject(error);
 				return;
@@ -365,7 +369,6 @@ users.prototype.create = function(params) {
 	var validation 				= this.validateCreateUser(params);
 	return validation.then(function (userInfo) {
 		if(userInfo.errors) {
-			console.log(userInfo.errors);
 			throw userInfo.errors;
 		} else {
 			// Persist
@@ -545,7 +548,6 @@ users.prototype.remove = function(id) {
 users.prototype.update = function (id, params) {
 	var currentTransaction = this;
 	return(new Promise(function(resolve, reject){
-
 		var validate = currentTransaction.validateUpdateUser(id, params);
 		validate.then(function(validation) {
 			if(validation.errors) {
@@ -684,8 +686,6 @@ users.prototype.addAclRole = function(userId, role) {
 };
 
 users.prototype.removeAclRole = function(userId, role) {
-	console.log(userId);
-	console.log(role);
 	return UserModel.findByIdAndUpdate(userId, {$pull: {aclRoles: role}}, {new: true}).exec();
 		// .then(function(user) {
 		// 	return user.save();
