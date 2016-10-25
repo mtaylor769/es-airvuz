@@ -19,7 +19,7 @@ VideoCuration.prototype.rating = function(req, res) {
     queryObject.update = {};
     queryObject.update.curation = {};
     queryObject.id = videoId;
-    queryObject.update.internalRanking = internalRanking;
+    queryObject.internalRanking = internalRanking;
     queryObject.update.curation.isRanked = true;
 
     //run if initial Video

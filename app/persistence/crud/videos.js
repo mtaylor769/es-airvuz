@@ -381,7 +381,13 @@ Videos.prototype.updateVideoFieldCounts = function(params) {
 };
 
 Videos.prototype.videoCurationUpdate = function(params) {
-	return VideoModel.findByIdAndUpdate(params.id, params.update).exec()
+	return VideoModel.findByIdAndUpdate(params.id, {$push: {internalRanking: params.internalRanking}}, {upsert: true}).then(function() {
+		if(params.update) {
+			return VideoModel.findByIdAndUpdate(params.id, params.update).exec();
+		} else {
+			return;
+		}
+	});
 };
 
 Videos.prototype.like = function(video, like) {
