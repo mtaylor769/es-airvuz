@@ -168,7 +168,7 @@ var videoSchema = mongoose.Schema({
 		isSeoTagged: Boolean
 	},
 
-	internalRanking: Number,
+	internalRanking: [],
 
 	internalTags: [String],
 
