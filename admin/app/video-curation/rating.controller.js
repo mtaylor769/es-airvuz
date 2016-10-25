@@ -65,6 +65,8 @@
                 .then(function(video) {
                     vm.video = video;
                     vm.keywords = video.tags;
+                    vm.internalKeywords = video.internalTags;
+                    vm.seoKeywords = video.seoTags;
                     if(video.curation) {
                         vm.curated = true;
                     } else {
