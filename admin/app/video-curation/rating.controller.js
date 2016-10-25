@@ -65,6 +65,11 @@
                 .then(function(video) {
                     vm.video = video;
                     vm.keywords = video.tags;
+                    if(video.curation) {
+                        vm.curated = true;
+                    } else {
+                        vm.curated = false;
+                    }
                     vm.userInputId = '';
                     clearSelection();
                     setVideoPlayerConfig();
@@ -92,6 +97,11 @@
                         vm.internalKeywords = video.internalTags;
                         vm.seoKeywords = video.seoTags;
                         vm.ratingRequired = false;
+                        if(video.curation) {
+                            vm.curated = true;
+                        } else {
+                            vm.curated = false;
+                        }
                         clearSelection();
                         setVideoPlayerConfig();
                     })

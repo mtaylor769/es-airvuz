@@ -166,3 +166,7 @@ tr:nth-child(even) {
 .card-list {
     list-style: none;
 }
+
+.warning {
+    color: red;
+}
