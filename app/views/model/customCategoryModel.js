@@ -11,9 +11,9 @@ try {
     //internal code references
     var BaseModel               = require('./baseModel');
     var amazonConfig            = require('../../config/amazon.config');
-    var videoCollectionCrud     = require('../../persistence/crud/videoCollection');
-    var categoryCrud            = require('../../persistence/crud/categoryType');
-    var videoCrud               = require('../../persistence/crud/videos');
+    var videoCollectionCrud     = require('../../persistence/crud/videoCollection1-0-0');
+    var categoryCrud            = require('../../persistence/crud/categoryType1-0-0');
+    var videoCrud               = require('../../persistence/crud/videos1-0-0');
 
     //set logger level based on Node environment
     if(global.NODE_ENV === 'production') {
