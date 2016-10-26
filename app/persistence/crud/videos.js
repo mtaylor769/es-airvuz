@@ -489,7 +489,7 @@ Videos.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
 };
 
 Videos.prototype.getNextVideoToRate = function() {
-	return VideoModel.find({'curation.isRanked' : null}).sort({viewCount: -1}).limit(1).exec();
+	return VideoModel.find({'curation.isRanked' : null}).sort({viewCount: -1}).limit(1).populate('categories').exec();
 };
 
 Videos.prototype.getRecentVideos 		= getRecentVideos;

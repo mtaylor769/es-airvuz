@@ -5,9 +5,11 @@
         .module('AirvuzAdmin')
         .controller('ratingController', ratingController);
 
-    ratingController.$inject = ['$http', 'Videos', 'Amazon'];
+    ratingController.$inject = ['$http', 'Videos', 'Amazon', 'CategoryType'];
 
-    function ratingController($http, Videos, Amazon) {
+    function ratingController($http, Videos, Amazon, CategoryType) {
+        getCategories();
+
         // settings for rating stars
         var $one = $('.one'),
             $two = $('.two'),
@@ -87,6 +89,7 @@
                 var data = {};
                 data.internalTags = vm.internalKeywords;
                 data.seoKeywords = vm.seoKeywords;
+                data.categories = vm.video.categories;
                 data.videoId = vm.video._id;
                 data.internalRanking = vm.ratingSelection;
                 if(!data.internalRanking) {
@@ -114,6 +117,7 @@
                 $http.post('/api/video-curation', data).then(function(response) {
                     var video = response.data[0];
                     vm.video = video;
+                    categoryCheck(vm.video.categories);
                     vm.keywords = video.tags;
                     vm.ratingRequired = false;
                     setVideoPlayerConfig();
@@ -216,11 +220,51 @@
             clearSelected();
         });
 
+        function getCategories() {
+            CategoryType.query()
+              .$promise
+              .then(function(categories) {
+                  vm.categories = categories;
+              })
+        }
+
+        function removeCategory(category) {
+            var index = vm.video.categories.indexOf(category);
+            var addCategory = vm.video.categories.splice(index, 1);
+            vm.categories.push(addCategory[0]);
+            vm.categoryType = '';
+            if(vm.video.categories.length < 3) {
+                vm.catLimitReached = false;
+            }
+        }
+
+        function addCategory(category) {
+            if(vm.video.categories.length < 3) {
+                var newCategory = JSON.parse(category);
+                vm.video.categories.push(newCategory);
+                categoryCheck(vm.video.categories);
+            } else {
+                vm.catLimitReached = true;
+            }
+        }
+
+        function categoryCheck(categories) {
+            categories.forEach(function(category) {
+                vm.categories.forEach(function(vmCat, index) {
+                    if(category._id === vmCat._id) {
+                        vm.categories.splice(index, 1);
+                    }
+                });
+            });
+        }
+
         /////////////////////
         var vm = this;
         vm.getKeywords = getKeywords;
         vm.userInputVideo = userInputVideo;
         vm.updateVideoAndGetNext = updateVideoAndGetNext;
+        vm.removeCategory = removeCategory;
+        vm.addCategory = addCategory;
         vm.ratingSelection = null;
 
 

@@ -10,6 +10,7 @@ VideoCuration.prototype.rating = function(req, res) {
     var rawInternalTags     = req.body.internalTags || [];
     var rawSeoTags          = req.body.seoKeywords || [];
     var videoId             = req.body.videoId;
+    var videoCategories     = req.body.categories;
     var internalRanking     = req.body.internalRanking;
     var initialVideo        = req.body.initialVideo;
     var waitFor;
@@ -18,6 +19,7 @@ VideoCuration.prototype.rating = function(req, res) {
     var queryObject = {};
     queryObject.update = {};
     queryObject.update.curation = {};
+    queryObject.update.categories = videoCategories;
     queryObject.id = videoId;
     queryObject.internalRanking = internalRanking;
     queryObject.update.curation.isRanked = true;
