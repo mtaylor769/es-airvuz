@@ -138,6 +138,26 @@ function _cleanUpReupload(body) {
   return body;
 }
 
+function removeVideo(req, res) {
+  VideoCrud.getById(req.params.id)
+    .then(function (currentVideo) {
+      return isVideoOwner(currentVideo, req.user) || isAllowedToDeleteVideo(req.user);
+    })
+    .then(function (isAllowed) {
+      if (!isAllowed) {
+        return Promise.reject('Not allowed to delete video');
+      }
+      return VideoCrud
+        .remove(req.params.id);
+    })
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function () {
+      res.sendStatus(500);
+    });
+}
+
 Video.prototype.post = function(req, res) {
   Promise.resolve(req.body)
     .then(_uploadCustomThumbnail)
@@ -190,16 +210,24 @@ Video.prototype.put = function(req, res) {
     });
 };
 
-Video.prototype.delete = function(req, res) {
-  VideoCrud
-    .remove(req.params.id)
-    .then(function(video) {
-      res.sendStatus(200);
-    })
-    .catch(function (error) {
-      res.sendStatus(500);
-    });
-};
+/**
+ * check if video is same as current user
+ * @param video
+ * @param user
+ * @returns {boolean}
+ */
+function isVideoOwner(video, user) {
+  return video.userId.toString() === user._id.toString();
+}
+
+/**
+ * user have to have the roles of root, video-root, and video-admin to delete video
+ * @param user
+ * @returns {boolean}
+ */
+function isAllowedToDeleteVideo(user) {
+  return user.aclRoles.indexOf('root') > -1 || user.aclRoles.indexOf('video-root') > -1 || user.aclRoles.indexOf('video-admin') > -1;
+}
 
 Video.prototype.like = function(req, res) {
   VideoCrud
@@ -490,6 +518,7 @@ Video.prototype.getCommentsByVideoId = function(req, res) {
 
 Video.prototype.getVideosByCategory = getVideosByCategory;
 Video.prototype.search = search;
+Video.prototype.delete = removeVideo;
 
 module.exports = new Video();
 
