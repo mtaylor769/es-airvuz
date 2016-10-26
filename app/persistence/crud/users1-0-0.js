@@ -188,7 +188,7 @@ users.prototype.validateCreateUser = function (params) {
 };
 
 
-    var ValidateUserName = function (id, params) {
+var ValidateUserName = function (id, params) {
     var sourceLocation = "persistence.crud.Users.update";
     var errorMessage = new ErrorMessage();
 
@@ -233,40 +233,36 @@ var ValidateEmailAddress = function (id, params) {
     var sourceLocation = "persistence.crud.Users.update";
     var errorMessage = new ErrorMessage();
 
-	return(new Promise(function(resolve, reject) {
-		if (params.emailAddress) {
-			UserModel.findOne({emailAddress : params.emailAddress})
-			.then(function(user){
-				if(user) {
-					if (user._id !== id) {
-						var errors = errorMessage.getErrorMessage({
-							statusCode			: "400",
-							errorId					: "VALIDA1000",
-							templateParams	: {
-								name : "emailAddress"
-							},
-							sourceError			: "#email",
-							displayMsg			: "Email already exists",
-							errorMessage		: "Email already exists",
-							sourceLocation	: sourceLocation
-						});
-						reject(errors);
-						return;
-					}
-					return resolve();
-				} else {
-					return resolve();
-				}
-				})
-			.catch(function(error) {
-				reject(error);
-				return;
-			});
-		} else {
-			resolve();
-			return;
-		}
-		}));
+    return (new Promise(function (resolve, reject) {
+        if (params.emailAddress) {
+            UserModel.findOne({emailAddress: params.emailAddress})
+                .then(function (user) {
+                    if (user._doc._id !== id) {
+                        var errors = errorMessage.getErrorMessage({
+                            statusCode: "400",
+                            errorId: "VALIDA1000",
+                            templateParams: {
+                                name: "emailAddress"
+                            },
+                            sourceError: "#email",
+                            displayMsg: "Email already exists",
+                            errorMessage: "Email already exists",
+                            sourceLocation: sourceLocation
+                        });
+                        reject(errors);
+                        return;
+                    }
+                    return resolve();
+                })
+                .catch(function (error) {
+                    reject(error);
+                    return;
+                });
+        } else {
+            resolve();
+            return;
+        }
+    }));
 };
 
 var ValidatePassword = function (id, params) {
@@ -363,26 +359,27 @@ users.prototype.validateUpdateUser = function (id, params) {
 /*
  * Create a new Users document.
  */
-users.prototype.create = function(params) {
-	logger.debug('made it into user create');
-	var validation 				= this.validateCreateUser(params);
-	return validation.then(function (userInfo) {
-		if(userInfo.errors) {
-			throw userInfo.errors;
-		} else {
-			// Persist
-			var saveUser = new UserModel(userInfo.data);
-			if (params.social) {
-				saveUser.userNameDisplay = saveUser._id;
-				saveUser.userNameUrl = saveUser._id;
-			}
-			if (saveUser.password) {
-				logger.debug('hash password');
-				saveUser.password = UserModel.generateHash(saveUser.password);
-			}
-			return saveUser.save();
-		}
-	});
+users.prototype.create = function (params) {
+    logger.debug('made it into user create');
+    var validation = this.validateCreateUser(params);
+    return validation.then(function (userInfo) {
+        if (userInfo.errors) {
+            console.log(userInfo.errors);
+            throw userInfo.errors;
+        } else {
+            // Persist
+            var saveUser = new UserModel(userInfo.data);
+            if (params.social) {
+                saveUser.userNameDisplay = saveUser._id;
+                saveUser.userNameUrl = saveUser._id;
+            }
+            if (saveUser.password) {
+                logger.debug('hash password');
+                saveUser.password = UserModel.generateHash(saveUser.password);
+            }
+            return saveUser.save();
+        }
+    });
 };
 
 /*
@@ -434,44 +431,44 @@ users.prototype.getUserById = function (userId) {
         validation.errors = errorMessage;
     }
 
-	return(new Promise(function(resolve, reject){
-		if (validation.userId === null) {
-			reject(validation.errors);
-		} else {
-			UserModel.findOne({_id : validation.userId})
-				.select('aclRoles emailAddress userNameDisplay userNameUrl lastName firstName profilePicture autoPlay coverPicture aboutMe status allowHire allowDonation socialMediaLinks isSubscribeAirVuzNews')
-				.lean()
-				.then(function (user) {
-					if(user.profilePicture.indexOf('http') > -1){
-						user.externalLink = true;
-					} else if(user.profilePicture === '') {
-						return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
-							.then(function (social) {
-								if(social) {
-									user.externalLink = true;
-									user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=large';
-								}
-								return user;
-							});
-					}
-					return user;
-				})
-				.then(function(user) {
-					resolve(user)
-				})
-				.catch(function (error) {
-					var errorMessage		= new ErrorMessage();
-					errorMessage.getErrorMessage({
-						statusCode			: "500",
-						errorId 				: "PERS1000",
-						errorMessage 		: "Failed while getting user by Id",
-					  sourceError			:  error,
-						sourceLocation	: "persistence.crud.Users.getAllAusers"
-					});
-					reject(errorMessage.getErrors());
-				})
-		}
-	}));
+    return (new Promise(function (resolve, reject) {
+        if (validation.userId === null) {
+            reject(validation.errors);
+        } else {
+            UserModel.findOne({_id: validation.userId})
+                .select('aclRoles emailAddress userNameDisplay userNameUrl lastName firstName profilePicture autoPlay')
+                .lean()
+                .then(function (user) {
+                    if (user.profilePicture.indexOf('http') > -1) {
+                        user.externalLink = true;
+                    } else if (user.profilePicture === '') {
+                        return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
+                            .then(function (social) {
+                                if (social) {
+                                    user.externalLink = true;
+                                    user.profilePicture = '//graph.facebook.com/' + social.accountId + '/picture?type=large';
+                                }
+                                return user;
+                            });
+                    }
+                    return user;
+                })
+                .then(function (user) {
+                    resolve(user)
+                })
+                .catch(function (error) {
+                    var errorMessage = new ErrorMessage();
+                    errorMessage.getErrorMessage({
+                        statusCode: "500",
+                        errorId: "PERS1000",
+                        errorMessage: "Failed while getting user by Id",
+                        sourceError: error,
+                        sourceLocation: "persistence.crud.Users.getAllAusers"
+                    });
+                    reject(errorMessage.getErrors());
+                })
+        }
+    }));
 };
 
 /*
@@ -551,41 +548,42 @@ users.prototype.remove = function (id) {
  * @param params
  */
 users.prototype.update = function (id, params) {
-	var currentTransaction = this;
-	return(new Promise(function(resolve, reject){
-		var validate = currentTransaction.validateUpdateUser(id, params);
-		validate.then(function(validation) {
-			if(validation.errors) {
-				reject(validation.errors);
-				return;
-			} else {
-				if (params.userNameDisplay) {
-					// update the userNameUrl also
-					params.userNameUrl = UserModel.purgeUserNameDisplay(params.userNameDisplay);
-				}
-				if (params.oldPassword) {
-					var hashUser 			= new UserModel();
-					var pw 						= UserModel.generateHash(params.newPassword);
-					delete params.oldPassword;
-					delete params.newPassword;
-					delete params.confirmPassword;
-					params.password 	= pw;
-				}
-				UserModel.findByIdAndUpdate(id, params, {new: true}).populate('SocialMediaLinks').exec()
-				.then(function(user) {
-					if (user._doc.password) {
-						user._doc.password = null;
-					}
-					resolve(user);
-					return;
-				});
-			}
-		})
-		.catch(function(error){
-			reject(error);
-			return;
-		});
-	}));
+    var currentTransaction = this;
+    return (new Promise(function (resolve, reject) {
+
+        var validate = currentTransaction.validateUpdateUser(id, params);
+        validate.then(function (validation) {
+            if (validation.errors) {
+                reject(validation.errors);
+                return;
+            } else {
+                if (params.userNameDisplay) {
+                    // update the userNameUrl also
+                    params.userNameUrl = UserModel.purgeUserNameDisplay(params.userNameDisplay);
+                }
+                if (params.oldPassword) {
+                    var hashUser = new UserModel();
+                    var pw = UserModel.generateHash(params.newPassword);
+                    delete params.oldPassword;
+                    delete params.newPassword;
+                    delete params.confirmPassword;
+                    params.password = pw;
+                }
+                UserModel.findByIdAndUpdate(id, params, {new: true}).populate('SocialMediaLinks').exec()
+                    .then(function (user) {
+                        if (user._doc.password) {
+                            user._doc.password = null;
+                        }
+                        resolve(user);
+                        return;
+                    });
+            }
+        })
+            .catch(function (error) {
+                reject(error);
+                return;
+            });
+    }));
 };
 
 /*
@@ -690,11 +688,13 @@ users.prototype.addAclRole = function (userId, role) {
     return UserModel.findByIdAndUpdate(userId, {$addToSet: {aclRoles: role}}, {new: true}).exec();
 };
 
-users.prototype.removeAclRole = function(userId, role) {
-	return UserModel.findByIdAndUpdate(userId, {$pull: {aclRoles: role}}, {new: true}).exec();
-		// .then(function(user) {
-		// 	return user.save();
-		// })
+users.prototype.removeAclRole = function (userId, role) {
+    console.log(userId);
+    console.log(role);
+    return UserModel.findByIdAndUpdate(userId, {$pull: {aclRoles: role}}, {new: true}).exec();
+    // .then(function(user) {
+    // 	return user.save();
+    // })
 };
 
 function updateRoles(params) {

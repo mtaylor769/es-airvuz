@@ -11,10 +11,9 @@ try {
 	var videoCrud1_0_0     	= require('../../persistence/crud/videos1-0-0');
 	var usersCrud1_0_0      = require('../../persistence/crud/users1-0-0');
 	var socialCrud			= require('../../persistence/crud/socialMediaAccount');
-	var commentCrud1_0_0   	= require('../../persistence/crud/comment1-0-0');
+	var followCrud			= require('../../persistence/crud/follow');
 	var videoLikeCrud1_0_0 	= require('../../persistence/crud/videoLike1-0-0');
 	var catTypeCrud1_0_0  	= require('../../persistence/crud/categoryType1-0-0');
-	var followCrud			= require('../../persistence/crud/follow1-0-0');
 	var amazonConfig  		= require('../../config/amazon.config');
 	var config				= require('../../../config/config')[global.NODE_ENV];
 
@@ -117,30 +116,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 		})
 		.then(function(likeBoolean) {
 			dataObject.likeBoolean = likeBoolean;
-			return commentCrud1_0_0.getParentCommentByVideoId({videoId: videoId});
-		})
-		.then(function (comments) {
-			return Promise.map(comments, function (comment) {
-				comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-				comment.showReplies = comment.replyCount > 0;
-
-				if (comment.userId !== null) {
-					return socialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
-						.then(function (social) {
-							socialCrud.setProfilePicture(social, comment.userId);
-							return comment;
-						});
-				}
-
-				comment.userId = {};
-				comment.userId.profilePicture = '/client/images/default.png';
-
-				return comment;
-			});
-		})
-		.then(function (comments) {
-			dataObject.comments = comments;
-			dataObject.hasMoreComments = dataObject.video.commentCount > comments.length;
 			return catTypeCrud1_0_0.get();
 		})
 		.then(function(categories) {

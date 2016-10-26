@@ -60,18 +60,18 @@ describe('Comment API Tests', function() {
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
                     // TODO Send JSON instead of JSON in a string
                     .send({data: '{' +
-                        '"comment": {' +
-                        '"videoId":"' + videoId + '",' +
-                        '"comment":"' + comment + '",' +
-                        '"userId":"' + userId + '"' +
+                    '"comment": {' +
+                    '"videoId":"' + videoId + '",' +
+                    '"comment":"' + comment + '",' +
+                    '"userId":"' + userId + '"' +
                     '},' +
-                        '"notification": {' +
-                        '"notificationType":"COMMENT",' +
-                        '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
-                        '"notificationMessage":"test",' +
-                        '"videoId":"'+ videoId +'",' +
-                        '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
-                        '}' +
+                    '"notification": {' +
+                    '"notificationType":"COMMENT",' +
+                    '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
+                    '"notificationMessage":"test",' +
+                    '"videoId":"'+ videoId +'",' +
+                    '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
+                    '}' +
                     '}'
                     })
                     .end(function (err, res) {
@@ -121,19 +121,18 @@ describe('Comment API Tests', function() {
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
                     .send({data: '{' +
-                        '"comment": {' +
-                        '"videoId":"' + videoId + '",' +
-                        '"comment":"' + replyComment + '",' +
-                        '"parentCommentId":"'+ parentCommentId + '",' +
-                        '"userId":"' + userId + '"' +
-                    '},' +
-                        '"notification": {' +
-                        '"notificationType":"COMMENT",' +
-                        '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
-                        '"notificationMessage":"test",' +
-                        '"videoId":"'+ videoId +'",' +
-                        '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
-                        '}' +
+                    '"comment": {' +
+                    '"videoId":"' + videoId + '",' +
+                    '"comment":"' + replyComment + '",' +
+                    '"parentCommentId":"'+ parentCommentId + '",' +
+                    '"userId":"' + userId + '"' +
+                    '},"notification": {' +
+                    '"notificationType":"COMMENT",' +
+                    '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
+                    '"notificationMessage":"test",' +
+                    '"videoId":"'+ videoId +'",' +
+                    '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
+                    '}' +
                     '}'
                     })
                     .end(function (err, res) {
@@ -212,21 +211,7 @@ describe('Comment API Tests', function() {
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-                    .send({data: '{' +
-                        '"comment": {' +
-                        '"videoId":"' + videoId + '",' +
-                        '"comment":"' + comment + '",' +
-                        '"userId":"' + userId + '"' +
-                    '},' +
-                        '"notification": {' +
-                        '"notificationType":"COMMENT",' +
-                        '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
-                        '"notificationMessage":"test",' +
-                        '"videoId":"'+ videoId +'",' +
-                        '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
-                        '}' +
-                    '}'
-                    })
+                    .send({data: '{"comment":{"videoId":"' + videoId + '","comment":"' + comment + '","userId":"' + userId + '"},"notification":{"notificationType":"COMMENT","notifiedUserId":"57b248b28f6b2e883860fd6f","notificationMessage":"test","videoId":"'+ videoId +'","actionUserId":"57e96ae61ef82b3db949d2a8"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -273,22 +258,7 @@ describe('Comment API Tests', function() {
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-                    .send({data: '{' +
-                        '"comment": {' +
-                        '"videoId":"' + videoId + '",' +
-                        '"comment":"' + replyComment + '",' +
-                        '"parentCommentId":"'+ parentCommentId + '",' +
-                        '"userId":"' + userId + '"' +
-                    '},' +
-                        '"notification": {' +
-                        '"notificationType":"COMMENT",' +
-                        '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
-                        '"notificationMessage":"test",' +
-                        '"videoId":"'+ videoId +'",' +
-                        '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
-                        '}' +
-                    '}'
-                    })
+                    .send({data: '{"comment":{"videoId":"' + videoId + '","comment":"' + replyComment + '","parentCommentId":"'+ parentCommentId + '","userId":"' + userId + '"},"notification":{"notificationType":"COMMENT","notifiedUserId":"57b248b28f6b2e883860fd6f","notificationMessage":"test","videoId":"'+ videoId +'","actionUserId":"57e96ae61ef82b3db949d2a8"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -364,24 +334,10 @@ describe('Comment API Tests', function() {
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-                    .send({data: '{' +
-                        '"comment": {' +
-                        '"videoId":"' + videoId + '",' +
-                        '"comment":"' + comment + '",' +
-                        '"userId":"' + userId + '" ' +
-                    '},' +
-                        '"notification": {' +
-                        '"notificationType":"COMMENT",' +
-                        '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
-                        '"notificationMessage":"test",' +
-                        '"videoId":"'+ videoId +'",' +
-                        '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
-                        '}' +
-                    '}'
-                    })
+                    .send({data: '{"comment":{"videoId":"' + videoId + '","comment":"' + comment + '","userId":"' + userId + '"},"notification":{"notificationType":"COMMENT","notifiedUserId":"57b248b28f6b2e883860fd6f","notificationMessage":"test","videoId":"'+ videoId +'","actionUserId":"57e96ae61ef82b3db949d2a8"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -396,7 +352,7 @@ describe('Comment API Tests', function() {
                     .send({ comment: updatedComment})
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -407,7 +363,7 @@ describe('Comment API Tests', function() {
                     .get('/api/comment/byVideo/?videoId=' + videoId + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -419,25 +375,10 @@ describe('Comment API Tests', function() {
                     .post('/api/comment/?' + apiVer)
                     .set('Authorization', token)
                     .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-                    .send({data: '{' +
-                        '"comment": {' +
-                        '"videoId":"' + videoId + '",' +
-                        '"comment":"' + replyComment + '",' +
-                        '"parentCommentId":"'+ parentCommentId + '",' +
-                        '"userId":"' + userId + '"' +
-                    '},' +
-                        '"notification": {' +
-                        '"notificationType":"COMMENT",' +
-                        '"notifiedUserId":"57b248b28f6b2e883860fd6f",' +
-                        '"notificationMessage":"test",' +
-                        '"videoId":"'+ videoId +'",' +
-                        '"actionUserId":"57e96ae61ef82b3db949d2a8"' +
-                        '}' +
-                    '}'
-                    })
+                    .send({data: '{"comment":{"videoId":"' + videoId + '","comment":"' + replyComment + '","parentCommentId":"'+ parentCommentId + '","userId":"' + userId + '"},"notification":{"notificationType":"COMMENT","notifiedUserId":"57b248b28f6b2e883860fd6f","notificationMessage":"test","videoId":"'+ videoId +'","actionUserId":"57e96ae61ef82b3db949d2a8"}}'})
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -448,7 +389,7 @@ describe('Comment API Tests', function() {
                     .get('/api/comment/byParent/?parentId=' + parentCommentId + '&' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -463,7 +404,7 @@ describe('Comment API Tests', function() {
                     .send({ commentId: parentCommentId})
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -477,7 +418,7 @@ describe('Comment API Tests', function() {
                     .send({ comment: updatedComment})
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });
@@ -488,7 +429,7 @@ describe('Comment API Tests', function() {
                     .get('/api/comment/' + parentCommentId + '/?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version");
+                        expect(res.body).to.have.property("error", "invalid api version")
                         done();
                     });
             });

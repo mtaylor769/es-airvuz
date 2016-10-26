@@ -70,43 +70,43 @@ function getComments(req, res) {
  * @returns {*}
  */
 function employeeContributor(req, res) {
-var usersArray = [];
-  var startDate = new Date(req.body.startDate);
-  var endDate = new Date(req.body.endDate);
-  return userCrud1_0_0.getEmployeeContributor()
-      .then(function(users) {
-        return Promise.map(users, function (user) {
-          var userInfo = {};
-          userInfo.user = user;
-          return videoLikeCrud1_0_0.findByUserIdAndDate(user._id, startDate, endDate)
-              .then(function(likes) {
-                userInfo.likes = likes;
-                return commentCrud1_0_0.getByUserAndDate(user._id, startDate, endDate)
-              })
-              .then(function(comments) {
-                userInfo.comments = comments;
-                return followCrud1_0_0.findFollowersByUserIdAndDate(user._id, startDate, endDate)
-              })
-              .then(function(followers) {
-                userInfo.followers = followers;
-                return followCrud1_0_0.findFollowingByUserIdAndDate(user._id, startDate, endDate)
-              })
-              .then(function(following) {
-                userInfo.following = following;
-                return videoCrud1_0_0.findByUserIdAndDate(user._id, startDate, endDate)
-              })
-              .then(function(videos) {
-                userInfo.uploadedVideos = videos;
-                return userInfo;
-              })
-              .then(function(userInfo) {
-                usersArray.push(userInfo);
-              })
+    var usersArray = [];
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+    return userCrud1_0_0.getEmployeeContributor()
+        .then(function(users) {
+            return Promise.map(users, function (user) {
+                var userInfo = {};
+                userInfo.user = user;
+                return videoLikeCrud1_0_0.findByUserIdAndDate(user._id, startDate, endDate)
+                    .then(function(likes) {
+                        userInfo.likes = likes;
+                        return commentCrud1_0_0.getByUserAndDate(user._id, startDate, endDate)
+                    })
+                    .then(function(comments) {
+                        userInfo.comments = comments;
+                        return followCrud1_0_0.findFollowersByUserIdAndDate(user._id, startDate, endDate)
+                    })
+                    .then(function(followers) {
+                        userInfo.followers = followers;
+                        return followCrud1_0_0.findFollowingByUserIdAndDate(user._id, startDate, endDate)
+                    })
+                    .then(function(following) {
+                        userInfo.following = following;
+                        return videoCrud1_0_0.findByUserIdAndDate(user._id, startDate, endDate)
+                    })
+                    .then(function(videos) {
+                        userInfo.uploadedVideos = videos;
+                        return userInfo;
+                    })
+                    .then(function(userInfo) {
+                        usersArray.push(userInfo);
+                    })
+            })
+                .then(function() {
+                    res.send(usersArray);
+                })
         })
-        .then(function() {
-          res.send(usersArray);
-        })
-      })
 }
 /**
  * route: POST /api/reports/hashtag
@@ -294,15 +294,15 @@ function userHashtag(req, res) {
  * @param res
  */
 function siteInfo(req, res) {
-  var endDate = new Date(req.query.endDate);
-  var startDate = new Date(req.query.startDate);
-  var promises = [
-    userCrud1_0_0.totalUsersByEndDate(endDate),
-    videoCrud1_0_0.totalVideosByEndDate(endDate),
-    userCrud1_0_0.newUsersBetweenDates(startDate, endDate),
-    videoCrud1_0_0.newVideosBetweenDates(startDate, endDate),
-    userCrud1_0_0.newUserList(startDate, endDate)
-  ];
+    var endDate = new Date(req.query.endDate);
+    var startDate = new Date(req.query.startDate);
+    var promises = [
+        userCrud1_0_0.totalUsersByEndDate(endDate),
+        videoCrud1_0_0.totalVideosByEndDate(endDate),
+        userCrud1_0_0.newUsersBetweenDates(startDate, endDate),
+        videoCrud1_0_0.newVideosBetweenDates(startDate, endDate),
+        userCrud1_0_0.newUserList(startDate, endDate)
+    ];
 
     Promise.all(promises)
         .spread(function (totalUsers, totalVideos, newUsersCount, newVideos, newUsersList) {
@@ -354,7 +354,7 @@ function top100Views(req, res) {
             res.json(videos);
         })
         .catch(function(error) {
-          logger.error(error);
+            logger.error(error);
             res.sendStatus(500);
         });
 }
