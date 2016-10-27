@@ -101,11 +101,22 @@
           <p>Video Completed Data Report</p>
         </md-list-item>
       </md-list>
-      <md-list-item ui-sref="curationRatingInitial">
+
+      <md-list-item ng-click="vm.videoCuration = !vm.videoCuration" >
         <md-icon class="material-icons"></md-icon>
         <p>Video Curation</p>
       </md-list-item>
+      <md-list ng-show="vm.videoCuration" class="menu-accordion">
+        <md-list-item ui-sref="curationRatingInitial" ng-click="vm.videoCuration = !vm.videoCuration">
+          <p>Curate Videos</p>
+        </md-list-item>
+        <md-list-item ui-sref="">
+          <p>SEO Keyword Search</p>
+        </md-list-item>
+      </md-list>
+
       <md-list-item ng-click="vm.carousel = !vm.carousel">
+        <md-icon class="material-icons"></md-icon>
         <p>Carousel Curation</p>
       </md-list-item>
       <md-list ng-show="vm.carousel" class="menu-accordion">
