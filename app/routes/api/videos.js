@@ -141,7 +141,7 @@ function _cleanUpReupload(body) {
 function removeVideo(req, res) {
   VideoCrud.getById(req.params.id)
     .then(function (currentVideo) {
-      return isVideoOwner(currentVideo, req.user) || isAllowedToDeleteVideo(req.user);
+      return isVideoOwner(currentVideo, req.user) || hasAllowedRole(req.user);
     })
     .then(function (isAllowed) {
       if (!isAllowed) {
@@ -192,12 +192,21 @@ Video.prototype.get = function(req, res) {
     });
 };
 
-Video.prototype.put = function(req, res) {
-  Promise.resolve(req.body)
-    .then(_uploadCustomThumbnail)
-    .then(_cleanUpReupload)
-    .then(function () {
-      return VideoCrud.update({id: req.params.id, update: req.body});
+function updateVideo(req, res) {
+  VideoCrud.getById(req.params.id)
+    .then(function (currentVideo) {
+      return isVideoOwner(currentVideo, req.user) || hasAllowedRole(req.user);
+    })
+    .then(function (isAllowed) {
+      if (!isAllowed) {
+        return Promise.reject('Not allowed to update video');
+      }
+      return Promise.resolve(req.body)
+        .then(_uploadCustomThumbnail)
+        .then(_cleanUpReupload)
+        .then(function () {
+          return VideoCrud.update({id: req.params.id, update: req.body});
+        });
     })
     .then(function (video) {
       res.json(video);
@@ -208,7 +217,7 @@ Video.prototype.put = function(req, res) {
       }
       res.sendStatus(500);
     });
-};
+}
 
 /**
  * check if video is same as current user
@@ -225,7 +234,7 @@ function isVideoOwner(video, user) {
  * @param user
  * @returns {boolean}
  */
-function isAllowedToDeleteVideo(user) {
+function hasAllowedRole(user) {
   return user.aclRoles.indexOf('root') > -1 || user.aclRoles.indexOf('video-root') > -1 || user.aclRoles.indexOf('video-admin') > -1;
 }
 
@@ -519,6 +528,7 @@ Video.prototype.getCommentsByVideoId = function(req, res) {
 Video.prototype.getVideosByCategory = getVideosByCategory;
 Video.prototype.search = search;
 Video.prototype.delete = removeVideo;
+Video.prototype.put = updateVideo;
 
 module.exports = new Video();
 
