@@ -159,6 +159,7 @@ apiRouter.route('/api/videos/user/:id')
 apiRouter.route('/api/videos/showcase/:id')
   .get(videos.getShowcaseByUser);
 
+
 apiRouter.route('/api/videos/topSixVideos/:id')
 	.get(videos.getTopSixVideos);
 apiRouter.route('/api/videos/videoCount/:id')
@@ -358,9 +359,9 @@ apiRouter.route('/api/video-curation')
  * /api/aclRoles
  */
 apiRouter.route('/api/aclRoles/:id')
-	.get(aclRoles.getUserRoles)
-	.post(aclRoles.removeAclRoleFromUser)
-	.put(aclRoles.addAclRoleToUser);
+	.get(protect, aclRoles.getUserRoles)
+	.post(protect, aclRoles.removeAclRoleFromUser)
+	.put(protect, aclRoles.addAclRoleToUser);
 
 /**
  * /api/cron
