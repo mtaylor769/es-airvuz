@@ -170,6 +170,11 @@ var videoSchema = mongoose.Schema({
 
 	internalRanking: [],
 
+	/*
+	* Average of values in internalRanking[];
+	*/
+	internalRankAvg: Number,
+
 	internalTags: [String],
 
 	seoTags: [String],

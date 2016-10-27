@@ -381,11 +381,22 @@ Videos.prototype.updateVideoFieldCounts = function(params) {
 };
 
 Videos.prototype.videoCurationUpdate = function(params) {
-	return VideoModel.findByIdAndUpdate(params.id, {$push: {internalRanking: params.internalRanking}}, {upsert: true}).then(function() {
+	return VideoModel.findByIdAndUpdate(params.id, {$push: {internalRanking: params.internalRanking}}, {upsert: true, new: true}).then(function(newVideoObject) {
+		//gets new array of internal rankings
+		var newRankArray = newVideoObject.internalRanking;
+		//runs a reduce against array to get the sum of all the values
+		var newRankArraySum = newRankArray.reduce(function(a, b) {
+			return a + b;
+		});
+		//divides the sum of reduce by the length of the array and sets it to the internalRankAvg property
+		var internalRankAverage = (newRankArraySum / (newRankArray.length));
 		if(params.update) {
+			//adds to update if there are other updates going into the update
+			params.update.internalRankAvg = internalRankAverage;
 			return VideoModel.findByIdAndUpdate(params.id, params.update).exec();
 		} else {
-			return;
+			//updates average if there are no other updates going in.... WILL ALWAYS HAVE INTERNAL RANK ON UPDATE
+			return VideoModel.findByIdAndUpdate(params.id, {internalRankAvg: internalRankAverage}).exec();
 		}
 	});
 };

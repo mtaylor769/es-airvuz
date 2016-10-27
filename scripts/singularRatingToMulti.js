@@ -27,7 +27,8 @@ function getVideos() {
 
 function resetRating(videos) {
   return Promise.map(videos, function(video) {
-    if(video.internalRanking) {
+    if(video.internalRanking.length) {
+      video.internalRankAvg = video.internalRanking[0];
       return video.save();
     }
     return video;
@@ -38,7 +39,6 @@ mongoose.connection.once('connected', function() {
   getVideos()
     .then(resetRating)
     .catch(function(error) {
-      console.log(error);
     })
     .finally(closeDatabaseConnection);
 });
