@@ -1,6 +1,8 @@
 var keywordCrud     = require('../../persistence/crud/keywords');
 var videoCrud       = require('../../persistence/crud/videos');
 var Promise         = require('bluebird');
+var log4js = require('log4js');
+var logger = log4js.getLogger('app.persistence.api.videoCuration');
 
 function VideoCuration() {}
 
@@ -13,6 +15,7 @@ VideoCuration.prototype.rating = function(req, res) {
     var videoCategories     = req.body.categories;
     var internalRanking     = req.body.internalRanking;
     var initialVideo        = req.body.initialVideo;
+    var nextVideoParams     = req.body.nextVideoParams;
     var waitFor;
 
     //setting up query object. Video Ranking is always required
@@ -91,12 +94,28 @@ VideoCuration.prototype.rating = function(req, res) {
     }
 
     waitFor.then(function () {
-        return videoCrud.getNextVideoToRate();
+        if(initialVideo) {
+            return videoCrud.getNextVideoToRate();
+        } else {
+            //will get next video based on input params
+            return videoCrud.getNextVideoToRate(nextVideoParams)
+              .then(function(video) {
+                  //if no more videos for specified params will send back a flag for dialog otherwise will return the video
+                  if(!video.length) {
+                      //flag for dialog
+                      return {completed: true};
+                  } else {
+                      //return video like normal
+                      return video;
+                  }
+              })
+        }
     })
     .then(function(nextVideo) {
         res.json(nextVideo);
     })
     .catch(function(error) {
+        logger.error(error);
         res.send(500);
     });
 };
