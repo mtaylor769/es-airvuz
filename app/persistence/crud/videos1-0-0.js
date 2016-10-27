@@ -381,7 +381,24 @@ Videos.prototype.updateVideoFieldCounts = function(params) {
 };
 
 Videos.prototype.videoCurationUpdate = function(params) {
-	return VideoModel.findByIdAndUpdate(params.id, params.update).exec()
+	return VideoModel.findByIdAndUpdate(params.id, {$push: {internalRanking: params.internalRanking}}, {upsert: true, new: true}).then(function(newVideoObject) {
+		//gets new array of internal rankings
+		var newRankArray = newVideoObject.internalRanking;
+		//runs a reduce against array to get the sum of all the values
+		var newRankArraySum = newRankArray.reduce(function(a, b) {
+			return a + b;
+		});
+		//divides the sum of reduce by the length of the array and sets it to the internalRankAvg property
+		var internalRankAverage = (newRankArraySum / (newRankArray.length));
+		if(params.update) {
+			//adds to update if there are other updates going into the update
+			params.update.internalRankAvg = internalRankAverage;
+			return VideoModel.findByIdAndUpdate(params.id, params.update).exec();
+		} else {
+			//updates average if there are no other updates going in.... WILL ALWAYS HAVE INTERNAL RANK ON UPDATE
+			return VideoModel.findByIdAndUpdate(params.id, {internalRankAvg: internalRankAverage}).exec();
+		}
+	});
 };
 
 Videos.prototype.like = function(video, like) {
@@ -482,8 +499,36 @@ Videos.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
 	return VideoModel.find({userId: userId, uploadDate: {$gte: new Date(startDate), $lte: new Date(endDate)}}).count().exec();
 };
 
-Videos.prototype.getNextVideoToRate = function() {
-	return VideoModel.find({'curation.isRanked' : null}).sort({viewCount: -1}).limit(1).exec();
+//function will return a video object with the categories populated
+Videos.prototype.getNextVideoToRate = function(nextVideoParams) {
+	//checks for params otherwise will run default
+	switch(nextVideoParams ? nextVideoParams.type : '') {
+		//case nextVideoParams.type === 'contributor'
+		case 'contributor':
+			return VideoModel.find({'userId' : nextVideoParams.value, 'curation.isRanked' : null})
+				.sort({viewCount: -1})
+				.limit(1)
+				.populate('categories')
+				.lean()
+				.exec();
+			break;
+		//case nextVideoParams.type === 'category'
+		case 'category':
+			return VideoModel.find({'categories' : nextVideoParams.value, 'curation.isRanked' : null})
+				.sort({commentCount: -1})
+				.limit(1)
+				.populate('categories')
+				.lean()
+				.exec();
+			break;
+		//case nextVideoParams.type === typeOf 'undefined' || non-valid param
+		default:
+			return VideoModel.find({'curation.isRanked' : null})
+				.sort({viewCount: -1}).limit(1)
+				.populate('categories')
+				.lean()
+				.exec();
+	}
 };
 
 Videos.prototype.getRecentVideos 		= getRecentVideos;
