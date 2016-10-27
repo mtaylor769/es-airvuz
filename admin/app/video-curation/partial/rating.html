@@ -28,6 +28,17 @@
             <auto-complete source="vm.getKeywords($query)"></auto-complete>
         </tags-input>
     </div>
+    <p class="field-title">Categories ( Select a Category to remove it ) </p>
+    <md-button ng-repeat="category in vm.video.categories" class="md-raised md-warn" ng-click="vm.removeCategory(category)">
+        {{category.name}}
+    </md-button>
+    <p class="field-title">Add a Category to the Video</p>
+    <p class="warning" ng-show="vm.catLimitReached">Max categories reached please remove one to add another</p>
+    <md-input-container>
+        <md-select ng-model="vm.categoryType" placeholder="Select a Category" ng-change="vm.addCategory(vm.categoryType)">
+            <md-option ng-repeat="category in vm.categories | orderBy : 'name'" value={{category}}>{{category.name}}</md-option>
+        </md-select>
+    </md-input-container>
     <!---- video title and id ---->
     <p class="field-title">{{vm.video.title}}</p>
     <p>{{vm.video._id}}</p>
@@ -51,6 +62,10 @@
             </div>
             <!---- next video button ---->
             <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext()">Go to next video</md-button>
+            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('contributor')">Go to next video of contributor</md-button>
+            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('category1')" ng-show="vm.video.categories.length > 0">Go to next video in 1st category</md-button>
+            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('category2')" ng-show="vm.video.categories.length > 1">Go to next video in 2nd category</md-button>
+            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('category3')" ng-show="vm.video.categories.length > 2">Go to next video in 3rd category</md-button>
         </div>
     </div>
 </div>
