@@ -8,7 +8,7 @@ var tokenDecode = require('../../middlewares/token');
 var aclRoles = function(){};
 
 function aclCheck(user) {
-  if(user.indexOf('user-admin') || user.aclRoles.indexOf('user-root') || user.aclRoles.indexOf('root')) {
+  if(user.indexOf('user-admin') > -1 || user.indexOf('user-root') > -1 || user.indexOf('root') > -1) {
     return Promise.resolve()
   } else {
     throw {error: 500};
