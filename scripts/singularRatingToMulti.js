@@ -22,10 +22,11 @@ function closeDatabaseConnection() {
 }
 
 function getVideos() {
-  return Video.find({}).exec();
+  return Video.find({curation: {$exists: true}}).exec();
 }
 
 function resetRating(videos) {
+  console.log('Number of curated Videos : ' + videos.length);
   return Promise.map(videos, function(video) {
     if(video.internalRanking.length) {
       video.internalRankAvg = video.internalRanking[0];
