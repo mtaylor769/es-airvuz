@@ -1,56 +1,74 @@
 var Promise     = require('bluebird');
 var usersCrud    = require('../../persistence/crud/users');
 var aclCrud     = require('../../persistence/crud/aclRoles');
+var tokenDecode = require('../../middlewares/token');
 
 
 
 var aclRoles = function(){};
 
+function aclCheck(user) {
+  if(user.indexOf('user-admin') || user.aclRoles.indexOf('user-root') || user.aclRoles.indexOf('root')) {
+    return Promise.resolve()
+  } else {
+    throw {error: 500};
+  }
+}
+
 aclRoles.prototype.addAclRoleToUser = function(req, res) {
-    var userId = req.params.id;
-    var role = req.body.role;
-    return usersCrud.addAclRole(userId, role)
-        .then(function(user) {
+    return aclCheck(req.user.aclRoles)
+      .then(function() {
+        var userId = req.params.id;
+        var role = req.body.role;
+        return usersCrud.addAclRole(userId, role)
+          .then(function(user) {
             var index = user.aclRoles.indexOf('root');
             if(index > -1) {
-                user.aclRoles.splice(index, 1);
+              user.aclRoles.splice(index, 1);
             }
             res.send(user.aclRoles);
-        })
-        .catch(function(error) {
+          })
+          .catch(function(error) {
             res.sendStatus(500);
-        })
+          })
+      });
 };
 
 aclRoles.prototype.removeAclRoleFromUser = function(req, res) {
-    var userId = req.params.id;
-    var role = req.body.role;
-    return usersCrud.removeAclRole(userId, role)
+  return aclCheck(req.user.aclRoles)
+    .then(function() {
+      var userId = req.params.id;
+      var role = req.body.role;
+      return usersCrud.removeAclRole(userId, role)
         .then(function(user) {
-            var index = user.aclRoles.indexOf('root');
-            if(index > -1) {
-                user.aclRoles.splice(index, 1);
-            }
-            res.send(user.aclRoles)
+          var index = user.aclRoles.indexOf('root');
+          if(index > -1) {
+            user.aclRoles.splice(index, 1);
+          }
+          res.send(user.aclRoles)
         })
         .catch(function(error) {
-            res.sendStatus(500)
+          res.sendStatus(500)
         })
+    });
 };
 
 aclRoles.prototype.getUserRoles = function(req, res) {
-  var userId = req.params.id;
-    return usersCrud.getUserById(userId)
+  return aclCheck(req.user.aclRoles)
+    .then(function() {
+      var userId = req.params.id;
+      return usersCrud.getUserById(userId)
         .then(function(user) {
-            var index = user.aclRoles.indexOf('root');
-            if(index > -1) {
-                user.aclRoles.splice(index, 1);
-            }
-            res.send(user)
+          var index = user.aclRoles.indexOf('root');
+          if(index > -1) {
+            user.aclRoles.splice(index, 1);
+          }
+          res.send(user)
         })
         .catch(function(error) {
-            res.sendStatus(500);
+          res.sendStatus(500);
         })
+    });
 };
 
 
