@@ -11,7 +11,7 @@ try {
 	var videoCrud1_0_0     	= require('../../persistence/crud/videos1-0-0');
 	var usersCrud1_0_0      = require('../../persistence/crud/users1-0-0');
 	var socialCrud			= require('../../persistence/crud/socialMediaAccount');
-	var followCrud			= require('../../persistence/crud/follow');
+	var followCrud1_0_0		= require('../../persistence/crud/follow1-0-0');
 	var videoLikeCrud1_0_0 	= require('../../persistence/crud/videoLike1-0-0');
 	var catTypeCrud1_0_0  	= require('../../persistence/crud/categoryType1-0-0');
 	var amazonConfig  		= require('../../config/amazon.config');
@@ -107,7 +107,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			});
 			
 			dataObject.topVideos = topVideos;
-			return followCrud.followCount(checkObject.user);
+			return followCrud1_0_0.followCount(checkObject.user);
 		})
 		.then(function(followCount) {
 			dataObject.followCount = followCount;
