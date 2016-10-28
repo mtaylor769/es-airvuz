@@ -41,42 +41,38 @@ UserProfileModel.prototype.getData = function (params) {
 	var profileUser = null;
 	var sourceManifest = params.sourceManifest;
 	// TODO: run parallel
-
 	return userCrud1_0_0.getUserByUserNameUrl(userNameUrl)
-	.then(function(user) {
-		if(!user) {
-			throw {error: 404};
-		}
-		profileUser = user;
-		return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
-			.then(function (social) {
-				if (social) {
-					user.facebook = true;
-					user.fbAccount = social.accountId;
-					return user;
-				} else {
-					return user;
-				}
-			});
-	})
-	.then(function(user) {
-		logger.debug(user);
-		if(user.facebook && user.profilePicture === ''){
-			user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
-		} else if(!user.facebook && user.profilePicture === '') {
-			user.profilePicture = '/client/images/default.png';
-		} else if(user.facebook && user.profilePicture.indexOf('facebook') > -1) {
-			user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
-		} else if(user.profilePicture.indexOf('http') === -1) {
-			user.profilePicture = '/image/profile-picture' + user.profilePicture + '?size=200';
-		} else {
-			user.profilePicture = user.profilePicture;
-		}
-		if(user.coverPicture.indexOf('http') === -1) {
-			user.coverPicture = amazonConfig.ASSET_URL + 'users/cover-pictures' + user.coverPicture;
-		} else {
-			user.coverPicture = user.coverPicture;
-		}
+		.then(function (user) {
+			profileUser = user;
+			return socialCrud.findByUserIdAndProvider(user._id, 'facebook')
+				.then(function (social) {
+					if (social) {
+						user.facebook = true;
+						user.fbAccount = social.accountId;
+						return user;
+					} else {
+						return user;
+					}
+				});
+		})
+		.then(function (user) {
+			logger.debug(user);
+			if (user.facebook && user.profilePicture === '') {
+				user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+			} else if (!user.facebook && user.profilePicture === '') {
+				user.profilePicture = '/client/images/default.png';
+			} else if (user.facebook && user.profilePicture.indexOf('facebook') > -1) {
+				user.profilePicture = '//graph.facebook.com/' + user.fbAccount + '/picture?type=large';
+			} else if (user.profilePicture.indexOf('http') === -1) {
+				user.profilePicture = '/image/profile-picture' + user.profilePicture + '?size=200';
+			} else {
+				user.profilePicture = user.profilePicture;
+			}
+			if (user.coverPicture.indexOf('http') === -1) {
+				user.coverPicture = amazonConfig.ASSET_URL + 'users/cover-pictures' + user.coverPicture;
+			} else {
+				user.coverPicture = user.coverPicture;
+			}
 
 			logger.debug(user);
 			dataObject.user = user;
@@ -132,18 +128,12 @@ UserProfileModel.prototype.getData = function (params) {
 
 			params.data.s3Bucket = amazonConfig.OUTPUT_URL;
 			return params;
-		});
-
-		params.data.s3Bucket 								= amazonConfig.OUTPUT_URL;
-		return params;
-	})
-	.catch(function(error) {
-		if(error.error === 404) {
-			params.next();
-		}
-	});
-
-
+		})
+        .catch(function(error) {
+            if(error.error === 404) {
+                params.next();
+            }
+        });
 };
 
 module.exports = UserProfileModel;
