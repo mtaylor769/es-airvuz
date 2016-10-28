@@ -8,7 +8,7 @@ try {
     var logger				= log4js.getLogger('app.routes.api.videos');
     var moment				= require('moment');
 
-    var VideoCrud				= require('../../persistence/crud/videos1-0-0');
+    var VideoCrud				= require('../../persistence/crud/videos');
     var VideoCollection		= require('../../persistence/crud/videoCollection');
     var CategoryType	        = require('../../persistence/crud/categoryType');
     var VideoLikeCrud         = require('../../persistence/crud/videoLike');
@@ -17,7 +17,7 @@ try {
     var EventTrackingCrud		= require('../../persistence/crud/events/eventTracking');
     var TrendingVideoCrud		= require('../../persistence/crud/trendingVideos');
     var amazonService         = require('../../services/amazon.service.server.js');
-    var usersCrud1_0_0        = require('../../persistence/crud/users1-0-0');
+    var UsersCrud             = require('../../persistence/crud/users');
     var SocialCrud            = require('../../persistence/crud/socialMediaAccount');
     var CommentCrud           = require('../../persistence/crud/comment');
 
@@ -138,7 +138,27 @@ function _cleanUpReupload(body) {
     return body;
 }
 
-function post (req, res) {
+function removeVideo(req, res) {
+    VideoCrud.getById(req.params.id)
+        .then(function (currentVideo) {
+            return isVideoOwner(currentVideo, req.user) || hasAllowedRole(req.user);
+        })
+        .then(function (isAllowed) {
+            if (!isAllowed) {
+                return Promise.reject('Not allowed to delete video');
+            }
+            return VideoCrud
+                .remove(req.params.id);
+        })
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function () {
+            res.sendStatus(500);
+        });
+}
+
+Video.prototype.post = function(req, res) {
     Promise.resolve(req.body)
         .then(_uploadCustomThumbnail)
         .then(function () {
@@ -153,9 +173,9 @@ function post (req, res) {
             }
             res.sendStatus(500);
         });
-}
+};
 
-function get (req, res) {
+Video.prototype.get = function(req, res) {
     logger.debug(".get: BEG");
     EventTrackingCrud.create({
         codeSource	: "app.persistence.crud.videos.get",
@@ -170,14 +190,23 @@ function get (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
-function put (req, res) {
-    Promise.resolve(req.body)
-        .then(_uploadCustomThumbnail)
-        .then(_cleanUpReupload)
-        .then(function () {
-            return VideoCrud.update({id: req.params.id, update: req.body});
+function updateVideo(req, res) {
+    VideoCrud.getById(req.params.id)
+        .then(function (currentVideo) {
+            return isVideoOwner(currentVideo, req.user) || hasAllowedRole(req.user);
+        })
+        .then(function (isAllowed) {
+            if (!isAllowed) {
+                return Promise.reject('Not allowed to update video');
+            }
+            return Promise.resolve(req.body)
+                .then(_uploadCustomThumbnail)
+                .then(_cleanUpReupload)
+                .then(function () {
+                    return VideoCrud.update({id: req.params.id, update: req.body});
+                });
         })
         .then(function (video) {
             res.json(video);
@@ -190,18 +219,26 @@ function put (req, res) {
         });
 }
 
-function deleteVideo (req, res) {
-    VideoCrud
-        .remove(req.params.id)
-        .then(function(video) {
-            res.sendStatus(200);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+/**
+ * check if video is same as current user
+ * @param video
+ * @param user
+ * @returns {boolean}
+ */
+function isVideoOwner(video, user) {
+    return video.userId.toString() === user._id.toString();
 }
 
-function like (req, res) {
+/**
+ * user have to have the roles of root, video-root, and video-admin to delete video
+ * @param user
+ * @returns {boolean}
+ */
+function hasAllowedRole(user) {
+    return user.aclRoles.indexOf('root') > -1 || user.aclRoles.indexOf('video-root') > -1 || user.aclRoles.indexOf('video-admin') > -1;
+}
+
+Video.prototype.like = function(req, res) {
     VideoCrud
         .getById(req.body.id)
         .then(function(video) {
@@ -213,9 +250,9 @@ function like (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
-function loaded (req, res) {
+Video.prototype.loaded = function(req, res) {
     var params = req.body;
     logger.debug(params);
 
@@ -244,9 +281,9 @@ function loaded (req, res) {
         .catch(function(error) {
             res.send(error);
         })
-}
+};
 
-function showcaseUpdate (req, res) {
+Video.prototype.showcaseUpdate = function(req, res) {
     var params = req.body;
     VideoCrud
         .update({id: params.id, update: params})
@@ -257,9 +294,9 @@ function showcaseUpdate (req, res) {
             res.send(error)
         })
 
-}
+};
 
-function reportVideo (req, res) {
+Video.prototype.reportVideo = function(req, res) {
     var params = req.body;
     var transport = nodemailer.createTransport({
         service: "Gmail",
@@ -285,9 +322,9 @@ function reportVideo (req, res) {
         }
     })
 
-}
+};
 
-function videoInfoCheck(req, res) {
+Video.prototype.videoInfoCheck = function(req, res) {
     var returnObject = {};
     var userId = req.query.userId;
     var videoId = req.query.videoId;
@@ -315,9 +352,9 @@ function videoInfoCheck(req, res) {
         .catch(function(error) {
             res.sendStatus(500);
         });
-}
+};
 
-function getVideosByUser (req, res) {
+Video.prototype.getVideosByUser = function(req, res) {
     var dataStatus = {};
     EventTrackingCrud.create({
         codeSource  : "app.persistence.crud.videos.user.get",
@@ -338,9 +375,9 @@ function getVideosByUser (req, res) {
             dataStatus.data       = error;
             res.send(dataStatus);
         });
-}
+};
 
-function getShowcaseByUser (req, res) {
+Video.prototype.getShowcaseByUser = function(req, res) {
     var dataStatus = {};
     EventTrackingCrud.create({
         codeSource  : "app.persistence.crud.videos.user.get",
@@ -361,9 +398,9 @@ function getShowcaseByUser (req, res) {
             dataStatus.data       = error;
             res.send(dataStatus);
         });
-}
+};
 
-function getTopSixVideos (req, res) {
+Video.prototype.getTopSixVideos = function(req, res) {
     var userId = req.params.id;
 
     VideoCrud
@@ -374,9 +411,9 @@ function getTopSixVideos (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
-function getVideoCount (req, res) {
+Video.prototype.getVideoCount = function(req, res) {
     var userId = req.params.id;
 
     VideoCrud
@@ -387,9 +424,9 @@ function getVideoCount (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
-function getFollowCount (req, res) {
+Video.prototype.getFollowCount = function(req, res) {
     var userId = req.params.id;
 
     FollowCrud
@@ -400,9 +437,9 @@ function getFollowCount (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
-function getNextVideos (req, res) {
+Video.prototype.getNextVideos = function (req, res) {
     VideoCrud.getById(req.query.video)
         .then(function (video) {
             return CategoryType.getInternalCategory(video.categories);
@@ -427,12 +464,12 @@ function getNextVideos (req, res) {
         .catch(function () {
             res.sendStatus(500);
         });
-}
+};
 
-function getVideoOwnerProfile (req, res) {
+Video.prototype.getVideoOwnerProfile = function(req, res) {
     var userId = req.params.id;
 
-    usersCrud1_0_0
+    UsersCrud
         .getUserById(userId)
         .then(function(user) {
             if (user !== null) {
@@ -457,9 +494,9 @@ function getVideoOwnerProfile (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
-function getCommentsByVideoId (req, res) {
+Video.prototype.getCommentsByVideoId = function(req, res) {
     var videoId = req.params.id;
 
     CommentCrud
@@ -486,27 +523,12 @@ function getCommentsByVideoId (req, res) {
         .catch(function (error) {
             res.sendStatus(500);
         });
-}
+};
 
 Video.prototype.getVideosByCategory = getVideosByCategory;
 Video.prototype.search = search;
-Video.prototype.post = post;
-Video.prototype.get = get;
-Video.prototype.put = put;
-Video.prototype.delete = deleteVideo;
-Video.prototype.like = like;
-Video.prototype.loaded = loaded;
-Video.prototype.showcaseUpdate = showcaseUpdate;
-Video.prototype.reportVideo = reportVideo;
-Video.prototype.videoInfoCheck = videoInfoCheck;
-Video.prototype.getVideosByUser = getVideosByUser;
-Video.prototype.getShowcaseByUser = getShowcaseByUser;
-Video.prototype.getTopSixVideos = getTopSixVideos;
-Video.prototype.getVideoCount = getVideoCount;
-Video.prototype.getFollowCount = getFollowCount;
-Video.prototype.getNextVideos = getNextVideos;
-Video.prototype.getVideoOwnerProfile = getVideoOwnerProfile;
-Video.prototype.getCommentsByVideoId = getCommentsByVideoId;
+Video.prototype.delete = removeVideo;
+Video.prototype.put = updateVideo;
 
 module.exports = new Video();
 
