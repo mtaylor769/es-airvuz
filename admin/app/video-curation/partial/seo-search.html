@@ -1,0 +1,29 @@
+<div layout-padding>
+    <h2>Search for SEO Keywords</h2>
+    <div layout="row">
+        <md-input-container flex="66">
+            <input type="text" placeholder="Enter Keyword Here" ng-model="vm.searchKeyword">
+        </md-input-container>
+        <div layout="column">
+            <md-button class="md-warn md-raised" ng-click="vm.executeSearch()">Search</md-button>
+        </div>
+    </div>
+    <div layout="row" layout-sm="column" layout-align="space-around" ng-show="vm.waiting">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div ng-show="vm.noResults">
+        <h2 class="warning">No Results found</h2>
+    </div>
+    <div ng-show="vm.keywordResult">
+        <div layout="row">
+            <h4 flex="33">Video Id</h4>
+            <h4 flex="55">Video Title</h4>
+            <h4>Video Link</h4>
+        </div>
+        <div ng-repeat="result in vm.searchResults" layout="row">
+            <h4 flex="33">{{result._id}}</h4>
+            <h4 flex="55">{{result.title}}</h4>
+            <a href="" ng-click="vm.goToVideo(result._id)"><h4>Go To Video</h4></a>
+        </div>
+    </div>
+</div>

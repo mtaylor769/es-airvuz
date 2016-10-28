@@ -532,9 +532,17 @@ Videos.prototype.getNextVideoToRate = function(nextVideoParams) {
 	}
 };
 
-Videos.prototype.getRecentVideos 		= getRecentVideos;
-Videos.prototype.getVideoByCategory = getVideoByCategory;
-Videos.prototype.search 						= search;
-Videos.prototype.getVideosByFollow 	= getVideosByFollow;
+function findVideoBySeoKeyword(keyword) {
+	return VideoModel.find({seoTags: keyword})
+		.populate('categories')
+		.populate('user', 'userNameDisplay userNameUrl')
+		.exec()
+}
+
+Videos.prototype.getRecentVideos 				= getRecentVideos;
+Videos.prototype.getVideoByCategory 		= getVideoByCategory;
+Videos.prototype.search 								= search;
+Videos.prototype.getVideosByFollow 			= getVideosByFollow;
+Videos.prototype.findVideoBySeoKeyword 	= findVideoBySeoKeyword;
 
 module.exports = new Videos();

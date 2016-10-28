@@ -262,6 +262,18 @@ function getCommentsByVideoId(req, res) {
     }
 }
 
+function querySeoKeywords(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        videos1_0_0.querySeoKeywords(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
 Video.prototype.getVideosByCategory = getVideosByCategory;
 Video.prototype.search = search;
 Video.prototype.post = post;
@@ -281,6 +293,7 @@ Video.prototype.getFollowCount = getFollowCount;
 Video.prototype.getNextVideos = getNextVideos;
 Video.prototype.getVideoOwnerProfile = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId = getCommentsByVideoId;
+Video.prototype.querySeoKeywords = querySeoKeywords;
 
 module.exports = new Video();
 

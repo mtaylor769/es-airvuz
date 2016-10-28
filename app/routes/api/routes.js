@@ -168,6 +168,8 @@ apiRouter.route('/api/videos/user/:id')
 apiRouter.route('/api/videos/showcase/:id')
   .get(videos.getShowcaseByUser);
 
+apiRouter.route('/api/video/search-keywords')
+	.get(videos.querySeoKeywords);
 
 apiRouter.route('/api/videos/topSixVideos/:id')
 	.get(videos.getTopSixVideos);
