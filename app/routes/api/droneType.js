@@ -1,58 +1,102 @@
-var DroneTypeCrud = require('../../persistence/crud/droneType');
+var namespace = 'app.routes.apiVersion.droneType1-0-0';
 
-function DroneType() {
+try {
+    var log4js          = require('log4js');
+    var logger          = log4js.getLogger(namespace);
+    var droneType1_0_0  = require('../apiVersion/droneType1-0-0');
 
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch(exception) {
+    logger.error(" import error:" + exception);
+}
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
+}
+function DroneType() {}
+
+
+/*
+ * If the request object param contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use default
+ */
+var defaultVer = "1.0.0";
+
+function post(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        droneType1_0_0.post(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
-DroneType.prototype.post = function(req, res) {
-  DroneTypeCrud
-    .create(req.body)
-    .then(function(drone) {
-      res.send(drone);
-    })
-    .catch(function(error) {
-      res.send(error);
-    })
-};
+function get(req, res) {
 
-DroneType.prototype.get = function(req, res) {
-  if(req.query.flag === 'all'){
-    DroneTypeCrud
-      .getAll()
-      .then(function(drones) {
-        res.send(drones)
-      })
-  } else {
-    DroneTypeCrud
-      .get()
-      .then(function(drones) {
-        res.send(drones);
-      }) 
-  }
-};
+    var version = req.query.apiVer || defaultVer;
 
-DroneType.prototype.getById = function(req, res) {
-  DroneTypeCrud
-    .getById(req.params.id)
-    .then(function(drone) {
-      res.send(drone);
-    })
-};
+    if (version === "1.0.0") {
+        droneType1_0_0.get(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
 
-DroneType.prototype.put = function(req, res) {
-  DroneTypeCrud
-    .update({id: req.body._id, update: req.body})
-    .then(function(drone) {
-      res.send(drone);
-    })
-};
+function getById(req, res) {
 
-DroneType.prototype.delete = function(req, res) {
-  DroneTypeCrud
-    .remove(req.params.id)
-    .then(function() {
-      res.sendStatus(200);
-    })
-};
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        droneType1_0_0.getById(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function put(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        droneType1_0_0.put(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function deleteDroneType(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        droneType1_0_0.delete(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+DroneType.prototype.post = post;
+DroneType.prototype.get = get;
+DroneType.prototype.getById = getById;
+DroneType.prototype.put = put;
+DroneType.prototype.delete = deleteDroneType;
 
 module.exports = new DroneType();

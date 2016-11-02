@@ -5,16 +5,16 @@ var logger					= log4js.getLogger(namespace);
 
 
 try {
-	var BaseModel	    = require('./baseModel');
+	var BaseModel	    	= require('./baseModel');
 	var moment				= require('moment');
 	var util			    = require('util');
-	var videoCrud     = require('../../persistence/crud/videos');
-	var userCrud      = require('../../persistence/crud/users');
-	var socialCrud		= require('../../persistence/crud/socialMediaAccount');
-	var videoLikeCrud = require('../../persistence/crud/videoLike');
-	var categoryCrud  = require('../../persistence/crud/categoryType');
-	var followCrud		= require('../../persistence/crud/follow');
-	var amazonConfig  = require('../../config/amazon.config');
+	var videoCrud1_0_0     	= require('../../persistence/crud/videos1-0-0');
+	var usersCrud1_0_0      = require('../../persistence/crud/users1-0-0');
+	var socialCrud			= require('../../persistence/crud/socialMediaAccount');
+	var followCrud1_0_0		= require('../../persistence/crud/follow1-0-0');
+	var videoLikeCrud1_0_0 	= require('../../persistence/crud/videoLike1-0-0');
+	var catTypeCrud1_0_0  	= require('../../persistence/crud/categoryType1-0-0');
+	var amazonConfig  		= require('../../config/amazon.config');
 	var config				= require('../../../config/config')[global.NODE_ENV];
 
 	if(global.NODE_ENV === "production") {
@@ -43,7 +43,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 	var checkObject 		= {};
 
 	// TODO: run parallel
-	return videoCrud.getById(videoId)
+	return videoCrud1_0_0.getById(videoId)
 		.then(function(video) {
 			logger.error(video);
 			if(!video) {
@@ -56,7 +56,7 @@ VideoPlayerModel.prototype.getData = function(params) {
 			video.openGraphCacheDate = moment(video.openGraphCacheDate).format('x');
 			dataObject.video 	= video;
 			checkObject.video = video._id;
-			return userCrud.getUserById(video.userId);
+			return usersCrud1_0_0.getUserById(video.userId);
 		})
 		.then(function(user){
 			if (user !== null) {
@@ -75,8 +75,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 			
 			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
 
-			return categoryCrud.getInternalCategory(dataObject.video.categories)
-				.then(videoCrud.getNextVideos);
+			return catTypeCrud1_0_0.getInternalCategory(dataObject.video.categories)
+				.then(videoCrud1_0_0.getNextVideos);
 		})
 		.then(function(videos) {
 			videos.forEach(function (video) {
@@ -92,11 +92,11 @@ VideoPlayerModel.prototype.getData = function(params) {
 				}
 			});
 			dataObject.upNext = videos;
-			return videoCrud.getVideoCount(checkObject.user);
+			return videoCrud1_0_0.getVideoCount(checkObject.user);
 		})
 		.then(function(videoCount) {
 			dataObject.videoCount = videoCount;
-			return videoCrud.getTopSixVideos(checkObject.user);
+			return videoCrud1_0_0.getTopSixVideos(checkObject.user);
 			})
 		.then(function(topSixVideos) {
 			var topVideos = [];
@@ -107,28 +107,28 @@ VideoPlayerModel.prototype.getData = function(params) {
 			});
 			
 			dataObject.topVideos = topVideos;
-			return followCrud.followCount(checkObject.user);
+			return followCrud1_0_0.followCount(checkObject.user);
 		})
 		.then(function(followCount) {
 			dataObject.followCount = followCount;
 
-			return videoLikeCrud.videoLikeCheck(checkObject);
+			return videoLikeCrud1_0_0.videoLikeCheck(checkObject);
 		})
 		.then(function(likeBoolean) {
 			dataObject.likeBoolean = likeBoolean;
-			return categoryCrud.get();
+			return catTypeCrud1_0_0.get();
 		})
 		.then(function(categories) {
 			
-			dataObject.categories = categories;
-			params.data													= dataObject;
-			params.data.videoPlayer							= {};
-			params.data.videoPlayer.title				= "Video Player";
-			params.data.videoPlayer.viewName		= "Video Player";
-			params.data.url 										= config.baseUrl;
-			params.data.facebookAppId 					= config.facebook.clientID;
+			dataObject.categories               = categories;
+			params.data							= dataObject;
+			params.data.videoPlayer				= {};
+			params.data.videoPlayer.title		= "Video Player";
+			params.data.videoPlayer.viewName	= "Video Player";
+			params.data.url 					= config.baseUrl;
+			params.data.facebookAppId 			= config.facebook.clientID;
 
-			params.data.s3Bucket 								= amazonConfig.OUTPUT_BUCKET;
+			params.data.s3Bucket 				= amazonConfig.OUTPUT_BUCKET;
 			return params;
 	})
 	.catch(function(error) {

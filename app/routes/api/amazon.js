@@ -1,95 +1,110 @@
-var amazonService = require('../../services/amazon.service.server.js');
-var request = require('request');
-var EventTrackingCrud = require('../../persistence/crud/events/eventTracking');
+var namespace = 'app.routes.api.amazon';
 
+try {
+    var log4js          = require('log4js');
+    var logger          = log4js.getLogger(namespace);
+    var amazon1_0_0     = require('../apiVersion/amazon1-0-0');
+    var amazonService   = require('../../services/amazon.service.server.js');
+
+    if (global.NODE_ENV === "production") {
+        logger.setLevel("INFO");
+    }
+}
+catch(exception) {
+    logger.error(" import error:" + exception);
+}
 /**
- * Amazon Route
- * @constructor
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
  */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
+}
+
 function Amazon() {}
+/*
+ * If the request object query contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use defaultVer
+ */
+var defaultVer = "1.0.0";
 
 function signAuth(req, res) {
-  amazonService.signAuth(req.query.to_sign)
-    .then(function (signRequest) {
-      res.send(signRequest);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        amazon1_0_0.signAuth(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getVideoInfo(req, res) {
-  amazonService.listVideoObjects(req.params.id)
-    .then(function (videoObjects) {
 
-      /**
-       * quick hack for local uploading
-       */
-      if (videoObjects.videoUrl && videoObjects.thumbnails.length > 0) {
-        return res.json(videoObjects);
-      }
-      return res.send('processing');
+    var version = req.query.apiVer || defaultVer;
 
-      //////////
-
-      //return res.json(videoObjects);
-    })
-    .catch(function (err) {
-      res.sendStatus(500);
-    });
+    if (version === "1.0.0") {
+        amazon1_0_0.getVideoInfo(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function startTranscode(req, res) {
-  var preset;
 
-  amazonService.createPreset(req.body.key + '.mp4')
-    .then(function (newPreset) {
-      preset = newPreset;
-      return amazonService.startTranscode(newPreset, req.body.key + '.mp4');
-    })
-    .then(function () {
-      res.send('video is processing');
-    })
-    .catch(function (err) {
-      res.status(500).send(err);
-    })
-    .finally(function () {
-      if (preset) {
-        amazonService.deletePreset(preset).done();
-      }
-    });
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        amazon1_0_0.startTranscode(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getVideoDuration(req, res) {
-  amazonService.getVideoDuration(req.query.key + '.mp4')
-    .then(function (duration) {
-      res.send(duration);
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        amazon1_0_0.getVideoDuration(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function moveFile(req, res) {
-  amazonService.moveFile(req.body)
-    .then(function () {
-      res.sendStatus(200);
-    })
-    .catch(function () {
-      res.sendStatus(500);
-    });
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        amazon1_0_0.moveFile(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
 function getVideo(req, res) {
-  EventTrackingCrud.create({
-    codeSource  : "amazon",
-    eventSource : "nodejs",
-    eventType   : "videoView",
-    eventName   : "video:" + req.params.videoId,
-    referrer    : req.header('Referrer')
-  });
-  var videoPath = 'https:' + amazonService.config.OUTPUT_URL + req.params.videoId + '/' + req.params.source;
-  req.pipe(request(videoPath)).pipe(res);
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        amazon1_0_0.getVideo(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
 }
 
-////////////////////////////////////////////
 
 Amazon.prototype.signAuth               = signAuth;
 Amazon.prototype.getVideoInfo           = getVideoInfo;

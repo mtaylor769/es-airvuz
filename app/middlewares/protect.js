@@ -7,7 +7,7 @@ try {
 
   var log4js                 = require('log4js');
   var logger                 = log4js.getLogger('app.middlewares.protect');
-  var usersCrud              = require('../persistence/crud/users');
+  var usersCrud1_0_0         = require('../persistence/crud/users1-0-0');
   var _                      = require('lodash');
 } catch(exception) {
   logger.error('require error:' + exception);
@@ -21,7 +21,7 @@ module.exports = function (req, res, next) {
       }
       // verify that the user is not suspend and also get the aclRoles from the database
       // incase the role was update
-      usersCrud.verifyStatus(decode._id)
+      usersCrud1_0_0.verifyStatus(decode._id)
         .then(function (user) {
           if (user.status === 'suspended') {
             return res.status(403).send('suspended');

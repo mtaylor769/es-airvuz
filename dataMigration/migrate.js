@@ -1,26 +1,24 @@
 "use strict";
 try {
-	var log4js											= require('log4js');
-	var logger											= log4js.getLogger("dataMigration.migrate");
-	var loggerUsers									= log4js.getLogger("dataMigration.migrate:MigrateUsers");
-	var loggerUserUtils							= log4js.getLogger("dataMigration.migrate:UserUtils");
+	var log4js 			= require('log4js');
+	var logger 			= log4js.getLogger("dataMigration.migrate");
+	var loggerUsers 	= log4js.getLogger("dataMigration.migrate:MigrateUsers");
+	var loggerUserUtils = log4js.getLogger("dataMigration.migrate:UserUtils");
+	var database 		= require('../app/persistence/database/database');
+	var Promise 		= require('bluebird');
+	var util 			= require('util');
 
-	var database										= require('../app/persistence/database/database');
-
-	var Promise											= require('bluebird');
-	var util												= require('util');
-	
 	// Version 1
-	var Channel_v1									= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.airvuz_v1.channel" });
-	var Users_v1										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.airvuz_v1.users" });
-	var Videos_v1										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.airvuz_v1.videos" });
-	
+	var Channel_v1 		= database.getModelByDotPath({modelDotPath: "app.persistence.model.airvuz_v1.channel"});
+	var Users_v1 		= database.getModelByDotPath({modelDotPath: "app.persistence.model.airvuz_v1.users"});
+	var Videos_v1 		= database.getModelByDotPath({modelDotPath: "app.persistence.model.airvuz_v1.videos"});
+
 	// Version 2
-	var Users_v2										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.users" });
-	var Videos_v2										= database.getModelByDotPath({	modelDotPath	: "app.persistence.model.videos" });
-	
-	var usersCrud										= require('../app/persistence/crud/users');
-	var videosCrud									= require('../app/persistence/crud/videos');
+	var Users_v2 		= database.getModelByDotPath({modelDotPath: "app.persistence.model.users"});
+	var Videos_v2 		= database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
+
+	var usersCrud1_0_0 	= require('../app/persistence/crud/users1-0-0');
+	var videoCrud1_0_0 	= require('../app/persistence/crud/videos1-0-0');
 	
 
 } 
@@ -541,7 +539,7 @@ var MigrateUser = function(userV1_p) {
 
 						//loggerUserUtils.error(".MigrateUser:" + JSON.stringify(newUserData, null, 2));
 
-						usersCrud
+						usersCrud1_0_0
 							.create(newUserData)
 							.then(function(savedUser) {
 								resolve(savedUser);
@@ -610,7 +608,7 @@ var MigrateVideos = function(savedUser_p, origUserData_p) {
 					
 					(function(newVideoData, oldVideoData) {
 
-						videosCrud
+						videoCrud1_0_0
 							.create(newVideoData)
 							.then(function(savedVideo) {
 								savedVideoCount++;

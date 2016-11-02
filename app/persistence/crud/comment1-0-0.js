@@ -12,7 +12,7 @@ try {
   var VideoModel = null;
   var database = require('../database/database');
   var SocialCrud = require('./socialMediaAccount')
-  var VideoCrud = require('./videos');
+  var VideoCrud1_0_0 = require('./videos1-0-0');
 
   CommentModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.comment"});
   VideoModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
@@ -207,7 +207,7 @@ Comment.prototype.replyIncrement = function(parentCommentId, videoId) {
     logger.debug('replyIncrament : this is the comment : comment : ' + comment);
     var videoId = comment.videoId;
     logger.debug('replyIncraement : videoId : ' + videoId);
-    return VideoCrud.getById(videoId);
+    return VideoCrud1_0_0.getById(videoId);
   })
   .then(function(video) {
     return VideoModel.findByIdAndUpdate(video._id, {$inc: {commentCount: 1}}).exec();

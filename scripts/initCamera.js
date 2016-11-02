@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-  cameraTypeCrud = require('../app/persistence/crud/cameraType');
+    cameraTypeCrud1_0_0 = require('../app/persistence/crud/cameraType1-0-0');
 
 var cameras = [
   {
@@ -18,7 +18,7 @@ function createCameraType() {
   var promises = [];
 
   cameras.forEach(function (camera) {
-    promises.push(cameraTypeCrud.create(camera));
+    promises.push(cameraTypeCrud1_0_0.create(camera));
   });
 
   return Promise.all(promises);

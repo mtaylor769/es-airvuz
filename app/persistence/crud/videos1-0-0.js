@@ -1,7 +1,8 @@
+var namespace = 'app.persistence.crud.videos1-0-0';
 try {
 	var Promise = require('bluebird');
 	var log4js = require('log4js');
-	var logger = log4js.getLogger('app.persistence.crud.videos');
+	var logger = log4js.getLogger(namespace);
 	var ErrorMessage = require('../../utils/errorMessage');
 	var ObjectValidationUtil = require('../../utils/objectValidationUtil');
 	var PersistenceException = require('../../utils/exceptions/PersistenceException');

@@ -1,43 +1,63 @@
-try{
-    var log4js				  = require('log4js');
-    var Promise               = require('bluebird');
-    var _                     = require('lodash');
-    var logger				  = log4js.getLogger('app.routes.api.videos');
-    var keywords              = require('../../persistence/crud/keywords');
+var namespace = 'app.routes.api.keywords';
 
-    if(global.NODE_ENV === "production") {
+try {
+    var log4js          = require('log4js');
+    var logger          = log4js.getLogger(namespace);
+    var keyword1_0_0    = require('../apiVersion/keywords1-0-0');
+
+    if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
     }
-
-    logger.debug("import complete");
 }
-catch(exception){
+catch(exception) {
     logger.error(" import error:" + exception);
 }
+/**
+ * returns an http 400 status along with "incorrect api version requested" to requster
+ * displays remote address
+ * @param req
+ * @param res
+ */
+function incorrectVer(req, res) {
+    logger.info("incorrect api version requested: " + req.query.apiVer +
+        ", requester IP: " + req.connection.remoteAddress);
+    res.status(400).json({error: "invalid api version"});
+}
 
-function Keyword() {}
+function Keyword() {
+}
+/*
+ * If the request object query contains "apiVer" use its value to set version
+ * and call corresponding version of video api object
+ * if "apiVer" is not present, use defaultVer
+ */
+var defaultVer = "1.0.0";
 
-Keyword.prototype.create = function(req, res) {
-    var newKeyword = req.body.keyword;
-    keywords.create(newKeyword)
-        .then(function(keyword) {
-            res.send(keyword);
-        })
-        .catch(function(error) {
-            if(error === 'keyword exists') {
-                res.send(error);
-            } else {
-                res.sendStatus(500);
-            }
-        })
-};
+function create(req, res) {
 
-Keyword.prototype.search = function(req, res) {
-    var searchTerm = new RegExp(req.query.keyword, 'i');
-    keywords.search(searchTerm)
-        .then(function(keywords) {
-            res.json(keywords)
-        })
-};
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        keyword1_0_0.create(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function search(req, res) {
+
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        keyword1_0_0.search(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+Keyword.prototype.create = create;
+Keyword.prototype.search = search;
 
 module.exports = new Keyword();

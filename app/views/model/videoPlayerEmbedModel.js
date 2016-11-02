@@ -1,15 +1,14 @@
 // IMPORT: BEGIN
-var namespace				= 'app.views.model.videoPlayerEmbedModel';
-var log4js					= require('log4js');
-var logger					= log4js.getLogger(namespace);
-
+var namespace		    = 'app.views.model.videoPlayerEmbedModel';
+var log4js			    = require('log4js');
+var logger			    = log4js.getLogger(namespace);
 
 try {
-  var BaseModel	    = require('./baseModel');
+  var BaseModel	        = require('./baseModel');
   var util			    = require('util');
-  var videoCrud     = require('../../persistence/crud/videos');
-  var config				= require('../../../config/config')[process.env.NODE_ENV || 'development'];
-  var amazonConfig  = require('../../config/amazon.config');
+  var videoCrud1_0_0    = require('../../persistence/crud/videos1-0-0');
+  var config		    = require('../../../config/config')[process.env.NODE_ENV || 'development'];
+  var amazonConfig      = require('../../config/amazon.config');
 
   if(global.NODE_ENV === "production") {
     logger.setLevel("WARN");
@@ -32,10 +31,10 @@ util.inherits(VideoPlayerEmbedModel, BaseModel);
 VideoPlayerEmbedModel.prototype.getData = function(params) {
 
   var videoId         = params.request.params.id;
-  return videoCrud.getById(videoId)
+  return videoCrud1_0_0.getById(videoId)
     .then(function(video) {
       video.viewCount = video.viewCount + 1;
-      return videoCrud.upCount(video)
+      return videoCrud1_0_0.upCount(video)
     })
     .then(function(video) {
         logger.debug(video);

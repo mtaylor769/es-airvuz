@@ -1,29 +1,38 @@
-var apiRouter           = require('express').Router();
-var avEventTracker      = require('./avEventTracker');
-var users               = require('./users');
-var videos              = require('./videos');
-var cameraType          = require('./cameraType');
-var categoryType        = require('./categoryType');
-var droneType           = require('./droneType');
-var comment             = require('./comment');
-var follow              = require('./follow');
-var notifications       = require('./notifications');
-var videoLike           = require('./videoLike');
-var slide               = require('./slide');
-var slider              = require('./slider');
-var upload              = require('./upload');
-var amazon              = require('./amazon');
-var videoCollection     = require('./videoCollection');
-var reports 			= require('./reports');
-var keywords			= require('./keywords');
-var videoCuration 		= require('./videoCuration');
-var aclRoles 			= require('./aclRoles');
-var customCarousel 		= require('./customCarousel');
-// var forms               = require('./forms');
-var image               = require('./image');
-var cron                = require('./cron');
-var protect             = require('../../middlewares/protect');
-var token               = require('../../middlewares/token');
+
+var namespace = 'app.routes.api.routes';
+
+try {
+	var log4js      		= require('log4js');
+	var logger      		= log4js.getLogger(namespace);
+	var apiRouter           = require('express').Router();
+	var avEventTracker      = require('./avEventTracker');
+	var users               = require('./users');
+	var videos              = require('./videos');
+	var cameraType          = require('./cameraType');
+	var categoryType        = require('./categoryType');
+	var droneType           = require('./droneType');
+	var comment             = require('./comment');
+	var follow              = require('./follow');
+	var notifications       = require('./notifications');
+	var videoLike           = require('./videoLike');
+	var slide               = require('./slide');
+	var slider              = require('./slider');
+	var upload              = require('./upload');
+	var amazon              = require('./amazon');
+	var videoCollection     = require('./videoCollection');
+	var reports 			= require('./reports');
+	var keywords			= require('./keywords');
+	var videoCuration 		= require('./videoCuration');
+	var aclRoles 			= require('./aclRoles');
+    var customCarousel      = require('./customCarousel');
+// var forms               	= require('./forms');
+	var image               = require('./image');
+	var cron                = require('./cron');
+	var protect             = require('../../middlewares/protect');
+	var token               = require('../../middlewares/token');
+} catch(exception) {
+	logger.error(" import error:" + exception);
+}
 
 apiRouter
   .route('/api/avEventTracker')
@@ -264,12 +273,12 @@ apiRouter.route('/api/slide/:id')
  * /api/featured-videos/
  */
 apiRouter.route('/api/featured-videos')
-  .get(videoCollection.getVideos('Featured Videos'))
-  .put(protect, videoCollection.updateVideo('Featured Videos'));
+  .get(videoCollection.getFeaturedVideos)
+  .put(protect, videoCollection.updateFeaturedVideos);
 
 apiRouter.route('/api/staff-pick-videos')
-  .get(videoCollection.getVideos('Staff Pick Videos'))
-  .put(protect, videoCollection.updateVideo('Staff Pick Videos'));
+  .get(videoCollection.getStaffPickVideos)
+  .put(protect, videoCollection.updateStaffPickVideos);
 
 apiRouter.route('/api/video-collection/update-collection')
   .post(protect, videoCollection.updateCollectionVideos);
@@ -305,14 +314,27 @@ apiRouter.post('/api/amazon/transcode/warning', /*bodyParser.text(),*/ amazon.co
  */
 // TODO: change /image to /images
 apiRouter.get('/image/profile-picture/:picture', image.getProfilePicture);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/image/profile-picture/:picture', image.getProfilePicture);
+
 apiRouter.get('/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
+// for better support of external api consumers, an additional route that starts with '/api/'
+apiRouter.get('/api/image/drone-video-thumbnail/:id/:source', image.proxyThumbnail);
+
 apiRouter.get('/image/drone-video-thumbnail', image.getVideoThumbnail);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/image/drone-video-thumbnail', image.getVideoThumbnail);
+
 apiRouter.get('/image/slide/:source', image.getSlide);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/image/slide/:source', image.getSlide);
 
 /**
  * /drone-video
  */
 apiRouter.get('/drone-video/:videoId/:source', amazon.getVideo);
+// for better support of external api consumers, an additional route that starts with '/api'
+apiRouter.get('/api/drone-video/:videoId/:source', amazon.getVideo);
 
 /**
  * /api/reports

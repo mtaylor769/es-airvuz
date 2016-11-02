@@ -1,10 +1,26 @@
-var formsCrud              = require('../../persistence/crud/forms');
-var nodemailer             = require('nodemailer');
-var _                      = require('lodash');
-var Promise                = require('bluebird');
+var namespace = 'app.routes.api.forms';
+try {
+    var log4js                 = require('log4js');
+    var logger                 = log4js.getLogger(namespace);
+    var formsCrud              = require('../../persistence/crud/forms');
+    var nodemailer             = require('nodemailer');
+    var _                      = require('lodash');
+    var Promise                = require('bluebird');
+}
+catch(exception) {
+    logger.error(" import error:" + exception);
+}
 
+/**
+ *
+ * @constructor
+ */
 function Forms() {}
-
+/**
+ *
+ * @param options
+ * @private
+ */
 function _sendMail(options) {
   var transport = nodemailer.createTransport({
     service: "Gmail",
@@ -30,7 +46,11 @@ function _sendMail(options) {
     });
   });
 }
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 function post(req, res) {
   var isRegistered  = formsCrud.getCount({emailAddress: req.body.emailAddress, type: req.body.type});
   var totalCount    = formsCrud.getCount({type: req.body.type});
@@ -70,6 +90,6 @@ function post(req, res) {
     });
 }
 
-Forms.prototype.post         = post;
+Forms.prototype.post = post;
 
 module.exports = new Forms();
