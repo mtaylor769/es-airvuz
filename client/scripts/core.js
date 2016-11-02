@@ -235,7 +235,7 @@ function bindEvents() {
     var userNameDisplay = $loginModal.find('#username:visible').val().trim();
     var password = $loginModal.find('#password:visible').val();
     var confirmPassword = $loginModal.find('#confirm-password:visible').val();
-    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').val() === 'true';
+    var isSubscribeAirVuzNews = $loginModal.find('#isSubscribeAirVuzNews').is(':checked');
 
     //setting object equal to modal values
     newUserObject.email = emailAddress;
