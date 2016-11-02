@@ -26,16 +26,19 @@ function rating(req, res) {
     var rawInternalTags     = req.body.internalTags || [];
     var rawSeoTags          = req.body.seoKeywords || [];
     var videoId             = req.body.videoId;
+    var videoCategories     = req.body.categories;
     var internalRanking     = req.body.internalRanking;
     var initialVideo        = req.body.initialVideo;
+    var nextVideoParams     = req.body.nextVideoParams;
     var waitFor;
 
     //setting up query object. Video Ranking is always required
     var queryObject = {};
     queryObject.update = {};
     queryObject.update.curation = {};
+    queryObject.update.categories = videoCategories;
     queryObject.id = videoId;
-    queryObject.update.internalRanking = internalRanking;
+    queryObject.internalRanking = internalRanking;
     queryObject.update.curation.isRanked = true;
 
     //run if initial Video
@@ -105,7 +108,22 @@ function rating(req, res) {
     }
 
     waitFor.then(function () {
-        return videoCrud1_0_0.getNextVideoToRate();
+        if(initialVideo) {
+            return videoCrud.getNextVideoToRate();
+        } else {
+            //will get next video based on input params
+            return videoCrud.getNextVideoToRate(nextVideoParams)
+              .then(function(video) {
+                  //if no more videos for specified params will send back a flag for dialog otherwise will return the video
+                  if(!video.length) {
+                      //flag for dialog
+                      return {completed: true};
+                  } else {
+                      //return video like normal
+                      return video;
+                  }
+              })
+        }
     })
     .then(function(nextVideo) {
         res.json(nextVideo);
