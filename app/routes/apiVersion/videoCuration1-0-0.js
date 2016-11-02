@@ -30,6 +30,9 @@ function rating(req, res) {
     var internalRanking     = req.body.internalRanking;
     var initialVideo        = req.body.initialVideo;
     var nextVideoParams     = req.body.nextVideoParams;
+    var initialVideoId      = req.body.stateVideo || null;
+    var initialType         = req.body.stateType || null;
+    var primaryCategory     = req.body.primaryCategory || null;
     var waitFor;
 
     //setting up query object. Video Ranking is always required
@@ -40,10 +43,22 @@ function rating(req, res) {
     queryObject.id = videoId;
     queryObject.internalRanking = internalRanking;
     queryObject.update.curation.isRanked = true;
+    //will set primary category if param is set
+    if(primaryCategory) {
+        queryObject.update.primaryCategory = primaryCategory;
+        queryObject.update.curation.primaryCategory = true;
+    }
 
     //run if initial Video
     if(initialVideo) {
-        waitFor = Promise.resolve();
+        if(initialVideoId) {
+            waitFor = Promise.resolve({initialVideoId: initialVideoId});
+        } else if(initialType) {
+            waitFor = Promise.resolve({initialType: initialType});
+        } else {
+            waitFor = Promise.resolve();
+        }
+
     } else {
 
         //function to run if both internal and SEO tags
@@ -106,29 +121,43 @@ function rating(req, res) {
             waitFor = videoCrud1_0_0.videoCurationUpdate(queryObject);
         }
     }
+    // waitFor.then(function () {
+    //     if(initialVideo) {
+    //         return videoCrud1_0_0.getNextVideoToRate();
+    //     } else {
+    //         //will get next video based on input params
+    //         return videoCrud1_0_0.getNextVideoToRate(nextVideoParams)
+    //           .then(function(video) {
+    //               //if no more videos for specified params will send back a flag for dialog otherwise will return the video
+    //               if(!video.length) {
+    //                   //flag for dialog
+    //                   return {completed: true};
+    //               } else {
+    //                   //return video like normal
+    //                   return video;
+    //               }
+    //           })
 
-    waitFor.then(function () {
-        if(initialVideo) {
-            return videoCrud1_0_0.getNextVideoToRate();
+
+    //TODO : make work like function above ^^^^^
+    waitFor.then(function(params) {
+        if(params) {
+            if(params.initialVideoId) {
+                return videoCrud1_0_0.getNextVideoToRate({videoId: params.initialVideoId});
+            } else if(params.initialType) {
+                return videoCrud1_0_0.getNextVideoToRate({type: params.initialType});
+            } else {
+                return videoCrud1_0_0.getNextVideoToRate();
+            }
         } else {
-            //will get next video based on input params
-            return videoCrud1_0_0.getNextVideoToRate(nextVideoParams)
-              .then(function(video) {
-                  //if no more videos for specified params will send back a flag for dialog otherwise will return the video
-                  if(!video.length) {
-                      //flag for dialog
-                      return {completed: true};
-                  } else {
-                      //return video like normal
-                      return video;
-                  }
-              })
+            return videoCrud1_0_0.getNextVideoToRate();
         }
     })
     .then(function(nextVideo) {
         res.json(nextVideo);
     })
     .catch(function(error) {
+        console.log(error);
         res.send(500);
     });
 }
