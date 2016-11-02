@@ -204,7 +204,7 @@ function initialize(videoObj) {
 
 function loadTwitterScript() {
     // check if twttr exists already
-    if (!typeof twttr) {
+    if (typeof twttr !== 'undefined') {
         return true;
     }
     $.ajax({
