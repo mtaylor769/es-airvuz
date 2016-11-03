@@ -109,10 +109,10 @@ function rating(req, res) {
 
     waitFor.then(function () {
         if(initialVideo) {
-            return videoCrud.getNextVideoToRate();
+            return videoCrud1_0_0.getNextVideoToRate();
         } else {
             //will get next video based on input params
-            return videoCrud.getNextVideoToRate(nextVideoParams)
+            return videoCrud1_0_0.getNextVideoToRate(nextVideoParams)
               .then(function(video) {
                   //if no more videos for specified params will send back a flag for dialog otherwise will return the video
                   if(!video.length) {
