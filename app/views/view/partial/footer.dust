@@ -130,7 +130,7 @@
               <p>Email sent, Please check your mailbox</p>
             </div>
             <div class="text-message text-danger hidden">
-                <p>There was a problem reseting your password or incorrect email</p>
+                <p>There was a problem resetting your password or incorrect email</p>
             </div>
             <div class="text-right">
               <button type="button" class="btn btn-primary" id="btn-password-reset">Reset</button>
