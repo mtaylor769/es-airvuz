@@ -101,24 +101,10 @@
           <p>Video Completed Data Report</p>
         </md-list-item>
       </md-list>
-
-      <md-list-item ng-click="vm.videoCuration = !vm.videoCuration" >
+      <md-list-item ui-sref="videoCuration.landing">
         <md-icon class="material-icons"></md-icon>
         <p>Video Curation</p>
       </md-list-item>
-
-      <md-list ng-show="vm.videoCuration" class="menu-accordion">
-
-        <md-list-item ui-sref="videoCuration.rateVideos" ng-click="vm.videoCuration = !vm.videoCuration">
-          <p>Curate Videos</p>
-        </md-list-item>
-
-        <md-list-item ui-sref="videoCuration.searchSeo" ng-click="vm.videoCuration = !vm.videoCuration">
-          <p>SEO Keyword Search</p>
-        </md-list-item>
-
-      </md-list>
-
       <md-list-item ng-click="vm.carousel = !vm.carousel">
         <md-icon class="material-icons"></md-icon>
         <p>Carousel Curation</p>
@@ -198,6 +184,7 @@
 <script src="/admin/app/camera-type/cameraTypeEdit.controller.js"></script>
 <script src="/admin/app/camera-type/createCamera.controller.js"></script>
 <script src="/admin/app/comments/editComments.controller.js"></script>
+<script src="/admin/app/video-curation/curationLanding.controller.js"></script>
 <script src="/admin/app/video-curation/rating.controller.js"></script>
 <script src="/admin/app/video-curation/seoSearch.controller.js"></script>
 <script src="/admin/app/custom-carousel/carouselCreate.controller.js"></script>

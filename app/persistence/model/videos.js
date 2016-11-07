@@ -165,7 +165,8 @@ var videoSchema = mongoose.Schema({
 	curation: {
 		isRanked: Boolean,
 		isTagged: Boolean,
-		isSeoTagged: Boolean
+		isSeoTagged: Boolean,
+		primaryCategory: Boolean
 	},
 
 	internalRanking: [],
@@ -175,8 +176,17 @@ var videoSchema = mongoose.Schema({
 	*/
 	internalRankAvg: Number,
 
+	//internal tags specified by internal curators
 	internalTags: [String],
 
+	//primary category set by internal curators
+	primaryCategory : {
+		ref: 'CategoryType',
+		required: false,
+		type: mongoose.Schema.ObjectId
+	},
+
+	//seo tags specified by internal curators
 	seoTags: [String],
 
 	videoLocation: String

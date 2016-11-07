@@ -83,7 +83,10 @@ function rating(req, res) {
                 queryObject.update.seoTags = seoTags;
                 queryObject.update.curation.isTagged = true;
                 queryObject.update.curation.isSeoTagged = true;
-                return videoCrud1_0_0.videoCurationUpdate(queryObject);
+                return videoCrud1_0_0.videoCurationUpdate(queryObject)
+                  .then(function() {
+                      return Promise.resolve(nextVideoParams);
+                  })
             });
 
             //function to run if internal tags but no SEO
@@ -98,7 +101,10 @@ function rating(req, res) {
                 });
                 queryObject.update.internalTags = internalTags;
                 queryObject.update.curation.isTagged = true;
-                return videoCrud1_0_0.videoCurationUpdate(queryObject);
+                return videoCrud1_0_0.videoCurationUpdate(queryObject)
+                  .then(function() {
+                      return Promise.resolve(nextVideoParams);
+                  })
             });
 
             //function to run if SEO tags but no internal
@@ -113,12 +119,19 @@ function rating(req, res) {
                 });
                 queryObject.update.seoTags = seoTags;
                 queryObject.update.curation.isSeoTagged = true;
-                return videoCrud1_0_0.videoCurationUpdate(queryObject);
+                return videoCrud1_0_0.videoCurationUpdate(queryObject)
+                  .then(function() {
+                      return Promise.resolve(nextVideoParams);
+                  })
             });
 
             //function to run if only ranking
         } else {
-            waitFor = videoCrud1_0_0.videoCurationUpdate(queryObject);
+                waitFor = videoCrud1_0_0.videoCurationUpdate(queryObject)
+              .then(function() {
+                  return Promise.resolve(nextVideoParams);
+              })
+
         }
     }
     // waitFor.then(function () {
@@ -142,10 +155,12 @@ function rating(req, res) {
     //TODO : make work like function above ^^^^^
     waitFor.then(function(params) {
         if(params) {
-            if(params.initialVideoId) {
+            if (params.initialVideoId) {
                 return videoCrud1_0_0.getNextVideoToRate({videoId: params.initialVideoId});
-            } else if(params.initialType) {
+            } else if (params.initialType) {
                 return videoCrud1_0_0.getNextVideoToRate({type: params.initialType});
+            } else if (params.type) {
+                return videoCrud1_0_0.getNextVideoToRate(params);
             } else {
                 return videoCrud1_0_0.getNextVideoToRate();
             }
@@ -157,10 +172,10 @@ function rating(req, res) {
         res.json(nextVideo);
     })
     .catch(function(error) {
-        console.log(error);
         res.send(500);
     });
 }
 
 VideoCuration.prototype.rating = rating;
+
 module.exports = new VideoCuration();

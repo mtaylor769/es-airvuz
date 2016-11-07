@@ -502,34 +502,58 @@ Videos.prototype.findByUserIdAndDate = function(userId, startDate, endDate) {
 
 //function will return a video object with the categories populated
 Videos.prototype.getNextVideoToRate = function(nextVideoParams) {
-	//checks for params otherwise will run default
-	switch(nextVideoParams ? nextVideoParams.type : '') {
-		//case nextVideoParams.type === 'contributor'
-		case 'contributor':
-			return VideoModel.find({'userId' : nextVideoParams.value, 'curation.isRanked' : null})
-				.sort({viewCount: -1})
-				.limit(1)
-				.populate('categories')
-				.lean()
-				.exec();
-			break;
-		//case nextVideoParams.type === 'category'
-		case 'category':
-			return VideoModel.find({'categories' : nextVideoParams.value, 'curation.isRanked' : null})
-				.sort({commentCount: -1})
-				.limit(1)
-				.populate('categories')
-				.lean()
-				.exec();
-			break;
-		//case nextVideoParams.type === typeOf 'undefined' || non-valid param
-		default:
-			return VideoModel.find({'curation.isRanked' : null})
-				.sort({viewCount: -1}).limit(1)
-				.populate('categories')
-				.lean()
-				.exec();
+	var videoIdCheck = nextVideoParams ? nextVideoParams.videoId : null;
+	var execute;
+
+	if(!videoIdCheck) {
+		//checks for params otherwise will run default
+		switch(nextVideoParams ? nextVideoParams.type : '') {
+			//case nextVideoParams.type === 'contributor'
+			case 'contributor':
+				execute = VideoModel.find({'userId' : nextVideoParams.value, 'curation.isRanked' : null});
+				break;
+
+			//case nextVideoParams.type === 'category'
+			case 'category':
+				execute = VideoModel.find({'categories' : nextVideoParams.value, 'curation.isRanked' : null});
+				break;
+
+			//case nextVideoParams.type === 'internal'
+			case 'internal':
+				execute = VideoModel.find({'internalTags' : []});
+				break;
+
+			//case nextVideoParams.type === 'seo'
+			case 'seo':
+				execute = VideoModel.find({'seoTags': []});
+				break;
+
+			//case nextVideoParams.type === 'primaryCategory'
+			case 'primaryCategory':
+				execute = VideoModel.find({'primaryCategory': null});
+				break;
+
+			//case nextVideoParams.type === typeOf 'undefined' || non-valid param
+			default:
+				execute = VideoModel.find({'curation.isRanked' : null});
+				break;
+		}
+	} else {
+		return VideoModel.findById(nextVideoParams.videoId)
+			.populate('categories')
+			.populate('primaryCategory')
+			.lean()
+			.exec();
 	}
+
+	//consolidated mongoose execute code will return mongoose query and run execution function
+	return execute
+		.sort({viewCount: -1})
+		.limit(1)
+		.populate('categories')
+		.populate('primaryCategory')
+		.lean()
+		.exec();
 };
 
 function findVideoBySeoKeyword(keyword) {

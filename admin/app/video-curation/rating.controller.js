@@ -5,9 +5,9 @@
         .module('AirvuzAdmin')
         .controller('ratingController', ratingController);
 
-    ratingController.$inject = ['$http', 'Videos', 'Amazon', 'CategoryType', 'dialog'];
+    ratingController.$inject = ['$http', 'Videos', 'Amazon', 'CategoryType', 'dialog', '$state'];
 
-    function ratingController($http, Videos, Amazon, CategoryType, dialog) {
+    function ratingController($http, Videos, Amazon, CategoryType, dialog, $state) {
         getCategories();
 
         // settings for rating stars
@@ -103,11 +103,19 @@
                         data.nextVideoParams.type = nextVideoType;
                     }
                 }
+                if(!nextVideoType && vm.curationType) {
+                    data.nextVideoParams = {};
+                    data.nextVideoParams.type = vm.curationType;
+                }
                 data.internalTags = vm.internalKeywords;
                 data.seoKeywords = vm.seoKeywords;
                 data.categories = vm.video.categories;
                 data.videoId = vm.video._id;
                 data.internalRanking = vm.ratingSelection;
+                if(vm.primaryCategory) {
+                    data.primaryCategory = vm.primaryCategory._id;
+                }
+
                 if(!data.internalRanking) {
                     vm.ratingRequired = true;
                 } else {
@@ -128,6 +136,7 @@
                             vm.keywords = video.tags;
                             vm.internalKeywords = video.internalTags;
                             vm.seoKeywords = video.seoTags;
+                            vm.primaryCategory = video.primaryCategory;
                             vm.ratingRequired = false;
                             if(video.curation) {
                                 vm.curated = true;
@@ -142,13 +151,26 @@
             } else {
                 var data = {};
                 data.initialVideo = true;
+                if($state.params.videoId) {
+                    data.stateVideo = $state.params.videoId;
+                }
+                if($state.params.type) {
+                    vm.curationType = $state.params.type;
+                    data.stateType = $state.params.type;
+                }
                 $http.post('/api/video-curation', data).then(function(response) {
-                    var video = response.data[0];
+                    if(response.data.length) {
+                        var video = response.data[0];
+                    } else {
+                        var video = response.data;
+                    }
                     vm.video = video;
                     if(vm.video.categories) {
                         categoryCheck(vm.video.categories);
                     }
-
+                    vm.internalKeywords = video.internalTags;
+                    vm.seoKeywords = video.seoTags;
+                    vm.primaryCategory = video.primaryCategory;
                     vm.keywords = video.tags;
                     vm.ratingRequired = false;
                     setVideoPlayerConfig();
@@ -258,6 +280,7 @@
               .$promise
               .then(function(categories) {
                   vm.categories = categories;
+                  vm.primaryCategoryList = categories;
               })
         }
 
