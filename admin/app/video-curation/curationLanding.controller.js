@@ -10,7 +10,6 @@
   function curationLandingController($state) {
 
     function curationRedirectType(params) {
-      console.log(params);
       $state.go('videoCuration.rating', {type: params});
     }
 

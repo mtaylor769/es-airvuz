@@ -134,25 +134,7 @@ function rating(req, res) {
 
         }
     }
-    // waitFor.then(function () {
-    //     if(initialVideo) {
-    //         return videoCrud1_0_0.getNextVideoToRate();
-    //     } else {
-    //         //will get next video based on input params
-    //         return videoCrud1_0_0.getNextVideoToRate(nextVideoParams)
-    //           .then(function(video) {
-    //               //if no more videos for specified params will send back a flag for dialog otherwise will return the video
-    //               if(!video.length) {
-    //                   //flag for dialog
-    //                   return {completed: true};
-    //               } else {
-    //                   //return video like normal
-    //                   return video;
-    //               }
-    //           })
 
-
-    //TODO : make work like function above ^^^^^
     waitFor.then(function(params) {
         if(params) {
             if (params.initialVideoId) {
@@ -160,7 +142,17 @@ function rating(req, res) {
             } else if (params.initialType) {
                 return videoCrud1_0_0.getNextVideoToRate({type: params.initialType});
             } else if (params.type) {
-                return videoCrud1_0_0.getNextVideoToRate(params);
+                return videoCrud1_0_0.getNextVideoToRate(params)
+                  .then(function(video) {
+                      //if no more videos for specified params will send back a flag for dialog otherwise will return the video
+                      if(!video.length) {
+                        //flag for dialog
+                        return {completed: true};
+                      } else {
+                        //return video like normal
+                        return video;
+                      }
+                  });
             } else {
                 return videoCrud1_0_0.getNextVideoToRate();
             }
