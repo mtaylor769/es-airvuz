@@ -5,9 +5,9 @@
     .module('AirvuzAdmin')
     .controller('StaffPickVideoController', StaffPickVideoController);
 
-  StaffPickVideoController.$inject = ['$http'];
+  StaffPickVideoController.$inject = ['$http', 'Amazon'];
 
-  function StaffPickVideoController($http) {
+  function StaffPickVideoController($http, Amazon) {
 
     function initialize() {
       $http.get('/api/staff-pick-videos')
@@ -17,18 +17,19 @@
     }
 
     function addVideo(id) {
-      vm.videoCollection.videos.push(id);
+      vm.videoCollection.unshift(id);
       _updateVideoCollection();
     }
 
     function _updateVideoCollection() {
-      $http.put('/api/staff-pick-videos', {videos: vm.videoCollection.videos})
-        .then(function (response) {
+      $http.put('/api/staff-pick-videos', {videos: vm.videoCollection})
+        .then(function () {
+          initialize();
         })
     }
 
     function removeVideo(index) {
-      vm.videoCollection.videos.splice(index, 1);
+      vm.videoCollection.splice(index, 1);
       _updateVideoCollection();
     }
 
@@ -36,6 +37,7 @@
     var vm          = this;
     vm.addVideo     = addVideo;
     vm.removeVideo  = removeVideo;
+    vm.amazonOutputUrl    = Amazon.outputUrl;
 
     initialize();
   }
