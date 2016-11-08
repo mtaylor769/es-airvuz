@@ -12,6 +12,8 @@ require('dustjs-helpers');
 
 require('./core');
 
+require('../scripts/services/pageTimer');
+
 window.Home = require('./home');
 window.Upload = require('./upload');
 window.videoPlayer = require('./videoPlayer');
