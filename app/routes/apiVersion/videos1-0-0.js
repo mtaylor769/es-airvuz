@@ -23,6 +23,8 @@ try {
     var SocialCrud                  = require('../../persistence/crud/socialMediaAccount');
     var commentCrud1_0_0            = require('../../persistence/crud/comment1-0-0');
     var md5                         = require('md5');
+    var viewManager                 = require('../../views/manager/viewManager');
+
     if(global.NODE_ENV === "production") {
         logger.setLevel("INFO");
     }
@@ -817,6 +819,22 @@ function querySeoKeywords(req, res) {
       })
 }
 
+function renderVideoPage(req, res, next) {
+    viewManager
+      .getView({
+          viewName: 'app.view.views.partial.videoPlayer',
+          request: req,
+          response: res,
+          next: next
+      })
+      .then(function(view) {
+          res.send(view)
+      })
+      .catch(function(error) {
+          logger.debug('Video Player View Manager Error : ' + error)
+      })
+}
+
 Video.prototype.getVideosByCategory     = getVideosByCategory;
 Video.prototype.search                  = search;
 Video.prototype.post                    = post;
@@ -837,6 +855,7 @@ Video.prototype.getNextVideos           = getNextVideos;
 Video.prototype.getVideoOwnerProfile    = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId    = getCommentsByVideoId;
 Video.prototype.querySeoKeywords        = querySeoKeywords;
+Video.prototype.renderVideoPage         = renderVideoPage;
 
 module.exports = new Video();
 
