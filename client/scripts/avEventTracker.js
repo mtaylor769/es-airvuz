@@ -14,7 +14,7 @@ var browser = require('./services/browser'),
  * @param {string} params.referrer
  * @param {string} params.videoId
  * @param {string} params.imgFileType
- * @param {string} params.siteTimeSpent
+ * @param {string} params.timeOnSite
  * @returns {Promise}
  */
 function AVEventTracker(params) {

@@ -12,6 +12,8 @@
             min = Math.floor(diff/60000),
             sec = Math.floor((diff/1000) % 60);
 
+        console.log(minSec);
+
         minSec = min + ':' + sec;
 
         trackTime(minSec);
@@ -30,32 +32,32 @@
 
         switch (minutes) {
             case '1:0':
-                evtObj.timeSpent = '1';
+                evtObj.timeOnSite = '1';
                 AVEventTracker(evtObj);
-                fbq('trackCustom', 'TimeSpent:1min');
+                fbq('trackCustom', 'timeOnSite:1min');
                 break;
             case '1:30':
-                evtObj.timeSpent = '1.5';
+                evtObj.timeOnSite = '1.5';
                 AVEventTracker(evtObj);
-                fbq('trackCustom', 'TimeSpent:1.5min');
+                fbq('trackCustom', 'timeOnSite:1.5min');
                 break;
             case '2:30':
-                evtObj.timeSpent = '2.5';
+                evtObj.timeOnSite = '2.5';
                 AVEventTracker(evtObj);
-                fbq('trackCustom', 'TimeSpent:2.5min');
+                fbq('trackCustom', 'timeOnSite:2.5min');
                 break;
             case '4:30':
-                evtObj.timeSpent = '4.5';
+                evtObj.timeOnSite = '4.5';
                 AVEventTracker(evtObj);
-                fbq('trackCustom', 'TimeSpent:4.5min');
+                fbq('trackCustom', 'timeOnSite:4.5min');
                 break;
             case '10:0':
                 stopTimer = true;
                 window.localStorage.setItem('endTime', new Date().getTime());
 
-                evtObj.timeSpent = '10';
+                evtObj.timeOnSite = '10';
                 AVEventTracker(evtObj);
-                fbq('trackCustom', 'TimeSpent:10min');
+                fbq('trackCustom', 'timeOnSite:10min');
                 break;
         }
     }

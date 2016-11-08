@@ -69,7 +69,7 @@ var eventTrackingSchema = mongoose.Schema({
 	/*
 	 * Time Spent on site
 	 */
-	timeSpent: String,
+	timeOnSite: String,
 
 
 	/*
