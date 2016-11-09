@@ -82,7 +82,7 @@ apiRouter.route('/api/users/create')
   .post(users.createUser);
 
 apiRouter.route('/api/users/hireme')
-  .post(users.hireMe);
+  .post(protect, users.hireMe);
 
 apiRouter.route('/api/users/contact-us')
   .post(users.contactUs);
@@ -103,7 +103,7 @@ apiRouter.route('/api/users/resend-confirmation')
  * /api/follow/
  */
 apiRouter.route('/api/follow')
-  .post(follow.post);
+  .post(protect, follow.post);
 
 apiRouter.route('/api/follow/check')
   .post(follow.getCheckFollowing);
