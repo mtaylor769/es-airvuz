@@ -477,7 +477,7 @@ function contactUs(req, res) {
             // TODO: make domain dynamic
             var mailOptions = {
                 from:'noreply <noreply@airvuz.com>',
-                to: 'bryce.blilie@airvuz.com',
+                to: 'support@airvuz.com',
                 subject: 'Contact Us',
                 html: '<div>'+
                 '<h4>Someone has sent a request for information</h4>'+
