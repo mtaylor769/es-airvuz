@@ -11,10 +11,29 @@
             </form>
 
             <md-list>
-                <md-list-item class="md-2-line" ng-repeat="video in vm.videoCollection.videos track by $index">
+                <md-list-item class="md-2-line" ng-repeat="video in vm.videoCollection track by $index">
                     <div class="md-list-item-text">
-                        {{video}}
-                        <md-button class="md-raised md-warn" ng-click="vm.removeVideo($index)">Remove</md-button>
+                        <md-card layout-padding layout="row">
+                            <div layout="column" flex="15">
+                                <p>Username : {{video.userId.userNameDisplay}}</p>
+                                <a href="/user/{{video.userId.userNameUrl}}"><p>Go To User Profile</p></a>
+                                <p>Uploaded Date : {{video.uploadDate}}</p>
+                            </div>
+                            <div layout="column" flex="33">
+                                <p>Video Id : {{video._id}}</p>
+                                <p>Video Title : {{video.title}}</p>
+                                <p>Video Duration : {{video.duration}}</p>
+                                <p>Video View Count : {{video.viewCount}}</p>
+                            </div>
+                            <div layout="column" flex>
+                                <div>
+                                    <img src="{{vm.amazonOutputUrl}}{{video.thumbnailPath}}">
+                                </div>
+                            </div>
+                            <div layout="column">
+                                <md-button class="md-raised md-warn" ng-click="vm.removeVideo($index)">Remove</md-button>
+                            </div>
+                        </md-card>
                     </div>
                 </md-list-item>
             </md-list>
