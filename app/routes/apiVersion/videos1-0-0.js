@@ -822,7 +822,7 @@ function querySeoKeywords(req, res) {
 function renderVideoPage(req, res, next) {
     viewManager
       .getView({
-          viewName: 'app.view.views.partial.videoPlayer',
+          viewName: 'app.view.views.videoPlayerPartial',
           request: req,
           response: res,
           next: next
