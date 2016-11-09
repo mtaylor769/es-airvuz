@@ -66,6 +66,11 @@ var eventTrackingSchema = mongoose.Schema({
 	 */
 	imgFileType: String,
 
+	/*
+	 * Time Spent on site
+	 */
+	timeOnSite: String,
+
 
 	/*
 	// "CLIENT" | "SERVER"
