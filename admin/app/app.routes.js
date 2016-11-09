@@ -230,15 +230,39 @@
         controller: 'slideEditController',
         controllerAs: 'vm'
       })
-      .state('curationRatingInitial', {
-        url: '',
+      .state('videoCuration', {
+        url: '/admin/video-curation',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('videoCuration.rateVideos', {
+        url: '/rate-videos',
         templateUrl: '/admin/app/video-curation/partial/rating.html',
         controller: 'ratingController',
         controllerAs: 'vm'
       })
-      .state('curationRating', {
-        url: '/admin/curation-rating/:id',
+      .state('videoCuration.searchSeo', {
+        url: '/search-seo-keywords',
+        templateUrl: '/admin/app/video-curation/partial/seo-search.html',
+        params: {
+          keyword: null
+        },
+        controller: 'seoSearchController',
+        controllerAs: 'vm'
+      })
+      .state('videoCuration.landing', {
+        url: '',
+        templateUrl: '/admin/app/video-curation/partial/curation-landing.html',
+        controller: 'curationLandingController',
+        controllerAs: 'vm'
+      })
+      .state('videoCuration.rating', {
+        url: '/rating',
         templateUrl: '/admin/app/video-curation/partial/rating.html',
+        params: {
+          type: null,
+          videoId: null
+        },
         controller: 'ratingController',
         controllerAs: 'vm'
       })

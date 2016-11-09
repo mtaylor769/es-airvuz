@@ -806,6 +806,17 @@ function getCommentsByVideoId (req, res) {
         });
 }
 
+function querySeoKeywords(req, res) {
+    var keyword = req.query.keyword;
+    return videoCrud1_0_0.findVideoBySeoKeyword(keyword)
+      .then(function(videos) {
+          res.json(videos);
+      })
+      .catch(function(error) {
+          res.sendStatus(500);
+      })
+}
+
 Video.prototype.getVideosByCategory     = getVideosByCategory;
 Video.prototype.search                  = search;
 Video.prototype.post                    = post;
@@ -825,6 +836,7 @@ Video.prototype.getFollowCount          = getFollowCount;
 Video.prototype.getNextVideos           = getNextVideos;
 Video.prototype.getVideoOwnerProfile    = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId    = getCommentsByVideoId;
+Video.prototype.querySeoKeywords        = querySeoKeywords;
 
 module.exports = new Video();
 

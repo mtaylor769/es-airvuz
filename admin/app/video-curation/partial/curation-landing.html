@@ -1,0 +1,38 @@
+<div layout-padding>
+    <h2>Video Curation</h2>
+    <p class="field-title">Select By Video Id</p>
+    <div layout="row">
+        <md-input-container flex="50">
+            <input type="text" placeholder="Enter Video Id" ng-model="vm.videoId">
+        </md-input-container>
+        <div layout="column">
+            <md-button class="md-raised md-warn" ng-click="vm.curationRedirectVideoId()">Submit</md-button>
+        </div>
+    </div>
+    <div layout="row" layout-padding>
+        <div class="field-title">
+            <h4>Or</h4>
+        </div>
+    </div>
+    <p class="field-title">Select by curation parameter</p>
+    <div layout="row">
+        <md-button class="md-raised md-primary" ng-click="vm.curationRedirectType()">Videos without Rating</md-button>
+        <md-button class="md-raised md-primary" ng-click="vm.curationRedirectType('internal')">Videos without Internal Keywords</md-button>
+        <md-button class="md-raised md-primary" ng-click="vm.curationRedirectType('seo')">Videos without Seo Keywords</md-button>
+        <md-button class="md-raised md-primary" ng-click="vm.curationRedirectType('primaryCategory')">Videos without Primary Category</md-button>
+    </div>
+    <div layout="row" layout-padding>
+        <div class="field-title">
+            <h4>Or</h4>
+        </div>
+    </div>
+    <p class="field-title">Search by SEO Keywords</p>
+    <div layout="row">
+        <md-input-container flex="50">
+            <input type="text" placeholder="Enter SEO keyword here" ng-model="vm.seoKeyword">
+        </md-input-container>
+        <div layout="column">
+            <md-button class="md-raised md-warn" ng-click="vm.searchSeoKeywords()">Submit</md-button>
+        </div>
+    </div>
+</div>

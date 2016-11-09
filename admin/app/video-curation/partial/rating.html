@@ -39,6 +39,13 @@
             <md-option ng-repeat="category in vm.categories | orderBy : 'name'" value={{category}}>{{category.name}}</md-option>
         </md-select>
     </md-input-container>
+    <!---- primary category---->
+    <p class="field-title">Select Primary Category</p>
+    <md-input-container>
+        <md-select ng-model="vm.primaryCategory" placeholder="Select a Category">
+            <md-option ng-repeat="category in vm.video.categories | orderBy: 'name'" value="{{category}}">{{category.name}}</md-option>
+        </md-select>
+    </md-input-container>
     <!---- video title and id ---->
     <p class="field-title">{{vm.video.title}}</p>
     <p>{{vm.video._id}}</p>
