@@ -152,6 +152,16 @@ function bindEvents() {
   });
 }
 
+function goToVideoPlayer(videoId) {
+  console.log(videoId);
+  $.ajax({
+    type: 'GET',
+    url: '/api/videos/render/' + videoId,
+    data: {params: 'partialVideo'},
+  })
+}
+
 module.exports = {
-  initialize: initialize
+  initialize: initialize,
+  goToVideoPlayer: goToVideoPlayer
 };

@@ -465,8 +465,35 @@ function bindEvents() {
     var list = '<li data-id="' + category._id + '">' + category.name + '</li>';
     var $categoryList = $uploadPage.find('#selected-category-list');
 
+
     if ($categoryList.find('li').length < 3) {
-      $categoryList.append(list);
+      var categoryChildren = $categoryList[0].children;
+      if(categoryChildren.length !== 0) {
+        console.log(categoryChildren);
+        console.log(typeof categoryChildren)
+        categoryChildren.forEach(function(category) {
+          if(category === list) {
+            $uploadPage.find('#category-message').text('Category already selected');
+
+            setTimeout(function () {
+              $uploadPage.find('#category-message').text('');
+            }, 2000);
+          } else {
+            $categoryList.append(list);
+          }
+        });
+        // if(categoryChildren.indexOf(list) !== -1) {
+        //   $uploadPage.find('#category-message').text('Category already selected');
+        //
+        //   setTimeout(function () {
+        //     $uploadPage.find('#category-message').text('');
+        //   }, 2000);
+        // } else {
+        //   $categoryList.append(list);
+        // }
+      } else {
+        $categoryList.append(list);
+      }
     } else {
       $uploadPage.find('#category-message').text('Max catgories');
 

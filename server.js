@@ -136,7 +136,7 @@ function loadView(req, res, name, next) {
 				res.send(view);
 			})
 			.catch(function(error) {
-				logger.error(name + " loading view error:" + error);
+				logger.error(name + " loading view error : " + error);
 			});
 }
 
@@ -245,6 +245,7 @@ app.get("/google2ad042ef42b82b4f.html", function(req, res) {
 });
 
 app.use(function (req, res) {
+  console.log(req);
 	if (req.accepts('html')) {
 		return loadView(req, res, notFoundView.getViewName());
 	}

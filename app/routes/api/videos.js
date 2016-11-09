@@ -268,13 +268,14 @@ function querySeoKeywords(req, res) {
     if (version === "1.0.0") {
         videos1_0_0.querySeoKeywords(req, res);
     } else {
-        incorrectVer(req,res);
+        incorrectVer(req, res);
     }
 }
 
 function renderVideoPage(req, res) {
 
     var version = req.query.apiVer || defaultVer;
+    req.partial = true;
 
     if (version === "1.0.0") {
         videos1_0_0.renderVideoPage(req, res);
@@ -304,6 +305,7 @@ Video.prototype.getVideoOwnerProfile = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId = getCommentsByVideoId;
 Video.prototype.querySeoKeywords = querySeoKeywords;
 Video.prototype.renderVideoPage = renderVideoPage;
+
 
 module.exports = new Video();
 

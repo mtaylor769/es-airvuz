@@ -140,6 +140,7 @@ ViewManager.prototype.getView = function(params) {
 
 
 	//var viewData					= null;
+	console.log(params.viewName);
 	var viewName					= params.viewName;
 	var view							= this.views[viewName];
 	var viewConfig				= view.getViewConfig();
