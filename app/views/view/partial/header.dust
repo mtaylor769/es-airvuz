@@ -2,7 +2,7 @@
     <div class="container container-shadow" id="header">
         <div class="logos">
             <a href="/">
-                <img src="{cdnUrl}/client/images/airvuz-drone-logo.jpg" alt="AirVuz Logo" class="airvuz-icon" />
+                <img src="{cdnUrl}/client/images/airvuz-drone-logo.png" width="196" height="51" alt="AirVuz Logo" class="airvuz-icon" />
             </a>
         </div>
           <div id="category-collapse">
