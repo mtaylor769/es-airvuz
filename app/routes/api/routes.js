@@ -186,7 +186,7 @@ apiRouter.route('/api/videos/videoComments/:id')
 /**
 *  Route to render SPA Video Page
 * */
-apiRouter.route('/api/video/render/:id')
+apiRouter.route('/api/videos/render')
 	.get(videos.renderVideoPage);
 
 

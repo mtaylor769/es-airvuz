@@ -153,12 +153,17 @@ function bindEvents() {
 }
 
 function goToVideoPlayer(videoId) {
-  console.log(videoId);
   $.ajax({
     type: 'GET',
-    url: '/api/videos/render/' + videoId,
-    data: {params: 'partialVideo'},
+    url: '/spaRender',
+    data: {id: videoId}
   })
+  .done(function(response) {
+    $('#views').html(response);
+  })
+  .fail(function(error) {
+
+  });
 }
 
 module.exports = {

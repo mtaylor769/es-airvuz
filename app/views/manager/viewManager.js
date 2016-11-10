@@ -140,7 +140,6 @@ ViewManager.prototype.getView = function(params) {
 
 
 	//var viewData					= null;
-	console.log(params.viewName);
 	var viewName					= params.viewName;
 	var view							= this.views[viewName];
 	var viewConfig				= view.getViewConfig();
@@ -167,7 +166,7 @@ ViewManager.prototype.getView = function(params) {
 	
 	//viewName				= view.getViewName();
 	return new Promise(function(resolve, reject) {
-		logger.debug("getView: renderNewView:" + renderNewView);
+		logger.debug("getView: renderNewView : " + renderNewView);
 
 		if(!renderNewView) {
 			logger.debug("getView: rendering cached view");

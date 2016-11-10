@@ -201,6 +201,13 @@ app.get('/password-reset/:code', function (req, res) {
 	loadView(req, res, passwordResetView.getViewName());
 });
 
+app.get('/spaRender', function(req, res) {
+	console.log('/spaRender');
+	console.log(req.query);
+	req.params.id = req.query.id;
+	loadView(req, res, videoPlayerPartial.getViewName());
+});
+
 /**
  * Static page
  */
@@ -245,7 +252,6 @@ app.get("/google2ad042ef42b82b4f.html", function(req, res) {
 });
 
 app.use(function (req, res) {
-  console.log(req);
 	if (req.accepts('html')) {
 		return loadView(req, res, notFoundView.getViewName());
 	}

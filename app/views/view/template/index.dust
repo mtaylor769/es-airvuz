@@ -27,63 +27,65 @@
     {> "app.views.view.partial.header" /}
 
     <!-- BEG:Main Container -->
-    <div id="home-page" class="container main container-shadow">
-      <div class="row visible-xs-block">
-        <div class="col-md-12 category-nav">
-            {> "app.views.view.partial.left-nav"/}
-        </div>
-      </div>
-      {?index.slider}
-      <div class="row">
-        <div id="slider-slick">
-          {#index.slider.slides}
-            <div class="slide hidden">
-              <a href="/video/{video._id}">
-                <img data-lazy="{cdnUrl}/image/slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
-              </a>
-              <a href="/video/{video._id}" class="btn btn-default">Watch now</a>
+    <div id="views">
+        <div id="home-page" class="container main container-shadow">
+          <div class="row visible-xs-block">
+            <div class="col-md-12 category-nav">
+                {> "app.views.view.partial.left-nav"/}
             </div>
-          {/index.slider.slides}
-        </div>
-      </div>
-      <div class="row" id="slider-description-row">
-        <div id="slider-description-slick">
-            {#index.slider.slides}
-              <div class="col-md-12">
-                <h3>{name}</h3>
-                By <a href="/user/{video.userId.userNameUrl}">{video.userId.userNameDisplay}</a>
-                <div class="slide-description">
-                    {description}
+          </div>
+          {?index.slider}
+          <div class="row">
+            <div id="slider-slick">
+              {#index.slider.slides}
+                <div class="slide hidden">
+                  <a href="/video/{video._id}">
+                    <img data-lazy="{cdnUrl}/image/slide/{imagePath}" alt="{imageAlt}" class="img-responsive"/>
+                  </a>
+                  <a href="/video/{video._id}" class="btn btn-default">Watch now</a>
                 </div>
-              </div>
-            {/index.slider.slides}
-        </div>
+              {/index.slider.slides}
+            </div>
+          </div>
+          <div class="row" id="slider-description-row">
+            <div id="slider-description-slick">
+                {#index.slider.slides}
+                  <div class="col-md-12">
+                    <h3>{name}</h3>
+                    By <a href="/user/{video.userId.userNameUrl}">{video.userId.userNameDisplay}</a>
+                    <div class="slide-description">
+                        {description}
+                    </div>
+                  </div>
+                {/index.slider.slides}
+            </div>
 
-        <div class="text-center arrow invisible">
-          <a href="#" class="btn btn-link">
-            <span class="glyphicon glyphicon-chevron-down"></span>
-          </a>
+            <div class="text-center arrow invisible">
+              <a href="#" class="btn btn-link">
+                <span class="glyphicon glyphicon-chevron-down"></span>
+              </a>
+            </div>
+          </div>
+          {/index.slider}
+          <div class="row" id="main-row">
+            <div class="col-md-2 hidden-xs hidden-sm category-nav">
+                {> "app.views.view.partial.left-nav"/}
+            </div>
+            <div class="col-md-10 border-left">
+                {?index.customSliderVideos}
+                    {> "client.templates.home.home-video" title="{index.customSliderName}" videos="customSliderVideos" viewAll="{index.customSliderNameUrl}"/}
+                    <hr/>
+                {/index.customSliderVideos}
+                {> "client.templates.home.home-video" title="Featured Drone Videos" videos="featuredVideos" viewAll="featured-drone-videos"/}
+              <hr/>
+                {> "client.templates.home.home-video" title="Latest Drone Videos" videos="recentVideos" viewAll="latest-drone-videos"/}
+              <hr/>
+                {> "client.templates.home.home-video" title="Trending Drone Videos" videos="trendingVideos" viewAll="trending-drone-videos"/}
+              <hr/>
+                {> "client.templates.home.home-video" title="Staff Picks Drone Videos" videos="staffPickVideos" viewAll="staff-picks-drone-videos"/}
+            </div>
+          </div>
         </div>
-      </div>
-      {/index.slider}
-      <div class="row" id="main-row">
-        <div class="col-md-2 hidden-xs hidden-sm category-nav">
-            {> "app.views.view.partial.left-nav"/}
-        </div>
-        <div class="col-md-10 border-left">
-            {?index.customSliderVideos}
-                {> "client.templates.home.home-video" title="{index.customSliderName}" videos="customSliderVideos" viewAll="{index.customSliderNameUrl}"/}
-                <hr/>
-            {/index.customSliderVideos}
-            {> "client.templates.home.home-video" title="Featured Drone Videos" videos="featuredVideos" viewAll="featured-drone-videos"/}
-          <hr/>
-            {> "client.templates.home.home-video" title="Latest Drone Videos" videos="recentVideos" viewAll="latest-drone-videos"/}
-          <hr/>
-            {> "client.templates.home.home-video" title="Trending Drone Videos" videos="trendingVideos" viewAll="trending-drone-videos"/}
-          <hr/>
-            {> "client.templates.home.home-video" title="Staff Picks Drone Videos" videos="staffPickVideos" viewAll="staff-picks-drone-videos"/}
-        </div>
-      </div>
     </div>
     <!-- END:Main Container -->
 
