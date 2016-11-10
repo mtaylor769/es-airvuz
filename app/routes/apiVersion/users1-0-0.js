@@ -325,7 +325,7 @@ function deleteUser(req, res) {
             })
             .then(function() {
                 //find user videos
-                return videoCrud.findByUserId(userId);
+                return videoCrud1_0_0.findByUserId(userId);
             })
             .then(function(videos) {
                 //map videos
@@ -341,7 +341,7 @@ function deleteUser(req, res) {
                             })
                         }).then(function() {
                             //delete video
-                            return videoCrud.remove(video._id);
+                            return videoCrud1_0_0.remove(video._id);
                         });
                 });
             })
