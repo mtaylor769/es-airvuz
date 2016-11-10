@@ -22,7 +22,7 @@ try {
     var usersCrud1_0_0              = require('../../persistence/crud/users1-0-0');
     var SocialCrud                  = require('../../persistence/crud/socialMediaAccount');
     var commentCrud1_0_0            = require('../../persistence/crud/comment1-0-0');
-
+    var md5                         = require('md5');
     if(global.NODE_ENV === "production") {
         logger.setLevel("INFO");
     }
@@ -170,7 +170,7 @@ function search(req, res) {
 function _uploadCustomThumbnail(body) {
     if (body.isCustomThumbnail && body.customThumbnail) {
         // resize and upload custom thumbnail to the correct directory
-        var newName = 'tn-custom.' + body.customThumbnail.split('.')[1];
+        var newName = md5('tn_custom-' + Date.now()) + '.' + body.customThumbnail.split('.')[1];
         body.thumbnailPath = body.hashName + '/' + newName;
 
         var readStream = request('https:' + amazonService.config.TEMP_URL + body.customThumbnail);
