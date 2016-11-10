@@ -12,8 +12,6 @@
             min = Math.floor(diff/60000),
             sec = Math.floor((diff/1000) % 60);
 
-        console.log(minSec);
-
         minSec = min + ':' + sec;
 
         trackTime(minSec);
