@@ -546,6 +546,34 @@ function bindEvents() {
   PubSub.subscribe('logout', logout);
 }
 
+/*
+ * Facebook login requirement based on url params [?login=""]
+ * 1. fbReq: require FB login/account creation
+ * 2. fbOpt: optional FB login/account creation
+ * 3. no param value: default to original login/account creation
+ */
+function fbAuthReq() {
+  var urlParam = browser.getUrlParams('login');
+  var $loginModal = $('#login-modal');
+
+  if (!identity.isAuthenticated()) {
+    switch (urlParam) {
+      case 'fbOpt':
+        $loginModal.find('#btn-google, .local-panel').hide();
+        break;
+      case 'fbReq':
+        $loginModal.find('#btn-google, .local-panel, .close').hide();
+        $loginModal.modal({
+          backdrop: 'static',
+          keyboard: false
+        });
+        break;
+      default:
+        break;
+    }
+  }
+}
+
 function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
@@ -585,6 +613,8 @@ function initialize() {
       });
     });
   });
+
+  fbAuthReq();
 }
 
 //////////////////////
@@ -593,9 +623,9 @@ var APP = {
   initialize: initialize
 };
 
-APP.initialize();
 FacebookPixel.initialize();
 GoogleAnalytic.initialize();
 GoogleTagManager.initialize();
+APP.initialize();
 
 module.exports = APP;

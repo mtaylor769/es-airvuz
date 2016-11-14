@@ -64,29 +64,32 @@
       <div class="modal-body">
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="login-tab">
-            <button class="btn btn-block btn-primary facebook" id="btn-facebook">Facebook</button>
-            <button class="btn btn-block btn-danger" id="btn-google">Google</button>
-            <p class="text-danger text-center m-t-5" id="social-login-error"></p>
-              {!<button class="btn btn-block btn-success">Instagram</button>!}
-            <hr/>
-            <form>
-              <div class="form-group">
-                <label>Email <span class="text-danger">*</span></label>
-                <input type="text" class="form-control email-input" placeholder="Email">
+              <div class="social-panel">
+                  <button class="btn btn-block btn-primary facebook" id="btn-facebook">Facebook</button>
+                  <button class="btn btn-block btn-danger" id="btn-google">Google</button>
+                  <p class="text-danger text-center m-t-5" id="social-login-error"></p>
+                  <hr/>
               </div>
-              <div class="form-group">
-                <label>Password <span class="text-danger">*</span></label>
-                <input type="password" class="form-control password-input" placeholder="Password">
+              <div class="local-panel">
+                  <form>
+                      <div class="form-group">
+                          <label>Email <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control email-input" placeholder="Email">
+                      </div>
+                      <div class="form-group">
+                          <label>Password <span class="text-danger">*</span></label>
+                          <input type="password" class="form-control password-input" placeholder="Password">
+                      </div>
+                      <p class="error-message text-danger"></p>
+                      <div class="text-right">
+                          <button type="submit" class="btn btn-primary" id="login-btn">Login</button>
+                      </div>
+                  </form>
+                  <hr/>
+                  <div class="text-center">
+                      <a href="#signup-tab" aria-controls="signup-tab" role="tab" data-toggle="tab" id="signup-anchor-tab">Sign up</a> | <a href="#forgot-password-tab" aria-controls="forgot-password-tab" role="tab" data-toggle="tab">Forgot password</a>
+                  </div>
               </div>
-              <p class="error-message text-danger"></p>
-              <div class="text-right">
-                <button type="submit" class="btn btn-primary" id="login-btn">Login</button>
-              </div>
-            </form>
-            <hr/>
-            <div class="text-center">
-              <a href="#signup-tab" aria-controls="signup-tab" role="tab" data-toggle="tab" id="signup-anchor-tab">Sign up</a> | <a href="#forgot-password-tab" aria-controls="forgot-password-tab" role="tab" data-toggle="tab">Forgot password</a>
-            </div>
           </div>
           <div role="tabpanel" class="tab-pane" id="signup-tab">
             <div class="form-group">
