@@ -70,9 +70,15 @@
                 .$promise
                 .then(function(video) {
                     vm.video = video;
+                    if(vm.video.categories) {
+                        categoryCheck(vm.video.categories);
+                    }
                     vm.keywords = video.tags;
                     vm.internalKeywords = video.internalTags;
                     vm.seoKeywords = video.seoTags;
+                    vm.primaryCategory = video.primaryCategory;
+                    vm.videoNotes = video.videoNotes;
+                    vm.ratingRequired = false;
                     if(video.curation) {
                         vm.curated = true;
                     } else {
@@ -112,6 +118,7 @@
                 data.categories = vm.video.categories;
                 data.videoId = vm.video._id;
                 data.internalRanking = vm.ratingSelection;
+                data.videoNotes = vm.videoNotes;
                 if(vm.primaryCategory) {
                     data.primaryCategory = vm.primaryCategory._id;
                 }
@@ -133,10 +140,14 @@
                         } else {
                             var video = response.data[0];
                             vm.video = video;
+                            if(vm.video.categories) {
+                                categoryCheck(vm.video.categories);
+                            }
                             vm.keywords = video.tags;
                             vm.internalKeywords = video.internalTags;
                             vm.seoKeywords = video.seoTags;
                             vm.primaryCategory = video.primaryCategory;
+                            vm.videoNotes = video.videoNotes;
                             vm.ratingRequired = false;
                             if(video.curation) {
                                 vm.curated = true;
@@ -172,6 +183,7 @@
                     vm.seoKeywords = video.seoTags;
                     vm.primaryCategory = video.primaryCategory;
                     vm.keywords = video.tags;
+                    vm.videoNotes = video.videoNotes;
                     vm.ratingRequired = false;
                     setVideoPlayerConfig();
                 });

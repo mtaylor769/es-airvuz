@@ -33,6 +33,7 @@ function rating(req, res) {
     var initialVideoId      = req.body.stateVideo || null;
     var initialType         = req.body.stateType || null;
     var primaryCategory     = req.body.primaryCategory || null;
+    var videoNotes          = req.body.videoNotes;
     var waitFor;
 
     //setting up query object. Video Ranking is always required
@@ -43,6 +44,7 @@ function rating(req, res) {
     queryObject.id = videoId;
     queryObject.internalRanking = internalRanking;
     queryObject.update.curation.isRanked = true;
+    queryObject.update.videoNotes = videoNotes;
     //will set primary category if param is set
     if(primaryCategory) {
         queryObject.update.primaryCategory = primaryCategory;

@@ -189,7 +189,10 @@ var videoSchema = mongoose.Schema({
 	//seo tags specified by internal curators
 	seoTags: [String],
 
-	videoLocation: String
+	videoLocation: String,
+
+	//attribute for internal video notes
+	videoNotes: String
 
 	//speed: {type: Number, default: 1},
 	//rating: {type: Number, default: 0},
