@@ -3,6 +3,7 @@ require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
 require('../styles/home.css');
+require('video.js');
 
 var identity      = require('./services/identity'),
     AmazonConfig  = require('./config/amazon.config.client');
@@ -150,16 +151,32 @@ function bindEvents() {
   $('.category-nav').on('click', 'h5', function () {
     $(this).parent().toggleClass('is-open');
   });
+
 }
 
-function goToVideoPlayer(videoId) {
+function goToVideoPlayer(ev, videoId) {
+  console.log(ev);
+  var touchEvent = new TouchEvent('touchstart', {touches: [{screenX: ev.screenX, screenY: ev.screenY}]});
+  console.log(touchEvent);
   $.ajax({
     type: 'GET',
-    url: '/spaRender',
-    data: {id: videoId}
+    url: '/spaRender/' + videoId
   })
   .done(function(response) {
-    $('#views').html(response);
+    $('#home-page').hide();
+    window.scrollTo(0,0);
+    $('#views').append(response);
+    $('body').find('video')[0].load();
+    $('body').find('video')[0].pause();
+
+    window.addEventListener('touchstart', function autoPlay(e) {
+      console.log(e);
+      $('body').find('video')[0].play();
+      this.removeEventListener('touchstart', autoPlay);
+    });
+
+    window.dispatchEvent(ev);
+
   })
   .fail(function(error) {
 

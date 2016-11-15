@@ -362,9 +362,11 @@ function onAutoPlayChange(event, state) {
 
 //bind events
 function bindEvents() {
+  console.log('running 123');
   if (browser.isMobile() && !initialUpNextClick) {
       initialUpNextClick = true;
       $('.next-video-list > li, .slick-slide a').one('touchstart', function () {
+        console.log('running 345')
           $('body').find('video')[0].load();
           $('body').find('video')[0].pause();
       });
@@ -1277,14 +1279,14 @@ function initialize(videoPath, currentVideo) {
 
   commentsLoader = $('.loading-comment-spinner');
 
-  $('.video-slick').slick(SLICK_CONFIG);
+  // $('.video-slick').slick(SLICK_CONFIG);
 
   setAutoPlay();
 
   videoInfoCheck();
 
   setCommentOptions();
-
+  console.log('running bind events');
   bindEvents();
 
   loadCommentsOnDemand();

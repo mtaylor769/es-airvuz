@@ -1,4 +1,4 @@
-<div partial-beg="app.views.view.partial.videoPlayer" class="video-page">
+<div partial-beg="app.views.view.partial.videoPlayer" id="video-page">
     <div class="container main">
         <div class="row">
             <div class="col-sm-8 videoplayback">
@@ -124,3 +124,12 @@
         </div>
     </div>
 </div>
+<script>
+    var commentSpinner = document.getElementsByClassName('loading-comment-spinner');
+    commentSpinner[0].classList.remove("hidden");
+
+    function initialize() {
+        videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
+    }
+    initialize();
+</script>

@@ -201,10 +201,7 @@ app.get('/password-reset/:code', function (req, res) {
 	loadView(req, res, passwordResetView.getViewName());
 });
 
-app.get('/spaRender', function(req, res) {
-	console.log('/spaRender');
-	console.log(req.query);
-	req.params.id = req.query.id;
+app.get('/spaRender/:id', function(req, res) {
 	loadView(req, res, videoPlayerPartial.getViewName());
 });
 
@@ -263,6 +260,6 @@ app.use(function (req, res) {
 	res.send('Not found');
 });
 
-app.listen(process.env.PORT || 80);
+app.listen(process.env.PORT || 8000);
 
 module.exports = app;
