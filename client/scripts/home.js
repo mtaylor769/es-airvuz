@@ -1,4 +1,5 @@
 /* global fbq, ga */
+var videojs = require('video.js');
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -137,6 +138,15 @@ function initialize(emailConfirm) {
   emailConfirmCheck(emailConfirm);
 
   ga('send', 'event', 'home page', 'landing', 'landing page');
+
+
+  var VideoPlayer = videojs('video-player', {
+    plugins: {
+      videoJsResolutionSwitcher: {
+        default: ''
+      }
+    }
+  });
 }
 
 function emailConfirmCheck(emailConfirm) {
@@ -155,27 +165,24 @@ function bindEvents() {
 }
 
 function goToVideoPlayer(ev, videoId) {
-  console.log(ev);
-  var touchEvent = new TouchEvent('touchstart', {touches: [{screenX: ev.screenX, screenY: ev.screenY}]});
-  console.log(touchEvent);
+  var videoplayer123 = $('body').find('.video-container').detach();
+  console.log(videoplayer123);
   $.ajax({
     type: 'GET',
     url: '/spaRender/' + videoId
   })
   .done(function(response) {
     $('#home-page').hide();
+
+    $('#video-anchor').append(videoplayer123);
     window.scrollTo(0,0);
     $('#views').append(response);
     $('body').find('video')[0].load();
     $('body').find('video')[0].pause();
-
-    window.addEventListener('touchstart', function autoPlay(e) {
-      console.log(e);
-      $('body').find('video')[0].play();
-      this.removeEventListener('touchstart', autoPlay);
-    });
-
-    window.dispatchEvent(ev);
+    $('body').find('video')[0].play();
+    //
+    //
+    // window.dispatchEvent(ev);
 
   })
   .fail(function(error) {

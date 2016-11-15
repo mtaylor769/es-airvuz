@@ -1,15 +1,16 @@
-<div partial-beg="app.views.view.partial.videoPlayer" id="video-page">
+<div partial-beg="app.views.view.partial.videoPlayer" class="video-page">
     <div class="container main">
         <div class="row">
             <div class="col-sm-8 videoplayback">
                 {!video title and back button!}
                 <div class="video-player-header flex"></div>
                 {!video player!}
-                <div>
-                    <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
-                           controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
-                           poster="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}">
-                    </video>
+                <div id="video-anchor">
+                    {? spa}
+
+                    {:else}
+                        {> "client.templates.videoPlayer.videoPlayerTemplate" /}
+                    {/ spa}
                 </div>
                 {!categories!}
                 <div class="video-player-categories">

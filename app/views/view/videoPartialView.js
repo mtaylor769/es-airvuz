@@ -30,5 +30,11 @@ util.inherits(IndexView, BaseView);
 module.exports = new IndexView({
   cacheTimeout	: 0,
   viewName			: 'app.views.view.videoPlayerPartial',
-  viewPath			: './app/views/view/partial/video-player.dust'
+  viewPath			: './app/views/view/partial/video-player.dust',
+  partials      : [
+    {
+      partialName: 'client.templates.videoPlayer.videoPlayerTemplate',
+      partialPath: './client/templates/videoPlayer/videoPlayerTemplate.dust'
+    }
+  ]
 });

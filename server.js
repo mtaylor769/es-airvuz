@@ -202,6 +202,7 @@ app.get('/password-reset/:code', function (req, res) {
 });
 
 app.get('/spaRender/:id', function(req, res) {
+	req.spa = true;
 	loadView(req, res, videoPlayerPartial.getViewName());
 });
 

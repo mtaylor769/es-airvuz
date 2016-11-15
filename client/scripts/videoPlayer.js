@@ -1279,7 +1279,7 @@ function initialize(videoPath, currentVideo) {
 
   commentsLoader = $('.loading-comment-spinner');
 
-  // $('.video-slick').slick(SLICK_CONFIG);
+  $('.video-slick').slick(SLICK_CONFIG);
 
   setAutoPlay();
 

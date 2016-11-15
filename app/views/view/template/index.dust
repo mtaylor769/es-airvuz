@@ -88,7 +88,9 @@
         </div>
     </div>
     <!-- END:Main Container -->
-
+  <div class="video-container">
+      {> "client.templates.videoPlayer.videoPlayerTemplate" /}
+  </div>
     {> "app.views.view.partial.footer" /}
     {> "app.views.view.partial.js" /}
 
