@@ -83,7 +83,8 @@ function getUnseen(req, res) {
  * @param res
  */
 function getAll(req, res) {
-    var userId = req.query.id;
+    var userId = req.params.id;
+
     notificationCrud1_0_0
         .getAllByUserId(userId)
         .then(function (notifications) {
