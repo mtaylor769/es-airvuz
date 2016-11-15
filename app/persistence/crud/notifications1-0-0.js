@@ -64,7 +64,7 @@ Notifications.prototype.getUnseenCount = function(id) {
 };
 
 Notifications.prototype.getAllByUserId = function(id) {
-  return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').populate('notifiedUserId').exec();
+  return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').exec();
 };
 
 Notifications.prototype.getByComment = function(id) {
