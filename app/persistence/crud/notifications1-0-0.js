@@ -31,7 +31,7 @@ function getUnseen(userId) {
     .find({notifiedUserId: userId, notificationViewed: false})
     .sort('-createdDate')
     .limit(10)
-    .populate('actionUserId', 'userNameDisplay userNameUrl')
+    .populate('actionUserId', 'coverPicture emailAddress userNameDisplay profilePicture userNameUrl aboutMe lastName firstName socialMediaLinks autoPlay')
     .lean()
     .exec();
 }
@@ -64,7 +64,7 @@ Notifications.prototype.getUnseenCount = function(id) {
 };
 
 Notifications.prototype.getAllByUserId = function(id) {
-  return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId').exec();
+  return NotificationModel.find({notifiedUserId: id}).sort({ createdDate: -1 }).populate('actionUserId', 'coverPicture emailAddress userNameDisplay profilePicture userNameUrl aboutMe lastName firstName socialMediaLinks autoPlay').exec();
 };
 
 Notifications.prototype.getByComment = function(id) {
