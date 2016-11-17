@@ -67,6 +67,7 @@
     "postcss-import": "^8.0.2",
     "postcss-loader": "^0.8.1",
     "postcss-simple-vars": "^1.2.0",
+    "probability-distributions": "^0.9.1",
     "pubsub-js": "^1.5.3",
     "rucksack-css": "^0.8.5",
     "shortid": "^2.2.6",
