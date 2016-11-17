@@ -888,6 +888,11 @@ function bindEvents() {
           player.play();
         });
       }
+
+      // pause the video if page required FB login/account creation
+      if (browser.getUrlParams('login') === 'required' && !identity.isAuthenticated()) {
+          this.pause();
+      }
     });
 
   /*

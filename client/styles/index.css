@@ -49,6 +49,10 @@ body.modal-open {
   cursor: pointer;
 }
 
+#login-modal .modal-header {
+  border: none;
+}
+
 /*
  * End Override bootstrap
 /**********************************/
@@ -371,6 +375,22 @@ body.modal-open {
 #notification .dropdown-menu a:hover {
   background-color: #353535;
 }
+
+.modal-header-text {
+  margin-top: 20px;
+}
+.modal-header-text p {
+  font-size: 15px;
+  letter-spacing: 1px;
+  word-spacing: normal;
+}
+.modal-header-text p:last-child {
+  text-align:center;
+  font-weight: 900;
+  font-size: 10px;
+  margin: 0;
+}
+
 /*
  * End Header
 /**********************************/
@@ -908,6 +928,9 @@ color: white;
 }
 .m-t-15 {
   margin-top: 15px;
+}
+.m-t-25 {
+  margin-top: 25px;
 }
 .m-t-35 {
   margin-top: 35px;
