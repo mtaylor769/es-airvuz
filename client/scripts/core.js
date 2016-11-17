@@ -560,6 +560,7 @@ function fbAuthReq() {
     switch (urlParam) {
       case 'optional':
         $loginModal.find('.modal-title').hide();
+        $loginModal.modal('toggle');
         break;
       case 'required':
         $loginModal.find('.modal-title').hide();
