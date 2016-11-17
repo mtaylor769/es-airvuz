@@ -376,15 +376,15 @@ body.modal-open {
   background-color: #353535;
 }
 
-.modal-quota {
+.modal-header-text {
   margin-top: 20px;
 }
-.modal-quota p {
+.modal-header-text p {
   font-size: 15px;
   letter-spacing: 1px;
   word-spacing: normal;
 }
-.modal-quota p:last-child {
+.modal-header-text p:last-child {
   text-align:center;
   font-weight: 900;
   font-size: 10px;
