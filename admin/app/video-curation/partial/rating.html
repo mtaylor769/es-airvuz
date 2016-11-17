@@ -46,6 +46,10 @@
             <md-option ng-repeat="category in vm.video.categories | orderBy: 'name'" value="{{category}}">{{category.name}}</md-option>
         </md-select>
     </md-input-container>
+    <p class="field-title">Video Notes</p>
+    <md-input-container>
+        <textarea ng-model="vm.videoNotes"></textarea>
+    </md-input-container>
     <!---- video title and id ---->
     <p class="field-title">{{vm.video.title}}</p>
     <p>{{vm.video._id}}</p>
