@@ -548,8 +548,8 @@ function bindEvents() {
 
 /*
  * Facebook login requirement based on url params [?login=""]
- * 1. fbReq: require FB login/account creation
- * 2. fbOpt: optional FB login/account creation
+ * 1. required: require FB login/account creation
+ * 2. optional: optional FB login/account creation
  * 3. no param value: default to original login/account creation
  */
 function fbAuthReq() {
@@ -558,17 +558,19 @@ function fbAuthReq() {
 
   if (!identity.isAuthenticated()) {
     switch (urlParam) {
-      case 'fbOpt':
-        $loginModal.find('#btn-google, .local-panel').hide();
+      case 'optional':
+        $loginModal.find('.modal-title').hide();
         break;
-      case 'fbReq':
-        $loginModal.find('#btn-google, .local-panel, .close').hide();
+      case 'required':
+        $loginModal.find('.modal-title').hide();
+        $loginModal.find('.close').hide();
         $loginModal.modal({
           backdrop: 'static',
           keyboard: false
         });
         break;
       default:
+        $('#modal-alt-header').hide();
         break;
     }
   }
