@@ -870,6 +870,8 @@ function bindEvents() {
 
     videojs("video-player").ready(function() {
       var player = this;
+      var loginParamVal = browser.getUrlParams('login');
+
       player
       .on('play', initialPlayFunction)
       .on('playing', playFunction)
@@ -890,7 +892,8 @@ function bindEvents() {
       }
 
       // pause the video if page required FB login/account creation
-      if (browser.getUrlParams('login') === 'required' && !identity.isAuthenticated()) {
+      if ((loginParamVal === 'req' || loginParamVal === 'opt') &&
+          !identity.isAuthenticated()) {
           this.pause();
       }
     });
