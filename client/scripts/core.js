@@ -548,8 +548,8 @@ function bindEvents() {
 
 /*
  * Facebook login requirement based on url params [?login=""]
- * 1. required: require FB login/account creation
- * 2. optional: optional FB login/account creation
+ * 1. req: require FB login/account creation
+ * 2. opt: optional FB login/account creation
  * 3. no param value: default to original login/account creation
  */
 function fbAuthReq() {
@@ -558,11 +558,11 @@ function fbAuthReq() {
 
   if (!identity.isAuthenticated()) {
     switch (urlParam) {
-      case 'optional':
+      case 'opt':
         $loginModal.find('.modal-title').hide();
         $loginModal.modal('toggle');
         break;
-      case 'required':
+      case 'req':
         $loginModal.find('.modal-title').hide();
         $loginModal.find('.close').hide();
         $loginModal.modal({
