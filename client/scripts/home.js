@@ -160,9 +160,6 @@ $('.go-to-video').on('click', function() {
       playerHolder,
       videoId = $(this).parent().attr('data-video-id');
 
-  // destroy the current slicks
-  $homePage.find('.video-slick').slick('unslick');
-
   //intialize video.js
   VideoPlayer = videojs('video-player', {
     plugins: {
@@ -180,6 +177,8 @@ $('.go-to-video').on('click', function() {
     url: '/spaRender/' + videoId
   })
     .done(function(response) {
+      // destroy the current slicks
+      $homePage.find('.video-slick').slick('unslick');
       //deatch hidden video player
       playerHolder = $('.video-container').detach();
       //hide homepage
