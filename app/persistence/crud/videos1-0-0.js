@@ -48,7 +48,7 @@ function getRecentVideos(params) {
 	return VideoModel
 		.find()
 		.sort('-uploadDate')
-		.select('thumbnailPath title viewCount duration categories userId uploadDate')
+		.select('thumbnailPath title viewCount duration categories userId uploadDate videoPath')
 		.skip(skip)
 		.populate('userId', 'userNameDisplay userNameUrl')
 		.populate('categories', 'name categoryTypeUrl')

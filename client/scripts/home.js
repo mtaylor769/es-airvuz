@@ -4,7 +4,7 @@ require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
 require('../styles/home.css');
-require('video.js');
+require('videojs-resolution-switcher');
 
 var identity      = require('./services/identity'),
     AmazonConfig  = require('./config/amazon.config.client');
@@ -138,15 +138,6 @@ function initialize(emailConfirm) {
   emailConfirmCheck(emailConfirm);
 
   ga('send', 'event', 'home page', 'landing', 'landing page');
-
-
-  var VideoPlayer = videojs('video-player', {
-    plugins: {
-      videoJsResolutionSwitcher: {
-        default: ''
-      }
-    }
-  });
 }
 
 function emailConfirmCheck(emailConfirm) {
@@ -164,33 +155,39 @@ function bindEvents() {
 
 }
 
-function goToVideoPlayer(ev, videoId) {
-  var videoplayer123 = $('body').find('.video-container').detach();
-  console.log(videoplayer123);
+$('.go-to-video').on('click', function() {
+  var VideoPlayer,
+      playerHolder,
+      videoSrc = $(this).parent().attr('data-video-path'),
+      videoId = $(this).parent().attr('data-video-id');
+
+  VideoPlayer = videojs('video-player', {
+    plugins: {
+      videoJsResolutionSwitcher: {
+        default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes
+      }
+    }
+  });
+  VideoPlayer.src({type: 'video/mp4', src: AmazonConfig.CDN_URL + '/drone-video/' + videoSrc});
+  VideoPlayer.load();
+  VideoPlayer.pause();
+
   $.ajax({
     type: 'GET',
     url: '/spaRender/' + videoId
   })
-  .done(function(response) {
-    $('#home-page').hide();
-
-    $('#video-anchor').append(videoplayer123);
-    window.scrollTo(0,0);
-    $('#views').append(response);
-    $('body').find('video')[0].load();
-    $('body').find('video')[0].pause();
-    $('body').find('video')[0].play();
-    //
-    //
-    // window.dispatchEvent(ev);
-
-  })
-  .fail(function(error) {
-
-  });
-}
+    .done(function(response) {
+      playerHolder = $('.video-container').detach();
+      $('#home-page').hide();
+      window.scrollTo(0,0);
+      $('#views').append(response);
+      $('#video-anchor').append(playerHolder);
+      VideoPlayer.play();
+    })
+    .fail(function(error) {
+    })
+});
 
 module.exports = {
-  initialize: initialize,
-  goToVideoPlayer: goToVideoPlayer
+  initialize: initialize
 };

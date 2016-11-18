@@ -11,15 +11,15 @@
       {#index[videos]}
         <div class="video">
           <div class="text-center">
-            <a title="{title}" onclick="Home.goToVideoPlayer(event, '{_id}')">
-              <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive"/>
+            <a title="{title}" data-video-path="{videoPath}" data-video-id="{_id}">
+              <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive go-to-video"/>
             </a>
           </div>
           <div class="video-bottom">
             <p><span class="airvuz-blue">VŪZ</span> {viewCount} | {uploadDate} <span class="pull-right">{duration}</span></p>
             <div class="title">
               <h4>
-                <a title="{title}" onclick="Home.goToVideoPlayer(event, '{_id}')">{title}</a>
+                <a title="{title}">{title}</a>
               </h4>
               {#userId.userNameDisplay}
                 <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>

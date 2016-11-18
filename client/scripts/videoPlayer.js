@@ -1258,12 +1258,13 @@ function initialize(videoPath, currentVideo) {
         defaultRes = '300';
         break;
       // res 400 is an option and should not be force
-      // case (browserWidth < 1200):
-      //   defaultRes = '400';
-      //   break;
-    }
-  }
+      case (browserWidth < 1200):
+    defaultRes = '400';
+    break;
+}
+}
 
+if(typeof VideoPlayer === 'undefined') {
   VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
@@ -1271,8 +1272,9 @@ function initialize(videoPath, currentVideo) {
       }
     }
   }, function () {
-      updateVideoSrc();
+    updateVideoSrc();
   });
+}
   //set video page
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');
