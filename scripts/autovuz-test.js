@@ -81,10 +81,11 @@ try {
 
     // Get a distribution
     var numOfDays = 14;
-    var numOfViews = 100;
-    var probability = 0.2;  // 0.2 is front loaded, 0.5 is mid, 0.8 is tail loaded
+    var numOfViews = 200;
+    var probability = 0.5;  // 0.2 is front loaded, 0.5 is mid, 0.8 is tail loaded
 
-    var rbinom_0 = PD.rbinom(numOfViews, numOfDays, 0.2);
+
+    var rbinom_0 = PD.rbinom(numOfViews, numOfDays, probability);
 
     // turn distribution into views per day.
     var dist = ToViewsPerDay({
@@ -108,6 +109,35 @@ try {
         logger.info( moment (timestamps[index]).toDate() );
     }
 
+
+    var AutoViews = function() {
+
+    }
+
+    //
+    AutoViews.prototype.autoCreate = function(params) {
+
+        var videoId = params.videoId;
+
+        // set random initial conditions
+
+        this.create({ // fill in params });
+    }
+
+    AutoViews.prototype.create = function(params) {
+        var numberOfDays    = params.numberOfDays;
+        var numberOfViews   = params.numberOfViews;
+        var probability     = params.probability;
+        var videoId         = params.videoId;
+
+
+        // store to mongo collections
+    }
+
+    AUtoViews.prototype.runAutoViews = function() {
+
+        // if all autoviews added, set isComplete to true.
+    }
 
 
     var noop = "";
