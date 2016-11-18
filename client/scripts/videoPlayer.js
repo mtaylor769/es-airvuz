@@ -1268,8 +1268,7 @@ function initialize(videoPath, currentVideo) {
 }
 }
 
-// if coming from spa, video-player dom will not be available; skip to prevent videojs init
-// if($videoPlayer.length) {
+if(!window.playerHolder) {
   VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
@@ -1279,8 +1278,18 @@ function initialize(videoPath, currentVideo) {
   }, function () {
     updateVideoSrc();
   });
-// }
-
+} else {
+//append video player
+  $('#video-anchor').append(window.playerHolder);
+  $('.video-container').removeClass('hidden');
+  //play video
+  VideoPlayer = window.VideoPlayer;
+  updateVideoSrc();
+  VideoPlayer.play();
+}
+  //set video page
+  $videoPage = $('.video-page');
+  $videoPlayer = $('#video-player');
 
   commentsLoader = $('.loading-comment-spinner');
 

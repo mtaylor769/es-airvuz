@@ -161,7 +161,7 @@ $('.go-to-video').on('click', function() {
       videoId = $(this).parent().attr('data-video-id');
 
   //intialize video.js
-  VideoPlayer = videojs('video-player', {
+  window.VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
         default: ''
@@ -169,8 +169,8 @@ $('.go-to-video').on('click', function() {
     }
   });
   //set load and pause on video src
-  VideoPlayer.load();
-  VideoPlayer.pause();
+  window.VideoPlayer.load();
+  window.VideoPlayer.pause();
 
   $.ajax({
     type: 'GET',
@@ -180,7 +180,7 @@ $('.go-to-video').on('click', function() {
       // destroy the current slicks
       $homePage.find('.video-slick').slick('unslick');
       //deatch hidden video player
-      playerHolder = $('.video-container').detach();
+      window.playerHolder = $('.video-container').detach();
       //hide homepage
       $('#home-page').hide();
       //scroll to top
@@ -189,11 +189,6 @@ $('.go-to-video').on('click', function() {
       $('#views').append(response);
       //update url for video
       history.pushState({}, null, '/video/' + videoId);
-      //append video player
-      $('#video-anchor').append(playerHolder);
-      $('.video-container').removeClass('hidden');
-      //play video
-      VideoPlayer.play();
     })
     .fail(function(error) {
     })
