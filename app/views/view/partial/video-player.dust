@@ -129,11 +129,6 @@
     var videoPath = '{video.videoPath}';
     var commentSpinner = document.getElementsByClassName('loading-comment-spinner');
     commentSpinner[0].classList.remove("hidden");
-    {? spa}
-    var videoHolder = true;
-    {:else}
-    var videoHolder = false;
-    {/ spa}
     function initialize() {
             videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
     }

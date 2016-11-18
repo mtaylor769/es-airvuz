@@ -1284,6 +1284,7 @@ if(!window.playerHolder) {
   $('.video-container').removeClass('hidden');
   //play video
   VideoPlayer = window.VideoPlayer;
+  VideoPlayer.videoJsResolutionSwitcher({default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes});
   updateVideoSrc();
   VideoPlayer.play();
 }
