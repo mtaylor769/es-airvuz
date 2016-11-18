@@ -158,17 +158,15 @@ function bindEvents() {
 $('.go-to-video').on('click', function() {
   var VideoPlayer,
       playerHolder,
-      videoSrc = $(this).parent().attr('data-video-path'),
       videoId = $(this).parent().attr('data-video-id');
 
   VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
-        default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes
+        default: ''
       }
     }
   });
-  VideoPlayer.src({type: 'video/mp4', src: AmazonConfig.CDN_URL + '/drone-video/' + videoSrc});
   VideoPlayer.load();
   VideoPlayer.pause();
 
@@ -181,6 +179,7 @@ $('.go-to-video').on('click', function() {
       $('#home-page').hide();
       window.scrollTo(0,0);
       $('#views').append(response);
+      history.pushState({}, null, '/video/' + videoId);
       $('#video-anchor').append(playerHolder);
       VideoPlayer.play();
     })
