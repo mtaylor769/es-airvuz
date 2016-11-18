@@ -175,7 +175,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
         getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id});
 
     // re-init the video slick
-    var $videoSlick = $('.video-slick');
+    var $videoSlick = $('.video-slick-vp');
     $videoSlick.slick('removeSlide', null, null, true);
     $videoSlick.slick('unslick');
     $videoSlick.slick(SLICK_CONFIG);
@@ -217,7 +217,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
         // update user video slider
         videoUserSlickPartialTpl({topVideos: topSixVid, cdnUrl: amazonConfig.CDN_URL, s3Bucket: amazonConfig.OUTPUT_BUCKET}, function (err, html) {
-            $('.video-slick').slick('slickAdd', html);
+            $('.video-slick-vp').slick('slickAdd', html);
         });
 
         // update video owner info
@@ -1281,7 +1281,7 @@ if(typeof VideoPlayer === 'undefined') {
 
   commentsLoader = $('.loading-comment-spinner');
 
-  $('.video-slick').slick(SLICK_CONFIG);
+    $('.video-slick-vp').slick(SLICK_CONFIG);
 
   setAutoPlay();
 

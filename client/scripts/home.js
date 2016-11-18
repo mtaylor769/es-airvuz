@@ -160,6 +160,7 @@ $('.go-to-video').on('click', function() {
       playerHolder,
       videoId = $(this).parent().attr('data-video-id');
 
+  //intialize video.js
   VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
@@ -167,6 +168,7 @@ $('.go-to-video').on('click', function() {
       }
     }
   });
+  //set load and pause on video src
   VideoPlayer.load();
   VideoPlayer.pause();
 
@@ -175,12 +177,20 @@ $('.go-to-video').on('click', function() {
     url: '/spaRender/' + videoId
   })
     .done(function(response) {
+      //deatch hidden video player
       playerHolder = $('.video-container').detach();
+      //hide homepage
       $('#home-page').hide();
+      //scroll to top
       window.scrollTo(0,0);
+      //append videopage view
       $('#views').append(response);
+      //update url for video
       history.pushState({}, null, '/video/' + videoId);
+      //append video player
       $('#video-anchor').append(playerHolder);
+      $('.video-container').removeClass('hidden');
+      //play video
       VideoPlayer.play();
     })
     .fail(function(error) {

@@ -107,7 +107,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 					topVideos.push(video);
 				}
 			});
-			
 			dataObject.topVideos = topVideos;
 			return followCrud1_0_0.followCount(checkObject.user);
 		})
