@@ -19,6 +19,7 @@ try {
      lastViewAddedDateTime 	: date
      isComplete				: boolean
 
+     add to video model: autoviewCount
      */
 
     var ToViewsPerDay = function(params) {
