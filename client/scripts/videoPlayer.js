@@ -1271,7 +1271,6 @@ function initialize(videoPath, currentVideo) {
 // if coming from spa, video-player dom will not be available; skip to prevent videojs init
 // if($videoPlayer.length) {
   VideoPlayer = videojs('video-player', {
-      muted: true,
     plugins: {
       videoJsResolutionSwitcher: {
         default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes
