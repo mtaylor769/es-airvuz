@@ -55,7 +55,7 @@
                             <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>Followers</p>
                         </div>
                     </div>
-                    <div class="video-slick-vp">
+                    <div class="video-slick">
                         {> "client.templates.videoPlayer.videoUserSlickPartial" /}
                     </div>
                 </div>

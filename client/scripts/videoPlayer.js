@@ -175,7 +175,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
         getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id});
 
     // re-init the video slick
-    var $videoSlick = $('.video-slick-vp');
+    var $videoSlick = $('.video-slick');
     $videoSlick.slick('removeSlide', null, null, true);
     $videoSlick.slick('unslick');
     $videoSlick.slick(SLICK_CONFIG);
@@ -217,7 +217,7 @@ PubSub.subscribe('video-switched', function (msg, data) {
 
         // update user video slider
         videoUserSlickPartialTpl({topVideos: topSixVid, cdnUrl: amazonConfig.CDN_URL, s3Bucket: amazonConfig.OUTPUT_BUCKET}, function (err, html) {
-            $('.video-slick-vp').slick('slickAdd', html);
+            $('.video-slick').slick('slickAdd', html);
         });
 
         // update video owner info
@@ -1236,6 +1236,10 @@ function updateVideoSrc() {
 //page init function
 function initialize(videoPath, currentVideo) {
   video = currentVideo;
+    //set video page
+    $videoPage = $('.video-page');
+    $videoPlayer = $('#video-player');
+
 
   initialPageLoad = true;
 
@@ -1264,8 +1268,10 @@ function initialize(videoPath, currentVideo) {
 }
 }
 
-if(typeof VideoPlayer === 'undefined') {
+// if coming from spa, video-player dom will not be available; skip to prevent videojs init
+// if($videoPlayer.length) {
   VideoPlayer = videojs('video-player', {
+      muted: true,
     plugins: {
       videoJsResolutionSwitcher: {
         default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes
@@ -1274,14 +1280,12 @@ if(typeof VideoPlayer === 'undefined') {
   }, function () {
     updateVideoSrc();
   });
-}
-  //set video page
-  $videoPage = $('.video-page');
-  $videoPlayer = $('#video-player');
+// }
+
 
   commentsLoader = $('.loading-comment-spinner');
 
-    $('.video-slick-vp').slick(SLICK_CONFIG);
+  $('.video-slick').slick(SLICK_CONFIG);
 
   setAutoPlay();
 

@@ -160,6 +160,9 @@ $('.go-to-video').on('click', function() {
       playerHolder,
       videoId = $(this).parent().attr('data-video-id');
 
+  // destroy the current slicks
+  $homePage.find('.video-slick').slick('unslick');
+
   //intialize video.js
   VideoPlayer = videojs('video-player', {
     plugins: {
