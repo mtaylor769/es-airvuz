@@ -48,7 +48,6 @@ var startViewCount                     = true;
 var initialPlayStart                   = false;
 var canResetShowMoreCount              = false;
 var countDownInterval                  = null;
-var initialUpNextClick                 = false;
 var isBuffering                        = false;
 var bufferCount                        = 0;
 var bufferTime                         = 2000;
@@ -362,15 +361,6 @@ function onAutoPlayChange(event, state) {
 
 //bind events
 function bindEvents() {
-  console.log('running 123');
-  if (browser.isMobile() && !initialUpNextClick) {
-      initialUpNextClick = true;
-      $('.next-video-list > li, .slick-slide a').one('touchstart', function () {
-        console.log('running 345')
-          $('body').find('video')[0].load();
-          $('body').find('video')[0].pause();
-      });
-  }
 
   //api calls
   function deleteComment() {
@@ -1301,7 +1291,7 @@ if(!window.playerHolder) {
   videoInfoCheck();
 
   setCommentOptions();
-  console.log('running bind events');
+
   bindEvents();
 
   loadCommentsOnDemand();

@@ -156,9 +156,7 @@ function bindEvents() {
 }
 
 $('.go-to-video').on('click', function() {
-  var VideoPlayer,
-      playerHolder,
-      videoId = $(this).parent().attr('data-video-id');
+  var videoId = $(this).parent().attr('data-video-id');
 
   //intialize video.js
   window.VideoPlayer = videojs('video-player', {
