@@ -58,6 +58,10 @@
     margin: 10px 0 0;
 }
 
+#home-page .go-to-video:hover {
+    cursor: pointer;
+}
+
 /***************************
  * Slick theme
  */
