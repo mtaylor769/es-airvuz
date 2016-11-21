@@ -37,35 +37,42 @@ require('../styles/upload.css');
 require('../../node_modules/video.js/dist/video-js.css');
 require('../../node_modules/videojs-resolution-switcher/lib/videojs-resolution-switcher.css');
 
-switch(window.page) {
-  case 'home':
-    require(['./home'], _loadPage);
-    break;
-  case 'category':
-    require(['./category'], _loadPage);
-    break;
-  case 'upload':
-    require(['./upload'], _loadPage);
-    break;
-  case 'videoPlayer':
-    require(['./videoPlayer'], _loadPage);
-    break;
-  case 'userProfile':
-    require(['./userProfile'], _loadPage);
-    break;
-  case 'search':
-    require(['./search'], _loadPage);
-    break;
-  case 'password-reset':
-    require(['./pages/password-reset/index'], _loadPage);
-    break;
-  // case 'static':
-  //   require(['./pages/static/index'], _loadPage);
+function initializePage() {
+  switch(window.page) {
+    case 'home':
+      require(['./home'], _loadPage);
+      break;
+    case 'category':
+      require(['./category'], _loadPage);
+      break;
+    case 'upload':
+      require(['./upload'], _loadPage);
+      break;
+    case 'videoPlayer':
+      require(['./videoPlayer'], _loadPage);
+      break;
+    case 'userProfile':
+      require(['./userProfile'], _loadPage);
+      break;
+    case 'search':
+      require(['./search'], _loadPage);
+      break;
+    case 'password-reset':
+      require(['./pages/password-reset/index'], _loadPage);
+      break;
+    // case 'static':
+    //   require(['./pages/static/index'], _loadPage);
+  }
 }
+
+initializePage();
 
 function _loadPage(page) {
   page.initialize(window.pageParams);
 }
+
+// expose to video-player.dust (spa)
+window.initializePage = initializePage;
 
 require('../styles/index.css');
 require('../styles/icons.css');
