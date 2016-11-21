@@ -1,0 +1,4 @@
+<video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player"
+       controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"
+       poster="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{video.thumbnailPath}">
+</video>

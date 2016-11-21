@@ -42,6 +42,8 @@ VideoPlayerModel.prototype.getData = function(params) {
 	var dataObject      = {};
 	var checkObject 		= {};
 
+	dataObject.spa = params.request.spa;
+
 	// TODO: run parallel
 	return videoCrud1_0_0.getById(videoId)
 		.then(function(video) {
@@ -105,7 +107,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 					topVideos.push(video);
 				}
 			});
-			
 			dataObject.topVideos = topVideos;
 			return followCrud1_0_0.followCount(checkObject.user);
 		})

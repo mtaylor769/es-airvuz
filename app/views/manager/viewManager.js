@@ -166,7 +166,7 @@ ViewManager.prototype.getView = function(params) {
 	
 	//viewName				= view.getViewName();
 	return new Promise(function(resolve, reject) {
-		logger.debug("getView: renderNewView:" + renderNewView);
+		logger.debug("getView: renderNewView : " + renderNewView);
 
 		if(!renderNewView) {
 			logger.debug("getView: rendering cached view");

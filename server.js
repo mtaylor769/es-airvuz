@@ -90,6 +90,7 @@ app.use(require('./app/routes/api/routes'));
 var viewManager						= require('./app/views/manager/viewManager');
 var indexView						= require('./app/views/view/indexView');
 var videoPlayerView					= require('./app/views/view/videoPlayerView');
+var videoPlayerPartial 			= require('./app/views/view/videoPartialView');
 var userProfileView					= require('./app/views/view/userProfileView');
 var videoUploadView					= require('./app/views/view/videoUploadView');
 var searchView						= require('./app/views/view/searchView');
@@ -105,6 +106,7 @@ var notFoundView					= require('./app/views/view/notFoundView');
 viewManager.addView({ view : indexView });
 viewManager.addView({ view : userProfileView });
 viewManager.addView({ view : videoPlayerView });
+viewManager.addView({ view : videoPlayerPartial});
 viewManager.addView({ view : videoPlayerEmbedView });
 viewManager.addView({ view : videoUploadView });
 viewManager.addView({ view : searchView });
@@ -134,7 +136,7 @@ function loadView(req, res, name, next) {
 				res.send(view);
 			})
 			.catch(function(error) {
-				logger.error(name + " loading view error:" + error);
+				logger.error(name + " loading view error : " + error);
 			});
 }
 
@@ -197,6 +199,11 @@ app.get("/notifications/:id", function(req, res, next) {
 
 app.get('/password-reset/:code', function (req, res) {
 	loadView(req, res, passwordResetView.getViewName());
+});
+
+app.get('/spaRender/:id', function(req, res) {
+	req.spa = true;
+	loadView(req, res, videoPlayerPartial.getViewName());
 });
 
 /**

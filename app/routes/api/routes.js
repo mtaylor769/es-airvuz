@@ -191,6 +191,14 @@ apiRouter.route('/api/videos/videoComments/:id')
 	.get(videos.getCommentsByVideoId);
 
 /**
+*  Route to render SPA Video Page
+* */
+apiRouter.route('/api/videos/render')
+	.get(videos.renderVideoPage);
+
+
+
+/**
  * /api/camera-type/
  */
 apiRouter.route('/api/camera-type')

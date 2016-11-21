@@ -48,7 +48,6 @@ var startViewCount                     = true;
 var initialPlayStart                   = false;
 var canResetShowMoreCount              = false;
 var countDownInterval                  = null;
-var initialUpNextClick                 = false;
 var isBuffering                        = false;
 var bufferCount                        = 0;
 var bufferTime                         = 2000;
@@ -362,13 +361,6 @@ function onAutoPlayChange(event, state) {
 
 //bind events
 function bindEvents() {
-  if (browser.isMobile() && !initialUpNextClick) {
-      initialUpNextClick = true;
-      $('.next-video-list > li, .slick-slide a').one('touchstart', function () {
-          $('body').find('video')[0].load();
-          $('body').find('video')[0].pause();
-      });
-  }
 
   //api calls
   function deleteComment() {
@@ -1234,6 +1226,10 @@ function updateVideoSrc() {
 //page init function
 function initialize(videoPath, currentVideo) {
   video = currentVideo;
+    //set video page
+    $videoPage = $('.video-page');
+    $videoPlayer = $('#video-player');
+
 
   initialPageLoad = true;
 
@@ -1256,12 +1252,13 @@ function initialize(videoPath, currentVideo) {
         defaultRes = '300';
         break;
       // res 400 is an option and should not be force
-      // case (browserWidth < 1200):
-      //   defaultRes = '400';
-      //   break;
-    }
-  }
+      case (browserWidth < 1200):
+    defaultRes = '400';
+    break;
+}
+}
 
+if(!window.playerHolder) {
   VideoPlayer = videojs('video-player', {
     plugins: {
       videoJsResolutionSwitcher: {
@@ -1269,8 +1266,18 @@ function initialize(videoPath, currentVideo) {
       }
     }
   }, function () {
-      updateVideoSrc();
+    updateVideoSrc();
   });
+} else {
+//append video player
+  $('#video-anchor').append(window.playerHolder);
+  $('.video-container').removeClass('hidden');
+  //play video
+  VideoPlayer = window.VideoPlayer;
+  VideoPlayer.videoJsResolutionSwitcher({default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes});
+  updateVideoSrc();
+  VideoPlayer.play();
+}
   //set video page
   $videoPage = $('.video-page');
   $videoPlayer = $('#video-player');

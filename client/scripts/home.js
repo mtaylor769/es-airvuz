@@ -1,8 +1,10 @@
 /* global fbq, ga */
+var videojs = require('video.js');
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
 require('../styles/home.css');
+require('videojs-resolution-switcher');
 
 var identity      = require('./services/identity'),
     AmazonConfig  = require('./config/amazon.config.client');
@@ -150,7 +152,45 @@ function bindEvents() {
   $('.category-nav').on('click', 'h5', function () {
     $(this).parent().toggleClass('is-open');
   });
+
 }
+
+$('.go-to-video').on('click', function() {
+  var videoId = $(this).parent().attr('data-video-id');
+
+  //intialize video.js
+  window.VideoPlayer = videojs('video-player', {
+    plugins: {
+      videoJsResolutionSwitcher: {
+        default: ''
+      }
+    }
+  });
+  //set load and pause on video src
+  window.VideoPlayer.load();
+  window.VideoPlayer.pause();
+
+  $.ajax({
+    type: 'GET',
+    url: '/spaRender/' + videoId
+  })
+    .done(function(response) {
+      // destroy the current slicks
+      $homePage.find('.video-slick').slick('unslick');
+      //deatch hidden video player
+      window.playerHolder = $('.video-container').detach();
+      //hide homepage
+      $('#home-page').hide();
+      //scroll to top
+      window.scrollTo(0,0);
+      //append videopage view
+      $('#views').append(response);
+      //update url for video
+      history.pushState({}, null, '/video/' + videoId);
+    })
+    .fail(function(error) {
+    })
+});
 
 module.exports = {
   initialize: initialize

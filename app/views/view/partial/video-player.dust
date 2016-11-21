@@ -1,0 +1,136 @@
+<div partial-beg="app.views.view.partial.videoPlayer" class="video-page">
+    <div class="container main">
+        <div class="row">
+            <div class="col-sm-8 videoplayback">
+                {!video title and back button!}
+                <div class="video-player-header flex"></div>
+                {!video player!}
+                <div id="video-anchor">
+                    {? spa}
+
+                    {:else}
+                        {> "client.templates.videoPlayer.videoPlayerTemplate" /}
+                    {/ spa}
+                </div>
+                {!categories!}
+                <div class="video-player-categories">
+                    <div class="row">
+                        <div class="description-toggle col-xs-12">
+                            <h4 class="video-player-title pull-left">{video.title}</h4>
+                            <div class="show-more-description pull-right m-10">
+                                <span class="glyphicon glyphicon-chevron-down invisible"></span>
+                            </div>
+                            <div class="show-less-description pull-right m-10" style="display: none">
+                                <span class="glyphicon glyphicon-chevron-up"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="description-container">
+                                <div id="video-description" class="m-l-10">
+                                    <p>
+                                        {video.description|s}
+                                    </p>
+                                    <h6 class="pull-left">Categories:</h6>
+                                    <ul class="list-inline categories pull-left">
+                                        {#video.categories}
+                                            <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
+                                        {/video.categories}
+                                    </ul>
+                                    <h6 class="upload-date m-b-10">Uploaded: {video.displayDate}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {!video owner info!}
+                <div class="flex video-user-info-height" style="background: #fafafa;">
+                    <div class="video-user-container" style="display:flex;">
+                        <button class="btn background-orange border-radius-0 font-white add-button" id="follow" data-toggle="tooltip" data-placement="right" title="Follow / Unfollow"></button>
+                        <img src="{user.profilePicture}" alt="profile picture" height="50" width="50" class="border-radius-circle video-user-picture">
+                        <div class="video-user-about t-a-inherit">
+                            <p class="m-b-0 bold"><a class="airvuz-blue videoUserName" href="/user/{user.userNameUrl}">{user.userNameDisplay}</a></p>
+                            <p class="m-b-0"><span class="airvuz-blue bold">{videoCount} </span>Videos</p>
+                            <p class="m-b-0"><span class="airvuz-blue bold">{followCount} </span>Followers</p>
+                        </div>
+                    </div>
+                    <div class="video-slick">
+                        {> "client.templates.videoPlayer.videoUserSlickPartial" /}
+                    </div>
+                </div>
+                <div class="gainsboro-background p-15-0 video-info">
+                    {> "client.templates.videoPlayer.videoInfoPartial" /}
+                </div>
+                {!Mobile tabs!}
+                <div class="mobile-tab-container">
+                    <div class="mobile-video-tab-wrapper visible-xs">
+                        <ul class="mobile-video-tabs list-inline">
+                            <li class="video-tab video-tab-upnext col-xs-4 text-center active" data-toggle="pill" data-id="upNext">Up Next</li>
+                            <li class="video-tab video-tab-description col-xs-4 text-center" data-toggle="pill" data-id="description">Description</li>
+                            <li class="video-tab video-tab-comments col-xs-4 text-center" data-toggle="pill" data-id="comments">Comments ({video.commentCount})</li>
+                        </ul>
+                    </div>
+                    <div class="mobile-tab-body" style="margin-top:10px; display:none;">
+                        <div id="video-description" class="m-l-10">
+                            <div>
+                                {video.description|s}
+                            </div>
+                            <ul class="list-inline categories">
+                                <span>Categories:</span>
+                                {#video.categories}
+                                    <li><a href="/category/{categoryTypeUrl}">{name}</a></li>
+                                {/video.categories}
+                            </ul>
+                            <div class="upload-date m-b-10">
+                                Uploaded: {video.displayDate}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="comments-wrapper" style="margin-top:10px;">
+                    <div class="flex write-comment">
+                        <textarea cols="90" rows="1" id="comment-text" placeholder="Post a comment..."></textarea>
+                        <button class="btn background-orange border-radius-0 font-white" id="commentSave">Comment</button>
+                    </div>
+                    <div class="loading-comment-spinner text-center m-t-15 hidden" style="height:45px;">
+                        <div class="icon icon-spinner pulse">
+                        </div>
+                        <span>&nbsp;Loading...</span>
+                    </div>
+                    <ul class="parent-comments">
+                        {> "client.templates.videoPlayer.comments"/}
+                    </ul>
+                    <div class="more-comments-container">
+                        {#hasMoreComments}
+                            <div class="text-center m-b-10">
+                                <button class="btn btn-primary" id="btn-view-more-comments">View more comments</button>
+                            </div>
+                        {/hasMoreComments}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 nextVideos" id="next">
+                <div class="flex">
+                    <h5 class="up-tag">UP NEXT</h5>
+                    <div class="auto-play">
+                        <h5>AutoPlay</h5>
+                        <input type="checkbox" name="auto-play-input" id="auto-play" checked>
+                    </div>
+                </div>
+                <ul class="next-video-list" style="list-style: none; padding-left: 0">
+                    {> "client.templates.videoPlayer.videoNextVideosPartial" /}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var videoPath = '{video.videoPath}';
+    var commentSpinner = document.getElementsByClassName('loading-comment-spinner');
+    commentSpinner[0].classList.remove("hidden");
+    function initialize() {
+            videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
+    }
+    initialize();
+</script>

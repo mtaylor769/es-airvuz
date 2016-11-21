@@ -476,6 +476,7 @@ function bindEvents() {
     }
   }
 
+
   function onCategoryRemove() {
     $(this).remove();
   }

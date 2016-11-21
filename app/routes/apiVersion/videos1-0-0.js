@@ -23,6 +23,8 @@ try {
     var SocialCrud                  = require('../../persistence/crud/socialMediaAccount');
     var commentCrud1_0_0            = require('../../persistence/crud/comment1-0-0');
     var md5                         = require('md5');
+    var viewManager                 = require('../../views/manager/viewManager');
+
     if(global.NODE_ENV === "production") {
         logger.setLevel("INFO");
     }
@@ -100,25 +102,25 @@ function getVideosByCategory(req, res) {
                 case 'following-drone-videos':
                     // follow should only be call if user is login
                     return followCrud1_0_0.getFollow(req.user._id)
-                        .then(function (users) {
-                            videosParam.users = users.map(function (user) {
-                                return user.followingUserId
-                            });
-
-                            return videoCrud1_0_0.getVideosByFollow(videosParam);
-                        });
-                default:
-                    videosParam.categoryId = category._id;
-                    return videoCrud1_0_0.getVideoByCategory(videosParam);
-            }
-        });
-
-    Promise.resolve(videoPromise).then(function (videos) {
-        res.json(videos);
-    }).catch(function (error) {
-        logger.error(error);
-        res.sendStatus(500);
+.then(function (users) {
+    videosParam.users = users.map(function (user) {
+        return user.followingUserId
     });
+
+    return videoCrud1_0_0.getVideosByFollow(videosParam);
+});
+default:
+videosParam.categoryId = category._id;
+return videoCrud1_0_0.getVideoByCategory(videosParam);
+}
+});
+
+Promise.resolve(videoPromise).then(function (videos) {
+    res.json(videos);
+}).catch(function (error) {
+    logger.error(error);
+    res.sendStatus(500);
+});
 }
 /**
  * route: GET /api/videos/search/?q=USERID, DESCRIPTION, TITLE, VIDEOLOCATION, TAGS
@@ -153,12 +155,12 @@ function getVideosByCategory(req, res) {
 function search(req, res) {
     var currentPage = parseInt(req.query.page, 10) || 1;
     videoCrud1_0_0.search(req.query.q, currentPage)
-        .then(function (result) {
-            res.json(result);
-        })
-        .catch(function (err) {
-            res.sendStatus(500);
-        });
+      .then(function (result) {
+          res.json(result);
+      })
+      .catch(function (err) {
+          res.sendStatus(500);
+      });
 }
 /**
  * upload custom thumbnail if exists
@@ -177,9 +179,9 @@ function _uploadCustomThumbnail(body) {
         var stream = image.resize(readStream, {width: 392, height: 220});
 
         return amazonService.uploadToS3(amazonService.config.OUTPUT_BUCKET, body.thumbnailPath, stream)
-            .then(function () {
-                return body;
-            });
+          .then(function () {
+              return body;
+          });
     }
     return body;
 }
@@ -232,19 +234,19 @@ function _cleanUpReupload(body) {
  */
 function post (req, res) {
     Promise.resolve(req.body)
-        .then(_uploadCustomThumbnail)
-        .then(function () {
-            return videoCrud1_0_0.create(req.body);
-        })
-        .then(function (video) {
-            res.json(video);
-        })
-        .catch(function (error) {
-            if (error.length) {
-                return res.status(400).json({error: error});
-            }
-            res.sendStatus(500);
-        });
+      .then(_uploadCustomThumbnail)
+      .then(function () {
+          return videoCrud1_0_0.create(req.body);
+      })
+      .then(function (video) {
+          res.json(video);
+      })
+      .catch(function (error) {
+          if (error.length) {
+              return res.status(400).json({error: error});
+          }
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/video/:id
@@ -326,13 +328,13 @@ function get (req, res) {
         eventType		: "get"
     });
     videoCrud1_0_0
-        .getById(req.params.id)
-        .then(function(video) {
-            res.send(video);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .getById(req.params.id)
+      .then(function(video) {
+          res.send(video);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: PROTECTED PUT /api/videos/:id
@@ -341,20 +343,20 @@ function get (req, res) {
  */
 function put (req, res) {
     Promise.resolve(req.body)
-        .then(_uploadCustomThumbnail)
-        .then(_cleanUpReupload)
-        .then(function () {
-            return videoCrud1_0_0.update({id: req.params.id, update: req.body});
-        })
-        .then(function (video) {
-            res.json(video);
-        })
-        .catch(function (err) {
-            if (err.length) {
-                return res.status(400).json({error: err});
-            }
-            res.sendStatus(500);
-        });
+      .then(_uploadCustomThumbnail)
+      .then(_cleanUpReupload)
+      .then(function () {
+          return videoCrud1_0_0.update({id: req.params.id, update: req.body});
+      })
+      .then(function (video) {
+          res.json(video);
+      })
+      .catch(function (err) {
+          if (err.length) {
+              return res.status(400).json({error: err});
+          }
+          res.sendStatus(500);
+      });
 }
 /**
  * route: PROTECTED DELETE /api/videos/:id
@@ -364,13 +366,13 @@ function put (req, res) {
  */
 function deleteVideo (req, res) {
     videoCrud1_0_0
-        .remove(req.params.id)
-        .then(function(video) {
-            res.sendStatus(200);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .remove(req.params.id)
+      .then(function(video) {
+          res.sendStatus(200);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * This function is not used, as the route (/api/video-like) goes to videoLike.js
@@ -379,16 +381,16 @@ function deleteVideo (req, res) {
  */
 function like (req, res) {
     videoCrud1_0_0
-        .getById(req.body.id)
-        .then(function(video) {
-            return videoCrud1_0_0.like(video, req.body.like)
-        })
-        .then(function(comment) {
-            res.sendStatus(200);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .getById(req.body.id)
+      .then(function(video) {
+          return videoCrud1_0_0.like(video, req.body.like)
+      })
+      .then(function(comment) {
+          res.sendStatus(200);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: POST /api/videos/loaded
@@ -411,19 +413,19 @@ function loaded (req, res) {
     });
 
     videoCrud1_0_0
-        .getById(params.videoId)
-        .then(videoCrud1_0_0.upCount)
-        .then(function() {
-            return VideoViewCrud.create(params);
-        })
-        .then(function(videoView) {
-            logger.debug('videoView');
-            logger.debug(videoView);
-            res.sendStatus(200);
-        })
-        .catch(function(error) {
-            res.send(error);
-        })
+      .getById(params.videoId)
+      .then(videoCrud1_0_0.upCount)
+      .then(function() {
+          return VideoViewCrud.create(params);
+      })
+      .then(function(videoView) {
+          logger.debug('videoView');
+          logger.debug(videoView);
+          res.sendStatus(200);
+      })
+      .catch(function(error) {
+          res.send(error);
+      })
 }
 /**
  * route: POST /api/videos/showcase-update
@@ -433,13 +435,13 @@ function loaded (req, res) {
 function showcaseUpdate (req, res) {
     var params = req.body;
     videoCrud1_0_0
-        .update({id: params.id, update: params})
-        .then(function(video) {
-            res.sendStatus(200);
-        })
-        .catch(function(error) {
-            res.send(error)
-        })
+      .update({id: params.id, update: params})
+      .then(function(video) {
+          res.sendStatus(200);
+      })
+      .catch(function(error) {
+          res.send(error)
+      })
 
 }
 /**
@@ -499,19 +501,19 @@ function videoInfoCheck(req, res) {
     logger.debug('1');
 
     videoLikeCrud1_0_0
-        .videoLikeCheck(likeObject)
-        .then(function(like) {
-            returnObject.like = !!like;
-            return followCrud1_0_0.followCheck(followObject);
-        })
-        .then(function(follow) {
-            logger.debug(follow);
-            returnObject.follow = !!follow;
-            res.json(returnObject);
-        })
-        .catch(function(error) {
-            res.sendStatus(500);
-        });
+      .videoLikeCheck(likeObject)
+      .then(function(like) {
+          returnObject.like = !!like;
+          return followCrud1_0_0.followCheck(followObject);
+      })
+      .then(function(follow) {
+          logger.debug(follow);
+          returnObject.follow = !!follow;
+          res.json(returnObject);
+      })
+      .catch(function(error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/videos/user/:id
@@ -546,19 +548,19 @@ function getVideosByUser (req, res) {
         eventType   : "get"
     });
     videoCrud1_0_0
-        .getByUser(req.params.id, req.query.sortBy)
-        .then(function(videos) {
-            dataStatus.status     = 'OK';
-            dataStatus.code       = 200;
-            dataStatus.data       = videos;
-            res.send(dataStatus);
-        })
-        .catch(function (error) {
-            dataStatus.status     = 'Fail';
-            dataStatus.code       = 500;
-            dataStatus.data       = error;
-            res.send(dataStatus);
-        });
+      .getByUser(req.params.id, req.query.sortBy)
+      .then(function(videos) {
+          dataStatus.status     = 'OK';
+          dataStatus.code       = 200;
+          dataStatus.data       = videos;
+          res.send(dataStatus);
+      })
+      .catch(function (error) {
+          dataStatus.status     = 'Fail';
+          dataStatus.code       = 500;
+          dataStatus.data       = error;
+          res.send(dataStatus);
+      });
 }
 /**
  * route: GET /api/videos/showcase/:id
@@ -593,19 +595,19 @@ function getShowcaseByUser (req, res) {
         eventType   : "get"
     });
     videoCrud1_0_0
-        .getByUser(req.params.id, req.query.sortBy)
-        .then(function(videos) {
-            dataStatus.status     = 'OK';
-            dataStatus.code       = 200;
-            dataStatus.data       = videos;
-            res.send(dataStatus);
-        })
-        .catch(function (error) {
-            dataStatus.status     = 'Fail';
-            dataStatus.code       = 500;
-            dataStatus.data       = error;
-            res.send(dataStatus);
-        });
+      .getByUser(req.params.id, req.query.sortBy)
+      .then(function(videos) {
+          dataStatus.status     = 'OK';
+          dataStatus.code       = 200;
+          dataStatus.data       = videos;
+          res.send(dataStatus);
+      })
+      .catch(function (error) {
+          dataStatus.status     = 'Fail';
+          dataStatus.code       = 500;
+          dataStatus.data       = error;
+          res.send(dataStatus);
+      });
 }
 /**
  * route: GET /api/videos/topSixVideos/:id
@@ -648,13 +650,13 @@ function getTopSixVideos (req, res) {
     var userId = req.params.id;
 
     videoCrud1_0_0
-        .getTopSixVideos(userId)
-        .then(function(resp) {
-            res.json(resp);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .getTopSixVideos(userId)
+      .then(function(resp) {
+          res.json(resp);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/videos/videoCount/:id
@@ -666,13 +668,13 @@ function getVideoCount (req, res) {
     var userId = req.params.id;
 
     videoCrud1_0_0
-        .getVideoCount(userId)
-        .then(function(resp) {
-            res.json(resp);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .getVideoCount(userId)
+      .then(function(resp) {
+          res.json(resp);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/videos/followCount/:id
@@ -684,13 +686,13 @@ function getFollowCount (req, res) {
     var userId = req.params.id;
 
     followCrud1_0_0
-        .followCount(userId)
-        .then(function(resp) {
-            res.json(resp);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .followCount(userId)
+      .then(function(resp) {
+          res.json(resp);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/videos/nextVideos?video=videoId
@@ -699,29 +701,29 @@ function getFollowCount (req, res) {
  */
 function getNextVideos (req, res) {
     videoCrud1_0_0.getById(req.query.video)
-        .then(function (video) {
-            return catTypeCrud1_0_0.getInternalCategory(video.categories);
-        })
-        .then(videoCrud1_0_0.getNextVideos)
-        .then(function (videos) {
-            videos.forEach(function (video) {
-                video.fullTitle = video.title;
-                video.displayDate = moment(video.uploadDate).fromNow();
-                video.title = video.title.substring(0, 30);
-                video.description = video.description.substring(0, 90);
-                if (video.title.length === 30) {
-                    video.title = video.title + '...'
-                }
-                if (video.description.length === 90) {
-                    video.description = video.description + '...';
-                }
-            });
+      .then(function (video) {
+          return catTypeCrud1_0_0.getInternalCategory(video.categories);
+      })
+      .then(videoCrud1_0_0.getNextVideos)
+      .then(function (videos) {
+          videos.forEach(function (video) {
+              video.fullTitle = video.title;
+              video.displayDate = moment(video.uploadDate).fromNow();
+              video.title = video.title.substring(0, 30);
+              video.description = video.description.substring(0, 90);
+              if (video.title.length === 30) {
+                  video.title = video.title + '...'
+              }
+              if (video.description.length === 90) {
+                  video.description = video.description + '...';
+              }
+          });
 
-            res.json(videos);
-        })
-        .catch(function () {
-            res.sendStatus(500);
-        });
+          res.json(videos);
+      })
+      .catch(function () {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/video/videoOwnerProfile/:id (NOTE it is "api/video" and not "api/videos" path)
@@ -747,30 +749,30 @@ function getVideoOwnerProfile (req, res) {
     var userId = req.params.id;
 
     usersCrud1_0_0
-        .getUserById(userId)
-        .then(function(user) {
-            if (user !== null) {
-                return SocialCrud.findByUserIdAndProvider(user._id, 'facebook')
-                    .then(function (social) {
-                        SocialCrud.setProfilePicture(social, user);
-                        return user;
-                    });
-            }
+      .getUserById(userId)
+      .then(function(user) {
+          if (user !== null) {
+              return SocialCrud.findByUserIdAndProvider(user._id, 'facebook')
+                .then(function (social) {
+                    SocialCrud.setProfilePicture(social, user);
+                    return user;
+                });
+          }
 
-            user.profilePicture = '/client/images/default.png';
+          user.profilePicture = '/client/images/default.png';
 
-            return user;
-        })
-        .then(function (user) {
-            if(user.userNameDisplay.length > 12) {
-                user.userNameDisplay = user.userNameDisplay.substring(0, 12) + '...';
-            }
-            user.isExternalLink = user.profilePicture.indexOf('http') > -1;
-            res.json(user);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+          return user;
+      })
+      .then(function (user) {
+          if(user.userNameDisplay.length > 12) {
+              user.userNameDisplay = user.userNameDisplay.substring(0, 12) + '...';
+          }
+          user.isExternalLink = user.profilePicture.indexOf('http') > -1;
+          res.json(user);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 /**
  * route: GET /api/videos/videoComments/:id
@@ -781,29 +783,29 @@ function getCommentsByVideoId (req, res) {
     var videoId = req.params.id;
 
     commentCrud1_0_0
-        .getParentCommentByVideoId({videoId: videoId})
-        .then(function(comments) {
-            return Promise.map(comments, function (comment) {
-                comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
-                comment.showReplies = comment.replyCount > 0 ? true : false;
-                if (comment.userId !== null) {
-                    return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
-                        .then(function (social) {
-                            SocialCrud.setProfilePicture(social, comment.userId);
-                            return comment;
-                        });
-                }
-                comment.userId = {};
-                comment.userId.profilePicture = '/client/images/default.png';
-                return comment;
-            });
-        })
-        .then(function(comments) {
-            res.json(comments);
-        })
-        .catch(function (error) {
-            res.sendStatus(500);
-        });
+      .getParentCommentByVideoId({videoId: videoId})
+      .then(function(comments) {
+          return Promise.map(comments, function (comment) {
+              comment.commentDisplayDate = moment(comment.commentCreatedDate).fromNow();
+              comment.showReplies = comment.replyCount > 0 ? true : false;
+              if (comment.userId !== null) {
+                  return SocialCrud.findByUserIdAndProvider(comment.userId._id, 'facebook')
+                    .then(function (social) {
+                        SocialCrud.setProfilePicture(social, comment.userId);
+                        return comment;
+                    });
+              }
+              comment.userId = {};
+              comment.userId.profilePicture = '/client/images/default.png';
+              return comment;
+          });
+      })
+      .then(function(comments) {
+          res.json(comments);
+      })
+      .catch(function (error) {
+          res.sendStatus(500);
+      });
 }
 
 function querySeoKeywords(req, res) {
@@ -814,6 +816,22 @@ function querySeoKeywords(req, res) {
       })
       .catch(function(error) {
           res.sendStatus(500);
+      })
+}
+
+function renderVideoPage(req, res, next) {
+    viewManager
+      .getView({
+          viewName: 'app.view.views.videoPlayerPartial',
+          request: req,
+          response: res,
+          next: next
+      })
+      .then(function(view) {
+          res.send(view)
+      })
+      .catch(function(error) {
+          logger.debug('Video Player View Manager Error : ' + error)
       })
 }
 
@@ -837,6 +855,7 @@ Video.prototype.getNextVideos           = getNextVideos;
 Video.prototype.getVideoOwnerProfile    = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId    = getCommentsByVideoId;
 Video.prototype.querySeoKeywords        = querySeoKeywords;
+Video.prototype.renderVideoPage         = renderVideoPage;
 
 module.exports = new Video();
 
