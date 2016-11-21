@@ -151,7 +151,17 @@ var videoSchema = mongoose.Schema({
 	viewCount: {
 		default : 0,
 		type: Number
-	},	
+	},
+
+
+	/*
+	 * Number of autoViews added to standard views
+	 */
+	autoViewCount: {
+		default: 0,
+		type: Number
+	},
+
 	
 	/* 
 	 * Old name : FileName

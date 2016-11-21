@@ -1,5 +1,7 @@
 console.log("begin");
 
+// MOVED TO: /app/persistence/crud/autovuz1-0-0
+
 // requires: sudo npm install --save probability-distributions
 
 try {
