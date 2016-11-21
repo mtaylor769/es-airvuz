@@ -82,9 +82,33 @@ function getFollowing(req, res) {
     }
 }
 
+function getFollowersCount(req, res) {
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        follow1_0_0.getFollowersCount(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+function getFollowingCount(req, res) {
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        follow1_0_0.getFollowingCount(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
 Follow.prototype.getCheckFollowing = getCheckFollowing;
 Follow.prototype.post = post;
 Follow.prototype.getFollowers = getFollowers;
 Follow.prototype.getFollowing = getFollowing;
+Follow.prototype.getFollowingCount = getFollowingCount;
+Follow.prototype.getFollowersCount = getFollowersCount;
 
 module.exports = new Follow();

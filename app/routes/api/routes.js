@@ -98,6 +98,13 @@ apiRouter.route('/api/users/:id')
 apiRouter.route('/api/users/resend-confirmation')
   .post(users.resendConfirmation);
 
+apiRouter.route('/api/users/:id/followers')
+	.get(follow.getFollowersCount);
+apiRouter.route('/api/users/:id/following')
+	.get(follow.getFollowingCount);
+apiRouter.route('/api/users/:id/video-count')
+	.get(videos.getVideoCount);
+
 
 /**
  * /api/follow/

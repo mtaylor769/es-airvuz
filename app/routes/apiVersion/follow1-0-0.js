@@ -171,9 +171,37 @@ function getFollowing(req, res) {
         })
 }
 
+function getFollowersCount(req, res) {
+    var userId = req.params.id;
+
+    followCrud1_0_0
+        .followCount(userId)
+        .then(function(resp) {
+            res.json(resp);
+        })
+        .catch(function(err) {
+            res.sendStatus(500);
+        });
+}
+
+function getFollowingCount(req, res) {
+    var userId = req.params.id;
+
+    followCrud1_0_0
+        .followingCount(userId)
+        .then(function(resp) {
+            res.json(resp);
+        })
+        .catch(function(err) {
+            res.sendStatus(500);
+        });
+}
+
 Follow.prototype.getCheckFollowing  = getCheckFollowing;
 Follow.prototype.post               = post;
 Follow.prototype.getFollowers       = getFollowers;
 Follow.prototype.getFollowing       = getFollowing;
+Follow.prototype.getFollowersCount  = getFollowersCount;
+Follow.prototype.getFollowingCount = getFollowingCount;
 
 module.exports = new Follow();
