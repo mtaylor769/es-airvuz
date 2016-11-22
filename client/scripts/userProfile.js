@@ -134,10 +134,13 @@ function bindEvents() {
   }
 
   function onProfileImageChange() {
+    var image = this.files[0],
+        hashName,
+        path;
+
     require(['md5'], function (md5) {
-      var image = this.files[0],
-        hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
-        path = 'users/profile-pictures/';
+      hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1];
+      path = 'users/profile-pictures/';
 
       uploadImage({
         image: image,
@@ -150,10 +153,13 @@ function bindEvents() {
   }
 
   function onCoverImageChange() {
-    require.ensure(['md5'], function (md5) {
-      var image = this.files[0],
-        hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
-        path = 'users/cover-pictures/';
+    var image = this.files[0],
+        hashName,
+        path;
+
+    require(['md5'], function (md5) {
+      hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
+      path = 'users/cover-pictures/';
 
       uploadImage({
         image: image,
