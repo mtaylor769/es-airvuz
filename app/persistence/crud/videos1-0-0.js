@@ -351,6 +351,7 @@ Videos.prototype.getById = function(id) {
 	logger.debug('.getByID : id : ' + id);
 	return VideoModel.findById(id)
 		.populate('categories')
+		.populate('primaryCategory')
 		.lean()
 		.exec();
 };
