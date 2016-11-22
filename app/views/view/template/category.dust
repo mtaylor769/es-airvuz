@@ -57,12 +57,13 @@
         </div>
 
         {> "app.views.view.partial.footer" /}
-        {> "app.views.view.partial.js" /}
+
         <script>
-            function initialize() {
-                Category.initialize('{category.uri}');
-            }
+          window.page = 'category';
+          window.pageParams = '{category.uri}';
         </script>
+
+        {> "app.views.view.partial.js" /}
     </body>
 
 </html>

@@ -19,21 +19,22 @@ var IS_PRODUCTION  = NODE_ENV === 'production';
 //  |_____|_|_.__/|_|  \__,_|_|  |_|\___|___/
 //
 
-var path                  = require ( 'path' );
-var webpack               = require ( 'webpack' );
-var WebpackManifestPlugin = require ( 'webpack-manifest-plugin' );
-var WebpackMd5Hash        = require ( 'webpack-md5-hash' );
-var ExtractTextPlugin     = require ( 'extract-text-webpack-plugin' );
-var CleanWebpackPlugin    = require ( 'clean-webpack-plugin' );
+var path                  = require('path');
+var webpack               = require('webpack');
+var WebpackManifestPlugin = require('webpack-manifest-plugin');
+var WebpackMd5Hash        = require('webpack-md5-hash');
+var ExtractTextPlugin     = require('extract-text-webpack-plugin');
+var CleanWebpackPlugin    = require('clean-webpack-plugin');
 
 // PostCSS
-var cssImport    = require ( 'postcss-import' );
-var simpleVars   = require ( 'postcss-simple-vars' );
-var rucksack     = require ( 'rucksack-css' );
-var lost         = require ( 'lost' );
-var autoprefixer = require ( 'autoprefixer' );
-var mqpacker     = require ( 'css-mqpacker' );
-var cssnano      = require ( 'cssnano' );
+var cssImport    = require('postcss-import');
+var simpleVars   = require('postcss-simple-vars');
+var rucksack     = require('rucksack-css');
+var lost         = require('lost');
+var autoprefixer = require('autoprefixer');
+var mqpacker     = require('css-mqpacker');
+var cssnano      = require('cssnano');
+var amazonCDN    = require('../app/config/amazon.config').CDN_URL;
 
 //    ____             __ _                       _   _
 //   / ___|___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -69,17 +70,8 @@ config.entry.vendor = [
   //'lodash'
   'jquery',
   'bootstrap',
-  'bootstrap-tagsinput',
-  'bootstrap-switch',
-  'pubsub-js',
   'dustjs-helpers',
-  'jwt-decode',
-  'slick-carousel',
-  'moment',
-  'video.js',
-  'evaporate',
-  'videojs-resolution-switcher',
-  'md5'
+  'jwt-decode'
 ];
 
 // Entry points for webpack to compile code.
@@ -91,6 +83,15 @@ config.output = {};
 config.output.path          = path.resolve ( __dirname, '../public/' );
 config.output.filename      = IS_PRODUCTION ? '[name].[chunkhash].js' : '[name].bundle.js';
 config.output.chunkFilename = IS_PRODUCTION ? 'airvuz.[name].[chunkhash].js' : 'airvuz.[name].chunk.js';
+
+switch(NODE_ENV) {
+  case 'development':
+    config.output.publicPath = '/public/';
+    break;
+  default:
+    config.output.publicPath = 'https:' + amazonCDN + '/public/';
+    break;
+}
 
 // Loaders
 config.module = { loaders: [] };

@@ -9,11 +9,6 @@ require('videojs-resolution-switcher');
 var identity      = require('./services/identity'),
     AmazonConfig  = require('./config/amazon.config.client');
 
-/**
- * Templates
- */
-var homeVideoTpl = require('../templates/home/home-video.dust');
-
 var $homePage;
 
 var SLICK_CONFIG = {
@@ -54,25 +49,26 @@ var SLICK_CONFIG = {
 
 function getFollowerVideos() {
   $.ajax('/api/videos/category/following-drone-videos')
-      .then(function (videos) {
-        if (videos.length > 0) {
-          var viewData = {
-            title: 'Following Drone Videos',
-            viewAll: 'following-drone-videos',
-            index: {
-              following: videos
-            },
-            videos: 'following',
-            s3Bucket: AmazonConfig.OUTPUT_BUCKET,
-            cdnUrl: AmazonConfig.CDN_URL
-          };
-
+    .then(function (videos) {
+      if (videos.length > 0) {
+        var viewData = {
+          title: 'Following Drone Videos',
+          viewAll: 'following-drone-videos',
+          index: {
+            following: videos
+          },
+          videos: 'following',
+          s3Bucket: AmazonConfig.OUTPUT_BUCKET,
+          cdnUrl: AmazonConfig.CDN_URL
+        };
+        require(['../templates/home/home-video.dust'], function (homeVideoTpl) {
           homeVideoTpl(viewData, function (err, html) {
             $homePage.find('#main-row > .border-left').append('<hr/>').append(html);
             $homePage.find('.video-slick').last().slick(SLICK_CONFIG).on('lazyLoadError', _lazyLoadError);
           });
-        }
-      });
+        });
+      }
+    });
 }
 
 function _lazyLoadError(event, slick, image) {
@@ -82,57 +78,61 @@ function _lazyLoadError(event, slick, image) {
 function initialize(emailConfirm) {
   $homePage = $('#home-page');
 
+  // load require css
+  // require(['../../node_modules/slick-carousel/slick/slick.css', '../../node_modules/slick-carousel/slick/slick-theme.css']);
   var SLIDER_DESCRIPTION_DELAY = 5000,
     $sliderDescriptionSlick = $('#slider-description-slick'),
     $sliderSlick = $('#slider-slick');
 
-  // Featured Videos, Recent Videos, Trending Videos, Staff Pick Videos
-  $('.video-slick').slick(SLICK_CONFIG).on('lazyLoadError', _lazyLoadError);
+  require(['slick-carousel'], function () {
+    // Featured Videos, Recent Videos, Trending Videos, Staff Pick Videos
+    $('.video-slick').slick(SLICK_CONFIG).on('lazyLoadError', _lazyLoadError);
 
-  // has sliders
-  if ($sliderSlick.length > 0) {
-    $sliderSlick.slick({
-      infinite: true,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false,
-      dots: true,
-      fade: true,
-      cssEase: 'linear',
-      asNavFor: '#slider-description-slick'
-    }).find('.slide').removeClass('hidden');
+    // has sliders
+    if ($sliderSlick.length > 0) {
+      $sliderSlick.slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        dots: true,
+        fade: true,
+        cssEase: 'linear',
+        asNavFor: '#slider-description-slick'
+      }).find('.slide').removeClass('hidden');
 
-    $sliderDescriptionSlick.slick({
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      arrows: false,
-      fade: true,
-      cssEase: 'linear',
-      asNavFor: '#slider-slick'
-    });
-
-    $sliderDescriptionSlick.find('.slide-description')
-      .delay(SLIDER_DESCRIPTION_DELAY)
-      .slideUp({
-        complete: function () {
-          $('#slider-description-row')
-            .find('.arrow span')
-            .removeClass('rotate-180').parents('.arrow').removeClass('invisible');
-        }
+      $sliderDescriptionSlick.slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        cssEase: 'linear',
+        asNavFor: '#slider-slick'
       });
 
-    $homePage.on('click', '#slider-description-row .arrow a', function (event) {
-      event.preventDefault();
-      $sliderDescriptionSlick.find('.slide-description').slideToggle();
-      $(this)
-        .find('span')
-        .toggleClass('rotate-180');
-    });
-  }
+      $sliderDescriptionSlick.find('.slide-description')
+        .delay(SLIDER_DESCRIPTION_DELAY)
+        .slideUp({
+          complete: function () {
+            $('#slider-description-row')
+              .find('.arrow span')
+              .removeClass('rotate-180').parents('.arrow').removeClass('invisible');
+          }
+        });
 
-  if (identity.isAuthenticated()) {
-    getFollowerVideos();
-  }
+      $homePage.on('click', '#slider-description-row .arrow a', function (event) {
+        event.preventDefault();
+        $sliderDescriptionSlick.find('.slide-description').slideToggle();
+        $(this)
+          .find('span')
+          .toggleClass('rotate-180');
+      });
+    }
+
+    if (identity.isAuthenticated()) {
+      getFollowerVideos();
+    }
+  });
 
   bindEvents();
   emailConfirmCheck(emailConfirm);
@@ -141,9 +141,9 @@ function initialize(emailConfirm) {
 }
 
 function emailConfirmCheck(emailConfirm) {
-  if(emailConfirm === true) {
+  if(emailConfirm === 'true') {
     $('#email-confirmed-modal').modal('show')
-  } else if(emailConfirm === false) {
+  } else if(emailConfirm === 'false') {
     $('#email-already-confirmed-modal').modal('show')
   }
 }

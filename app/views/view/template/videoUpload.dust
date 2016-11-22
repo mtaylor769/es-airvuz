@@ -16,17 +16,14 @@
         </div>
 
         {> "app.views.view.partial.footer" /}
-        {> "app.views.view.partial.js" /}
-
         <script>
           /** global page **/
           var Page = {};
           Page.categories = {categories|js|s};
 
-          function initialize() {
-              Upload.initialize();
-          }
+          window.page = 'upload';
         </script>
+        {> "app.views.view.partial.js" /}
     </body>
 
 </html>

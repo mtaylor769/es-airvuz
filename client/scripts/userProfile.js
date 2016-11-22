@@ -4,22 +4,16 @@
  */
 require('bootstrap-tagsinput');
 require('bootstrap-switch');
-require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
-require('../../node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css');
-
 
 var Evaporate                 = require('evaporate');
 var AmazonConfig              = require('./config/amazon.config.client');
 var identity                  = require('./services/identity');
-var camera                    = require('./services/camera');
-var drone                     = require('./services/drone');
 var category                  = require('./services/category');
 var AVEventTracker            = require('./avEventTracker');
 var utils                     = require('./services/utils');
 var user                      = identity.currentUser || null;
 var userNameCheck             = '';
 var amazonConfig              = require('./config/amazon.config.client');
-var md5                       = require('md5');
 var allOwnerVideos            = [];
 var showcaseOwnerVideos       = [];
 var skip                      = 0;
@@ -141,30 +135,40 @@ function bindEvents() {
 
   function onProfileImageChange() {
     var image = this.files[0],
-        hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
-        path = 'users/profile-pictures/';
+        hashName,
+        path;
 
-    uploadImage({
-      image: image,
-      fileName: path + hashName,
-      onComplete: function () {
-        updateUserPicture(hashName, 'profilePicture');
-      }
+    require(['md5'], function (md5) {
+      hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1];
+      path = 'users/profile-pictures/';
+
+      uploadImage({
+        image: image,
+        fileName: path + hashName,
+        onComplete: function () {
+          updateUserPicture(hashName, 'profilePicture');
+        }
+      });
     });
   }
 
   function onCoverImageChange() {
     var image = this.files[0],
-        hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
-        path = 'users/cover-pictures/';
+        hashName,
+        path;
 
-    uploadImage({
-      image: image,
-      fileName: path + hashName,
-      onComplete: function () {
-        // do request to save hashName to database
-        updateUserPicture(hashName, 'coverPicture');
-      }
+    require(['md5'], function (md5) {
+      hashName = md5(image.name + Date.now()) + '.' +  image.name.split('.')[1],
+      path = 'users/cover-pictures/';
+
+      uploadImage({
+        image: image,
+        fileName: path + hashName,
+        onComplete: function () {
+          // do request to save hashName to database
+          updateUserPicture(hashName, 'coverPicture');
+        }
+      });
     });
   }
 
@@ -500,8 +504,6 @@ function onSaveVideoEdit() {
     categories            : $('#selected-category-list li').map(function (index, li) {
                               return $(li).data('id');
                             }).toArray(),
-    droneType             : $('#drone-type').val().length === 0 ? null : $('#drone-type').val(),
-    cameraType            : $('#camera-type').val().length === 0 ? null : $('#camera-type').val(),
     thumbnailPath         : currentEditVideo.thumbnailPath,
     isCustomThumbnail     : isCustomThumbnail,
     hashName              : currentEditVideo.videoPath.split('/')[0],
@@ -680,8 +682,6 @@ function renderEditVideoHtml(video) {
   var viewData = {
     video: video,
     categoryType: VIEW_MODEL.categories,
-    drones: VIEW_MODEL.drones,
-    cameras: VIEW_MODEL.cameras,
     selectedCategory: selectedCategory
   };
 
@@ -962,16 +962,6 @@ function renderSocialMediaLinks() {
 }
 
 function getData() {
-  camera.getAll()
-    .then(function (cameras) {
-      VIEW_MODEL.cameras = cameras;
-    });
-
-  drone.getAll()
-    .then(function (drones) {
-      VIEW_MODEL.drones = drones;
-    });
-
   category.getByRoles()
       .then(function (categories) {
         VIEW_MODEL.categories = categories;

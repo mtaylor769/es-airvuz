@@ -61,11 +61,9 @@
         </div>
 
         {> "app.views.view.partial.footer" /}
-        {> "app.views.view.partial.js" /}
         <script>
-            function initialize() {
-                Search.initialize('{searchKeyWord}');
-            }
+          window.page = 'search';
         </script>
+        {> "app.views.view.partial.js" /}
     </body>
 </html>

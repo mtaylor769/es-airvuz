@@ -31,18 +31,14 @@
     </div>
     {> "app.views.view.partial.footer" /}
     {> "client.templates.userProfile.user-profile-modal" /}
-    {> "app.views.view.partial.js" /}
     <script>
         /** global page **/
         var Page = {};
         Page.categories = {?categories}{categories|js|s}{:else}[]{/categories};
-
         var profileUser = {?user}{user|js|s}{:else}[]{/user};
         var profileVideos = {?videos}{videos|js|s}{:else}[]{/videos};
-
-        function initialize() {
-            userProfile.initialize();
-        }
+        window.page = 'userProfile';
     </script>
+    {> "app.views.view.partial.js" /}
   </body>
 </html>

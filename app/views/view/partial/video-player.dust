@@ -126,11 +126,12 @@
     </div>
 </div>
 <script>
-    var videoPath = '{video.videoPath}';
-    var commentSpinner = document.getElementsByClassName('loading-comment-spinner');
-    commentSpinner[0].classList.remove("hidden");
-    function initialize() {
-            videoPlayer.initialize('{video.videoPath}', {?video}{video|js|s}{:else}{}{/video});
-    }
-    initialize();
+    document.getElementsByClassName('loading-comment-spinner')[0].classList.remove("hidden");
+
+    window.page = 'videoPlayer';
+    window.pageParams = {
+        videoPath: '{video.videoPath}',
+        currentVideo: {?video}{video|js|s}{:else}{}{/video}
+    };
+    window.initializePage ? window.initializePage() : '';
 </script>
