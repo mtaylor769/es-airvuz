@@ -19,21 +19,22 @@ var IS_PRODUCTION  = NODE_ENV === 'production';
 //  |_____|_|_.__/|_|  \__,_|_|  |_|\___|___/
 //
 
-var path                  = require ( 'path' );
-var webpack               = require ( 'webpack' );
-var WebpackManifestPlugin = require ( 'webpack-manifest-plugin' );
-var WebpackMd5Hash        = require ( 'webpack-md5-hash' );
-var ExtractTextPlugin     = require ( 'extract-text-webpack-plugin' );
-var CleanWebpackPlugin    = require ( 'clean-webpack-plugin' );
+var path                  = require('path');
+var webpack               = require('webpack');
+var WebpackManifestPlugin = require('webpack-manifest-plugin');
+var WebpackMd5Hash        = require('webpack-md5-hash');
+var ExtractTextPlugin     = require('extract-text-webpack-plugin');
+var CleanWebpackPlugin    = require('clean-webpack-plugin');
 
 // PostCSS
-var cssImport    = require ( 'postcss-import' );
-var simpleVars   = require ( 'postcss-simple-vars' );
-var rucksack     = require ( 'rucksack-css' );
-var lost         = require ( 'lost' );
-var autoprefixer = require ( 'autoprefixer' );
-var mqpacker     = require ( 'css-mqpacker' );
-var cssnano      = require ( 'cssnano' );
+var cssImport    = require('postcss-import');
+var simpleVars   = require('postcss-simple-vars');
+var rucksack     = require('rucksack-css');
+var lost         = require('lost');
+var autoprefixer = require('autoprefixer');
+var mqpacker     = require('css-mqpacker');
+var cssnano      = require('cssnano');
+var amazonCDN    = require('../app/config/amazon.config').CDN_URL;
 
 //    ____             __ _                       _   _
 //   / ___|___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -87,11 +88,8 @@ switch(NODE_ENV) {
   case 'development':
     config.output.publicPath = '/public/';
     break;
-  case 'beta':
-    config.output.publicPath = 'https://d6xm2cm58wj2l.cloudfront.net/public/';
-    break;
-  case 'production':
-    config.output.publicPath = 'https://d32znywta9rkav.cloudfront.net/public/';
+  default:
+    config.output.publicPath = 'https:' + amazonCDN + '/public/';
     break;
 }
 
