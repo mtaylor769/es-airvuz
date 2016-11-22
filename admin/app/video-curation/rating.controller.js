@@ -120,6 +120,7 @@
                 data.internalRanking = vm.ratingSelection;
                 data.videoNotes = vm.videoNotes;
                 if(vm.primaryCategory) {
+                    vm.primaryCategory = JSON.parse(vm.primaryCategory);
                     data.primaryCategory = vm.primaryCategory._id;
                 }
 
