@@ -629,29 +629,22 @@ users.prototype.delete = function (userId) {
     }));
 };
 
-users.prototype.emailConfirm = function (userId) {
-    return (new Promise(function (resolve, reject) {
-            UserModel.findOne({_id: userId})
-                .then(function (user) {
-                    if (user.status === 'email-confirm') {
-                        user.status = 'active';
-                        user.save(function (user) {
-                            resolve('true');
-                        })
-                    } else {
-                        resolve('false');
-                    }
-                })
-                .catch(function (error) {
-                    if (!userId) {
-                        resolve()
-                    } else if (userId) {
-                        resolve('false');
-                    }
-                })
-        })
-    )
-};
+/**
+ * check if email need to be confirm if so change status to active
+ *
+ * @param userId
+ * @returns {Boolean}
+ */
+function emailConfirm(userId) {
+    return UserModel.findOne({_id: userId}).exec()
+      .then(function (user) {
+          if (user && user.status === 'email-confirm') {
+              user.status = 'active';
+              return user.save().return(true);
+          }
+          return false;
+      });
+}
 
 users.prototype.findById = function (id) {
     return UserModel.findById(id).exec();
@@ -772,5 +765,6 @@ users.prototype.resetPasswordChange = resetPasswordChange;
 users.prototype.getUserByUserNameUrl = getUserByUserNameUrl;
 users.prototype.updateStatus = updateStatus;
 users.prototype.verifyStatus = verifyStatus;
+users.prototype.emailConfirm = emailConfirm;
 
 module.exports = new users();

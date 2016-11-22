@@ -141,9 +141,9 @@ function initialize(emailConfirm) {
 }
 
 function emailConfirmCheck(emailConfirm) {
-  if(emailConfirm === true) {
+  if(emailConfirm === 'true') {
     $('#email-confirmed-modal').modal('show')
-  } else if(emailConfirm === false) {
+  } else if(emailConfirm === 'false') {
     $('#email-already-confirmed-modal').modal('show')
   }
 }
