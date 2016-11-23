@@ -494,6 +494,44 @@ Videos.prototype.upCount = function(video) {
 };
 
 
+/**
+ * increment viewCount by video ID
+ */
+Videos.prototype.incrementViewCountById = function(params) {
+	videoId = params.videoId;
+	return VideoModel.findByIdAndUpdate(videoId, {$inc: {viewCount: 1}}).exec();
+};
+
+
+/**
+ * increment autoView count
+ */
+
+Videos.prototype.incrementAutoViewCountById = function (params) {
+	var videoId = params.videoId;
+	return VideoModel.findByIdAndUpdate(videoId, {$inc: {autoViewCount: 1}}).exec();
+}
+
+/**
+ * Apply increment to both view count and autoview count
+ * @param params
+ */
+Videos.prototype.applyAutoView = function (params) {
+	var videoId = params.videoId;
+	logger.info (videoId);
+	// increment view count
+	this.incrementViewCountById ({videoId: videoId}).then ( function (result){
+		logger.info ('incremented view count');
+		// increment autoView
+		Videos.prototype.incrementAutoViewCountById( { videoId: result._id });
+	}).then (function (result){
+		// incremented autoView
+	}).catch( function(err){
+		logger.error (err);
+	});
+
+}
+
 Videos.prototype.findByUserId = function(id) {
 	return VideoModel.find({userId: id}).exec()
 };

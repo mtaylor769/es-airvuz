@@ -10,7 +10,6 @@ var mongoose = require('mongoose');
  lastAddedTimeIndex     : index of the last view added from the date/time distribution array.
  lastViewAddedDateTime    : date
  isComplete                : boolean
-
  */
 
 var autoViewSchema = mongoose.Schema({
@@ -25,36 +24,42 @@ var autoViewSchema = mongoose.Schema({
     /*
      * Number of autoViews
      */
-    autoViewCount: {
-        default: 0,
-        type: Number
+    numberOfViews: {
+        type: Number,
+        default: 0
     },
 
     /*
-     * Number of autoViews
+     * Number of Days
      */
-    distributionCurve: {
-        type: Number
+    numberOfDays: {
+        type: Number,
+        default: 0
+    },
+
+
+    /*
+     * Probability distribution
+     */
+    probability: {
+        type: Number,
+        default: 0
     },
 
     /*
-     * Array date/times when the view is to be added.
+     * Array of date/times when an AutoView is to be added.
     */
-    autoViewAddDateTime: [],
+    autoViewDateTime: {
+        type: Array,
+        default: []
+    },
 
     /*
      * index of the last view added from the date/time distribution array
      */
     lastAddedTimeIndex: {
-        type: Number
-    },
-
-    /*
-     *  timestamp of most recently added autoView
-     *  TODO: don't need this?  get from  autoViewAddDateTime [lastAddedTimeIndex] ??
-     */
-    lastViewAddedDateTime: {
-        type: Date
+        type: Number,
+        default: -1
     },
 
     /*

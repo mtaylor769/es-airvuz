@@ -5,6 +5,7 @@ var namespace = 'app.persistence.crud.autoView1-0-0';
 // requires: sudo npm install --save probability-distributions
 
 try {
+    var Promise = require('bluebird');
     var PD = require("probability-distributions");
     var log4js = require('log4js');
     var logger = log4js.getLogger('app.persistence.crud.autoView1-0-0.js');
@@ -12,7 +13,9 @@ try {
     var database = require('../database/database');
 
     AutoViewModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.autoView"});
+    VideoModel 	= database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
 
+    var video      = require('../../persistence/crud/videos1-0-0');
 }
 catch (error) {
     console.log("error: " + error);
@@ -20,15 +23,6 @@ catch (error) {
 
 /**
  *
- * Data Model for collection : autoviews:
- videoId:
- numberOfViewsToAdd        : number
- distributionCurve        : spike, longtail
- viewAddDateTime        : []  // this is an array date/times when the view is to be added.
- lastAddedTimeIndex     : index of the last view added  from the date/time distributeion array.
- lastViewAddedDateTime    : date
- isComplete                : boolean
-
  added to video model: autoViewCount
  */
 
@@ -40,9 +34,28 @@ AutoView.prototype.create = function (params) {
     var probability = params.probability;
     var videoId = params.videoId;
 
+    var rbinom_0 = PD.rbinom(numberOfViews, numberOfDays, probability);
+
+// turn distribution into views per day.
+    var dist = ToViewsPerDay({
+        numberOfDays: numberOfDays,
+        data: rbinom_0
+    });
+
+// Get a list of timestamps for views.
+    var thisDate = moment().valueOf();        // Time begins now
+
+    var timestamps = getTimestamps({
+        dateBegin: thisDate,
+        dist: dist
+    });
+
+    params.autoViewDateTime = timestamps;
+
     // store to mongo collections
     var autoViewModel = new AutoViewModel( params );
-    return autoViewModel.save();
+    autoViewModel.save( function (err) { if (err) { logger.info (err) } } );
+    return autoViewModel;
 }
 
 AutoView.prototype.autoCreate = function (params) {
@@ -55,22 +68,204 @@ AutoView.prototype.autoCreate = function (params) {
 
     var autoView = this.create(newParams);
 
+    return autoView;
 }
 
-AutoView.prototype.runAutoViews = function (params) {
-    var autoViewId = params.autoViewId;
+AutoView.prototype.updateAutoViews = function (){
+    var timeNow = moment().valueOf();
+    var avArray = [];  // array of autoViews to be processed
 
-    // if isComplete true, no further action
+    var autoViews = AutoViewModel.find({ isComplete: false }).exec();
 
-    // most recently implemented autoview
+    autoViews.then ( function (avResult){
+        // resolved
+        logger.info (avResult);
+        var aryLen = avResult.length;
+        var aryLen2;
+        var i;
+        var i2;
+        var avTimeDates;
+        var activeTimeDates = [];
+        var videoId;
+        var thisTimeDate;
+        var timeNow = moment().valueOf();
+        var lastIndex;
 
-    // while remaining autoviews have date less than now, implement autoview
+        for (i=0; i< aryLen; i++) {
+            logger.info ('Processing record ' + i + ' of ' + aryLen);
+            i2 = avResult[i].lastAddedTimeIndex + 1;
 
-    // if all autoviews added, set isComplete to true.
+            avTimeDates = avResult[i].autoViewDateTime;
+            aryLen2 = avTimeDates.length;
+
+            for (i2; i2<aryLen2; i2++) {
+                thisTimeDate = avTimeDates[i2];
+                if (thisTimeDate <= timeNow) {
+                    activeTimeDates.push (getVideo (avResult[i].videoId));
+                   var noop;
+                } else {
+                    continue;
+                }
+            }
+
+            /*
+            thisTimeDate = aryTimeDate[i];
+            logger.info ('TIMES:');
+            logger.info (thisTimeDate);
+            logger.info (timeNow);
+            if (thisTimeDate <= timeNow ) {
+                addAvParams.videoId = obj.videoId;
+                addAvParams.viewCount = params.viewCount;
+                addAutoView (addAvParams);
+            } else {
+                break;
+            }
+
+            */
+        }
+
+        /*
+        aryLen = avArray.length;
+        for (i=0; i< aryLen; i++) {
+            logger.info ('Processing record ' + i + ' of ' + aryLen);
+            avArray.push ( getVideo (avResult[i].videoId) );
+        }
+*/
+
+        logger.info (activeTimeDates.length);
+
+        Promise.each(activeTimeDates, function(result) {
+            //logger.info(result);
+            videoId = result._id;
+            logger.info (videoId);
+            video.applyAutoView ( { videoId: videoId } );
+            var noop;
+        });
+
+    }).catch(function (err){
+        logger.error (err);
+    });
 }
 
 
 // Internal functions ////////////////////////////////////////////////
+
+var processAutoViewRecord = function (params) {
+    // process single AutoView record
+    logger.info ("processAutoViewRecord");
+    logger.info (params);
+    var aryTimeDate = params.autoView.autoViewDateTime;
+    var aryLen = aryTimeDate.length;
+    var i = 0;
+    var thisTimeDate;
+    var timeNow = moment().valueOf();
+    var params = {};
+    var addAvParams = {};
+
+    if (obj.lastAddedTimeIndex>-1){
+        i = obj.lastAddedTimeIndex;
+    }
+
+    for (i; i<aryLen; i++) {
+        thisTimeDate = aryTimeDate[i];
+        logger.info ('TIMES:');
+        logger.info (thisTimeDate);
+        logger.info (timeNow);
+        if (thisTimeDate <= timeNow ) {
+            // TODO: Yes, add AutoView
+            addAvParams.videoId = obj.videoId;
+            addAvParams.viewCount = params.viewCount;
+            addAutoView (addAvParams);
+        } else {
+            // Stop adding AutoViews (they are in future)
+            // Update the AutoView record
+            params.id = obj._id;
+            params.update = { lastAddedTimeIndex: i-1 };
+
+            AutoViewModel.findByIdAndUpdate(params.id, params.update ).then(function (vidResult) {
+                // resolved
+                logger.info (vidResult.viewCount);
+                var noop;
+
+            }, function (avResult){
+                // rejected
+                var noop = null;
+            }).catch (function (err){
+                logger.error (err);
+                // resolve (function (err) {  })
+                //return { status: 'error', error: err }
+            });
+
+            break;
+        }
+
+    }
+}
+
+var addAutoView = function (params){
+    var newParams = {};
+    var newViewCount;
+//    var updateParamsvideoId = params.videoId;
+
+    logger.info ("*** addAutoView ***");
+    logger.info (params);
+
+    var noop
+
+
+}
+
+var getIncompleteAutoViews = function () {
+    // return promise of query for all AutoViews which are not complete
+    return AutoViewModel.find({ isComplete: false }).exec();
+}
+
+var getVideo = function (id) {
+    return VideoModel.findById({ _id: id});
+}
+
+var updateVideo = function (params) {
+    VideoModel.findByIdAndUpdate(params.id, params.update ).then(function (updateResult) {
+        // resolved
+        logger.info (updateResult.viewCount);
+
+        var noop;
+
+    }, function (avResult){
+        // rejected
+        var noop = null;
+    }).catch (function (err){
+        logger.error (err);
+        // resolve (function (err) {  })
+        //return { status: 'error', error: err }
+    });
+
+}
+
+var getAutoView = function (id) {
+    return AutoViewModel.findById ({_id: id}).exec();
+}
+
+var fooGetAutoView = function (id){
+    // TODO refactor
+    var autoViewId = params.autoViewId;
+    var avPromise = getAutoView ( autoViewId );
+
+    avPromise.then(function (avResult) {
+        // resolved
+        logger.info (avResult);
+        var noop = null;
+
+    }, function (avResult){
+        // rejected
+        var noop = null;
+    }).catch (function (err){
+        logger.error (err);
+        resolve (function (err) {  })
+        //return { status: 'error', error: err }
+    });
+
+}
 
 var ToViewsPerDay = function (params) {
     var numberOfDays = params.numberOfDays;
@@ -99,6 +294,10 @@ var ToViewsPerDay = function (params) {
 
 var getTimestamps = function (params) {
     var theDate = params.dateBegin;
+
+    logger.info ('THE DATE:');
+    logger.info (theDate);
+
     var dist = params.dist;
     var distLen = dist.length;
     var millisecPerDay = 86400000;  // number of milliseconds per day
@@ -111,20 +310,20 @@ var getTimestamps = function (params) {
         numViews = dist[index];
 
         if (numViews === 0) {
-            theDate = theDate.add(1, 'days');
+            theDate = moment (theDate).add(1, 'days');
             continue;
         }
 
         millisecUnits = parseInt(millisecPerDay / numViews);  // Units of time per day, one view per unit
 
         for (index2 = 0; index2 < numViews; index2++) {
+            logger.info ('THE DATE 2:');
+            logger.info (theDate);
             timestamps.push(theDate + index2 * millisecUnits);
         }
 
-        theDate = theDate.add(1, 'days');
-
+        theDate = moment(theDate).add(1, 'days');
     }
-
     return (timestamps);
 }
 
@@ -144,37 +343,5 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-// Miscellaneous TODO: delete //////////////////////////////////////////////////////
-
-// Get a distribution
-var numOfDays = 14;
-var numOfViews = 200;
-var probability = 0.5;  // 0.2 is front loaded, 0.5 is mid, 0.8 is tail loaded
-
-var rbinom_0 = PD.rbinom(numOfViews, numOfDays, probability);
-
-// turn distribution into views per day.
-var dist = ToViewsPerDay({
-    numberOfDays: numOfDays,
-    data: rbinom_0
-});
-
-
-// Get a list of timestamps for views.
-var thisDate = moment();        // Time begins now
-
-var timestamps = getTimestamps({
-    dateBegin: thisDate,
-    dist: dist
-});
-
-
-// TEST ///////////////////////////////////////////////////////////////
-
-var autoView = AutoView.prototype.autoCreate({videoId: '12345'});
-logger.info ('AutoView:');
-logger.info (autoView);
-var noop = "";
 
 module.exports = new AutoView();
