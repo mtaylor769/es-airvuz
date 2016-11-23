@@ -71,7 +71,7 @@ AutoView.prototype.autoCreate = function (params) {
     return autoView;
 }
 
-AutoView.prototype.updateAutoViews = function (){
+AutoView.prototype.applyAutoViews = function (){
     var timeNow = moment().valueOf();
     var avArray = [];  // array of autoViews to be processed
 
@@ -82,67 +82,31 @@ AutoView.prototype.updateAutoViews = function (){
         logger.info (avResult);
         var aryLen = avResult.length;
         var aryLen2;
-        var i;
-        var i2;
+        var indexOuter;
+        var indexInner;
         var avTimeDates;
-        var activeTimeDates = [];
-        var videoId;
         var thisTimeDate;
         var timeNow = moment().valueOf();
         var lastIndex;
 
-        for (i=0; i< aryLen; i++) {
-            logger.info ('Processing record ' + i + ' of ' + aryLen);
-            i2 = avResult[i].lastAddedTimeIndex + 1;
+        for (indexOuter=0; indexOuter< aryLen; indexOuter++) {
+            logger.info ('Processing record ' + indexOuter + ' of ' + aryLen);
+            indexInner = avResult[indexOuter].lastAddedTimeIndex + 1;
 
-            avTimeDates = avResult[i].autoViewDateTime;
+            avTimeDates = avResult[indexOuter].autoViewDateTime;
             aryLen2 = avTimeDates.length;
 
-            for (i2; i2<aryLen2; i2++) {
-                thisTimeDate = avTimeDates[i2];
+            for (indexInner; indexInner<aryLen2; indexInner++) {
+                thisTimeDate = avTimeDates[indexInner];
                 if (thisTimeDate <= timeNow) {
-                    video.applyAutoView ( { videoId: avResult[i].videoId } );
-                    //Video.applyAutoView({ videoId : })
-                   // activeTimeDates.push (getVideo (avResult[i].videoId));
-                   var noop;
+                    video.applyAutoView ( { videoId: avResult[indexOuter].videoId } );
+                    updateAutoView({ id: avResult[indexOuter]._id, update: { lastAddedTimeIndex: indexInner }});
                 } else {
                     continue;
                 }
             }
-
-            /*
-            thisTimeDate = aryTimeDate[i];
-            logger.info ('TIMES:');
-            logger.info (thisTimeDate);
-            logger.info (timeNow);
-            if (thisTimeDate <= timeNow ) {
-                addAvParams.videoId = obj.videoId;
-                addAvParams.viewCount = params.viewCount;
-                addAutoView (addAvParams);
-            } else {
-                break;
-            }
-
-            */
         }
 
-        /*
-        aryLen = avArray.length;
-        for (i=0; i< aryLen; i++) {
-            logger.info ('Processing record ' + i + ' of ' + aryLen);
-            avArray.push ( getVideo (avResult[i].videoId) );
-        }
-*/
-
-        logger.info (activeTimeDates.length);
-
-        Promise.each(activeTimeDates, function(result) {
-            //logger.info(result);
-            videoId = result._id;
-            logger.info (videoId);
-            video.applyAutoView ( { videoId: videoId } );
-            var noop;
-        });
 
     }).catch(function (err){
         logger.error (err);
@@ -152,57 +116,18 @@ AutoView.prototype.updateAutoViews = function (){
 
 // Internal functions ////////////////////////////////////////////////
 
-var getIncompleteAutoViews = function () {
-    // return promise of query for all AutoViews which are not complete
-    return AutoViewModel.find({ isComplete: false }).exec();
-}
+var updateAutoView = function (params) {
 
-var getVideo = function (id) {
-    return VideoModel.findById({ _id: id});
-}
-
-var updateVideo = function (params) {
-    VideoModel.findByIdAndUpdate(params.id, params.update ).then(function (updateResult) {
+    AutoViewModel.findByIdAndUpdate(params.id, params.update ).then(function (updateResult) {
         // resolved
-        logger.info (updateResult.viewCount);
-
-        var noop;
-
     }, function (avResult){
         // rejected
-        var noop = null;
     }).catch (function (err){
         logger.error (err);
-        // resolve (function (err) {  })
-        //return { status: 'error', error: err }
     });
 
 }
 
-var getAutoView = function (id) {
-    return AutoViewModel.findById ({_id: id}).exec();
-}
-
-var fooGetAutoView = function (id){
-    // TODO refactor
-    var autoViewId = params.autoViewId;
-    var avPromise = getAutoView ( autoViewId );
-
-    avPromise.then(function (avResult) {
-        // resolved
-        logger.info (avResult);
-        var noop = null;
-
-    }, function (avResult){
-        // rejected
-        var noop = null;
-    }).catch (function (err){
-        logger.error (err);
-        resolve (function (err) {  })
-        //return { status: 'error', error: err }
-    });
-
-}
 
 var ToViewsPerDay = function (params) {
     var numberOfDays = params.numberOfDays;
@@ -231,9 +156,6 @@ var ToViewsPerDay = function (params) {
 
 var getTimestamps = function (params) {
     var theDate = params.dateBegin;
-
-    logger.info ('THE DATE:');
-    logger.info (theDate);
 
     var dist = params.dist;
     var distLen = dist.length;

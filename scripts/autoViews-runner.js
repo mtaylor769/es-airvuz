@@ -10,7 +10,7 @@ try {
 
     logger.info("begin");
 
-    AutoView.updateAutoViews();
+    AutoView.applyAutoViews();
 
     logger.info ('done');
 }
