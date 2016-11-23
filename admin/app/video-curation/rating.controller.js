@@ -69,6 +69,7 @@
             Videos.get({id: userInputId})
                 .$promise
                 .then(function(video) {
+                    vm.showNextButtons = false;
                     vm.video = video;
                     if(vm.video.categories) {
                         categoryCheck(vm.video.categories);
@@ -93,15 +94,44 @@
                 })
         }
 
+
+        function updateVideo() {
+            var data = {};
+            data.internalTags = vm.internalKeywords;
+            data.seoKeywords = vm.seoKeywords;
+            data.categories = vm.video.categories;
+            data.videoId = vm.video._id;
+            data.internalRanking = vm.ratingSelection;
+            data.videoNotes = vm.videoNotes;
+            if(vm.primaryCategory) {
+                data.primaryCategory = vm.primaryCategory;
+            }
+            if(!data.internalRanking) {
+                vm.ratingRequired = true;
+            } else {
+                $http.put('/api/video-curation', data).then(function(response) {
+                    dialog.alert({
+                        title: 'Video saved',
+                        content: 'Video Info Successfully Saved',
+                        ok: 'ok'
+                    });
+                    vm.showNextButtons = true;
+                });
+            }
+        }
+
         //save current video and get next one
-        function updateVideoAndGetNext(nextVideoType) {
+        function getNextVideo(nextVideoType) {
             if(vm.video) {
                 var data = {};
+
                 //current options nextVideoType === 'contributor' || 'category1' || 'category2' || 'category3'
                 if(nextVideoType) {
                     data.nextVideoParams = {};
+
                     //gets value based on nextVideoType
                     data.nextVideoParams.value = getNextVideoValue(nextVideoType);
+
                     //if nextVideoType === 'category1' || 'category2' || 'category3' will set 'type' to category for backend code
                     if(nextVideoType.indexOf('category') > -1) {
                         data.nextVideoParams.type = 'category';
@@ -109,57 +139,49 @@
                         data.nextVideoParams.type = nextVideoType;
                     }
                 }
+                // will return for the next video based off initial params
                 if(!nextVideoType && vm.curationType) {
                     data.nextVideoParams = {};
                     data.nextVideoParams.type = vm.curationType;
                 }
-                data.internalTags = vm.internalKeywords;
-                data.seoKeywords = vm.seoKeywords;
-                data.categories = vm.video.categories;
-                data.videoId = vm.video._id;
-                data.internalRanking = vm.ratingSelection;
-                data.videoNotes = vm.videoNotes;
-                if(vm.primaryCategory) {
-                    vm.primaryCategory = JSON.parse(vm.primaryCategory);
-                    data.primaryCategory = vm.primaryCategory._id;
-                }
 
-                if(!data.internalRanking) {
-                    vm.ratingRequired = true;
-                } else {
-                    $http.post('/api/video-curation', data).then(function(response) {
-                        // if no more videos available will display dialog and clear out page
-                        if(response.data.completed === true) {
-                            dialog.alert({
-                                title: 'Completed',
-                                content: 'There are no more videos available for the current user/category. Please enter a new video id to start a new set.',
-                                ok: 'ok'
-                            });
-                            vm.video = {};
-                            vm.curated = false;
-                            clearSelection();
-                        } else {
-                            var video = response.data[0];
-                            vm.video = video;
-                            if(vm.video.categories) {
-                                categoryCheck(vm.video.categories);
-                            }
-                            vm.keywords = video.tags;
-                            vm.internalKeywords = video.internalTags;
-                            vm.seoKeywords = video.seoTags;
-                            vm.primaryCategory = video.primaryCategory;
-                            vm.videoNotes = video.videoNotes;
-                            vm.ratingRequired = false;
-                            if(video.curation) {
-                                vm.curated = true;
-                            } else {
-                                vm.curated = false;
-                            }
-                            clearSelection();
-                            setVideoPlayerConfig();
+                //function to get next video
+                $http.post('/api/video-curation', data).then(function(response) {
+
+                    // if no more videos available will display dialog and clear out page
+                    if(response.data.completed === true) {
+                        dialog.alert({
+                            title: 'Completed',
+                            content: 'There are no more videos available for the current user/category. Please enter a new video id to start a new set.',
+                            ok: 'ok'
+                        });
+                        vm.video = {};
+                        vm.curated = false;
+                        clearSelection();
+                        $state.go('videoCuration.landing');
+                    } else {
+                        vm.showNextButtons = false;
+                        var video = response.data[0];
+                        vm.video = video;
+                        if(vm.video.categories) {
+                            categoryCheck(vm.video.categories);
                         }
-                    });
-                }
+                        vm.keywords = video.tags;
+                        vm.internalKeywords = video.internalTags;
+                        vm.seoKeywords = video.seoTags;
+                        vm.primaryCategory = video.primaryCategory;
+                        vm.videoNotes = video.videoNotes;
+                        vm.ratingRequired = false;
+                        if(video.curation) {
+                            vm.curated = true;
+                        } else {
+                            vm.curated = false;
+                        }
+                        clearSelection();
+                        setVideoPlayerConfig();
+                    }
+                });
+
             } else {
                 var data = {};
                 data.initialVideo = true;
@@ -176,6 +198,7 @@
                     } else {
                         var video = response.data;
                     }
+                    vm.showNextButtons = false;
                     vm.video = video;
                     if(vm.video.categories) {
                         categoryCheck(vm.video.categories);
@@ -337,13 +360,13 @@
                     return vm.video.userId;
                     break;
                 case 'category1' :
-                    return vm.video.categories[0];
+                    return vm.video.categories[0]._id;
                     break;
                 case 'category2' :
-                    return vm.video.categories[1];
+                    return vm.video.categories[1]._id;
                     break;
                 case 'category3' :
-                    return vm.video.categories[2];
+                    return vm.video.categories[2]._id;
                     break;
                 default :
                     return
@@ -354,12 +377,13 @@
         var vm = this;
         vm.getKeywords = getKeywords;
         vm.userInputVideo = userInputVideo;
-        vm.updateVideoAndGetNext = updateVideoAndGetNext;
+        vm.updateVideo = updateVideo;
         vm.removeCategory = removeCategory;
         vm.addCategory = addCategory;
+        vm.getNextVideo = getNextVideo;
         vm.ratingSelection = null;
 
 
-        updateVideoAndGetNext();
+        getNextVideo();
     }
 })();

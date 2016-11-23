@@ -60,7 +60,7 @@
         </video>
         <div style="margin: auto">
             <!---- video rating selection ---->
-            <div class="video-rating-container">
+            <div class="video-rating-container" ng-hide="vm.showNextButtons">
                 <p class="rating-title">Rate This Video</p>
                 <div class="star-container">
                     <span class="material-icons rating-star one">star_rate</span>
@@ -70,13 +70,18 @@
                     <span class="material-icons rating-star five">star_rate</span>
                 </div>
                 <p class="error" ng-show="vm.ratingRequired">Rating Required</p>
+                <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideo()">Save</md-button>
             </div>
             <!---- next video button ---->
-            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext()">Go to next video</md-button>
-            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('contributor')">Go to next video of contributor</md-button>
-            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('category1')" ng-show="vm.video.categories.length > 0">Go to next video in 1st category</md-button>
-            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('category2')" ng-show="vm.video.categories.length > 1">Go to next video in 2nd category</md-button>
-            <md-button class="md-warn md-raised next-video-button" ng-click="vm.updateVideoAndGetNext('category3')" ng-show="vm.video.categories.length > 2">Go to next video in 3rd category</md-button>
+            <div >
+            </div>
+            <div ng-show="vm.showNextButtons">
+                <md-button class="md-warn md-raised next-video-button" ng-click="vm.getNextVideo()" ng-show="vm.curationType">Go to next video ({{vm.curationType}})</md-button>
+                <md-button class="md-warn md-raised next-video-button" ng-click="vm.getNextVideo('contributor')">Go to next video of contributor</md-button>
+                <md-button class="md-warn md-raised next-video-button" ng-click="vm.getNextVideo('category1')" ng-show="vm.video.categories.length > 0">Go to next video in 1st category</md-button>
+                <md-button class="md-warn md-raised next-video-button" ng-click="vm.getNextVideo('category2')" ng-show="vm.video.categories.length > 1">Go to next video in 2nd category</md-button>
+                <md-button class="md-warn md-raised next-video-button" ng-click="vm.getNextVideo('category3')" ng-show="vm.video.categories.length > 2">Go to next video in 3rd category</md-button>
+            </div>
         </div>
     </div>
 </div>

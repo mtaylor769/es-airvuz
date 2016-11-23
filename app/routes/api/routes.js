@@ -392,7 +392,8 @@ apiRouter.route('/api/keyword')
  * /api/video-curation
  */
 apiRouter.route('/api/video-curation')
-	.post(videoCuration.rating);
+	.post(videoCuration.getNextVideo)
+	.put(videoCuration.updateVideo);
 
 /**
  * /api/aclRoles

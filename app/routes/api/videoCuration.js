@@ -31,17 +31,30 @@ function VideoCuration() {}
  */
 var defaultVer = "1.0.0";
 
-function rating(req, res) {
+function getNextVideo(req, res) {
 
     var version = req.params.apiVer || defaultVer;
 
     if (version === "1.0.0") {
-        videoCuration1_0_0.rating(req, res);
+        videoCuration1_0_0.getNextVideo(req, res);
     }
     else {
         incorrectVer(req,res);
     }
 }
 
-VideoCuration.prototype.rating = rating;
+function updateVideo(req, res) {
+
+    var version = req.params.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        videoCuration1_0_0.updateVideo(req, res);
+    }
+    else {
+        incorrectVer(req,res);
+    }
+}
+
+VideoCuration.prototype.getNextVideo = getNextVideo;
+VideoCuration.prototype.updateVideo = updateVideo;
 module.exports = new VideoCuration();

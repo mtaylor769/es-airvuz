@@ -20,7 +20,8 @@ function VideoCuration() {}
  * @param req
  * @param res
  */
-function rating(req, res) {
+
+function updateVideo(req, res) {
     var internalTags        = [];
     var seoTags             = [];
     var rawInternalTags     = req.body.internalTags || [];
@@ -28,28 +29,104 @@ function rating(req, res) {
     var videoId             = req.body.videoId;
     var videoCategories     = req.body.categories;
     var internalRanking     = req.body.internalRanking;
-    var initialVideo        = req.body.initialVideo;
-    var nextVideoParams     = req.body.nextVideoParams;
-    var initialVideoId      = req.body.stateVideo || null;
-    var initialType         = req.body.stateType || null;
     var primaryCategory     = req.body.primaryCategory || null;
     var videoNotes          = req.body.videoNotes;
     var waitFor;
 
-    //setting up query object. Video Ranking is always required
-    var queryObject = {};
-    queryObject.update = {};
-    queryObject.update.curation = {};
-    queryObject.update.categories = videoCategories;
-    queryObject.id = videoId;
-    queryObject.internalRanking = internalRanking;
-    queryObject.update.curation.isRanked = true;
-    queryObject.update.videoNotes = videoNotes;
+    var updateObject = {};
+    updateObject.update = {};
+    updateObject.update.curation = {};
+    updateObject.update.categories = videoCategories;
+    updateObject.id = videoId;
+    updateObject.internalRanking = internalRanking;
+    updateObject.update.curation.isRanked = true;
+    updateObject.update.videoNotes = videoNotes;
     //will set primary category if param is set
     if(primaryCategory) {
-        queryObject.update.primaryCategory = primaryCategory;
-        queryObject.update.curation.primaryCategory = true;
+        updateObject.update.primaryCategory = primaryCategory;
+        updateObject.update.curation.primaryCategory = true;
     }
+
+    //function to run if both internal and seo tags
+
+    if (rawSeoTags.length && rawInternalTags.length) {
+
+        waitFor = Promise.map(rawSeoTags, function (tag) {
+            return keywordCrud1_0_0.create(tag.text);
+        })
+        .then(function () {
+          rawSeoTags.forEach(function (tag) {
+              seoTags.push(tag.text);
+          });
+          return Promise.map(rawInternalTags, function (tag) {
+              return keywordCrud1_0_0.create(tag.text);
+          });
+        })
+        .then(function () {
+          rawInternalTags.forEach(function (tag) {
+              internalTags.push(tag.text);
+          });
+          updateObject.update.internalTags = internalTags;
+          updateObject.update.seoTags = seoTags;
+          updateObject.update.curation.isTagged = true;
+          updateObject.update.curation.isSeoTagged = true;
+          return videoCrud1_0_0.videoCurationUpdate(updateObject);
+        });
+
+    //function to run if internal tags but no SEO
+
+    } else if (rawInternalTags.length && !rawSeoTags.length) {
+
+        waitFor = Promise.map(rawInternalTags, function (tag) {
+            return keywordCrud1_0_0.create(tag.text);
+        })
+        .then(function () {
+          rawInternalTags.forEach(function (tag) {
+              internalTags.push(tag.text);
+          });
+          updateObject.update.internalTags = internalTags;
+          updateObject.update.curation.isTagged = true;
+          return videoCrud1_0_0.videoCurationUpdate(updateObject);
+        });
+
+    //function to run if SEO tags but no internal
+
+    } else if (!rawInternalTags.length && rawSeoTags.length) {
+
+        waitFor = Promise.map(rawSeoTags, function (tag) {
+            return keywordCrud1_0_0.create(tag.text);
+        })
+        .then(function () {
+          rawSeoTags.forEach(function (tag) {
+              seoTags.push(tag.text);
+          });
+          updateObject.update.seoTags = seoTags;
+          updateObject.update.curation.isSeoTagged = true;
+          return videoCrud1_0_0.videoCurationUpdate(updateObject);
+        });
+
+    //function to run if only ranking
+
+    } else {
+        waitFor = videoCrud1_0_0.videoCurationUpdate(updateObject);
+    }
+
+    return waitFor
+      .then(function() {
+        res.sendStatus(200);
+      })
+      .catch(function(error) {
+        res.sendStatus(500);
+      })
+}
+
+function getNextVideo(req, res) {
+    var initialVideo        = req.body.initialVideo;
+    var nextVideoParams     = req.body.nextVideoParams;
+    var initialVideoId      = req.body.stateVideo || null;
+    var initialType         = req.body.stateType || null;
+    var waitFor;
+
 
     //run if initial Video
     if(initialVideo) {
@@ -62,79 +139,7 @@ function rating(req, res) {
         }
 
     } else {
-
-        //function to run if both internal and SEO tags
-        if (rawSeoTags.length && rawInternalTags.length) {
-
-            waitFor = Promise.map(rawSeoTags, function (tag) {
-                return keywordCrud1_0_0.create(tag.text);
-            })
-            .then(function () {
-                rawSeoTags.forEach(function (tag) {
-                    seoTags.push(tag.text);
-                });
-                return Promise.map(rawInternalTags, function (tag) {
-                    return keywordCrud1_0_0.create(tag.text);
-                });
-            })
-            .then(function () {
-                rawInternalTags.forEach(function (tag) {
-                    internalTags.push(tag.text);
-                });
-                queryObject.update.internalTags = internalTags;
-                queryObject.update.seoTags = seoTags;
-                queryObject.update.curation.isTagged = true;
-                queryObject.update.curation.isSeoTagged = true;
-                return videoCrud1_0_0.videoCurationUpdate(queryObject)
-                  .then(function() {
-                      return Promise.resolve(nextVideoParams);
-                  })
-            });
-
-            //function to run if internal tags but no SEO
-        } else if (rawInternalTags.length && !rawSeoTags.length) {
-
-            waitFor = Promise.map(rawInternalTags, function (tag) {
-                return keywordCrud1_0_0.create(tag.text);
-            })
-            .then(function () {
-                rawInternalTags.forEach(function (tag) {
-                    internalTags.push(tag.text);
-                });
-                queryObject.update.internalTags = internalTags;
-                queryObject.update.curation.isTagged = true;
-                return videoCrud1_0_0.videoCurationUpdate(queryObject)
-                  .then(function() {
-                      return Promise.resolve(nextVideoParams);
-                  })
-            });
-
-            //function to run if SEO tags but no internal
-        } else if (!rawInternalTags.length && rawSeoTags.length) {
-
-            waitFor = Promise.map(rawSeoTags, function (tag) {
-                return keywordCrud1_0_0.create(tag.text);
-            })
-            .then(function () {
-                rawSeoTags.forEach(function (tag) {
-                    seoTags.push(tag.text);
-                });
-                queryObject.update.seoTags = seoTags;
-                queryObject.update.curation.isSeoTagged = true;
-                return videoCrud1_0_0.videoCurationUpdate(queryObject)
-                  .then(function() {
-                      return Promise.resolve(nextVideoParams);
-                  })
-            });
-
-            //function to run if only ranking
-        } else {
-                waitFor = videoCrud1_0_0.videoCurationUpdate(queryObject)
-              .then(function() {
-                  return Promise.resolve(nextVideoParams);
-              })
-
-        }
+        waitFor = Promise.resolve(nextVideoParams);
     }
 
     waitFor.then(function(params) {
@@ -148,11 +153,11 @@ function rating(req, res) {
                   .then(function(video) {
                       //if no more videos for specified params will send back a flag for dialog otherwise will return the video
                       if(!video.length) {
-                        //flag for dialog
-                        return {completed: true};
+                          //flag for dialog
+                          return {completed: true};
                       } else {
-                        //return video like normal
-                        return video;
+                          //return video like normal
+                          return video;
                       }
                   });
             } else {
@@ -162,14 +167,15 @@ function rating(req, res) {
             return videoCrud1_0_0.getNextVideoToRate();
         }
     })
-    .then(function(nextVideo) {
-        res.json(nextVideo);
-    })
-    .catch(function(error) {
-        res.send(500);
-    });
+      .then(function(nextVideo) {
+          res.json(nextVideo);
+      })
+      .catch(function(error) {
+          res.send(500);
+      });
 }
 
-VideoCuration.prototype.rating = rating;
+VideoCuration.prototype.getNextVideo = getNextVideo;
+VideoCuration.prototype.updateVideo = updateVideo;
 
 module.exports = new VideoCuration();
