@@ -520,10 +520,12 @@ Videos.prototype.applyAutoView = function (params) {
 	var videoId = params.videoId;
 	logger.info (videoId);
 	// increment view count
+
+	var self = this;
 	this.incrementViewCountById ({videoId: videoId}).then ( function (result){
 		logger.info ('incremented view count');
 		// increment autoView
-		Videos.prototype.incrementAutoViewCountById( { videoId: result._id });
+		self.incrementAutoViewCountById( { videoId: result._id });
 	}).then (function (result){
 		// incremented autoView
 	}).catch( function(err){

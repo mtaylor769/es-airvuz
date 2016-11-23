@@ -101,7 +101,9 @@ AutoView.prototype.updateAutoViews = function (){
             for (i2; i2<aryLen2; i2++) {
                 thisTimeDate = avTimeDates[i2];
                 if (thisTimeDate <= timeNow) {
-                    activeTimeDates.push (getVideo (avResult[i].videoId));
+                    video.applyAutoView ( { videoId: avResult[i].videoId } );
+                    //Video.applyAutoView({ videoId : })
+                   // activeTimeDates.push (getVideo (avResult[i].videoId));
                    var noop;
                 } else {
                     continue;
