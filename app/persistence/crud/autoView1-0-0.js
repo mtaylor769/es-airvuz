@@ -58,6 +58,7 @@ AutoView.prototype.create = function (params) {
     return autoViewModel;
 }
 
+/* User-supplied parameters */
 AutoView.prototype.autoCreate = function (params) {
     var newParams = {};
     newParams.videoId = params.videoId;
@@ -71,6 +72,7 @@ AutoView.prototype.autoCreate = function (params) {
     return autoView;
 }
 
+/* Automatic randomized parameters */
 AutoView.prototype.applyAutoViews = function (){
     var timeNow = moment().valueOf();
     var avArray = [];  // array of autoViews to be processed
@@ -79,7 +81,6 @@ AutoView.prototype.applyAutoViews = function (){
 
     autoViews.then ( function (avResult){
         // resolved
-        logger.info (avResult);
         var aryLen = avResult.length;
         var aryLen2;
         var indexOuter;
@@ -90,7 +91,6 @@ AutoView.prototype.applyAutoViews = function (){
         var lastIndex;
 
         for (indexOuter=0; indexOuter< aryLen; indexOuter++) {
-            logger.info ('Processing record ' + indexOuter + ' of ' + aryLen);
             indexInner = avResult[indexOuter].lastAddedTimeIndex + 1;
 
             avTimeDates = avResult[indexOuter].autoViewDateTime;
@@ -176,8 +176,6 @@ var getTimestamps = function (params) {
         millisecUnits = parseInt(millisecPerDay / numViews);  // Units of time per day, one view per unit
 
         for (index2 = 0; index2 < numViews; index2++) {
-            logger.info ('THE DATE 2:');
-            logger.info (theDate);
             timestamps.push(theDate + index2 * millisecUnits);
         }
 
