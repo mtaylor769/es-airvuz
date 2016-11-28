@@ -16,7 +16,6 @@ catch (exception) {
 // IMPORT: END
 
 var BaseView = function (params) {
-  logger.error(params);
   params = params || {};
   this.viewConfig = params;
   this.model = null;
