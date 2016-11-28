@@ -319,33 +319,44 @@ Videos.prototype.create = function(params) {
 	);
 };
 
-Videos.prototype.getAllVideos = function() {
-	return VideoModel.find({}).lean().exec();
-};
-
 /**
  * get next videos by category
+ * - get 4 rank videos and 1 random video in same category
  * @param category
- * @returns {Promise}
+ * @returns {Promise} - 5 videos
  */
 Videos.prototype.getNextVideos = function(category) {
-	return VideoModel.find({categories: category})
-		.count()
-		.exec()
-		.then(function(videoCount) {
-			var skip = Math.floor(Math.random() * videoCount);
+	var waitFor = Promise.all([
+			_getVideo({categories: category, internalRankAvg: {$gte: 4}}, 4), // get by internal rank
+			_getVideo({categories: category}, 5) // get by category
+		]);
 
-			return VideoModel.find({categories: category})
-				.skip(skip)
-				.populate('userId')
-				.limit(5)
-				.lean()
-				.exec();
-		})
-		.then(function(videos) {
-			return videos;
-		});
+	return waitFor.spread(function (rankVideo, categoryVideo) {
+		if (rankVideo.length > 0) {
+      return rankVideo.concat(categoryVideo.slice(0, 1)); // 4 internal + 1 category
+		}
+		return categoryVideo; // 0 internal + 5 category
+	});
 };
+
+function _getVideo(query, limit) {
+  return VideoModel.find(query)
+    .count()
+    .exec()
+    .then(function(videoCount) {
+      var skip = Math.floor(Math.random() * videoCount);
+
+      return VideoModel.find(query)
+        .skip(skip)
+        .populate('userId')
+        .limit(limit)
+        .lean()
+        .exec();
+    })
+    .then(function(videos) {
+      return videos;
+    });
+}
 
 Videos.prototype.getById = function(id) {
 	logger.debug('.getByID : id : ' + id);
@@ -404,13 +415,12 @@ Videos.prototype.videoCurationUpdate = function(params) {
 };
 
 Videos.prototype.like = function(video, like) {
-	if(like === 'plus') {
+	if (like === 'plus') {
 		video.likeCount = video.likeCount + 1;
-		return video.save();
 	} else {
 		video.likeCount = video.likeCount - 1;
-		return video.save();
 	}
+  return video.save();
 };
 
 Videos.prototype.getShowcaseByUser = function(id, sortBy) {
@@ -419,13 +429,13 @@ Videos.prototype.getShowcaseByUser = function(id, sortBy) {
 	} else {
 		switch(sortBy) {
 			case 'vuz' :
-				return VideoModel.find({userId: userId, isShowcase: true}).sort({viewCount: -1}).populate('userId').exec();
+				return VideoModel.find({userId: id, isShowcase: true}).sort({viewCount: -1}).populate('userId').exec();
 			case 'dasc' :
-				return VideoModel.find({userId: userId, isShowcase: true}).sort({uploadDate: 1}).populate('userId').exec();
+				return VideoModel.find({userId: id, isShowcase: true}).sort({uploadDate: 1}).populate('userId').exec();
 			case 'ddesc' :
-				return VideoModel.find({userId: userId, isShowcase: true}).sort({uploadDate: -1}).populate('userId').exec();
+				return VideoModel.find({userId: id, isShowcase: true}).sort({uploadDate: -1}).populate('userId').exec();
 			default:
-				return VideoModel.find({userId: userId, isShowcase: true}).sort({likeCount: 1}).populate('userId').exec();
+				return VideoModel.find({userId: id, isShowcase: true}).sort({likeCount: 1}).populate('userId').exec();
 		}
 	}
 	
