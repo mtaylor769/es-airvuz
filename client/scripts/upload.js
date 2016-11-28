@@ -1,4 +1,3 @@
-/* global ga, fbq */
 require('bootstrap-tagsinput');
 require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
