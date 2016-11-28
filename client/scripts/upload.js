@@ -1,4 +1,6 @@
 /* global ga, fbq */
+require('bootstrap-tagsinput');
+require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
 
 var AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
@@ -6,6 +8,15 @@ var AmazonConfig  = require('./config/amazon.config.client'),
     dialogs       = require('./services/dialogs'),
     utils         = require('./services/utils'),
     AVEventTracker = require('./avEventTracker');
+
+/**k
+ * Templates
+ */
+var thumbnailTpl = require('../templates/upload/thumbnail.dust');
+var step1Tpl = require('../templates/upload/step-1.dust');
+var step2Tpl = require('../templates/upload/step-2.dust');
+var step3Tpl = require('../templates/upload/step-3.dust');
+var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
 
 var $uploadPage,
     $tags,
@@ -268,6 +279,7 @@ function bindEvents() {
       };
 
       _trackUploadEvent(eventName, eventNameAny, eventParams);
+
 
     }).fail(function(response) {
       if (response.status === 400) {
