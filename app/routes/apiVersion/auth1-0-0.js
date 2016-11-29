@@ -113,8 +113,6 @@ function facebook(req, res, next) {
               });
       })
       .catch(function(err) {
-          logger.error('err =====> ', err);
-
           if (err instanceof Array && err.length) {
               return res.status(400).json({'error': err[0].displayMsg});
           }
