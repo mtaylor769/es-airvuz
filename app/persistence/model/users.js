@@ -139,6 +139,14 @@ var usersSchema 		= mongoose.Schema({
 			}
 		}
 	],
+
+	/*
+	 * flag for FB user name creation
+	 */
+	remindFBUserNameCreate: {
+		type: Boolean,
+		default: true
+	},
 	
 	version : {
 		default	: "2.0.0",

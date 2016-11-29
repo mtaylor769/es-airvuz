@@ -104,17 +104,21 @@ function facebook(req, res, next) {
   var socialData = req.body;
   socialData.provider = 'facebook';
 
-  // TODO: verify facebook token - like google
-  _socialLogin(socialData)
-    .then(function (token) {
-      res.json(token);
-    })
-    .catch(function (error) {
-      if (typeof error === 'string') {
-        return res.status(400).send(error);
-      }
-      res.sendStatus(500);
-    });
+  _validateFBDisplayName(socialData)
+      .then(function() {
+          // TODO: verify facebook token - like google
+          return _socialLogin(socialData)
+              .then(function (token) {
+                  res.json(token);
+              });
+      })
+      .catch(function(err) {
+          if (err instanceof Array && err.length) {
+              return res.status(400).json({'error': err[0].displayMsg});
+          }
+
+          return res.status(400).json(err);
+      });
 }
 /**
  * route: POST /api/auth/google
@@ -210,6 +214,9 @@ function _socialLogin(socialData) {
             .then(function(user) {
               socialData.userId = user._id;
               return SocialCrud.create(socialData)
+                  .then(function () {
+                      return _validateFBDisplayName(socialData);
+                  })
                 .then(function () {
                   user.socialAccount = {
                       provider: socialData.provider,
@@ -228,6 +235,57 @@ function _socialLogin(socialData) {
         });
     });
 }
+
+/**
+ * FB login/signup require user to fill in username
+ * @param socialData
+ * @returns {Promise}
+ * @private
+ */
+function _validateFBDisplayName(socialData) {
+    return SocialCrud.findAccountByIdandProvider(socialData.accountId, socialData.provider)
+        .then(function(account) {
+            if (account) {
+                var userId = account.userId._id.toString(),
+                    reminderBool = socialData.useNameCreateReminder === 'true';
+
+                if (account.provider === 'facebook') {
+                    if (userId !== account.userId.userNameDisplay) {
+                        return;
+                    } else {
+                        if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === true) {
+                            throw {
+                                'error': 'Username is required',
+                                'userName': account.userId.userNameDisplay
+                            };
+                        } else if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === false) {
+                            return;
+                        } else if (socialData.altUserDisplayName.length === 0 && !reminderBool) {
+                            throw {
+                                'error': 'Username cannot be empty',
+                                'userName': account.userId.userNameDisplay
+                            };
+                        } else if (socialData.altUserDisplayName.length && !reminderBool) {
+                            return usersCrud1_0_0.update(userId, {
+                                userNameDisplay: socialData.altUserDisplayName,
+                                remindFBUserNameCreate: false
+                            });
+                        } else if (typeof socialData.altUserDisplayName !== 'undefined' && socialData.altUserDisplayName.length === 0 && reminderBool) {
+                            return;
+                        } else {
+                            return usersCrud1_0_0.update(userId, {
+                                userNameDisplay: socialData.altUserDisplayName,
+                                remindFBUserNameCreate: false
+                            });
+                        }
+                    }
+                }
+            } else {
+                return true;
+            }
+        });
+}
+
 
 // function instagram(req, res, next) {
 //   logger.debug('hitting instagram api');

@@ -9,6 +9,7 @@ var GoogleAnalytic = require('./google-analytic');
 var GoogleTagManager = require('./google-tag-manager');
 var AVEventTracker = require('./avEventTracker');
 var browser       = require('./services/browser');
+var dialog        = require('./services/dialogs');
 
 /**
  * Templates
@@ -108,6 +109,10 @@ function onLoginSuccess() {
     contactUsFlag = false;
   }
 
+  if ($('#service-dialog').is(":visible")) {
+    dialog.hide();
+  }
+
   if (identity.socialAccountInfo && identity.socialAccountInfo.isNew) {
     var socialEvent = 'account-created:' + identity.socialAccountInfo.provider;
 
@@ -144,7 +149,63 @@ function execSocialLogin(ajaxOption) {
     })
     .then(onLoginSuccess)
     .fail(function (response) {
-      $loginModal.find('#social-login-error').text(response.responseText).slideDown().delay(5000).slideUp(300);
+      var errMsg = JSON.parse(response.responseText);
+
+      if (errMsg.error === 'Username is required' ||
+          errMsg.error === 'Username cannot be empty' ||
+          errMsg.error === 'Username already exists') {
+
+        var isLoginReq = browser.getUrlParams('login') === 'req' ? true : false,
+            errMsg2 = errMsg.error === 'Username is required' ? '' : errMsg.error;
+
+        $('#login-modal').modal('hide');
+
+        // modify the dialog
+        $('#service-dialog').find('.btn-okay').removeAttr('data-dismiss');
+        $('#service-dialog').find('.btn-okay').html('Continue');
+
+        dialog.open({
+          title: 'Create Username',
+          body: [
+              "<div id='fb-body'>",
+              "<p>Please create a username.</p>",
+              "<p>Your current username is: <b id='fb-username' style='font-size:1.5em;'></b></p>",
+              "<input type='text' class='form-control fb-username-input' placeholder='Username'>",
+              "<p class='text-danger' id='fb-username-error' style='padding:5px;'></p>",
+              "</div>",
+              "<input type='checkbox' id='user-name-create-reminder'>",
+              "<span>&nbsp;Remind me next time</span>"
+          ].join(""),
+          html: true,
+          showOkay: true,
+          preventClose: isLoginReq,
+          hideCloseBtn: isLoginReq
+        }).then(function () {
+          ajaxOption.data.altUserDisplayName = $('.fb-username-input').val();
+          ajaxOption.data.useNameCreateReminder = $('#user-name-create-reminder').is(':checked');
+
+          execSocialLogin(ajaxOption);
+        });
+
+        $('#user-name-create-reminder').on('change', function(evt) {
+          if (evt.target.checked) {
+            $('#fb-body').addClass('hidden');
+            $('.fb-username-input').val('');
+          } else {
+            $('#fb-body').removeClass('hidden');
+          }
+        });
+
+        $('#service-dialog').find('#fb-username-error').html(errMsg2);
+        $('#service-dialog').find('#fb-username').html(errMsg.userName);
+
+        if ($('#user-name-create-reminder').is(':checked')) {
+          $('#fb-body').addClass('hidden');
+        }
+
+      } else {
+        $loginModal.find('#social-login-error').text(response.responseText).slideDown().delay(5000).slideUp(300);
+      }
     });
 }
 
@@ -157,7 +218,6 @@ function bindEvents() {
   $contactUsModal = $('#contact-us-modal');
   $contactUs = $('.contact-us');
   sendContactUsEmail = $('#send-contact-us');
-
 
   function contactUs() {
     if(identity.isAuthenticated()) {
