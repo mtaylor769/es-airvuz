@@ -5,9 +5,9 @@
         .module('AirvuzAdmin')
         .controller('ratingController', ratingController);
 
-    ratingController.$inject = ['$http', 'Videos', 'Amazon', 'CategoryType', 'dialog', '$state'];
+    ratingController.$inject = ['$http', 'Videos', 'Amazon', 'CategoryType', 'dialog', '$state', 'identity'];
 
-    function ratingController($http, Videos, Amazon, CategoryType, dialog, $state) {
+    function ratingController($http, Videos, Amazon, CategoryType, dialog, $state, identity) {
         getCategories();
 
         // settings for rating stars
@@ -97,6 +97,12 @@
 
         function updateVideo() {
             var data = {};
+            data.eventInfo = {};
+            data.eventInfo.userId = identity.currentUser._id;
+            data.eventInfo.videoId = vm.video._id;
+            data.eventInfo.eventType = 'Video Curation Save';
+            data.eventInfo.eventSource = 'Video Curation Admin';
+
             data.internalTags = vm.internalKeywords;
             data.seoKeywords = vm.seoKeywords;
             data.categories = vm.video.categories;
@@ -382,7 +388,6 @@
         vm.addCategory = addCategory;
         vm.getNextVideo = getNextVideo;
         vm.ratingSelection = null;
-
 
         getNextVideo();
     }
