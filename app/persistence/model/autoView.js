@@ -75,7 +75,8 @@ var autoViewSchema = mongoose.Schema({
         required	    : true,
         type			: String,
         enum			: ['system', 'admin'],
-        default         : 'system'
+        default         : 'system',
+        lowercase       : true
     }
 
 });
