@@ -117,7 +117,7 @@ function facebook(req, res, next) {
               return res.status(400).json({'error': err[0].displayMsg});
           }
 
-          return res.status(400).json({'error': err});
+          return res.status(400).json(err);
       });
 }
 /**
@@ -246,19 +246,35 @@ function _validateFBDisplayName(socialData) {
     return SocialCrud.findAccountByIdandProvider(socialData.accountId, socialData.provider)
         .then(function(account) {
             if (account) {
-                var userId = account.userId._id.toString();
+                var userId = account.userId._id.toString(),
+                    reminderBool = socialData.useNameCreateReminder === 'true';
 
                 if (account.provider === 'facebook') {
                     if (userId !== account.userId.userNameDisplay) {
                         return;
                     } else {
-                        if (typeof socialData.altUserDisplayName === 'undefined') {
-                            throw 'Username is required';
-                        } else if (typeof socialData.altUserDisplayName !== 'undefined' && socialData.altUserDisplayName.length === 0) {
-                            throw 'Username cannot be empty';
+                        if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === true) {
+                            throw {
+                                'error': 'Username is required',
+                                'isChecked': account.userId.remindFBUserNameCreate
+                            };
+                        } else if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === false) {
+                            return;
+                        } else if (socialData.altUserDisplayName.length === 0 && !reminderBool) {
+                            throw {
+                                'error': 'Username cannot be empty'
+                            };
+                        } else if (socialData.altUserDisplayName.length && !reminderBool) {
+                            return usersCrud1_0_0.update(userId, {
+                                userNameDisplay: socialData.altUserDisplayName,
+                                remindFBUserNameCreate: false
+                            });
+                        } else if (typeof socialData.altUserDisplayName !== 'undefined' && socialData.altUserDisplayName.length === 0 && reminderBool) {
+                            return;
                         } else {
                             return usersCrud1_0_0.update(userId, {
-                                userNameDisplay: socialData.altUserDisplayName
+                                userNameDisplay: socialData.altUserDisplayName,
+                                remindFBUserNameCreate: false
                             });
                         }
                     }
