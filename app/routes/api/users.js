@@ -180,6 +180,10 @@ function addAclRole(req, res) {
 }
 
 function updateCoverImage(req, res) {
+    if (req.user._id !== req.params.id) {
+        return res.sendStatus(403);
+    }
+
     var fileName = req.file.originalname,
         hashName = md5(fileName + Date.now()) + '.' +  fileName.split('.')[1],
         path = 'users/cover-pictures/';
@@ -197,6 +201,10 @@ function updateCoverImage(req, res) {
 }
 
 function updateProfileImage(req, res) {
+    if (req.user._id !== req.params.id) {
+        return res.sendStatus(403);
+    }
+
     var fileName = req.file.originalname,
         hashName = md5(fileName + Date.now()) + '.' +  fileName.split('.')[1],
         path = 'users/profile-pictures/';
