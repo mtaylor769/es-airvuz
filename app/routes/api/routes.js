@@ -413,6 +413,8 @@ apiRouter.route('/api/aclRoles/:id')
  */
 apiRouter.route('/api/cron/trending')
 	.get(cron.runTrending);
+apiRouter.route('/api/cron/apply-auto-views')
+	.get(cron.applyAutoViews);
 
 /**
  * /api/video-collection

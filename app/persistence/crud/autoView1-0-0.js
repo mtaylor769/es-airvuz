@@ -78,7 +78,7 @@ AutoView.prototype.applyAutoViews = function (){
 
     var autoViews = AutoViewModel.find({ isComplete: false }).exec();
 
-    autoViews.then ( function (avResult){
+    return autoViews.then ( function (avResult){
         // resolved
         var aryLen = avResult.length;
         var aryLen2;
