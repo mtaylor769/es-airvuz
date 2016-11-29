@@ -169,6 +169,7 @@ function execSocialLogin(ajaxOption) {
           body: [
               "<div id='fb-body'>",
               "<p>Please create a username.</p>",
+              "<p>Your current username is: <b id='fb-username' style='font-size:1.5em;'></b></p>",
               "<input type='text' class='form-control fb-username-input' placeholder='Username'>",
               "<p class='text-danger' id='fb-username-error' style='padding:5px;'></p>",
               "</div>",
@@ -196,7 +197,7 @@ function execSocialLogin(ajaxOption) {
         });
 
         $('#service-dialog').find('#fb-username-error').html(errMsg2);
-        $('#service-dialog').find('#user-name-create-reminder').attr('checked', errMsg.isChecked);
+        $('#service-dialog').find('#fb-username').html(errMsg.userName);
 
         if ($('#user-name-create-reminder').is(':checked')) {
           $('#fb-body').addClass('hidden');

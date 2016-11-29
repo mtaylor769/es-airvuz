@@ -256,13 +256,14 @@ function _validateFBDisplayName(socialData) {
                         if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === true) {
                             throw {
                                 'error': 'Username is required',
-                                'isChecked': account.userId.remindFBUserNameCreate
+                                'userName': account.userId.userNameDisplay
                             };
                         } else if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === false) {
                             return;
                         } else if (socialData.altUserDisplayName.length === 0 && !reminderBool) {
                             throw {
-                                'error': 'Username cannot be empty'
+                                'error': 'Username cannot be empty',
+                                'userName': account.userId.userNameDisplay
                             };
                         } else if (socialData.altUserDisplayName.length && !reminderBool) {
                             return usersCrud1_0_0.update(userId, {
