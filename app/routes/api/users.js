@@ -3,8 +3,9 @@ var namespace = 'app.routes.api.users';
 try {
     var log4js      = require('log4js');
     var logger      = log4js.getLogger(namespace);
-    var users1_0_0 = require('../apiVersion/users1-0-0');
-
+    var users1_0_0  = require('../apiVersion/users1-0-0');
+    var amazonService = require('../../services/amazon.service.server.js');
+    var md5         = require('md5');
     if(global.NODE_ENV === "production") {
         logger.setLevel("INFO");
     }
@@ -178,6 +179,34 @@ function addAclRole(req, res) {
     }
 }
 
+function updateCoverImage(req, res) {
+    _updateImage(req, res, 'users/cover-pictures/', 'coverPicture');
+}
+
+function updateProfileImage(req, res) {
+    _updateImage(req, res, 'users/profile-pictures/', 'profilePicture');
+}
+
+function _updateImage(req, res, path, type) {
+    if (req.user._id !== req.params.id) {
+        return res.sendStatus(403);
+    }
+
+    var fileName = req.file.originalname,
+        hashName = md5(fileName + Date.now()) + '.' +  fileName.split('.')[1];
+
+    amazonService.uploadToS3(amazonService.config.ASSET_BUCKET, path + hashName , req.file.buffer)
+        .then(function () {
+            return users1_0_0.updateImage(req.params.id, '/' + hashName, type);
+        })
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function () {
+            res.sendStatus(500);
+        });
+}
+
 User.prototype.hireMe = hireMe;
 User.prototype.search = search;
 User.prototype.get = get;
@@ -190,5 +219,7 @@ User.prototype.statusChange = statusChange;
 User.prototype.contactUs = contactUs;
 User.prototype.resendConfirmation = resendConfirmation;
 User.prototype.addAclRole = addAclRole;
+User.prototype.updateCoverImage = updateCoverImage;
+User.prototype.updateProfileImage = updateProfileImage;
 
 module.exports = new User();

@@ -759,6 +759,13 @@ function verifyStatus(userId) {
     return UserModel.findOne({_id: userId}).select('status aclRoles').lean().exec();
 }
 
+function updateImage(userId, path, type) {
+    var update = {};
+
+    update[type] = path;
+    return UserModel.findOneAndUpdate({_id: userId}, update).exec();
+}
+
 users.prototype.updateRoles = updateRoles;
 users.prototype.resetPasswordRequest = resetPasswordRequest;
 users.prototype.resetPasswordChange = resetPasswordChange;
@@ -766,5 +773,6 @@ users.prototype.getUserByUserNameUrl = getUserByUserNameUrl;
 users.prototype.updateStatus = updateStatus;
 users.prototype.verifyStatus = verifyStatus;
 users.prototype.emailConfirm = emailConfirm;
+users.prototype.updateImage = updateImage;
 
 module.exports = new users();

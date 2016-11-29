@@ -533,8 +533,8 @@ function resendConfirmation(req, res) {
         });
 }
 
-function addAclRole(req, res) {
-
+function updateImage(userId, path, type) {
+  return usersCrud1_0_0.updateImage(userId, path, type);
 }
 
 User.prototype.hireMe                   = hireMe;
@@ -548,6 +548,6 @@ User.prototype.passwordResetChange      = passwordResetChange;
 User.prototype.statusChange             = statusChange;
 User.prototype.contactUs                = contactUs;
 User.prototype.resendConfirmation       = resendConfirmation;
-User.prototype.addAclRole               = addAclRole;
+User.prototype.updateImage              = updateImage;
 
 module.exports = new User();

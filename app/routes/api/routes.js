@@ -30,6 +30,11 @@ try {
 	var cron                = require('./cron');
 	var protect             = require('../../middlewares/protect');
 	var token               = require('../../middlewares/token');
+	var multer							= require('multer');
+	// WARNING: Uploading very large files, or relatively small files in large numbers very quickly,
+	// can cause your application to run out of memory when memory storage is used.
+	var storage							= multer.memoryStorage();
+	var multerUpload				= multer({storage: storage});
 } catch(exception) {
 	logger.error(" import error:" + exception);
 }
@@ -87,8 +92,14 @@ apiRouter.route('/api/users/hireme')
 apiRouter.route('/api/users/contact-us')
   .post(users.contactUs);
 
-apiRouter.route('/api/users/:id' + '/status')
+apiRouter.route('/api/users/:id/status')
   .put(protect, users.statusChange);
+
+apiRouter.route('/api/users/:id/cover-picture')
+	.put(protect, multerUpload.single('file'), users.updateCoverImage);
+
+apiRouter.route('/api/users/:id/profile-picture')
+  .put(protect, multerUpload.single('file'), users.updateProfileImage);
 
 apiRouter.route('/api/users/:id')
   .get(users.get)
