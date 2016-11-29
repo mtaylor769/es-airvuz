@@ -32,7 +32,6 @@ AutoView.prototype.create = function (params) {
     var numberOfDays = params.numberOfDays;
     var numberOfViews = params.numberOfViews;
     var probability = params.probability;
-    var videoId = params.videoId;
 
     var rbinom_0 = PD.rbinom(numberOfViews, numberOfDays, probability);
 
@@ -52,9 +51,9 @@ AutoView.prototype.create = function (params) {
 
     params.autoViewDateTime = timestamps;
 
-    // store to mongo collections
-    var autoViewModel = new AutoViewModel( params );
-    autoViewModel.save( function (err) { if (err) { logger.info (err) } } );
+    // store to mongo
+    var autoView = new AutoViewModel( params );
+    autoView.save( function (err) { if (err) { logger.info (err) } } );
     return autoViewModel;
 }
 
