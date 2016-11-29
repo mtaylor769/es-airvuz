@@ -180,38 +180,24 @@ function addAclRole(req, res) {
 }
 
 function updateCoverImage(req, res) {
-    if (req.user._id !== req.params.id) {
-        return res.sendStatus(403);
-    }
-
-    var fileName = req.file.originalname,
-        hashName = md5(fileName + Date.now()) + '.' +  fileName.split('.')[1],
-        path = 'users/cover-pictures/';
-
-    amazonService.uploadToS3(amazonService.config.ASSET_BUCKET, path + hashName , req.file.buffer)
-        .then(function (d) {
-          return users1_0_0.updateImage(req.params.id, '/' + hashName, 'coverPicture');
-        })
-        .then(function () {
-            res.sendStatus(200);
-        })
-        .catch(function () {
-            res.sendStatus(500);
-        });
+    _updateImage(req, res, 'users/cover-pictures/', 'coverPicture');
 }
 
 function updateProfileImage(req, res) {
+    _updateImage(req, res, 'users/profile-pictures/', 'profilePicture');
+}
+
+function _updateImage(req, res, path, type) {
     if (req.user._id !== req.params.id) {
         return res.sendStatus(403);
     }
 
     var fileName = req.file.originalname,
-        hashName = md5(fileName + Date.now()) + '.' +  fileName.split('.')[1],
-        path = 'users/profile-pictures/';
+        hashName = md5(fileName + Date.now()) + '.' +  fileName.split('.')[1];
 
     amazonService.uploadToS3(amazonService.config.ASSET_BUCKET, path + hashName , req.file.buffer)
         .then(function () {
-            return users1_0_0.updateImage(req.params.id, '/' + hashName, 'profilePicture');
+            return users1_0_0.updateImage(req.params.id, '/' + hashName, type);
         })
         .then(function () {
             res.sendStatus(200);
