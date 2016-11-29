@@ -68,6 +68,14 @@ var autoViewSchema = mongoose.Schema({
     isComplete: {
         type: Boolean,
         default: false
+    },
+
+    /* Where did the AutoView originate: system (automatic on video upload), or admin (manual assignment) ? */
+    origin: {
+        required	    : true,
+        type			: String,
+        enum			: ['system', 'admin'],
+        default         : 'system'
     }
 
 });

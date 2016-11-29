@@ -63,7 +63,7 @@ AutoView.prototype.autoCreate = function (params) {
     newParams.videoId = params.videoId;
     // set random initial conditions
     newParams.numberOfDays = getRandomInt(7, 14);
-    newParams.numberOfViews = getRandomInt(5, 40);
+    newParams.numberOfViews = getRandomInt(25, 50);
     newParams.probability = getRandom(.2, .8);
 
     var autoView = this.create(newParams);
