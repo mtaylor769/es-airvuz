@@ -9,6 +9,7 @@ var GoogleAnalytic = require('./google-analytic');
 var GoogleTagManager = require('./google-tag-manager');
 var AVEventTracker = require('./avEventTracker');
 var browser       = require('./services/browser');
+var dialog        = require('./services/dialogs');
 
 /**
  * Templates
@@ -108,6 +109,10 @@ function onLoginSuccess() {
     contactUsFlag = false;
   }
 
+  if ($('#service-dialog').is(":visible")) {
+    dialog.hide();
+  }
+
   if (identity.socialAccountInfo && identity.socialAccountInfo.isNew) {
     var socialEvent = 'account-created:' + identity.socialAccountInfo.provider;
 
@@ -144,7 +149,41 @@ function execSocialLogin(ajaxOption) {
     })
     .then(onLoginSuccess)
     .fail(function (response) {
-      $loginModal.find('#social-login-error').text(response.responseText).slideDown().delay(5000).slideUp(300);
+      var errMsg = JSON.parse(response.responseText);
+
+      if (errMsg.error === 'Username is required' ||
+          errMsg.error === 'Username cannot be empty' ||
+          errMsg.error === 'Username already exists') {
+
+        var isLoginReq = browser.getUrlParams('login') === 'req' ? true : false;
+
+        $('#login-modal').modal('hide');
+
+        // modify the dialog
+        $('#service-dialog').find('.btn-okay').removeAttr('data-dismiss');
+        $('#service-dialog').find('.btn-okay').html('Save');
+
+        dialog.open({
+          title: 'Username Required',
+          body: [
+              "<p>To continue Facebook login, please create a username.</p>",
+              "<input type='text' class='form-control fb-username-input' placeholder='Username'>",
+              "<p class='text-danger' id='fb-username-error'></p>"
+          ].join(""),
+          html: true,
+          showOkay: true,
+          preventClose: isLoginReq,
+          hideCloseBtn: isLoginReq
+        }).then(function () {
+          ajaxOption.data.altUserDisplayName = $('.fb-username-input').val();
+          execSocialLogin(ajaxOption);
+        });
+
+        $('#service-dialog').find('#fb-username-error').html(errMsg.error);
+
+      } else {
+        $loginModal.find('#social-login-error').text(response.responseText).slideDown().delay(5000).slideUp(300);
+      }
     });
 }
 
