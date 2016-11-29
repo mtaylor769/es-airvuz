@@ -489,56 +489,37 @@ function bindEvents() {
   //video like
   function likeHandler() {
       if(userIdentity._id && userIdentity._id !== video.userId) {
-          notificationObject.notificationType = 'LIKE';
-          notificationObject.notifiedUserId  = video.userId;
-          notificationObject.notificationMessage = 'liked your video';
-          notificationObject.videoId = video._id;
-          if(userIdentity.isAuthenticated()) {
-              notificationObject.actionUserId = userIdentity._id;
-          }
-          var likeData = {};
-          var likeObject = {};
-          likeObject.videoId = video._id;
-          likeObject.userId = userIdentity._id;
-          likeObject.videoOwnerId = video.userId;
-          likeData.like = likeObject;
-          likeData.notification = notificationObject;
-
           $.ajax({
               type: 'POST',
-              url: '/api/video-like',
-              data: {data: JSON.stringify(likeData)},
-              dataType: 'json'
+              url: '/api/videos/' + video._id + '/like'
           })
-              .done(function (response) {
-                  var likeLog = Number($('.like-count').text());
-                  if (response.status === 'liked') {
-                      AVEventTracker({
-                          codeSource: 'videoPlayer',
-                          eventName: 'video-liked',
-                          eventType: 'click',
-                          videoId: video._id
-                      });
-                      $('.like').addClass('airvuz-blue');
-                      $('.like-count').text(likeLog + 1);
-                      fbq('trackCustom', 'like');
-                  } else if (response.status === 'unliked') {
-                      AVEventTracker({
-                          codeSource: 'videoPlayer',
-                          eventName: 'video-unliked',
-                          eventType: 'click',
-                          videoId: video._id
-                      });
-                      $('.like').removeClass('airvuz-blue');
-                      $('.like-count').text(likeLog - 1);
-                      fbq('trackCustom', '-like');
-                  }
+          .done(function (response) {
+              var likeLog = Number($('.like-count').text());
+              if (response.status === 'liked') {
+                  AVEventTracker({
+                      codeSource: 'videoPlayer',
+                      eventName: 'video-liked',
+                      eventType: 'click',
+                      videoId: video._id
+                  });
+                  $('.like').addClass('airvuz-blue');
+                  $('.like-count').text(likeLog + 1);
+                  fbq('trackCustom', 'like');
+              } else if (response.status === 'unliked') {
+                  AVEventTracker({
+                      codeSource: 'videoPlayer',
+                      eventName: 'video-unliked',
+                      eventType: 'click',
+                      videoId: video._id
+                  });
+                  $('.like').removeClass('airvuz-blue');
+                  $('.like-count').text(likeLog - 1);
+                  fbq('trackCustom', '-like');
+              }
 
-                  ga('send', 'social', 'facebook', 'like', window.location.href);
-                  ga('send', 'event', 'video page', 'facebook-like', 'like video');
-              })
-              .fail(function (error) {
-              });
+              ga('send', 'social', 'facebook', 'like', window.location.href);
+              ga('send', 'event', 'video page', 'facebook-like', 'like video');
+          });
       } else if(!userIdentity.isAuthenticated()) {
           showLoginDialog();
       } else {

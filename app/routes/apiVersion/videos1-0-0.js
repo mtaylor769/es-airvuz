@@ -374,24 +374,7 @@ function deleteVideo (req, res) {
           res.sendStatus(500);
       });
 }
-/**
- * This function is not used, as the route (/api/video-like) goes to videoLike.js
- * @param req
- * @param res
- */
-function like (req, res) {
-    videoCrud1_0_0
-      .getById(req.body.id)
-      .then(function(video) {
-          return videoCrud1_0_0.like(video, req.body.like)
-      })
-      .then(function(comment) {
-          res.sendStatus(200);
-      })
-      .catch(function (error) {
-          res.sendStatus(500);
-      });
-}
+
 /**
  * route: POST /api/videos/loaded
  * @param req
@@ -841,7 +824,6 @@ Video.prototype.post                    = post;
 Video.prototype.get                     = get;
 Video.prototype.put                     = put;
 Video.prototype.delete                  = deleteVideo;
-Video.prototype.like                    = like;
 Video.prototype.loaded                  = loaded;
 Video.prototype.showcaseUpdate          = showcaseUpdate;
 Video.prototype.reportVideo             = reportVideo;

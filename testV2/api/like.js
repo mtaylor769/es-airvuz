@@ -8,7 +8,6 @@ var token;
 var userId;
 var userNameDisplay = 'bryceb';
 var videoId = '57e8366a7b09480e3378289f';
-var videoOwnerId = '56703d3b8440cc2451a06d8b';
 
 chai.use(chaiHttp);
 
@@ -41,24 +40,7 @@ describe('Like API tests', function() {
         describe('Like a video', function() {
             it('should like a video', function (done) {
                 chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    // TODO send pure JSON instead of JSON in a string
-                    .send({data:'{' +
-                        '"like": {' +
-                        '"videoId":"'+videoId+'",' +
-                        '"userId":"'+userId+'",' +
-                        '"videoOwnerId":"'+videoOwnerId+'"' +
-                        '},' +
-                        '"notification": {' +
-                        '"notificationType":"LIKE",' +
-                        '"notifiedUserId":"'+videoOwnerId+'",' +
-                        '"notificationMessage":"liked your video",' +
-                        '"videoId":"'+videoId+'",' +
-                        '"actionUserId":"'+userId+'"' +
-                        '}' +
-                        '}'
-                    })
+                    .post('/api/videos/' + videoId + '/like?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -70,24 +52,7 @@ describe('Like API tests', function() {
         describe('Un-Like a video', function() {
             it('should like a video', function (done) {
                 chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    // TODO send pure JSON instead of JSON in a string
-                    .send({data:'{' +
-                        '"like": {' +
-                        '"videoId":"'+videoId+'",' +
-                        '"userId":"'+userId+'",' +
-                        '"videoOwnerId":"'+videoOwnerId+'"' +
-                        '},' +
-                        '"notification": {' +
-                        '"notificationType":"LIKE",' +
-                        '"notifiedUserId":"'+videoOwnerId+'",' +
-                        '"notificationMessage":"liked your video",' +
-                        '"videoId":"'+videoId+'",' +
-                        '"actionUserId":"'+userId+'"' +
-                        '}' +
-                        '}'
-                    })
+                    .post('/api/videos/' + videoId + '/like?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -103,23 +68,7 @@ describe('Like API tests', function() {
         describe('Like a video', function() {
             it('should like a video', function (done) {
                 chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data:'{' +
-                        '"like": {' +
-                        '"videoId":"'+videoId+'",' +
-                        '"userId":"'+userId+'",' +
-                        '"videoOwnerId":"'+videoOwnerId+'"' +
-                        '},' +
-                        '"notification": {' +
-                        '"notificationType":"LIKE",' +
-                        '"notifiedUserId":"'+videoOwnerId+'",' +
-                        '"notificationMessage":"liked your video",' +
-                        '"videoId":"'+videoId+'",' +
-                        '"actionUserId":"'+userId+'"' +
-                        '}' +
-                        '}'
-                    })
+                    .post('/api/videos/' + videoId + '/like?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -131,23 +80,7 @@ describe('Like API tests', function() {
         describe('Un-Like a video', function() {
             it('should like a video', function (done) {
                 chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data:'{' +
-                        '"like": {' +
-                        '"videoId":"'+videoId+'",' +
-                        '"userId":"'+userId+'",' +
-                        '"videoOwnerId":"'+videoOwnerId+'"' +
-                        '},' +
-                        '"notification": {' +
-                        '"notificationType":"LIKE",' +
-                        '"notifiedUserId":"'+videoOwnerId+'",' +
-                        '"notificationMessage":"liked your video",' +
-                        '"videoId":"'+videoId+'",' +
-                        '"actionUserId":"'+userId+'"' +
-                        '}' +
-                        '}'
-                    })
+                    .post('/api/videos/' + videoId + '/like?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -162,26 +95,10 @@ describe('Like API tests', function() {
         describe('Like a video', function() {
             it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data:'{' +
-                        '"like": {' +
-                        '"videoId":"'+videoId+'",' +
-                        '"userId":"'+userId+'",' +
-                        '"videoOwnerId":"'+videoOwnerId+'"' +
-                        '},' +
-                        '"notification": {' +
-                        '"notificationType":"LIKE",' +
-                        '"notifiedUserId":"'+videoOwnerId+'",' +
-                        '"notificationMessage":"liked your video",' +
-                        '"videoId":"'+videoId+'",' +
-                        '"actionUserId":"'+userId+'"' +
-                        '}' +
-                        '}'
-                    })
+                    .post('/api/videos/' + videoId + '/like?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version")
+                        expect(res.body).to.have.property("error", "invalid api version");
                         done();
                     });
             });
@@ -189,26 +106,10 @@ describe('Like API tests', function() {
         describe('un-Like a video', function() {
             it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
-                    .post('/api/video-like/?' + apiVer)
-                    .set('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8')
-                    .send({data:'{' +
-                        '"like": {' +
-                        '"videoId":"'+videoId+'",' +
-                        '"userId":"'+userId+'",' +
-                        '"videoOwnerId":"'+videoOwnerId+'"' +
-                        '},' +
-                        '"notification": {' +
-                        '"notificationType":"LIKE",' +
-                        '"notifiedUserId":"'+videoOwnerId+'",' +
-                        '"notificationMessage":"liked your video",' +
-                        '"videoId":"'+videoId+'",' +
-                        '"actionUserId":"'+userId+'"' +
-                        '}' +
-                        '}'
-                    })
+                    .post('/api/videos/' + videoId + '/like?' + apiVer)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("error", "invalid api version")
+                        expect(res.body).to.have.property("error", "invalid api version");
                         done();
                     });
             });

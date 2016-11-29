@@ -358,15 +358,6 @@ function _getVideo(query, limit) {
     });
 }
 
-Videos.prototype.getById = function(id) {
-	logger.debug('.getByID : id : ' + id);
-	return VideoModel.findById(id)
-		.populate('categories')
-		.populate('primaryCategory')
-		.lean()
-		.exec();
-};
-
 Videos.prototype.getByIdAndPopulateUser = function(id) {
 	return VideoModel.findById(id)
 		.populate('userId')
@@ -574,10 +565,19 @@ function findVideoBySeoKeyword(keyword) {
 		.exec()
 }
 
+function getById(id) {
+  return VideoModel.findById(id)
+    .populate('categories')
+    .populate('primaryCategory')
+    .lean()
+    .exec();
+}
+
 Videos.prototype.getRecentVideos 				= getRecentVideos;
 Videos.prototype.getVideoByCategory 		= getVideoByCategory;
 Videos.prototype.search 								= search;
 Videos.prototype.getVideosByFollow 			= getVideosByFollow;
 Videos.prototype.findVideoBySeoKeyword 	= findVideoBySeoKeyword;
+Videos.prototype.getById 								= getById;
 
 module.exports = new Videos();
