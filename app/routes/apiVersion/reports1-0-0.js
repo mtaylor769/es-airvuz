@@ -12,6 +12,7 @@ try {
     var videoViews              = require('../../persistence/crud/videoViews');
     var catTypeCrud1_0_0        = require('../../persistence/crud/categoryType1-0-0');
     var eventTrackerCrud        = require('../../persistence/crud/events/eventTracking');
+    var moment                  = require('moment');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -306,6 +307,9 @@ function siteInfo(req, res) {
 
     Promise.all(promises)
         .spread(function (totalUsers, totalVideos, newUsersCount, newVideos, newUsersList) {
+            newUsersList.forEach(function (user) {
+                user.accountCreatedDate = moment(user.accountCreatedDate).format('MMM Do YYYY');
+            });
             res.json({
                 title: 'Site Info',
                 totalUsers: totalUsers,
