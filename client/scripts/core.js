@@ -164,17 +164,19 @@ function execSocialLogin(ajaxOption) {
         $('#service-dialog').find('.btn-okay').removeAttr('data-dismiss');
         $('#service-dialog').find('.btn-okay').html('Continue');
 
+        dialog.setSize('md');
+
         dialog.open({
-          title: 'Create Username',
+          title: 'Now’s your chance – update your username!',
           body: [
               "<div id='fb-body'>",
-              "<p>Please create a username.</p>",
+              "<p>Tell people who you are!  (We recommend using your same username from Instagram and Facebook so others can follow your great work).</p>",
               "<p>Your current username is: <b id='fb-username' style='font-size:1.5em;'></b></p>",
               "<input type='text' class='form-control fb-username-input' placeholder='Username'>",
               "<p class='text-danger' id='fb-username-error' style='padding:5px;'></p>",
               "</div>",
               "<input type='checkbox' id='user-name-create-reminder'>",
-              "<span>&nbsp;Remind me next time</span>"
+              "<span>&nbsp;Remind Me Later.</span>"
           ].join(""),
           html: true,
           showOkay: true,
