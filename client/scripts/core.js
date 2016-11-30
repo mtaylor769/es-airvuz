@@ -637,6 +637,28 @@ function fbAuthReq() {
   }
 }
 
+function fbRefTrack() {
+  var refParam = browser.getUrlParams('ref'),
+      fbRef = localStorage.getItem('fbRef') || 0;
+
+  if (refParam === 'fb') {
+    fbRef++;
+    if (fbRef === 3) {
+      AVEventTracker({
+        codeSource: 'core',
+        eventName: 'fbRef-3plus',
+        eventType: 'fbRef'
+      });
+      fbq('trackCustom', 'fbRef-3plus');
+      ga('send', 'event', 'referral', 'fbRef-3plus', 'referral');
+    }
+
+    if (fbRef < 4) {
+      localStorage.setItem('fbRef', fbRef);
+    }
+  }
+}
+
 function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
@@ -678,6 +700,7 @@ function initialize() {
   });
 
   fbAuthReq();
+  fbRefTrack();
 }
 
 //////////////////////
