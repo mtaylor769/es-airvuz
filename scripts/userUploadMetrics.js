@@ -64,9 +64,9 @@ try {
                     }
                     // logger.info (userData[userIndex]);
                     if (userData[userIndex].count >= minVideoCount) {
-                        strOut = userData[userIndex].userObject[0].firstName + ', ';
-                        strOut += userData[userIndex].userObject[0].lastName + ', ';
-                        strOut += userData[userIndex].userObject[0].emailAddress + ', ';
+                        strOut = userData[userIndex].userObject[0].firstName + ',';
+                        strOut += userData[userIndex].userObject[0].lastName + ',';
+                        strOut += userData[userIndex].userObject[0].emailAddress + ',';
                         strOut += userData[userIndex].count;
                         console.log (strOut);
                     }
