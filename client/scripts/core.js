@@ -176,7 +176,7 @@ function execSocialLogin(ajaxOption) {
               "<p class='text-danger' id='fb-username-error' style='padding:5px;'></p>",
               "</div>",
               "<input type='checkbox' id='user-name-create-reminder'>",
-              "<span>&nbsp;Remind Me Later</span>"
+              "<span>&nbsp;Remind Me Later.</span>"
           ].join(""),
           html: true,
           showOkay: true,
