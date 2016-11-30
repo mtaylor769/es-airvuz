@@ -172,13 +172,13 @@ apiRouter.route('/api/videos/videoInfoCheck')
 apiRouter.route('/api/videos/nextVideos')
    .get(videos.getNextVideos);
 
+apiRouter.route('/api/videos/:id/like')
+  .post(protect, videoLike.post);
+
 apiRouter.route('/api/videos/:id')
   .get(videos.get)
   .put(protect, videos.put)
   .delete(protect, videos.delete);
-
-apiRouter.route('/api/video-like')
-  .post(videoLike.post);
 
 apiRouter.route('/api/videos/user/:id')
   .get(videos.getVideosByUser);
