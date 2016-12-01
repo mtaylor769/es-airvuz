@@ -72,19 +72,13 @@ apiRouter.route('/api/auth/google')
 /**
  * /api/users/
  */
-//apiRouter.route('/api/users')
-//.get(users.getAll)
-//.post(users.post);
-//
-apiRouter.route('/api/users/search')
-  .get(protect, users.search);
+apiRouter.route('/api/users')
+	.get(protect, users.getUsers)
+	.post(users.createUser);
 
 apiRouter.route('/api/users/password-reset')
   .post(users.passwordResetRequest)
   .put(users.passwordResetChange);
-
-apiRouter.route('/api/users/create')
-  .post(users.createUser);
 
 apiRouter.route('/api/users/hireme')
   .post(protect, users.hireMe);

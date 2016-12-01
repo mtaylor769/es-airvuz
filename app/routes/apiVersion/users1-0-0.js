@@ -35,73 +35,7 @@ try {
 function User() {}
 
 /**
- * route: GET /api/users/search/?username=userNameDisplay
- * @param req
- * @param res
- * @returns
- * {
-    "_id": "57f3eff096190c114272aa8a",
-    "coverPicture": "https://scontent.xx.fbcdn.net/v/t1.0-0/p180x540/13529096_10154283959321660_1226387418316521094_n.jpg?oh=13105693a82e18a16b2a0268b4d4597c&oe=587A083B",
-    "emailAddress": "bluemagma@gmail.com",
-    "userNameDisplay": "bluemagma-at-gmail",
-    "profilePicture": "",
-    "userNameUrl": "bluemagma-at-gmail",
-    "version": "2.0.0",
-    "socialMediaLinks": [
-        {
-            "url": "",
-            "socialType": "FACEBOOK",
-            "_id": "57f5479efce8b505442e2aae"
-        },
-        {
-            "url": "",
-            "socialType": "GOOGLE+",
-            "_id": "57f5479efce8b505442e2aad"
-        },
-        {
-            "url": "",
-            "socialType": "INSTAGRAM",
-            "_id": "57f5479efce8b505442e2aac"
-        },
-        {
-            "url": "",
-            "socialType": "TWITTER",
-            "_id": "57f5479efce8b505442e2aab"
-        }
-    ],
-    "lastLoginDate": "2016-10-04T18:07:44.528Z",
-    "isSubscribeAirVuzNews": false,
-    "status": "active",
-    "autoPlay": true,
-    "accountCreatedDate": "2016-10-04T18:07:44.528Z",
-    "allowHire": false,
-    "allowDonation": false,
-    "aclRoles": [
-        "user-general"
-    ],
-    "__v": 0,
-    "aboutMe": "",
-    "lastName": "",
-    "firstName": "Bryce",
-    "resetPasswordCode": "2e83a91062ff132f63a8"
-}
- */
-function search(req, res) {
-    // aclUtil.isAllowed(req.user._id, 'user', 'search')
-    //   .then(function (isAllow) {
-    //     if (!isAllow) {
-    //       return res.sendStatus(403);
-    //     }
-    return usersCrud1_0_0
-        .getUserByUserNameUrl(req.query.username)
-        .then(function (user) {
-            res.json(user);
-        })
-        // })
-        .catch(logger.error);
-}
-/**
- * route: PROTECTED GET /api/users/search
+ * route: PROTECTED GET /api/users/:id
  * @param req
  * @param res
  * @returns {*}
@@ -308,7 +242,6 @@ function deleteUser(req, res) {
                 var deletedRootCheck = user.aclRoles.indexOf('root');
                 var deletedUserRootCheck = user.aclRoles.indexOf('user-root');
                 if(rootCheck > -1 || (deletedRootCheck === -1 && deletedUserRootCheck === -1)) {
-                    logger.error('made it into delete');
                     //find user social accounts
                     return socialCrud.findAllSocialById(user._id);
                 } else {
@@ -537,8 +470,28 @@ function updateImage(userId, path, type) {
   return usersCrud1_0_0.updateImage(userId, path, type);
 }
 
+/**
+ * get users
+ * - only get user by username atm
+ * route: GET /api/users?username=userNameDisplay
+ * @param req
+ * @param res
+ * @returns {Object} user - user modal
+ */
+function getUsers(req, res) {
+    if (!req.query.username) {
+        return res.status(400).send('required username query');
+    }
+
+    return usersCrud1_0_0
+      .getUserByUserNameUrl(req.query.username)
+      .then(function (user) {
+          res.json(user);
+      })
+      .catch(logger.error);
+}
+
 User.prototype.hireMe                   = hireMe;
-User.prototype.search                   = search;
 User.prototype.get                      = get;
 User.prototype.createUser               = createUser;
 User.prototype.put                      = put;
@@ -549,5 +502,6 @@ User.prototype.statusChange             = statusChange;
 User.prototype.contactUs                = contactUs;
 User.prototype.resendConfirmation       = resendConfirmation;
 User.prototype.updateImage              = updateImage;
+User.prototype.getUsers                 = getUsers;
 
 module.exports = new User();

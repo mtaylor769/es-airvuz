@@ -35,18 +35,6 @@ function User() {}
  */
 var defaultVer = "1.0.0";
 
-function search(req, res) {
-
-    var version = req.query.apiVer || defaultVer;
-
-    if (version === "1.0.0") {
-        users1_0_0.search(req, res);
-    }
-    else {
-        incorrectVer(req,res);
-    }
-}
-
 function get(req, res) {
 
     var version = req.query.apiVer || defaultVer;
@@ -179,6 +167,17 @@ function addAclRole(req, res) {
     }
 }
 
+function getUsers(req, res) {
+  var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    users1_0_0.getUsers(req, res);
+  }
+  else {
+    incorrectVer(req,res);
+  }
+}
+
 function updateCoverImage(req, res) {
     _updateImage(req, res, 'users/cover-pictures/', 'coverPicture');
 }
@@ -208,7 +207,6 @@ function _updateImage(req, res, path, type) {
 }
 
 User.prototype.hireMe = hireMe;
-User.prototype.search = search;
 User.prototype.get = get;
 User.prototype.createUser = createUser;
 User.prototype.put = put;
@@ -221,5 +219,6 @@ User.prototype.resendConfirmation = resendConfirmation;
 User.prototype.addAclRole = addAclRole;
 User.prototype.updateCoverImage = updateCoverImage;
 User.prototype.updateProfileImage = updateProfileImage;
+User.prototype.getUsers = getUsers;
 
 module.exports = new User();

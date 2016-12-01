@@ -10,7 +10,7 @@
 	function UsersController($http, confirmDelete, unAuthorized, $state) {
 
 		function searchUsername(username) {
-			$http.get('/api/users/search', { params: {
+			$http.get('/api/users', { params: {
 				username: username
 			}}).then(function(response){
 				vm.user = response.data;
