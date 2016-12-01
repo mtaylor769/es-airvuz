@@ -28,7 +28,7 @@ describe('Slider API tests', function() {
                 })
                 .then(function(token) {
                     chai.request(server)
-                        .get('/api/users/search/?username=' + userNameDisplay)
+                        .et('/api/users?username=' + userNameDisplay)
                         .set('Authorization', token)
                         .end(function(err, res){
                             userId = res.body._id;
