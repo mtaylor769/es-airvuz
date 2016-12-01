@@ -309,7 +309,7 @@ function bindEvents() {
     onSignupClick.isSubmitted = true;
     $.ajax({
       type: 'POST',
-      url: '/api/users/create',
+      url: '/api/users',
       data: JSON.stringify(newUserObject),
       contentType : 'application/json',
       beforeSend: function () {
