@@ -336,43 +336,87 @@ function get (req, res) {
           res.sendStatus(500);
       });
 }
+
+/**
+ * check if user is the owner of the video
+ * @param video
+ * @param user
+ * @returns {boolean}
+ */
+function isVideoOwner(video, user) {
+  return video.userId.toString() === user._id.toString();
+}
+
+/**
+ * check if user have the allow role
+ * @param user
+ * @returns {boolean}
+ */
+function hasAllowedRole(user) {
+  return user.aclRoles.indexOf('root') > -1 || user.aclRoles.indexOf('video-root') > -1 || user.aclRoles.indexOf('video-admin') > -1;
+}
+
 /**
  * route: PROTECTED PUT /api/videos/:id
  * @param req note: req.body needs to contain all fields not just the one to update
  * @param res
  */
-function put (req, res) {
-    Promise.resolve(req.body)
-      .then(_uploadCustomThumbnail)
-      .then(_cleanUpReupload)
-      .then(function () {
+function updateVideo(req, res) {
+  videoCrud1_0_0.getById(req.params.id)
+    .then(function (currentVideo) {
+      return isVideoOwner(currentVideo, req.user) || hasAllowedRole(req.user);
+    })
+    .then(function (isAllowed) {
+      if (!isAllowed) {
+        return Promise.reject('Not allowed to update video');
+      }
+      return Promise.resolve(req.body)
+        .then(_uploadCustomThumbnail)
+        .then(_cleanUpReupload)
+        .then(function () {
           return videoCrud1_0_0.update({id: req.params.id, update: req.body});
-      })
-      .then(function (video) {
-          res.json(video);
-      })
-      .catch(function (err) {
-          if (err.length) {
-              return res.status(400).json({error: err});
-          }
-          res.sendStatus(500);
-      });
+        });
+    })
+    .then(function (video) {
+      res.json(video);
+    })
+    .catch(function (err) {
+      if (err.length) {
+        return res.status(400).json({error: err});
+      }
+      if (err === 'Not allowed to update video') {
+        return res.sendStatus(403);
+      }
+      res.sendStatus(500);
+    });
 }
+
 /**
  * route: PROTECTED DELETE /api/videos/:id
  * @param req
  * @param res
  * @returns "OK"
  */
-function deleteVideo (req, res) {
-    videoCrud1_0_0
-      .remove(req.params.id)
-      .then(function(video) {
-          res.sendStatus(200);
-      })
-      .catch(function (error) {
-          res.sendStatus(500);
-      });
+function deleteVideo(req, res) {
+  videoCrud1_0_0.getById(req.params.id)
+    .then(function (currentVideo) {
+      return isVideoOwner(currentVideo, req.user) || hasAllowedRole(req.user);
+    })
+    .then(function (isAllowed) {
+      if (!isAllowed) {
+        return Promise.reject('Not allowed to delete video');
+      }
+      return videoCrud1_0_0.remove(req.params.id);
+    })
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(function (err) {
+      if (err === 'Not allowed to delete video') {
+        return res.sendStatus(403);
+      }
+      res.sendStatus(500);
+    });
 }
 
 /**
@@ -822,8 +866,8 @@ Video.prototype.getVideosByCategory     = getVideosByCategory;
 Video.prototype.search                  = search;
 Video.prototype.post                    = post;
 Video.prototype.get                     = get;
-Video.prototype.put                     = put;
-Video.prototype.delete                  = deleteVideo;
+Video.prototype.updateVideo             = updateVideo;
+Video.prototype.deleteVideo             = deleteVideo;
 Video.prototype.loaded                  = loaded;
 Video.prototype.showcaseUpdate          = showcaseUpdate;
 Video.prototype.reportVideo             = reportVideo;

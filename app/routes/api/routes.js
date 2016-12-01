@@ -177,8 +177,8 @@ apiRouter.route('/api/videos/:id/like')
 
 apiRouter.route('/api/videos/:id')
   .get(videos.get)
-  .put(protect, videos.put)
-  .delete(protect, videos.delete);
+  .put(protect, videos.updateVideo)
+  .delete(protect, videos.deleteVideo);
 
 apiRouter.route('/api/videos/user/:id')
   .get(videos.getVideosByUser);
