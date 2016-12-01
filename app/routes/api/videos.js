@@ -82,12 +82,12 @@ function get(req, res) {
     }
 }
 
-function put(req, res) {
+function updateVideo(req, res) {
 
     var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
-        videos1_0_0.put(req, res);
+        videos1_0_0.updateVideo(req, res);
     }
     else {
         incorrectVer(req,res);
@@ -99,7 +99,7 @@ function deleteVideo(req, res) {
     var version = req.query.apiVer || defaultVer;
 
     if (version === "1.0.0") {
-        videos1_0_0.delete(req, res);
+        videos1_0_0.deleteVideo(req, res);
     }
     else {
         incorrectVer(req,res);
@@ -288,8 +288,8 @@ Video.prototype.getVideosByCategory = getVideosByCategory;
 Video.prototype.search = search;
 Video.prototype.post = post;
 Video.prototype.get = get;
-Video.prototype.put = put;
-Video.prototype.delete = deleteVideo;
+Video.prototype.updateVideo = updateVideo;
+Video.prototype.deleteVideo = deleteVideo;
 Video.prototype.like = like;
 Video.prototype.loaded = loaded;
 Video.prototype.showcaseUpdate = showcaseUpdate;
