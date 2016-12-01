@@ -8,7 +8,7 @@
     ratingController.$inject = ['$http', 'Videos', 'Amazon', 'CategoryType', 'dialog', '$state', 'identity'];
 
     function ratingController($http, Videos, Amazon, CategoryType, dialog, $state, identity) {
-        getCategories();
+
 
         // settings for rating stars
         var $one = $('.one'),
@@ -71,9 +71,6 @@
                 .then(function(video) {
                     vm.showNextButtons = false;
                     vm.video = video;
-                    if(vm.video.categories) {
-                        categoryCheck(vm.video.categories);
-                    }
                     vm.keywords = video.tags;
                     vm.internalKeywords = video.internalTags;
                     vm.seoKeywords = video.seoTags;
@@ -169,9 +166,6 @@
                         vm.showNextButtons = false;
                         var video = response.data[0];
                         vm.video = video;
-                        if(vm.video.categories) {
-                            categoryCheck(vm.video.categories);
-                        }
                         vm.keywords = video.tags;
                         vm.internalKeywords = video.internalTags;
                         vm.seoKeywords = video.seoTags;
@@ -206,15 +200,17 @@
                     }
                     vm.showNextButtons = false;
                     vm.video = video;
-                    if(vm.video.categories) {
-                        categoryCheck(vm.video.categories);
-                    }
                     vm.internalKeywords = video.internalTags;
                     vm.seoKeywords = video.seoTags;
                     vm.primaryCategory = video.primaryCategory;
                     vm.keywords = video.tags;
                     vm.videoNotes = video.videoNotes;
                     vm.ratingRequired = false;
+                    if(video.curation) {
+                        vm.curated = true;
+                    } else {
+                        vm.curated = false;
+                    }
                     setVideoPlayerConfig();
                 });
             }
@@ -318,7 +314,7 @@
 
         //get all categories for select
         function getCategories() {
-            CategoryType.query()
+            return CategoryType.query()
               .$promise
               .then(function(categories) {
                   vm.categories = categories;
@@ -330,7 +326,6 @@
         function removeCategory(category) {
             var index = vm.video.categories.indexOf(category);
             var addCategory = vm.video.categories.splice(index, 1);
-            vm.categories.push(addCategory[0]);
             vm.categoryType = '';
             if(vm.video.categories.length < 3) {
                 vm.catLimitReached = false;
@@ -339,24 +334,27 @@
 
         //function to add category to video, also removes from select options
         function addCategory(category) {
+            var categoryMatch = false;
+            var category = JSON.parse(category);
             if(vm.video.categories.length < 3) {
-                var newCategory = JSON.parse(category);
-                vm.video.categories.push(newCategory);
-                categoryCheck(vm.video.categories);
+                vm.video.categories.forEach(function(cat) {
+                    if(cat._id === category._id) {
+                        categoryMatch = true;
+                    }
+                });
+                if(!categoryMatch) {
+                    var newCategory = category;
+                    vm.video.categories.push(newCategory);
+                } else {
+                    dialog.alert({
+                        title: 'Category Selected',
+                        content: 'This category has already been selected',
+                        ok: 'ok'
+                    })
+                }
             } else {
                 vm.catLimitReached = true;
             }
-        }
-
-        //function to pull out categories for select that are already applied to video
-        function categoryCheck(categories) {
-            categories.forEach(function(category) {
-                vm.categories.forEach(function(vmCat, index) {
-                    if(category._id === vmCat._id) {
-                        vm.categories.splice(index, 1);
-                    }
-                });
-            });
         }
 
         //gets value for specified getNextVideo 'type' get next video
@@ -389,6 +387,8 @@
         vm.getNextVideo = getNextVideo;
         vm.ratingSelection = null;
 
-        getNextVideo();
+        getCategories().then(function() {
+            getNextVideo();
+        });
     }
 })();
