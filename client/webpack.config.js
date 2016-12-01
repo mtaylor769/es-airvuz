@@ -81,8 +81,8 @@ config.entry.airvuz = './scripts';
 config.output = {};
 
 config.output.path          = path.resolve ( __dirname, '../public/' );
-config.output.filename      = IS_PRODUCTION ? '[name].[chunkhash].js' : '[name].bundle.js';
-config.output.chunkFilename = IS_PRODUCTION ? 'airvuz.[name].[chunkhash].js' : 'airvuz.[name].chunk.js';
+config.output.filename      = (IS_PRODUCTION ? '[name].[chunkhash].js' : '[name].bundle.js') + '?v=' + Date.now();
+config.output.chunkFilename = (IS_PRODUCTION ? 'airvuz.[name].[chunkhash].js' : 'airvuz.[name].chunk.js') + '?v=' + Date.now();
 
 switch(NODE_ENV) {
   case 'development':
