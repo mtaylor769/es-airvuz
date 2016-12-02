@@ -155,7 +155,7 @@ function bindEvents() {
 
 }
 
-$('.go-to-video').on('click', function() {
+$('#main-row').on('click', '.go-to-video', function() {
   var videoId = $(this).parent().attr('data-video-id');
 
   //intialize video.js
