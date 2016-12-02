@@ -1,6 +1,7 @@
 /* global fbq */
 (function(window, document) {
     var AVEventTracker = require('../../scripts/avEventTracker'),
+        PubSub = require('pubsub-js'),
         startTime = new Date().getTime(),
         stopTimer = false,
         minSec;
@@ -25,6 +26,7 @@
         var evtObj = {
             codeSource: 'pageTimer',
             eventType: 'browser',
+            eventName: 'page-timer',
             referrer: document.referrer
         };
 
@@ -43,6 +45,11 @@
                 evtObj.timeOnSite = '2.5';
                 AVEventTracker(evtObj);
                 fbq('trackCustom', 'timeOnSite:2.5min');
+                break;
+            case '3:0':
+                if (window.sessionStorage.getItem('opened') === null) {
+                    PubSub.publish('prompOptLogin');
+                }
                 break;
             case '4:30':
                 evtObj.timeOnSite = '4.5';

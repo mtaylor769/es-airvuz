@@ -619,10 +619,20 @@ function fbAuthReq() {
   var $loginModal = $('#login-modal');
 
   if (!identity.isAuthenticated()) {
+
+    PubSub.subscribe('prompOptLogin', function() {
+      window.sessionStorage.setItem('opened', true);
+
+      $loginModal.find('.modal-title').hide();
+      $('#modal-alt-header').show();
+      $loginModal.modal('toggle');
+    });
+
     switch (urlParam) {
       case 'opt':
         $loginModal.find('.modal-title').hide();
         $loginModal.modal('toggle');
+        window.sessionStorage.setItem('opened', true);
         break;
       case 'req':
         $loginModal.find('.modal-title').hide();
@@ -631,6 +641,7 @@ function fbAuthReq() {
           backdrop: 'static',
           keyboard: false
         });
+        window.sessionStorage.setItem('opened', true);
         break;
       default:
         $('#modal-alt-header').hide();
