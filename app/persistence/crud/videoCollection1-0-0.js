@@ -108,7 +108,16 @@ function createVideoCollection(params) {
 
 
 function getCollectionVideos(userId, name) {
-    return VideoCollectionModel.findOne({user: userId, name: name}).populate('videos').exec();
+    return VideoCollectionModel
+        .findOne({user: userId, name: name})
+        .populate('videos')
+        .exec()
+        .then(function(videos) {
+            return VideoCollectionModel.populate(videos, {path: 'videos.userId', model: 'Users', select: 'aclRoles emailAddress userNameDisplay userNameUrl lastName firstName profilePicture autoPlay coverPicture aboutMe status allowHire allowDonation socialMediaLinks isSubscribeAirVuzNews'});
+        })
+        .catch(function(err) {
+            return err;
+        });
 }
 
 function updateCollection(params) {
