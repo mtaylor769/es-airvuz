@@ -821,6 +821,19 @@ function renderVideoPage(req, res, next) {
       })
 }
 
+function getVideoLocation(req, res) {
+    var videoId = req.params.id;
+
+    videoCrud1_0_0
+        .getById(videoId)
+        .then(function(video) {
+            res.send(video);
+        })
+        .catch(function (error) {
+            res.sendStatus(500);
+        });
+}
+
 Video.prototype.getVideosByCategory     = getVideosByCategory;
 Video.prototype.search                  = search;
 Video.prototype.post                    = post;
@@ -840,6 +853,8 @@ Video.prototype.getVideoOwnerProfile    = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId    = getCommentsByVideoId;
 Video.prototype.querySeoKeywords        = querySeoKeywords;
 Video.prototype.renderVideoPage         = renderVideoPage;
+
+Video.prototype.getVideoLocation        = getVideoLocation;
 
 module.exports = new Video();
 

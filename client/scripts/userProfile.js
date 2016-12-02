@@ -20,6 +20,7 @@ var skip                      = 0;
 var fUserId                   = null;
 var modalFollowBtnClicked     = false;
 var modalFollowBtnSelected    = null;
+var GoogleMap                 = require('../scripts/services/map');
 
 
 /*
@@ -64,7 +65,6 @@ function _editShowcase(type, videoId) {
 }
 
 function bindEvents() {
-
   function uploadImage(params) {
     var evaporate = new Evaporate({
       signerUrl : '/api/amazon/sign-auth',
@@ -199,7 +199,8 @@ function bindEvents() {
     .on('click', '#btn-custom-thumbnail', onCustomThumbnailClick)
     .on('click', '#generated-thumbnails li', onThumbnailSelect)
     .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick)
-    .on('click', '#btn-save-video-edit', onSaveVideoEdit);
+    .on('click', '#btn-save-video-edit', onSaveVideoEdit)
+    .on('click', '#location-update span', onUpdatedLocationList);
 
   function showcaseButton() {
     var buttonDiv = $(this).parent();
@@ -533,6 +534,10 @@ function onSaveVideoEdit() {
     });
 }
 
+function onUpdatedLocationList(evt) {
+  console.log(evt);
+}
+
 function appendErrorMessage(errorArray) {
   $('.error').remove();
 
@@ -713,6 +718,12 @@ function renderEditVideoHtml(video) {
 
     $videoEditModal
       .modal('show');
+
+    $videoEditModal.on('shown.bs.modal', function (e) {
+      GoogleMap.reload();
+    });
+
+    initMap(document.getElementById('map'));
   });
 }
 
@@ -1242,6 +1253,14 @@ function renderFollowers(el, data, showFollowBtn) {
   } else {
     $('.follow-modal-button').remove();
   }
+}
+
+function initMap(dom) {
+  GoogleMap.init({
+    dom: dom,
+    showCurrentLocation: true,
+    enableDrawingMode: true
+  });
 }
 
 function initialize() {

@@ -589,11 +589,23 @@ function getById(id) {
     .exec();
 }
 
+/*
+ * @params {String} [id] - video id
+ */
+function getVideoLocationById(id) {
+	return VideoModel
+		.findById(id)
+		.populate('videoCoordinates')
+		.lean()
+		.exec();
+}
+
 Videos.prototype.getRecentVideos 				= getRecentVideos;
 Videos.prototype.getVideoByCategory 		= getVideoByCategory;
 Videos.prototype.search 								= search;
 Videos.prototype.getVideosByFollow 			= getVideosByFollow;
 Videos.prototype.findVideoBySeoKeyword 	= findVideoBySeoKeyword;
 Videos.prototype.getById 								= getById;
+Videos.prototype.getVideoLocationById			= getVideoLocationById;
 
 module.exports = new Videos();

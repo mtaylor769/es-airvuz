@@ -272,6 +272,16 @@ function renderVideoPage(req, res) {
     }
 }
 
+function getVideoLocation(req, res) {
+    var version = req.query.apiVer || defaultVer;
+
+    if (version === "1.0.0") {
+        videos1_0_0.getVideoLocation(req, res);
+    } else {
+        incorrectVer(req, res);
+    }
+}
+
 Video.prototype.getVideosByCategory = getVideosByCategory;
 Video.prototype.search = search;
 Video.prototype.post = post;
@@ -292,6 +302,8 @@ Video.prototype.getVideoOwnerProfile = getVideoOwnerProfile;
 Video.prototype.getCommentsByVideoId = getCommentsByVideoId;
 Video.prototype.querySeoKeywords = querySeoKeywords;
 Video.prototype.renderVideoPage = renderVideoPage;
+
+Video.prototype.getVideoLocation = getVideoLocation;
 
 
 module.exports = new Video();

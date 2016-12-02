@@ -46,3 +46,7 @@
     width: 100%;
     margin-bottom: 20px;
 }
+
+#upload-page #map {
+    height: 400px;
+}

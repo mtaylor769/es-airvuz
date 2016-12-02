@@ -202,7 +202,19 @@ var videoSchema = mongoose.Schema({
 	videoLocation: String,
 
 	//attribute for internal video notes
-	videoNotes: String
+	videoNotes: String,
+
+	/*
+	 * video location
+	 * type: the shape being represented ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon", "GeometryCollection", "Feature", or "FeatureCollection"]
+	 * coordinates: an array of points determined by the "type" field [<longitude>, <latitude>] (order matters)
+	 * index: Indexes this schema in 2dsphere format (allows mongodb and mongoose to query users based on geographic inclusion, intersection, and proximity)
+	 */
+	videoCoordinates: {
+		type: String,
+		coordinates: [Number],
+		index: '2dsphere'
+	},
 
 	//speed: {type: Number, default: 1},
 	//rating: {type: Number, default: 0},

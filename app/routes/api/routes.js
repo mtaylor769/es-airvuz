@@ -199,6 +199,8 @@ apiRouter.route('/api/video/videoOwnerProfile/:id')
 	.get(videos.getVideoOwnerProfile);
 apiRouter.route('/api/videos/videoComments/:id')
 	.get(videos.getCommentsByVideoId);
+apiRouter.route('/api/videos/:id/location')
+	.get(videos.getVideoLocation);
 
 /**
 *  Route to render SPA Video Page
