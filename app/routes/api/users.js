@@ -187,7 +187,7 @@ function updateProfileImage(req, res) {
 }
 
 function _updateImage(req, res, path, type) {
-    if (req.user._id !== req.params.id) {
+    if (req.user._id.toString() !== req.params.id) {
         return res.sendStatus(403);
     }
 
