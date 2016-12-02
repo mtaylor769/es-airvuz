@@ -110,6 +110,9 @@ apiRouter.route('/api/users/:id/following')
 apiRouter.route('/api/users/:id/video-count')
 	.get(videos.getVideoCount);
 
+apiRouter.route('/api/users/:id/showcase')
+  .get(videos.getShowcaseByUser);
+
 
 /**
  * /api/follow/
@@ -176,9 +179,6 @@ apiRouter.route('/api/videos/:id')
 
 apiRouter.route('/api/videos/user/:id')
   .get(videos.getVideosByUser);
-
-apiRouter.route('/api/videos/showcase/:id')
-  .get(videos.getShowcaseByUser);
 
 apiRouter.route('/api/video/search-keywords')
 	.get(videos.querySeoKeywords);
