@@ -617,24 +617,24 @@ function getVideosByUser (req, res) {
 function getShowcaseByUser (req, res) {
     var dataStatus = {};
     EventTrackingCrud.create({
-        codeSource  : "app.persistence.crud.videos.user.get",
+        codeSource  : "app.persistence.crud.getShowcaseByUser",
         eventSource : "nodejs",
         eventType   : "get"
     });
-    videoCrud1_0_0
-      .getByUser(req.params.id, req.query.sortBy)
-      .then(function(videos) {
-          dataStatus.status     = 'OK';
-          dataStatus.code       = 200;
-          dataStatus.data       = videos;
-          res.send(dataStatus);
-      })
-      .catch(function (error) {
-          dataStatus.status     = 'Fail';
-          dataStatus.code       = 500;
-          dataStatus.data       = error;
-          res.send(dataStatus);
-      });
+    videoCollCrud1_0_0
+        .getCollectionVideos(req.params.id, 'showcase')
+        .then(function(videos) {
+            dataStatus.status     = 'OK';
+            dataStatus.code       = 200;
+            dataStatus.data       = videos;
+            res.send(dataStatus);
+        })
+        .catch(function (error) {
+            dataStatus.status     = 'Fail';
+            dataStatus.code       = 500;
+            dataStatus.data       = error;
+            res.send(dataStatus);
+        });
 }
 /**
  * route: GET /api/videos/topSixVideos/:id
