@@ -46,7 +46,7 @@
                 AVEventTracker(evtObj);
                 fbq('trackCustom', 'timeOnSite:2.5min');
                 break;
-            case '0:10':
+            case '3:0':
                 if (window.sessionStorage.getItem('opened') === null) {
                     PubSub.publish('prompOptLogin');
                 }
