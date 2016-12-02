@@ -72,8 +72,9 @@ AutoView.prototype.autoCreate = function (params) {
 }
 
 /* Automatic randomized parameters */
-AutoView.prototype.applyAutoViews = function (){
-    var timeNow = moment().valueOf();
+AutoView.prototype.applyAutoViews = function (params){
+    var daysAhead = params.daysAhead;
+    var timeNow = moment().add(daysAhead, 'days').valueOf();
     var avArray = [];  // array of autoViews to be processed
 
     var autoViews = AutoViewModel.find({ isComplete: false }).exec();

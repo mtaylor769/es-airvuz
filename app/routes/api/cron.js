@@ -29,7 +29,8 @@ function runTrending(req, res) {
 }
 
 function applyAutoViews(req, res) {
-    AutoView.applyAutoViews()
+    var daysAhead = req.params.daysAhead || 0;
+    AutoView.applyAutoViews(daysAhead)
         .then(function () {
             res.sendStatus(200);
         })
