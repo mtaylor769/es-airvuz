@@ -105,6 +105,21 @@
         <md-icon class="material-icons"></md-icon>
         <p>Video Curation</p>
       </md-list-item>
+      <md-list-item ng-click="vm.autoViews = !vm.autoViews">
+        <md-icon class="material-icons"></md-icon>
+        <p>Auto Views</p>
+      </md-list-item>
+      <md-list ng-show="vm.autoViews" class="menu-accordion">
+        <md-list-item ui-sref="autoViews.create">
+          <p>Create Auto Views</p>
+        </md-list-item>
+        <md-list-item ui-sref="autoViews.list">
+          <p>Get Created Auto Views</p>
+        </md-list-item>
+        <md-list-item ui-sref="autoViews.search">
+          <p>Search Auto Views</p>
+        </md-list-item>
+      </md-list>
       <md-list-item ng-click="vm.carousel = !vm.carousel">
         <md-icon class="material-icons"></md-icon>
         <p>Carousel Curation</p>
@@ -190,6 +205,9 @@
 <script src="/admin/app/custom-carousel/carouselCreate.controller.js"></script>
 <script src="/admin/app/custom-carousel/carouselEdit.controller.js"></script>
 <script src="/admin/app/custom-carousel/carouselViewAll.controller.js"></script>
+<script src="/admin/app/auto-views/autoViewsCreate.controller.js"></script>
+<script src="/admin/app/auto-views/autoViewsList.controller.js"></script>
+<script src="/admin/app/auto-views/autoViewsSearch.controller.js"></script>
 
 <!-- 3rd party -->
 <script src="/admin/lib/angular-ui-router/release/angular-ui-router.min.js"></script>

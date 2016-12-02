@@ -1,0 +1,23 @@
+<div layout-padding>
+    <h2>List of Admin AutoVuz Sets</h2>
+    <div>
+        <md-card ng-repeat="view in vm.createdViews">
+            <div layout-padding layout="row">
+                <div flex="50">
+                    <div>
+                        <p>Video Title : {{view.videoId.title}}</p>
+                        <p>Number of Days : {{view.numberOfDays}}</p>
+                        <p>Number of Views : {{view.numberOfViews}}</p>
+                        <p>Probability : {{view.probability}}</p>
+                    </div>
+                </div>
+                <div flex>
+                    <img src="{{vm.amazonBucket}}{{view.videoId.thumbnailPath}}" width="271px">
+                </div>
+                <div layout="column">
+                    <md-button class="md-raised md-warn" ng-click="vm.setToComplete(view._id, $index)">Set to Complete</md-button>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>

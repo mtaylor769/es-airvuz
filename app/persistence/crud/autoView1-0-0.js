@@ -11,6 +11,8 @@ try {
     var logger = log4js.getLogger('app.persistence.crud.autoView1-0-0.js');
     var moment = require('moment');
     var database = require('../database/database');
+    var AutoViewModel = null;
+    var VideoModel = null;
 
     AutoViewModel = database.getModelByDotPath({modelDotPath: "app.persistence.model.autoView"});
     VideoModel 	= database.getModelByDotPath({modelDotPath: "app.persistence.model.videos"});
@@ -28,10 +30,22 @@ catch (error) {
 
 var AutoView = function () {}
 
+AutoView.prototype.getAll = function() {
+    return AutoViewModel.find({isComplete: false}).populate('videoId').sort({createdDate: -1}).exec();
+};
+
+AutoView.prototype.getByVideoId = function(videoId) {
+    return AutoViewModel.find({videoId: videoId}).populate('videoId').sort({isComplete: 1}).exec()
+};
+
+AutoView.prototype.setComplete = function(autoViewId) {
+    return AutoViewModel.findByIdAndUpdate(autoViewId, {isComplete: true}).exec();
+};
+
 AutoView.prototype.create = function (params) {
-    var numberOfDays = params.numberOfDays;
-    var numberOfViews = params.numberOfViews;
-    var probability = params.probability;
+    var numberOfDays = parseInt(params.numberOfDays);
+    var numberOfViews = parseInt(params.numberOfViews);
+    var probability = parseFloat(params.probability);
 
     var rbinom_0 = PD.rbinom(numberOfViews, numberOfDays, probability);
 
@@ -52,10 +66,9 @@ AutoView.prototype.create = function (params) {
     params.autoViewDateTime = timestamps;
 
     // store to mongo
-    var autoView = new AutoViewModel( params );
-    autoView.save( function (err) { if (err) { logger.info (err) } } );
-    return autoViewModel;
-}
+    var autoView = new AutoViewModel(params);
+    return autoView.save();
+};
 
 /* User-supplied parameters */
 AutoView.prototype.autoCreate = function (params) {

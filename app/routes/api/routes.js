@@ -20,14 +20,15 @@ try {
 	var upload              = require('./upload');
 	var amazon              = require('./amazon');
 	var videoCollection     = require('./videoCollection');
-	var reports 			= require('./reports');
-	var keywords			= require('./keywords');
-	var videoCuration 		= require('./videoCuration');
-	var aclRoles 			= require('./aclRoles');
-    var customCarousel      = require('./customCarousel');
+	var reports 						= require('./reports');
+	var keywords						= require('./keywords');
+	var videoCuration 			= require('./videoCuration');
+	var aclRoles 						= require('./aclRoles');
+	var customCarousel      = require('./customCarousel');
 // var forms               	= require('./forms');
 	var image               = require('./image');
 	var cron                = require('./cron');
+	var autoViews						= require('./autoViews');
 	var protect             = require('../../middlewares/protect');
 	var token               = require('../../middlewares/token');
 	var multer							= require('multer');
@@ -428,5 +429,15 @@ apiRouter.route('/api/custom-carousel/:id')
 	.delete(customCarousel.removeCarousel)
 	.put(customCarousel.updateCarousel);
 
+/**
+ * /api/auto-views
+ */
+apiRouter.route('/api/auto-views')
+	.post(autoViews.create)
+	.get(autoViews.getAll);
+
+apiRouter.route('/api/auto-views/:id')
+	.get(autoViews.getByVideoId)
+	.put(autoViews.setComplete);
 
 module.exports = apiRouter;

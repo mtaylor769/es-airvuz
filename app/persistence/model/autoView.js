@@ -77,6 +77,11 @@ var autoViewSchema = mongoose.Schema({
         enum			: ['system', 'admin'],
         default         : 'system',
         lowercase       : true
+    },
+
+    createdDate: {
+        type: Date,
+        default: Date.now()
     }
 
 });
