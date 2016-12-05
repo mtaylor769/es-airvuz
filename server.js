@@ -221,10 +221,6 @@ app.get("/copyright", function(req, res) {
 	loadView(req, res, 'copyright');
 });
 
-app.get("/copyright", function(req, res) {
-	loadView(req, res, 'copyright');
-});
-
 app.get("/about", function(req, res) {
 	loadView(req, res, 'about');
 });
