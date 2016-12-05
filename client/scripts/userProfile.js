@@ -1259,7 +1259,8 @@ function initMap(dom) {
   GoogleMap.init({
     dom: dom,
     showCurrentLocation: true,
-    enableDrawingMode: true
+    enableDrawingMode: false,
+    editMode: true
   });
 }
 

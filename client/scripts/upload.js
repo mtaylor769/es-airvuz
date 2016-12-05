@@ -588,7 +588,8 @@ function initMap(dom) {
   GoogleMap.init({
     dom: dom,
     showCurrentLocation: true,
-    enableDrawingMode: true
+    enableDrawingMode: false,
+    editMode: false
   });
 }
 
@@ -606,76 +607,6 @@ function initialize() {
     });
 
   bindEvents();
-
-  /*GoogleMap.loader.load(function() {
-    console.log('google map loaded');
-  });
-
-  GoogleMap.loader.onLoad(function() {
-    console.log('google map onload()');
-    var mapDiv = document.getElementById('map'),
-        map,
-        geocoder;
-
-    // Initialize the map
-    map = new google.maps.Map(mapDiv, {
-      center: {lat: 46.392410, lng: -94.636230},
-      zoom: 8
-    });
-
-    // Geocoder
-    geocoder = new google.maps.Geocoder();
-
-    // autocomplete search
-    var locationTxBx = document.getElementById('location');
-    var autoComplete = new google.maps.places.Autocomplete(locationTxBx, {types: ['(cities)']});
-
-    google.maps.event.addListener(autoComplete, 'place_changed', function() {
-      var place = autoComplete.getPlace();
-      if (place.geometry) {
-        map.panTo(place.geometry.location);
-        map.setZoom(15);
-        geocodeAddress(geocoder, map);
-      }
-    });
-
-
-    // button click handler
-    $('#map-button').on('click', function() {
-      geocodeAddress(geocoder, map);
-    });
-
-  });*/
-}
-
-function geocodeAddress(geocoder, resultsMap) {
-  var location = $('#location').val();
-
-  // clear all markers
-  clearMarkers();
-
-  if (location.length) {
-    setTimeout(function() {
-      geocoder.geocode({'address': location}, function(results, status) {
-        if (status === 'OK') {
-          resultsMap.setCenter(results[0].geometry.location);
-          var marker = new google.maps.Marker({
-            map: resultsMap,
-            position: results[0].geometry.location
-          });
-          mapMarkers.push(marker);
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
-        }
-      });
-    }, 100);
-  }
-}
-
-function clearMarkers() {
-  for (var i = 0; i < mapMarkers.length; i++) {
-    mapMarkers[i].setMap(null);
-  }
 }
 
 module.exports = {

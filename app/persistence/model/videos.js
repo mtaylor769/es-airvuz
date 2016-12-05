@@ -212,7 +212,9 @@ var videoSchema = mongoose.Schema({
 	 */
 	videoCoordinates: {
 		type: String,
+		name: String,
 		coordinates: [Number],
+		place_id: String,
 		index: '2dsphere'
 	},
 
