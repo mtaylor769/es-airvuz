@@ -110,10 +110,12 @@ apiRouter.route('/api/users/:id/following')
 apiRouter.route('/api/users/:id/video-count')
 	.get(videos.getVideoCount);
 
-apiRouter.route('/api/users/:id/showcase/:videoId?')
-  .get(videos.getShowcaseByUser)
-	.put(protect, videoCollection.addVideoToUserShowcase)
-	.delete(protect, videoCollection.removeVideoFromUserShowcase);
+apiRouter.route('/api/users/:id/showcase/:videoId')
+  .put(protect, videoCollection.addVideoToUserShowcase)
+  .delete(protect, videoCollection.removeVideoFromUserShowcase);
+
+apiRouter.route('/api/users/:id/showcase')
+  .get(videoCollection.getUserShowcase);
 
 
 /**

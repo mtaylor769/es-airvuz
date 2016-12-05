@@ -589,53 +589,7 @@ function getVideosByUser (req, res) {
           res.send(dataStatus);
       });
 }
-/**
- * route: GET /api/videos/showcase/:id
- * @param req id = userId
- * @param res
- * @returns
- *   "status": "OK",
- "code": 200,
- "data": [
- {
-   "_id": "57f94fdcab61a80344376865",
-   "userId": {
-     "_id": "57e96a719ddd2b02f44f3367",
-     "userNameDisplay": "bryceb",
-     "userNameUrl": "bryceb"
-   },
-   "title": "title_xxxxx",
-   "description": "description_xxxxxx",
-   "duration": "1",
-   "thumbnailPath": "4ff2fcce6b32cf6ccf9fa4190ee58d5f/tn_00006.jpg",
-   "viewCount": 0,
-   "uploadDate": "2016-10-08T19:58:20.445Z",
-   "categories": [
-     "574f91b3b55602296def65be"
-   ]
-*/
-function getShowcaseByUser (req, res) {
-    var dataStatus = {};
-    EventTrackingCrud.create({
-        codeSource  : "app.persistence.crud.getShowcaseByUser",
-        eventSource : "nodejs",
-        eventType   : "get"
-    });
-    videoCollCrud1_0_0
-        .getCollectionVideos(req.params.id, 'showcase')
-        .then(function(videos) {
-            dataStatus.status     = 'OK';
-            dataStatus.code       = 200;
-            dataStatus.data       = videos;
-            res.send(dataStatus);
-        })
-        .catch(function (error) {
-            dataStatus.status     = 'Fail';
-            dataStatus.code       = 500;
-            dataStatus.data       = error;
-            res.send(dataStatus);
-        });
-}
+
 /**
  * route: GET /api/videos/topSixVideos/:id
  * @param req id = userId
@@ -873,7 +827,6 @@ Video.prototype.showcaseUpdate          = showcaseUpdate;
 Video.prototype.reportVideo             = reportVideo;
 Video.prototype.videoInfoCheck          = videoInfoCheck;
 Video.prototype.getVideosByUser         = getVideosByUser;
-Video.prototype.getShowcaseByUser       = getShowcaseByUser;
 Video.prototype.getTopSixVideos         = getTopSixVideos;
 Video.prototype.getVideoCount           = getVideoCount;
 Video.prototype.getFollowCount          = getFollowCount;

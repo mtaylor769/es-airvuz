@@ -103,11 +103,23 @@ function removeVideoFromUserShowcase(req, res) {
   }
 }
 
+function getUserShowcase(req, res) {
+  var version = req.query.apiVer || defaultVer;
+
+  if (version === "1.0.0") {
+    videoColl1_0_0.getUserShowcase(req, res);
+  }
+  else {
+    incorrectVer(req,res);
+  }
+}
+
 VideoCollection.prototype.getFeaturedVideos = getFeaturedVideos;
 VideoCollection.prototype.updateFeaturedVideos = updateFeaturedVideos;
 VideoCollection.prototype.getStaffPickVideos = getStaffPickVideos;
 VideoCollection.prototype.updateStaffPickVideos = updateStaffPickVideos;
 VideoCollection.prototype.addVideoToUserShowcase = addVideoToUserShowcase;
 VideoCollection.prototype.removeVideoFromUserShowcase = removeVideoFromUserShowcase;
+VideoCollection.prototype.getUserShowcase = getUserShowcase;
 
 module.exports = new VideoCollection();
