@@ -71,24 +71,22 @@ AutoView.prototype.autoCreate = function (params) {
     return autoView;
 }
 
-/* Automatic randomized parameters */
+/* Automatic randomized parameters
+* params.daysAhead = number of "days ahead" to add when computing current time/date (for testing cron job)
+*/
 AutoView.prototype.applyAutoViews = function (params){
-    var daysAhead = params.daysAhead;
-    var timeNow = moment().add(daysAhead, 'days').valueOf();
-    var avArray = [];  // array of autoViews to be processed
-
     var autoViews = AutoViewModel.find({ isComplete: false }).exec();
 
     return autoViews.then ( function (avResult){
         // resolved
+        var daysAhead = params.daysAhead;
         var aryLen = avResult.length;
         var aryLen2;
         var indexOuter;
         var indexInner;
         var avTimeDates;
         var thisTimeDate;
-        var timeNow = moment().valueOf();
-        var lastIndex;
+        var timeNow = moment().add(daysAhead, 'days').valueOf();
 
         for (indexOuter=0; indexOuter< aryLen; indexOuter++) {
             indexInner = avResult[indexOuter].lastAddedTimeIndex + 1;
@@ -100,7 +98,11 @@ AutoView.prototype.applyAutoViews = function (params){
                 thisTimeDate = avTimeDates[indexInner];
                 if (thisTimeDate <= timeNow) {
                     video.applyAutoView ( { videoId: avResult[indexOuter].videoId } );
-                    updateAutoView({ id: avResult[indexOuter]._id, update: { lastAddedTimeIndex: indexInner }});
+                    if (indexInner == aryLen2 -1) {
+                        updateAutoView({ id: avResult[indexOuter]._id, update: { lastAddedTimeIndex: indexInner, isComplete: true }});
+                    } else {
+                        updateAutoView({ id: avResult[indexOuter]._id, update: { lastAddedTimeIndex: indexInner }});
+                    }
                 } else {
                     continue;
                 }

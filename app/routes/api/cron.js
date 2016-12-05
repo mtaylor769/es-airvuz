@@ -30,7 +30,9 @@ function runTrending(req, res) {
 
 function applyAutoViews(req, res) {
     var daysAhead = req.params.daysAhead || 0;
-    AutoView.applyAutoViews(daysAhead)
+    var params = [];
+    params.daysAhead = daysAhead;
+    AutoView.applyAutoViews(params)
         .then(function () {
             res.sendStatus(200);
         })
