@@ -69,10 +69,11 @@ function updateStaffPickVideos (req, res) {
 }
 
 function addVideoToUserShowcase(req, res, next) {
-  var params = {};
-  params.user = req.params.id;
-  params.video = req.params.videoId;
-  params.name = 'showcase';
+  var params = {
+    user: req.params.id,
+    video: req.params.videoId
+  };
+
   videoCollCrud1_0_0
     .addVideoToUserShowcase(params)
     .then(function () {
@@ -82,10 +83,11 @@ function addVideoToUserShowcase(req, res, next) {
 }
 
 function removeVideoFromUserShowcase(req, res, next) {
-  var params = {};
-  params.user = req.params.id;
-  params.video = req.params.videoId;
-  params.name = 'showcase';
+  var params = {
+    user: req.params.id,
+    video: req.params.videoId
+  };
+
   videoCollCrud1_0_0
     .removeVideoFromUserShowcase(params)
     .then(function () {

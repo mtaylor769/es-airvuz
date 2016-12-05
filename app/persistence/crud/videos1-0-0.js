@@ -414,24 +414,6 @@ Videos.prototype.like = function(video, like) {
   return video.save();
 };
 
-Videos.prototype.getShowcaseByUser = function(id, sortBy) {
-	if (!sortBy) {
-		return VideoModel.find({userId: id, isShowcase: true}).populate('userId').lean().exec();
-	} else {
-		switch(sortBy) {
-			case 'vuz' :
-				return VideoModel.find({userId: id, isShowcase: true}).sort({viewCount: -1}).populate('userId').exec();
-			case 'dasc' :
-				return VideoModel.find({userId: id, isShowcase: true}).sort({uploadDate: 1}).populate('userId').exec();
-			case 'ddesc' :
-				return VideoModel.find({userId: id, isShowcase: true}).sort({uploadDate: -1}).populate('userId').exec();
-			default:
-				return VideoModel.find({userId: id, isShowcase: true}).sort({likeCount: 1}).populate('userId').exec();
-		}
-	}
-	
-};
-
 Videos.prototype.totalVideosByEndDate = function(endDate) {
 	return VideoModel.find({uploadDate: {$lte: new Date(endDate)}})
 		.count()

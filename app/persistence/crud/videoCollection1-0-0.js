@@ -112,28 +112,21 @@ function getCollectionVideos(userId, name) {
         });
 }
 
-function _updateCollection(params) {
-    return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
-        .then(function(videoCollection) {
-            var videoId = JSON.stringify(params.video);
-            var videoCollectionString = JSON.stringify(videoCollection);
-            var found = videoCollectionString.indexOf(videoId);
-            logger.debug(found);
-            // TODO: check $addToSet & $pull
-            if(found !== -1){
-                return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$pull: {videos: params.video}}, {safe: true}).exec();
-            } else {
-                return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$push: {videos: params.video}}, {safe: true, upsert: true}).exec();
-            }
-        })
+function _updateShowcaseCollection(params, type) {
+    var updateQuery = {};
+
+    updateQuery[type] = {videos: params.video};
+    return VideoCollectionModel.findOneAndUpdate({user: params.user, name: 'showcase'}, updateQuery).exec();
 }
 
 function addVideoToUserShowcase(params) {
-  return _updateCollection(params);
+  // $addToSet should only add if it exist instead of $push
+  return _updateShowcaseCollection(params, '$addToSet');
 }
 
 function removeVideoFromUserShowcase(params) {
-  return _updateCollection(params);
+  // $pull will pull all matches
+  return _updateShowcaseCollection(params, '$pull');
 }
 
 function getCurrentCustomCarousel() {
