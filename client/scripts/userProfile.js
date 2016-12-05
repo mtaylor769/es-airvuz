@@ -48,21 +48,19 @@ var okHtml                = '<div class="ok showcase-edit-button"><span class="g
 var notSelectedHtml       = '<div class="not-selected showcase-edit-button"><span class="glyphicon glyphicon-plus"></span></div>';
 var removeHtml            = '<div class="removed showcase-edit-button"><span class="glyphicon glyphicon-minus"></span></div>';
 
+function addVideoToShowcase(videoId) {
+  return _editShowcase('PUT', videoId);
+}
 
-function showcaseAdd(videoId) {
-  var data = {};
-  data.video = videoId;
-  data.user = user._id;
+function removeVideoFromShowcase(videoId) {
+  return _editShowcase('DELETE', videoId);
+}
 
-  $.ajax({
-    type: 'POST',
-    url: '/api/video-collection/update-collection',
-    data: data
-  })
-    .done(function(response) {
-    })
-    .fail(function(error) {
-    });
+function _editShowcase(type, videoId) {
+  return $.ajax({
+    type: type,
+    url: '/api/users/' + user._id + '/showcase/' + videoId
+  });
 }
 
 function bindEvents() {
@@ -211,11 +209,11 @@ function bindEvents() {
     if(status === 'true') {
       $(buttonDiv).append(removeHtml);
       $(buttonDiv).attr('data-showcase', 'false');
-      showcaseAdd(videoId)
+      removeVideoFromShowcase(videoId);
     } else {
       $(buttonDiv).append(okHtml);
       $(buttonDiv).attr('data-showcase', 'true');
-      showcaseAdd(videoId)
+      addVideoToShowcase(videoId);
     }
   }
 
@@ -271,11 +269,11 @@ function editShowcase() {
     if(status === 'true') {
       $(buttonDiv).append(removeHtml);
       $(buttonDiv).attr('data-showcase', 'false');
-      showcaseAdd(videoId);
+      removeVideoFromShowcase(videoId);
     } else {
       $(buttonDiv).append(okHtml);
       $(buttonDiv).attr('data-showcase', 'true');
-      showcaseAdd(videoId);
+      addVideoToShowcase(videoId);
     }
   });
 

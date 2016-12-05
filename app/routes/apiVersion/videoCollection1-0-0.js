@@ -12,17 +12,8 @@ catch (exception) {
     logger.error(" import error:" + exception);
 }
 
-function VideoCollection() {
-}
-// function getVideos(req, res, type) {
-//     return function (req, res) {
-//         videoCollCrud1_0_0
-//             .getVideo(type)
-//             .then(function (videos) {
-//                 res.json(videos);
-//             });
-//     }
-// }
+function VideoCollection() {}
+
 /**
  * Get all the featured videos as a json object
  * route: GET /api/featured-videos
@@ -37,15 +28,6 @@ function getFeaturedVideos(req, res) {
         });
 }
 
-// function updateVideo(type) {
-//     return function (req, res) {
-//         return videoCollCrud1_0_0
-//             .updateVideos(type, req.body.videos)
-//             .then(function () {
-//                 res.json({});
-//             });
-//     }
-// }
 /**
  * Update the featured video collection
  * route: PROTECTED PUT /api/featured-videos
@@ -85,28 +67,38 @@ function updateStaffPickVideos (req, res) {
             res.json({});
         });
 }
-/**
- * update a video collection indicated in params.name
- * route: PROTECTED POST /api/video-collection/update-collection
- * @param req
- * @param res
- */
-function updateCollectionVideos(req, res) {
-    var params = {};
-    params.user = req.body.user;
-    params.video = req.body.video;
-    params.name = 'showcase';
-    videoCollCrud1_0_0
-        .updateCollection(params)
-        .then(function (video) {
-            res.json({status: 'OK'});
-        })
+
+function addVideoToUserShowcase(req, res, next) {
+  var params = {};
+  params.user = req.params.id;
+  params.video = req.params.videoId;
+  params.name = 'showcase';
+  videoCollCrud1_0_0
+    .addVideoToUserShowcase(params)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(next);
+}
+
+function removeVideoFromUserShowcase(req, res, next) {
+  var params = {};
+  params.user = req.params.id;
+  params.video = req.params.videoId;
+  params.name = 'showcase';
+  videoCollCrud1_0_0
+    .removeVideoFromUserShowcase(params)
+    .then(function () {
+      res.sendStatus(200);
+    })
+    .catch(next);
 }
 
 VideoCollection.prototype.getFeaturedVideos         = getFeaturedVideos;
 VideoCollection.prototype.updateFeaturedVideos      = updateFeaturedVideos;
 VideoCollection.prototype.getStaffPickVideos        = getStaffPickVideos;
 VideoCollection.prototype.updateStaffPickVideos     = updateStaffPickVideos;
-VideoCollection.prototype.updateCollectionVideos    = updateCollectionVideos;
+VideoCollection.prototype.addVideoToUserShowcase    = addVideoToUserShowcase;
+VideoCollection.prototype.removeVideoFromUserShowcase = removeVideoFromUserShowcase;
 
 module.exports = new VideoCollection();
