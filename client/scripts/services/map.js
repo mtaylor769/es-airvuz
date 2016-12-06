@@ -10,17 +10,18 @@ GoogleMapsLoader.LANGUAGE = 'en';
 GoogleMapsLoader.REGION = '';
 GoogleMapsLoader.LIBRARIES = ['geometry', 'places', 'drawing'];
 
-var longitude = -94.636230, //long & lat defaults to MPLS if user location GPS is turned off
+var longitude = -94.636230,
     latitude = 46.392410,
-    locations = [],
+    disableGeocoding = false,
+    canUpdateLoc = false,
     mapPlaceHolder = null,
     map = null,
+    locations = [],
     mapMarkers = [],
     infoWindow,
     geocoder,
     places,
-    mapParams,
-    disableGeocoding = false; // expose
+    mapParams;
 
 /*
  * initialize the map
@@ -31,41 +32,36 @@ var longitude = -94.636230, //long & lat defaults to MPLS if user location GPS i
  * @params {Boolean} params.enableDrawingMode
  */
 function init(params) {
-    console.log('initialize google maps...');
+    mapParams = setMapParams(params);
 
-    var mapDom = params && params.dom || undefined,
-        showCurrentLocation = params && params.showCurrentLocation || false,
-        enableDrawingMode = params && params.enableDrawingMode || false,
-        editMode = params && params.editMode || false;
-
-    mapParams = params;
-
-    if (!mapDom) {
+    if (!mapParams.mapDom) {
         throw new Error('Map Dom is not found');
     } else {
-        mapPlaceHolder = mapDom;
+        mapPlaceHolder = mapParams.mapDom;
     }
 
     GoogleMapsLoader.load(function() {
-        console.log('google maps load() ===> ');
         _loadMap();
 
-        if (showCurrentLocation) {
+        if (mapParams.showCurrentLocation) {
             $('.loading-comment-spinner').show();
             _getCurrentCoordinates()
                 .then(function(params) {
                     $('.loading-comment-spinner').hide();
                     updateMap(params);
+                    mapParams.gpsEnabled = true;
                 })
                 .fail(function(err) {
                     var string = '&nbsp; ' + err.message + '&nbsp; Click on map to pinpoint where the video was recorded.';
 
                     _displayErrorMsg(true, string);
+
+                    mapParams.gpsEnabled = false;
                 });
         }
     });
 
-    if (params.enableDrawingMode) {
+    if (mapParams.enableDrawingMode) {
         displayDrawingMode();
     }
 }
@@ -80,7 +76,7 @@ function _loadMap() {
         center: {lat: latitude, lng: longitude},
         streetViewControl: false,
         mapTypeControl: false,
-        zoom: 8
+        zoom: 4
     };
 
     map = new google.maps.Map(mapPlaceHolder, options);
@@ -89,7 +85,23 @@ function _loadMap() {
 
     _bindEvents();
 
-    // displayDrawingMode();
+    // displayDrawingMode(); TODO: later
+}
+
+/*
+ * @private
+ * @params {Object}
+ * @description set the mapparam object
+ */
+function setMapParams(params) {
+    return {
+        mapDom: params && params.dom || undefined,
+        showCurrentLocation: params && params.showCurrentLocation || false,
+        enableDrawingMode: params && params.enableDrawingMode || false,
+        editMode: params && params.editMode || false,
+        showLocLists: params && params.showLocLists || false,
+        gpsEnabled: false
+    };
 }
 
 /*
@@ -112,18 +124,15 @@ function _bindEvents() {
     var locationTxBx = document.getElementById('location'),
         autoComplete = new google.maps.places.Autocomplete(locationTxBx);
 
-    // hide updated location lists
     locationTxBx.addEventListener('keyup', function () {
         $('#location-update').hide();
     });
 
-    // map click
     map.addListener('click', function(e) {
         disableGeocoding = false;
         placeMarkerAndPanTo(e.latLng, map);
     });
 
-    // autocomplete search
     google.maps.event.addListener(autoComplete, 'place_changed', function(e) {
         var place = autoComplete.getPlace();
 
@@ -137,7 +146,7 @@ function _bindEvents() {
             map.fitBounds(place.geometry.viewport);
         } else {
             map.setCenter(place.geometry.location);
-            map.setZoom(17);
+            map.setZoom(15);
         }
 
         _setInfoWindow(place);
@@ -145,24 +154,18 @@ function _bindEvents() {
         geocode(geocoder, map);
     });
 
-    console.log('mapParams.editMode: ', mapParams.editMode);
-
-    if (mapParams.editMode) {
-        geocode(geocoder, map, true);
-    }
+    if (mapParams.editMode) geocode(geocoder, map);
 }
 
 /*
  * Geocode location
  * @params {Object} [geocoder] - google's geocoder obj
  * @params {Element} [resultsMap] - the map element
- * @params {Boolean} [reverseGeo] - "true" to allow reverse geocoding
  */
-function geocode(geocoder, resultsMap, reverseGeo) {
+function geocode(geocoder, resultsMap) {
     console.log('geocoding ...');
 
     var location = $('#location').val();
-    var $locationUpdateDiv = $('#location-update');
 
     _clearMapMarkers();
 
@@ -170,27 +173,37 @@ function geocode(geocoder, resultsMap, reverseGeo) {
         setTimeout(function() {
             geocoder.geocode({'address': location}, function(results, status) {
                 if (status === 'OK') {
-                    if (!reverseGeo) {
+
+                    if (!mapParams.showLocLists) {
                         resultsMap.setCenter(results[0].geometry.location);
                         placeMarkerAndPanTo(results[0].geometry.location, resultsMap);
-                    } else {
-                        console.log(results, results.length);
-                        if (results.length) {
-                            $locationUpdateDiv.removeClass('hidden');
-
-                            for(var i = 0; i < results.length; i++) {
-                                console.log(results[i].formatted_address);
-                                $locationUpdateDiv.find('#updated-location-lists').append("<span class='tag label label-info' data-place-id="+results[i].place_id+">"+results[i].formatted_address+"</span>");
-                            }
-                        } else {
-                            $locationUpdateDiv.addClass('hidden');
-                        }
+                        return;
                     }
+
+                    _showLocationLists(results);
+
                 } else {
                     _displayErrorMsg(false, '&nbsp; Geocode was not successful for the following reason: ' + status);
                 }
             });
         }, 100);
+    }
+}
+
+/*
+ * @private
+ * @description show a list of suggested locations
+ */
+function _showLocationLists(params) {
+    if (params.length) {
+        $('#location-list').removeClass('hidden');
+
+        for(var i = 0; i < params.length; i++) {
+            console.log(params[i].formatted_address);
+            $('#location-list').find('#updated-location-lists').append("<span class='tag label label-info' data-place-id="+params[i].place_id+">"+params[i].formatted_address+"</span>");
+        }
+    } else {
+        $('#location-list').addClass('hidden');
     }
 }
 
@@ -221,7 +234,7 @@ function _reverseGeoCode(pos) {
  * @description will only update the location textbox if map is in edit mode
  */
 function updateLocation(param) {
-    if (mapParams.editMode) return;
+    if (mapParams.editMode && !canUpdateLoc) return;
 
     $('#location').val(param);
 }
@@ -235,10 +248,14 @@ function placeMarkerAndPanTo(latLng, map) {
 
     var marker = new google.maps.Marker({
         draggable: true,
-        animation: google.maps.Animation.BOUNCE,
+        animation: google.maps.Animation.DROP,
         position: latLng,
         map: map
     });
+
+    if (!mapParams.gpsEnabled) {
+        map.setZoom(10);
+    }
 
     map.panTo(latLng);
 
@@ -258,16 +275,18 @@ function placeMarkerAndPanTo(latLng, map) {
  * @params {Object} [evt]
  */
 function showInfoWindow(marker) {
-    infoWindow.setPosition({
+    var coords = {
         lat: marker.getPosition().lat(),
         lng: marker.getPosition().lng()
-    });
+    };
+    infoWindow.setPosition(coords);
 
     infoWindow.open(map, marker);
 
     $('#update-loc-link').on('click', function() {
-        // can get the marker points from the evt obj
-        console.log('update location link clicked ...');
+        canUpdateLoc = true;
+        $('#location-list').hide();
+        _reverseGeoCode(coords);
     });
 }
 
@@ -282,10 +301,9 @@ function _hideInfoWindow() {
  * @description set infowindow contents
  */
 function _setInfoWindow(params) {
-    var stringLoc = '<div><strong>' + params.formatted_address + '</strong><br>' +
-        'Place ID: ' + params.place_id;
+    var stringLoc = '<div><strong>' + params.formatted_address + '</strong><br>' + 'Place ID: ' + params.place_id;
 
-    if (mapParams.editMode) {
+    if (mapParams.editMode && !canUpdateLoc) {
         stringLoc += "<div class='text-center'><hr><a href='#' id='update-loc-link'>Update my location</a></div>";
     }
 
@@ -419,7 +437,10 @@ function _displayErrorMsg(hasGeo, msg) {
  * reload the map
  */
 function reload() {
-    google.maps.event.trigger(map, 'resize');
+    if (typeof google !== 'undefined') {
+        google.maps.event.trigger(map, 'resize');
+    }
+    canUpdateLoc = false;
 }
 
 /*

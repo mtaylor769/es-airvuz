@@ -22,7 +22,7 @@
       </div>
         <div class="form-group" style="margin-bottom: 45px;position:relative;">
             <label for="map">Map</label>
-            <div class="loading-comment-spinner text-center airvuz-blue" style="position: absolute;z-index: 500;left: 40%;top: 50%;font-size:25px;">
+            <div class="loading-comment-spinner text-center airvuz-blue">
                 <div class="icon icon-spinner pulse"></div>
                 <span>&nbsp;Loading...</span>
             </div>

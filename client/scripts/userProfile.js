@@ -1260,7 +1260,8 @@ function initMap(dom) {
     dom: dom,
     showCurrentLocation: true,
     enableDrawingMode: false,
-    editMode: true
+    editMode: true,
+    showLocLists: true
   });
 }
 
