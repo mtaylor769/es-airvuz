@@ -221,6 +221,7 @@ Videos.prototype.getPreCondition = function(params) {
 		this.data.videoLocation			= params.videoLocation || null;
 		this.data.droneType				= params.droneType || null;
 		this.data.cameraType			= params.cameraType || null;
+		this.data.loc					= params.loc || null;
 
 		if(this.data.userId === null) {
 			this.errors = errorMessage.getErrorMessage({
@@ -589,11 +590,24 @@ function getById(id) {
     .exec();
 }
 
+/*
+ * @params {String} [id] - video id
+ * @return {Object} - video coordinates
+ */
+function getVideoLocationById(id) {
+	return VideoModel
+		.findById(id)
+		.select('loc')
+		.lean()
+		.exec();
+}
+
 Videos.prototype.getRecentVideos 				= getRecentVideos;
 Videos.prototype.getVideoByCategory 		= getVideoByCategory;
 Videos.prototype.search 								= search;
 Videos.prototype.getVideosByFollow 			= getVideosByFollow;
 Videos.prototype.findVideoBySeoKeyword 	= findVideoBySeoKeyword;
 Videos.prototype.getById 								= getById;
+Videos.prototype.getVideoLocationById			= getVideoLocationById;
 
 module.exports = new Videos();

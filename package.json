@@ -48,6 +48,7 @@
     "file-loader": "^0.8.5",
     "gm": "^1.23.0",
     "google-auth-library": "^0.9.8",
+    "google-maps": "^3.2.1",
     "hsts": "^1.0.0",
     "html": "0.0.10",
     "isomorphic-fetch": "2.2.1",

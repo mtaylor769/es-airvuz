@@ -1,12 +1,16 @@
 require('bootstrap-tagsinput');
 require('../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css');
-
 var AmazonConfig  = require('./config/amazon.config.client'),
     identity      = require('./services/identity'),
     categories    = require('./services/category'),
     dialogs       = require('./services/dialogs'),
     utils         = require('./services/utils'),
-    AVEventTracker = require('./avEventTracker');
+    identity      = require('./services/identity'),
+    categories    = require('./services/category'),
+    dialogs       = require('./services/dialogs'),
+    utils         = require('./services/utils'),
+    AVEventTracker = require('./avEventTracker'),
+    GoogleMap = require('../scripts/services/map');
 
 /**k
  * Templates
@@ -31,6 +35,10 @@ var $uploadPage,
     isCustomThumbnail = false,
     isPublishing = false,
     uploadSource; // use to determine if upload is local, youtube, or vimeo
+
+var mapMarkers = [];
+
+
 
 function appendErrorMessage(errorArray) {
   errorArray.forEach(function(error) {
@@ -197,6 +205,8 @@ function renderStep(step, video) {
             // enter, commas, and space
             confirmKeys: [13, 188, 32]
           });
+
+          initMap(document.getElementById('map'));
         });
       });
       break;
@@ -230,6 +240,14 @@ function bindEvents() {
       return false;
     }
     removeErrorMessage();
+
+    var videoCoordsObj = {
+      type: 'Point',
+      name: $uploadPage.find('#location').val(),
+      address: GoogleMap.getMarkerCoordinates().address,
+      coordinates: [GoogleMap.getMarkerCoordinates().lng, GoogleMap.getMarkerCoordinates().lat],
+      googlePlaceId: GoogleMap.getMarkerCoordinates().placeId
+    };
     
     var params = {
       title             : $uploadPage.find('#title').val(),
@@ -244,7 +262,8 @@ function bindEvents() {
       customThumbnail   : customThumbnailName,
       hashName          : currentUploadFile.hashName,
       description       : $uploadPage.find('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
-      userId            : identity._id
+      userId            : identity._id,
+      loc               : videoCoordsObj
     };
 
     if ($tags.val()) {
@@ -278,7 +297,6 @@ function bindEvents() {
       };
 
       _trackUploadEvent(eventName, eventNameAny, eventParams);
-
 
     }).fail(function(response) {
       if (response.status === 400) {
@@ -566,6 +584,15 @@ function _trackUploadEvent(eventName, eventNameAny, eventParams) {
   eventParams.eventName = eventNameAny;
   AVEventTracker(eventParams);
   fbq('trackCustom', eventName);
+}
+
+function initMap(dom) {
+  GoogleMap.init({
+    dom: dom,
+    showCurrentLocation: true,
+    enableDrawingMode: false,
+    editMode: false
+  });
 }
 
 function initialize() {

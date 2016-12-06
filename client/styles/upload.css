@@ -46,3 +46,15 @@
     width: 100%;
     margin-bottom: 20px;
 }
+
+#upload-page #map {
+    height: 400px;
+}
+
+#upload-page .loading-comment-spinner {
+    position: absolute;
+    z-index: 500;
+    left: 40%;
+    top: 50%;
+    font-size:25px;
+}

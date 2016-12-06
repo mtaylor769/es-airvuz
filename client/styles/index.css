@@ -1549,6 +1549,34 @@ End user profile CSS
   color: #0ab7ff;
 }
 
+/*
+ * edit-video-modal
+ */
+#updated-location-lists {
+  position:absolute;
+}
+
+#location-list {
+  margin-bottom: 40px;
+}
+
+#updated-location-lists > span {
+  margin-right: 5px;
+  display: inline-block;
+}
+
+/* Overwrite z-index due to bootstrap modal issue */
+.pac-container {
+  z-index: 1051 !important;
+}
+
+#edit-video-modal .loading-comment-spinner {
+  position: absolute;
+  z-index: 500;
+  left: 40%;
+  top: 50%;
+  font-size:25px;
+}
 
 /*
 Video Player Slick theme
