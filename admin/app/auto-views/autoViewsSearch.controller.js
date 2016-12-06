@@ -11,7 +11,7 @@
 
     function searchForAutoViews() {
       var videoId = vm.videoId;
-      $http.get('/api/auto-views/' + videoId).then(function(response) {
+      $http.get('/api/ava/' + videoId).then(function(response) {
         vm.views = response.data;
       }, function(error) {
         dialog.serverError();
@@ -19,7 +19,7 @@
     }
 
     function setToComplete(id) {
-      $http.put('/api/auto-views/' + id).then(function(response) {
+      $http.put('/api/ava/' + id).then(function(response) {
         vm.views.forEach(function(view) {
           if(view._id === id) {
             view.isComplete = true;

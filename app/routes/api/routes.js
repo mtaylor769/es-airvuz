@@ -432,12 +432,12 @@ apiRouter.route('/api/custom-carousel/:id')
 /**
  * /api/auto-views
  */
-apiRouter.route('/api/auto-views')
-	.post(autoViews.create)
-	.get(autoViews.getAll);
+apiRouter.route('/api/ava')
+	.post(protect, autoViews.create)
+	.get(protect,autoViews.getAll);
 
-apiRouter.route('/api/auto-views/:id')
-	.get(autoViews.getByVideoId)
-	.put(autoViews.setComplete);
+apiRouter.route('/api/ava/:id')
+	.get(protect,autoViews.getByVideoId)
+	.put(protect,autoViews.setComplete);
 
 module.exports = apiRouter;

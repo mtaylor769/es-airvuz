@@ -11,7 +11,7 @@
 
     function saveAutoView() {
       console.log(vm.view);
-      $http.post('/api/auto-views', vm.view).then(function(response) {
+      $http.post('/api/ava', vm.view).then(function(response) {
         vm.view = {};
         vm.view.origin = 'admin';
       }, function(error) {
