@@ -1,5 +1,6 @@
 var CronCrud = require('../../persistence/crud/cron'),
-    EventTrackingCrud	  = require('../../persistence/crud/events/eventTracking');
+    EventTrackingCrud = require('../../persistence/crud/events/eventTracking'),
+    AutoView = require('../../persistence/crud/autoView1-0-0');
 
 function Cron() {}
 
@@ -27,6 +28,20 @@ function runTrending(req, res) {
     });
 }
 
+function applyAutoViews(req, res) {
+    var daysAhead = req.params.daysAhead || 0;
+    var params = [];
+    params.daysAhead = daysAhead;
+    AutoView.applyAutoViews(params)
+        .then(function () {
+            res.sendStatus(200);
+        })
+        .catch(function () {
+            res.sendStatus(500);
+        });
+}
+
 Cron.prototype.runTrending = runTrending;
+Cron.prototype.applyAutoViews = applyAutoViews;
 
 module.exports = new Cron();

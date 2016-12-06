@@ -1,0 +1,20 @@
+<div layout-padding>
+    <h2>Create an Auto View</h2>
+    <div layout-padding>
+        <md-input-container class="md-block">
+            <input type="text" ng-model="vm.view.videoId" placeholder="Video Id">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <input type="text" ng-model="vm.view.numberOfDays" placeholder="Number of Days">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <input type="text" ng-model="vm.view.numberOfViews" placeholder="Number of Views">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <md-select ng-model="vm.view.probability" placeholder="Select Probability">
+                <md-option ng-repeat="prob in vm.probs" ng-value="prob">{{prob}}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-button class="md-raised md-warn" ng-click="vm.saveAutoView()">submit</md-button>
+    </div>
+</div>

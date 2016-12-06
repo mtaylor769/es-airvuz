@@ -266,6 +266,29 @@
         controller: 'ratingController',
         controllerAs: 'vm'
       })
+      .state('autoViews', {
+        url: '/admin/auto-views',
+        abstract: true,
+        template: '<div ui-view></div>'
+      })
+      .state('autoViews.create', {
+        url: '/create',
+        templateUrl: '/admin/app/auto-views/templates/auto-views-create.html',
+        controller: 'autoViewsCreateController',
+        controllerAs: 'vm'
+      })
+      .state('autoViews.list', {
+        url: '/list',
+        templateUrl: '/admin/app/auto-views/templates/auto-views-list.html',
+        controller: 'autoViewsListController',
+        controllerAs: 'vm'
+      })
+      .state('autoViews.search', {
+        url: '/search',
+        templateUrl: '/admin/app/auto-views/templates/auto-views-search.html',
+        controller: 'autoViewsSearchController',
+        controllerAs: 'vm'
+      })
       .state('customCarousel', {
         url: '/admin/carousel',
         abstract: true,

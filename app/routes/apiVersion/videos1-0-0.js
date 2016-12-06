@@ -22,6 +22,9 @@ try {
     var usersCrud1_0_0              = require('../../persistence/crud/users1-0-0');
     var SocialCrud                  = require('../../persistence/crud/socialMediaAccount');
     var commentCrud1_0_0            = require('../../persistence/crud/comment1-0-0');
+
+    var autoView                    = require('../../persistence/crud/autoView1-0-0');
+
     var md5                         = require('md5');
     var viewManager                 = require('../../views/manager/viewManager');
 
@@ -234,19 +237,21 @@ function _cleanUpReupload(body) {
  */
 function post (req, res) {
     Promise.resolve(req.body)
-      .then(_uploadCustomThumbnail)
-      .then(function () {
-          return videoCrud1_0_0.create(req.body);
-      })
-      .then(function (video) {
-          res.json(video);
-      })
-      .catch(function (error) {
-          if (error.length) {
-              return res.status(400).json({error: error});
-          }
-          res.sendStatus(500);
-      });
+
+        .then(_uploadCustomThumbnail)
+        .then(function () {
+            return videoCrud1_0_0.create(req.body);
+        })
+        .then(function (video) {
+            autoView.autoCreate( { videoId: video._id } );
+            res.json(video);
+        })
+        .catch(function (error) {
+            if (error.length) {
+                return res.status(400).json({error: error});
+            }
+            res.sendStatus(500);
+        });
 }
 /**
  * route: GET /api/video/:id

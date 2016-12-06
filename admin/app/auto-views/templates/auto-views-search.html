@@ -1,0 +1,42 @@
+<div layout-padding>
+    <h2>Auto Views Search By Id (Will pull in all autoviews created for video provided)</h2>
+    <div layout="row">
+        <md-input-container flex>
+            <input type="text" placeholder="Video Id" ng-model="vm.videoId">
+        </md-input-container>
+        <div layout="column">
+            <md-button class="md-raised md-warn" ng-click="vm.searchForAutoViews()">Search</md-button>
+        </div>
+    </div>
+    <div>
+        <md-card ng-repeat="view in vm.views">
+            <div layout-padding layout="row">
+                <div flex="50">
+                    <div>
+                        <p>Video Title : {{view.videoId.title}}</p>
+                        <p>Number of Days : {{view.numberOfDays}}</p>
+                        <p>Number of Views : {{view.numberOfViews}}</p>
+                        <p>Probability : {{view.probability}}</p>
+                    </div>
+                </div>
+                <div flex>
+                    <img src="{{vm.amazonBucket}}{{view.videoId.thumbnailPath}}" width="271px">
+                </div>
+                <div layout="column" ng-hide="view.isComplete">
+                    <md-button class="md-raised md-warn" ng-click="vm.setToComplete(view._id)">Set to Complete</md-button>
+                    <div>
+                        <p ng-show="view.createdDate">Created Date : {{view.createdDate | date}}</p>
+                        <p>Created By : {{view.origin}}</p>
+                    </div>
+                </div>
+                <div layout="column" ng-show="view.isComplete">
+                    <md-button disabled class="md-raised">Completed</md-button>
+                    <div>
+                        <p ng-show="view.createdDate">Created Date : {{view.createdDate | date}}</p>
+                        <p>Created By : {{view.origin}}</p>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>
