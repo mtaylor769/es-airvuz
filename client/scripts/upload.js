@@ -266,8 +266,6 @@ function bindEvents() {
       loc               : videoCoordsObj
     };
 
-    console.log('params: ', params);
-
     if ($tags.val()) {
       params.tags = $tags.val().split(',');
     }
@@ -466,7 +464,7 @@ function bindEvents() {
   function onUploadAgain() {
     isCustomThumbnail = false;
     customThumbnailName = null;
-    renderStep();
+    renderStep(1);
   }
 
   function onBeforeUnload() {
