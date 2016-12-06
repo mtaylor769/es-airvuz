@@ -825,7 +825,7 @@ function getVideoLocation(req, res) {
     var videoId = req.params.id;
 
     videoCrud1_0_0
-        .getById(videoId)
+        .getVideoLocationById(videoId)
         .then(function(video) {
             res.send(video);
         })

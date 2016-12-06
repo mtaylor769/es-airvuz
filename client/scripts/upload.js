@@ -207,8 +207,6 @@ function renderStep(step, video) {
           });
 
           initMap(document.getElementById('map'));
-
-          window.map = GoogleMap;
         });
       });
       break;
@@ -231,7 +229,6 @@ function renderStep(step, video) {
 }
 
 function bindEvents() {
-  renderStep(2);
   function _isVimeo(url) {
     return url.indexOf('vimeo.com') > -1;
   }
@@ -243,6 +240,14 @@ function bindEvents() {
       return false;
     }
     removeErrorMessage();
+
+    var videoCrdsObj = {
+      type: 'Point',
+      name: $uploadPage.find('#location').val(),
+      address: GoogleMap.getMarkerCoordinates().address,
+      coordinates: [GoogleMap.getMarkerCoordinates().lng, GoogleMap.getMarkerCoordinates().lat],
+      googlePlaceId: GoogleMap.getMarkerCoordinates().placeId
+    };
     
     var params = {
       title             : $uploadPage.find('#title').val(),
@@ -258,7 +263,7 @@ function bindEvents() {
       hashName          : currentUploadFile.hashName,
       description       : $uploadPage.find('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
       userId            : identity._id,
-      videoCoordinates  : { type: 'Point', coordinates: [GoogleMap.getMarkerCoordinates()] }
+      loc               : videoCrdsObj
     };
 
     console.log('params: ', params);
@@ -294,7 +299,6 @@ function bindEvents() {
       };
 
       _trackUploadEvent(eventName, eventNameAny, eventParams);
-
 
     }).fail(function(response) {
       if (response.status === 400) {

@@ -212,13 +212,12 @@ var videoSchema = mongoose.Schema({
 	 * coordinates: an array of points determined by the "type" field [<longitude>, <latitude>] (order matters)
 	 * index: Indexes this schema in 2dsphere format (allows mongodb and mongoose to query users based on geographic inclusion, intersection, and proximity)
 	 */
-	videoCoordinates: {
-		type: String,
+	loc: {
+		type: {type: String},
 		name: String,
 		address: String,
 		coordinates: [Number],
-		placeId: String,
-		index: '2dsphere'
+		googlePlaceId: String
 	},
 
 	//speed: {type: Number, default: 1},
@@ -248,6 +247,8 @@ var videoSchema = mongoose.Schema({
 	});
 
 //video_schema.index({VideoLocation: 1});
+
+videoSchema.index({'loc': '2dsphere'});
 
 module.exports = {
 	connectionName	: "main",

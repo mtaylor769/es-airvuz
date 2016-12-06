@@ -18,10 +18,12 @@ var longitude = -94.636230,
     map = null,
     locations = [],
     mapMarkers = [],
+    coords = {},
     infoWindow,
     geocoder,
     places,
-    mapParams;
+    mapParams,
+    videoId;
 
 /*
  * initialize the map
@@ -43,27 +45,60 @@ function init(params) {
     GoogleMapsLoader.load(function() {
         _loadMap();
 
+        $('.loading-comment-spinner').show();
+
         if (mapParams.showCurrentLocation) {
-            $('.loading-comment-spinner').show();
-            _getCurrentCoordinates()
-                .then(function(params) {
-                    $('.loading-comment-spinner').hide();
-                    updateMap(params);
-                    mapParams.gpsEnabled = true;
-                })
-                .fail(function(err) {
-                    var string = '&nbsp; ' + err.message + '&nbsp; Click on map to pinpoint where the video was recorded.';
-
-                    _displayErrorMsg(true, string);
-
-                    mapParams.gpsEnabled = false;
-                });
+            if (mapParams.editMode) {
+                get(videoId)
+                    .then(function(resp) {
+                        if (typeof resp.loc !== 'undefined') {
+                            $('.loading-comment-spinner').hide();
+                            disableGeocoding = true;
+                            updateMap(resp.loc.coordinates);
+                            canUpdateLoc = true;
+                            mapParams.showLocLists = false;
+                            _setInfoWindow({
+                                formatted_address: resp.loc.address,
+                                place_id: resp.loc.googlePlaceId
+                            });
+                        } else {
+                            _getCurrentVideoCoords();
+                        }
+                    })
+                    .fail(function(err) {
+                        console.log('There was an error getting the video coordinates.');
+                    });
+            } else {
+                _getCurrentVideoCoords();
+            }
         }
     });
 
     if (mapParams.enableDrawingMode) {
         displayDrawingMode();
     }
+}
+
+/*
+ * get the current video coordinates
+ * @private
+ */
+function _getCurrentVideoCoords() {
+    _getCurrentCoordinates()
+        .then(function(params) {
+            updateMap(params);
+            mapParams.gpsEnabled = true;
+        })
+        .fail(function(err) {
+            var string = '&nbsp; ' + err.message + '&nbsp; Click on map to pinpoint where the video was recorded.';
+
+            _displayErrorMsg(true, string);
+
+            mapParams.gpsEnabled = false;
+        })
+        .always(function() {
+            $('.loading-comment-spinner').hide();
+        });
 }
 
 /*
@@ -163,8 +198,6 @@ function _bindEvents() {
  * @params {Element} [resultsMap] - the map element
  */
 function geocode(geocoder, resultsMap) {
-    console.log('geocoding ...');
-
     var location = $('#location').val();
 
     _clearMapMarkers();
@@ -199,7 +232,6 @@ function _showLocationLists(params) {
         $('#location-list').removeClass('hidden');
 
         for(var i = 0; i < params.length; i++) {
-            console.log(params[i].formatted_address);
             $('#location-list').find('#updated-location-lists').append("<span class='tag label label-info' data-place-id="+params[i].place_id+">"+params[i].formatted_address+"</span>");
         }
     } else {
@@ -307,6 +339,11 @@ function _setInfoWindow(params) {
         stringLoc += "<div class='text-center'><hr><a href='#' id='update-loc-link'>Update my location</a></div>";
     }
 
+    _setMarkerCooordinates({
+        address: params.formatted_address,
+        placeId: params.place_id
+    });
+
     infoWindow.setContent(stringLoc);
 }
 
@@ -336,13 +373,18 @@ function displayDrawingMode() {
 }
 
 /*
- * @params {Object} [pos] the long/lat object
+ * @params {Object/Array} [pos] the long/lat object
  * @description update marker position
  */
 function updateMap(pos) {
     if (typeof pos !== 'undefined') {
-        latitude = pos.coords.latitude;
-        longitude = pos.coords.longitude;
+        if (pos instanceof Array) {
+            longitude = pos[0];
+            latitude = pos[1];
+        } else {
+            latitude = pos.coords.latitude;
+            longitude = pos.coords.longitude;
+        }
     }
 
     placeMarkerAndPanTo({lat: latitude, lng: longitude}, map);
@@ -377,35 +419,25 @@ function _getCurrentCoordinates() {
 }
 
 /*
+ * set marker coordinates
+ * @params {Object}
+ */
+function _setMarkerCooordinates(params) {
+    $.extend(coords, params);
+}
+
+/*
  * get marker coordinates
  * @return {Object}
  */
 function getMarkerCoordinates() {
-    var coords;
-    switch (mapMarkers.length) {
-        case 0:
-            coords = {
-                lat: latitude,
-                lng: longitude
-            };
-            break;
-        case 1:
-            coords = {
-                lat: mapMarkers[0].getPosition().lat(),
-                lng: mapMarkers[0].getPosition().lng()
-            };
-            break;
-        default:
-            coords = [];
-            array.forEach(mapMarkers, function(marker) {
-                coords.push({
-                    lat: marker.getPosition().lat,
-                    lng: marker.getPosition().lng
-                });
-            });
-            break;
+    if (mapMarkers.length === 0) {
+        coords.lat = latitude;
+        coords.lng = longitude;
+    } else {
+        coords.lat = mapMarkers[0].getPosition().lat();
+        coords.lng = mapMarkers[0].getPosition().lng();
     }
-
     return coords;
 }
 
@@ -454,21 +486,35 @@ function hasMarkerOnMap() {
 /*
  * get the map
  * @params {Number} [videoId]
+ * @returns Promise
  */
 function get(videoId) {
+    var dfd = $.Deferred();
     $.ajax({
         type: 'GET',
-        url: '/api/videos/'+videoId+'/location'
-    }).then(function(resp) {
-        console.log(resp);
-    }).catch(function(err) {
-        // do something
+        url: '/api/videos/'+videoId+'/location',
+        success : function(resp) {
+            dfd.resolve(resp);
+        },
+        error: function (err) {
+            dfd.reject(err);
+        }
     });
 
+    return dfd.promise();
+}
+
+/*
+ * set the videoId
+ * @params {Number} [id]
+ */
+function setVideoId(id) {
+    videoId = id;
 }
 
 GoogleMapService.init = init;
 GoogleMapService.get = get;
+GoogleMapService.setVideoId = setVideoId;
 GoogleMapService.getMarkerCoordinates = getMarkerCoordinates;
 GoogleMapService.reload = reload;
 GoogleMapService.hasMarkerOnMap = hasMarkerOnMap;

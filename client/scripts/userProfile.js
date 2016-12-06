@@ -220,6 +220,8 @@ function bindEvents() {
 
   function onVideoEditClick() {
     editVideo($(this).data('videoId'));
+
+    GoogleMap.setVideoId($(this).data('videoId'));
   }
 
   function onVideoDeleteClick() {
@@ -494,6 +496,14 @@ function editProfile() {
 
 function onSaveVideoEdit() {
 
+  var videoCrdsObj = {
+    type: 'Point',
+    name: $('#location').val(),
+    address: GoogleMap.getMarkerCoordinates().address,
+    coordinates: [GoogleMap.getMarkerCoordinates().lng, GoogleMap.getMarkerCoordinates().lat],
+    googlePlaceId: GoogleMap.getMarkerCoordinates().placeId
+  };
+
   var params = {
     _id                   : currentEditVideo._id,
     title                 : $('#title').val(),
@@ -507,7 +517,8 @@ function onSaveVideoEdit() {
     isCustomThumbnail     : isCustomThumbnail,
     hashName              : currentEditVideo.videoPath.split('/')[0],
     customThumbnail       : customThumbnailName,
-    userId                : identity._id
+    userId                : identity._id,
+    loc                   : videoCrdsObj
   };
 
   if ($('#tags').val()) {
