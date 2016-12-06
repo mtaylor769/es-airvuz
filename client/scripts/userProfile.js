@@ -1103,10 +1103,9 @@ function displayHireMeModal() {
 function sendHireMeEmail() {
   var $hireMeModal = $('#hire-me-modal');
   var hireData = {
-    profileUser       : profileUser,
-    name              : $($hireMeModal).find('#hire-name').val(),
-    email             : $($hireMeModal).find('#hire-email').val(),
-    message           : $($hireMeModal).find('#project-description').val()
+    name              : $hireMeModal.find('#hire-name').val(),
+    email             : $hireMeModal.find('#hire-email').val(),
+    message           : $hireMeModal.find('#project-description').val()
   };
 
   $hireMeModal
@@ -1114,9 +1113,8 @@ function sendHireMeEmail() {
 
   $.ajax({
     type: 'POST',
-    url: '/api/users/hireme',
-    data: JSON.stringify(hireData),
-    contentType : 'application/json'
+    url: '/api/users/' + profileUser._id + '/hire',
+    data: hireData
   })
     .done(function(response){
       // open dialog that says message has been sent or show message
