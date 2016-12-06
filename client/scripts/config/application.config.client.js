@@ -18,7 +18,6 @@ if (IS_PRODUCTION) {
   googleTrackingId = 'UA-80777160-1';
   googleTagManagerId = 'GTM-KWVNMW';
   googleMapsKey    = 'AIzaSyCeB8e-WQUsrTI0qGFj2syiubFvUrASExY';
-  // googleMapsKey    = 'AIzaSyCanXc5K1bzsKQPTJE4HyEfpDIel3NSWTQ';
 }
 
 module.exports = {
