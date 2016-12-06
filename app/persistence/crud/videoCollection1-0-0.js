@@ -8,7 +8,6 @@ try {
   var generateShortId         = require('../../utils/generateShortId');
   var urlFriendlyString       = require('../../utils/urlFriendlyString');
 
-
   var _                     = require('lodash');
   var moment                = require('moment');
   var Promise               = require('bluebird');
@@ -19,13 +18,6 @@ try {
 }
 
 function VideoCollection() {}
-
-function updateDateWithMoment(videos) {
-    return videos.map(function (video) {
-        video.uploadDate = moment(new Date(video.uploadDate)).fromNow();
-        return video;
-    });
-}
 
 function getVideo(type) {
     return VideoCollectionModel.findOne({name: type, user: null}).lean().exec()
@@ -120,27 +112,21 @@ function getCollectionVideos(userId, name) {
         });
 }
 
-function updateCollection(params) {
-    return VideoCollectionModel.findOne({user: params.user, name: params.name}).exec()
-        .then(function(videoCollection) {
-            var videoId = JSON.stringify(params.video);
-            var videoCollectionString = JSON.stringify(videoCollection);
-            var found = videoCollectionString.indexOf(videoId);
-            logger.debug(found);
-            if(found !== -1){
-                return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$pull: {videos: params.video}}, {safe: true}).exec();
-            } else {
-                return VideoCollectionModel.findOneAndUpdate({user: params.user, name: params.name}, {$push: {videos: params.video}}, {safe: true, upsert: true}).exec();
-            }
-        })
+function _updateShowcaseCollection(params, type) {
+    var updateQuery = {};
+
+    updateQuery[type] = {videos: params.video};
+    return VideoCollectionModel.findOneAndUpdate({user: params.user, name: 'showcase'}, updateQuery).exec();
 }
 
-function addToCollectionVideos(userId, name, video) {
-    return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$push: {videos: video}}, {safe: true, upsert: true}).exec();
+function addVideoToUserShowcase(params) {
+  // $addToSet should only add if it exist instead of $push
+  return _updateShowcaseCollection(params, '$addToSet');
 }
 
-function removeFromCollectionVideos(userId, name, video) {
-    return VideoCollectionModel.findOneAndUpdate({user: userId, name: name}, {$pull: {videos: video}},{safe: true}).exec();
+function removeVideoFromUserShowcase(params) {
+  // $pull will pull all matches
+  return _updateShowcaseCollection(params, '$pull');
 }
 
 function getCurrentCustomCarousel() {
@@ -321,17 +307,14 @@ function updateCustom(carouselId, carouselUpdates) {
     });
 }
 
-function removeCustom(carouselId) {
-  return VideoCollectionModel.findByIdAndRemove(carouselId).exec();
-}
-
 VideoCollection.prototype.getFeaturedVideos           = getFeaturedVideos;
 VideoCollection.prototype.getStaffPickVideos          = getStaffPickVideos;
 VideoCollection.prototype.getVideo                    = getVideo;
 VideoCollection.prototype.updateVideos                = updateVideos;
 VideoCollection.prototype.getCollectionVideos         = getCollectionVideos;
 VideoCollection.prototype.createVideoCollection       = createVideoCollection;
-VideoCollection.prototype.updateCollection            = updateCollection;
+VideoCollection.prototype.addVideoToUserShowcase      = addVideoToUserShowcase;
+VideoCollection.prototype.removeVideoFromUserShowcase = removeVideoFromUserShowcase;
 VideoCollection.prototype.findByUserId                = findByUserId;
 VideoCollection.prototype.delete                      = remove;
 VideoCollection.prototype.createCustomCarousel        = createCustomCarousel;

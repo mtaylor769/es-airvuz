@@ -178,18 +178,6 @@ function getVideosByUser(req, res) {
     }
 }
 
-function getShowcaseByUser(req, res) {
-
-    var version = req.query.apiVer || defaultVer;
-
-    if (version === "1.0.0") {
-        videos1_0_0.getShowcaseByUser(req, res);
-    }
-    else {
-        incorrectVer(req,res);
-    }
-}
-
 function getTopSixVideos(req, res) {
 
     var version = req.query.apiVer || defaultVer;
@@ -296,7 +284,6 @@ Video.prototype.showcaseUpdate = showcaseUpdate;
 Video.prototype.reportVideo = reportVideo;
 Video.prototype.videoInfoCheck = videoInfoCheck;
 Video.prototype.getVideosByUser = getVideosByUser;
-Video.prototype.getShowcaseByUser = getShowcaseByUser;
 Video.prototype.getTopSixVideos = getTopSixVideos;
 Video.prototype.getVideoCount = getVideoCount;
 Video.prototype.getFollowCount = getFollowCount;

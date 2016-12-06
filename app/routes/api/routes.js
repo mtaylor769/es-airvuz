@@ -110,8 +110,12 @@ apiRouter.route('/api/users/:id/following')
 apiRouter.route('/api/users/:id/video-count')
 	.get(videos.getVideoCount);
 
+apiRouter.route('/api/users/:id/showcase/:videoId')
+  .put(protect, videoCollection.addVideoToUserShowcase)
+  .delete(protect, videoCollection.removeVideoFromUserShowcase);
+
 apiRouter.route('/api/users/:id/showcase')
-  .get(videos.getShowcaseByUser);
+  .get(videoCollection.getUserShowcase);
 
 
 /**
@@ -301,9 +305,6 @@ apiRouter.route('/api/featured-videos')
 apiRouter.route('/api/staff-pick-videos')
   .get(videoCollection.getStaffPickVideos)
   .put(protect, videoCollection.updateStaffPickVideos);
-
-apiRouter.route('/api/video-collection/update-collection')
-  .post(protect, videoCollection.updateCollectionVideos);
 
 /**
  * /api/upload
