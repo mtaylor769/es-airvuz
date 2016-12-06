@@ -11,15 +11,6 @@
                     <input type="text" class="form-control" id="location" value="{videoLocation}" placeholder="Video location">
                 </div>
                 <div class="form-group hidden" id="location-list">
-                    <style>
-                        {!FIX: bootstrap modal has higher z-index!}
-                        .modal{
-                            z-index: 20;
-                        }
-                        .modal-backdrop{
-                            z-index: 10;
-                        }​
-                    </style>
                     <label for="location">Are you referring to any of these locations? (Select one to update or click on map to mark your location)</label><br>
                     <div id="updated-location-lists"></div>
                 </div>

@@ -1565,13 +1565,11 @@ End user profile CSS
   display: inline-block;
 }
 
-#edit-video-modal > .modal {
-  z-index: 20;
+/* Overwrite z-index due to bootstrap modal issue */
+.pac-container {
+  z-index: 1051 !important;
 }
 
-#edit-video-modal > .modal-backdrop {
-  z-index: 20;
-}
 #edit-video-modal .loading-comment-spinner {
   position: absolute;
   z-index: 500;
