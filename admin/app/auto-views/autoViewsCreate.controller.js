@@ -10,7 +10,6 @@
   function autoViewsCreateController($http, dialog) {
 
     function saveAutoView() {
-      console.log(vm.view);
       $http.post('/api/ava', vm.view).then(function(response) {
         vm.view = {};
         vm.view.origin = 'admin';
@@ -23,7 +22,7 @@
     var vm = this;
     vm.view = {};
     vm.view.origin = 'admin';
-    vm.probs = ['0.2', '0.3', '0.4', '0.5', '0.6', '0.7'];
+    vm.probs = ['0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8'];
 
     vm.saveAutoView = saveAutoView;
   }
