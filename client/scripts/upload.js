@@ -241,7 +241,7 @@ function bindEvents() {
     }
     removeErrorMessage();
 
-    var videoCrdsObj = {
+    var videoCoordsObj = {
       type: 'Point',
       name: $uploadPage.find('#location').val(),
       address: GoogleMap.getMarkerCoordinates().address,
@@ -263,7 +263,7 @@ function bindEvents() {
       hashName          : currentUploadFile.hashName,
       description       : $uploadPage.find('#description').val().replace(/(?:\r\n|\r|\n)/g, '<br />'),
       userId            : identity._id,
-      loc               : videoCrdsObj
+      loc               : videoCoordsObj
     };
 
     console.log('params: ', params);
