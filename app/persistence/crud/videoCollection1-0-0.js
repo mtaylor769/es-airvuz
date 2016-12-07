@@ -103,7 +103,7 @@ function getCollectionVideos(userId, name) {
     return VideoCollectionModel
         .findOne({user: userId, name: name})
         .populate('user', 'userNameDisplay userNameUrl profilePicture')
-        .populate('videos', 'title description duration videoPath thumbnailPath viewCount uploadDate tas likeCount commentCount categories')
+        .populate('videos', 'title description duration videoPath thumbnailPath viewCount uploadDate tags likeCount commentCount categories')
         .exec()
         .catch(function(err) {
             return err;
