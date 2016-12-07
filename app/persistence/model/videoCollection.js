@@ -56,7 +56,7 @@ var videoCollectionSchema = mongoose.Schema({
    */
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User'
+    ref: 'Users'
   },
   /*
    * Videos included in the collection
