@@ -202,22 +202,6 @@ function bindEvents() {
     .on('click', '#btn-save-video-edit', onSaveVideoEdit)
     .on('click', '#location-list span', onUpdatedLocationList);
 
-  function showcaseButton() {
-    var buttonDiv = $(this).parent();
-    var videoId = buttonDiv.attr('data-videoid');
-    var status = buttonDiv.attr('data-showcase');
-    $(this).remove();
-    if(status === 'true') {
-      $(buttonDiv).append(removeHtml);
-      $(buttonDiv).attr('data-showcase', 'false');
-      removeVideoFromShowcase(videoId);
-    } else {
-      $(buttonDiv).append(okHtml);
-      $(buttonDiv).attr('data-showcase', 'true');
-      addVideoToShowcase(videoId);
-    }
-  }
-
   function onVideoEditClick() {
     editVideo($(this).data('videoId'));
 
@@ -252,33 +236,42 @@ function doneEditShowcase(){
   location.reload();
 }
 
+function showcaseButton() {
+  var $buttonDiv = $(this).parent();
+  var videoId = $buttonDiv.attr('data-videoid');
+  var status = $buttonDiv.attr('data-showcase');
+  $(this).remove();
+  if(status === 'true') {
+    removeVideoFromShowcase(videoId)
+      .done(function () {
+        $buttonDiv.append(removeHtml);
+        $buttonDiv.attr('data-showcase', 'false');
+      });
+  } else {
+    addVideoToShowcase(videoId)
+      .done(function () {
+        $buttonDiv.append(okHtml);
+        $buttonDiv.attr('data-showcase', 'true');
+      });
+  }
+}
+
 function editShowcase() {
+  var $showcase = $('.showcase');
+
   $('.edit-showcase-btn').toggle();
   $('.edit-done-btn').toggle();
-  $('.showcase').each(function(i, link) {
-    var isShowcase = $(link).attr('data-showcase');
+
+  $showcase.each(function(i, link) {
+    var $link = $(link);
+    var isShowcase = $link.attr('data-showcase');
     if(isShowcase === 'true') {
-      $(link).append(okHtml);
+      $link.append(okHtml);
     } else {
-      $(link).append(notSelectedHtml);
+      $link.append(notSelectedHtml);
     }
   });
-  var showcase = ($('.showcase')).children();
-  $(showcase).on('click', function() {
-    var buttonDiv = $(this).parent();
-    var videoId = buttonDiv.attr('data-videoid');
-    var status = buttonDiv.attr('data-showcase');
-    $(this).remove();
-    if(status === 'true') {
-      $(buttonDiv).append(removeHtml);
-      $(buttonDiv).attr('data-showcase', 'false');
-      removeVideoFromShowcase(videoId);
-    } else {
-      $(buttonDiv).append(okHtml);
-      $(buttonDiv).attr('data-showcase', 'true');
-      addVideoToShowcase(videoId);
-    }
-  });
+  $showcase.children().on('click', showcaseButton);
 
   $('.edit-done-btn').on('click', doneEditShowcase);
 }
