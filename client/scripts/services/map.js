@@ -16,7 +16,6 @@ var longitude = -94.636230,
     canUpdateLoc = false,
     mapPlaceHolder = null,
     map = null,
-    locations = [],
     mapMarkers = [],
     coords = {},
     infoWindow,
@@ -119,8 +118,6 @@ function _loadMap() {
     _loadLibraries();
 
     _bindEvents();
-
-    // displayDrawingMode(); TODO: later
 }
 
 /*
@@ -228,11 +225,17 @@ function geocode(geocoder, resultsMap) {
  * @description show a list of suggested locations
  */
 function _showLocationLists(params) {
+    var obj = {};
     if (params.length) {
         $('#location-list').removeClass('hidden');
 
         for(var i = 0; i < params.length; i++) {
-            $('#location-list').find('#updated-location-lists').append("<span class='tag label label-info' data-place-id="+params[i].place_id+">"+params[i].formatted_address+"</span>");
+            obj.placeId = params[i].place_id;
+            obj.coords = {
+                lat: params[i].geometry.location.lat(),
+                lng: params[i].geometry.location.lng()
+            };
+            $('#location-list').find('#updated-location-lists').append("<span class='tag label label-info' data-object="+JSON.stringify(obj)+">"+params[i].formatted_address+"</span>");
         }
     } else {
         $('#location-list').addClass('hidden');
@@ -286,7 +289,7 @@ function placeMarkerAndPanTo(latLng, map) {
     });
 
     if (!mapParams.gpsEnabled) {
-        map.setZoom(10);
+        map.setZoom(12);
     }
 
     map.panTo(latLng);
@@ -518,5 +521,6 @@ GoogleMapService.setVideoId = setVideoId;
 GoogleMapService.getMarkerCoordinates = getMarkerCoordinates;
 GoogleMapService.reload = reload;
 GoogleMapService.hasMarkerOnMap = hasMarkerOnMap;
+GoogleMapService.updateMap = updateMap;
 
 module.exports = GoogleMapService;
