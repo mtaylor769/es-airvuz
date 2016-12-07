@@ -33,42 +33,31 @@ var ViewManager = function() {
 /*
  * Read a dust file, compile, and load source to dust.
  */
-ViewManager.prototype._loadSource = function(params) {
-	logger.debug("_loadSource: params:" + JSON.stringify(params));
-	
-	params.partials = params.partials || [];
-	
-	var compiled			= null;
-	var index					= 0;
-	var partial				= null;
-	var partialName		= "";
-	var partialPath		= "";
-	var partialSource = "";
-	var size					= params.partials.length;
-	
-	// load partials
-	if(size > 0) {
-		logger.debug("_loadSource: loading partials ...");
-		
-		for(index = 0; index < size; index++) {
-			partial = params.partials[index];
-			partialName = partial.partialName;
-			partialPath = partial.partialPath;
-			
-			
-			partialSource = fs.readFileSync(partialPath);
-			compiled			= dust.compile(new String(partialSource), partialName);
-			dust.loadSource(compiled);			
-			
-			logger.debug("_loadSource: loading partials:" + partialPath);
-			
-		}
-	}	
-	
-	// load primary view
-	var source      = fs.readFileSync(params.viewPath);
-	var compiled    = dust.compile(new String(source), params.viewName);
-	dust.loadSource(compiled);
+ViewManager.prototype._loadSource = function (params) {
+  logger.debug("_loadSource: params:" + JSON.stringify(params));
+
+  params.partials = params.partials || [];
+
+  var index;
+  var partial;
+  var partialPath;
+  var size = params.partials.length;
+
+  // load partials
+  if (size > 0) {
+    logger.debug("_loadSource: loading partials ...");
+
+    for (index = 0; index < size; index++) {
+      partial = params.partials[index];
+      partialPath = partial.partialPath;
+
+      compileView(partialPath, partial.partialName);
+      logger.debug("_loadSource: loading partials:" + partialPath);
+    }
+  }
+
+  // load primary view
+  compileView(params.viewPath, params.viewName);
 };
 
 
