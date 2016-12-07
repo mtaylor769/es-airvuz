@@ -71,15 +71,18 @@ function updateStaffPickVideos (req, res) {
 
 /**
  * check to see if the login user own the video that is being update
+ * - currently admin can not update a user showcase
  * @param req
  * @private
  */
 function _canUpdateShowcase(req) {
+  var currentLoginUserId = req.user._id.toString();
+
   return videoCrud1_0_0.getById(req.params.videoId)
     .then(function (video) {
       // req.user._id = current login user
       // video.userId = owner
-      return video.userId.toString() === req.user._id.toString();
+      return video.userId.toString() === currentLoginUserId && req.params.id === currentLoginUserId;
     });
 }
 
