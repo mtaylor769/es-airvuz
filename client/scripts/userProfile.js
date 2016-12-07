@@ -492,10 +492,14 @@ function onSaveVideoEdit() {
   var videoCoordsObj = {
     type: 'Point',
     name: $('#location').val(),
-    address: GoogleMap.getMarkerCoordinates().address,
-    coordinates: [GoogleMap.getMarkerCoordinates().lng, GoogleMap.getMarkerCoordinates().lat],
-    googlePlaceId: GoogleMap.getMarkerCoordinates().placeId
+    address: GoogleMap.getMarkerCoordinates().address || '',
+    googlePlaceId: GoogleMap.getMarkerCoordinates().placeId || ''
   };
+
+  // [-150, 0] - [lng, lt] : this is the default coordinates when user has no GPS turned on & there is no marker on the map
+  var coords = GoogleMap.hasMarkerOnMap() ? [GoogleMap.getMarkerCoordinates().lng, GoogleMap.getMarkerCoordinates().lat] : [-150, 0];
+
+  $.extend(videoCoordsObj, {coordinates: coords});
 
   var params = {
     _id                   : currentEditVideo._id,

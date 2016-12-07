@@ -50,16 +50,27 @@ function init(params) {
             if (mapParams.editMode) {
                 get(videoId)
                     .then(function(resp) {
+                        // Handle the created video with location coords (ref to New videos)
                         if (typeof resp.loc !== 'undefined') {
                             $('.loading-comment-spinner').hide();
                             disableGeocoding = true;
-                            updateMap(resp.loc.coordinates);
                             canUpdateLoc = true;
-                            mapParams.showLocLists = false;
+
+                            // if is default coords, show the location lists
+                            mapParams.showLocLists = (resp.loc.coordinates.indexOf(-150) > -1 && resp.loc.coordinates.indexOf(0) > -1) ? true : false;
+
+                            if (!mapParams.showLocLists) {
+                                updateMap(resp.loc.coordinates);
+                            } else {
+                                // enable geocoding b/c there are no coords on the map & geocode the 'clicked' suggested location list
+                                disableGeocoding = false;
+                            }
+
                             _setInfoWindow({
                                 formatted_address: resp.loc.address,
                                 place_id: resp.loc.googlePlaceId
                             });
+                        // Handle the video without location coords (ref to Old videos)
                         } else {
                             _getCurrentVideoCoords();
                         }
@@ -79,7 +90,7 @@ function init(params) {
 }
 
 /*
- * get the current video coordinates
+ * get the users current GPS coordinates
  * @private
  */
 function _getCurrentVideoCoords() {
@@ -104,10 +115,11 @@ function _getCurrentVideoCoords() {
  * load the google map
  * @private
  * @params {Object} [posObj] - the current location coords (lng, lt)
+ * @descriptions - when map is initially loaded, it will be center to the United States lng/lt
  */
 function _loadMap() {
     var options = {
-        center: {lat: latitude, lng: longitude},
+        center: {lat: 37.09024, lng: -95.712891},
         streetViewControl: false,
         mapTypeControl: false,
         zoom: 4
@@ -178,7 +190,7 @@ function _bindEvents() {
             map.fitBounds(place.geometry.viewport);
         } else {
             map.setCenter(place.geometry.location);
-            map.setZoom(15);
+            map.setZoom(12);
         }
 
         _setInfoWindow(place);
@@ -392,7 +404,7 @@ function updateMap(pos) {
 
     placeMarkerAndPanTo({lat: latitude, lng: longitude}, map);
 
-    map.setZoom(15);
+    map.setZoom(12);
     map.setCenter({
         lat: latitude,
         lng: longitude
@@ -483,7 +495,7 @@ function reload() {
  * @return {Boolean}
  */
 function hasMarkerOnMap() {
-    return map.getBounds().contains(marker.getPosition());
+    return mapMarkers.length > 0;
 }
 
 /*
