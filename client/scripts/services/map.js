@@ -336,7 +336,7 @@ function _hideInfoWindow() {
  * @description set infowindow contents
  */
 function _setInfoWindow(params) {
-    var stringLoc = '<div><strong>' + params.formatted_address + '</strong><br>' + 'Place ID: ' + params.place_id;
+    var stringLoc = '<div><strong>' + params.formatted_address + '</strong></div>';
 
     if (mapParams.editMode && !canUpdateLoc) {
         stringLoc += "<div class='text-center'><hr><a href='#' id='update-loc-link'>Update my location</a></div>";
