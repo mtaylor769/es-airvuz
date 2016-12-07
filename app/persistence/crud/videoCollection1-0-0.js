@@ -102,11 +102,9 @@ function createVideoCollection(params) {
 function getCollectionVideos(userId, name) {
     return VideoCollectionModel
         .findOne({user: userId, name: name})
-        .populate('videos')
+        .populate('user', 'userNameDisplay userNameUrl profilePicture')
+        .populate('videos', 'title description duration videoPath thumbnailPath viewCount uploadDate tas likeCount commentCount categories')
         .exec()
-        .then(function(videos) {
-            return VideoCollectionModel.populate(videos, {path: 'videos.userId', model: 'Users', select: 'aclRoles emailAddress userNameDisplay userNameUrl lastName firstName profilePicture autoPlay coverPicture aboutMe status allowHire allowDonation socialMediaLinks isSubscribeAirVuzNews'});
-        })
         .catch(function(err) {
             return err;
         });
