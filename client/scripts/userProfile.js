@@ -200,7 +200,7 @@ function bindEvents() {
     .on('click', '#generated-thumbnails li', onThumbnailSelect)
     .on('click', '#btn-cancel-custom-thumbnail', onCancelCustomThumbnailClick)
     .on('click', '#btn-save-video-edit', onSaveVideoEdit)
-    .on('click', '#location-update span', onUpdatedLocationList);
+    .on('click', '#location-list span', onUpdatedLocationList);
 
   function showcaseButton() {
     var buttonDiv = $(this).parent();
@@ -496,7 +496,7 @@ function editProfile() {
 
 function onSaveVideoEdit() {
 
-  var videoCrdsObj = {
+  var videoCoordsObj = {
     type: 'Point',
     name: $('#location').val(),
     address: GoogleMap.getMarkerCoordinates().address,
@@ -518,7 +518,7 @@ function onSaveVideoEdit() {
     hashName              : currentEditVideo.videoPath.split('/')[0],
     customThumbnail       : customThumbnailName,
     userId                : identity._id,
-    loc                   : videoCrdsObj
+    loc                   : videoCoordsObj
   };
 
   if ($('#tags').val()) {
@@ -546,7 +546,8 @@ function onSaveVideoEdit() {
 }
 
 function onUpdatedLocationList(evt) {
-  console.log(evt);
+  var obj = $(this).data('object');
+  GoogleMap.updateMap([obj.coords.lng, obj.coords.lat]);
 }
 
 function appendErrorMessage(errorArray) {
