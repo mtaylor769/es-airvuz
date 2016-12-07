@@ -3,6 +3,7 @@ try {
     var log4js = require('log4js');
     var logger = log4js.getLogger(namespace);
     var videoCollCrud1_0_0 = require('../../persistence/crud/videoCollection1-0-0');
+    var videoCrud1_0_0 = require('../../persistence/crud/videos1-0-0');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -68,14 +69,33 @@ function updateStaffPickVideos (req, res) {
         });
 }
 
+/**
+ * check to see if the login user own the video that is being update
+ * @param req
+ * @private
+ */
+function _canUpdateShowcase(req) {
+  return videoCrud1_0_0.getById(req.params.videoId)
+    .then(function (video) {
+      // req.user._id = current login user
+      // video.userId = owner
+      return video.userId.toString() === req.user._id.toString();
+    });
+}
+
 function addVideoToUserShowcase(req, res, next) {
   var params = {
     user: req.params.id,
     video: req.params.videoId
   };
 
-  videoCollCrud1_0_0
-    .addVideoToUserShowcase(params)
+  _canUpdateShowcase(req)
+    .then(function (canUpdate) {
+      if (canUpdate) {
+        return videoCollCrud1_0_0.addVideoToUserShowcase(params);
+      }
+      res.sendStatus(403);
+    })
     .then(function () {
       res.sendStatus(200);
     })
@@ -88,8 +108,13 @@ function removeVideoFromUserShowcase(req, res, next) {
     video: req.params.videoId
   };
 
-  videoCollCrud1_0_0
-    .removeVideoFromUserShowcase(params)
+  _canUpdateShowcase(req)
+    .then(function (canUpdate) {
+      if (canUpdate) {
+        return videoCollCrud1_0_0.removeVideoFromUserShowcase(params);
+      }
+      res.sendStatus(403);
+    })
     .then(function () {
       res.sendStatus(200);
     })
