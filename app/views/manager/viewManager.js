@@ -25,7 +25,9 @@ var ViewManager = function() {
 	 * @type{View}
 	 */
 	this.views = {};
-	
+
+	// precompile view
+  compileView('./app/views/view/email/hire.dust', 'hire-me');
 };
 
 /*
@@ -204,6 +206,25 @@ ViewManager.prototype.getView = function(params) {
 			})
 	});
 };
+
+function render(viewName, data) {
+  return new Promise(function (resolve, reject) {
+    dust.render(viewName, data, function (err, out) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(out);
+    });
+  });
+}
+
+function compileView(viewPath, viewName) {
+  fs.readFile(viewPath, 'utf8', function (err, data) {
+    dust.loadSource(dust.compile(data, viewName));
+  });
+}
+
+ViewManager.prototype.render = render;
 
 var viewManager = new ViewManager();
 

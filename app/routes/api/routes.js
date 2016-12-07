@@ -81,11 +81,11 @@ apiRouter.route('/api/users/password-reset')
   .post(users.passwordResetRequest)
   .put(users.passwordResetChange);
 
-apiRouter.route('/api/users/hireme')
-  .post(protect, users.hireMe);
-
 apiRouter.route('/api/users/contact-us')
   .post(users.contactUs);
+
+apiRouter.route('/api/users/:id/hire')
+  .post(protect, users.hireMe);
 
 apiRouter.route('/api/users/:id/status')
   .put(protect, users.statusChange);
