@@ -664,6 +664,9 @@ function fbRefTrack() {
       });
       fbq('trackCustom', 'fbRef-3plus');
       ga('send', 'event', 'referral', 'fbRef-3plus', 'referral');
+
+      // show login
+      PubSub.publish('prompOptLogin');
     }
 
     if (fbRef < 4) {

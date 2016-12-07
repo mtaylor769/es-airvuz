@@ -41,6 +41,19 @@
                 AVEventTracker(evtObj);
                 fbq('trackCustom', 'timeOnSite:1.5min');
                 break;
+            case '2:0':
+                var secondVist = localStorage.getItem('2ndVistLogin') || 0;
+
+                secondVist++;
+
+                if (secondVist === 2) {
+                  PubSub.publish('prompOptLogin');
+                }
+
+                if (secondVist < 3) {
+                    localStorage.setItem('2ndVistLogin', secondVist);
+                }
+                break;
             case '2:30':
                 evtObj.timeOnSite = '2.5';
                 AVEventTracker(evtObj);
