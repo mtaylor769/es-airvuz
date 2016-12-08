@@ -225,7 +225,7 @@ function geocode(geocoder, resultsMap) {
                     _showLocationLists(results);
 
                 } else if (status === 'ZERO_RESULTS') {
-                    _displayErrorMsg(true, '&nbsp; Fount 0 results based on the location provided.');
+                    _displayErrorMsg(true, '&nbsp; Found 0 results based on the location provided.');
                 } else {
                     _displayErrorMsg(false, '&nbsp; Geocode was not successful for the following reason: ' + status);
                 }
