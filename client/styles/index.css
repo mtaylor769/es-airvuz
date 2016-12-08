@@ -1557,12 +1557,16 @@ End user profile CSS
 }
 
 #location-list {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
 #updated-location-lists > span {
   margin-right: 5px;
   display: inline-block;
+  height: 25px;
+  padding-top: 6px;
+  font-size: 10px;
+  margin-top: 2px;
 }
 
 /* Overwrite z-index due to bootstrap modal issue */
