@@ -97,8 +97,9 @@
             data.eventInfo = {};
             data.eventInfo.userId = identity.currentUser._id;
             data.eventInfo.videoId = vm.video._id;
-            data.eventInfo.eventType = 'Video Curation Save';
-            data.eventInfo.eventSource = 'Video Curation Admin';
+            data.eventInfo.eventName = 'video-curation-save';
+            data.eventInfo.eventType = 'save';
+            data.eventInfo.eventSource = 'video-curation-admin';
 
             data.internalTags = vm.internalKeywords;
             data.seoKeywords = vm.seoKeywords;
