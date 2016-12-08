@@ -20,6 +20,7 @@
     <p>New videos within date range, [{{vm.siteInfoStartDate}}] - [{{vm.siteInfoEndDate}}]: {{vm.newVideos}}</p>
     <table>
         <tr>
+            <th></th>
             <th>Allow Donation</th>
             <th>Allow Hire</th>
             <th>Email</th>
@@ -28,6 +29,7 @@
             <th>Joined Date</th>
         </tr>
         <tr ng-repeat="newUser in vm.newUsers">
+            <td>{{$index + 1}}</td>
             <td>{{newUser.allowDonation}}</td>
             <td>{{newUser.allowHire}}</td>
             <td>{{newUser.emailAddress}}</td>
