@@ -605,6 +605,18 @@ function bindEvents() {
     $loginModal.modal('show');
   });
 
+  PubSub.subscribe('prompOptLogin', function() {
+    if (identity.isAuthenticated()) {
+      return;
+    }
+
+    window.sessionStorage.setItem('opened', true);
+
+    $loginModal.find('.modal-title').hide();
+    $('#modal-alt-header').show();
+    $loginModal.modal('toggle');
+  });
+
   PubSub.subscribe('logout', logout);
 }
 
@@ -616,18 +628,8 @@ function bindEvents() {
  */
 function fbAuthReq() {
   var urlParam = browser.getUrlParams('login');
-  var $loginModal = $('#login-modal');
 
   if (!identity.isAuthenticated()) {
-
-    PubSub.subscribe('prompOptLogin', function() {
-      window.sessionStorage.setItem('opened', true);
-
-      $loginModal.find('.modal-title').hide();
-      $('#modal-alt-header').show();
-      $loginModal.modal('toggle');
-    });
-
     switch (urlParam) {
       case 'opt':
         $loginModal.find('.modal-title').hide();
