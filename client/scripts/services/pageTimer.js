@@ -44,6 +44,7 @@
             case '2:0':
                 evtObj.timeOnSite = '2';
                 AVEventTracker(evtObj);
+                fbq('trackCustom', 'timeOnSite:2min');
 
                 var secondVist = localStorage.getItem('2ndVisitLogin') || 0;
 
@@ -65,6 +66,7 @@
             case '3:0':
                 evtObj.timeOnSite = '3';
                 AVEventTracker(evtObj);
+                fbq('trackCustom', 'timeOnSite:3min');
 
                 if (window.sessionStorage.getItem('opened') === null) {
                     PubSub.publish('prompOptLogin');
