@@ -493,23 +493,15 @@ Videos.prototype.incrementViewCountById = function(params) {
 Videos.prototype.incrementAutoViewCountById = function (params) {
 	var videoId = params.videoId;
 	return VideoModel.findByIdAndUpdate(videoId, {$inc: {autoViewCount: 1}}).exec();
-}
+};
 
 /**
  * Apply increment to both view count and autoview count
  * @param params
  */
 Videos.prototype.applyAutoView = function (params) {
-	var videoId = params.videoId;
-
-
-	VideoModel.findByIdAndUpdate(videoId, {$inc: {viewCount: 1, autoViewCount: 1}}).exec()
-		.then ( function () {} )
-		.catch( function (err){
-			logger.error (err);
-		});
-
-}
+  return VideoModel.findByIdAndUpdate(params.videoId, {$inc: {viewCount: 1, autoViewCount: 1}}).exec();
+};
 
 Videos.prototype.findByUserId = function(id) {
 	return VideoModel.find({userId: id}).exec()

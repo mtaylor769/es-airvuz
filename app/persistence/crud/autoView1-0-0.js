@@ -87,61 +87,51 @@ AutoView.prototype.autoCreate = function (params) {
 /* Automatic randomized parameters
 * params.daysAhead = number of "days ahead" to add when computing current time/date (for testing cron job)
 */
-AutoView.prototype.applyAutoViews = function (params){
-    var autoViews = AutoViewModel.find({ isComplete: false }).exec();
+AutoView.prototype.applyAutoViews = function (params) {
+  return AutoViewModel.find({isComplete: false}).exec()
+    .then(function (avResult) {
+      // resolved
+      var daysAhead = params.daysAhead;
+      var aryLen = avResult.length;
+      var aryLen2;
+      var indexOuter;
+      var indexInner;
+      var avTimeDates;
+      var thisTimeDate;
+      var timeNow = moment().add(daysAhead, 'days').valueOf();
+      var promises = [];
 
-    return autoViews.then ( function (avResult){
-        // resolved
-        var daysAhead = params.daysAhead;
-        var aryLen = avResult.length;
-        var aryLen2;
-        var indexOuter;
-        var indexInner;
-        var avTimeDates;
-        var thisTimeDate;
-        var timeNow = moment().add(daysAhead, 'days').valueOf();
+      // TODO: revisit promise - Promise.each...
+      for (indexOuter = 0; indexOuter < aryLen; indexOuter++) {
+        indexInner = avResult[indexOuter].lastAddedTimeIndex + 1;
 
-        for (indexOuter=0; indexOuter< aryLen; indexOuter++) {
-            indexInner = avResult[indexOuter].lastAddedTimeIndex + 1;
+        avTimeDates = avResult[indexOuter].autoViewDateTime;
+        aryLen2 = avTimeDates.length;
 
-            avTimeDates = avResult[indexOuter].autoViewDateTime;
-            aryLen2 = avTimeDates.length;
-
-            for (indexInner; indexInner<aryLen2; indexInner++) {
-                thisTimeDate = avTimeDates[indexInner];
-                if (thisTimeDate <= timeNow) {
-                    video.applyAutoView ( { videoId: avResult[indexOuter].videoId } );
-                    if (indexInner == aryLen2 -1) {
-                        updateAutoView({ id: avResult[indexOuter]._id, update: { lastAddedTimeIndex: indexInner, isComplete: true }});
-                    } else {
-                        updateAutoView({ id: avResult[indexOuter]._id, update: { lastAddedTimeIndex: indexInner }});
-                    }
-                } else {
-                    continue;
-                }
+        for (indexInner; indexInner < aryLen2; indexInner++) {
+          thisTimeDate = avTimeDates[indexInner];
+          if (thisTimeDate <= timeNow) {
+            promises.push(video.applyAutoView({videoId: avResult[indexOuter].videoId}));
+            if (indexInner == aryLen2 - 1) {
+              promises.push(updateAutoView({id: avResult[indexOuter]._id, update: {lastAddedTimeIndex: indexInner, isComplete: true}
+              }));
+            } else {
+              promises.push(updateAutoView({id: avResult[indexOuter]._id, update: {lastAddedTimeIndex: indexInner}}));
             }
+          }
         }
+      }
 
-
-    }).catch(function (err){
-        logger.error (err);
+      return Promise.all(promises);
     });
-}
+};
 
 
 // Internal functions ////////////////////////////////////////////////
 
 var updateAutoView = function (params) {
-
-    AutoViewModel.findByIdAndUpdate(params.id, params.update ).then(function (updateResult) {
-        // resolved
-    }, function (avResult){
-        // rejected
-    }).catch (function (err){
-        logger.error (err);
-    });
-
-}
+  return AutoViewModel.findByIdAndUpdate(params.id, params.update).exec();
+};
 
 
 var ToViewsPerDay = function (params) {
