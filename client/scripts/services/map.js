@@ -314,6 +314,12 @@ function placeMarkerAndPanTo(latLng, map) {
 
     mapMarkers.push(marker);
 
+    marker.addListener('dragend', function() {
+        canUpdateLoc = true;
+        _reverseGeoCode(marker.getPosition());
+
+    });
+
     setTimeout(function() {
         showInfoWindow(marker);
     }, 600);
