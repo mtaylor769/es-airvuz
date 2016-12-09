@@ -119,6 +119,7 @@ function _getCurrentVideoCoords() {
  */
 function _loadMap() {
     var options = {
+        scrollwheel: false,
         center: {lat: 37.09024, lng: -95.712891},
         streetViewControl: false,
         mapTypeControl: false,
