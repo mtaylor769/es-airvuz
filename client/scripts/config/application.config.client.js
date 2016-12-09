@@ -10,7 +10,7 @@ if (IS_PRODUCTION) {
   pixelId          = '1682201602042635';
   googleTrackingId = 'UA-67060276-2';
   googleTagManagerId = 'GTM-WNN2PJ';
-  googleMapsKey    = ' AIzaSyCay71RPraZjzSjQ5oXWaVRdpd-n21XD3g';
+  googleMapsKey    = 'AIzaSyCay71RPraZjzSjQ5oXWaVRdpd-n21XD3g';
 } else {
   facebookClientId = '1095635343791580';
   googleClientId   = '783133684568-ogs5u3utle2mlfok7h8nldr72jpjdc5m.apps.googleusercontent.com';
