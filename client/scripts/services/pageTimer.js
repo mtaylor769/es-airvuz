@@ -42,6 +42,7 @@
                 fbq('trackCustom', 'timeOnSite:1.5min');
                 break;
             case '2:0':
+                evtObj.timeOnSite = '2';
                 var secondVist = localStorage.getItem('2ndVisitLogin') || 0;
 
                 secondVist++;
@@ -60,6 +61,7 @@
                 fbq('trackCustom', 'timeOnSite:2.5min');
                 break;
             case '3:0':
+                evtObj.timeOnSite = '3';
                 if (window.sessionStorage.getItem('opened') === null) {
                     PubSub.publish('prompOptLogin');
                 }
