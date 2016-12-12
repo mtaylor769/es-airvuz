@@ -607,8 +607,8 @@ function deleteVideo(videoId) {
   return $.Deferred(function (defer) {
     $('#delete-video-modal')
       .modal('show')
-      .on('click', '#confirm-delete-video-btn', function(){
-        event.preventDefault();
+      .on('click', '#confirm-delete-video-btn', function(e){
+        e.preventDefault();
         $.ajax({
           type: 'DELETE',
           url: '/api/videos/' + videoId
