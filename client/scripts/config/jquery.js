@@ -23,6 +23,7 @@ $.ajaxSetup({
         eventType: 'xhr-status',
         data: {
           url: this.url,
+          type: this.type,
           response: jqXHR.responseText
         }
       });
