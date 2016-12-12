@@ -213,12 +213,18 @@ var videoSchema = mongoose.Schema({
 	 * index: Indexes this schema in 2dsphere format (allows mongodb and mongoose to query users based on geographic inclusion, intersection, and proximity)
 	 */
 	loc: {
-		type: {type: String},
+		type: {
+			type: String,
+			default: 'Point'
+		},
 		name: String,
 		address: String,
-		coordinates: [Number],
+		coordinates: {
+			type: [Number],
+			default: [-150, 0]
+		},
 		googlePlaceId: String
-	},
+	}
 
 	//speed: {type: Number, default: 1},
 	//rating: {type: Number, default: 0},
