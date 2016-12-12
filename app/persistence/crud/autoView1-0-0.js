@@ -79,10 +79,8 @@ AutoView.prototype.autoCreate = function (params) {
     newParams.numberOfViews = getRandomInt(25, 50);
     newParams.probability = getRandom(.2, .8);
 
-    var autoView = this.create(newParams);
-
-    return autoView;
-}
+    return this.create(newParams);
+};
 
 /* Automatic randomized parameters
 * params.daysAhead = number of "days ahead" to add when computing current time/date (for testing cron job)

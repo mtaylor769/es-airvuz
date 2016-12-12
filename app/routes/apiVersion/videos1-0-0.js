@@ -237,13 +237,14 @@ function _cleanUpReupload(body) {
  */
 function post (req, res) {
     Promise.resolve(req.body)
-
         .then(_uploadCustomThumbnail)
         .then(function () {
             return videoCrud1_0_0.create(req.body);
         })
         .then(function (video) {
-            autoView.autoCreate( { videoId: video._id } );
+            return autoView.autoCreate({videoId: video._id});
+        })
+        .then(function () {
             res.json(video);
         })
         .catch(function (error) {
