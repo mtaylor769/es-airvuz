@@ -242,9 +242,12 @@ function post (req, res) {
             return videoCrud1_0_0.create(req.body);
         })
         .then(function (video) {
-            return autoView.autoCreate({videoId: video._id});
+            return autoView.autoCreate({videoId: video._id})
+              .then(function () {
+                return video;
+              });
         })
-        .then(function () {
+        .then(function (video) {
             res.json(video);
         })
         .catch(function (error) {
