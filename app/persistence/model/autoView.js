@@ -54,6 +54,24 @@ var autoViewSchema = mongoose.Schema({
         default: []
     },
 
+
+    /*
+     * Array of views
+     */
+    rbinom_0: {
+        type: Array,
+        default: []
+    },
+
+    /*
+     * Array of view distribution
+     */
+    dist: {
+        type: Array,
+        default: []
+    },
+
+
     /*
      * index of the last view added from the date/time distribution array
      */

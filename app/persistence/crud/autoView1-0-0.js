@@ -1,5 +1,3 @@
-console.log("begin");
-
 var namespace = 'app.persistence.crud.autoView1-0-0';
 
 // requires: sudo npm install --save probability-distributions
@@ -49,11 +47,15 @@ AutoView.prototype.create = function (params) {
 
     var rbinom_0 = PD.rbinom(numberOfViews, numberOfDays, probability);
 
+    params.rbinom_0 = rbinom_0;
+
 // turn distribution into views per day.
     var dist = ToViewsPerDay({
         numberOfDays: numberOfDays,
         data: rbinom_0
     });
+
+    params.dist = dist;
 
 // Get a list of timestamps for views.
     var thisDate = moment().valueOf();        // Time begins now
@@ -139,20 +141,25 @@ var ToViewsPerDay = function (params) {
     var data = params.data;
     var dayIndex = 0;
     var index = 0;
-    var size = data.length;
-    var item = 0;
+    var dataLength = data.length;
     var distribution = [];
+    var testIndex = 0;
 
     for (index = 0; index < numberOfDays; index++) {
         distribution[index] = 0;
     }
 
-    for (index = 0; index < size; index++) {
-        dayIndex = data[index];
+    for (index = 0; index < dataLength; index++) {
 
-        if (typeof(distribution[dayIndex]) !== "undefined") {
-            distribution[dayIndex]++;
+        if (data[index]>0){
+            // This handles data anomaly from the Probability Distribution library
+            // The PD lib returns range of data that is "one day too many"
+            // That is:  request 7 days, get days 0 - 7 (causing array out of bounds in subsequent code)
+            dayIndex = data[index] -1;      // minus one for zero-based array ref
         }
+
+        distribution[dayIndex]++;
+
     }
 
     return (distribution);
