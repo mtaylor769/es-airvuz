@@ -115,7 +115,9 @@ function onLoginSuccess() {
 
   if (identity.socialAccountInfo && identity.socialAccountInfo.isNew) {
     var socialEvent = 'account-created:' + identity.socialAccountInfo.provider;
-
+    if (typeof ga === "undefined") {
+      console.error('attempted to create account: ga is undefined');
+    }
     fbq('trackCustom', socialEvent);
     ga('send', 'event', 'login', socialEvent, 'login');
     AVEventTracker({
@@ -333,6 +335,9 @@ function bindEvents() {
           eventType: 'signUpClick',
           referrer: document.referrer
         });
+        if (typeof ga === "undefined") {
+          console.error('attempted to create account: ga is undefined');
+        }
         fbq('trackCustom', 'account-created:local');
         ga('send', 'event', 'signup', 'account-created:local', 'signup');
 
