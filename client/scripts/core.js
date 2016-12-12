@@ -1,4 +1,5 @@
 /* global fbq, ga */
+var AVEventTracker = require('./avEventTracker');
 var auth          = require('./services/auth');
 var identity      = require('./services/identity');
 var amazonConfig  = require('./config/amazon.config.client');
@@ -7,7 +8,6 @@ var PubSub        = require('pubsub-js');
 var FacebookPixel = require('./facebook-pixel');
 var GoogleAnalytic = require('./google-analytic');
 var GoogleTagManager = require('./google-tag-manager');
-var AVEventTracker = require('./avEventTracker');
 var browser       = require('./services/browser');
 var dialog        = require('./services/dialogs');
 
