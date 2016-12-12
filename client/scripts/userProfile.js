@@ -980,10 +980,12 @@ function renderSocialMediaLinks() {
 }
 
 function getData() {
-  category.getByRoles()
+  if (identity.isAuthenticated()) {
+    category.getByRoles()
       .then(function (categories) {
         VIEW_MODEL.categories = categories;
       });
+  }
 }
 
 
