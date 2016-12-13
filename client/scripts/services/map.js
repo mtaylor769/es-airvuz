@@ -18,6 +18,7 @@ var longitude = -94.636230,
     map = null,
     mapMarkers = [],
     coords = {},
+    place = null,
     infoWindow,
     geocoder,
     places,
@@ -87,6 +88,65 @@ function init(params) {
     if (mapParams.enableDrawingMode) {
         displayDrawingMode();
     }
+}
+
+/*
+ * load the google map api
+ * @description - load api without the map
+ */
+function loadGoogleMapApi() {
+    GoogleMapsLoader.load();
+}
+
+/*
+ * @params {Element} [el]
+ * @description - set the input textbox for "place" autocomplete
+ */
+function setPlaceAutocomplete(el) {
+    var autocomplete = new google.maps.places.Autocomplete(el);
+
+    autocomplete.addListener('place_changed', function() {
+        place = autocomplete;
+
+        if (place.getPlace().geometry) {
+            el.value = place.getPlace().formatted_address;
+        }
+    });
+
+    $(el).on('change, blur', function() {
+       place = null;
+    });
+}
+
+/*
+ * @description - get the place based on autocomplete textbox input
+ * @params {Element} - the input textbox element
+ * @return {Object}
+ */
+function getPlaceAutocomplete(el) {
+    var $el = $(el),
+        obj;
+
+    if (place === null) {
+        obj = {
+            type: 'Point',
+            address: el.val(),
+            coordinates: [-150, 0],
+            googlePlaceId: ''
+        };
+    } else {
+        var placeResult = place.getPlace(),
+            hasGeometry = placeResult.geometry
+
+        obj = {
+            type: 'Point',
+            address: hasGeometry ? placeResult.formatted_address : el.val(),
+            coordinates: hasGeometry ? [placeResult.geometry.location.lng(), placeResult.geometry.location.lat()] : [-150, 0],
+            googlePlaceId: hasGeometry ? placeResult.place_id : ''
+        };
+    }
+
+    return obj;
 }
 
 /*
@@ -543,5 +603,8 @@ GoogleMapService.getMarkerCoordinates = getMarkerCoordinates;
 GoogleMapService.reload = reload;
 GoogleMapService.hasMarkerOnMap = hasMarkerOnMap;
 GoogleMapService.updateMap = updateMap;
+GoogleMapService.loadGoogleMapApi = loadGoogleMapApi;
+GoogleMapService.setPlaceAutocomplete = setPlaceAutocomplete;
+GoogleMapService.getPlaceAutocomplete = getPlaceAutocomplete;
 
 module.exports = GoogleMapService;

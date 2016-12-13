@@ -186,6 +186,16 @@ function bindEvents() {
     .on('click', '#change-password-btn', changePassword)
     .on('click', '.follower', openFollowers)
     .on('click', '.following', openFollowing);
+
+  $profilePage.find("a[data-toggle='tab']")
+      .on('show.bs.tab', function(evt) {
+        if ($(evt.target).attr("href") === '#edit-profile') {
+          if (typeof google === 'undefined') {
+            GoogleMap.loadGoogleMapApi();
+            googleMapCheck();
+          }
+        }
+      });
     
   $('#followers-modal')
     .on('click', '.follower-btn', getMoreFollowers);
@@ -226,6 +236,15 @@ function bindEvents() {
   $profilePage.find('#allvideos')
     .on('click', '.btn-edit-video', onVideoEditClick)
     .on('click', '.btn-delete-video', onVideoDeleteClick);
+}
+
+function googleMapCheck() {
+  if (typeof google !== 'undefined') {
+    GoogleMap.setPlaceAutocomplete(document.getElementById('address'));
+    return;
+  } else {
+    setTimeout(googleMapCheck, 1000);
+  }
 }
 
 function doneEditShowcase(){
@@ -374,7 +393,8 @@ function editProfile() {
     lastName              : lastName,
     aboutMe               : myAbout,
     allowDonation         : allowDonation,
-    allowHire             : allowHire
+    allowHire             : allowHire,
+    loc                   : GoogleMap.getPlaceAutocomplete($('#address'))
   };
 
   if (userNameDisplay && userNameDisplay !== profileUser.userNameDisplay) {
