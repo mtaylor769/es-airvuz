@@ -201,7 +201,10 @@ function passwordResetRequest(req, res) {
         .then(function () {
             res.sendStatus(200);
         })
-        .catch(function () {
+        .catch(function (err) {
+            if (err === 'Email does not exists.') {
+                return res.status(400).send(err);
+            }
             res.sendStatus(500);
         });
 }

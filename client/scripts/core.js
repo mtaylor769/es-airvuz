@@ -266,12 +266,18 @@ function bindEvents() {
         $emailInput = $loginModal.find('.email-input:visible'),
         emailAddress = $emailInput.val().trim();
 
-    function _showHideInput(which) {
+    function _showHideInput(which, text) {
       $emailInput.val('');
-      $loginModal.find('#forgot-password-tab .text-message.' + which).removeClass('hidden');
+      var $msgLabel = $loginModal.find('#forgot-password-tab .text-message.' + which);
+
+      if (text) {
+        $msgLabel.find('p').text(text);
+      }
+
+      $msgLabel.removeClass('hidden');
       setTimeout(function () {
-        $loginModal.find('#forgot-password-tab .text-message.' + which).addClass('hidden');
-      }, 5000);
+        $msgLabel.addClass('hidden');
+      }, 7000);
     }
 
     $.ajax({
@@ -279,9 +285,12 @@ function bindEvents() {
       url: url,
       data: {email: emailAddress}
     }).then(function () {
-      _showHideInput('text-success');
-    }).fail(function () {
-      _showHideInput('text-danger');
+      _showHideInput('text-success', 'Email sent to ' + emailAddress + ', Please check your mailbox.');
+    }).fail(function (xhr) {
+      if (xhr.status === 400) {
+        return _showHideInput('text-danger', xhr.responseText);
+      }
+      _showHideInput('text-danger', 'Something went wrong, please try again or contact support@airvuz.com');
     });
   }
 

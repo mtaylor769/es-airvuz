@@ -698,7 +698,7 @@ function resetPasswordRequest(email) {
     return UserModel.findOne({emailAddress: email}).exec()
         .then(function (user) {
             if (!user) {
-                throw 'Email does not exists';
+                throw 'Email does not exists.';
             }
 
             // random string in hex to prevent adding "/" "+"
