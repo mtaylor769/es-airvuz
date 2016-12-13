@@ -45,7 +45,8 @@ AutoView.prototype.create = function (params) {
     var numberOfViews = parseInt(params.numberOfViews);
     var probability = parseFloat(params.probability);
 
-    var rbinom_0 = PD.rbinom(numberOfViews, numberOfDays, probability);
+    // numberOfDays -1:  the -1 is because the function returns a value in the zero-to-numberOfDays ranges
+    var rbinom_0 = PD.rbinom(numberOfViews, numberOfDays -1, probability);
 
     params.rbinom_0 = rbinom_0;
 
@@ -150,16 +151,8 @@ var ToViewsPerDay = function (params) {
     }
 
     for (index = 0; index < dataLength; index++) {
-
-        if (data[index]>0){
-            // This handles data anomaly from the Probability Distribution library
-            // The PD lib returns range of data that is "one day too many"
-            // That is:  request 7 days, get days 0 - 7 (causing array out of bounds in subsequent code)
-            dayIndex = data[index] -1;      // minus one for zero-based array ref
-        }
-
+        dayIndex = data[index];
         distribution[dayIndex]++;
-
     }
 
     return (distribution);
