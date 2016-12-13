@@ -219,7 +219,7 @@ function bindEvents() {
         $('#error-message-modal')
           .modal('show')
           .find('.error-modal-body')
-          .html(error);
+          .html('Something went wrong, please try again or contact support@airvuz.com');
       })
   }
 
