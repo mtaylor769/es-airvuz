@@ -37,6 +37,27 @@ function AVEventTracker(params) {
   });
 }
 
+function error(msg) {
+  var data = {
+    userAgent: navigator.userAgent
+  };
+
+  if (typeof msg === 'string') {
+    data.message = msg;
+  } else {
+    data = msg;
+  }
+
+  AVEventTracker({
+    codeSource: 'avEventTracker',
+    eventName: 'js-error:client',
+    eventType: 'javascript-error',
+    data: data
+  });
+}
+
+AVEventTracker.error = error;
+
 // Track JavaScript error
 (function (window) {
   "use strict";
@@ -54,7 +75,9 @@ function AVEventTracker(params) {
       data: {
         message: event.message,
         source: event.filename,
-        lineNumber: event.lineno
+        lineNumber: event.lineno,
+        userAgent: navigator.userAgent,
+        stack: event.error.stack
       }
     });
 
@@ -63,29 +86,6 @@ function AVEventTracker(params) {
     // return false to fire the default event handler
     return false;
   }
-
-  function _error(msg) {
-    originalConsoleError(msg);
-    var data = {};
-
-    if (typeof msg === 'string') {
-      data.message = msg;
-    } else {
-      data = msg;
-    }
-
-    AVEventTracker({
-      codeSource: 'avEventTracker',
-      eventName: 'js-error:client',
-      eventType: 'javascript-error',
-      data: data
-    });
-  }
-
-  // override console.error to send data to the server
-  var originalConsoleError = window.console.error;
-
-  window.console.error = _error;
 
   // catch all client error
   window.addEventListener('error', _onClientError);
