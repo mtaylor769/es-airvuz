@@ -134,6 +134,9 @@ function onLoginSuccess() {
       eventType: 'loginClick'
     });
   }
+     if (window.sessionStorage.getItem('promptAddVidGeo') === null) {
+         promptUserToAddVidGeo(identity._id);
+     }
 
   fbq('trackCustom', 'login');
   ga('send', 'event', 'login', 'login-success', 'login');
@@ -691,6 +694,42 @@ function fbRefTrack() {
   }
 }
 
+/*
+ * @params {String} [id] - current user id
+ */
+function promptUserToAddVidGeo(userId) {
+    var hasNoCoords = function(videos) {
+        var defaultCoords = [-150, 0];
+
+        return videos.some(function(video) {
+            return video.loc.coordinates.join(',') === defaultCoords.join(',');
+        });
+    };
+    $.ajax({
+        type: 'GET',
+        url: '/api/videos/user/' + userId
+    })
+        .then(function(resp) {
+            if (hasNoCoords(resp.data)) {
+                if (window.sessionStorage.getItem('promptAddVidGeo') === null) {
+                    window.sessionStorage.setItem('promptAddVidGeo', true);
+
+                    dialog.open({
+                        title: 'Attention',
+                        body: [
+                            "<div>",
+                            "<p>Please go to your videos to add a location to the map.</p>",
+                            "<a href='/user/"+identity.currentUser.userNameUrl+"'>Go to Profile</a>",
+                            "</div>"
+                        ].join(""),
+                        html: true,
+                        showOkay: false
+                    }).then(function () {});
+                }
+            }
+        });
+}
+
 function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
@@ -699,6 +738,10 @@ function initialize() {
       .then(renderProfileHeader);
     $footerSub1.addClass('is-login');
     $header.addClass('is-login');
+
+      if (window.sessionStorage.getItem('promptAddVidGeo') === null) {
+          promptUserToAddVidGeo(identity._id);
+      }
   } else {
     renderLoginHeader();
   }
