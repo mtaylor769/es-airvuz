@@ -711,8 +711,8 @@ function promptUserToAddVidGeo(userId) {
     })
         .then(function(resp) {
             if (hasNoCoords(resp.data)) {
-                if (window.sessionStorage.getItem('promptAddVidGeo') === null) {
-                    window.sessionStorage.setItem('promptAddVidGeo', true);
+                if (window.localStorage.getItem('promptAddVidGeo') === null) {
+                    window.localStorage.setItem('promptAddVidGeo', true);
 
                     dialog.open({
                         title: 'Location, Location, Location!',
@@ -739,7 +739,7 @@ function initialize() {
     $footerSub1.addClass('is-login');
     $header.addClass('is-login');
 
-      if (window.sessionStorage.getItem('promptAddVidGeo') === null) {
+      if (window.localStorage.getItem('promptAddVidGeo') === null) {
           promptUserToAddVidGeo(identity._id);
       }
   } else {
