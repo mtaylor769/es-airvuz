@@ -1,6 +1,11 @@
 <div layout-padding>
     <h2>Create Custom Carousel</h2>
 
+    <!---- Input container for carousel url ---->
+    <md-input-container class="md-block">
+        <input type="text" placeholder="Url" ng-model="vm.carousel.nameUrl" required>
+    </md-input-container>
+
     <!---- Input container for carousel name ---->
     <md-input-container class="md-block">
         <input type="text" placeholder="Title" ng-model="vm.carousel.name" required>

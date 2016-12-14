@@ -14,6 +14,7 @@ var videoCollectionSchema = mongoose.Schema({
   },
   /*
    * cleaned up name in url friendly format ex: /{name-to-url-friendly-name}?id={urlId}
+   * *** now url on the client ***
    */
   nameUrl: String,
   /*

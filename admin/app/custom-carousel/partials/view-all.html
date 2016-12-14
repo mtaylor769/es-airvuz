@@ -2,8 +2,8 @@
     <md-card ng-repeat="carousel in vm.carousels">
         <div layout="row">
             <ul class="card-list" flex>
+                <li><strong>Url : </strong>{{carousel.nameUrl}}</li>
                 <li><strong>Name : </strong>{{carousel.name}}</li>
-                <li><strong>Name Url : </strong>{{carousel.nameUrl}}</li>
                 <li><strong>Description : </strong>{{carousel.description}}</li>
                 <li ng-show="carousel.startDate"><strong>Start Date : </strong>{{carousel.startDate}}</li>
                 <li ng-show="carousel.endDate"><strong>End Date : </strong>{{carousel.endDate}}</li>

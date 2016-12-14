@@ -185,6 +185,7 @@ function customCarouselValidation(params) {
   var info                      = {};
   info.data                     = {};
   info.data.name                = params.name || null;
+  info.data.nameUrl             = params.nameUrl || null;
   info.data.description         = params.description || null;
   info.data.listDescription     = params.listDescription || null;
   info.data.displayImage        = params.displayImage || null;
@@ -211,6 +212,20 @@ function customCarouselValidation(params) {
       sourceLocation	: sourceLocation
     })
   }
+  if(info.data.name === null) {
+    info.errors = errorMessage.getErrorMessage({
+        statusCode			: "400",
+        errorId					: "VALIDA1000",
+        templateParams	: {
+            name : "Url"
+        },
+        sourceError			: "#url",
+        displayMsg			: "This field is required",
+        errorMessage		: "Url is null",
+        sourceLocation	: sourceLocation
+    })
+  }
+
   if(info.data.description === null) {
     info.errors = errorMessage.getErrorMessage({
       statusCode			: "400",
@@ -268,11 +283,26 @@ function customCarouselValidation(params) {
 }
 
 function createCustomCarouselParams(info) {
-  var carouselId      = generateShortId.generate();
-  var scrubbedUrl     = urlFriendlyString.createUrl(info.name.trim());
-  info.nameUrl   = scrubbedUrl + '?id=' + carouselId;
-  info.urlId     = carouselId;
-  return Promise.resolve(info);
+    //if is an update call
+    if(info.update) {
+        //find index of id url params
+        var sliceIndex = info.nameUrl.indexOf('?id=');
+        //slice out urlId
+        var urlId = info.nameUrl.slice(sliceIndex);
+        //slice out nameUrl
+        var url = info.nameUrl.slice(0, sliceIndex);
+        //scrub url to only url friendly characters
+        var scrubbedUrl = urlFriendlyString.createUrl(url.trim());
+        //set nameUrl to new nameUrl + urlId
+        info.nameUrl = scrubbedUrl + urlId;
+        return Promise.resolve(info);
+    } else {
+        var carouselId      = generateShortId.generate();
+        var scrubbedUrl     = urlFriendlyString.createUrl(info.nameUrl.trim());
+        info.nameUrl   = scrubbedUrl + '?id=' + carouselId;
+        info.urlId     = carouselId;
+        return Promise.resolve(info);
+    }
 }
 
 function createCustomCarousel(params) {
@@ -301,7 +331,11 @@ function getCustomById(id) {
 function updateCustom(carouselId, carouselUpdates) {
   return customCarouselValidation(carouselUpdates)
     .then(function(updates) {
-      return VideoCollectionModel.findByIdAndUpdate(carouselId, updates.data).exec();
+        updates.data.update = true;
+        return createCustomCarouselParams(updates.data);
+    })
+    .then(function(updates) {
+      return VideoCollectionModel.findByIdAndUpdate(carouselId, updates).exec();
     });
 }
 
