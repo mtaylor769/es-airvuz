@@ -715,11 +715,11 @@ function promptUserToAddVidGeo(userId) {
                     window.sessionStorage.setItem('promptAddVidGeo', true);
 
                     dialog.open({
-                        title: 'Attention',
+                        title: 'Location, Location, Location!',
                         body: [
                             "<div>",
-                            "<p>Please go to your videos to add a location to the map.</p>",
-                            "<a href='/user/"+identity.currentUser.userNameUrl+"'>Go to Profile</a>",
+                            "<p>Welcome back! We noticed you have a video missing out on our new ‘Location’ feature!  By adding your video’s location, you help our community discover and fully appreciate your great content!</p>",
+                            "<a href='/user/"+identity.currentUser.userNameUrl+"'>Take me to my Profile to Edit my video/s and add the location!</a>",
                             "</div>"
                         ].join(""),
                         html: true,
