@@ -65,6 +65,8 @@ function _editShowcase(type, videoId) {
 }
 
 function bindEvents() {
+  $('#save-changes').on('click', '#save-changes-btn', editProfile);
+
   function uploadImage(params) {
     var evaporate = new Evaporate({
       signerUrl : '/api/amazon/sign-auth',
@@ -355,8 +357,6 @@ function confirmPasswordChange() {
 
 function changeProfile() {
   $('#save-changes').modal('show');
-  $('#save-changes')
-    .on('click', '#save-changes-btn', editProfile);
 }
 
 function renderUserInfo() {
