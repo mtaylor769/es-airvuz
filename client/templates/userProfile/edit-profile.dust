@@ -22,6 +22,10 @@
             <label for="email">Email</label>
             <input type="text" class="form-control" id="email" placeholder="Email" value="{emailAddress}">
           </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" placeholder="Address" value="{loc.address}">
+            </div>
           <div class="form-group">
             <label for="facebook">Facebook Link</label>
             <input type="text" class="form-control socialMediaLink" id="facebook" placeholder="Facebook Url">

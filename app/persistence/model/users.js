@@ -151,8 +151,26 @@ var usersSchema 		= mongoose.Schema({
 	version : {
 		default	: "2.0.0",
 		type		: String
+	},
+
+	loc: {
+		type: {
+			type: String,
+			default: "Point"
+		},
+		address: {
+			type: String,
+			default: ""
+		},
+		coordinates: {
+			type: [Number],
+			default: [-150, 0]
+		},
+		googlePlaceId: String
 	}
 });
+
+usersSchema.index({'loc': '2dsphere'});
 
 usersSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.password);
