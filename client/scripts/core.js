@@ -134,6 +134,9 @@ function onLoginSuccess() {
       eventType: 'loginClick'
     });
   }
+     if (window.sessionStorage.getItem('promptAddVidGeo') === null) {
+         promptUserToAddVidGeo(identity._id);
+     }
 
   fbq('trackCustom', 'login');
   ga('send', 'event', 'login', 'login-success', 'login');
@@ -691,6 +694,42 @@ function fbRefTrack() {
   }
 }
 
+/*
+ * @params {String} [id] - current user id
+ */
+function promptUserToAddVidGeo(userId) {
+    var hasNoCoords = function(videos) {
+        var defaultCoords = [-150, 0];
+
+        return videos.some(function(video) {
+            return video.loc.coordinates.join(',') === defaultCoords.join(',');
+        });
+    };
+    $.ajax({
+        type: 'GET',
+        url: '/api/videos/user/' + userId
+    })
+        .then(function(resp) {
+            if (hasNoCoords(resp.data)) {
+                if (window.localStorage.getItem('promptAddVidGeo') === null) {
+                    window.localStorage.setItem('promptAddVidGeo', true);
+
+                    dialog.open({
+                        title: 'Location, Location, Location!',
+                        body: [
+                            "<div>",
+                            "<p>Welcome back! We noticed you have a video missing out on our new ‘Location’ feature!  By adding your video’s location, you help our community discover and fully appreciate your great content!</p>",
+                            "<a href='/user/"+identity.currentUser.userNameUrl+"'>Take me to my Profile to Edit my video/s and add the location!</a>",
+                            "</div>"
+                        ].join(""),
+                        html: true,
+                        showOkay: false
+                    }).then(function () {});
+                }
+            }
+        });
+}
+
 function initialize() {
   $footerSub1 = $('.footer-sub1');
   bindEvents();
@@ -699,6 +738,10 @@ function initialize() {
       .then(renderProfileHeader);
     $footerSub1.addClass('is-login');
     $header.addClass('is-login');
+
+      if (window.localStorage.getItem('promptAddVidGeo') === null) {
+          promptUserToAddVidGeo(identity._id);
+      }
   } else {
     renderLoginHeader();
   }
