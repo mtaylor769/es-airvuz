@@ -593,8 +593,6 @@ function _trackUploadEvent(eventName, eventNameAny, eventParams) {
 function initMap(dom) {
   GoogleMap.init({
     dom: dom,
-    showCurrentLocation: true,
-    enableDrawingMode: false,
     editMode: false
   });
 }

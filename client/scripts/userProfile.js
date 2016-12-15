@@ -1267,10 +1267,7 @@ function renderFollowers(el, data, showFollowBtn) {
 function initMap(dom) {
   GoogleMap.init({
     dom: dom,
-    showCurrentLocation: true,
-    enableDrawingMode: false,
-    editMode: true,
-    showLocLists: true
+    editMode: true
   });
 }
 
