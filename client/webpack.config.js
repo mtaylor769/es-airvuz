@@ -144,12 +144,12 @@ config.postcss = function ( webpack ) {
 
   plugins.push ( autoprefixer );
 
-  if ( IS_PRODUCTION ) {
+  if (IS_PRODUCTION || IS_BETA) {
     // TODO: take a look at mqpacker again
     // this is messing up with media query by combining them in wrong order
     // plugins.push ( mqpacker );
 
-    plugins.push ( cssnano({reduceIdents: false}) );
+    plugins.push ( cssnano({reduceIdents: false, zindex: false}) );
   }
 
   return plugins;
@@ -187,7 +187,7 @@ config.plugins.push ( new webpack.optimize.CommonsChunkPlugin ( {
 // Make CSS stylesheets
 config.plugins.push ( new ExtractTextPlugin ( IS_PRODUCTION ? '[name].[chunkhash].css' : '[name].css' ) );
 
-if ( IS_PRODUCTION ) {
+if (IS_PRODUCTION || IS_BETA) {
   config.plugins.push ( new webpack.optimize.UglifyJsPlugin ( {
     compress: {
       warnings: false
