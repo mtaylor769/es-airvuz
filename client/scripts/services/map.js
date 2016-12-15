@@ -8,12 +8,11 @@ var GoogleMapService = {};
 GoogleMapsLoader.KEY = appConfig.google.googleMapsKey;
 GoogleMapsLoader.LANGUAGE = 'en';
 GoogleMapsLoader.REGION = '';
-GoogleMapsLoader.LIBRARIES = ['geometry', 'places', 'drawing'];
+GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
 
 var longitude = -94.636230,
     latitude = 46.392410,
     disableGeocoding = false,
-    canUpdateLoc = false,
     mapPlaceHolder = null,
     map = null,
     mapMarkers = [],
@@ -28,9 +27,7 @@ var longitude = -94.636230,
  * initialize the map
  * @params {Object}  params
  * @params {Element} params.dom - the div element where the map will be placed at
- * @params {Boolean} params.showCurrentLocation - show the user's current location on the map or not
  * @params {Boolean} params.editMode - map in edit mode (defaults to false)
- * @params {Boolean} params.enableDrawingMode
  */
 function init(params) {
     mapParams = setMapParams(params);
@@ -46,47 +43,39 @@ function init(params) {
 
         $('.loading-comment-spinner').show();
 
-        if (mapParams.showCurrentLocation) {
-            if (mapParams.editMode) {
-                get(videoId)
-                    .then(function(resp) {
-                        // Handle the created video with location coords (ref to New videos)
-                        if (typeof resp.loc !== 'undefined') {
-                            $('.loading-comment-spinner').hide();
-                            disableGeocoding = true;
-                            canUpdateLoc = true;
+        if (mapParams.editMode) {
+            get(videoId)
+                .then(function(resp) {
+                    // Handle the created video with location coords (ref to New videos or videos with default coords: [-150, 0])
+                    if (typeof resp.loc !== 'undefined') {
+                        $('.loading-comment-spinner').hide();
+                        disableGeocoding = true;
 
-                            // if is default coords, show the location lists
-                            mapParams.showLocLists = (resp.loc.coordinates.indexOf(-150) > -1 && resp.loc.coordinates.indexOf(0) > -1) ? true : false;
+                        mapParams.hasCoords = true;
+                        mapParams.hasDefaultCoords = resp.loc.coordinates.join('') === "-1500" ? true : false;
 
-                            if (!mapParams.showLocLists) {
-                                updateMap(resp.loc.coordinates);
-                            } else {
-                                // enable geocoding b/c there are no coords on the map & geocode the 'clicked' suggested location list
-                                disableGeocoding = false;
-                            }
-
-                            _setInfoWindow({
-                                formatted_address: resp.loc.address,
-                                place_id: resp.loc.googlePlaceId
-                            });
-                        // Handle the video without location coords (ref to Old videos)
+                        if (!mapParams.hasDefaultCoords) {
+                            updateMap(resp.loc.coordinates);
                         } else {
-                            _getCurrentVideoCoords();
+                            disableGeocoding = false;
                         }
-                    })
-                    .fail(function(err) {
-                        console.log('There was an error getting the video coordinates.');
-                    });
-            } else {
-                _getCurrentVideoCoords();
-            }
+
+                        _setInfoWindow({
+                            formatted_address: resp.loc.address,
+                            place_id: resp.loc.googlePlaceId
+                        });
+                    // Handle the video without location coords (ref to Old videos)
+                    } else {
+                        _getCurrentVideoCoords();
+                    }
+                })
+                .fail(function(err) {
+                    console.log('There was an error getting the video coordinates.');
+                });
+        } else {
+            _getCurrentVideoCoords();
         }
     });
-
-    if (mapParams.enableDrawingMode) {
-        displayDrawingMode();
-    }
 }
 
 /*
@@ -96,8 +85,9 @@ function init(params) {
 function _getCurrentVideoCoords() {
     _getCurrentCoordinates()
         .then(function(params) {
-            updateMap(params);
             mapParams.gpsEnabled = true;
+            disableGeocoding = false;
+            updateMap(params);
         })
         .fail(function(err) {
             var string = '&nbsp; ' + err.message + '&nbsp; Click on map to pinpoint where the video was recorded.';
@@ -141,10 +131,9 @@ function _loadMap() {
 function setMapParams(params) {
     return {
         mapDom: params && params.dom || undefined,
-        showCurrentLocation: params && params.showCurrentLocation || false,
-        enableDrawingMode: params && params.enableDrawingMode || false,
         editMode: params && params.editMode || false,
-        showLocLists: params && params.showLocLists || false,
+        hasDefaultCoords: params && params.hasDefaultCoords || false,
+        hasCoords: params && params.hasCoords || false,
         gpsEnabled: false
     };
 }
@@ -157,8 +146,6 @@ function _loadLibraries() {
     infoWindow = new google.maps.InfoWindow({pixelOffset:new google.maps.Size(0, 0), maxWidth: 300});    // TODO: extract to own setInfoWindow()
     geocoder = new google.maps.Geocoder();
     places = new google.maps.places.PlacesService(map);
-
-    // TODO: load map and drawing lib
 }
 
 /*
@@ -174,14 +161,18 @@ function _bindEvents() {
     });
 
     map.addListener('click', function(e) {
+        // For videos that have no coords or have default coords, reset to allow location text update
+        mapParams.hasCoords = true;
+        mapParams.hasDefaultCoords = false;
+
         disableGeocoding = false;
-        placeMarkerAndPanTo(e.latLng, map);
+        _placeMarker(e.latLng);
     });
 
-    google.maps.event.addListener(autoComplete, 'place_changed', function(e) {
-        var place = autoComplete.getPlace();
+    autoComplete.bindTo('bounds', map);
 
-        disableGeocoding = true;
+    autoComplete.addListener('place_changed', function(e) {
+        var place = autoComplete.getPlace();
 
         if (!place.geometry) {
             return;
@@ -191,48 +182,38 @@ function _bindEvents() {
             map.fitBounds(place.geometry.viewport);
         } else {
             map.setCenter(place.geometry.location);
-            map.setZoom(12);
         }
 
         _setInfoWindow(place);
-        map.panTo(place.geometry.location);
-        geocode(geocoder, map);
+
+        _placeMarker(place.geometry.location);
+
+        $('#location-list').hide();
     });
 
-    if (mapParams.editMode) geocode(geocoder, map);
+    if (mapParams.editMode) {
+        setTimeout(function() {
+            _locationSearchSuggestions();
+        }, 500);
+    }
 }
 
 /*
- * Geocode location
- * @params {Object} [geocoder] - google's geocoder obj
- * @params {Element} [resultsMap] - the map element
+ * @private
+ * @description
  */
-function geocode(geocoder, resultsMap) {
+function _locationSearchSuggestions() {
     var location = $('#location').val();
 
-    _clearMapMarkers();
-
-    if (location.length) {
-        setTimeout(function() {
-            geocoder.geocode({'address': location}, function(results, status) {
-                if (status === 'OK') {
-
-                    if (!mapParams.showLocLists) {
-                        resultsMap.setCenter(results[0].geometry.location);
-                        placeMarkerAndPanTo(results[0].geometry.location, resultsMap);
-                        return;
-                    }
-
-                    _showLocationLists(results);
-
-                } else if (status === 'ZERO_RESULTS') {
-                    _displayErrorMsg(true, '&nbsp; Found 0 results based on the location provided.');
-                } else {
-                    _displayErrorMsg(false, '&nbsp; Geocode was not successful for the following reason: ' + status);
-                }
-            });
-        }, 100);
-    }
+    places.textSearch({query: location}, function(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            _showLocationLists(results);
+        } else if (status === 'ZERO_RESULTS') {
+            _displayErrorMsg(true, '&nbsp; Found 0 results based on the location provided. Please click on the map to choose your location.');
+        } else {
+            _displayErrorMsg(false, '&nbsp; Geocode was not successful for the following reason: ' + status);
+        }
+    });
 }
 
 /*
@@ -241,8 +222,9 @@ function geocode(geocoder, resultsMap) {
  */
 function _showLocationLists(params) {
     var obj = {};
+    var $locList = $('#location-list');
     if (params.length) {
-        $('#location-list').removeClass('hidden');
+        $locList.removeClass('hidden');
 
         for(var i = 0; i < params.length; i++) {
             obj.placeId = params[i].place_id;
@@ -250,10 +232,10 @@ function _showLocationLists(params) {
                 lat: params[i].geometry.location.lat(),
                 lng: params[i].geometry.location.lng()
             };
-            $('#location-list').find('#updated-location-lists').append("<span class='tag label label-info' data-object="+JSON.stringify(obj)+">"+params[i].formatted_address+"</span>");
+            $locList.find('#updated-location-lists').append("<span class='tag label label-info' data-object="+JSON.stringify(obj)+">"+params[i].formatted_address+"</span>");
         }
     } else {
-        $('#location-list').addClass('hidden');
+        $locList.addClass('hidden');
     }
 }
 
@@ -284,7 +266,9 @@ function _reverseGeoCode(pos) {
  * @description will only update the location textbox if map is in edit mode
  */
 function updateLocation(param) {
-    if (mapParams.editMode && !canUpdateLoc) return;
+    if (mapParams.editMode && (!mapParams.hasCoords && !mapParams.hasDefaultCoords) || (!mapParams.hasCoords && mapParams.hasDefaultCoords)) {
+        return;
+    }
 
     $('#location').val(param);
 }
@@ -292,7 +276,7 @@ function updateLocation(param) {
 /*
  * @description place marker on map and pan to location
  */
-function placeMarkerAndPanTo(latLng, map) {
+function _placeMarker(latLng) {
     _clearMapMarkers();
     _hideInfoWindow();
 
@@ -303,11 +287,9 @@ function placeMarkerAndPanTo(latLng, map) {
         map: map
     });
 
-    if (!mapParams.gpsEnabled) {
-        map.setZoom(12);
-    }
-
     map.panTo(latLng);
+    map.setCenter(marker.getPosition());
+    map.setZoom(12);
 
     if (!disableGeocoding) {
         _reverseGeoCode(latLng);
@@ -315,8 +297,15 @@ function placeMarkerAndPanTo(latLng, map) {
 
     mapMarkers.push(marker);
 
+    marker.addListener('dragstart', function() {
+        _hideInfoWindow();
+    });
+
     marker.addListener('dragend', function() {
-        canUpdateLoc = true;
+        mapParams.hasCoords = true;
+        mapParams.hasDefaultCoords = false;
+
+        showInfoWindow(marker);
         _reverseGeoCode(marker.getPosition());
 
     });
@@ -324,6 +313,10 @@ function placeMarkerAndPanTo(latLng, map) {
     setTimeout(function() {
         showInfoWindow(marker);
     }, 600);
+
+    if (!mapParams.hasCoords) {
+        _displayErrorMsg(true, '&nbsp;Video does not have a location on the map. Defaulting to your current location.');
+    }
 }
 
 /*
@@ -338,12 +331,6 @@ function showInfoWindow(marker) {
     infoWindow.setPosition(coords);
 
     infoWindow.open(map, marker);
-
-    $('#update-loc-link').on('click', function() {
-        canUpdateLoc = true;
-        $('#location-list').hide();
-        _reverseGeoCode(coords);
-    });
 }
 
 /*
@@ -359,41 +346,12 @@ function _hideInfoWindow() {
 function _setInfoWindow(params) {
     var stringLoc = '<div><strong>' + params.formatted_address + '</strong></div>';
 
-    if (mapParams.editMode && !canUpdateLoc) {
-        stringLoc += "<div class='text-center'><hr><a href='#' id='update-loc-link'>Update my location</a></div>";
-    }
-
     _setMarkerCooordinates({
         address: params.formatted_address,
         placeId: params.place_id
     });
 
     infoWindow.setContent(stringLoc);
-}
-
-/*
- * enable drawing controls
- * TODO: For later use...
- */
-function displayDrawingMode() {
-    var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.MARKER,
-        drawingControl: true,
-        drawingControlOptions: {
-            position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
-        },
-        // markerOptions: {PATH_TO_IMG},
-        circleOptions: {
-            fillColor: '#d3d3d3',
-            fillOpacity: 0.5,
-            strokeWeight: 1,
-            clickable: true,
-            editable: true,
-            zIndex: 1
-        }
-    });
-    drawingManager.setMap(map);
 }
 
 /*
@@ -411,13 +369,7 @@ function updateMap(pos) {
         }
     }
 
-    placeMarkerAndPanTo({lat: latitude, lng: longitude}, map);
-
-    map.setZoom(12);
-    map.setCenter({
-        lat: latitude,
-        lng: longitude
-    });
+    _placeMarker({lat: latitude, lng: longitude});
 }
 
 /*
@@ -483,9 +435,10 @@ function _clearMapMarkers() {
  * @params {String} msg
  */
 function _displayErrorMsg(hasGeo, msg) {
+    var $mapAlert = $('#map-alert');
     var message = hasGeo ? msg : 'Your browser doesn\'t support Geolocation. Click on map to pinpoint where the video was recorded.';
-    $('#map-alert').removeClass('hidden');
-    $('#map-alert').find('.warning-msg').html(message);
+    $mapAlert.removeClass('hidden');
+    $mapAlert.find('.warning-msg').html(message);
     $('.loading-comment-spinner').hide();
 }
 
@@ -496,7 +449,6 @@ function reload() {
     if (typeof google !== 'undefined') {
         google.maps.event.trigger(map, 'resize');
     }
-    canUpdateLoc = false;
 }
 
 /*

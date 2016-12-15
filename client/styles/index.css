@@ -1552,14 +1552,6 @@ End user profile CSS
 /*
  * edit-video-modal
  */
-#updated-location-lists {
-  position:absolute;
-}
-
-#location-list {
-  margin-bottom: 60px;
-}
-
 #updated-location-lists > span {
   margin-right: 5px;
   display: inline-block;
