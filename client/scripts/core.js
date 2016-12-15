@@ -718,8 +718,8 @@ function promptUserToAddVidGeo(userId) {
                         title: 'Location, Location, Location!',
                         body: [
                             "<div>",
-                            "<p>Welcome back! We noticed you have a video missing out on our new ‘Location’ feature!  By adding your video’s location, you help our community discover and fully appreciate your great content!</p>",
-                            "<a href='/user/"+identity.currentUser.userNameUrl+"'>Take me to my Profile to Edit my video/s and add the location!</a>",
+                            "<p>Welcome back! <br/><br/> We noticed you have a video missing out on our new &quot;Location&quot; feature! By adding location, you help our community discover and fully enjoy your great content!</p>",
+                            "<a href='/user/"+identity.currentUser.userNameUrl+"'>Take me to my Profile to Edit my video/s!</a>",
                             "</div>"
                         ].join(""),
                         html: true,
