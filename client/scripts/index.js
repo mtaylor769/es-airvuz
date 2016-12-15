@@ -12,6 +12,7 @@ require('dustjs-helpers');
 
 require('./core');
 
+require('../scripts/services/activeTabTimer');
 require('../scripts/services/pageTimer');
 
 // shared style
