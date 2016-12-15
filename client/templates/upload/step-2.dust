@@ -16,10 +16,6 @@
         <label for="title">Title <span class="text-danger">*</span></label>
         <input type="text" class="form-control" id="title" placeholder="Give your video a title" required>
       </div>
-      <div class="form-group">
-        <label for="location">Location</label>
-        <input type="text" class="form-control" id="location" placeholder="Video location">
-      </div>
         <div class="form-group" style="margin-bottom: 45px;position:relative;">
             <label for="map">Map</label>
             <div class="loading-comment-spinner text-center airvuz-blue">
@@ -32,6 +28,10 @@
                 <strong>Warning!</strong>
                 <span class="warning-msg"></span>
             </div>
+        </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" class="form-control" id="location" placeholder="Video location">
         </div>
       <div class="form-group">
         <label for="tags">Keywords</label> <br/>
