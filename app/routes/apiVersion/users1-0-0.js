@@ -82,7 +82,7 @@ function createUser(req, res) {
         })
         .then(function () {
             EventTrackingCrud.create({
-                codeSource  : 'auth',
+                codeSource  : 'users',
                 eventSource : 'nodejs',
                 eventType   : 'signUpClick',
                 eventName   : 'account-created:local',

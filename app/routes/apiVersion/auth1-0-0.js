@@ -270,7 +270,9 @@ function _validateFBDisplayName(socialData) {
                                 remindFBUserNameCreate: false
                             });
                         } else if (typeof socialData.altUserDisplayName !== 'undefined' && socialData.altUserDisplayName.length === 0 && reminderBool) {
-                            return true;
+                            return usersCrud1_0_0.update(userId, {
+                                remindFBUserNameCreate: false
+                            });
                         } else {
                             return usersCrud1_0_0.update(userId, {
                                 userNameDisplay: socialData.altUserDisplayName,
