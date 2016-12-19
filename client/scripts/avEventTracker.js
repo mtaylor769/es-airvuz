@@ -81,7 +81,10 @@ AVEventTracker.error = error;
             }
         });
 
-        // TODO: send event to google? (if ga exists)
+        ga('send', 'exception', {
+            'exDescription': event.message,
+            'exFatal': false
+        });
 
         // return false to fire the default event handler
         return false;
