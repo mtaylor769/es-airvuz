@@ -19,6 +19,7 @@ try {
     var notificationCrud1_0_0       = require('../../persistence/crud/notifications1-0-0');
     var videoLikeCrud1_0_0          = require('../../persistence/crud/videoLike1-0-0');
     var videoViewCrud               = require('../../persistence/crud/videoViews');
+    var EventTrackingCrud   = require('../../persistence/crud/events/eventTracking')
 
     // add dust template
     viewManager.addView({view: confirmationView});
@@ -80,6 +81,14 @@ function createUser(req, res) {
             return _sendMail(mailOptions);
         })
         .then(function () {
+            EventTrackingCrud.create({
+                codeSource  : 'auth',
+                eventSource : 'nodejs',
+                eventType   : 'signUpClick',
+                eventName   : 'account-created:local',
+                referrer    : req.header('Referrer')
+            });
+
             res.sendStatus(200);
         })
         .catch(function(error) {
