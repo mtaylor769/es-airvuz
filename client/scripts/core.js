@@ -119,7 +119,7 @@ function onLoginSuccess() {
       AVEventTracker.error('attempted to create account: ga is undefined');
     }
     fbq('trackCustom', socialEvent);
-    ga('send', 'event', 'login', socialEvent, 'login', {nonInteraction: true});
+    ga('send', 'event', 'signup', socialEvent, 'signup', {nonInteraction: true});
     AVEventTracker({
       codeSource: 'core',
       eventName: socialEvent,
@@ -127,7 +127,7 @@ function onLoginSuccess() {
     });
 
     fbq('trackCustom', 'account-created:any');
-    ga('send', 'event', 'login', 'account-created:any', 'login', {nonInteraction: true});
+    ga('send', 'event', 'signup', 'account-created:any', 'signup', {nonInteraction: true});
     AVEventTracker({
       codeSource: 'core',
       eventName: 'account-created:any',
@@ -354,7 +354,7 @@ function bindEvents() {
         ga('send', 'event', 'signup', 'account-created:local', 'signup', {nonInteraction: true});
 
         fbq('trackCustom', 'account-created:any');
-        ga('send', 'event', 'login', 'account-created:any', 'login', {nonInteraction: true});
+        ga('send', 'event', 'signup', 'account-created:any', 'signup', {nonInteraction: true});
         AVEventTracker({
           codeSource: 'core',
           eventName: 'account-created:any',
