@@ -78,8 +78,8 @@ describe('Slider API tests', function() {
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
                         expect(res.body).to.have.property('_id');
                         expect(res.body).to.have.property('name', 'Test Slider')
-                        expect(res.body).to.have.property('startDate', '2001-01-01T06:00:00.000Z')
-                        expect(res.body).to.have.property('endDate', '2051-01-01T06:00:00.000Z')
+                        expect(res.body).to.have.property('startDate', startDateReturned)
+                        expect(res.body).to.have.property('endDate', endDateReturned)
                         expect(res.body).to.have.property('isActive', true)
                         expect(res.body.slides[0]).to.equal(slides);
                         sliderId = res.body._id;
@@ -97,8 +97,8 @@ describe('Slider API tests', function() {
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
                         expect(res.body).to.have.property('_id', sliderId);
                         expect(res.body).to.have.property('name', 'Test Slider')
-                        expect(res.body).to.have.property('startDate', '2001-01-01T06:00:00.000Z')
-                        expect(res.body).to.have.property('endDate', '2051-01-01T06:00:00.000Z')
+                        expect(res.body).to.have.property('startDate', startDateReturned)
+                        expect(res.body).to.have.property('endDate', endDateReturned)
                         expect(res.body).to.have.property('isActive', true)
                         expect(res.body.slides[0]._id).to.equal(slides);
                         sliderId = res.body._id;
