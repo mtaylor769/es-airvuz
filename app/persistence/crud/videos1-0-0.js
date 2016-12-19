@@ -349,7 +349,7 @@ function _getVideo(query, limit) {
 
       return VideoModel.find(query)
         .skip(skip)
-        .populate('userId')
+		.populate('userId', 'coverPicture emailAddress userNameDisplay profilePicture userNameUrl aboutMe lastName firstName socialMediaLinks autoPlay')
         .limit(limit)
         .lean()
         .exec();
