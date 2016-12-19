@@ -17,6 +17,20 @@ _**Note:** If you update a production client build you'll need to restart Expres
 
 All tests will create code coverage and place it in the `coverage/` folder.
 
+## API Testing
+1. Globally NPM install mocha "-g", or update package.json "test:api:local" and point to node_modules folder containing mocha exe
+2. Create a new user for testing, or if you want to use an existing go to step 2
+3. Update package.json to include the email, username and password created in step one, assigning the value to 
+ TEST_EMAIL, TEST_USER and TEST_PWD on the line beginning with test:api:local. For example;
+- "test:api:local" : "NODE_TEST_ENV=localhost:3000 TEST_EMAIL=email@server.com TEST_USER=testingUser TEST_PWD=password mocha testV2/api/*.js --reporter spec",
+- to execute the API tests on beta.airvuz.com update the line beginning with test:api:beta
+4. Update the same line to include the hostname and port of your local environment (NODE_TEST_ENV=)
+5. Enter "sudo npm run test:api:local" to execute all API tests in testV2/api folder from the cmd line
+6. To debug any tests, create a new Mocha "Run/Debug configuration" within WebStorm
+- include the same environment variables as in the package.json file along with their appropriate values
+- point to the test file within the testV2/api folder
+- when a new configuration has been saved, select it from the test list dropdown and click the debug icon
+
 ## Windows
 
 If you receive an error trying to run a NPM script on Windows. Add a `:win` to the end of the command and that will use a special Windows version of the script. This is due to the differences between how *nix systems and Windows do environmental variables.

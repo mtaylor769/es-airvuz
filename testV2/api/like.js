@@ -1,12 +1,14 @@
 var chai        = require('chai');
 var chaiHttp    = require('chai-http');
-var host        = 'http://' + (process.env.HOST || 'localhost');
-var server      = host + ":" + (process.env.PORT || 80);
+var server      = 'http://' + process.env.NODE_TEST_ENV;
 var expect      = require('chai').expect;
+
+var testEmailAddress = process.env.TEST_EMAIL;
+var userNameDisplay = process.env.TEST_USER;
+var testPassword = process.env.TEST_PWD;
 
 var token;
 var userId;
-var userNameDisplay = 'bryceb';
 var videoId = '57e8366a7b09480e3378289f';
 
 chai.use(chaiHttp);
@@ -19,13 +21,13 @@ describe('Like API tests', function() {
         describe('get a token', function() {
             chai.request(server)
                 .post('/api/auth')
-                .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
+                .send({emailAddress: testEmailAddress, password: testPassword})
                 .then(function (res) {
                     return token = "Bearer " + res.text;
                 })
                 .then(function(token) {
                     chai.request(server)
-                        .et('/api/users?username=' + userNameDisplay)
+                        .get('/api/users?username=' + userNameDisplay)
                         .set('Authorization', token)
                         .end(function(err, res){
                             userId = res.body._id;
@@ -34,6 +36,7 @@ describe('Like API tests', function() {
                 });
         });
     });
+//--------------------------------------------------------------------------------------------------------------------->
     describe('Like tests no apiVer', function() {
         var apiVer = 'apiVer=';
 
@@ -41,6 +44,7 @@ describe('Like API tests', function() {
             it('should like a video', function (done) {
                 chai.request(server)
                     .post('/api/videos/' + videoId + '/like?' + apiVer)
+                    .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -53,6 +57,7 @@ describe('Like API tests', function() {
             it('should like a video', function (done) {
                 chai.request(server)
                     .post('/api/videos/' + videoId + '/like?' + apiVer)
+                    .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -61,14 +66,15 @@ describe('Like API tests', function() {
                     });
             });
         });
-    //no apiVer end
     });
+//--------------------------------------------------------------------------------------------------------------------->
     describe('Like tests apiVer=1.0.0', function() {
         var apiVer = 'apiVer=1.0.0';
         describe('Like a video', function() {
             it('should like a video', function (done) {
                 chai.request(server)
                     .post('/api/videos/' + videoId + '/like?' + apiVer)
+                    .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -81,6 +87,7 @@ describe('Like API tests', function() {
             it('should like a video', function (done) {
                 chai.request(server)
                     .post('/api/videos/' + videoId + '/like?' + apiVer)
+                    .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(200);
                         expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
@@ -90,12 +97,14 @@ describe('Like API tests', function() {
             });
         });
     });
+//--------------------------------------------------------------------------------------------------------------------->
     describe('Like tests apiVer=2.0.0', function() {
         var apiVer = 'apiVer=2.0.0';
         describe('Like a video', function() {
             it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/videos/' + videoId + '/like?' + apiVer)
+                    .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version");
@@ -107,6 +116,7 @@ describe('Like API tests', function() {
             it('should return a 400 and invalid api version json', function (done) {
                 chai.request(server)
                     .post('/api/videos/' + videoId + '/like?' + apiVer)
+                    .set('Authorization', token)
                     .end(function (err, res) {
                         expect(res).to.have.status(400);
                         expect(res.body).to.have.property("error", "invalid api version");
