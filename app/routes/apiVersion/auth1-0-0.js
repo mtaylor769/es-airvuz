@@ -13,6 +13,7 @@ try {
     var GoogleAuth          = require('google-auth-library');
     var authFactory         = new GoogleAuth();
     var token               = null;
+    var EventTrackingCrud   = require('../../persistence/crud/events/eventTracking');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -107,7 +108,7 @@ function facebook(req, res, next) {
   _validateFBDisplayName(socialData)
       .then(function() {
           // TODO: verify facebook token - like google
-          return _socialLogin(socialData)
+          return _socialLogin(socialData, req)
               .then(function (token) {
                   res.json(token);
               });
@@ -138,7 +139,7 @@ function google(req, res) {
       socialData.provider = 'google';
       socialData.email = response.email;
 
-      return _socialLogin(socialData);
+      return _socialLogin(socialData, req);
     })
     .then(function (token) {
       res.json(token);
@@ -154,10 +155,11 @@ function google(req, res) {
 /**
  * social login or create new account
  * @param socialData
+ * @param req
  * @returns {Promise} - with token if success
  * @private
  */
-function _socialLogin(socialData) {
+function _socialLogin(socialData, req) {
   return SocialCrud.findAccountByIdandProvider(socialData.accountId, socialData.provider)
     .then(function(account) {
       if (account) {
@@ -171,26 +173,19 @@ function _socialLogin(socialData) {
       }
 
       // check if local user exists
+      // Tie in social account to local account
       return usersCrud1_0_0.getUserByEmail(socialData.email)
         .then(function (user) {
           if (user) {
-            user.socialAccount = {
-              isNew: false,
-              provider: socialData.provider
-            };
             socialData.userId = user._id;
             return SocialCrud.create(socialData)
               .then(function () {
-
-                user.socialAccount.isNew = true;
-
                 if (user.status === 'suspended') {
                   throw 'You are suspended, please contact support';
                 }
                 return _signToken({
                   _id: user._id,
-                  aclRoles: user.aclRoles,
-                  socialAccountInfo: user.socialAccount
+                  aclRoles: user.aclRoles
                 });
               });
           }
@@ -214,10 +209,14 @@ function _socialLogin(socialData) {
             .then(function(user) {
               socialData.userId = user._id;
               return SocialCrud.create(socialData)
-                  .then(function () {
-                      return _validateFBDisplayName(socialData);
-                  })
                 .then(function () {
+                    EventTrackingCrud.create({
+                        codeSource  : 'auth',
+                        eventSource : 'nodejs',
+                        eventType   : 'signUpClick',
+                        eventName   : 'account-created:' + socialData.provider,
+                        referrer    : req.header('Referrer')
+                    });
                   user.socialAccount = {
                       provider: socialData.provider,
                       isNew : true
@@ -251,7 +250,7 @@ function _validateFBDisplayName(socialData) {
 
                 if (account.provider === 'facebook') {
                     if (userId !== account.userId.userNameDisplay) {
-                        return;
+                        return true;
                     } else {
                         if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === true) {
                             throw {
@@ -259,7 +258,7 @@ function _validateFBDisplayName(socialData) {
                                 'userName': account.userId.userNameDisplay
                             };
                         } else if (typeof socialData.altUserDisplayName === 'undefined' && account.userId.remindFBUserNameCreate === false) {
-                            return;
+                            return true;
                         } else if (socialData.altUserDisplayName.length === 0 && !reminderBool) {
                             throw {
                                 'error': 'Username cannot be empty',
@@ -271,7 +270,9 @@ function _validateFBDisplayName(socialData) {
                                 remindFBUserNameCreate: false
                             });
                         } else if (typeof socialData.altUserDisplayName !== 'undefined' && socialData.altUserDisplayName.length === 0 && reminderBool) {
-                            return;
+                            return usersCrud1_0_0.update(userId, {
+                                remindFBUserNameCreate: false
+                            });
                         } else {
                             return usersCrud1_0_0.update(userId, {
                                 userNameDisplay: socialData.altUserDisplayName,
