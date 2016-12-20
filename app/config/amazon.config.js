@@ -11,10 +11,16 @@ switch(process.env.NODE_ENV || 'development') {
     OUTPUT_BUCKET = 'airvuz-drone-video';
     PIPELINE_ID   = '1455744809087-s0jcq3';
     ASSET_BUCKET  = 'airvuz-asset';
-    CDN_URL       = '//d32znywta9rkav.cloudfront.net';
+    // amazon cloudfront
+    // CDN_URL       = '//d32znywta9rkav.cloudfront.net';
+    // beluga cdn
+    CDN_URL       = '//cdn.airvuz.com';
     break;
   case 'beta':
-    CDN_URL       = '//d6xm2cm58wj2l.cloudfront.net';
+    // amazon cloudfront
+    // CDN_URL       = '//d6xm2cm58wj2l.cloudfront.net';
+    // beluga cdn
+    CDN_URL       = '//cdn-beta.airvuz.com';
     // beta fallthrough
   default:
     // beta & development
