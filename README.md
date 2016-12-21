@@ -19,7 +19,7 @@ All tests will create code coverage and place it in the `coverage/` folder.
 
 ## API Testing
 1. Globally NPM install mocha "-g", or update package.json "test:api:local" and point to node_modules folder containing mocha exe
-2. Create a new user for testing, or if you want to use an existing go to step 2
+2. Create a new user for testing, or if you want to use an existing go to step 2 
 3. Update package.json to include the email, username and password created in step one, assigning the value to 
  TEST_EMAIL, TEST_USER and TEST_PWD on the line beginning with test:api:local. For example;
 - "test:api:local" : "NODE_TEST_ENV=localhost:3000 TEST_EMAIL=email@server.com TEST_USER=testingUser TEST_PWD=password mocha testV2/api/*.js --reporter spec",
