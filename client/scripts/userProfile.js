@@ -325,7 +325,7 @@ function confirmPasswordChange() {
     $('#error-message-modal')
       .modal('show')
       .find('.error-modal-body')
-      .html('New Password Invalid');
+      .html('Passwords do not match');
     return false;
   } 
   $.ajax({
@@ -337,12 +337,10 @@ function confirmPasswordChange() {
     if(response.status==='OK') {
      //Do nothing, password has been changed
     } else {
-      var strBuilder = '';
-      response.data.forEach(function(item){
-        if (item.displayMsg) {
-          strBuilder += item.displayMsg;
-        }
-      });
+      $('#error-message-modal')
+        .modal('show')
+        .find('.error-modal-body')
+        .html('Error. ' + response.data);
     }
   })
   .fail(function(error) {
@@ -458,29 +456,20 @@ function editProfile() {
     $.ajax({
       type:'PUT',
       url: '/api/users/' + user._id,
-      data: JSON.stringify(userData),
-      contentType : 'application/json'
+      data: userData
     })
       .done(function(response) {
         if (response.statusCode === 500) {
-          var strBuilder = '';
-          if (!!response.data.length) {
-            response.data.forEach(function(item){
-              if (item.displayMsg) {
-                strBuilder += item.displayMsg;
-              }
-            });
-          }
           $('#save-changes').modal('hide');
           $('#error-message-modal')
             .modal('show')
             .find('.error-modal-body')
-            .html('Error. ' + strBuilder);
+            .html('Error. ' + response.data);
         } else {
 
           if (userData.userNameDisplay) {
             // if user change the user name then redirect them to the new url
-            identity.getUserInfo()
+            return identity.getUserInfo()
               .then(function () {
                 window.location.href = '/user/' + response.data.userNameUrl;
               });
