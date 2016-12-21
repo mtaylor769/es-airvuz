@@ -14,6 +14,7 @@ try {
 	var followCrud1_0_0		= require('../../persistence/crud/follow1-0-0');
 	var videoLikeCrud1_0_0 	= require('../../persistence/crud/videoLike1-0-0');
 	var catTypeCrud1_0_0  	= require('../../persistence/crud/categoryType1-0-0');
+	var videoCollection1_0_0 = require('../../persistence/crud/videoCollection1-0-0');
 	var amazonConfig  		= require('../../config/amazon.config');
 	var config				= require('../../../config/config')[global.NODE_ENV];
 
@@ -38,7 +39,9 @@ util.inherits(VideoPlayerModel, BaseModel);
 
 VideoPlayerModel.prototype.getData = function(params) {
 	var videoId         = params.request.params.id;
-	logger.error(videoId);
+
+	var ccid 	= params.request.query.ccid || null;
+
 	var dataObject      = {};
 	var checkObject 		= {};
 
@@ -47,7 +50,6 @@ VideoPlayerModel.prototype.getData = function(params) {
 	// TODO: run parallel
 	return videoCrud1_0_0.getById(videoId)
 		.then(function(video) {
-			logger.error(video);
 			if(!video) {
 				throw {error: 404};
 			}
@@ -76,6 +78,17 @@ VideoPlayerModel.prototype.getData = function(params) {
 			checkObject.user  = user._id;
 			
 			dataObject.user.isExternalLink = user.profilePicture.indexOf('http') > -1;
+
+			// return custom category videos
+			if (ccid !== null) {
+				return videoCollection1_0_0.getCustomById(ccid)
+					.then(function (category) {
+						category.videos.map(function(video) {
+							video.ccid = category._id;
+						});
+						return category.videos;
+					});
+			}
 
 			return catTypeCrud1_0_0.getInternalCategory(dataObject.video.categories)
 				.then(videoCrud1_0_0.getNextVideos);

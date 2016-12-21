@@ -16,6 +16,7 @@
      * @params      {element}   el                          - the selected video
      * @property    {object}    options                     - optional params
      * @property    {string}    options.selectedVideoId     - the selected video id
+     * @property    {string}    options.ccid    - the custom category id video is part of
      */
     var Plugin = function (el, options) {
         this.element = el;
@@ -42,16 +43,21 @@
         },
         // get the video data
         _getVideoData: function () {
-            var _this = this;
-            var selectedVideoId = this.options.selectedVideoId;
+            var _this = this,
+                selectedVideoId = this.options.selectedVideoId,
+                ccid = typeof this.options.ccid !== 'undefined' && this.options.ccid.length ? this.options.ccid : '';
 
-            $.ajax({url: '/api/videos/' + selectedVideoId})
+            $.ajax({url: '/api/videos/' + selectedVideoId + (ccid.length ? '?ccid:' + ccid : '')})
                 .then(function (resp) {
                     require(['moment'], function (moment) {
                         resp.displayDate = moment(resp.uploadDate).fromNow();
                         resp.openGraphCacheDate = moment(resp.openGraphCacheDate).format('x');
                         if(resp.title.length > 45) {
                             resp.title = resp.title.substring(0, 45) + '...';
+                        }
+
+                        if (ccid.length) {
+                            resp.ccid = ccid;
                         }
                         _this._updateVideoSrc(resp);
                     });
@@ -84,7 +90,9 @@
         },
         // update page url
         _updateUrl: function (data) {
-            window.history.pushState({}, 'Airvuz - ' + data.title, '/video/' + this.$element.attr('data-id'));
+            var ccidQueryParam = typeof this.options.ccid !== 'undefined' && this.$element.data('ccid').length ? '?ccid=' + this.$element.data('ccid') : '';
+
+            window.history.pushState({}, 'Airvuz - ' + data.title, '/video/' + this.$element.attr('data-id') + ccidQueryParam);
         },
         // remove the plugin instance
         destroy: function () {

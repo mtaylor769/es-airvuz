@@ -11,7 +11,7 @@
       {#index[videos]}
         <div class="video">
           <div class="text-center">
-            <a title="{title}" data-video-id="{_id}">
+            <a title="{title}" data-video-id="{_id}" data-ccid="{ccid}">
               <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive go-to-video"/>
             </a>
           </div>

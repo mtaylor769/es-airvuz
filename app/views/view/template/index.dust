@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-10 border-left">
                 {?index.customSliderVideos}
-                    {> "client.templates.home.home-video" title="{index.customSliderName}" videos="customSliderVideos" viewAll="{index.customSliderNameUrl}"/}
+                    {> "client.templates.home.home-video" title="{index.customSliderName}" videos="customSliderVideos" viewAll="{index.customSliderNameUrl}" ccid="{index.ccid}" /}
                     <hr/>
                 {/index.customSliderVideos}
                 {> "client.templates.home.home-video" title="Featured Drone Videos" videos="featuredVideos" viewAll="featured-drone-videos"/}
