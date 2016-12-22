@@ -340,10 +340,6 @@ function showLoginDialog() {
 
 //function to persist autoplay data
 function onAutoPlayChange(event, state) {
-  var autoPlayObject = {};
-  autoPlayObject.userId = user._id;
-  autoPlayObject.autoPlay = state;
-
   AVEventTracker({
     codeSource: 'videoPlayer',
     eventName: 'video-auto-play',
@@ -354,7 +350,9 @@ function onAutoPlayChange(event, state) {
   $.ajax({
     type:'PUT',
     url: '/api/users/' + user._id,
-    data: autoPlayObject
+    data: {
+        autoPlay: state
+    }
   })
   .done(function(response) {
     user.autoPlay = response.data.autoPlay;

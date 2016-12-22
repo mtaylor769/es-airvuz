@@ -189,131 +189,45 @@ users.prototype.validateCreateUser = function (params) {
 
 
 var ValidateUserName = function (id, params) {
-    var sourceLocation = "persistence.crud.Users.update";
-    var errorMessage = new ErrorMessage();
+    if (params.userNameDisplay) {
+        return UserModel.findOne({userNameDisplay: params.userNameDisplay})
+            .lean()
+            .exec()
+            .then(function (user) {
+                if (user && user._id !== id) {
+                    return Promise.reject('Username already exists');
+                }
+            });
+    }
 
-    return (new Promise(function (resolve, reject) {
-            if (params.userNameDisplay) {
-                UserModel.findOne({userNameDisplay: params.userNameDisplay})
-                    .lean()
-                    .exec()
-                    .then(function (user) {
-                        if (user) {
-                            if (user._id !== id) {
-                                var errors = errorMessage.getErrorMessage({
-                                    statusCode: "400",
-                                    errorId: "VALIDA1000",
-                                    templateParams: {
-                                        name: "userNameDisplay"
-                                    },
-                                    sourceError: '#username',
-                                    displayMsg: "Username already exists",
-                                    errorMessage: "Username already exists",
-                                    sourceLocation: sourceLocation
-                                });
-                                return reject(errors);
-                            } else {
-                                return resolve();
-                            }
-                        } else {
-                            return resolve();
-                        }
-                    })
-                    .catch(function (error) {
-                        return reject(error);
-                    });
-            } else {
-                return resolve();
-            }
-        })
-    );
+    return Promise.resolve();
 };
 
 var ValidateEmailAddress = function (id, params) {
-    var sourceLocation = "persistence.crud.Users.update";
-    var errorMessage = new ErrorMessage();
+    if (params.emailAddress) {
+        return UserModel.findOne({emailAddress: params.emailAddress})
+            .then(function (user) {
+                if (user && user._id !== id) {
+                    return Promise.reject('Email already exists');
+                }
+            });
+    }
 
-    return (new Promise(function (resolve, reject) {
-        if (params.emailAddress) {
-            UserModel.findOne({emailAddress: params.emailAddress})
-                .then(function (user) {
-                    if (user._doc._id !== id) {
-                        var errors = errorMessage.getErrorMessage({
-                            statusCode: "400",
-                            errorId: "VALIDA1000",
-                            templateParams: {
-                                name: "emailAddress"
-                            },
-                            sourceError: "#email",
-                            displayMsg: "Email already exists",
-                            errorMessage: "Email already exists",
-                            sourceLocation: sourceLocation
-                        });
-                        reject(errors);
-                        return;
-                    }
-                    return resolve();
-                })
-                .catch(function (error) {
-                    reject(error);
-                    return;
-                });
-        } else {
-            resolve();
-            return;
-        }
-    }));
+    return Promise.resolve();
 };
 
 var ValidatePassword = function (id, params) {
-    var sourceLocation = "persistence.crud.Users.update";
-    var errorMessage = new ErrorMessage();
+    if (params.newPassword !== params.confirmPassword) {
+        return Promise.reject('Passwords do not match');
+    }
 
-    return (new Promise(function (resolve, reject) {
-        if (params.oldPassword) {
-            if (params.newPassword !== params.confirmPassword) {
-                var errors = errorMessage.getErrorMessage({
-                    statusCode: "400",
-                    errorId: "VALIDA1000",
-                    templateParams: {
-                        name: "password"
-                    },
-                    sourceError: "Passwords do not match",
-                    errorMessage: "Passwords do not match",
-                    sourceLocation: sourceLocation
-                });
-                reject(errors);
-                return;
-            } else {
-                UserModel.findById(id).exec()
-                    .then(function (user) {
-                        if (!user.validPassword(params.oldPassword)) {
-                            var errors = errorMessage.getErrorMessage({
-                                statusCode: "400",
-                                errorId: "VALIDA1000",
-                                templateParams: {
-                                    name: "password"
-                                },
-                                sourceError: "Password Invalid",
-                                errorMessage: "Invalid Password",
-                                sourceLocation: sourceLocation
-                            });
-                            reject(errors);
-                            return;
-                        } else {
-                            resolve();
-                            return;
-                        }
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                    });
+    return UserModel.findById(id).exec()
+        .then(function (user) {
+            if (!user.validPassword(params.oldPassword)) {
+                return Promise.reject('Current password does not match');
             }
-        } else {
-            resolve();
-            return;
-        }
-    }));
+            return Promise.resolve();
+        });
 };
 
 /*
@@ -321,39 +235,11 @@ var ValidatePassword = function (id, params) {
  * @param params.sourceLocation {string} - location where the error initiates.
  */
 users.prototype.validateUpdateUser = function (id, params) {
-    var userInfo = {};
-
-    return (new Promise(function (resolve, reject) {
-
-        ValidateUserName(id, params)
-            .then(function (validation) {
-                userInfo.errors = validation;
-
-                ValidateEmailAddress(id, params)
-                    .then(function (validation) {
-                        userInfo.errors = validation;
-
-                        ValidatePassword(id, params)
-                            .then(function (validation) {
-                                userInfo.errors = validation;
-                                resolve(userInfo);
-                                return;
-                            })
-                            .catch(function (error) {
-                                reject(error);
-                                return;
-                            });
-                    })
-                    .catch(function (error) {
-                        reject(error);
-                        return;
-                    });
-            })
-            .catch(function (error) {
-                reject(error);
-                return;
-            });
-    }));
+    return Promise.all([
+        ValidateUserName(id, params),
+        ValidateEmailAddress(id, params),
+        ValidatePassword(id, params)
+    ]);
 };
 
 /*
@@ -548,42 +434,28 @@ users.prototype.remove = function (id) {
  * @param params
  */
 users.prototype.update = function (id, params) {
-    var currentTransaction = this;
-    return (new Promise(function (resolve, reject) {
-
-        var validate = currentTransaction.validateUpdateUser(id, params);
-        validate.then(function (validation) {
-            if (validation.errors) {
-                reject(validation.errors);
-                return;
-            } else {
-                if (params.userNameDisplay) {
-                    // update the userNameUrl also
-                    params.userNameUrl = UserModel.purgeUserNameDisplay(params.userNameDisplay);
-                }
-                if (params.oldPassword) {
-                    var hashUser = new UserModel();
-                    var pw = UserModel.generateHash(params.newPassword);
-                    delete params.oldPassword;
-                    delete params.newPassword;
-                    delete params.confirmPassword;
-                    params.password = pw;
-                }
-                UserModel.findByIdAndUpdate(id, params, {new: true}).populate('SocialMediaLinks').exec()
-                    .then(function (user) {
-                        if (user._doc.password) {
-                            user._doc.password = null;
-                        }
-                        resolve(user);
-                        return;
-                    });
+    return this.validateUpdateUser(id, params)
+        .then(function () {
+            if (params.userNameDisplay) {
+                // update the userNameUrl also
+                params.userNameUrl = UserModel.purgeUserNameDisplay(params.userNameDisplay);
             }
-        })
-            .catch(function (error) {
-                reject(error);
-                return;
-            });
-    }));
+            if (params.oldPassword) {
+                var pw = UserModel.generateHash(params.newPassword);
+                delete params.oldPassword;
+                delete params.newPassword;
+                delete params.confirmPassword;
+                params.password = pw;
+            }
+
+            return UserModel.findByIdAndUpdate(id, params, {new: true}).exec()
+                .then(function (user) {
+                    if (user._doc.password) {
+                        user._doc.password = null;
+                    }
+                    return user;
+                });
+        });
 };
 
 /*
