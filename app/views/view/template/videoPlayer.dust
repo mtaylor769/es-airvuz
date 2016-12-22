@@ -28,6 +28,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Discover, watch, and share breathtaking drone videos from some of the most scenic locations on earth as well as videos from the world’s top drone racing and FPV freestyle pilots." />
         <meta name="keywords" content="AirVuz, Aerial Videos, Drone videos, Drones, GoPro Videos, Horizon Hobby Drones, DJI Drone Videos, Drone Racing Videos" />
+        <meta name="p:domain_verify" content="a37dadbea7b34453a6329d62919e0316"/>
         <link rel="icon" href="/client/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="{script.css}">
     </head>
