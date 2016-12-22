@@ -45,6 +45,10 @@ module.exports = new IndexView({
 				partialPath: './app/views/view/partial/footer.dust' 
 			},
 			{
+				partialName: 'client.templates.videoPlayer.videoPlayerModal',
+				partialPath: './client/templates/videoPlayer/videoPlayerModal.dust'
+			},
+			{
 				partialName: 'client.templates.home.home-video',
 				partialPath: './client/templates/home/home-video.dust'
 			},

@@ -98,6 +98,7 @@
       window.pageParams = '{emailConfirm|j|s}';
     </script>
     {> "app.views.view.partial.footer" /}
+    {> "client.templates.videoPlayer.videoPlayerModal" /}
     {> "app.views.view.partial.js" /}
   </body>
     
