@@ -456,7 +456,8 @@ function editProfile() {
     $.ajax({
       type:'PUT',
       url: '/api/users/' + user._id,
-      data: userData
+        data: JSON.stringify(userData),
+        contentType : 'application/json'
     })
       .done(function(response) {
         if (response.statusCode === 500) {
