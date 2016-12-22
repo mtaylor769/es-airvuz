@@ -217,6 +217,10 @@ var ValidateEmailAddress = function (id, params) {
 };
 
 var ValidatePassword = function (id, params) {
+    if (!params.oldPassword) {
+        return Promise.resolve();
+    }
+
     if (params.newPassword !== params.confirmPassword) {
         return Promise.reject('Passwords do not match');
     }
