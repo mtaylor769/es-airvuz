@@ -12,7 +12,7 @@
 		// quick fix - use $http
 		$.ajaxSetup({
 			beforeSend: function (xhr) {
-				var token = localStorage.getItem('id_token');
+				var token = localStorage.getItem('admin_token');
 				if (token) {
 					xhr.setRequestHeader('Authorization', 'Bearer ' + identity.getToken());
 				}

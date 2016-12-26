@@ -8,7 +8,7 @@
 		.module('AirvuzAdmin')
 		.factory('identity', ['jwtHelper', function (jwtHelper) {
 			var currentUser,
-				token = localStorage.getItem('id_token');
+				token = localStorage.getItem('admin_token');
 
 			// if token is not expire decode the token or else set current user to null
 			if (token) {
