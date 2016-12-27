@@ -1,8 +1,11 @@
 var chai        = require('chai');
 var chaiHttp    = require('chai-http');
-var host        = 'http://' + (process.env.HOST || 'localhost');
-var server      = host + ":" + (process.env.PORT || 80);
+var server      = 'http://' + process.env.NODE_TEST_ENV;
 var expect      = require('chai').expect;
+
+var testEmailAddress = process.env.TEST_EMAIL;
+var userNameDisplay = process.env.TEST_USER;
+var testPassword = process.env.TEST_PWD;
 
 chai.use(chaiHttp);
 
@@ -15,7 +18,7 @@ describe('Authorization tests', function() {
         it('should return a token', function (done) {
             chai.request(server)
                 .post('/api/auth')
-                .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
+                .send({emailAddress: testEmailAddress, password: testPassword})
                 .end(function (err, res) {
                     expect(res).to.have.status(200);
                     expect(res).to.have.header('content-type', 'text/html; charset=utf-8');
@@ -32,7 +35,7 @@ describe('Authorization tests', function() {
         it('should a 400 and invalid api version json', function (done) {
             chai.request(server)
                 .post('/api/auth?apiVer=2.0.0')
-                .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
+                .send({emailAddress: testEmailAddress, password: testPassword})
                 .end(function (err, res) {
                     expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
                     expect(res).to.be.json;
@@ -49,7 +52,7 @@ describe('Authorization tests', function() {
         it('should return a token', function (done) {
             chai.request(server)
                 .post('/api/auth?apiVer=1.0.0')
-                .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'bryc3b'})
+                .send({emailAddress: testEmailAddress, password: testPassword})
                 .end(function (err, res) {
                     expect(res).to.have.status(200);
                     expect(res).to.have.header('content-type', 'text/html; charset=utf-8');
@@ -62,7 +65,7 @@ describe('Authorization tests', function() {
         it('should return a 400 unauthorized', function (done) {
             chai.request(server)
                 .post('/api/auth?apiVer=1.0.0')
-                .send({emailAddress: 'bryce.blilie@airvuz.com', password: 'xxx'})
+                .send({emailAddress: testEmailAddress, password: 'xxx'})
                 .end(function (err, res) {
                     //TODO: fix to return JSON
                     // expect(res).to.have.header('content-type', 'application/json; charset=utf-8');
