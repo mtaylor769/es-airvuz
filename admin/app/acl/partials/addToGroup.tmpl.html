@@ -1,0 +1,62 @@
+<div ng-if="vm.showSearchPop">
+    <md-card layout-padding>
+        <h2>Search for a User to add to {{vm.group.name}}</h2>
+        <b>Enter a username <em>(search is case sensitive)</em></b>
+        <form name="vm.searchForm">
+            <md-input-container>
+                <label>Username</label>
+                <input type="text" ng-model="vm.username" required/>
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary" ng-click="vm.searchForUser(vm.username)"
+                       ng-disabled="vm.searchForm.$invalid">
+                Search
+            </md-button>
+        </form>
+    </md-card>
+</div>
+<div id="acluser" ng-if="vm.showUserPop" flex>
+    <md-card layout-padding layout-margin>
+        <div>
+            <md-button class="md-fab md-danger"
+                       ng-click="vm.showSearchPop = true; vm.showUserPop = false; vm.username='';">
+                <md-icon class="material-icon">search</md-icon>
+                <md-tooltip>Search again</md-tooltip>
+            </md-button>
+            <md-button class="md-fab md-danger"
+                       ng-click="vm.addToGroup({aclUser: vm.aclUser.id, aclGroup: vm.group._id, linkedUserId: vm.aclUser._id})">
+                <md-icon class="material-icon">group_add</md-icon>
+                <md-tooltip>Add to {{ vm.group.name}}</md-tooltip>
+            </md-button>
+        </div>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{vm.aclUser.userNameDisplay}}</span>
+                <span class="md-subhead">{{vm.aclUser.firstName}} {{vm.aclUser.lastName}}</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-subheader class="md-no-sticky"><h3>User Details</h3></md-subheader>
+        <md-list-item>
+            <h5>Email Address: {{vm.aclUser.emailAddress}}</h5>
+        </md-list-item>
+        <md-subheader>
+            <h3>Assigned Groups</h3>
+        </md-subheader>
+        <md-list-item ng-repeat="group in vm.groups">
+            <div class="md-list-item-text" layout="column">
+                <h4>{{ group.aclGroup.name}}</h4>
+                <p class="md-caption">{{ group.aclGroup.description }}</p>
+            </div>
+            <md-checkbox class="md-secondary" ng-model="group.isChecked" ng-disabled="true"></md-checkbox>
+        </md-list-item>
+        <md-subheader>
+            <h3>Individual Permissions</h3>
+        </md-subheader>
+        <md-list-item ng-repeat="permission in vm.permissions">
+            <p> {{ permission.description }} <br/>
+            </p>
+            <md-checkbox class="md-secondary" ng-model="permission.isChecked" ng-disabled="true"></md-checkbox>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-card>
+</div>
+
