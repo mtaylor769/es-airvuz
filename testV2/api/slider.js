@@ -9,7 +9,7 @@ var testPassword = process.env.TEST_PWD;
 
 var token;
 var userId;
-var videoId = '57e8366a7b09480e3378289f';
+var videoId = '57b24c25beb6e09523772298';
 var slides = '5755c8a2fc2f9c228701978a';
 var slidesUpdated = '57645b4f053b60a72c875f24';
 var sliderId;

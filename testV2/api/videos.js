@@ -278,7 +278,7 @@ describe('Video API tests', function () {
         describe('Get next videos', function () {
             it('should return json with an array of videos', function (done) {
                 chai.request(server)
-                    .get('/api/videos/nextvideos?video=57b24c25beb6e09523772298' + '&' + apiVer)
+                    .get('/api/videos/nextvideos?video=568f1c8b53e46385e0aa18d0' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);
@@ -653,7 +653,7 @@ describe('Video API tests', function () {
         describe('Get next videos', function () {
             it('should return json with an array of videos', function (done) {
                 chai.request(server)
-                    .get('/api/videos/nextvideos?video=57b24c25beb6e09523772298' + '&' + apiVer)
+                    .get('/api/videos/nextvideos?video=568f1c8b53e46385e0aa18d0' + '&' + apiVer)
                     .end(function (err, res) {
                         var data = res.body;
                         expect(res).to.have.status(200);

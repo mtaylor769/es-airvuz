@@ -9,7 +9,7 @@ var testPassword = process.env.TEST_PWD;
 
 var token;
 var userId;
-var videoId = '57e8366a7b09480e3378289f'; //update to a video in local environment
+var videoId = '57b24c25beb6e09523772298'; //update to a video in local environment
 var slideId;
 
 chai.use(chaiHttp);
