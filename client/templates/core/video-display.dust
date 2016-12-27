@@ -2,22 +2,20 @@
   <div class="col-md-3 col-sm-6">
     <div class="video">
       <div class="text-center">
-        <a href="/video/{_id}" data-id="{_id}"title="{title}" data-ccid="{ccid}" class="video-link">
-          <img src="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive"/>
+        <a href="/video/{_id}" data-id="{_id}" title="{title}" data-ccid="{ccid}">
+          <img src="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive video-link"/>
         </a>
       </div>
-      <div class="video-bottom">
+      <div class="video-bottom" data-id="{_id}" title="{title}" data-ccid="{ccid}">
         <p><span class="airvuz-blue">VUZ</span> {viewCount} | {uploadDate} <span class="pull-right">{duration}</span></p>
-        <div class="title">
-          <h4>
-            <a href="/video/{_id}" title="{title}">{title}</a>
-          </h4>
-			{#userId.userNameDisplay}
-              <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
-			{:else}
-              <p>By <a href="/user/{userId._id}">{userId._id}</a></p>
-			{/userId.userNameDisplay}
-        </div>
+        <h4 class="title video-link">
+          <a href="/video/{_id}" title="{title}">{title}</a>
+        </h4>
+		{#userId.userNameDisplay}
+        <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
+		{:else}
+        <p>By <a href="/user/{userId._id}">{userId._id}</a></p>
+		{/userId.userNameDisplay}
         {#showCategory}
           <a href="/category/{categories[0].categoryTypeUrl}">{categories[0].name}</a>
         {/showCategory}

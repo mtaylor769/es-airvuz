@@ -15,18 +15,16 @@
               <img data-lazy="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive go-to-video"/>
             </a>
           </div>
-          <div class="video-bottom" data-video-id="{_id}">
+          <div class="video-bottom" data-video-id="{_id}" data-ccid="{ccid}">
             <p><span class="airvuz-blue">VŪZ</span> {viewCount} | {uploadDate} <span class="pull-right">{duration}</span></p>
-            <div class="title go-to-video">
-              <h4>
-                <a title="{title}">{title}</a>
-              </h4>
-              {#userId.userNameDisplay}
-                <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
-              {:else}
-                <p>By <a href="/user/{userId._id}">{userId._id}</a></p>
-              {/userId.userNameDisplay}
-            </div>
+            <h4 class="title go-to-video">
+              <a title="{title}">{title}</a>
+            </h4>
+            {#userId.userNameDisplay}
+              <p>By <a href="/user/{userId.userNameUrl}">{userId.userNameDisplay}</a></p>
+            {:else}
+              <p>By <a href="/user/{userId._id}">{userId._id}</a></p>
+            {/userId.userNameDisplay}
           </div>
         </div>
       {/index[videos]}
