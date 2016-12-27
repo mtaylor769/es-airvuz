@@ -12,15 +12,6 @@ var AmazonConfig  = require('./config/amazon.config.client'),
     AVEventTracker = require('./avEventTracker'),
     GoogleMap = require('../scripts/services/map');
 
-/**k
- * Templates
- */
-var thumbnailTpl = require('../templates/upload/thumbnail.dust');
-var step1Tpl = require('../templates/upload/step-1.dust');
-var step2Tpl = require('../templates/upload/step-2.dust');
-var step3Tpl = require('../templates/upload/step-3.dust');
-var videoSocialShareTpl = require('../templates/social/videoSocialShare.dust');
-
 var $uploadPage,
     $tags,
     currentUploadFile = {},
@@ -33,7 +24,6 @@ var $uploadPage,
     POLLING_INTERVAL_TIME = 20000, // 20 sec
     customThumbnailName,
     isCustomThumbnail = false,
-    isPublishing = false,
     uploadSource; // use to determine if upload is local, youtube, or vimeo
 
 var mapMarkers = [];
@@ -207,6 +197,9 @@ function renderStep(step, video) {
           });
 
           initMap(document.getElementById('map'));
+
+          // turn publish button disable back to false in case user want to upload another video
+          $uploadPage.find('#btn-publish').prop('disabled', false);
         });
       });
       break;
@@ -234,11 +227,12 @@ function bindEvents() {
   }
   function onPublish(event) {
     event.preventDefault();
-
+    var $btn = $(this);
     // isUploadVideo will prevent validation
-    if (isPublishing || isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
+    if (isUploadingCustomThumbnail /*|| isUploadingVideo*/) {
       return false;
     }
+    $btn.prop('disabled', true);
     removeErrorMessage();
 
     var videoCoordsObj = {
@@ -281,8 +275,7 @@ function bindEvents() {
         displayMsg: 'Require custom thumbnail'
       }]);
     }
-    
-    isPublishing = true;
+
     $.ajax({
       url         : '/api/videos',
       contentType : 'application/json',
@@ -290,7 +283,6 @@ function bindEvents() {
       data        : JSON.stringify(params)
     }).done(function (video) {
       renderStep(3, video);
-
       var eventName = 'video-upload-published:' + uploadSource;
       var eventNameAny = 'video-upload-published:any';
       var eventParams = {
@@ -307,8 +299,7 @@ function bindEvents() {
         dialogs.required();
         appendErrorMessage(response.responseJSON.error);
       }
-    }).always(function () {
-      isPublishing = false;
+      $btn.prop('disabled', false);
     });
   }
 

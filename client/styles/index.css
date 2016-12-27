@@ -6,7 +6,7 @@ textarea {
   resize: none;
 }
 
-a.btn + a.btn {
+.btn + .btn {
   margin-left: 10px;
 }
 /**********************************
@@ -2208,10 +2208,6 @@ header logo and tag line media queries
   .video-page .comment-wrap .posted-comment-text {
     padding-left: 50px;
     margin-top: 10px;
-  }
-
-  a.btn + a.btn {
-    margin-left: 10px;
   }
 
   #user-profile .profile-video img {
