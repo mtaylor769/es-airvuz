@@ -76,7 +76,6 @@
 	"requireSpaceAfterBinaryOperators": true,
 	"requireSpacesInConditionalExpression": true,
 	"requireSpaceBeforeBlockStatements": true,
-	"requireLineFeedAtFileEnd": true,
 	"disallowSpacesInsideObjectBrackets": "all",
 	"disallowSpacesInsideArrayBrackets": "all",
 	"disallowSpacesInsideParentheses": true,
