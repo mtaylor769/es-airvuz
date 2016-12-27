@@ -26,7 +26,7 @@
 							return dfd.reject({error: "You aren't a pro drone pilot"});
 						}
 
-						localStorage.setItem('id_token', token);
+						localStorage.setItem('admin_token', token);
 						dfd.resolve();
 					}, function (err) {
 						dfd.reject(err.data);
@@ -35,7 +35,7 @@
 				},
 				logout: function () {
 					identity.currentUser = null;
-					localStorage.removeItem('id_token');
+					localStorage.removeItem('admin_token');
 				}
 			};
 		}]);

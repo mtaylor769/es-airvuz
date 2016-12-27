@@ -32,7 +32,7 @@
 
     // add token to request
     jwtInterceptorProvider.tokenGetter = [function() {
-      return localStorage.getItem('id_token');
+      return localStorage.getItem('admin_token');
     }];
 
     // Add http interceptors
