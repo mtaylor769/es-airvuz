@@ -38,7 +38,7 @@ function setIconFontSize(size) {
 
 // embed click handler
 function embedClickHandler() {
-    var iframeUrl = "<code>&lt;iframe src='https://www.airvuz.com/videoPlayerEmbed/" +video._id + " height='245' width='432'&gt;&lt;/iframe&gt;</code>";
+    var iframeUrl = "<code>&lt;iframe src='https://www.airvuz.com/videoPlayerEmbed/" +video._id + "' height='245' width='432'&gt;&lt;/iframe&gt;</code>";
 
     dialog.setSize('md');
 
