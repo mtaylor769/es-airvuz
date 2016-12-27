@@ -5,10 +5,10 @@ function initialize() {
     $('#category-page').on('click', '.video-link', function(evt) {
         evt.preventDefault();
 
-        var videoId = $(this).data('id'),
+        var videoId = $(this).parent().data('id'),
             $category = $('#category-page'),
-            isCustomCategoryVideo = $(this).data('ccid').length > 0,
-            ccid = $(this).data('ccid'),
+            isCustomCategoryVideo = $(this).parent().data('ccid').length > 0,
+            ccid = $(this).parent().data('ccid'),
             ccidQueryParam = (isCustomCategoryVideo ? '?ccid=' + ccid: '');
 
         //intialize video.js
