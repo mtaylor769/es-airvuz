@@ -18,7 +18,7 @@
         trackTime(minSec);
 
         if (!stopTimer) {
-            timerId = setTimeout(update, 1000);
+            setTimeout(update, 1000);
         }
     }
 
