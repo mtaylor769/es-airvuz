@@ -3,6 +3,7 @@
  * external lib
  */
 var videojs = require('video.js');
+var vttJsPath = require('file-loader?name=vtt.js.[hash].[ext]!videojs-vtt.js/dist/vtt.min.js');
 var PubSub  = require('pubsub-js');
 
 require('slick-carousel');
@@ -1296,6 +1297,7 @@ function initialize(params) {
 
 if(!window.playerHolder) {
   VideoPlayer = videojs('video-player', {
+    'vtt.js': vttJsPath,
     plugins: {
       videoJsResolutionSwitcher: {
         default: (vqResUrlParam && vqResUrlParam !== '') ? vqResUrlParam : defaultRes

@@ -1,5 +1,6 @@
 /* global fbq, ga */
 var videojs = require('video.js');
+var vttJsPath = require('file-loader?name=vtt.js.[hash].[ext]!videojs-vtt.js/dist/vtt.min.js');
 require('slick-carousel');
 require('../../node_modules/slick-carousel/slick/slick.css');
 require('../../node_modules/slick-carousel/slick/slick-theme.css');
@@ -163,6 +164,7 @@ $('#main-row').on('click', '.go-to-video', function() {
 
   //intialize video.js
   window.VideoPlayer = videojs('video-player', {
+    'vtt.js': vttJsPath,
     plugins: {
       videoJsResolutionSwitcher: {
         default: ''
