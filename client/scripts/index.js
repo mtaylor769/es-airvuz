@@ -61,6 +61,9 @@ function initializePage() {
     case 'password-reset':
       require(['./pages/password-reset/index'], _loadPage);
       break;
+    case 'customCategory':
+      require(['./customCategory'], _loadPage);
+      break;
     // case 'static':
     //   require(['./pages/static/index'], _loadPage);
   }

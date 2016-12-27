@@ -690,11 +690,23 @@ function getFollowCount (req, res) {
  * @param res
  */
 function getNextVideos (req, res) {
+    var ccid 	= req.query.ccid || null;
+
     videoCrud1_0_0.getById(req.query.video)
-      .then(function (video) {
-          return catTypeCrud1_0_0.getInternalCategory(video.categories);
+      .then(function(video) {
+          if (ccid !== null) {
+              return videoCollCrud1_0_0.getCustomById(ccid)
+                  .then(function(category) {
+                      category.videos.map(function(vid) {
+                         vid.ccid = category._id;
+                      });
+                      return category.videos;
+                  })
+          }
+
+          return catTypeCrud1_0_0.getInternalCategory(video.categories)
+              .then(videoCrud1_0_0.getNextVideos);
       })
-      .then(videoCrud1_0_0.getNextVideos)
       .then(function (videos) {
           videos.forEach(function (video) {
               video.fullTitle = video.title;

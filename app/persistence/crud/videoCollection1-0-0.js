@@ -325,7 +325,7 @@ function getAllCustom() {
 }
 
 function getCustomById(id) {
-  return VideoCollectionModel.findById(id).populate('videos').exec();
+  return VideoCollectionModel.findById(id).populate('videos').lean().exec();
 }
 
 function updateCustom(carouselId, carouselUpdates) {

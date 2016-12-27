@@ -156,7 +156,10 @@ function bindEvents() {
 }
 
 $('#main-row').on('click', '.go-to-video', function() {
-  var videoId = $(this).parent().attr('data-video-id');
+  var videoId = $(this).parent().attr('data-video-id'),
+      isCustomCategoryVideo = $(this).parent().data('ccid').length > 0,
+      ccid = $(this).parent().data('ccid'),
+      ccidQueryParam = (isCustomCategoryVideo ? '?ccid=' + ccid : '');
 
   //intialize video.js
   window.VideoPlayer = videojs('video-player', {
@@ -172,7 +175,7 @@ $('#main-row').on('click', '.go-to-video', function() {
 
   $.ajax({
     type: 'GET',
-    url: '/spaRender/' + videoId
+    url: '/spaRender/' + videoId + ccidQueryParam
   })
     .done(function(response) {
       // destroy the current slicks
@@ -186,7 +189,7 @@ $('#main-row').on('click', '.go-to-video', function() {
       //append videopage view
       $('#views').append(response);
       //update url for video
-      history.pushState({}, null, '/video/' + videoId);
+      history.pushState({}, null, '/video/' + videoId + ccidQueryParam);
     })
     .fail(function(error) {
     })

@@ -69,6 +69,7 @@ IndexModel.prototype.getData = function (params) {
 				params.data.index.customSliderVideos = customCarousel.videos;
 				params.data.index.customSliderName = customCarousel.name;
 				params.data.index.customSliderNameUrl = customCarousel.nameUrl;
+				params.data.index.ccid = customCarousel._id;
 			}
 			var videoToOmit = [];
 

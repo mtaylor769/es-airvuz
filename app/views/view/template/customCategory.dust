@@ -24,7 +24,7 @@
                     {?videoHeader}
                         <div class="row">
                             <div class="col-md-6 right-space">
-                                <a href="/video/{category.displayVideo}">
+                                <a href="/video/{category.displayVideo}?ccid={category._id}">
                                     <img src="{displayVideoSrc}" width="100%">
                                 </a>
                             </div>
@@ -44,7 +44,7 @@
                     {/videoHeader}
                     <div class="row" id="videos">
                         <div class="col-md-12">
-                            {> "client.templates.core.video-display"/}
+                            {> "client.templates.core.video-display" ccid="{category._id}"/}
                         </div>
                     </div>
                     <div class="row top-space text-space">
@@ -53,7 +53,14 @@
                 </div>
             </div>
         </div>
+        <div id="view"></div>
+        <div class="video-container hidden">
+            <video id="video-player" class="video-js vjs-big-play-centered vjs-fullscreen video-player" controls preload="auto" autoplay style="position: relative; width: 100%; height: 100%"></video>
+        </div>
         {> "app.views.view.partial.footer" /}
+        <script>
+            window.page = 'customCategory';
+        </script>
         {> "app.views.view.partial.js" /}
     </body>
 </html>

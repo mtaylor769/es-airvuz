@@ -94,7 +94,8 @@ function nextVideoHandler(evt) {
     });
     // Config parameters
     var CONFIG = {
-        selectedVideoId: $(this).attr('data-id')
+        selectedVideoId: $(this).data('id'),
+        ccid: $(this).data('ccid')
     };
     // reset the initialPlayStart start flag to capture the play start event
     initialPlayStart = false;
@@ -171,11 +172,14 @@ PubSub.subscribe('video-switched', function (msg, data) {
     // update video title
     $('.video-player-title').empty().html(video.title);
 
+      var ccid = typeof video.ccid !== 'undefined' && video.ccid.length ? video.ccid : '';
+      var ccidQueryParam = '&ccid=' + ccid;
+
     var getUserProfile = $.ajax({type: 'GET', url: '/api/video/videoOwnerProfile/' + video.userId}),
       getTopSixVid = $.ajax({type: 'GET', url: '/api/videos/topSixVideos/' + video.userId}),
       getFollowCount = $.ajax({type: 'GET', url: '/api/videos/followCount/' + video.userId}),
       getVideoCount = $.ajax({type: 'GET', url: '/api/videos/videoCount/' + video.userId}),
-      getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id});
+      getNextVideos = $.ajax({type: 'GET', url: '/api/videos/nextVideos?video=' + video._id + (ccid.length ? ccidQueryParam : '')});
 
     // re-init the video slick
     var $videoSlick = $('.video-slick');
@@ -191,7 +195,35 @@ PubSub.subscribe('video-switched', function (msg, data) {
       getVideoCount,
       getNextVideos
     ).done(function(userData, topSixVidData, followCountData, videoCountData, nextVideosData) {
-      videoNextVideosPartialTpl({upNext: nextVideosData[0], s3Bucket: amazonConfig.OUTPUT_BUCKET, cdnUrl: amazonConfig.CDN_URL}, function (err, html) {
+        var nextVideosArr = nextVideosData[0];
+
+        // shift the current video to the bottom of the playlist; Only for custom category videos
+        if (ccid) {
+            var idxToShift = function() {
+                var i = 0;
+                nextVideosArr.find(function(vid, idx) {
+                    i = idx;
+                    return video._id === vid._id;
+                });
+                return i;
+            }
+
+            function updateVideoOrder(arr, fromIndex, toIndex) {
+                var element = arr[fromIndex];
+                arr.splice(fromIndex, 1);
+                arr.splice(toIndex, 0, element);
+            }
+            updateVideoOrder(nextVideosArr, idxToShift(), nextVideosArr.length - 1);
+        }
+
+        var upNextOptions = {
+            upNext: nextVideosArr,
+            s3Bucket: amazonConfig.OUTPUT_BUCKET,
+            cdnUrl: amazonConfig.CDN_URL,
+            ccid: ccid
+        };
+
+      videoNextVideosPartialTpl(upNextOptions, function (err, html) {
         $('.next-video-list').empty().prepend(html);
         lazyLoadImage($('img[data-lazy]', '.next-video-list'));
       });
@@ -665,6 +697,7 @@ function bindEvents() {
         var nextVideo = $('.nextVideos').children('ul').children().first();
         var picture = nextVideo.find('img').attr('src');
         var nextTitle = nextVideo.attr('data-title');
+        var ccid = $('.nextVideos').children('ul').children().first().data('ccid');
 
         //set countdown variables
         var countdownNumber = Number(10);
@@ -707,7 +740,7 @@ function bindEvents() {
               clearInterval(countdown);
             }
           } else {
-            window.location.href = nextVideo.attr('data-id');
+            window.location.href = nextVideo.attr('data-id') + (ccid ? '?ccid='+ccid : '');
           }
         };
         //calling interval variable
