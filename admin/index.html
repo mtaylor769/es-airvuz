@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="/admin/lib/ng-tags-input/ng-tags-input.min.css">
   <link rel="stylesheet" href="/admin/lib/video.js/dist/video-js.min.css">
 </head>
-<body ng-cloak ng-controller="BaseController as baseCtrl">
-<div layout="column" layout-fill>
+<body ng-cloak ng-controller="BaseController as baseCtrl" layout="column">
+<md-content layout="column" layout-fill>
   <md-toolbar>
     <div class="md-toolbar-tools">
       <md-button ng-click="baseCtrl.showSideBar()">
@@ -33,6 +33,24 @@
         <md-icon class="material-icons">person</md-icon>
         <p>Users</p>
       </md-list-item>
+      <md-list-item ng-click="vm.aclMenu = !vm.aclMenu">
+        <md-icon class="material-icons">assignment_ind</md-icon>
+        <p>Access Control</p>
+      </md-list-item>
+      <md-list ng-show="vm.aclMenu" class="menu-accordion">
+        <md-list-item ui-sref="acl.users" ng-click="vm.aclMenu = !vm.aclMenu">
+          <md-icon class="material-icons">search</md-icon>
+          <p>Search User Policies</p>
+        </md-list-item>
+        <md-list-item ui-sref="acl.groups.search" ng-click="vm.aclMenu = !vm.aclMenu">
+          <md-icon class="material-icons">search</md-icon>
+          <p>Search Group Policies</p>
+        </md-list-item>
+        <md-list-item ui-sref="acl.groups.add" ng-click="vm.aclMenu = !vm.aclMenu">
+          <md-icon class="material-icons">group_add</md-icon>
+          <p>Add Group Policy</p>
+        </md-list-item>
+      </md-list>
       <md-list-item ui-sref="droneType">
         <md-icon class="material-icons">flight_takeoff</md-icon>
         <p>Drone Type</p>
@@ -134,7 +152,7 @@
       </md-list>
     </md-list>
   </md-sidenav>
-</div>
+</md-content>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
@@ -205,9 +223,23 @@
 <script src="/admin/app/custom-carousel/carouselCreate.controller.js"></script>
 <script src="/admin/app/custom-carousel/carouselEdit.controller.js"></script>
 <script src="/admin/app/custom-carousel/carouselViewAll.controller.js"></script>
+<!-- ACL -->
+<script src="/admin/app/acl/controllers/groups.controller.js"></script>
+<script src="/admin/app/acl/controllers/users.controller.js"></script>
+<script src="/admin/app/acl/services/users.service.js"></script>
+<script src="/admin/app/acl/services/permissions.service.js"></script>
+<script src="/admin/app/acl/services/groups.service.js"></script>
+<script src="/admin/app/acl/services/groupmembers.service.js"></script>
 <script src="/admin/app/auto-views/autoViewsCreate.controller.js"></script>
 <script src="/admin/app/auto-views/autoViewsList.controller.js"></script>
 <script src="/admin/app/auto-views/autoViewsSearch.controller.js"></script>
+<!-- ACL -->
+<script src="/admin/app/acl/controllers/groups.controller.js"></script>
+<script src="/admin/app/acl/controllers/users.controller.js"></script>
+<script src="/admin/app/acl/services/users.service.js"></script>
+<script src="/admin/app/acl/services/permissions.service.js"></script>
+<script src="/admin/app/acl/services/groups.service.js"></script>
+<script src="/admin/app/acl/services/groupmembers.service.js"></script>
 
 <!-- 3rd party -->
 <script src="/admin/lib/angular-ui-router/release/angular-ui-router.min.js"></script>

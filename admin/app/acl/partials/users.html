@@ -1,0 +1,91 @@
+<md-content layout="row" layout-padding>
+
+    <div ng-if="vm.showSearch">
+        <md-card layout-padding>
+            <h2>Search for a User Policy</h2>
+            <b>Enter a username <em>(search is case sensitive)</em></b>
+            <form name="vm.searchForm">
+                <md-input-container>
+                    <label>Username</label>
+                    <input type="text" ng-model="vm.username" required/>
+                </md-input-container>
+                <md-button type="submit" class="md-raised md-primary" ng-click="vm.searchUsername(vm.username)"
+                           ng-disabled="vm.searchForm.$invalid">
+                    Search
+                </md-button>
+            </form>
+        </md-card>
+    </div>
+    <div id="acluser" ng-if="vm.showUser" flex>
+        <md-card layout-padding layout-margin>
+            <div>
+                <md-button class="md-fab md-danger" ng-click="vm.showSearch = true; vm.showUser = false; vm.username='';">
+                    <md-icon class="material-icon">search</md-icon>
+                    <md-tooltip>Search again</md-tooltip>
+                </md-button>
+            </div>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-fab md-danger" ng-click="vm.changeUserStatus()">
+                    <md-icon class="material-icon">block</md-icon>
+                    <md-tooltip>Disable Login</md-tooltip>
+                </md-button>
+                <md-button class="md-fab md-danger" ng-click="vm.showConfirm('Remove user?')">
+                    <md-icon class="material-icon">delete</md-icon>
+                    <md-tooltip>Delete</md-tooltip>
+                </md-button>
+            </md-card-actions>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{vm.aclUser.userNameDisplay}}</span>
+                    <span class="md-subhead">{{vm.aclUser.firstName}} {{vm.aclUser.lastName}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-subheader class="md-no-sticky"><h3>User Details</h3></md-subheader>
+            <md-list-item>
+                <h5>Email Address: {{vm.aclUser.emailAddress}}</h5>
+            </md-list-item>
+            <md-subheader>
+                <div layout="row" layout-align="space-between center">
+                    <div flex="30" ><h3>Assigned Groups</h3><br /><i class="md-caption">Deselect to unassign group</i></div>
+                    <div flex="60"></div>
+                    <div flex>
+                        <md-button class="md-fab md-danger" ng-click="vm.showGroups(vm.aclUser)">
+                            <md-icon class="material-icons">group_add</md-icon>
+                            <md-tooltip>Assign Group</md-tooltip>
+                        </md-button>
+                    </div>
+                </div>
+            </md-subheader>
+            <md-list-item ng-repeat="group in vm.groups">
+                <p> {{ group.aclGroup.name }} </p>
+                <i>{{ group.aclGroup.description }}</i>
+                <md-checkbox class="md-secondary" ng-model="group.isChecked" ng-click="vm.groupRemoveBtn = true"></md-checkbox>
+            </md-list-item>
+            <md-button type="submit" class="md-raised md-primary" ng-click="vm.showConfirm('Remove user from group(s)?')" ng-disabled="!vm.groupRemoveBtn">
+                Update user group assignments
+            </md-button>
+            <md-subheader>
+                <div layout="row" layout-align="space-between center">
+                    <div flex="30"><h3>Individual Permissions</h3><br /><i class="md-caption">Deselect to remove permission(s)</i></div>
+                    <div flex="60"></div>
+                    <div flex>
+                        <md-button class="md-fab md-danger" ng-click="vm.showPermissions($event)">
+                            <md-icon class="material-icons">add_circle</md-icon>
+                            <md-tooltip>Add Permission</md-tooltip>
+                        </md-button>
+                    </div>
+                </div>
+            </md-subheader>
+            <md-list-item ng-repeat="permission in vm.permissions">
+                <p> {{ permission.description }} <br/>
+                </p>
+                <md-checkbox class="md-secondary" ng-model="permission.isChecked" ng-click="vm.permissionRemoveBtn = true"></md-checkbox>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-button type="submit" class="md-raised md-primary" ng-click="vm.showConfirm('Remove permission(s) from user?')" ng-disabled="!vm.permissionRemoveBtn">
+                Update user policy permissions
+            </md-button>
+        </md-card>
+    </div>
+    </md-card>
+</md-content>

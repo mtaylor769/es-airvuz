@@ -311,7 +311,35 @@
         templateUrl: '/admin/app/custom-carousel/partials/edit.html',
         controller: 'carouselEditController',
         controllerAs: 'vm'
-      });
+      })
+        .state('acl', {
+            url: '/admin/acl',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('acl.users', {
+            url: '/users',
+            templateUrl: '/admin/app/acl/partials/users.html',
+            controller: 'AclUsersController',
+            controllerAs: 'vm'
+        })
+        .state('acl.groups', {
+            url: '/groups',
+            abstract: true,
+            template: '<div ui-view></div>'
+        })
+        .state('acl.groups.add', {
+            url: '/add',
+            templateUrl: '/admin/app/acl/partials/groups.html',
+            controller: 'AclGroupsController',
+            controllerAs: 'vm'
+        })
+        .state('acl.groups.search', {
+            url: '/search',
+            templateUrl: '/admin/app/acl/partials/groups.html',
+            controller: 'AclGroupsController',
+            controllerAs: 'vm'
+        });
     $urlRouterProvider.otherwise('/admin');
   }
 })();

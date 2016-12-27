@@ -20,6 +20,7 @@ try {
     var videoLikeCrud1_0_0          = require('../../persistence/crud/videoLike1-0-0');
     var videoViewCrud               = require('../../persistence/crud/videoViews');
     var EventTrackingCrud   = require('../../persistence/crud/events/eventTracking')
+    var acl                         = require('../../acl/aclCheck');
 
     // add dust template
     viewManager.addView({view: confirmationView});
@@ -241,127 +242,146 @@ function passwordResetChange(req, res) {
  * @param res
  */
 function deleteUser(req, res) {
-    logger.debug('***** delete function in ********');
-    var roles = req.user.aclRoles;
-    logger.debug(roles);
-    var userId = req.params.id;
-    var rootCheck = roles.indexOf('root');
-    var userRootCheck = roles.indexOf('user-root');
-    //find user
-    if(rootCheck > -1 || userRootCheck > -1) {
-        usersCrud1_0_0.findById(userId)
-            .then(function(user) {
-                var deletedRootCheck = user.aclRoles.indexOf('root');
-                var deletedUserRootCheck = user.aclRoles.indexOf('user-root');
-                if(rootCheck > -1 || (deletedRootCheck === -1 && deletedUserRootCheck === -1)) {
-                    //find user social accounts
-                    return socialCrud.findAllSocialById(user._id);
-                } else {
-                    throw "can't remove root or root-user";
-                }
-            })
-            .then(function(socialAccounts) {
-                //map user social accounts
-                logger.debug(socialAccounts);
-                return Promise.map(socialAccounts, function (socialAccount) {
-                    //remove user social accounts
-                    return socialCrud.remove(socialAccount._id);
-                });
-            })
-            .then(function() {
-                //find user videos
-                return videoCrud1_0_0.findByUserId(userId);
-            })
-            .then(function(videos) {
-                //map videos
-                return Promise.map(videos, function(video) {
-                    //find video comments
-                    return commentCrud1_0_0
-                        .getByVideoId(video._id)
+    var params = {
+        linkedUserId: req.user._id,
+        permission: ['user-delete']
+    };
+    // check to see if logged in user has access to update an acl user
+    return acl.isAllowed(params)
+        .then(function (accessCheck) {
+            if (accessCheck) {
+                // access granted
+
+                logger.debug('***** delete function in ********');
+                var roles = req.user.aclRoles;
+                logger.debug(roles);
+                var userId = req.params.id;
+                var rootCheck = roles.indexOf('root');
+                var userRootCheck = roles.indexOf('user-root');
+                //find user
+                if(rootCheck > -1 || userRootCheck > -1) {
+                    usersCrud1_0_0.findById(userId)
+                        .then(function(user) {
+                            var deletedRootCheck = user.aclRoles.indexOf('root');
+                            var deletedUserRootCheck = user.aclRoles.indexOf('user-root');
+                            if(rootCheck > -1 || (deletedRootCheck === -1 && deletedUserRootCheck === -1)) {
+                                //find user social accounts
+                                return socialCrud.findAllSocialById(user._id);
+                            } else {
+                                throw "can't remove root or root-user";
+                            }
+                        })
+                        .then(function(socialAccounts) {
+                            //map user social accounts
+                            logger.debug(socialAccounts);
+                            return Promise.map(socialAccounts, function (socialAccount) {
+                                //remove user social accounts
+                                return socialCrud.remove(socialAccount._id);
+                            });
+                        })
+                        .then(function() {
+                            //find user videos
+                            return videoCrud1_0_0.findByUserId(userId);
+                        })
+                        .then(function(videos) {
+                            //map videos
+                            return Promise.map(videos, function(video) {
+                                //find video comments
+                                return commentCrud1_0_0
+                                    .getByVideoId(video._id)
+                                    .then(function(comments) {
+                                        //map video comments
+                                        return Promise.map(comments, function(comment) {
+                                            //delete video comments
+                                            return commentCrud1_0_0.remove(comment._id);
+                                        })
+                                    }).then(function() {
+                                        //delete video
+                                        return videoCrud1_0_0.remove(video._id);
+                                    });
+                            });
+                        })
+                        .then(function() {
+                            //find comments
+                            return commentCrud1_0_0.findByUserId(userId);
+                        })
                         .then(function(comments) {
-                            //map video comments
+                            //map comments
                             return Promise.map(comments, function(comment) {
-                                //delete video comments
+                                //delete comments
                                 return commentCrud1_0_0.remove(comment._id);
                             })
-                        }).then(function() {
-                            //delete video
-                            return videoCrud1_0_0.remove(video._id);
-                        });
-                });
-            })
-            .then(function() {
-                //find comments
-                return commentCrud1_0_0.findByUserId(userId);
-            })
-            .then(function(comments) {
-                //map comments
-                return Promise.map(comments, function(comment) {
-                    //delete comments
-                    return commentCrud1_0_0.remove(comment._id);
-                })
-            })
-            // .then(function() {
-            //   return followCrud1_0_0.findByFollowingUserIdAndUserId(userId);
-            // })
-            // .then(function(follows) {
-            //   return Promise.map(follows, function(follow) {
-            //     return followCrud1_0_0.delete(follow._id);
-            //   })
-            // })
-            // .then(function() {
-            //   return notificationCrud1_0_0.findByNotifiedUserIdAndActionUserId(userId);
-            // })
-            // .then(function(notifications) {
-            //   return Promise.map(notifications, function(notification) {
-            //     return notificationCrud1_0_0.delete(notification._id);
-            //   })
-            // })
-            // .then(function() {
-            //   return videoCollectionCrud.findByUserId(userId);
-            // })
-            // .then(function(videoCollections) {
-            //   return Promise.map(videoCollections, function(videoCollection) {
-            //     return videoCollectionCrud.delete(videoCollection._id);
-            //   })
-            // })
-            // .then(function() {
-            //   //find likes
-            //   return videoLikeCrud1_0_0.findByUserId(userId);
-            // })
-            // .then(function(likes) {
-            //   //remove likes
-            //   return Promise.map(likes, function(like) {
-            //     return videoLikeCrud1_0_0.delete(like._id);
-            //   })
-            // })
-            // .then(function() {
-            //   //find videoView
-            //   return videoViewCrud.findByUserId(userId);
-            // })
-            // .then(function(videoViews) {
-            //   //remove videoView
-            //   return Promise.map(videoViews, function(videoView) {
-            //     return videoViewCrud.delete(videoView._id)
-            //   })
-            // })
-            .then(function() {
-                return usersCrud1_0_0.remove(userId);
-            })
-            .then(function() {
-                res.sendStatus(200);
-            })
-            .catch(function(error) {
-                if (typeof error === 'string') {
-                    return res.sendStatus(401);
+                        })
+                        // .then(function() {
+                        //   return followCrud1_0_0.findByFollowingUserIdAndUserId(userId);
+                        // })
+                        // .then(function(follows) {
+                        //   return Promise.map(follows, function(follow) {
+                        //     return followCrud1_0_0.delete(follow._id);
+                        //   })
+                        // })
+                        // .then(function() {
+                        //   return notificationCrud1_0_0.findByNotifiedUserIdAndActionUserId(userId);
+                        // })
+                        // .then(function(notifications) {
+                        //   return Promise.map(notifications, function(notification) {
+                        //     return notificationCrud1_0_0.delete(notification._id);
+                        //   })
+                        // })
+                        // .then(function() {
+                        //   return videoCollectionCrud.findByUserId(userId);
+                        // })
+                        // .then(function(videoCollections) {
+                        //   return Promise.map(videoCollections, function(videoCollection) {
+                        //     return videoCollectionCrud.delete(videoCollection._id);
+                        //   })
+                        // })
+                        // .then(function() {
+                        //   //find likes
+                        //   return videoLikeCrud1_0_0.findByUserId(userId);
+                        // })
+                        // .then(function(likes) {
+                        //   //remove likes
+                        //   return Promise.map(likes, function(like) {
+                        //     return videoLikeCrud1_0_0.delete(like._id);
+                        //   })
+                        // })
+                        // .then(function() {
+                        //   //find videoView
+                        //   return videoViewCrud.findByUserId(userId);
+                        // })
+                        // .then(function(videoViews) {
+                        //   //remove videoView
+                        //   return Promise.map(videoViews, function(videoView) {
+                        //     return videoViewCrud.delete(videoView._id)
+                        //   })
+                        // })
+                        .then(function() {
+                            return usersCrud1_0_0.remove(userId);
+                        })
+                        .then(function() {
+                            res.sendStatus(200);
+                        })
+                        .catch(function(error) {
+                            if (typeof error === 'string') {
+                                return res.sendStatus(401);
+                            }
+                            logger.debug(error);
+                            res.sendStatus(500);
+                        })
+                } else {
+                    res.sendStatus(401);
                 }
-                logger.debug(error);
-                res.sendStatus(500);
-            })
-    } else {
-        res.sendStatus(401);
-    }
 
+                // access denied
+            } else {
+                logger.info(params.permission + " access denied for userId: " + req.user._id);
+                res.status(401).json({"ERROR": "Access Denied"});
+            }
+        })
+        .catch(function (error) {
+            logger.error(error);
+        });
 }
 /**
  * route: PROTECTED PUT /api/users/:id

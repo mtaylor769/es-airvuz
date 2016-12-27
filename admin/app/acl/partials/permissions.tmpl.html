@@ -1,0 +1,15 @@
+<md-dialog aria-label="All ACL Permissions" layout="row" layout-padding>
+    <form ng-cloak>
+        <md-dialog-content>
+            <md-subheader>Select a permission to add to this user policy</md-subheader>
+            <md-list-item ng-repeat="permission in permissions">
+                <p> {{ permission.description }} <br/>
+                </p>
+                <md-button class="md-fab md-danger acluser-dialog-button" ng-click="vm.addPermissions(permission._id)">
+                    <md-icon class="material-icons">add_circle</md-icon>
+                </md-button>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-dialog-content>
+    </form>
+</md-dialog>

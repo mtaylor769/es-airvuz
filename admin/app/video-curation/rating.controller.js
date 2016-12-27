@@ -113,14 +113,27 @@
             if(!data.internalRanking) {
                 vm.ratingRequired = true;
             } else {
-                $http.put('/api/video-curation', data).then(function(response) {
-                    dialog.alert({
-                        title: 'Video saved',
-                        content: 'Video Info Successfully Saved',
-                        ok: 'ok'
+                $http.put('/api/video-curation', data)
+                    .then(function(response) {
+                        dialog.alert({
+                            title: 'Video saved',
+                            content: 'Video Info Successfully Saved',
+                            ok: 'ok'
+                        });
+                        vm.showNextButtons = true;
+                    })
+                    .catch(function(error) {
+                        if (error.data = "ERROR: 'Access Denied'"){
+                            dialog.alert({
+                                title: 'Video not updated',
+                                content: 'Access denied',
+                                ok: 'ok'
+                            });
+                        } else {
+                            console.log(error);
+                        }
+                        vm.showNextButtons = false;
                     });
-                    vm.showNextButtons = true;
-                });
             }
         }
 

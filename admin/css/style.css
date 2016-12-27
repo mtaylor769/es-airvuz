@@ -111,7 +111,20 @@ tr:nth-child(even) {
 #new-slide, #new-slider, #sliders, #slides {
     padding: 30px;
 }
+/* ACL styles --------------------------------------------------------------------------------------------------------*/
+#acluser .md-subheader-inner {
+    padding: 0px;
+}
 
+#acluser md-list-item {
+    margin: 0px;
+}
+
+.md-button.md-fab.acluser-dialog-button {
+    width: 36px;
+    height:28px;
+}
+/*--------------------------------------------------------------------------------------------------------------------*/
 #upload-file {
     display: none;
 }

@@ -11,6 +11,7 @@ try {
     var mongoose                = require('mongoose');
     var moment                  = require('moment');
     var nodemailer              = require('nodemailer');
+    var acl                     = require('../../acl/aclCheck');
 
     if (global.NODE_ENV === "production") {
         logger.setLevel("INFO");
@@ -154,6 +155,10 @@ function put(req, res) {
  * @param res
  */
 function deleteComment(req, res) {
+    var params = {
+        linkedUserId: req.user._id,
+        permission: ['comment-delete']
+    };
     var reply;
     commentCrud1_0_0.getById(req.params.id)
         .then(function (comment) {
@@ -163,6 +168,23 @@ function deleteComment(req, res) {
                 reply = true;
                 return comment;
             }
+        })
+        .then(function (comments) {
+            // logger.info(req.user._id.toString());
+            // logger.info(comments[0].userId);
+            if (req.user._id.toString() === comments[0].userId.toString()) {
+                params.pass = true; //add pass to params to indicate user doesnt need an access check - they own the comment
+            }
+
+            return Promise.resolve(acl.isAllowed(params))
+                .then(function(aclCheck) {
+                    if (aclCheck == false){
+                        logger.info(params.permission + " access denied for userId: " + req.user._id);
+                        res.status(401).json({"ERROR": "Access Denied"});
+                        throw "Comment Delete Access Denied!";
+                    }
+                    return comments;
+                });
         })
         .then(function (comments) {
             if (typeof comments.length === 'undefined') {
@@ -218,8 +240,8 @@ function deleteComment(req, res) {
         })
         .catch(function (error) {
             logger.error(error);
-            res.sendStatus(500);
-        })
+            //res.sendStatus(500);
+        });
 }
 /**
  *

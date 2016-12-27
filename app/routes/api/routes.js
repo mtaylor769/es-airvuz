@@ -20,12 +20,14 @@ try {
 	var upload              = require('./upload');
 	var amazon              = require('./amazon');
 	var videoCollection     = require('./videoCollection');
-	var reports 						= require('./reports');
-	var keywords						= require('./keywords');
-	var videoCuration 			= require('./videoCuration');
-	var aclRoles 						= require('./aclRoles');
-	var customCarousel      = require('./customCarousel');
-// var forms               	= require('./forms');
+	var reports 			= require('./reports');
+	var keywords			= require('./keywords');
+	var videoCuration 		= require('./videoCuration');
+	var aclGroups 			= require('./aclGroups');
+	var aclUsers 			= require('./aclUsers');
+	var aclPermissions		= require('./aclPermissions');
+	var aclGroupMembers		= require('./aclGroupMembers');
+    var customCarousel      = require('./customCarousel');
 	var image               = require('./image');
 	var cron                = require('./cron');
 	var autoViews						= require('./autoViews');
@@ -36,6 +38,8 @@ try {
 	// can cause your application to run out of memory when memory storage is used.
 	var storage							= multer.memoryStorage();
 	var multerUpload				= multer({storage: storage});
+	var auth				= require('./auth');
+
 } catch(exception) {
 	logger.error(" import error:" + exception);
 }
@@ -47,7 +51,6 @@ apiRouter
 /**
  * /api/auth
  */
-var auth = require('./auth');
 
 apiRouter.route('/api/auth')
   .post(auth.localLogin);
@@ -405,12 +408,55 @@ apiRouter.route('/api/video-curation')
 	.put(videoCuration.updateVideo);
 
 /**
- * /api/aclRoles
+ * /api/aclGroup, Resource, User
  */
-apiRouter.route('/api/aclRoles/:id')
-	.get(protect, aclRoles.getUserRoles)
-	.post(protect, aclRoles.removeAclRoleFromUser)
-	.put(protect, aclRoles.addAclRoleToUser);
+
+apiRouter.route('/api/aclgroups')
+	.post(protect, aclGroups.create)
+	.get(protect, aclGroups.getAll);
+apiRouter.route('/api/aclgroups/:id')
+	.put(protect, aclGroups.update)
+	.delete(protect, aclGroups.remove);
+apiRouter.route('/api/aclgroups/:name')
+    .get(protect, aclGroups.getByName);
+apiRouter.route('/api/aclgroups/:id/permissions')
+	.post(protect, aclGroups.addPermissions)
+	.put(protect, aclGroups.removePermissions);
+
+apiRouter.route('/api/aclPermissions')
+	.post(protect, aclPermissions.create)
+	.get(protect, aclPermissions.getAll);
+apiRouter.route('/api/aclPermissions/:id')
+	.get(protect, aclPermissions.get)
+	.put(protect, aclPermissions.update)
+	.delete(protect, aclPermissions.remove);
+
+apiRouter.route('/api/aclusers')
+	.post(protect, aclUsers.create)
+	.get(protect, aclUsers.getAll);
+apiRouter.route('/api/aclusers/:id')
+	.get(protect, aclUsers.get)
+	.put(protect, aclUsers.update)
+	.delete(protect, aclUsers.remove);
+apiRouter.route('/api/aclusers/search/:username')
+	.get(protect, aclUsers.search);
+apiRouter.route('/api/aclusers/:id/permissions')
+	.post(protect, aclUsers.addPermissions)
+	.put(protect, aclUsers.removePermissions)
+
+apiRouter.route('/api/aclgroupmembers')
+    .post(protect, aclGroupMembers.create)
+    .get(protect, aclGroupMembers.getAll);
+apiRouter.route('/api/aclgroupmembers/:id')
+    .get(protect, aclGroupMembers.get)
+    .put(protect, aclGroupMembers.update)
+    .delete(protect, aclGroupMembers.remove);
+apiRouter.route('/api/aclgroupmembers/aclusers/:id')
+	.delete(protect, aclGroupMembers.removeByAclUserId);
+apiRouter.route('/api/aclgroupmembers/aclusers/:id')
+	.get(protect, aclGroupMembers.getAclUsersGroups);
+apiRouter.route('/api/aclgroupmembers/aclgroups/:id')
+	.get(protect, aclGroupMembers.getGroupMembers);
 
 /**
  * /api/cron
