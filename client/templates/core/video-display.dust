@@ -2,13 +2,13 @@
   <div class="col-md-3 col-sm-6">
     <div class="video">
       <div class="text-center">
-        <a href="/video/{_id}" data-id="{_id}" title="{title}" data-ccid="{ccid}">
+        <a href="/video/{_id}" data-id="{_id}" title="{title}" data-ccid="{ccid}" class="video-link">
           <img src="{cdnUrl}/image/drone-video-thumbnail?image={s3Bucket}/{thumbnailPath}" alt="{title}" class="img-responsive video-link"/>
         </a>
       </div>
       <div class="video-bottom" data-id="{_id}" title="{title}" data-ccid="{ccid}">
         <p><span class="airvuz-blue">VUZ</span> {viewCount} | {uploadDate} <span class="pull-right">{duration}</span></p>
-        <h4 class="title video-link">
+        <h4 class="video-link">
           <a href="/video/{_id}" title="{title}">{title}</a>
         </h4>
 		{#userId.userNameDisplay}

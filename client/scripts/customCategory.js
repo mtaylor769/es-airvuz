@@ -2,7 +2,7 @@ var videojs = require('video.js');
 require('videojs-resolution-switcher');
 
 function initialize() {
-    $('#category-page').on('click', '.video-link', function(evt) {
+    $('#category-page').on('click', 'img.video-link, h4.video-link', function(evt) {
         evt.preventDefault();
 
         var videoId = $(this).parent().data('id'),
