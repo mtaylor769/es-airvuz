@@ -6,7 +6,7 @@ textarea {
   resize: none;
 }
 
-.btn + .btn {
+a.btn + a.btn {
   margin-left: 10px;
 }
 /**********************************
