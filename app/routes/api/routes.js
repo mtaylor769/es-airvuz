@@ -405,7 +405,7 @@ apiRouter.route('/api/keyword')
  */
 apiRouter.route('/api/video-curation')
 	.post(videoCuration.getNextVideo)
-	.put(videoCuration.updateVideo);
+	.put(protect, videoCuration.updateVideo);
 
 /**
  * /api/aclGroup, Resource, User
