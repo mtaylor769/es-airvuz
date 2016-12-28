@@ -58,3 +58,7 @@
     top: 50%;
     font-size:25px;
 }
+
+#upload-page .btn + .btn {
+    margin-left: 10px;
+}
