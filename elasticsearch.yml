@@ -1,0 +1,5 @@
+node.name: ${HOSTNAME}
+cluster.name: es-airvuz-prod
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
