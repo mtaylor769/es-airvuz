@@ -325,7 +325,18 @@ function getAllCustom() {
 }
 
 function getCustomById(id) {
-  return VideoCollectionModel.findById(id).populate('videos').lean().exec();
+  return VideoCollectionModel
+      .findById(id)
+      .populate('videos')
+      .lean()
+      .exec()
+      .then(function(videos) {
+          return VideoCollectionModel
+              .populate(videos, {path: 'videos.userId', model: 'Users', select: 'coverPicture emailAddress userNameDisplay profilePicture userNameUrl aboutMe lastName firstName socialMediaLinks autoPlay'});
+      })
+      .catch(function(error) {
+          return error;
+      });
 }
 
 function updateCustom(carouselId, carouselUpdates) {
